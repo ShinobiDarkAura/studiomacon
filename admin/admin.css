@@ -4,6 +4,9 @@
 :root{--cream:#FFFBF0;--ink:#282523;--terra:#B56B2F;--terra-deep:#9F551B;--olive:#43493E;
       --tan:#CFA886;--hairline:#CAC5B2;--deep-olive:#242619;--notes:#C04722;--panel:#FDFAF2}
 *{box-sizing:border-box;margin:0;padding:0}
+/* author display rules (e.g. .gate{display:flex}) otherwise beat the UA's
+   [hidden]{display:none}, leaving the sign-in screen covering the app */
+[hidden]{display:none !important}
 body{background:var(--cream);color:var(--ink);font-family:"Index",ui-monospace,monospace;-webkit-font-smoothing:antialiased}
 button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
 

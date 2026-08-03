@@ -18,7 +18,7 @@ function toast(msg, isErr) {
 }
 
 /* small on-page readout so sign-in problems are visible without DevTools */
-const BUILD = "2026-08-03d";
+const BUILD = "2026-08-03e";
 function diag(extra) {
   const d = $("#diag");
   if (!d) return;
