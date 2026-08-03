@@ -132,7 +132,7 @@ $("#signOut").addEventListener("click", async () => {
 async function loadProducts() {
   const { data, error } = await sb
     .from("store_products")
-    .select("*,store_product_images(id,url,alt,sort_order,variant)")
+    .select("*,store_product_images(*)")
     .order("sort_order");
   if (error) return toast(error.message, true);
   products = data || [];
@@ -284,7 +284,7 @@ $("#newProduct").addEventListener("click", async () => {
   const { data, error } = await sb.from("store_products")
     .insert({ name, slug, status: "draft", collection: "perennial",
               sort_order: products.length })
-    .select("*,store_product_images(id,url,alt,sort_order,variant)").single();
+    .select("*,store_product_images(*)").single();
   if (error) return toast(error.message, true);
   products.push(data);
   drawList();

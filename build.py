@@ -42,7 +42,7 @@ def load_content():
     if OFFLINE:
         print("  (offline) using cached content")
         return json.load(open(CACHE, encoding="utf-8"))
-    products = fetch("store_products?select=*,store_product_images(url,alt,sort_order)"
+    products = fetch("store_products?select=*,store_product_images(*)"
                      "&order=sort_order")
     pages = fetch("store_pages?select=*")
     settings = fetch("store_settings?select=*")
