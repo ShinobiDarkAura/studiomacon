@@ -116,3 +116,4 @@ button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
   padding:4px 8px;background:rgba(255,251,240,.92);color:var(--olive)}
 .img-cell .var.hand{background:var(--notes);color:var(--cream)}
 .img-cell .var:hover{outline:1px solid var(--ink)}
+.diag{margin-top:14px;font-size:10px;letter-spacing:.06em;color:var(--olive);opacity:.55}

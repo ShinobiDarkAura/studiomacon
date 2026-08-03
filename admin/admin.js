@@ -17,6 +17,18 @@ function toast(msg, isErr) {
   toast._t = setTimeout(() => t.classList.remove("show"), isErr ? 6000 : 2600);
 }
 
+/* small on-page readout so sign-in problems are visible without DevTools */
+const BUILD = "2026-08-03d";
+function diag(extra) {
+  const d = $("#diag");
+  if (!d) return;
+  let store = "ok";
+  try { localStorage.setItem("_t", "1"); localStorage.removeItem("_t"); }
+  catch (e) { store = "BLOCKED"; }
+  d.textContent = `build ${BUILD} · session ${session ? "yes" : "no"} · storage ${store}`
+                + (extra ? ` · ${extra}` : "");
+}
+
 /* ---------------- boot ---------------- */
 (async function boot() {
   const cfg = await (await fetch(CFG_URL)).json();
@@ -52,6 +64,7 @@ function toast(msg, isErr) {
     // only SIGNED_OUT should tear down the UI — a late INITIAL_SESSION(null)
     // must not knock an already-signed-in user back to the gate
     if (evt === "SIGNED_OUT") { session = null; render(); return; }
+    if (typeof diag === "function") diag("event " + evt);
     if (!s) return;
     session = s;
     history.replaceState(null, "", location.pathname);   // tidy the token out of the URL
@@ -61,6 +74,7 @@ function toast(msg, isErr) {
 })();
 
 async function render() {
+  diag();
   if (!session) { $("#gate").hidden = false; $("#app").hidden = true; return; }
   $("#gate").hidden = true;
   $("#app").hidden = false;
@@ -86,6 +100,7 @@ $("#loginForm").addEventListener("submit", async e => {
   if (error) {
     msg.textContent = error.message;
     console.warn("[auth] password", error);
+    diag("error: " + error.message);
     return;
   }
   console.log("[auth] signInWithPassword ok; session:", !!data?.session,
@@ -98,6 +113,7 @@ $("#loginForm").addEventListener("submit", async e => {
   // don't wait on onAuthStateChange — drive the UI directly
   session = data.session;
   msg.textContent = "";
+  diag("signed in");
   await render();
 });
 
