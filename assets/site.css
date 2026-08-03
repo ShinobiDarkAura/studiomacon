@@ -61,6 +61,21 @@ body.menu-open .menu-overlay{opacity:1;pointer-events:auto}
 .card-img{aspect-ratio:3/4;overflow:hidden;background:#f3ecdd;border-radius:999px}
 .card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
 .card:hover .card-img img{transform:scale(1.04)}
+/* collection headings */
+.coll-head{text-align:center;margin-bottom:34px}
+.coll-head h2{font-family:"Louize",Georgia,serif;font-weight:400;font-size:30px;letter-spacing:.02em}
+.coll-head .overline,.pdp-left .overline{font-family:"SwimClub","Index",monospace;font-size:12px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--notes);margin-bottom:8px}
+.grid-2{grid-template-columns:repeat(2,1fr);gap:60px 48px}
+@media(max-width:820px){.grid-2{grid-template-columns:1fr}}
+/* claimed / sold out */
+.card-img{position:relative}
+.card .sold{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;
+  font-family:"SwimClub","Index",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream);background:rgba(40,37,35,.72);padding:8px 16px;border-radius:999px}
+.card.is-sold .card-img img{filter:saturate(.25) contrast(.95) brightness(1.02)}
+.card.is-sold:hover .card-img img{transform:none}
+.btn-bag.is-disabled{background:transparent;color:var(--olive);border:1px solid var(--hairline);cursor:default;opacity:.75}
 .card-name{margin-top:14px;font-size:18px;text-align:center}
 .card-price{margin-top:3px;font-size:15px;color:var(--terra);text-align:center;letter-spacing:.03em}
 

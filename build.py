@@ -1,9 +1,26 @@
 #!/usr/bin/env python3
-"""Regenerate the Studio Maçon static site from _source/ data + assets/."""
-import json, re, os, html
+"""Build the Studio Maçon static site from Supabase content.
+
+  python3 build.py             # fetch live content from Supabase, then build
+  python3 build.py --offline   # build from the last cached fetch (_source/content-cache.json)
+
+Content lives in Supabase (store_products / store_product_images / store_pages /
+store_settings). The generated site is fully static — remote images are downloaded
+at build time so the deployed pages have no runtime dependency on Supabase.
+"""
+import json, os, re, sys, html, urllib.request, urllib.parse, hashlib, datetime
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 os.chdir(ROOT)
+
+OFFLINE = "--offline" in sys.argv
+CACHE = "_source/content-cache.json"
+
+# ---------------------------------------------------------------- config
+def _config():
+    cfg = json.load(open("supabase-config.json", encoding="utf-8"))
+    return (os.environ.get("SUPABASE_URL", cfg["supabase_url"]),
+            os.environ.get("SUPABASE_ANON_KEY", cfg["supabase_anon_key"]))
 
 def v(path):
     """Append a content version so browsers pick up replaced assets immediately."""
@@ -11,10 +28,64 @@ def v(path):
         return f"{path}?v={int(os.path.getmtime(path))}"
     except OSError:
         return path
-prods = json.load(open("_source/products.json"))
-man = json.load(open("_source/image-manifest.json"))
 
-# ---------- shared fragments ----------
+# ---------------------------------------------------------------- fetch
+def fetch(path):
+    url_base, key = _config()
+    url = f"{url_base}/rest/v1/{path}"
+    req = urllib.request.Request(url, headers={
+        "apikey": key, "Authorization": f"Bearer {key}", "Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=45) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+def load_content():
+    if OFFLINE:
+        print("  (offline) using cached content")
+        return json.load(open(CACHE, encoding="utf-8"))
+    products = fetch("store_products?select=*,store_product_images(url,alt,sort_order)"
+                     "&order=sort_order")
+    pages = fetch("store_pages?select=*")
+    settings = fetch("store_settings?select=*")
+    data = {"products": products, "pages": pages, "settings": settings,
+            "fetched_at": datetime.datetime.now(datetime.timezone.utc).isoformat()}
+    os.makedirs("_source", exist_ok=True)
+    json.dump(data, open(CACHE, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
+    return data
+
+# ---------------------------------------------------------------- images
+def resolve_image(url):
+    """Local repo paths pass through; Storage URLs are downloaded so the site stays static."""
+    if not url.startswith("http"):
+        return url
+    ext = os.path.splitext(urllib.parse.urlparse(url).path)[1] or ".jpg"
+    name = hashlib.sha1(url.encode()).hexdigest()[:16] + ext
+    dest = f"images/remote/{name}"
+    if not os.path.exists(dest):
+        os.makedirs("images/remote", exist_ok=True)
+        urllib.request.urlretrieve(url, dest)
+        print(f"    downloaded {url.split('/')[-1]} -> {dest}")
+    return dest
+
+def images_for(p):
+    imgs = sorted(p.get("store_product_images") or [], key=lambda i: i["sort_order"])
+    return [{"url": resolve_image(i["url"]), "alt": i.get("alt") or p["name"]} for i in imgs]
+
+# ---------------------------------------------------------------- visibility
+def is_public(p, now):
+    """Which products get a page built at all."""
+    if p["status"] in ("draft",):
+        return False
+    if p["status"] == "scheduled":
+        rel = p.get("release_at")
+        if not rel:
+            return False
+        return datetime.datetime.fromisoformat(rel.replace("Z", "+00:00")) <= now
+    return p["status"] in ("live", "sold_out", "archived")
+
+def buyable(p):
+    return p["status"] == "live"
+
+# ---------------------------------------------------------------- shell
 NAVLINKS = [("index.html", "Shop"), ("story.html", "Story"),
             ("custom.html", "Custom"), ("shipping.html", "Shipping & Returns"),
             ("contact.html", "Contact")]
@@ -50,132 +121,158 @@ def page(title, body, up="", desc=""):
 <script src="{up}{v("assets/site.js")}"></script>
 </body></html>'''
 
-def notes_for(slug):
-    try: md = open(f"_source/pages/{slug}.md").read()
-    except FileNotFoundError: return []
-    m = re.search(r"## NOTES(.*?)\$[\d.,]+Price", md, re.S)
-    if not m: return []
-    return [l.strip() for l in m.group(1).splitlines()
-            if l.strip() and "$" not in l and l.strip().lower() != "price"][:4]
-
-# ---------- homepage ----------
-cards = []
-for p in prods:
-    imgs = man.get(p["slug"], [])
-    if not imgs: continue
-    cards.append(f'''      <a class="card" href="product/{p['slug']}.html">
-        <div class="card-img"><img src="images/products/{imgs[0]}" alt="{html.escape(p['name'])}" loading="lazy"></div>
+# ---------------------------------------------------------------- cards
+def card(p, imgs):
+    price = p.get("price")
+    price_txt = f"${float(price):,.0f}" if price else ""
+    sold = p["status"] in ("sold_out", "archived")
+    badge = '<span class="sold">Claimed</span>' if sold else ""
+    cls = "card" + (" is-sold" if sold else "")
+    first = imgs[0]["url"] if imgs else ""
+    return f'''      <a class="{cls}" href="product/{p['slug']}.html" data-slug="{p['slug']}">
+        <div class="card-img"><img src="{first}" alt="{html.escape(p['name'])}" loading="lazy">{badge}</div>
         <div class="card-name">{html.escape(p['name'])}</div>
-        <div class="card-price">${p.get('price','')}</div>
-      </a>''')
-home_body = f'''  <section class="hero">
-    <img class="hero-art" src="{v("assets/hero.png")}" alt="Maçon">
-    <p class="tagline"><span class="dash">&mdash;</span><span class="tl">Limited-run and custom artifacts and jewelry designed, cast and finished by hand in California.</span><span class="dash">&mdash;</span></p>
-  </section>
-  <section class="shop">
-    <div class="grid">
-      <img class="crest" src="{v("assets/crest.png")}" alt="Maçon Bureau of Provenance">
-{chr(10).join(cards)}
-    </div>
-  </section>'''
-open("index.html", "w").write(page("Shop ⚚ Studio Maçon", home_body, "",
-    "Limited-run and custom artifacts and jewelry designed, cast and finished by hand in California."))
+        <div class="card-price">{price_txt}</div>
+      </a>'''
 
-# ---------- product pages ----------
-os.makedirs("product", exist_ok=True)
-for p in prods:
-    slug = p["slug"]; imgs = man.get(slug, [])
-    if not imgs: continue
-    thumbs = "".join(f'<img src="../images/products/{im}" data-full="../images/products/{im}" class="{"on" if i==0 else ""}" alt="">' for i, im in enumerate(imgs))
-    notes = notes_for(slug)
-    notes_html = ""
-    if notes:
-        rows = "".join(f'<div class="row">{html.escape(n)}</div>' for n in notes)
-        notes_html = f'''    <section class="notes-block">
+# ---------------------------------------------------------------- build
+def main():
+    print("Building Studio Maçon…")
+    data = load_content()
+    now = datetime.datetime.now(datetime.timezone.utc)
+
+    products = [p for p in data["products"] if is_public(p, now)]
+    settings = {s["key"]: s["value"] for s in data["settings"]}
+    by_collection = {"ephemeral": [], "perennial": []}
+    for p in products:
+        by_collection.setdefault(p.get("collection", "perennial"), []).append(p)
+
+    imgs_of = {p["slug"]: images_for(p) for p in products}
+
+    # ---------- homepage ----------
+    tagline = settings.get("tagline", "")
+    hero = settings.get("hero_image", "assets/hero.png")
+    sections = []
+    eph = [p for p in by_collection.get("ephemeral", []) if imgs_of[p["slug"]]]
+    per = [p for p in by_collection.get("perennial", []) if imgs_of[p["slug"]]]
+
+    if eph:   # only rendered once ephemeral pieces exist
+        sections.append(
+            '  <section class="shop ephemeral">\n'
+            '    <div class="coll-head"><div class="overline">One of One</div>'
+            '<h2>Ephemeral</h2></div>\n'
+            '    <div class="grid grid-2">\n'
+            + "\n".join(card(p, imgs_of[p["slug"]]) for p in eph)
+            + "\n    </div>\n  </section>")
+
+    crest = f'      <img class="crest" src="{v("assets/crest.png")}" alt="Maçon Bureau of Provenance">\n'
+    sections.append(
+        '  <section class="shop">\n'
+        + ('    <div class="coll-head"><h2>The Collection</h2></div>\n' if eph else '')
+        + '    <div class="grid">\n' + (crest if not eph else "")
+        + "\n".join(card(p, imgs_of[p["slug"]]) for p in per)
+        + "\n    </div>\n  </section>")
+
+    home_body = (f'  <section class="hero">\n'
+                 f'    <img class="hero-art" src="{v(hero)}" alt="Maçon">\n'
+                 f'    <p class="tagline"><span class="dash">&mdash;</span>'
+                 f'<span class="tl">{html.escape(tagline)}</span>'
+                 f'<span class="dash">&mdash;</span></p>\n  </section>\n'
+                 + "\n".join(sections))
+    open("index.html", "w", encoding="utf-8").write(
+        page("Shop ⚚ Studio Maçon", home_body, "", tagline))
+
+    # ---------- product pages ----------
+    os.makedirs("product", exist_ok=True)
+    built = 0
+    for p in products:
+        imgs = imgs_of[p["slug"]]
+        if not imgs:
+            print(f"  ! {p['slug']} has no images — skipped")
+            continue
+        thumbs = "".join(
+            f'<img src="../{i["url"]}" data-full="../{i["url"]}" '
+            f'class="{"on" if k == 0 else ""}" alt="">' for k, i in enumerate(imgs))
+        notes = p.get("notes") or []
+        notes_html = ""
+        if notes:
+            rows = "".join(f'<div class="row">{html.escape(n)}</div>' for n in notes)
+            notes_html = f'''    <section class="notes-block">
       <button class="notes-head" data-notes-toggle aria-expanded="false">
         <span class="lbl">NOTES</span><span class="sign" aria-hidden="true"></span>
       </button>
       <div class="notes-body"><div class="notes-inner">{rows}</div></div>
     </section>'''
-    subj = f"Hi!%20I%27d%20like%20to%20order%20{slug.replace('-','%20')}."
-    price = p.get('price', '')
-    price_fmt = f"${float(price):,.2f}" if price else ""
-    body = f'''  <article class="pdp">
-    <div class="pdp-hero"><img id="mainImg" src="../images/products/{imgs[0]}" alt="{html.escape(p['name'])}"></div>
+        price = p.get("price")
+        price_fmt = f"${float(price):,.2f}" if price else ""
+        subj = f"Hi!%20I%27d%20like%20to%20order%20{p['slug'].replace('-', '%20')}."
+        if buyable(p):
+            actions = (f'        <a class="btn-bag" href="mailto:hello@studiomacon.co?subject={subj}">Add to Bag</a>\n'
+                       f'        <a class="btn-buy" href="mailto:hello@studiomacon.co?subject={subj}">Buy Now</a>')
+        else:
+            actions = '        <div class="btn-bag is-disabled" aria-disabled="true">Claimed</div>'
+        one_of_one = ('<div class="overline">One of One</div>'
+                      if p.get("collection") == "ephemeral" else "")
+        body = f'''  <article class="pdp" data-slug="{p['slug']}">
+    <div class="pdp-hero"><img id="mainImg" src="../{imgs[0]['url']}" alt="{html.escape(p['name'])}"></div>
     <div class="thumbs">{thumbs}</div>
     <div class="pdp-info">
       <div class="pdp-left">
-        <h1>{html.escape(p['name'])}</h1>
-        <div class="desc">{html.escape(p.get('desc') or '')}</div>
+        {one_of_one}<h1>{html.escape(p['name'])}</h1>
+        <div class="desc">{html.escape(p.get('description') or '')}</div>
       </div>
       <div class="pdp-right">
         <div class="price">{price_fmt}</div>
-        <a class="btn-bag" href="mailto:hello@studiomacon.co?subject={subj}">Add to Bag</a>
-        <a class="btn-buy" href="mailto:hello@studiomacon.co?subject={subj}">Buy Now</a>
+{actions}
       </div>
     </div>
 {notes_html}
   </article>'''
-    open(f"product/{slug}.html", "w").write(page(f"{p['name']} | Studio Maçon", body, "../", p.get("desc", "")))
+        open(f"product/{p['slug']}.html", "w", encoding="utf-8").write(
+            page(f"{p['name']} | Studio Maçon", body, "../", p.get("description") or ""))
+        built += 1
 
-# ---------- content pages ----------
-story = '''  <div class="content">
-    <h1>Our Story</h1>
-    <h3>Our Practice</h3>
-    <p class="lead">Each piece begins as a sketch on paper. Next, the object is carved by hand &mdash; first in wax, then fine-tuned in metal. We work closely with a local foundry to cast the wax carvings in bronze, silver or gold. Each piece is then refined and polished in our studio.</p>
-    <p>If its path is to become a collection piece, a rubber mold is made so that we can make the children of that original and share them with you. If it's a custom piece, it is one of a kind.</p>
-    <div class="steps">
-      <figure><img src="images/content/draw.png" alt="Concept &amp; sketch"><figcaption>Concept &amp; Sketch</figcaption></figure>
-      <figure><img src="images/content/cast.png" alt="Carve &amp; cast"><figcaption>Carve &amp; Cast</figcaption></figure>
-      <figure><img src="images/content/polish.png" alt="Polish &amp; patina"><figcaption>Polish &amp; Patina</figcaption></figure>
-    </div>
-    <h3>Our History</h3>
-    <p>Maçon is based in southern California, but Alex and Hannah met at RISD in 2008. They had figure drawing class together freshman year and quickly became close friends.</p>
-    <p>After graduating college, their resilient love for each other &mdash; despite gaps in distance and time &mdash; never waned. Eventually they found their way back to each other and married in 2023. Both Maçon and their union were born out of their desire to live and create as one.</p>
-    <div class="twoup"><img src="images/content/hannah.png" alt="Hannah as a child"><img src="images/content/alex.png" alt="Alex as a child"></div>
-    <p class="lead">We discover by holding.</p>
-    <p>Maçon was founded by two creative and life partners, Alex and Hannah. Their work is inspired by ancient artifacts and the intimate and personal objects they cared for when they were children.</p>
-    <img src="images/content/hand-milo.png" alt="Hand holding Milo">
-  </div>'''
-open("story.html", "w").write(page("Studio Maçon ⚚ Our Story", story, "",
-    "The story of Studio Maçon — Alex and Hannah, sculptural jewelry cast by hand in California."))
+    # ---------- prune pages for products that are no longer public ----------
+    keep = {f"{p['slug']}.html" for p in products if imgs_of[p["slug"]]}
+    for f in os.listdir("product"):
+        if f.endswith(".html") and f not in keep:
+            os.remove(os.path.join("product", f))
+            print(f"  pruned product/{f} (no longer published)")
 
-custom = '''  <div class="content">
-    <h1>Custom Heirlooms</h1>
-    <p class="lead">Let's make something real together.</p>
-    <p>It's a rare privilege to create custom heirlooms to honor a special moment. If you're interested in commissioning a piece for yourself or someone you love, <a href="contact.html">reach out to us here</a>.</p>
-    <img src="images/content/lorenz.jpg" alt="Lorenz Ring, 2023">
-    <p style="text-align:center;color:var(--olive);font-size:13px;letter-spacing:.06em">Lorenz Ring, 2023</p>
-    <div class="twoup"><img src="images/content/custom-2.jpg" alt="Custom work"><img src="images/content/custom-3.jpg" alt="Custom work"></div>
-  </div>'''
-open("custom.html", "w").write(page("Maçon ⚚ Custom Heirlooms", custom, "",
-    "Commission a custom heirloom from Studio Maçon."))
+    # ---------- content pages ----------
+    build_content_pages({pg["key"]: pg for pg in data["pages"]})
 
-ship = '''  <div class="content">
-    <h1>Shipping &amp; Returns</h1>
-    <h3>Shipping</h3>
-    <p>Each piece is individually made to order; please allow up to 10 business days for us to create your piece before it heads out to you.</p>
-    <p>Standard shipping takes 3&ndash;7 business days for delivery, while international shipping generally takes 5&ndash;10 business days depending on shipping destination.</p>
-    <h3>Returns</h3>
-    <p>We will accept pieces (excluding custom work) in their original condition for store credit towards your next purchase. For pieces that don't fit properly, we will gladly work with you to find the right size. Returns and exchanges must be initiated within 14 days of the delivery date.</p>
-    <p><a href="mailto:hello@studiomacon.co?subject=Hi!%20I%27d%20like%20to%20start%20a%20return.">Contact us</a> to initiate a return. Include your order number and please let us know the reason for your return. After your return has been successfully processed, you will receive store credit and a confirmation email.</p>
-    <img src="images/content/olive-branch.png" alt="Olive branch" style="max-width:340px">
-  </div>'''
-open("shipping.html", "w").write(page("Maçon ⚚ Shipping & Returns", ship, "",
-    "Shipping and returns policy for Studio Maçon."))
+    print(f"  {built} product pages | {len(eph)} ephemeral, {len(per)} perennial")
+    print(f"  content fetched {data.get('fetched_at', 'from cache')}")
 
-contact = '''  <div class="content contact">
-    <img class="leaves" src="images/content/leaves.png" alt="">
-    <h1>Contact</h1>
-    <p style="text-align:center"><a href="https://www.instagram.com/studiomacon/">@studiomacon</a> &nbsp;&middot;&nbsp; <a href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a></p>
-    <form id="cform" class="cform">
-      <div class="row2"><input name="first" placeholder="First Name" required><input name="last" placeholder="Last Name"></div>
-      <input name="email" type="email" placeholder="Email" required>
-      <textarea name="message" rows="5" placeholder="Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </div>'''
-open("contact.html", "w").write(page("Maçon ⚚ Contact", contact, "",
-    "Get in touch with Studio Maçon."))
+def blocks_to_html(body):
+    """Render editor block JSON. Empty body -> fall back to the built-in copy."""
+    out = []
+    for b in body:
+        t = b.get("type")
+        if t == "h3":
+            out.append(f'    <h3>{html.escape(b.get("text",""))}</h3>')
+        elif t == "lead":
+            out.append(f'    <p class="lead">{html.escape(b.get("text",""))}</p>')
+        elif t == "p":
+            out.append(f'    <p>{html.escape(b.get("text",""))}</p>')
+        elif t == "img":
+            out.append(f'    <img src="{resolve_image(b.get("src",""))}" alt="{html.escape(b.get("alt",""))}">')
+    return "\n".join(out)
 
-print("built: index + %d products + story/custom/shipping/contact" % len([p for p in prods if man.get(p['slug'])]))
+def build_content_pages(pages):
+    from content_fallback import FALLBACK          # built-in copy, used until edited
+    for key, meta in FALLBACK.items():
+        rec = pages.get(key, {})
+        title = rec.get("title") or meta["title"]
+        body_blocks = rec.get("body") or []
+        inner = blocks_to_html(body_blocks) if body_blocks else meta["html"]
+        extra = meta.get("wrap_class", "")
+        pre = (meta.get("pre", "") + "\n") if meta.get("pre") else ""
+        body = (f'  <div class="content {extra}">\n{pre}'
+                f'    <h1>{html.escape(title)}</h1>\n{inner}\n  </div>')
+        open(meta["file"], "w", encoding="utf-8").write(
+            page(meta["page_title"], body, "", meta["desc"]))
+
+if __name__ == "__main__":
+    main()
