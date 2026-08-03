@@ -18,7 +18,7 @@ function toast(msg, isErr) {
 }
 
 /* small on-page readout so sign-in problems are visible without DevTools */
-const BUILD = "2026-08-03f";
+const BUILD = "2026-08-03g";
 function diag(extra) {
   const d = $("#diag");
   if (!d) return;
@@ -333,10 +333,11 @@ function drawImages() {
     const c = el("div", "img-cell");
     c.draggable = true;
     c.dataset.id = im.id;
-    const v = im.variant || "plain";
+    const v = im.variant || "untagged";
+    const label = v === "hand" ? "In hand" : v === "plain" ? "Plain bg" : "Untagged";
     c.innerHTML = `<img src="${publicUrl(im.url)}" alt="" loading="lazy">
       <button class="rm" title="Remove">×</button>
-      <button class="var ${v}" title="In-hand shot or plain background? Used for the shop hover.">${v === "hand" ? "In hand" : "Plain"}</button>
+      <button class="var ${v}" title="Is this the piece held in a hand, or on a plain background? The shop grid alternates the two and swaps between them on hover.">${label}</button>
       ${i === 0 ? '<span class="first">Thumbnail</span>' : ""}`;
     c.querySelector(".var").addEventListener("click", async ev => {
       ev.stopPropagation();

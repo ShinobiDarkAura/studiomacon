@@ -1,25 +1,33 @@
-@font-face{font-family:"Index";src:url("../assets/fonts/index.woff2") format("woff2");font-display:swap}
+/* Public Sans for everything readable — Index is on-brand but hard to read at
+   UI sizes. Hierarchy comes from weight and scale instead. Louize is kept only
+   for the two display headings. */
+@font-face{font-family:"PublicSans";src:url("../assets/fonts/publicsans-latin.woff2") format("woff2");
+  font-weight:300 800;font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"PublicSans";src:url("../assets/fonts/publicsans-latinext.woff2") format("woff2");
+  font-weight:300 800;font-display:swap;
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 @font-face{font-family:"Louize";src:url("../assets/fonts/louize.woff2") format("woff2");font-display:swap}
-@font-face{font-family:"SwimClub";src:url("../assets/fonts/swimclub.woff2") format("woff2");font-display:swap}
 :root{--cream:#FFFBF0;--ink:#282523;--terra:#B56B2F;--terra-deep:#9F551B;--olive:#43493E;
-      --tan:#CFA886;--hairline:#CAC5B2;--deep-olive:#242619;--notes:#C04722;--panel:#FDFAF2}
+      --tan:#CFA886;--hairline:#CAC5B2;--deep-olive:#242619;--notes:#C04722;--panel:#FDFAF2;
+      --sans:"PublicSans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 /* author display rules (e.g. .gate{display:flex}) otherwise beat the UA's
    [hidden]{display:none}, leaving the sign-in screen covering the app */
 [hidden]{display:none !important}
-body{background:var(--cream);color:var(--ink);font-family:"Index",ui-monospace,monospace;-webkit-font-smoothing:antialiased}
-button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+button,input,select,textarea{font-family:var(--sans);font-size:14px;color:inherit}
 
 /* ---------- sign in ---------- */
 .gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .gate-card{width:100%;max-width:380px;text-align:center}
 .gate-logo{height:56px;margin-bottom:18px}
-.gate-card h1{font-family:"Louize",serif;font-weight:400;font-size:32px;margin-bottom:6px}
-.gate-sub{color:var(--olive);font-size:14px;margin-bottom:26px}
+.gate-card h1{font-family:"Louize",Georgia,serif;font-weight:400;font-size:34px;letter-spacing:-.01em;margin-bottom:8px}
+.gate-sub{color:var(--olive);font-size:14px;line-height:1.55;margin-bottom:26px}
 #loginForm{display:flex;flex-direction:column;gap:10px}
 #loginForm input{padding:13px 14px;border:1px solid var(--hairline);border-radius:6px;background:#fff;outline:none}
 #loginForm input:focus{border-color:var(--terra)}
-#loginForm button{padding:13px;border:none;border-radius:6px;background:var(--deep-olive);color:var(--cream);cursor:pointer;transition:background .15s}
+#loginForm button{padding:13px;border:none;border-radius:6px;background:var(--deep-olive);color:var(--cream);cursor:pointer;transition:background .15s;font-size:14px;font-weight:600}
 #loginForm button:hover{background:#151709}
 .gate-note{font-size:12px;opacity:.75}
 .link-alt{margin-top:14px;background:none;border:none;color:var(--olive);font-size:12px;
@@ -33,10 +41,10 @@ button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
   border-bottom:1px solid var(--hairline)}
 .bar-left{display:flex;align-items:center;gap:11px}
 .bar-logo{height:30px}
-.bar-title{font-family:"Louize",serif;font-size:19px}
+.bar-title{font-family:"Louize",Georgia,serif;font-size:19px}
 .bar-right{display:flex;align-items:center;gap:10px}
-.who{font-size:12px;color:var(--olive);margin-right:4px}
-.btn{padding:9px 15px;border:1px solid var(--hairline);border-radius:6px;background:transparent;cursor:pointer;transition:.15s;font-size:13px}
+.who{font-size:12.5px;color:var(--olive);margin-right:4px}
+.btn{padding:9px 16px;border:1px solid var(--hairline);border-radius:6px;background:transparent;cursor:pointer;transition:.15s;font-size:13.5px;font-weight:600}
 .btn:hover{border-color:var(--ink)}
 .btn.primary{background:var(--deep-olive);color:var(--cream);border-color:var(--deep-olive)}
 .btn.primary:hover{background:#151709}
@@ -56,11 +64,11 @@ button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
 
 /* ---------- list ---------- */
 .section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
-.section-head h2{font-family:"Louize",serif;font-weight:400;font-size:27px}
+.section-head h2{font-family:"Louize",Georgia,serif;font-weight:400;font-size:27px;letter-spacing:-.01em}
 .head-actions{display:flex;align-items:center;gap:12px}
 .filter{font-size:12px;color:var(--olive);display:flex;align-items:center;gap:7px}
 .filter select{padding:8px 10px;border:1px solid var(--hairline);border-radius:6px;background:#fff}
-.hint{font-size:12px;color:var(--olive);opacity:.85;margin-bottom:16px}
+.hint{font-size:12.5px;color:var(--olive);opacity:.85;margin-bottom:16px}
 .rows{display:flex;flex-direction:column;gap:8px}
 .row{display:grid;grid-template-columns:26px 62px 1fr 110px 120px 108px;gap:14px;align-items:center;
   padding:10px 14px 10px 8px;background:var(--panel);border:1px solid rgba(43,38,34,.07);border-radius:10px;cursor:pointer;transition:.14s}
@@ -69,10 +77,10 @@ button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
 .row.drop-target{border-color:var(--terra);border-style:dashed}
 .grip{color:var(--hairline);cursor:grab;text-align:center;font-size:15px;line-height:1;user-select:none}
 .row-img{width:62px;height:62px;border-radius:8px;object-fit:cover;background:#f1ead9}
-.row-name{font-size:16px}
-.row-slug{font-size:11px;color:var(--olive);opacity:.8;margin-top:2px}
-.row-price{font-size:14px;color:var(--terra)}
-.pill{display:inline-block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.row-name{font-size:15.5px;font-weight:600;letter-spacing:-.005em}
+.row-slug{font-size:12px;font-weight:400;color:var(--olive);opacity:.8;margin-top:2px}
+.row-price{font-size:14px;font-weight:600;color:var(--terra)}
+.pill{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap}
 .pill.live{background:#e3ecdc;color:#46603a}
 .pill.draft{background:#eceae4;color:#7d786e}
 .pill.scheduled{background:#e6ecf5;color:#4a6d92}
@@ -82,14 +90,14 @@ button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
 @media(max-width:760px){.row{grid-template-columns:22px 48px 1fr;row-gap:8px}.row-price,.row .pill{grid-column:3}}
 
 /* ---------- editor ---------- */
-.back{background:none;border:none;color:var(--olive);cursor:pointer;font-size:12px;letter-spacing:.12em;
+.back{background:none;border:none;color:var(--olive);cursor:pointer;font-size:12px;font-weight:600;letter-spacing:.06em;
   text-transform:uppercase;margin-bottom:18px;padding:0}
 .back:hover{color:var(--terra)}
 .edit-grid{display:grid;grid-template-columns:1fr 290px;gap:34px;align-items:start}
 @media(max-width:860px){.edit-grid{grid-template-columns:1fr;gap:24px}}
 .fld{display:block;margin-bottom:18px}
-.fld>span{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin-bottom:7px}
-.fld>span em{font-style:normal;text-transform:none;letter-spacing:.02em;opacity:.75;font-size:11px}
+.fld>span{display:block;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--olive);margin-bottom:7px}
+.fld>span em{font-style:normal;font-weight:400;text-transform:none;letter-spacing:0;opacity:.8;font-size:11.5px}
 .fld input,.fld select,.fld textarea{width:100%;padding:11px 13px;border:1px solid var(--hairline);
   border-radius:6px;background:#fff;outline:none;line-height:1.5}
 .fld textarea{resize:vertical}
@@ -108,18 +116,20 @@ button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
 .img-cell .rm{position:absolute;top:6px;right:6px;width:22px;height:22px;border:none;border-radius:50%;
   background:rgba(40,37,35,.62);color:#fff;cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center}
 .img-cell .rm:hover{background:var(--notes)}
-.img-cell .first{position:absolute;left:6px;bottom:6px;font-family:"SwimClub","Index",monospace;font-size:9px;
-  letter-spacing:.14em;text-transform:uppercase;background:rgba(255,251,240,.92);color:var(--ink);padding:3px 7px;border-radius:999px}
+.img-cell .first{position:absolute;left:6px;bottom:6px;font-family:var(--sans);font-size:10px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;background:rgba(255,251,240,.92);color:var(--ink);padding:3px 7px;border-radius:999px}
 .upload{display:inline-block;padding:10px 16px;border:1px dashed var(--hairline);border-radius:8px;
   cursor:pointer;font-size:13px;color:var(--olive);transition:.15s}
 .upload:hover{border-color:var(--terra);color:var(--terra)}
 .uploading{font-size:12px;color:var(--terra);margin-top:8px}
 .img-cell .var{position:absolute;left:6px;top:6px;border:none;border-radius:999px;cursor:pointer;
-  font-family:"SwimClub","Index",monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
   padding:4px 8px;background:rgba(255,251,240,.92);color:var(--olive)}
 .img-cell .var.hand{background:var(--notes);color:var(--cream)}
+.img-cell .var.plain{background:rgba(255,251,240,.94);color:var(--olive)}
+.img-cell .var.untagged{background:rgba(40,37,35,.55);color:#fff;font-weight:500}
 .img-cell .var:hover{outline:1px solid var(--ink)}
-.diag{margin-top:14px;font-size:10px;letter-spacing:.06em;color:var(--olive);opacity:.55}
+.diag{margin-top:14px;font-size:11px;letter-spacing:0;color:var(--olive);opacity:.55}
 .empty{padding:28px;text-align:center;color:var(--olive);font-size:13px;line-height:1.7;
   background:var(--panel);border:1px dashed var(--hairline);border-radius:10px}
 .empty-hint{display:block;margin-top:6px;font-size:11px;opacity:.75}
