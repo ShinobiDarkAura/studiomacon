@@ -1,0 +1,64 @@
+name: Publish site
+
+on:
+  push:
+    branches: [main]
+  # "Publish" button in the Maçon Studio admin fires this
+  repository_dispatch:
+    types: [publish]
+  # manual run from the Actions tab
+  workflow_dispatch:
+  # safety net so scheduled drops go live even if nobody hits Publish
+  schedule:
+    - cron: "*/15 * * * *"
+
+# only one publish at a time; a newer one supersedes a queued one
+concurrency:
+  group: publish
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build deps
+        run: pip install --quiet Pillow
+
+      - name: Build site from Supabase
+        run: python3 build.py
+
+      - name: Stage deployable files
+        run: |
+          mkdir -p _site
+          cp -R *.html assets images product _site/ 2>/dev/null || true
+          # don't ship source data, tooling or the original uncropped art
+          rm -rf _site/_source
+          echo "staged: $(find _site -type f | wc -l) files"
+
+      - name: Optimize images for the web
+        run: python3 optimize_site.py _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -42,6 +42,10 @@ Rebuild of studiomacon.co off Wix. Static site + Supabase-backed editor ("Maçon
 
 ## Open items
 
+- Image performance: PDP thumbnails currently load full-size images (56px display).
+  Generate small derivatives + consider WebP; a few transparent PNG product shots
+  are still 2-3MB after optimization.
+
 - **Font licensing** — Index, Louize, Swim Club Wide are commercial fonts licensed for Wix.
   Self-hosting on GitHub Pages is a separate use. CONFIRM LICENSE OR BUY WEBFONT LICENSE before public launch.
 - Contact form backend (currently opens mail client) — Formspree or Supabase function
