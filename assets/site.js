@@ -8,6 +8,18 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.body.classList.remove('menu-open');
 });
 
+// nav logo — replay the blink animation on hover (GIF restarts when src is re-set)
+document.querySelectorAll('.nav .logo img').forEach(img => {
+  const base = img.getAttribute('src').split('?')[0];
+  let busy = false;
+  img.closest('.logo').addEventListener('mouseenter', () => {
+    if (busy) return;
+    busy = true;
+    img.src = base + '?t=' + Date.now();
+    setTimeout(() => { busy = false; }, 900);   // let the blink finish before re-arming
+  });
+});
+
 // NOTES accordion
 document.querySelectorAll('[data-notes-toggle]').forEach(btn => {
   btn.addEventListener('click', () => {
