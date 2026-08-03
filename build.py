@@ -114,12 +114,17 @@ def images_for(p):
         out.append({
             "url": src,
             "alt": i.get("alt") or p["name"],
+            "variant": i.get("variant"),          # 'hand' | 'plain' | None
             "thumb": derive(src, 200),
             "card": derive(src, 800),
             "hero": derive(src, 1800),
             "srcset": srcset(src),
         })
     return out
+
+def pick_variant(imgs, want):
+    """First image tagged `want`, else None."""
+    return next((i for i in imgs if i.get("variant") == want), None)
 
 # ---------------------------------------------------------------- visibility
 def is_public(p, now):
@@ -173,17 +178,40 @@ def page(title, body, up="", desc=""):
 </body></html>'''
 
 # ---------------------------------------------------------------- cards
-def card(p, imgs):
+def card(p, imgs, hand_first=False):
+    """Shop card.
+
+    Products that have both an in-hand and a plain shot alternate which one leads
+    (hand_first), and swap to the counterpart on hover — a crossfade only, never
+    any movement of the image or the text beneath it.
+    """
     price = p.get("price")
     price_txt = f"${float(price):,.0f}" if price else ""
     sold = p["status"] in ("sold_out", "archived")
     badge = '<span class="sold">Claimed</span>' if sold else ""
     cls = "card" + (" is-sold" if sold else "")
-    i0 = imgs[0] if imgs else {}
-    src = i0.get("card") or i0.get("url", "")
-    ss = f' srcset="{i0["srcset"]}" sizes="(max-width:520px) 90vw, (max-width:820px) 45vw, 30vw"' if i0.get("srcset") else ""
+
+    hand, plain = pick_variant(imgs, "hand"), pick_variant(imgs, "plain")
+    if hand and plain:
+        lead, alt = (hand, plain) if hand_first else (plain, hand)
+    else:
+        lead, alt = (imgs[0] if imgs else {}), None
+
+    def tag(i, extra_cls):
+        ss = (f' srcset="{i["srcset"]}" sizes="(max-width:520px) 90vw,'
+              f' (max-width:820px) 45vw, 30vw"') if i.get("srcset") else ""
+        src = i.get("card") or i.get("url", "")
+        name = html.escape(p["name"])
+        return (f'<img class="{extra_cls}" src="{src}"{ss} alt="{name}" '
+                f'loading="lazy" decoding="async">')
+
+    imgs_html = tag(lead, "ci-lead")
+    if alt:
+        imgs_html += tag(alt, "ci-alt")
+        cls += " has-alt"
+
     return f'''      <a class="{cls}" href="product/{p['slug']}.html" data-slug="{p['slug']}">
-        <div class="card-img"><img src="{src}"{ss} alt="{html.escape(p['name'])}" loading="lazy" decoding="async">{badge}</div>
+        <div class="card-img">{imgs_html}{badge}</div>
         <div class="card-name">{html.escape(p['name'])}</div>
         <div class="card-price">{price_txt}</div>
       </a>'''
@@ -209,13 +237,24 @@ def main():
     eph = [p for p in by_collection.get("ephemeral", []) if imgs_of[p["slug"]]]
     per = [p for p in by_collection.get("perennial", []) if imgs_of[p["slug"]]]
 
+    def render_cards(items):
+        """Alternate the lead shot across products that have both variants."""
+        out, n = [], 0
+        for p in items:
+            ims = imgs_of[p["slug"]]
+            both = pick_variant(ims, "hand") and pick_variant(ims, "plain")
+            out.append(card(p, ims, hand_first=(both and n % 2 == 1)))
+            if both:
+                n += 1
+        return "\n".join(out)
+
     if eph:   # only rendered once ephemeral pieces exist
         sections.append(
             '  <section class="shop ephemeral">\n'
             '    <div class="coll-head"><div class="overline">One of One</div>'
             '<h2>Ephemeral</h2></div>\n'
             '    <div class="grid grid-2">\n'
-            + "\n".join(card(p, imgs_of[p["slug"]]) for p in eph)
+            + render_cards(eph)
             + "\n    </div>\n  </section>")
 
     crest = f'      <img class="crest" src="{v("assets/crest.png")}" alt="Maçon Bureau of Provenance">\n'
@@ -223,7 +262,7 @@ def main():
         '  <section class="shop">\n'
         + ('    <div class="coll-head"><h2>The Collection</h2></div>\n' if eph else '')
         + '    <div class="grid">\n' + (crest if not eph else "")
-        + "\n".join(card(p, imgs_of[p["slug"]]) for p in per)
+        + render_cards(per)
         + "\n    </div>\n  </section>")
 
     hero_src = derive(hero, 1800)

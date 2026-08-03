@@ -132,7 +132,7 @@ $("#signOut").addEventListener("click", async () => {
 async function loadProducts() {
   const { data, error } = await sb
     .from("store_products")
-    .select("*,store_product_images(id,url,alt,sort_order)")
+    .select("*,store_product_images(id,url,alt,sort_order,variant)")
     .order("sort_order");
   if (error) return toast(error.message, true);
   products = data || [];
@@ -284,7 +284,7 @@ $("#newProduct").addEventListener("click", async () => {
   const { data, error } = await sb.from("store_products")
     .insert({ name, slug, status: "draft", collection: "perennial",
               sort_order: products.length })
-    .select("*,store_product_images(id,url,alt,sort_order)").single();
+    .select("*,store_product_images(id,url,alt,sort_order,variant)").single();
   if (error) return toast(error.message, true);
   products.push(data);
   drawList();
@@ -300,9 +300,21 @@ function drawImages() {
     const c = el("div", "img-cell");
     c.draggable = true;
     c.dataset.id = im.id;
-    c.innerHTML = `<img src="${publicUrl(im.url)}" alt="">
+    const v = im.variant || "plain";
+    c.innerHTML = `<img src="${publicUrl(im.url)}" alt="" loading="lazy">
       <button class="rm" title="Remove">×</button>
+      <button class="var ${v}" title="In-hand shot or plain background? Used for the shop hover.">${v === "hand" ? "In hand" : "Plain"}</button>
       ${i === 0 ? '<span class="first">Thumbnail</span>' : ""}`;
+    c.querySelector(".var").addEventListener("click", async ev => {
+      ev.stopPropagation();
+      const next = (im.variant === "hand") ? "plain" : "hand";
+      const { error } = await sb.from("store_product_images")
+        .update({ variant: next }).eq("id", im.id);
+      if (error) return toast(error.message, true);
+      im.variant = next;
+      drawImages();
+      toast(next === "hand" ? "Marked as in-hand shot" : "Marked as plain shot");
+    });
     c.querySelector(".rm").addEventListener("click", async ev => {
       ev.stopPropagation();
       if (!confirm("Remove this image?")) return;

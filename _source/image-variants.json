@@ -1,0 +1,238 @@
+{
+  "ear-cuff-1.jpg": {
+    "sat": 0.49,
+    "variant": "hand"
+  },
+  "ear-cuff-2.jpg": {
+    "sat": 0.217,
+    "variant": "plain"
+  },
+  "ear-cuff-3.jpg": {
+    "sat": 0.456,
+    "variant": "hand"
+  },
+  "eclipse-ring-1.jpg": {
+    "sat": 0.375,
+    "variant": "hand"
+  },
+  "eclipse-ring-2.jpg": {
+    "sat": 0.21,
+    "variant": "plain"
+  },
+  "eleph-1.jpg": {
+    "sat": 0.224,
+    "variant": "plain"
+  },
+  "eleph-2.jpg": {
+    "sat": 0.543,
+    "variant": "hand"
+  },
+  "eleph-3.jpg": {
+    "sat": 0.21,
+    "variant": "plain"
+  },
+  "eleph-4.jpg": {
+    "sat": 0.103,
+    "variant": "plain"
+  },
+  "ibi-1.jpg": {
+    "sat": 0.598,
+    "variant": "hand"
+  },
+  "ibi-2.jpg": {
+    "sat": 0.271,
+    "variant": "plain"
+  },
+  "ibi-3.jpg": {
+    "sat": 0.233,
+    "variant": "plain"
+  },
+  "lunar-canyon-ring-1.jpg": {
+    "sat": 0.209,
+    "variant": "plain"
+  },
+  "lunar-canyon-ring-2.jpg": {
+    "sat": 0.428,
+    "variant": "hand"
+  },
+  "lunar-canyon-ring-3.jpg": {
+    "sat": 0.168,
+    "variant": "plain"
+  },
+  "macon-cap-1.jpg": {
+    "sat": 0.212,
+    "variant": "plain"
+  },
+  "macon-cap-2.jpg": {
+    "sat": 0.27,
+    "variant": "plain"
+  },
+  "meridian-egg-ring-1.jpg": {
+    "sat": 0.199,
+    "variant": "plain"
+  },
+  "meridian-egg-ring-2.jpg": {
+    "sat": 0.42,
+    "variant": "hand"
+  },
+  "meridian-egg-ring-3.jpg": {
+    "sat": 0.167,
+    "variant": "plain"
+  },
+  "milo-1.jpg": {
+    "sat": 0.232,
+    "variant": "plain"
+  },
+  "milo-2.jpg": {
+    "sat": 0.543,
+    "variant": "hand"
+  },
+  "milo-3.jpg": {
+    "sat": 0.103,
+    "variant": "plain"
+  },
+  "ori-1.jpg": {
+    "sat": 0.578,
+    "variant": "hand"
+  },
+  "ori-2.jpg": {
+    "sat": 0.249,
+    "variant": "plain"
+  },
+  "ori-3.jpg": {
+    "sat": 0.256,
+    "variant": "plain"
+  },
+  "ori-4.jpg": {
+    "sat": 0.257,
+    "variant": "plain"
+  },
+  "ori-5.jpg": {
+    "sat": 0.271,
+    "variant": "plain"
+  },
+  "ori-6.jpg": {
+    "sat": 0.103,
+    "variant": "plain"
+  },
+  "pip-1.jpg": {
+    "sat": 0.466,
+    "variant": "hand"
+  },
+  "pip-2.jpg": {
+    "sat": 0.261,
+    "variant": "plain"
+  },
+  "pip-3.jpg": {
+    "sat": 0.239,
+    "variant": "plain"
+  },
+  "pip-4.jpg": {
+    "sat": 0.264,
+    "variant": "plain"
+  },
+  "pip-5.jpg": {
+    "sat": 0.213,
+    "variant": "plain"
+  },
+  "rebi-1.jpg": {
+    "sat": 0.238,
+    "variant": "plain"
+  },
+  "rebi-2.jpg": {
+    "sat": 0.569,
+    "variant": "hand"
+  },
+  "rebi-3.jpg": {
+    "sat": 0.222,
+    "variant": "plain"
+  },
+  "ren-1.jpg": {
+    "sat": 0.251,
+    "variant": "plain"
+  },
+  "ren-2.jpg": {
+    "sat": 0.524,
+    "variant": "hand"
+  },
+  "ren-3.jpg": {
+    "sat": 0.245,
+    "variant": "plain"
+  },
+  "ren-4.jpg": {
+    "sat": 0.204,
+    "variant": "plain"
+  },
+  "sietch-aperture-1.jpg": {
+    "sat": 0.201,
+    "variant": "plain"
+  },
+  "sietch-aperture-2.jpg": {
+    "sat": 0.207,
+    "variant": "plain"
+  },
+  "starshipkey-pendant-1.jpg": {
+    "sat": 0.214,
+    "variant": "plain"
+  },
+  "starshipkey-pendant-2.jpg": {
+    "sat": 0.115,
+    "variant": "plain"
+  },
+  "wonderhorn-talisman-1.jpg": {
+    "sat": 0.23,
+    "variant": "plain"
+  },
+  "wonderhorn-talisman-2.jpg": {
+    "sat": 0.12,
+    "variant": "plain"
+  },
+  "wonderhorn-talisman-3.jpg": {
+    "sat": 0.188,
+    "variant": "plain"
+  },
+  "yael-1.jpg": {
+    "sat": 0.615,
+    "variant": "hand"
+  },
+  "yael-2.jpg": {
+    "sat": 0.251,
+    "variant": "plain"
+  },
+  "yael-3.jpg": {
+    "sat": 0.218,
+    "variant": "plain"
+  },
+  "zuma-1.jpg": {
+    "sat": 0.235,
+    "variant": "plain"
+  },
+  "zuma-2.jpg": {
+    "sat": 0.575,
+    "variant": "hand"
+  },
+  "zuma-3.jpg": {
+    "sat": 0.234,
+    "variant": "plain"
+  },
+  "zuma-4.jpg": {
+    "sat": 0.26,
+    "variant": "plain"
+  },
+  "zuma-ring-1.jpg": {
+    "sat": 0.341,
+    "variant": "hand"
+  },
+  "zuma-ring-2.jpg": {
+    "sat": 0.197,
+    "variant": "plain"
+  },
+  "zuma-ring-3.jpg": {
+    "sat": 0.194,
+    "variant": "plain"
+  },
+  "zuma-ring-4.jpg": {
+    "sat": 0.271,
+    "variant": "plain"
+  }
+}
