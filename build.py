@@ -4,6 +4,13 @@ import json, re, os, html
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 os.chdir(ROOT)
+
+def v(path):
+    """Append a content version so browsers pick up replaced assets immediately."""
+    try:
+        return f"{path}?v={int(os.path.getmtime(path))}"
+    except OSError:
+        return path
 prods = json.load(open("_source/products.json"))
 man = json.load(open("_source/image-manifest.json"))
 
@@ -35,12 +42,12 @@ def page(title, body, up="", desc=""):
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}</title><meta name="description" content="{html.escape(desc)}">
 <link rel="icon" href="{up}assets/favicon.png">
-<link rel="stylesheet" href="{up}assets/site.css">
+<link rel="stylesheet" href="{up}{v("assets/site.css")}">
 </head><body>
 {nav(up)}
 {body}
 {footer(up)}
-<script src="{up}assets/site.js"></script>
+<script src="{up}{v("assets/site.js")}"></script>
 </body></html>'''
 
 def notes_for(slug):
@@ -62,12 +69,12 @@ for p in prods:
         <div class="card-price">${p.get('price','')}</div>
       </a>''')
 home_body = f'''  <section class="hero">
-    <img class="hero-art" src="assets/hero.png" alt="Maçon">
+    <img class="hero-art" src="{v("assets/hero.png")}" alt="Maçon">
     <p class="tagline"><span class="dash">&mdash;</span><span class="tl">Limited-run and custom artifacts and jewelry designed, cast and finished by hand in California.</span><span class="dash">&mdash;</span></p>
   </section>
   <section class="shop">
     <div class="grid">
-      <img class="crest" src="assets/crest.png" alt="Maçon Bureau of Provenance">
+      <img class="crest" src="{v("assets/crest.png")}" alt="Maçon Bureau of Provenance">
 {chr(10).join(cards)}
     </div>
   </section>'''
