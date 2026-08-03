@@ -28,6 +28,10 @@ def main():
     # 1. copy everything that could be served
     for f in ROOT_FILES:
         shutil.copy2(f, OUT)
+    # fetched at runtime by the admin, so not discoverable via src/href
+    for extra in ("supabase-config.json",):
+        if os.path.exists(extra):
+            shutil.copy2(extra, OUT)
     for d in SRC_DIRS:
         if os.path.isdir(d):
             shutil.copytree(d, os.path.join(OUT, d))
@@ -39,6 +43,9 @@ def main():
 
     # 2. work out what is actually reachable
     keep = set()
+    cfg = os.path.join(OUT, "supabase-config.json")
+    if os.path.exists(cfg):
+        keep.add(os.path.abspath(cfg))
     def add(base, ref):
         if ref.startswith(("http", "mailto:", "#", "data:")):
             return

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maçon Studio</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ---------------- sign in ---------------- -->
+<div id="gate" class="gate">
+  <div class="gate-card">
+    <img class="gate-logo" src="../assets/goat-logo.gif" alt="">
+    <h1>Maçon Studio</h1>
+    <p class="gate-sub">Sign in to edit the shop.</p>
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="you@studiomacon.co" required autocomplete="email">
+      <button type="submit">Email me a link</button>
+    </form>
+    <div id="gateMsg" class="gate-msg"></div>
+  </div>
+</div>
+
+<!-- ---------------- app ---------------- -->
+<div id="app" class="app" hidden>
+  <header class="bar">
+    <div class="bar-left">
+      <img class="bar-logo" src="../assets/goat-logo.gif" alt="">
+      <span class="bar-title">Maçon Studio</span>
+    </div>
+    <div class="bar-right">
+      <span id="who" class="who"></span>
+      <button id="publishBtn" class="btn primary">Publish</button>
+      <button id="signOut" class="btn ghost">Sign out</button>
+    </div>
+  </header>
+
+  <div id="toast" class="toast"></div>
+
+  <main class="wrap">
+    <!-- product list -->
+    <section id="listView">
+      <div class="section-head">
+        <h2>Products</h2>
+        <div class="head-actions">
+          <label class="filter">Collection
+            <select id="filterCollection">
+              <option value="">All</option>
+              <option value="perennial">Perennial</option>
+              <option value="ephemeral">Ephemeral</option>
+            </select>
+          </label>
+          <button id="newProduct" class="btn">+ New piece</button>
+        </div>
+      </div>
+      <p class="hint">Drag a row to reorder how pieces appear in the shop.</p>
+      <div id="rows" class="rows"></div>
+    </section>
+
+    <!-- editor -->
+    <section id="editView" hidden>
+      <button id="backBtn" class="back">&larr; All products</button>
+      <div class="edit-grid">
+        <div class="edit-main">
+          <label class="fld"><span>Name</span>
+            <input id="f_name" type="text"></label>
+
+          <div class="row2">
+            <label class="fld"><span>Price (USD)</span>
+              <input id="f_price" type="number" step="1" min="0"></label>
+            <label class="fld"><span>URL slug</span>
+              <input id="f_slug" type="text"></label>
+          </div>
+
+          <label class="fld"><span>Description</span>
+            <textarea id="f_desc" rows="5"></textarea></label>
+
+          <label class="fld"><span>Notes <em>(one per line — materials, dimensions)</em></span>
+            <textarea id="f_notes" rows="3"></textarea></label>
+
+          <div class="fld">
+            <span>Images <em>(drag to reorder — the first is the shop thumbnail)</em></span>
+            <div id="imgGrid" class="img-grid"></div>
+            <label class="upload">
+              <input id="fileInput" type="file" accept="image/*" multiple hidden>
+              <span>+ Add images</span>
+            </label>
+          </div>
+        </div>
+
+        <aside class="edit-side">
+          <label class="fld"><span>Collection</span>
+            <select id="f_collection">
+              <option value="perennial">Perennial — made to order</option>
+              <option value="ephemeral">Ephemeral — one of one</option>
+            </select></label>
+
+          <label class="fld"><span>Status</span>
+            <select id="f_status">
+              <option value="draft">Draft — hidden</option>
+              <option value="scheduled">Scheduled — drops later</option>
+              <option value="live">Live — for sale</option>
+              <option value="sold_out">Sold out — shown as Claimed</option>
+              <option value="archived">Archived — kept in the record</option>
+            </select></label>
+
+          <label class="fld" id="releaseWrap" hidden><span>Release at</span>
+            <input id="f_release" type="datetime-local"></label>
+
+          <label class="fld"><span>Quantity <em>(blank = made to order)</em></span>
+            <input id="f_qty" type="number" min="0" step="1" placeholder="unlimited"></label>
+
+          <div class="side-actions">
+            <button id="saveBtn" class="btn primary wide">Save</button>
+            <button id="deleteBtn" class="btn danger wide">Delete piece</button>
+          </div>
+          <div class="side-note" id="savedAt"></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="admin.js"></script>
+</body>
+</html>
