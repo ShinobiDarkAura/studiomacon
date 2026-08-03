@@ -20,11 +20,39 @@ function toast(msg, isErr) {
 /* ---------------- boot ---------------- */
 (async function boot() {
   const cfg = await (await fetch(CFG_URL)).json();
-  sb = supabase.createClient(cfg.supabase_url, cfg.supabase_anon_key);
+  // implicit flow: the token arrives in the URL hash, so the link still works
+  // when the email is opened in a different browser than it was requested from
+  // (PKCE would need a code_verifier from the originating browser).
+  sb = supabase.createClient(cfg.supabase_url, cfg.supabase_anon_key, {
+    auth: { flowType: "implicit", detectSessionInUrl: true, persistSession: true,
+            autoRefreshToken: true, storageKey: "macon-studio-auth" }
+  });
+
+  // surface anything Supabase sent back instead of failing silently
+  const hash = new URLSearchParams(location.hash.replace(/^#/, ""));
+  const query = new URLSearchParams(location.search);
+  const err = hash.get("error_description") || hash.get("error")
+           || query.get("error_description") || query.get("error");
+  if (err) {
+    $("#gateMsg").textContent = decodeURIComponent(err).replace(/\+/g, " ");
+    console.warn("[auth]", err);
+  }
+
+  // PKCE fallback: if a ?code= ever shows up, exchange it explicitly
+  const code = query.get("code");
+  if (code) {
+    const { error } = await sb.auth.exchangeCodeForSession(code);
+    if (error) { $("#gateMsg").textContent = error.message; console.warn("[auth] exchange", error); }
+  }
 
   const { data } = await sb.auth.getSession();
   session = data.session;
-  sb.auth.onAuthStateChange((_e, s) => { session = s; render(); });
+  sb.auth.onAuthStateChange((evt, s) => {
+    console.log("[auth]", evt, s ? s.user.email : "no session");
+    session = s;
+    if (s) history.replaceState(null, "", location.pathname);   // tidy the token out of the URL
+    render();
+  });
   render();
 })();
 
@@ -37,15 +65,43 @@ async function render() {
 }
 
 /* ---------------- auth ---------------- */
+/* password sign-in — the keepers already have these from the Archive */
 $("#loginForm").addEventListener("submit", async e => {
   e.preventDefault();
   const email = $("#email").value.trim();
-  const { error } = await sb.auth.signInWithOtp({
-    email, options: { emailRedirectTo: location.href.split("#")[0] }
-  });
-  $("#gateMsg").textContent = error
-    ? error.message
-    : "Check your email — the sign-in link is on its way.";
+  const password = $("#password").value;
+  const msg = $("#gateMsg");
+  if (!password) { return sendMagicLink(email); }   // empty password -> link flow
+  msg.textContent = "Signing in…";
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) {
+    msg.textContent = error.message;
+    console.warn("[auth] password", error);
+    return;
+  }
+  msg.textContent = "";
+});
+
+/* magic link — fallback; needs this URL allowlisted in Supabase redirect URLs */
+async function sendMagicLink(email) {
+  const redirect = location.origin + location.pathname;
+  const msg = $("#gateMsg");
+  msg.textContent = "Sending…";
+  const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: redirect } });
+  if (error) {
+    msg.textContent = error.message;
+    console.warn("[auth] signInWithOtp", error);
+    return;
+  }
+  msg.innerHTML = "Check your email — the sign-in link is on its way.<br>" +
+                  "<span style='opacity:.7'>Open it in this same browser.</span>";
+  console.log("[auth] magic link requested, redirect =", redirect);
+}
+
+$("#linkInstead").addEventListener("click", () => {
+  const email = $("#email").value.trim();
+  if (!email) { $("#gateMsg").textContent = "Enter your email first."; return; }
+  sendMagicLink(email);
 });
 
 $("#signOut").addEventListener("click", async () => {

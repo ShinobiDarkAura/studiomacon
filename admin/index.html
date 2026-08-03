@@ -15,11 +15,13 @@
   <div class="gate-card">
     <img class="gate-logo" src="../assets/goat-logo.gif" alt="">
     <h1>Maçon Studio</h1>
-    <p class="gate-sub">Sign in to edit the shop.</p>
+    <p class="gate-sub">Sign in to edit the shop.<br><span class="gate-note">Same email and password as the Archive.</span></p>
     <form id="loginForm">
       <input id="email" type="email" placeholder="you@studiomacon.co" required autocomplete="email">
-      <button type="submit">Email me a link</button>
+      <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+      <button type="submit">Sign in</button>
     </form>
+    <button id="linkInstead" class="link-alt">Email me a sign-in link instead</button>
     <div id="gateMsg" class="gate-msg"></div>
   </div>
 </div>

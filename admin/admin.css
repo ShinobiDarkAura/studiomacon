@@ -18,6 +18,10 @@ button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
 #loginForm input:focus{border-color:var(--terra)}
 #loginForm button{padding:13px;border:none;border-radius:6px;background:var(--deep-olive);color:var(--cream);cursor:pointer;transition:background .15s}
 #loginForm button:hover{background:#151709}
+.gate-note{font-size:12px;opacity:.75}
+.link-alt{margin-top:14px;background:none;border:none;color:var(--olive);font-size:12px;
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.link-alt:hover{color:var(--terra)}
 .gate-msg{margin-top:16px;font-size:13px;line-height:1.6;color:var(--terra)}
 
 /* ---------- chrome ---------- */
