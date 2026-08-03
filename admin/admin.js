@@ -18,7 +18,7 @@ function toast(msg, isErr) {
 }
 
 /* small on-page readout so sign-in problems are visible without DevTools */
-const BUILD = "2026-08-03e";
+const BUILD = "2026-08-03f";
 function diag(extra) {
   const d = $("#diag");
   if (!d) return;
@@ -146,12 +146,23 @@ $("#signOut").addEventListener("click", async () => {
 
 /* ---------------- data ---------------- */
 async function loadProducts() {
-  const { data, error } = await sb
+  const rows = $("#rows");
+  if (rows) rows.innerHTML = '<div class="empty">Loading…</div>';
+  const { data, error, status } = await sb
     .from("store_products")
     .select("*,store_product_images(*)")
     .order("sort_order");
-  if (error) return toast(error.message, true);
+  if (error) {
+    console.error("[load]", status, error);
+    toast(error.message, true);
+    if (rows) rows.innerHTML =
+      `<div class="empty">Couldn't load products (HTTP ${status}).<br>` +
+      `${escapeHtml(error.message)}<br>` +
+      `<span class="empty-hint">${escapeHtml(error.hint || error.details || "")}</span></div>`;
+    return;
+  }
   products = data || [];
+  console.log("[load] products:", products.length);
   drawList();
 }
 
@@ -169,6 +180,12 @@ function drawList() {
   const filter = $("#filterCollection").value;
   const rows = $("#rows");
   rows.innerHTML = "";
+  if (!products.length) {
+    rows.innerHTML = '<div class="empty">No products returned.<br>' +
+      '<span class="empty-hint">You are signed in, but the query came back empty — ' +
+      'usually a row-level security rule.</span></div>';
+    return;
+  }
   products
     .filter(p => !filter || p.collection === filter)
     .forEach(p => {

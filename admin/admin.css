@@ -120,3 +120,6 @@ button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
 .img-cell .var.hand{background:var(--notes);color:var(--cream)}
 .img-cell .var:hover{outline:1px solid var(--ink)}
 .diag{margin-top:14px;font-size:10px;letter-spacing:.06em;color:var(--olive);opacity:.55}
+.empty{padding:28px;text-align:center;color:var(--olive);font-size:13px;line-height:1.7;
+  background:var(--panel);border:1px dashed var(--hairline);border-radius:10px}
+.empty-hint{display:block;margin-top:6px;font-size:11px;opacity:.75}
