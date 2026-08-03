@@ -2,17 +2,22 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Studio Maçon ⚚ Our Story</title><meta name="description" content="The story of Studio Maçon — Alex and Hannah, sculptural jewelry cast by hand in California.">
+<link rel="icon" href="assets/favicon.png">
 <link rel="stylesheet" href="assets/site.css">
 </head><body>
   <nav class="nav">
     <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.3"><path d="M8 3h8M9 3c0 2 1 3 3 3s3-1 3-3M7 8c0-1.5 2-2 5-2s5 .5 5 2c0 5-2 8-5 12-3-4-5-7-5-12Z"/></svg>
     <a class="logo" href="index.html"><img src="assets/goat-logo.gif" alt="Studio Maçon"></a>
-    <a class="menu" href="index.html">Shop</a>
+    <button class="menu" data-menu-open aria-label="Open menu">Menu</button>
   </nav>
+  <div class="menu-overlay" role="dialog" aria-label="Menu">
+    <button class="close" data-menu-close aria-label="Close menu">Close</button>
+    <a href="index.html">Shop</a><a href="story.html">Story</a><a href="custom.html">Custom</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a>
+  </div>
   <div class="content">
     <h1>Our Story</h1>
     <h3>Our Practice</h3>
-    <p class="lead">Each piece begins as a sketch on paper. Next, the object is carved by hand — first in wax, then fine-tuned in metal. We work closely with a local foundry to cast the wax carvings in bronze, silver or gold. Each piece is then refined and polished in our studio.</p>
+    <p class="lead">Each piece begins as a sketch on paper. Next, the object is carved by hand &mdash; first in wax, then fine-tuned in metal. We work closely with a local foundry to cast the wax carvings in bronze, silver or gold. Each piece is then refined and polished in our studio.</p>
     <p>If its path is to become a collection piece, a rubber mold is made so that we can make the children of that original and share them with you. If it's a custom piece, it is one of a kind.</p>
     <div class="steps">
       <figure><img src="images/content/draw.png" alt="Concept &amp; sketch"><figcaption>Concept &amp; Sketch</figcaption></figure>
@@ -21,7 +26,7 @@
     </div>
     <h3>Our History</h3>
     <p>Maçon is based in southern California, but Alex and Hannah met at RISD in 2008. They had figure drawing class together freshman year and quickly became close friends.</p>
-    <p>After graduating college, their resilient love for each other — despite gaps in distance and time — never waned. Eventually they found their way back to each other and married in 2023. Both Maçon and their union were born out of their desire to live and create as one.</p>
+    <p>After graduating college, their resilient love for each other &mdash; despite gaps in distance and time &mdash; never waned. Eventually they found their way back to each other and married in 2023. Both Maçon and their union were born out of their desire to live and create as one.</p>
     <div class="twoup"><img src="images/content/hannah.png" alt="Hannah as a child"><img src="images/content/alex.png" alt="Alex as a child"></div>
     <p class="lead">We discover by holding.</p>
     <p>Maçon was founded by two creative and life partners, Alex and Hannah. Their work is inspired by ancient artifacts and the intimate and personal objects they cared for when they were children.</p>
@@ -32,4 +37,5 @@
     <a class="mail" href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>
     <div class="fine">MAÇON · HANDMADE IN CALIFORNIA</div>
   </footer>
+<script src="assets/site.js"></script>
 </body></html>

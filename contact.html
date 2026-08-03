@@ -2,17 +2,22 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Maçon ⚚ Contact</title><meta name="description" content="Get in touch with Studio Maçon.">
+<link rel="icon" href="assets/favicon.png">
 <link rel="stylesheet" href="assets/site.css">
 </head><body>
   <nav class="nav">
     <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.3"><path d="M8 3h8M9 3c0 2 1 3 3 3s3-1 3-3M7 8c0-1.5 2-2 5-2s5 .5 5 2c0 5-2 8-5 12-3-4-5-7-5-12Z"/></svg>
     <a class="logo" href="index.html"><img src="assets/goat-logo.gif" alt="Studio Maçon"></a>
-    <a class="menu" href="index.html">Shop</a>
+    <button class="menu" data-menu-open aria-label="Open menu">Menu</button>
   </nav>
+  <div class="menu-overlay" role="dialog" aria-label="Menu">
+    <button class="close" data-menu-close aria-label="Close menu">Close</button>
+    <a href="index.html">Shop</a><a href="story.html">Story</a><a href="custom.html">Custom</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a>
+  </div>
   <div class="content contact">
     <img class="leaves" src="images/content/leaves.png" alt="">
     <h1>Contact</h1>
-    <p style="text-align:center"><a href="https://www.instagram.com/studiomacon/">@studiomacon</a> &nbsp;·&nbsp; <a href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a></p>
+    <p style="text-align:center"><a href="https://www.instagram.com/studiomacon/">@studiomacon</a> &nbsp;&middot;&nbsp; <a href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a></p>
     <form id="cform" class="cform">
       <div class="row2"><input name="first" placeholder="First Name" required><input name="last" placeholder="Last Name"></div>
       <input name="email" type="email" placeholder="Email" required>
@@ -20,18 +25,10 @@
       <button type="submit">Send</button>
     </form>
   </div>
-  <script>
-    // interim: opens the visitor's mail client prefilled. Swap for Formspree/Supabase before launch.
-    document.getElementById('cform').addEventListener('submit',e=>{
-      e.preventDefault();
-      const f=e.target;
-      const body=encodeURIComponent(`Name: ${f.first.value} ${f.last.value}\nEmail: ${f.email.value}\n\n${f.message.value}`);
-      window.location.href=`mailto:hello@studiomacon.co?subject=${encodeURIComponent('Hello from '+f.first.value)}&body=${body}`;
-    });
-  </script>
   <footer>
     <div class="links"><a href="story.html">Story</a><a href="custom.html">Custom</a><a href="shipping.html">Shipping &amp; Returns</a></div>
     <a class="mail" href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>
     <div class="fine">MAÇON · HANDMADE IN CALIFORNIA</div>
   </footer>
+<script src="assets/site.js"></script>
 </body></html>
