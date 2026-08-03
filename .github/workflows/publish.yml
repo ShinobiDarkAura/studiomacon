@@ -38,16 +38,10 @@ jobs:
       - name: Build site from Supabase
         run: python3 build.py
 
+      # ships only files reachable from the HTML/CSS (WebP derivatives, not the
+      # full-res originals) and fails the build on any broken reference
       - name: Stage deployable files
-        run: |
-          mkdir -p _site
-          cp -R *.html assets images product _site/ 2>/dev/null || true
-          # don't ship source data, tooling or the original uncropped art
-          rm -rf _site/_source
-          echo "staged: $(find _site -type f | wc -l) files"
-
-      - name: Optimize images for the web
-        run: python3 optimize_site.py _site
+        run: python3 stage_site.py _site
 
       - uses: actions/upload-pages-artifact@v3
         with:

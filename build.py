@@ -66,9 +66,60 @@ def resolve_image(url):
         print(f"    downloaded {url.split('/')[-1]} -> {dest}")
     return dest
 
+# ---------------------------------------------------------------- derivatives
+# Sizes the site actually renders (CSS px), doubled for retina:
+#   PDP thumbnail  56px -> 200      card 294px -> 800      PDP hero 1080px -> 1800
+DERIVED_DIR = "images/derived"
+SIZES = (200, 800, 1800)
+
+def derive(src, width):
+    """Return a WebP derivative at `width`, generating it on first use.
+
+    WebP carries alpha, so transparent product shots stop being multi-MB PNGs.
+    Derivatives are build artifacts (gitignored) — originals stay the archive.
+    """
+    if not os.path.exists(src):
+        return src
+    stem = hashlib.sha1(src.encode()).hexdigest()[:12]
+    out = f"{DERIVED_DIR}/{stem}-{width}.webp"
+    if os.path.exists(out) and os.path.getmtime(out) >= os.path.getmtime(src):
+        return out
+    try:
+        from PIL import Image
+    except ImportError:
+        return src                                  # no Pillow -> ship originals
+    os.makedirs(DERIVED_DIR, exist_ok=True)
+    im = Image.open(src)
+    if im.mode == "P":
+        im = im.convert("RGBA")
+    if im.width > width:
+        im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
+    im.save(out, "WEBP", quality=82, method=6)
+    return out
+
+def srcset(src):
+    """srcset across the derivative sizes, letting the browser pick."""
+    parts = []
+    for w in SIZES:
+        d = derive(src, w)
+        if d != src:
+            parts.append(f"../{d} {w}w" if False else f"{d} {w}w")
+    return ", ".join(parts)
+
 def images_for(p):
     imgs = sorted(p.get("store_product_images") or [], key=lambda i: i["sort_order"])
-    return [{"url": resolve_image(i["url"]), "alt": i.get("alt") or p["name"]} for i in imgs]
+    out = []
+    for i in imgs:
+        src = resolve_image(i["url"])
+        out.append({
+            "url": src,
+            "alt": i.get("alt") or p["name"],
+            "thumb": derive(src, 200),
+            "card": derive(src, 800),
+            "hero": derive(src, 1800),
+            "srcset": srcset(src),
+        })
+    return out
 
 # ---------------------------------------------------------------- visibility
 def is_public(p, now):
@@ -128,9 +179,11 @@ def card(p, imgs):
     sold = p["status"] in ("sold_out", "archived")
     badge = '<span class="sold">Claimed</span>' if sold else ""
     cls = "card" + (" is-sold" if sold else "")
-    first = imgs[0]["url"] if imgs else ""
+    i0 = imgs[0] if imgs else {}
+    src = i0.get("card") or i0.get("url", "")
+    ss = f' srcset="{i0["srcset"]}" sizes="(max-width:520px) 90vw, (max-width:820px) 45vw, 30vw"' if i0.get("srcset") else ""
     return f'''      <a class="{cls}" href="product/{p['slug']}.html" data-slug="{p['slug']}">
-        <div class="card-img"><img src="{first}" alt="{html.escape(p['name'])}" loading="lazy">{badge}</div>
+        <div class="card-img"><img src="{src}"{ss} alt="{html.escape(p['name'])}" loading="lazy" decoding="async">{badge}</div>
         <div class="card-name">{html.escape(p['name'])}</div>
         <div class="card-price">{price_txt}</div>
       </a>'''
@@ -173,8 +226,9 @@ def main():
         + "\n".join(card(p, imgs_of[p["slug"]]) for p in per)
         + "\n    </div>\n  </section>")
 
+    hero_src = derive(hero, 1800)
     home_body = (f'  <section class="hero">\n'
-                 f'    <img class="hero-art" src="{v(hero)}" alt="Maçon">\n'
+                 f'    <img class="hero-art" src="{v(hero_src)}" alt="Maçon" fetchpriority="high">\n'
                  f'    <p class="tagline"><span class="dash">&mdash;</span>'
                  f'<span class="tl">{html.escape(tagline)}</span>'
                  f'<span class="dash">&mdash;</span></p>\n  </section>\n'
@@ -191,7 +245,7 @@ def main():
             print(f"  ! {p['slug']} has no images — skipped")
             continue
         thumbs = "".join(
-            f'<img src="../{i["url"]}" data-full="../{i["url"]}" '
+            f'<img src="../{i["thumb"]}" data-full="../{i["hero"]}" loading="lazy" '
             f'class="{"on" if k == 0 else ""}" alt="">' for k, i in enumerate(imgs))
         notes = p.get("notes") or []
         notes_html = ""
@@ -214,7 +268,7 @@ def main():
         one_of_one = ('<div class="overline">One of One</div>'
                       if p.get("collection") == "ephemeral" else "")
         body = f'''  <article class="pdp" data-slug="{p['slug']}">
-    <div class="pdp-hero"><img id="mainImg" src="../{imgs[0]['url']}" alt="{html.escape(p['name'])}"></div>
+    <div class="pdp-hero"><img id="mainImg" src="../{imgs[0]['hero']}" alt="{html.escape(p['name'])}" fetchpriority="high"></div>
     <div class="thumbs">{thumbs}</div>
     <div class="pdp-info">
       <div class="pdp-left">
@@ -260,13 +314,24 @@ def blocks_to_html(body):
             out.append(f'    <img src="{resolve_image(b.get("src",""))}" alt="{html.escape(b.get("alt",""))}">')
     return "\n".join(out)
 
+def swap_derivatives(markup, width=1200):
+    """Point <img src> in built-in page copy at WebP derivatives."""
+    def repl(m):
+        src = m.group(1)
+        if src.startswith("http"):
+            return m.group(0)
+        d = derive(src, width)
+        return m.group(0).replace(src, d) + (' loading="lazy" decoding="async"'
+                                             if 'loading=' not in m.group(0) else '')
+    return re.sub(r'<img[^>]*src="([^"]+)"[^>]*>', repl, markup)
+
 def build_content_pages(pages):
     from content_fallback import FALLBACK          # built-in copy, used until edited
     for key, meta in FALLBACK.items():
         rec = pages.get(key, {})
         title = rec.get("title") or meta["title"]
         body_blocks = rec.get("body") or []
-        inner = blocks_to_html(body_blocks) if body_blocks else meta["html"]
+        inner = blocks_to_html(body_blocks) if body_blocks else swap_derivatives(meta["html"])
         extra = meta.get("wrap_class", "")
         pre = (meta.get("pre", "") + "\n") if meta.get("pre") else ""
         body = (f'  <div class="content {extra}">\n{pre}'
