@@ -18,7 +18,7 @@ function toast(msg, isErr) {
 }
 
 /* small on-page readout so sign-in problems are visible without DevTools */
-const BUILD = "2026-08-03g";
+const BUILD = "2026-08-03h";
 function diag(extra) {
   const d = $("#diag");
   if (!d) return;
@@ -424,3 +424,223 @@ function escapeHtml(s) {
 window.addEventListener("beforeunload", e => {
   if (dirty) { e.preventDefault(); e.returnValue = ""; }
 });
+
+/* ================= views ================= */
+const VIEWS = {
+  products: ["listView"], pages: ["pagesView"], home: ["homeView"],
+};
+function showView(name) {
+  ["listView","editView","pagesView","pageEditView","homeView"].forEach(id => {
+    const n = $("#" + id); if (n) n.hidden = true;
+  });
+  (VIEWS[name] || VIEWS.products).forEach(id => { const n = $("#" + id); if (n) n.hidden = false; });
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.view === name));
+  if (name === "pages") loadPages();
+  if (name === "home") loadHome();
+}
+document.querySelectorAll(".tab").forEach(t =>
+  t.addEventListener("click", () => showView(t.dataset.view)));
+
+/* ================= pages ================= */
+const PAGE_FILES = { story: "story.html", custom: "custom.html",
+                     shipping: "shipping.html", contact: "contact.html" };
+let pages = [], currentPage = null;
+
+async function loadPages() {
+  const list = $("#pageList");
+  list.innerHTML = '<div class="empty">Loading…</div>';
+  const { data, error } = await sb.from("store_pages").select("*");
+  if (error) { list.innerHTML = `<div class="empty">${escapeHtml(error.message)}</div>`; return; }
+  const order = ["story","custom","shipping","contact"];
+  pages = (data || []).sort((a,b) => order.indexOf(a.key) - order.indexOf(b.key));
+  list.innerHTML = "";
+  pages.forEach(pg => {
+    const n = (pg.body || []).length;
+    const r = el("div", "row row-page");
+    r.innerHTML = `<div class="row-name">${escapeHtml(pg.title || pg.key)}</div>
+      <div class="row-slug">/${PAGE_FILES[pg.key] || pg.key} · ${n} block${n===1?"":"s"}</div>`;
+    r.addEventListener("click", () => openPage(pg.key));
+    list.appendChild(r);
+  });
+}
+
+function openPage(key) {
+  currentPage = pages.find(p => p.key === key);
+  if (!currentPage) return;
+  showView("pages");
+  $("#pagesView").hidden = true;
+  $("#pageEditView").hidden = false;
+  $("#pg_title").value = currentPage.title || "";
+  $("#pageView").href = "../" + (PAGE_FILES[key] || "");
+  $("#pageSavedAt").textContent = currentPage.updated_at
+    ? "Last saved " + new Date(currentPage.updated_at).toLocaleString() : "";
+  drawBlocks();
+  window.scrollTo(0, 0);
+}
+$("#pageBack").addEventListener("click", () => { $("#pageEditView").hidden = true; showView("pages"); });
+
+function blockFields(b, i) {
+  const T = (label, val, key, rows) => rows
+    ? `<label class="bf"><span>${label}</span><textarea rows="${rows}" data-k="${key}">${escapeHtml(val||"")}</textarea></label>`
+    : `<label class="bf"><span>${label}</span><input type="text" data-k="${key}" value="${escapeHtml(val||"")}"></label>`;
+  switch (b.type) {
+    case "h3":      return T("Heading", b.text, "text");
+    case "lead":    return T("Lead text", b.text, "text", 3);
+    case "p":       return T("Paragraph", b.text, "text", 4);
+    case "caption": return T("Caption", b.text, "text");
+    case "html":    return T("Text (HTML allowed)", b.html, "html", 3);
+    case "img":     return imgField("Image", b.src, "src", i) + T("Alt text", b.alt, "alt");
+    case "twoup":   return imgField("Left image", b.src1, "src1", i) + imgField("Right image", b.src2, "src2", i);
+    case "steps":   return (b.items||[]).map((s,k) =>
+                      `<div class="step-row">${imgField("Step "+(k+1), s.src, "items."+k+".src", i)}
+                       <label class="bf"><span>Caption</span><input type="text" data-k="items.${k}.caption" value="${escapeHtml(s.caption||"")}"></label></div>`).join("");
+    default:        return "";
+  }
+}
+function imgField(label, src, key, i) {
+  return `<div class="bf">
+    <span>${label}</span>
+    <div class="bimg">
+      ${src ? `<img src="${publicUrl(src)}" alt="">` : '<div class="bimg-none">none</div>'}
+      <label class="upload sm"><input type="file" accept="image/*" hidden data-imgfor="${key}" data-block="${i}"><span>Replace</span></label>
+    </div></div>`;
+}
+
+function drawBlocks() {
+  const host = $("#blocks");
+  host.innerHTML = "";
+  (currentPage.body || []).forEach((b, i) => {
+    const c = el("div", "block");
+    c.dataset.i = i;
+    c.draggable = true;
+    c.innerHTML = `<div class="block-head">
+        <span class="bgrip" title="Drag to reorder">⠿</span>
+        <span class="btype">${b.type === "html" ? "text" : b.type}</span>
+        <button class="brm" title="Remove block">×</button>
+      </div>
+      <div class="block-body">${blockFields(b, i)}</div>`;
+    c.querySelector(".brm").addEventListener("click", () => {
+      if (!confirm("Remove this block?")) return;
+      currentPage.body.splice(i, 1); drawBlocks();
+    });
+    c.querySelectorAll("[data-k]").forEach(inp =>
+      inp.addEventListener("input", () => setBlockValue(i, inp.dataset.k, inp.value)));
+    c.querySelectorAll("[data-imgfor]").forEach(inp =>
+      inp.addEventListener("change", ev => uploadBlockImage(ev, i, inp.dataset.imgfor)));
+    wireBlockDrag(c);
+    host.appendChild(c);
+  });
+  if (!(currentPage.body || []).length)
+    host.innerHTML = '<div class="empty">No blocks yet — add one below.</div>';
+}
+
+function setBlockValue(i, key, val) {
+  const b = currentPage.body[i];
+  if (key.includes(".")) {
+    const [arr, idx, field] = key.split(".");
+    b[arr][+idx][field] = val;
+  } else b[key] = val;
+}
+
+let dragBlock = null;
+function wireBlockDrag(c) {
+  c.addEventListener("dragstart", e => {
+    if (!e.target.closest(".bgrip") && e.target !== c) { e.preventDefault(); return; }
+    dragBlock = c; c.classList.add("dragging");
+  });
+  c.addEventListener("dragend", () => { c.classList.remove("dragging"); dragBlock = null;
+    document.querySelectorAll(".block").forEach(x => x.classList.remove("drop-target")); });
+  c.addEventListener("dragover", e => { e.preventDefault(); if (dragBlock && dragBlock !== c) c.classList.add("drop-target"); });
+  c.addEventListener("dragleave", () => c.classList.remove("drop-target"));
+  c.addEventListener("drop", e => {
+    e.preventDefault(); c.classList.remove("drop-target");
+    if (!dragBlock || dragBlock === c) return;
+    const from = +dragBlock.dataset.i, to = +c.dataset.i;
+    const [m] = currentPage.body.splice(from, 1);
+    currentPage.body.splice(to, 0, m);
+    drawBlocks();
+  });
+}
+
+document.querySelectorAll(".add").forEach(btn => btn.addEventListener("click", () => {
+  const t = btn.dataset.add;
+  const blank = { h3:{type:"h3",text:""}, lead:{type:"lead",text:""}, p:{type:"p",text:""},
+                  caption:{type:"caption",text:""}, img:{type:"img",src:"",alt:""},
+                  twoup:{type:"twoup",src1:"",alt1:"",src2:"",alt2:""} }[t];
+  currentPage.body = currentPage.body || [];
+  currentPage.body.push(JSON.parse(JSON.stringify(blank)));
+  drawBlocks();
+  $("#blocks").lastElementChild?.scrollIntoView({ block: "center", behavior: "smooth" });
+}));
+
+async function uploadBlockImage(ev, i, key) {
+  const f = ev.target.files[0]; if (!f) return;
+  const url = await uploadToStorage(f, "pages/" + currentPage.key);
+  if (!url) return;
+  setBlockValue(i, key, url);
+  drawBlocks();
+  toast("Image added — remember to save");
+}
+
+$("#pageSave").addEventListener("click", async () => {
+  const btn = $("#pageSave"); btn.disabled = true; btn.textContent = "Saving…";
+  const { error } = await sb.from("store_pages")
+    .update({ title: $("#pg_title").value.trim(), body: currentPage.body || [] })
+    .eq("key", currentPage.key);
+  btn.disabled = false; btn.textContent = "Save page";
+  if (error) return toast(error.message, true);
+  currentPage.title = $("#pg_title").value.trim();
+  $("#pageSavedAt").textContent = "Last saved just now";
+  toast("Page saved");
+});
+
+/* ================= homepage ================= */
+let settings = {};
+async function loadHome() {
+  const { data, error } = await sb.from("store_settings").select("*");
+  if (error) return toast(error.message, true);
+  settings = Object.fromEntries((data || []).map(s => [s.key, s.value]));
+  $("#hp_tagline").value = settings.tagline || "";
+  drawHero();
+}
+function drawHero() {
+  const src = settings.hero_image || "";
+  $("#heroPreview").innerHTML = src
+    ? `<img src="${publicUrl(src)}" alt="">`
+    : '<div class="bimg-none">none</div>';
+}
+$("#heroFile").addEventListener("change", async ev => {
+  const f = ev.target.files[0]; if (!f) return;
+  const url = await uploadToStorage(f, "home");
+  if (!url) return;
+  settings.hero_image = url;
+  drawHero();
+  toast("Hero updated — remember to save");
+});
+$("#homeSave").addEventListener("click", async () => {
+  const btn = $("#homeSave"); btn.disabled = true; btn.textContent = "Saving…";
+  const rows = [
+    { key: "tagline", value: $("#hp_tagline").value.trim() },
+    { key: "hero_image", value: settings.hero_image || "assets/hero.png" },
+  ];
+  let err = null;
+  for (const r of rows) {
+    const { error } = await sb.from("store_settings")
+      .upsert({ key: r.key, value: r.value }, { onConflict: "key" });
+    if (error) err = error;
+  }
+  btn.disabled = false; btn.textContent = "Save homepage";
+  if (err) return toast(err.message, true);
+  $("#homeSavedAt").textContent = "Last saved just now";
+  toast("Homepage saved");
+});
+
+/* shared uploader */
+async function uploadToStorage(file, folder) {
+  const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+  const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+  const { error } = await sb.storage.from("store-media")
+    .upload(path, file, { cacheControl: "31536000", upsert: false });
+  if (error) { toast(error.message, true); return null; }
+  return sb.storage.from("store-media").getPublicUrl(path).data.publicUrl;
+}

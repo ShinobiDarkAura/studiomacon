@@ -57,12 +57,13 @@ FALLBACK = {
         "desc": "Get in touch with Studio Maçon.",
         "wrap_class": "contact",
         "pre": '    <img class="leaves" src="images/content/leaves.png" alt="">',
-        "html": '''    <p style="text-align:center"><a href="https://www.instagram.com/studiomacon/">@studiomacon</a> &nbsp;&middot;&nbsp; <a href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a></p>
-    <form id="cform" class="cform">
+        # always rendered, blocks or not — the form is functionality, not copy
+        "post": '''    <form id="cform" class="cform">
       <div class="row2"><input name="first" placeholder="First Name" required><input name="last" placeholder="Last Name"></div>
       <input name="email" type="email" placeholder="Email" required>
       <textarea name="message" rows="5" placeholder="Message" required></textarea>
       <button type="submit">Send</button>
     </form>''',
+        "html": '''    <p style="text-align:center"><a href="https://www.instagram.com/studiomacon/">@studiomacon</a> &nbsp;&middot;&nbsp; <a href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a></p>''',
     },
 }

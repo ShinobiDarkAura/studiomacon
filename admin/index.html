@@ -33,6 +33,11 @@
     <div class="bar-left">
       <img class="bar-logo" src="../assets/goat-logo.gif" alt="">
       <span class="bar-title">Maçon Studio</span>
+      <nav class="tabs">
+        <button class="tab on" data-view="products">Products</button>
+        <button class="tab" data-view="pages">Pages</button>
+        <button class="tab" data-view="home">Homepage</button>
+      </nav>
     </div>
     <div class="bar-right">
       <span id="who" class="who"></span>
@@ -121,6 +126,70 @@
             <button id="deleteBtn" class="btn danger wide">Delete piece</button>
           </div>
           <div class="side-note" id="savedAt"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- pages -->
+    <section id="pagesView" hidden>
+      <div class="section-head"><h2>Pages</h2></div>
+      <p class="hint">Story, Custom, Shipping &amp; Returns and Contact. Edit the copy and images that appear on each.</p>
+      <div id="pageList" class="rows"></div>
+    </section>
+
+    <!-- page block editor -->
+    <section id="pageEditView" hidden>
+      <button id="pageBack" class="back">&larr; All pages</button>
+      <div class="edit-grid">
+        <div class="edit-main">
+          <label class="fld"><span>Page title</span>
+            <input id="pg_title" type="text"></label>
+          <div class="fld">
+            <span>Content <em>(drag the handle to reorder blocks)</em></span>
+            <div id="blocks" class="blocks"></div>
+          </div>
+          <div class="addbar">
+            <span class="addbar-label">Add:</span>
+            <button class="btn add" data-add="h3">Heading</button>
+            <button class="btn add" data-add="lead">Lead text</button>
+            <button class="btn add" data-add="p">Paragraph</button>
+            <button class="btn add" data-add="img">Image</button>
+            <button class="btn add" data-add="twoup">Two images</button>
+            <button class="btn add" data-add="caption">Caption</button>
+          </div>
+        </div>
+        <aside class="edit-side">
+          <div class="side-actions">
+            <button id="pageSave" class="btn primary wide">Save page</button>
+            <a id="pageView" class="btn wide" target="_blank" rel="noopener">View page</a>
+          </div>
+          <div class="side-note" id="pageSavedAt"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- homepage -->
+    <section id="homeView" hidden>
+      <div class="section-head"><h2>Homepage</h2></div>
+      <p class="hint">The hero artwork and the line beneath it.</p>
+      <div class="edit-grid">
+        <div class="edit-main">
+          <label class="fld"><span>Tagline</span>
+            <textarea id="hp_tagline" rows="3"></textarea></label>
+          <div class="fld">
+            <span>Hero artwork</span>
+            <div id="heroPreview" class="hero-preview"></div>
+            <label class="upload">
+              <input id="heroFile" type="file" accept="image/*" hidden>
+              <span>Replace hero image</span>
+            </label>
+          </div>
+        </div>
+        <aside class="edit-side">
+          <div class="side-actions">
+            <button id="homeSave" class="btn primary wide">Save homepage</button>
+          </div>
+          <div class="side-note" id="homeSavedAt"></div>
         </aside>
       </div>
     </section>

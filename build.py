@@ -338,19 +338,49 @@ def main():
     print(f"  {built} product pages | {len(eph)} ephemeral, {len(per)} perennial")
     print(f"  content fetched {data.get('fetched_at', 'from cache')}")
 
+def page_img(src, alt="", width=1200, cls="", style=""):
+    if not src:
+        return ""
+    d = derive(resolve_image(src), width)
+    c = f' class="{cls}"' if cls else ""
+    st = f' style="{style}"' if style else ""
+    return (f'<img{c} src="{d}" alt="{html.escape(alt)}"{st} '
+            f'loading="lazy" decoding="async">')
+
 def blocks_to_html(body):
-    """Render editor block JSON. Empty body -> fall back to the built-in copy."""
+    """Render editor block JSON. Empty body -> fall back to the built-in copy.
+
+    Block types mirror what the pages actually use, so editing never forces
+    content into a shape the design doesn't have.
+    """
     out = []
     for b in body:
         t = b.get("type")
+        txt = html.escape(b.get("text", ""))
         if t == "h3":
-            out.append(f'    <h3>{html.escape(b.get("text",""))}</h3>')
+            out.append(f"    <h3>{txt}</h3>")
         elif t == "lead":
-            out.append(f'    <p class="lead">{html.escape(b.get("text",""))}</p>')
+            out.append(f'    <p class="lead">{txt}</p>')
         elif t == "p":
-            out.append(f'    <p>{html.escape(b.get("text",""))}</p>')
+            out.append(f"    <p>{txt}</p>")
+        elif t == "caption":
+            out.append('    <p style="text-align:center;color:var(--olive);'
+                       f'font-size:13px;letter-spacing:.06em">{txt}</p>')
+        elif t == "html":                       # escape hatch for links etc.
+            out.append(f'    <p>{b.get("html","")}</p>')
         elif t == "img":
-            out.append(f'    <img src="{resolve_image(b.get("src",""))}" alt="{html.escape(b.get("alt",""))}">')
+            out.append("    " + page_img(b.get("src", ""), b.get("alt", ""),
+                                         style=b.get("style", "")))
+        elif t == "twoup":
+            a = page_img(b.get("src1", ""), b.get("alt1", ""), 900)
+            c = page_img(b.get("src2", ""), b.get("alt2", ""), 900)
+            out.append(f'    <div class="twoup">{a}{c}</div>')
+        elif t == "steps":
+            figs = ""
+            for s in b.get("items", []):
+                figs += (f'<figure>{page_img(s.get("src",""), s.get("caption",""), 600)}'
+                         f'<figcaption>{html.escape(s.get("caption",""))}</figcaption></figure>')
+            out.append(f'    <div class="steps">{figs}</div>')
     return "\n".join(out)
 
 def swap_derivatives(markup, width=1200):
@@ -373,8 +403,9 @@ def build_content_pages(pages):
         inner = blocks_to_html(body_blocks) if body_blocks else swap_derivatives(meta["html"])
         extra = meta.get("wrap_class", "")
         pre = (meta.get("pre", "") + "\n") if meta.get("pre") else ""
+        post = ("\n" + meta["post"]) if meta.get("post") else ""
         body = (f'  <div class="content {extra}">\n{pre}'
-                f'    <h1>{html.escape(title)}</h1>\n{inner}\n  </div>')
+                f'    <h1>{html.escape(title)}</h1>\n{inner}{post}\n  </div>')
         open(meta["file"], "w", encoding="utf-8").write(
             page(meta["page_title"], body, "", meta["desc"]))
 
