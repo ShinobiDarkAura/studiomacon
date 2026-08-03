@@ -44,12 +44,13 @@ body.menu-open .menu-overlay{opacity:1;pointer-events:auto}
 /* Bureau crest — overlaps the top-left product, tilted counter-clockwise */
 .grid .crest{position:absolute;top:-58px;left:-6px;width:178px;height:auto;opacity:.92;z-index:4;
   transform:rotate(-20deg);pointer-events:none}
-.tagline{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;color:var(--terra);font-size:16px;line-height:1.75;letter-spacing:.06em;margin:6px auto 4px;max-width:640px}
+/* vertically centered in the gap between the hero art and the product grid */
+.tagline{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;color:var(--terra);font-size:16px;line-height:1.75;letter-spacing:.06em;margin:31px auto 0;max-width:640px}
 .tagline .dash{opacity:.6;font-size:15px}
 .tagline .tl{display:block}
 
 /* ---- shop grid ---- */
-.shop{max-width:1180px;margin:52px auto 80px;padding:0 24px}
+.shop{max-width:1180px;margin:31px auto 80px;padding:0 24px}
 .shop h2{font-family:"Louize",Georgia,serif;font-weight:400;font-size:30px;text-align:center;margin-bottom:38px;letter-spacing:.02em}
 .grid{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:52px 40px}
 @media(max-width:820px){.grid{grid-template-columns:repeat(2,1fr);gap:38px 24px}}
