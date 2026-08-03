@@ -17,18 +17,16 @@ def nav(up=""):
     return f'''  <nav class="nav">
     <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.3"><path d="M8 3h8M9 3c0 2 1 3 3 3s3-1 3-3M7 8c0-1.5 2-2 5-2s5 .5 5 2c0 5-2 8-5 12-3-4-5-7-5-12Z"/></svg>
     <a class="logo" href="{up}index.html"><img src="{up}assets/goat-logo.gif" alt="Studio Maçon"></a>
-    <button class="menu" data-menu-open aria-label="Open menu">Menu</button>
+    <button class="menu" data-menu-toggle aria-label="Menu"><span class="bars"><i></i><i></i><i></i></span></button>
   </nav>
   <div class="menu-overlay" role="dialog" aria-label="Menu">
-    <button class="close" data-menu-close aria-label="Close menu">Close</button>
     {links}
   </div>'''
 
 def footer(up=""):
     return f'''  <footer>
     <div class="links"><a href="{up}story.html">Story</a><a href="{up}custom.html">Custom</a><a href="{up}shipping.html">Shipping &amp; Returns</a></div>
-    <a class="mail" href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>
-    <div class="fine">MAÇON · HANDMADE IN CALIFORNIA</div>
+    <div class="fine">HANDMADE IN CALIFORNIA</div>
   </footer>'''
 
 def page(title, body, up="", desc=""):
@@ -84,23 +82,34 @@ for p in prods:
     if not imgs: continue
     thumbs = "".join(f'<img src="../images/products/{im}" data-full="../images/products/{im}" class="{"on" if i==0 else ""}" alt="">' for i, im in enumerate(imgs))
     notes = notes_for(slug)
-    notes_html = ("<div class=\"notes\"><div class=\"lbl\">Notes</div>" +
-                  "".join(f'<div class="row">{html.escape(n)}</div>' for n in notes) + "</div>") if notes else ""
+    notes_html = ""
+    if notes:
+        rows = "".join(f'<div class="row">{html.escape(n)}</div>' for n in notes)
+        notes_html = f'''    <section class="notes-block">
+      <button class="notes-head" data-notes-toggle aria-expanded="false">
+        <span class="lbl">NOTES</span><span class="sign" aria-hidden="true"></span>
+      </button>
+      <div class="notes-body"><div class="notes-inner">{rows}</div></div>
+    </section>'''
     subj = f"Hi!%20I%27d%20like%20to%20order%20{slug.replace('-','%20')}."
-    body = f'''  <section class="product">
-    <div class="gallery">
-      <img class="main" id="mainImg" src="../images/products/{imgs[0]}" alt="{html.escape(p['name'])}">
-      <div class="thumbs">{thumbs}</div>
+    price = p.get('price', '')
+    price_fmt = f"${float(price):,.2f}" if price else ""
+    body = f'''  <article class="pdp">
+    <div class="pdp-hero"><img id="mainImg" src="../images/products/{imgs[0]}" alt="{html.escape(p['name'])}"></div>
+    <div class="thumbs">{thumbs}</div>
+    <div class="pdp-info">
+      <div class="pdp-left">
+        <h1>{html.escape(p['name'])}</h1>
+        <div class="desc">{html.escape(p.get('desc') or '')}</div>
+      </div>
+      <div class="pdp-right">
+        <div class="price">{price_fmt}</div>
+        <a class="btn-bag" href="mailto:hello@studiomacon.co?subject={subj}">Add to Bag</a>
+        <a class="btn-buy" href="mailto:hello@studiomacon.co?subject={subj}">Buy Now</a>
+      </div>
     </div>
-    <div class="pinfo">
-      <a class="back" href="../index.html">&larr; Shop</a>
-      <h1>{html.escape(p['name'])}</h1>
-      <div class="price">${p.get('price','')}</div>
-      <div class="desc">{html.escape(p.get('desc') or '')}</div>
-      <a class="buy" href="mailto:hello@studiomacon.co?subject={subj}">Buy Now</a>
-      {notes_html}
-    </div>
-  </section>'''
+{notes_html}
+  </article>'''
     open(f"product/{slug}.html", "w").write(page(f"{p['name']} | Studio Maçon", body, "../", p.get("desc", "")))
 
 # ---------- content pages ----------

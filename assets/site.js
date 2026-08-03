@@ -1,12 +1,20 @@
 // Studio Maçon — shared behavior
 
-// fullscreen menu overlay
+// fullscreen menu overlay — hamburger animates to an X in place
 document.addEventListener('click', e => {
-  if (e.target.closest('[data-menu-open]')) document.body.classList.add('menu-open');
-  if (e.target.closest('[data-menu-close]')) document.body.classList.remove('menu-open');
+  if (e.target.closest('[data-menu-toggle]')) document.body.classList.toggle('menu-open');
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.body.classList.remove('menu-open');
+});
+
+// NOTES accordion
+document.querySelectorAll('[data-notes-toggle]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const block = btn.closest('.notes-block');
+    const open = block.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
 });
 
 // product gallery — click a thumbnail to swap the main image
