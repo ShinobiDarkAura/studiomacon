@@ -49,8 +49,12 @@ function toast(msg, isErr) {
   session = data.session;
   sb.auth.onAuthStateChange((evt, s) => {
     console.log("[auth]", evt, s ? s.user.email : "no session");
+    // only SIGNED_OUT should tear down the UI — a late INITIAL_SESSION(null)
+    // must not knock an already-signed-in user back to the gate
+    if (evt === "SIGNED_OUT") { session = null; render(); return; }
+    if (!s) return;
     session = s;
-    if (s) history.replaceState(null, "", location.pathname);   // tidy the token out of the URL
+    history.replaceState(null, "", location.pathname);   // tidy the token out of the URL
     render();
   });
   render();
@@ -60,8 +64,13 @@ async function render() {
   if (!session) { $("#gate").hidden = false; $("#app").hidden = true; return; }
   $("#gate").hidden = true;
   $("#app").hidden = false;
-  $("#who").textContent = session.user.email;
-  await loadProducts();
+  $("#who").textContent = session.user?.email || "";
+  try {
+    await loadProducts();
+  } catch (err) {
+    console.error("[load]", err);
+    toast("Signed in, but loading products failed: " + err.message, true);
+  }
 }
 
 /* ---------------- auth ---------------- */
@@ -73,13 +82,23 @@ $("#loginForm").addEventListener("submit", async e => {
   const msg = $("#gateMsg");
   if (!password) { return sendMagicLink(email); }   // empty password -> link flow
   msg.textContent = "Signing in…";
-  const { error } = await sb.auth.signInWithPassword({ email, password });
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
   if (error) {
     msg.textContent = error.message;
     console.warn("[auth] password", error);
     return;
   }
+  console.log("[auth] signInWithPassword ok; session:", !!data?.session,
+              "user:", data?.user?.email, "mfa:", data?.user?.factors?.length || 0);
+  if (!data?.session) {
+    msg.textContent = "Signed in, but no session came back — the account may need "
+                    + "email confirmation or a second factor.";
+    return;
+  }
+  // don't wait on onAuthStateChange — drive the UI directly
+  session = data.session;
   msg.textContent = "";
+  await render();
 });
 
 /* magic link — fallback; needs this URL allowlisted in Supabase redirect URLs */
