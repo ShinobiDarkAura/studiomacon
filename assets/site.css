@@ -39,7 +39,8 @@ body.menu-open .menu-overlay{opacity:1;pointer-events:auto}
 .menu-overlay a:hover{color:var(--terra)}
 
 /* ---- home hero ---- */
-.hero{position:relative;max-width:1180px;margin:8px auto 0;padding:0 24px}
+/* hero runs 15% wider than the shop grid below it */
+.hero{position:relative;max-width:1357px;margin:8px auto 0;padding:0 24px}
 .hero .hero-art{width:100%;height:auto;display:block}
 /* Bureau crest — overlaps the top-left product, tilted counter-clockwise */
 .grid .crest{position:absolute;top:-58px;left:-6px;width:178px;height:auto;opacity:.92;z-index:4;
