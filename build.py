@@ -66,7 +66,6 @@ home_body = f'''  <section class="hero">
     <p class="tagline"><span class="dash">&mdash;</span><span class="tl">Limited-run and custom artifacts and jewelry designed, cast and finished by hand in California.</span><span class="dash">&mdash;</span></p>
   </section>
   <section class="shop">
-    <h2>Shop</h2>
     <div class="grid">
       <img class="crest" src="assets/crest.png" alt="Maçon Bureau of Provenance">
 {chr(10).join(cards)}
