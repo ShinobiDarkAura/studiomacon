@@ -27,11 +27,14 @@ body.menu-open .nav{background:transparent;-webkit-backdrop-filter:none;backdrop
    also shows through the transparency AROUND the creature. */
 .nav .logo .goat-eye{position:absolute;left:22.70%;top:10.32%;width:49.71%;height:33.55%;
   overflow:hidden;z-index:1;pointer-events:none}
-.nav .logo .goat-pupil,.nav .logo .goat-lid{position:absolute;background:#000;pointer-events:none}
+/* Scoped to .goat-eye on purpose: a browser holding cached HTML without the
+   wrapper would otherwise size the lid to the whole logo and paint a black
+   square over it. Without the container these simply don't render. */
+.nav .logo .goat-eye .goat-pupil,.nav .logo .goat-eye .goat-lid{position:absolute;background:#000;pointer-events:none}
 /* pupil sits high at rest (matching the artwork's crescent) and can travel down
    to the lower lid; the container clips whatever overshoots */
-.nav .logo .goat-pupil{left:21.68%;top:-10.58%;width:56.65%;aspect-ratio:1;border-radius:50%;will-change:transform}
-.nav .logo .goat-lid{left:0;top:0;width:100%;height:100%;transform:scaleY(0);transform-origin:top center}
+.nav .logo .goat-eye .goat-pupil{left:21.68%;top:-10.58%;width:56.65%;aspect-ratio:1;border-radius:50%;will-change:transform}
+.nav .logo .goat-eye .goat-lid{left:0;top:0;width:100%;height:100%;transform:scaleY(0);transform-origin:top center}
 @keyframes goat-blink{0%,100%{transform:scaleY(0)}30%,60%{transform:scaleY(1)}}
 .nav .logo .goat.blink .goat-lid{animation:goat-blink .24s ease-in-out}
 @media (prefers-reduced-motion:reduce){
