@@ -17,20 +17,9 @@ img{max-width:100%}
 body.menu-open .nav{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
 .nav .urn{justify-self:start;width:34px;height:34px;opacity:.9}
 .nav .logo{justify-self:center;line-height:0}
-.nav .logo img{height:44px;display:block}
-/* Logo blink: the original GIF's own frames as a 4-frame sprite (rest, closing,
-   closed, opening). Driven by CSS so it replays reliably — re-inserting a
-   non-looping GIF does not restart it in every browser. */
-.nav .logo .goat{display:block;width:49.4px;height:44px;
-  background:url("goat-blink.png") 0 0/400% 100% no-repeat}
-@keyframes goat-blink{
-  0%,100%{background-position:0 0}
-  20%{background-position:33.333% 0}
-  45%{background-position:66.666% 0}
-  70%{background-position:100% 0}
-}
-.nav .logo .goat.blink{animation:goat-blink .46s steps(1,end)}
-@media (prefers-reduced-motion:reduce){.nav .logo .goat.blink{animation:none}}
+/* width:auto + max-width:none — the global img{max-width:100%} otherwise resolves
+   against the shrink-to-fit anchor and collapses the logo to 0 wide */
+.nav .logo img{height:44px;width:auto;max-width:none;display:block}
 /* hamburger -> X */
 .nav .menu{justify-self:end;background:none;border:none;cursor:pointer;padding:6px;line-height:0;z-index:110;position:relative}
 .nav .menu .bars{display:block;width:26px;height:18px;position:relative}

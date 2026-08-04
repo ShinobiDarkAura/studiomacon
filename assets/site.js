@@ -8,25 +8,18 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.body.classList.remove('menu-open');
 });
 
-// nav logo — blink on a random 4-7s interval, using the GIF's own frames
-// rendered as a CSS sprite (see .goat in site.css).
-(function () {
-  const goats = [...document.querySelectorAll('.nav .logo .goat')];
-  if (!goats.length) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  goats.forEach(goat => {
-    const again = () => setTimeout(blink, 4000 + Math.random() * 3000);
-    const blink = () => {
-      if (document.visibilityState === 'visible') {
-        goat.classList.add('blink');
-        setTimeout(() => goat.classList.remove('blink'), 500);
-      }
-      again();
-    };
-    again();
+// nav logo — replay the blink animation on hover (the GIF restarts when its
+// src is re-set). Guarded so a rapid re-hover doesn't retrigger mid-animation.
+document.querySelectorAll('.nav .logo img').forEach(img => {
+  const base = img.getAttribute('src').split('?')[0];
+  let busy = false;
+  img.closest('.logo').addEventListener('mouseenter', () => {
+    if (busy) return;
+    busy = true;
+    img.src = base + '?t=' + Date.now();
+    setTimeout(() => { busy = false; }, 900);
   });
-})();
+});
 
 // NOTES accordion
 document.querySelectorAll('[data-notes-toggle]').forEach(btn => {
