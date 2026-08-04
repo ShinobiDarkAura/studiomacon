@@ -8,15 +8,13 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.body.classList.remove('menu-open');
 });
 
-// nav logo — the eye follows the cursor and blinks on a random interval.
-// Pupil + eyelid are plain elements layered behind the silhouette PNG, so the
-// transparent eye opening clips them for free. No JS = static, correct logo.
+// nav logo — blinks on a random 4-7s interval. The eye stays put; the pupil and
+// lid are plain elements behind the silhouette PNG, clipped by its eye opening.
 (function () {
   const goats = [...document.querySelectorAll('.nav .logo .goat')];
   if (!goats.length) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // blink — one independent random 4–7s timer per logo
   goats.forEach(goat => {
     const again = () => setTimeout(blink, 4000 + Math.random() * 3000);
     const blink = () => {
@@ -26,61 +24,6 @@ document.addEventListener('keydown', e => {
     };
     again();
   });
-
-  // cursor tracking — skipped on touch / coarse pointers
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-  // Travel as a fraction of the logo's rendered width. The pupil nearly fills
-  // the eye, so vertical range is deliberately generous — the eye container
-  // clips the overshoot, which is what reads as "looking down".
-  const MAX_X = 0.10;
-  const MAX_UP = 0.035;   // little room above: the pupil already sits high
-  const MAX_DOWN = 0.085; // room to drop to the lower lid
-  const REACH = 420;    // px from the logo at which the eye is fully deflected
-  const eyes = goats.map(goat => ({
-    el: goat.querySelector('.goat-pupil'),
-    box: goat,
-    x: 0, y: 0, tx: 0, ty: 0,
-  }));
-
-  let px = 0, py = 0, seen = false, raf = 0;
-
-  function measure() {
-    for (const e of eyes) {
-      const r = e.box.getBoundingClientRect();
-      if (!r.width) { e.tx = e.ty = 0; continue; }
-      const dx = (px - (r.left + r.width / 2)) / REACH;
-      const dy = (py - (r.top + r.height / 2)) / REACH;
-      const d = Math.hypot(dx, dy) || 1;
-      const k = Math.min(1, d) / d;          // clamp to the unit disc, keep direction
-      const vy = dy * k;
-      e.tx = dx * k * MAX_X * r.width;
-      // asymmetric: the pupil rests high, so it has further to fall than to rise
-      e.ty = vy * (vy < 0 ? MAX_UP : MAX_DOWN) * r.width;
-    }
-  }
-
-  function tick() {
-    raf = 0;
-    measure();
-    let moving = false;
-    for (const e of eyes) {
-      e.x += (e.tx - e.x) * 0.14;            // ease toward the target
-      e.y += (e.ty - e.y) * 0.14;
-      if (Math.abs(e.tx - e.x) > 0.02 || Math.abs(e.ty - e.y) > 0.02) moving = true;
-      e.el.style.transform = 'translate(' + e.x.toFixed(2) + 'px,' + e.y.toFixed(2) + 'px)';
-    }
-    if (moving) raf = requestAnimationFrame(tick);
-  }
-
-  function wake() { if (!raf) raf = requestAnimationFrame(tick); }
-
-  window.addEventListener('pointermove', ev => {
-    if (ev.pointerType && ev.pointerType !== 'mouse') return;
-    px = ev.clientX; py = ev.clientY; seen = true;
-    wake();
-  }, { passive: true });
-  window.addEventListener('scroll', () => { if (seen) wake(); }, { passive: true });
 })();
 
 // NOTES accordion
