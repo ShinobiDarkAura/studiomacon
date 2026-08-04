@@ -150,7 +150,7 @@ def nav(up=""):
     links = "".join(f'<a href="{up}{href}">{html.escape(label)}</a>' for href, label in NAVLINKS)
     return f'''  <nav class="nav">
     <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.3"><path d="M8 3h8M9 3c0 2 1 3 3 3s3-1 3-3M7 8c0-1.5 2-2 5-2s5 .5 5 2c0 5-2 8-5 12-3-4-5-7-5-12Z"/></svg>
-    <a class="logo" href="{up}index.html"><span class="goat"><span class="goat-pupil"></span><span class="goat-lid"></span><img src="{up}{v("assets/goat-body.png")}" alt="Studio Maçon"></span></a>
+    <a class="logo" href="{up}index.html"><span class="goat"><span class="goat-eye"><span class="goat-pupil"></span><span class="goat-lid"></span></span><img src="{up}{v("assets/goat-body.png")}" alt="Studio Maçon"></span></a>
     <button class="menu" data-menu-toggle aria-label="Menu"><span class="bars"><i></i><i></i><i></i></span></button>
   </nav>
   <div class="menu-overlay" role="dialog" aria-label="Menu">

@@ -30,8 +30,12 @@ document.addEventListener('keydown', e => {
   // cursor tracking — skipped on touch / coarse pointers
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-  const MAX_X = 0.06;   // pupil travel, as a fraction of the logo's rendered width
-  const MAX_Y = 0.03;
+  // Travel as a fraction of the logo's rendered width. The pupil nearly fills
+  // the eye, so vertical range is deliberately generous — the eye container
+  // clips the overshoot, which is what reads as "looking down".
+  const MAX_X = 0.10;
+  const MAX_UP = 0.035;   // little room above: the pupil already sits high
+  const MAX_DOWN = 0.085; // room to drop to the lower lid
   const REACH = 420;    // px from the logo at which the eye is fully deflected
   const eyes = goats.map(goat => ({
     el: goat.querySelector('.goat-pupil'),
@@ -49,8 +53,10 @@ document.addEventListener('keydown', e => {
       const dy = (py - (r.top + r.height / 2)) / REACH;
       const d = Math.hypot(dx, dy) || 1;
       const k = Math.min(1, d) / d;          // clamp to the unit disc, keep direction
+      const vy = dy * k;
       e.tx = dx * k * MAX_X * r.width;
-      e.ty = dy * k * MAX_Y * r.width;
+      // asymmetric: the pupil rests high, so it has further to fall than to rise
+      e.ty = vy * (vy < 0 ? MAX_UP : MAX_DOWN) * r.width;
     }
   }
 

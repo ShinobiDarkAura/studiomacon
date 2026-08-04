@@ -21,10 +21,17 @@ body.menu-open .nav{background:transparent;-webkit-backdrop-filter:none;backdrop
 /* width:auto + max-width:none — the global img{max-width:100%} would otherwise
    resolve against the shrink-to-fit .goat wrapper and collapse both to 0 */
 .nav .logo img{height:44px;width:auto;max-width:none;display:block;position:relative;z-index:2}
-/* eye parts sit behind the silhouette and show through its transparent eye opening */
-.nav .logo .goat-pupil,.nav .logo .goat-lid{position:absolute;z-index:1;background:#000;pointer-events:none}
-.nav .logo .goat-pupil{left:35.63%;top:6.77%;width:28.16%;height:31.61%;border-radius:50%;will-change:transform}
-.nav .logo .goat-lid{left:21.84%;top:9.68%;width:51.72%;height:34.84%;transform:scaleY(0);transform-origin:top center}
+/* Eye parts sit behind the silhouette and show through its transparent opening.
+   They're clipped to the eye's bounding box (measured from goat-body.png: the
+   hole spans x 79-251, y 32-135 of 348x310) — without this the lid rectangle
+   also shows through the transparency AROUND the creature. */
+.nav .logo .goat-eye{position:absolute;left:22.70%;top:10.32%;width:49.71%;height:33.55%;
+  overflow:hidden;z-index:1;pointer-events:none}
+.nav .logo .goat-pupil,.nav .logo .goat-lid{position:absolute;background:#000;pointer-events:none}
+/* pupil sits high at rest (matching the artwork's crescent) and can travel down
+   to the lower lid; the container clips whatever overshoots */
+.nav .logo .goat-pupil{left:21.68%;top:-10.58%;width:56.65%;aspect-ratio:1;border-radius:50%;will-change:transform}
+.nav .logo .goat-lid{left:0;top:0;width:100%;height:100%;transform:scaleY(0);transform-origin:top center}
 @keyframes goat-blink{0%,100%{transform:scaleY(0)}30%,60%{transform:scaleY(1)}}
 .nav .logo .goat.blink .goat-lid{animation:goat-blink .24s ease-in-out}
 @media (prefers-reduced-motion:reduce){
