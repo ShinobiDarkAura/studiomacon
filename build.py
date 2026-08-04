@@ -191,9 +191,13 @@ def card(p, imgs, hand_first=False):
     badge = '<span class="sold">Claimed</span>' if sold else ""
     cls = "card" + (" is-sold" if sold else "")
 
+    # Prefer the tagged in-hand/plain pair so the grid can alternate which leads.
+    # Anything without both tags still swaps — it just uses its next photo.
     hand, plain = pick_variant(imgs, "hand"), pick_variant(imgs, "plain")
     if hand and plain:
         lead, alt = (hand, plain) if hand_first else (plain, hand)
+    elif len(imgs) >= 2:
+        lead, alt = imgs[0], imgs[1]
     else:
         lead, alt = (imgs[0] if imgs else {}), None
 
