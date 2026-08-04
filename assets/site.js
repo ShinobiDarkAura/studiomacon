@@ -8,17 +8,74 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.body.classList.remove('menu-open');
 });
 
-// nav logo — replay the blink animation on hover (GIF restarts when src is re-set)
-document.querySelectorAll('.nav .logo img').forEach(img => {
-  const base = img.getAttribute('src').split('?')[0];
-  let busy = false;
-  img.closest('.logo').addEventListener('mouseenter', () => {
-    if (busy) return;
-    busy = true;
-    img.src = base + '?t=' + Date.now();
-    setTimeout(() => { busy = false; }, 900);   // let the blink finish before re-arming
+// nav logo — the eye follows the cursor and blinks on a random interval.
+// Pupil + eyelid are plain elements layered behind the silhouette PNG, so the
+// transparent eye opening clips them for free. No JS = static, correct logo.
+(function () {
+  const goats = [...document.querySelectorAll('.nav .logo .goat')];
+  if (!goats.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // blink — one independent random 4–7s timer per logo
+  goats.forEach(goat => {
+    const again = () => setTimeout(blink, 4000 + Math.random() * 3000);
+    const blink = () => {
+      goat.classList.add('blink');
+      setTimeout(() => goat.classList.remove('blink'), 300);
+      again();
+    };
+    again();
   });
-});
+
+  // cursor tracking — skipped on touch / coarse pointers
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const MAX_X = 0.06;   // pupil travel, as a fraction of the logo's rendered width
+  const MAX_Y = 0.03;
+  const REACH = 420;    // px from the logo at which the eye is fully deflected
+  const eyes = goats.map(goat => ({
+    el: goat.querySelector('.goat-pupil'),
+    box: goat,
+    x: 0, y: 0, tx: 0, ty: 0,
+  }));
+
+  let px = 0, py = 0, seen = false, raf = 0;
+
+  function measure() {
+    for (const e of eyes) {
+      const r = e.box.getBoundingClientRect();
+      if (!r.width) { e.tx = e.ty = 0; continue; }
+      const dx = (px - (r.left + r.width / 2)) / REACH;
+      const dy = (py - (r.top + r.height / 2)) / REACH;
+      const d = Math.hypot(dx, dy) || 1;
+      const k = Math.min(1, d) / d;          // clamp to the unit disc, keep direction
+      e.tx = dx * k * MAX_X * r.width;
+      e.ty = dy * k * MAX_Y * r.width;
+    }
+  }
+
+  function tick() {
+    raf = 0;
+    measure();
+    let moving = false;
+    for (const e of eyes) {
+      e.x += (e.tx - e.x) * 0.14;            // ease toward the target
+      e.y += (e.ty - e.y) * 0.14;
+      if (Math.abs(e.tx - e.x) > 0.02 || Math.abs(e.ty - e.y) > 0.02) moving = true;
+      e.el.style.transform = 'translate(' + e.x.toFixed(2) + 'px,' + e.y.toFixed(2) + 'px)';
+    }
+    if (moving) raf = requestAnimationFrame(tick);
+  }
+
+  function wake() { if (!raf) raf = requestAnimationFrame(tick); }
+
+  window.addEventListener('pointermove', ev => {
+    if (ev.pointerType && ev.pointerType !== 'mouse') return;
+    px = ev.clientX; py = ev.clientY; seen = true;
+    wake();
+  }, { passive: true });
+  window.addEventListener('scroll', () => { if (seen) wake(); }, { passive: true });
+})();
 
 // NOTES accordion
 document.querySelectorAll('[data-notes-toggle]').forEach(btn => {

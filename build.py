@@ -150,7 +150,7 @@ def nav(up=""):
     links = "".join(f'<a href="{up}{href}">{html.escape(label)}</a>' for href, label in NAVLINKS)
     return f'''  <nav class="nav">
     <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.3"><path d="M8 3h8M9 3c0 2 1 3 3 3s3-1 3-3M7 8c0-1.5 2-2 5-2s5 .5 5 2c0 5-2 8-5 12-3-4-5-7-5-12Z"/></svg>
-    <a class="logo" href="{up}index.html"><img src="{up}assets/goat-logo.gif" alt="Studio Maçon"></a>
+    <a class="logo" href="{up}index.html"><span class="goat"><span class="goat-pupil"></span><span class="goat-lid"></span><img src="{up}{v("assets/goat-body.png")}" alt="Studio Maçon"></span></a>
     <button class="menu" data-menu-toggle aria-label="Menu"><span class="bars"><i></i><i></i><i></i></span></button>
   </nav>
   <div class="menu-overlay" role="dialog" aria-label="Menu">
@@ -386,12 +386,14 @@ def blocks_to_html(body):
 def swap_derivatives(markup, width=1200):
     """Point <img src> in built-in page copy at WebP derivatives."""
     def repl(m):
-        src = m.group(1)
+        tag, src = m.group(0), m.group(1)
         if src.startswith("http"):
-            return m.group(0)
-        d = derive(src, width)
-        return m.group(0).replace(src, d) + (' loading="lazy" decoding="async"'
-                                             if 'loading=' not in m.group(0) else '')
+            return tag
+        tag = tag.replace(src, derive(src, width))
+        if "loading=" not in tag:
+            # insert INSIDE the tag — appending after '>' renders as visible text
+            tag = tag[:-1].rstrip().rstrip("/") + ' loading="lazy" decoding="async">'
+        return tag
     return re.sub(r'<img[^>]*src="([^"]+)"[^>]*>', repl, markup)
 
 def build_content_pages(pages):
