@@ -106,11 +106,16 @@ def srcset(src):
             parts.append(f"../{d} {w}w" if False else f"{d} {w}w")
     return ", ".join(parts)
 
+# Maps the url stored in Supabase -> a small local derivative, so the admin can
+# show thumbnails without us shipping the full-resolution originals.
+THUMB_MANIFEST = {}
+
 def images_for(p):
     imgs = sorted(p.get("store_product_images") or [], key=lambda i: i["sort_order"])
     out = []
     for i in imgs:
         src = resolve_image(i["url"])
+        THUMB_MANIFEST[i["url"]] = derive(src, 200)
         out.append({
             "url": src,
             "alt": i.get("alt") or p["name"],
@@ -338,6 +343,11 @@ def main():
 
     # ---------- content pages ----------
     build_content_pages({pg["key"]: pg for pg in data["pages"]})
+
+    # ---------- thumbnail manifest for the admin ----------
+    os.makedirs(DERIVED_DIR, exist_ok=True)
+    json.dump(THUMB_MANIFEST, open(f"{DERIVED_DIR}/thumbs.json", "w", encoding="utf-8"),
+              indent=0, ensure_ascii=False)
 
     print(f"  {built} product pages | {len(eph)} ephemeral, {len(per)} perennial")
     print(f"  content fetched {data.get('fetched_at', 'from cache')}")

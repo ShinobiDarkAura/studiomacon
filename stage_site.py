@@ -57,9 +57,10 @@ def main():
 
     # 2. work out what is actually reachable
     keep = set()
-    cfg = os.path.join(OUT, "supabase-config.json")
-    if os.path.exists(cfg):
-        keep.add(os.path.abspath(cfg))
+    for extra in ("supabase-config.json", "images/derived/thumbs.json"):
+        p_extra = os.path.join(OUT, extra)
+        if os.path.exists(p_extra):
+            keep.add(os.path.abspath(p_extra))
     def add(base, ref):
         if ref.startswith(("http", "mailto:", "#", "data:")):
             return

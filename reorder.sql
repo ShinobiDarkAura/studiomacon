@@ -1,0 +1,21 @@
+-- Studio Maçon — reorder shop: totems, then jewelry, hat last
+begin;
+update public.store_products set sort_order=0 where slug='pip';
+update public.store_products set sort_order=1 where slug='rebi';
+update public.store_products set sort_order=2 where slug='ren';
+update public.store_products set sort_order=3 where slug='zuma';
+update public.store_products set sort_order=4 where slug='ori';
+update public.store_products set sort_order=5 where slug='yael';
+update public.store_products set sort_order=6 where slug='milo';
+update public.store_products set sort_order=7 where slug='eleph';
+update public.store_products set sort_order=8 where slug='ibi';
+update public.store_products set sort_order=9 where slug='zuma-ring';
+update public.store_products set sort_order=10 where slug='eclipse-ring';
+update public.store_products set sort_order=11 where slug='sietch-aperture';
+update public.store_products set sort_order=12 where slug='lunar-canyon-ring';
+update public.store_products set sort_order=13 where slug='wonderhorn-talisman';
+update public.store_products set sort_order=14 where slug='ear-cuff';
+update public.store_products set sort_order=15 where slug='starshipkey-pendant';
+update public.store_products set sort_order=16 where slug='meridian-egg-ring';
+update public.store_products set sort_order=17 where slug='macon-cap';
+commit;

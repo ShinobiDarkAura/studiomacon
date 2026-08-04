@@ -170,9 +170,17 @@ function imgsOf(p) {
   return (p.store_product_images || []).slice().sort((a, b) => a.sort_order - b.sort_order);
 }
 
+// Repo-relative rows point at full-resolution originals that aren't deployed
+// (the site ships WebP derivatives), so map them through the build's manifest.
+let THUMBS = {};
+fetch("../images/derived/thumbs.json").then(r => r.ok ? r.json() : {})
+  .then(m => { THUMBS = m || {}; if (products.length) drawList(); })
+  .catch(() => {});
+
 function publicUrl(u) {
-  // migrated rows hold repo-relative paths; uploads hold full Storage URLs
-  return u.startsWith("http") ? u : "../" + u;
+  const d = THUMBS[u];
+  if (d) return "../" + d;
+  return u.startsWith("http") ? u : "../" + u;   // Storage uploads serve directly
 }
 
 /* ---------------- list ---------------- */
