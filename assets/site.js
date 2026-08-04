@@ -8,8 +8,8 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.body.classList.remove('menu-open');
 });
 
-// nav logo — blinks on a random 4-7s interval. The eye stays put; the pupil and
-// lid are plain elements behind the silhouette PNG, clipped by its eye opening.
+// nav logo — blink on a random 4-7s interval, using the GIF's own frames
+// rendered as a CSS sprite (see .goat in site.css).
 (function () {
   const goats = [...document.querySelectorAll('.nav .logo .goat')];
   if (!goats.length) return;
@@ -18,8 +18,10 @@ document.addEventListener('keydown', e => {
   goats.forEach(goat => {
     const again = () => setTimeout(blink, 4000 + Math.random() * 3000);
     const blink = () => {
-      goat.classList.add('blink');
-      setTimeout(() => goat.classList.remove('blink'), 300);
+      if (document.visibilityState === 'visible') {
+        goat.classList.add('blink');
+        setTimeout(() => goat.classList.remove('blink'), 500);
+      }
       again();
     };
     again();

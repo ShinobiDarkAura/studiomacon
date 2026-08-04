@@ -17,29 +17,20 @@ img{max-width:100%}
 body.menu-open .nav{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
 .nav .urn{justify-self:start;width:34px;height:34px;opacity:.9}
 .nav .logo{justify-self:center;line-height:0}
-.nav .logo .goat{position:relative;display:inline-block;line-height:0}
-/* width:auto + max-width:none — the global img{max-width:100%} would otherwise
-   resolve against the shrink-to-fit .goat wrapper and collapse both to 0 */
-.nav .logo img{height:44px;width:auto;max-width:none;display:block;position:relative;z-index:2}
-/* Eye parts sit behind the silhouette and show through its transparent opening.
-   They're clipped to the eye's bounding box (measured from goat-body.png: the
-   hole spans x 79-251, y 32-135 of 348x310) — without this the lid rectangle
-   also shows through the transparency AROUND the creature. */
-.nav .logo .goat-eye{position:absolute;left:22.70%;top:10.32%;width:49.71%;height:33.55%;
-  overflow:hidden;z-index:1;pointer-events:none}
-/* Scoped to .goat-eye on purpose: a browser holding cached HTML without the
-   wrapper would otherwise size the lid to the whole logo and paint a black
-   square over it. Without the container these simply don't render. */
-.nav .logo .goat-eye .goat-pupil,.nav .logo .goat-eye .goat-lid{position:absolute;background:#000;pointer-events:none}
-/* pupil sits high in the eye, matching the artwork's crescent — it doesn't move */
-.nav .logo .goat-eye .goat-pupil{left:21.68%;top:-10.58%;width:56.65%;aspect-ratio:1;border-radius:50%}
-.nav .logo .goat-eye .goat-lid{left:0;top:0;width:100%;height:100%;transform:scaleY(0);transform-origin:top center}
-@keyframes goat-blink{0%,100%{transform:scaleY(0)}30%,60%{transform:scaleY(1)}}
-.nav .logo .goat.blink .goat-lid{animation:goat-blink .24s ease-in-out}
-@media (prefers-reduced-motion:reduce){
-  .nav .logo .goat-lid{display:none}
-  .nav .logo .goat-pupil{transform:none!important}
+.nav .logo img{height:44px;display:block}
+/* Logo blink: the original GIF's own frames as a 4-frame sprite (rest, closing,
+   closed, opening). Driven by CSS so it replays reliably — re-inserting a
+   non-looping GIF does not restart it in every browser. */
+.nav .logo .goat{display:block;width:49.4px;height:44px;
+  background:url("goat-blink.png") 0 0/400% 100% no-repeat}
+@keyframes goat-blink{
+  0%,100%{background-position:0 0}
+  20%{background-position:33.333% 0}
+  45%{background-position:66.666% 0}
+  70%{background-position:100% 0}
 }
+.nav .logo .goat.blink{animation:goat-blink .46s steps(1,end)}
+@media (prefers-reduced-motion:reduce){.nav .logo .goat.blink{animation:none}}
 /* hamburger -> X */
 .nav .menu{justify-self:end;background:none;border:none;cursor:pointer;padding:6px;line-height:0;z-index:110;position:relative}
 .nav .menu .bars{display:block;width:26px;height:18px;position:relative}
