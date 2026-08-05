@@ -183,7 +183,11 @@ def page(title, body, up="", desc=""):
 </body></html>'''
 
 # ---------------------------------------------------------------- cards
-def card(p, imgs, hand_first=False):
+def is_totem(p):
+    """Bronze pieces are the totems; the alternating in-hand rule is theirs only."""
+    return "bronze" in " ".join(p.get("notes") or []).lower()
+
+def card(p, imgs, hand_first=False, alternate=True):
     """Shop card.
 
     Products that have both an in-hand and a plain shot alternate which one leads
@@ -196,15 +200,18 @@ def card(p, imgs, hand_first=False):
     badge = '<span class="sold">Claimed</span>' if sold else ""
     cls = "card" + (" is-sold" if sold else "")
 
-    # Prefer the tagged in-hand/plain pair so the grid can alternate which leads.
-    # Anything without both tags still swaps — it just uses its next photo.
+    # Totems alternate which variant leads across the grid. Everything else leads
+    # with whatever image is ordered first in the admin, and hovers to its
+    # counterpart variant (or simply the next photo).
     hand, plain = pick_variant(imgs, "hand"), pick_variant(imgs, "plain")
-    if hand and plain:
+    if alternate and hand and plain:
         lead, alt = (hand, plain) if hand_first else (plain, hand)
-    elif len(imgs) >= 2:
-        lead, alt = imgs[0], imgs[1]
+    elif imgs:
+        lead = imgs[0]
+        opposite = {"hand": plain, "plain": hand}.get(lead.get("variant"))
+        alt = opposite or (imgs[1] if len(imgs) > 1 else None)
     else:
-        lead, alt = (imgs[0] if imgs else {}), None
+        lead, alt = {}, None
 
     def tag(i, extra_cls):
         ss = (f' srcset="{i["srcset"]}" sizes="(max-width:520px) 90vw,'
@@ -252,8 +259,9 @@ def main():
         for p in items:
             ims = imgs_of[p["slug"]]
             both = pick_variant(ims, "hand") and pick_variant(ims, "plain")
-            out.append(card(p, ims, hand_first=(both and n % 2 == 1)))
-            if both:
+            alternate = is_totem(p) and bool(both)
+            out.append(card(p, ims, hand_first=(n % 2 == 1), alternate=alternate))
+            if alternate:
                 n += 1
         return "\n".join(out)
 
