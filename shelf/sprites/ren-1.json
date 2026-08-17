@@ -1,0 +1,18 @@
+{
+  "sprite": [
+    1066,
+    737
+  ],
+  "object": [
+    504,
+    719
+  ],
+  "base": [
+    252,
+    718
+  ],
+  "source_scene": "shelf/scenes/scene-ren-1.png",
+  "fidelity_iou": 0.9787,
+  "clipped": false,
+  "verdict": "ok"
+}

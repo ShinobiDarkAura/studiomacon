@@ -1,0 +1,18 @@
+{
+  "sprite": [
+    729,
+    1012
+  ],
+  "object": [
+    395,
+    1009
+  ],
+  "base": [
+    196,
+    1006
+  ],
+  "source_scene": "shelf/scenes/scene-rebi-1.png",
+  "fidelity_iou": 0.9855,
+  "clipped": false,
+  "verdict": "ok"
+}

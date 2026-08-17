@@ -1,0 +1,5 @@
+# Scratch: preview sheets, alpha checks, comparison strips, run logs.
+# Everything in here is reproducible from the committed scenes and cutouts —
+# compare_identity.py and the composite snippets regenerate it — so it is
+# working output, not source.
+_test/

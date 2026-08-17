@@ -1,0 +1,18 @@
+{
+  "sprite": [
+    1199,
+    709
+  ],
+  "object": [
+    886,
+    646
+  ],
+  "base": [
+    446,
+    645
+  ],
+  "source_scene": "shelf/scenes/scene-milo-1.png",
+  "fidelity_iou": 0.983,
+  "clipped": false,
+  "verdict": "ok"
+}
