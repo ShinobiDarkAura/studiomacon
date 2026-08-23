@@ -15,19 +15,9 @@
       "plate": "shelf/plates/dressed/dressed-thresh-b.png",
       "px_per_mm": 3.6,
       "sink_px": 6,
-      "objects": [
-        {
-          "slug": "milo",
-          "x": 0.42,
-          "y": 0.585
-        },
-        {
-          "slug": "zuma-ring",
-          "x": 0.53,
-          "y": 0.585
-        }
-      ],
-      "label_dy": 0.048
+      "objects": [],
+      "label_dy": 0.048,
+      "_note": "Hero plate — deliberately empty. The title sits over it, and a piece behind type reads as clutter."
     },
     {
       "id": "d-bronze",
@@ -91,22 +81,32 @@
         },
         {
           "slug": "yael",
-          "x": 0.42,
+          "x": 0.36,
+          "y": 0.685
+        },
+        {
+          "slug": "zuma-ring",
+          "x": 0.5,
           "y": 0.685
         },
         {
           "slug": "pip",
-          "x": 0.58,
+          "x": 0.64,
           "y": 0.685
         },
         {
           "slug": "meridian-egg-ring",
-          "x": 0.35,
+          "x": 0.28,
           "y": 0.905
         },
         {
           "slug": "wonderhorn-talisman",
-          "x": 0.6,
+          "x": 0.52,
+          "y": 0.905
+        },
+        {
+          "slug": "milo",
+          "x": 0.76,
           "y": 0.905
         }
       ],

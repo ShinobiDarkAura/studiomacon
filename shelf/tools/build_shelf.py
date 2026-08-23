@@ -26,8 +26,15 @@ def main():
 
     tagline = next((x["value"] for x in cache.get("settings", []) if x["key"] == "tagline"), "")
 
+    hero_copy = f'''
+      <div class="hero-copy">
+        <p class="eyebrow">Studio Ma&ccedil;on</p>
+        <h1>Cast by hand, one at a time</h1>
+        <p class="lede">{html.escape(tagline)}</p>
+      </div>'''
+
     scenes_html = []
-    for scene in comp["scenes"]:
+    for si, scene in enumerate(comp["scenes"]):
         marks = []
         # Labels sit on the shelf's front face, below the surface the piece stands
         # on, the way a museum card is fixed to the shelf edge rather than floating.
@@ -42,9 +49,14 @@ def main():
         <span class="card"><span class="nm">{html.escape(p['name'])}</span>'''
                 f'''<span class="pr">{money(p.get('price'))}</span></span>
       </a>''')
+        # The first scene is the hero: full viewport, title centred over it. It is
+        # cropped to fill, which would drag any label off its piece — so it carries
+        # none, and its pieces live on the shelves below.
+        is_hero = si == 0
         scenes_html.append(
-            f'''    <section class="scene">
-      <img src="scene-{scene['id']}.jpg" alt="" loading="lazy">
+            f'''    <section class="scene{' hero' if is_hero else ''}">
+      <img src="scene-{scene['id']}.jpg" alt=""{'' if is_hero else ' loading="lazy"'}>
+{hero_copy if is_hero else ''}
 {chr(10).join(marks)}
     </section>''')
 
@@ -76,12 +88,6 @@ def main():
   </div>
 
   <main>
-    <header class="hero">
-      <p class="eyebrow">Studio Ma&ccedil;on</p>
-      <h1>Cast by hand, one at a time</h1>
-      <p class="lede">{html.escape(tagline)}</p>
-    </header>
-
 {chr(10).join(scenes_html)}
 
     <section class="index">
@@ -101,10 +107,10 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
 }});
 // The nav sits on cream over the hero and on photography below it.
 (function () {{
-  var nav = document.querySelector('.nav'), hero = document.querySelector('.hero');
+  var nav = document.querySelector('.nav'), rec = document.querySelector('.index');
   function mark() {{
-    var over = window.scrollY > hero.offsetHeight - 64;
-    nav.classList.toggle('over-art', over);
+    // white while the nav is over photography, ink once the Record is behind it
+    nav.classList.toggle('over-art', window.scrollY + 80 < rec.offsetTop);
   }}
   mark();
   window.addEventListener('scroll', mark, {{passive: true}});
