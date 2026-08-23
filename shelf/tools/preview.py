@@ -46,9 +46,9 @@ def main():
         W, H = plate.size
         d = ImageDraw.Draw(plate)
         serif = font(["/System/Library/Fonts/Supplemental/Georgia.ttf",
-                      "/System/Library/Fonts/Supplemental/Times New Roman.ttf"], max(13, int(W * 0.0115)))
+                      "/System/Library/Fonts/Supplemental/Times New Roman.ttf"], max(15, int(W * 0.0145)))
         mono = font(["/System/Library/Fonts/Supplemental/Courier New.ttf",
-                     "/System/Library/Fonts/Menlo.ttc"], max(11, int(W * 0.0085)))
+                     "/System/Library/Fonts/Menlo.ttc"], max(11, int(W * 0.010)))
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
         scene_dy = scene.get("label_dy", 0.045)
 
@@ -69,9 +69,14 @@ def main():
             cx, cy = left + bx, top + by + dy * H
             name, price = p["name"], (f"${float(p['price']):,.0f}" if p.get("price") else "")
             wn = d.textlength(name, font=serif)
-            d.text((cx - wn / 2, cy), name, fill=(43, 39, 34), font=serif)
+            for ox, oy in ((-1,0),(1,0),(0,-1),(0,1)):
+                d.text((cx - wn / 2 + ox, cy + oy), name, fill=(90, 78, 62), font=serif)
+            d.text((cx - wn / 2, cy), name, fill=(255, 255, 255), font=serif)
             wp = d.textlength(price, font=mono)
-            d.text((cx - wp / 2, cy + serif.size * 1.35), price, fill=(141, 131, 117), font=mono)
+            py = cy + serif.size + 6
+            for ox, oy in ((-1,0),(1,0),(0,-1),(0,1)):
+                d.text((cx - wp / 2 + ox, py + oy), price, fill=(90, 78, 62), font=mono)
+            d.text((cx - wp / 2, py), price, fill=(246, 243, 238), font=mono)
 
         out = os.path.join(ROOT, "shelf/_test", f"preview-{scene['id']}.jpg")
         plate.convert("RGB").save(out, quality=92)

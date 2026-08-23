@@ -165,8 +165,9 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{
     body.classList.remove('intro'); return;
   }}
-  setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 2100);
-  setTimeout(function () {{ body.classList.remove('intro'); body.classList.add('intro-done'); }}, 2750);
+  // the mark's own animation runs 4.13s — let it finish before the wipe
+  setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 4200);
+  setTimeout(function () {{ body.classList.remove('intro'); body.classList.add('intro-done'); }}, 4850);
 }})();
 </script>
 </body></html>
