@@ -24,16 +24,21 @@ def main():
     prod = {p["slug"]: p for p in cache["products"]}
     excl = set(pieces.get("_shelf_exclude", {}))
 
+    tagline = next((x["value"] for x in cache.get("settings", []) if x["key"] == "tagline"), "")
+
     scenes_html = []
     for scene in comp["scenes"]:
         marks = []
+        # Labels sit on the shelf's front face, below the surface the piece stands
+        # on, the way a museum card is fixed to the shelf edge rather than floating.
+        dy = scene.get("label_dy", 0.045)
         for o in scene["objects"]:
             p = prod[o["slug"]]
             # Label sits just under the piece on the shelf, the way a museum card does.
             marks.append(
-                f'''      <a class="mark" style="left:{o['x']*100:.3f}%;top:{o['y']*100:.3f}%"
-         href="/product/{o['slug']}.html">
-        <span class="hit"></span>
+                f'''      <a class="mark" style="left:{o['x']*100:.3f}%;top:{(o['y']+dy)*100:.3f}%"
+         href="/product/{o['slug']}.html" aria-label="{html.escape(p['name'])}, view piece">
+        <span class="hit" style="height:{dy*100:.2f}vw"></span>
         <span class="card"><span class="nm">{html.escape(p['name'])}</span>'''
                 f'''<span class="pr">{money(p.get('price'))}</span></span>
       </a>''')
@@ -71,6 +76,12 @@ def main():
   </div>
 
   <main>
+    <header class="hero">
+      <p class="eyebrow">Studio Ma&ccedil;on</p>
+      <h1>Cast by hand, one at a time</h1>
+      <p class="lede">{html.escape(tagline)}</p>
+    </header>
+
 {chr(10).join(scenes_html)}
 
     <section class="index">
@@ -88,6 +99,16 @@ def main():
 document.querySelector('[data-menu-toggle]').addEventListener('click', function () {{
   document.body.classList.toggle('menu-open');
 }});
+// The nav sits on cream over the hero and on photography below it.
+(function () {{
+  var nav = document.querySelector('.nav'), hero = document.querySelector('.hero');
+  function mark() {{
+    var over = window.scrollY > hero.offsetHeight - 64;
+    nav.classList.toggle('over-art', over);
+  }}
+  mark();
+  window.addEventListener('scroll', mark, {{passive: true}});
+}})();
 </script>
 </body></html>
 '''
