@@ -50,14 +50,27 @@ def main():
         mono = font(["/System/Library/Fonts/Supplemental/Courier New.ttf",
                      "/System/Library/Fonts/Menlo.ttc"], max(11, int(W * 0.010)))
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
-        scene_dy = scene.get("label_dy", 0.045)
+        fronts = scene.get("shelf_fronts", [])
+
+        def front_mid(y):
+            """Centre of the shelf's front face — the band the label sits on.
+
+            Measured off the plate rather than guessed at, because the visible
+            front face is not where the piece stands: the shelf top is seen in
+            slight perspective, so its front edge sits well below the surface
+            the object rests on.
+            """
+            if not fronts:
+                return y + 0.045
+            f = min(fronts, key=lambda f: abs(f["y"] - y))["front"]
+            return (f[0] + f[1]) / 2.0
 
         for o in scene["objects"]:
             slug = o["slug"]; p = prod[slug]
             meta = json.load(open(os.path.join(ROOT, "shelf/sprites", f"{pieces[slug]}.json")))
-            dy = o.get("label_dy", scene_dy)
+            mid = front_mid(o["y"])
             mm = over.get(slug) or longest_mm(p.get("notes"))
-            s = (mm * ppmm) / max(meta["object"])
+            s = (mm * ppmm) / max(meta["object"]) * float(o.get("scale", 1.0))
             sw, sh = meta["sprite"][0] * s, meta["sprite"][1] * s
             bx, by = meta["base"][0] * s, meta["base"][1] * s
             left, top = W * o["x"] - bx, H * o["y"] - by + sink
@@ -66,16 +79,13 @@ def main():
             sp = sp.resize((max(1, round(sw)), max(1, round(sh))), Image.LANCZOS)
             plate.alpha_composite(sp, (round(left), round(top)))
 
-            cx, cy = left + bx, top + by + dy * H
+            block = serif.size + 6 + mono.size
+            cx, cy = left + bx, mid * H - block / 2
             name, price = p["name"], (f"${float(p['price']):,.0f}" if p.get("price") else "")
             wn = d.textlength(name, font=serif)
-            for ox, oy in ((-1,0),(1,0),(0,-1),(0,1)):
-                d.text((cx - wn / 2 + ox, cy + oy), name, fill=(90, 78, 62), font=serif)
             d.text((cx - wn / 2, cy), name, fill=(255, 255, 255), font=serif)
             wp = d.textlength(price, font=mono)
             py = cy + serif.size + 6
-            for ox, oy in ((-1,0),(1,0),(0,-1),(0,1)):
-                d.text((cx - wp / 2 + ox, py + oy), price, fill=(90, 78, 62), font=mono)
             d.text((cx - wp / 2, py), price, fill=(246, 243, 238), font=mono)
 
         out = os.path.join(ROOT, "shelf/_test", f"preview-{scene['id']}.jpg")

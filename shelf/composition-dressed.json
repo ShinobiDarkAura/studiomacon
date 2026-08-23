@@ -16,7 +16,6 @@
       "px_per_mm": 3.6,
       "sink_px": 6,
       "objects": [],
-      "label_dy": 0.048,
       "_note": "Hero plate — deliberately empty. The title sits over it, and a piece behind type reads as clutter."
     },
     {
@@ -37,29 +36,42 @@
         },
         {
           "slug": "zuma",
-          "x": 0.56,
+          "x": 0.56781,
           "y": 0.468
         },
         {
           "slug": "ibi",
-          "x": 0.32,
-          "y": 0.925,
-          "label_dy": 0.026
+          "x": 0.33563,
+          "y": 0.925
         },
         {
-          "slug": "ear-cuff",
-          "x": 0.455,
-          "y": 0.925,
-          "label_dy": 0.026
+          "slug": "rebi",
+          "x": 0.47063,
+          "y": 0.925
         },
         {
           "slug": "eleph",
-          "x": 0.595,
+          "x": 0.61062,
           "y": 0.925,
-          "label_dy": 0.026
+          "scale": 1.15
         }
       ],
-      "label_dy": 0.046
+      "shelf_fronts": [
+        {
+          "y": 0.468,
+          "front": [
+            0.506,
+            0.597
+          ]
+        },
+        {
+          "y": 0.925,
+          "front": [
+            0.921,
+            0.974
+          ]
+        }
+      ]
     },
     {
       "id": "d-tall",
@@ -68,7 +80,7 @@
       "sink_px": 5,
       "objects": [
         {
-          "slug": "rebi",
+          "slug": "ear-cuff",
           "x": 0.38,
           "y": 0.47
         },
@@ -100,23 +112,42 @@
         {
           "slug": "meridian-egg-ring",
           "x": 0.28,
-          "y": 0.905,
-          "label_dy": 0.026
+          "y": 0.905
         },
         {
           "slug": "wonderhorn-talisman",
           "x": 0.52,
-          "y": 0.905,
-          "label_dy": 0.026
+          "y": 0.905
         },
         {
           "slug": "milo",
           "x": 0.76,
-          "y": 0.905,
-          "label_dy": 0.026
+          "y": 0.905
         }
       ],
-      "label_dy": 0.026
+      "shelf_fronts": [
+        {
+          "y": 0.47,
+          "front": [
+            0.478,
+            0.503
+          ]
+        },
+        {
+          "y": 0.685,
+          "front": [
+            0.686,
+            0.712
+          ]
+        },
+        {
+          "y": 0.905,
+          "front": [
+            0.908,
+            0.936
+          ]
+        }
+      ]
     }
   ]
 }

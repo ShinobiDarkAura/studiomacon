@@ -53,16 +53,29 @@ def main():
         plate.convert("RGB").save(os.path.join(OUT, plate_name), quality=90)
 
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
-        scene_dy = scene.get("label_dy", 0.045)
+        fronts = scene.get("shelf_fronts", [])
+
+        def front_mid(y):
+            """Centre of the shelf's front face — the band the label sits on.
+
+            Measured off the plate rather than guessed at, because the visible
+            front face is not where the piece stands: the shelf top is seen in
+            slight perspective, so its front edge sits well below the surface
+            the object rests on.
+            """
+            if not fronts:
+                return y + 0.045
+            f = min(fronts, key=lambda f: abs(f["y"] - y))["front"]
+            return (f[0] + f[1]) / 2.0
         marks = []
         for o in scene["objects"]:
             slug = o["slug"]
             p = prod[slug]
             piece = pieces[slug]
             meta = json.load(open(os.path.join(ROOT, "shelf/sprites", f"{piece}.json")))
-            dy = o.get("label_dy", scene_dy)
+            mid = front_mid(o["y"])
             mm = overrides.get(slug) or longest_mm(p.get("notes"))
-            s = (mm * ppmm) / max(meta["object"])
+            s = (mm * ppmm) / max(meta["object"]) * float(o.get("scale", 1.0))
 
             sw, sh = meta["sprite"][0] * s, meta["sprite"][1] * s
             bx, by = meta["base"][0] * s, meta["base"][1] * s
@@ -78,7 +91,7 @@ def main():
             # percentages of the SPRITE, not of the plate: drop from the object's
             # base by the shelf-front distance, and centre on the base, not on the
             # sprite (whose width includes the shadow and is off-centre).
-            card_top = (by + dy * H) / sh * 100
+            card_top = (mid * H - top) / sh * 100      # centred on the shelf front
             card_left = bx / sw * 100
 
             marks.append(
