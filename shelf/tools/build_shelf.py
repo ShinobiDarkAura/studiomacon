@@ -39,8 +39,11 @@ def main():
 
     hero_copy = f'''
       <div class="hero-copy">
+        <!-- Replaced by the logotype; kept in case the wording is wanted back.
         <p class="eyebrow">Studio Ma&ccedil;on</p>
         <h1>Cast by hand, one at a time</h1>
+        -->
+        <img class="logotype" src="logotype.png" alt="Studio Ma&ccedil;on">
         <p class="lede">{html.escape(tagline)}</p>
       </div>'''
 
