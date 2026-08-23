@@ -16,5 +16,5 @@
   "fidelity_iou": 0.9603,
   "shadow": 8.5,
   "clipped": false,
-  "verdict": "NO-SHADOW"
+  "verdict": "ok"
 }

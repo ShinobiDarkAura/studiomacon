@@ -79,14 +79,15 @@ def main():
             sp = sp.resize((max(1, round(sw)), max(1, round(sh))), Image.LANCZOS)
             plate.alpha_composite(sp, (round(left), round(top)))
 
-            block = serif.size + 6 + mono.size
-            cx, cy = left + bx, mid * H - block / 2
+            gap = 6
+            name_h, price_h = serif.size, mono.size
+            block = name_h + gap + price_h
+            cx = left + bx
+            name_mid = mid * H - block / 2 + name_h / 2
+            price_mid = mid * H + block / 2 - price_h / 2
             name, price = p["name"], (f"${float(p['price']):,.0f}" if p.get("price") else "")
-            wn = d.textlength(name, font=serif)
-            d.text((cx - wn / 2, cy), name, fill=(255, 255, 255), font=serif)
-            wp = d.textlength(price, font=mono)
-            py = cy + serif.size + 6
-            d.text((cx - wp / 2, py), price, fill=(246, 243, 238), font=mono)
+            d.text((cx, name_mid), name, fill=(255, 255, 255), font=serif, anchor="mm")
+            d.text((cx, price_mid), price, fill=(246, 243, 238), font=mono, anchor="mm")
 
         out = os.path.join(ROOT, "shelf/_test", f"preview-{scene['id']}.jpg")
         plate.convert("RGB").save(out, quality=92)
