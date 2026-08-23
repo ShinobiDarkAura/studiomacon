@@ -1,18 +1,20 @@
 {
   "sprite": [
-    1066,
-    737
+    611,
+    547
   ],
   "object": [
-    504,
-    719
+    364,
+    546
   ],
   "base": [
-    252,
-    718
+    181,
+    545
   ],
   "source_scene": "shelf/scenes/scene-ren-1.png",
-  "fidelity_iou": 0.9787,
+  "engine": "fal",
+  "fidelity_iou": 0.9296,
+  "shadow": 21.1,
   "clipped": false,
   "verdict": "ok"
 }

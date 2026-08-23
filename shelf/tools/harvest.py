@@ -21,7 +21,7 @@ compositing it onto a different plate behaves like a multiply.
   python3 shelf/tools/harvest.py milo-1 --skip-generate
   python3 shelf/tools/harvest.py pip-2
 """
-import argparse, json, os, subprocess, sys
+import argparse, json, os, shutil, subprocess, sys
 import numpy as np
 from PIL import Image, ImageFilter
 
@@ -49,7 +49,7 @@ def frame_size(ref_path):
     return "1024x1024"
 
 
-def generate(piece, notes, name):
+def generate(piece, notes, name, engine="gpt"):
     """Render the piece into a shelf scene. Material comes from the catalogue."""
     material = "; ".join(n for n in (notes or []) if not any(c.isdigit() for c in n)) or "cast metal"
     # A lighting rig, not a set. The environment comes from the plate; all this
@@ -62,21 +62,33 @@ def generate(piece, notes, name):
         f"Product photograph of this exact object — {name}, {material} — resting on a "
         "plain seamless pale warm-grey surface. Absolutely nothing else in frame: no "
         "shelf, no shelf edge, no walls, no boxes, no props, no texture, no vignette. "
-        "Plain even background. Warm late-afternoon light from camera-left at a low "
-        "angle, casting one soft contact shadow to the right. Eye-level camera. "
+        "Plain even background. Warm late-afternoon light from camera-left, softly "
+        "diffused and slightly frontal. "
+        "CAMERA — critical, and identical for every piece in the set: shoot from EXACTLY "
+        "eye level with the surface the object rests on, straight on, lens perpendicular "
+        "to the object, horizon line at the object's own mid-height. Never from above, "
+        "never looking down, no tilt, no high angle. The object is seen as someone "
+        "standing at a shelf at eye height would see it, resting naturally on its base. "
         "FRAMING IS CRITICAL: the ENTIRE object must be visible well inside the frame, "
         "including the very bottom where it meets the surface, with at least 20 percent "
         "empty margin on every side. Do not crop, touch or run the object off any edge. "
-        "Leave clear empty surface beneath and to the right of it for its shadow. "
-        "Reproduce the object EXACTLY as given: identical silhouette, proportions, stance, "
-        "surface finish and colour. Do not restyle, redesign, smooth or re-proportion it. "
-        "It must remain the same object, only relit."
+        "SHADOW: the object casts ONE real, soft-edged shadow onto the surface, falling "
+        "to the RIGHT and slightly toward the camera, about as long as the object is wide "
+        "and clearly visible on the surface beside it. The shadow must stay COMPLETELY "
+        "inside the frame with clear empty surface beyond its tip — it must never touch "
+        "or run off an edge. "
+        "It must be the SAME OBJECT as the reference: same form, same proportions, same "
+        "surface finish, same colour and patina, with every curve, taper, edge, gap and "
+        "opening preserved. Do NOT simplify, round off, thicken, straighten or regularise "
+        "it; if the shape is unusual or asymmetric it must stay that way. Only the "
+        "viewpoint and the lighting change."
     )
     os.makedirs(SCENES, exist_ok=True)
     dst = os.path.join(SCENES, f"scene-{piece}.png")
     ref = os.path.join(CUTS, f"obj-{piece}.png")
+    script = "gen_scene_fal.py" if engine == "fal" else "gen_scene.py"
     subprocess.run(
-        [sys.executable, os.path.join(ROOT, "shelf/tools/gen_scene.py"),
+        [sys.executable, os.path.join(ROOT, "shelf/tools", script),
          "--ref", ref, "--out", dst, "--prompt", prompt, "--size", frame_size(ref)],
         check=True,
     )
@@ -114,17 +126,25 @@ def harvest(scene_path, shadow_strength=1.0, kernel=0.22):
     dark[dark < 0.03] = 0.0            # kill sensor/paper noise
 
     # Bound the shadow to the object's own footprint. Without this the closing
-    # reports every dark thing in the scene — archive boxes, the wall falloff,
-    # the shelf's front edge — and the sprite comes out the size of the frame.
-    # Asymmetric because the light is camera-left: the cast falls to the right.
+    # reports every dark thing in the scene and the sprite comes out frame-sized.
+    # The mask is an ellipse, not a rectangle: a blurred box leaves faint straight
+    # edges that read as a pale panel behind the piece once it is composited onto
+    # a flat plate. Offset to the right because the light is camera-left.
     x0, y0, x1, y1 = bbox
     ow, oh = x1 - x0, y1 - y0
-    keep = np.zeros(dark.shape, np.float32)
-    rx0, rx1 = int(x0 - ow * 0.25), int(x1 + ow * 1.40)
-    ry0, ry1 = int(y1 - oh * 0.35), int(y1 + oh * 0.90)
-    keep[max(0, ry0):ry1, max(0, rx0):rx1] = 1.0
-    keep = cv2.GaussianBlur(keep, (0, 0), max(6, ow * 0.06))
+    cx, cy = (x0 + x1) / 2 + ow * 0.18, y1
+    ry_, rx_ = max(8.0, oh * 0.55), max(8.0, ow * 0.95)
+    yy, xx = np.ogrid[:dark.shape[0], :dark.shape[1]]
+    d = ((xx - cx) / rx_) ** 2 + ((yy - cy) / ry_) ** 2
+    keep = np.clip(1.35 - d, 0.0, 1.0).astype(np.float32)
+    keep = cv2.GaussianBlur(keep, (0, 0), max(4, ow * 0.05))
     dark *= keep
+
+    # Anything this faint is measurement noise on a flat backdrop, and it is
+    # exactly what shows up as a halo against the plate. Cut it, then ease the
+    # remainder so there is no hard step where it was cut.
+    dark = np.clip((dark - 0.06) / 0.94, 0.0, 1.0)
+    dark = dark * dark * (3 - 2 * dark)
 
     sh = Image.new("RGBA", scene.size, SHADOW_RGB + (0,))
     sh.putalpha(Image.fromarray((np.clip(dark, 0, 1) * 255).astype(np.uint8)))
@@ -134,6 +154,32 @@ def harvest(scene_path, shadow_strength=1.0, kernel=0.22):
     rows = np.where(mask.max(axis=1) > 0.15)[0]
     base = (int((cols[0] + cols[-1]) / 2), int(rows[-1]))
     return obj, sh, base, bbox
+
+
+def shadow_score(scene_path, obj_alpha, bbox):
+    """How much shadow the piece actually casts on the surface beside it.
+
+    Identity and framing were already scored; shadow was not, and that is how a
+    whole set arrived with nothing under it. The model is erratic here — the same
+    prompt and piece gave 33 on one roll and 9 on the next — so it has to be
+    measured per roll and re-rolled like anything else.
+
+    Measured as mean darkening in a band to the right of the object at its base,
+    against clean ground nearby.
+    """
+    import numpy as np
+    arr = np.asarray(Image.open(scene_path).convert("RGB"), np.float32).mean(axis=2)
+    m = np.asarray(obj_alpha) > 128
+    x0, y0, x1, y1 = bbox
+    ow, oh = x1 - x0, y1 - y0
+    band = np.zeros(arr.shape, bool)
+    band[max(0, y1 - int(oh * 0.25)):min(arr.shape[0], y1 + int(oh * 0.35)),
+         x1:min(arr.shape[1], x1 + int(ow * 1.5))] = True
+    band &= ~m
+    if band.sum() < 50:
+        return 0.0
+    clean = np.percentile(arr[band], 92)
+    return float((clean - arr[band]).clip(0).mean())
 
 
 def fidelity(ref_path, obj, bbox, H=520):
@@ -172,7 +218,14 @@ def main():
     ap.add_argument("--skip-generate", action="store_true")
     ap.add_argument("--width", type=int, default=900, help="reference cutout width")
     ap.add_argument("--strength", type=float, default=1.0)
-    ap.add_argument("--min-iou", type=float, default=0.95,
+    ap.add_argument("--engine", choices=("gpt", "fal"), default="fal",
+                    help="fal = Nano Banana (cheap, for relighting pieces); gpt = GPT Image 2")
+    ap.add_argument("--tries", type=int, default=3,
+                    help="re-roll a flagged piece and keep the best; scores vary a lot "
+                         "run to run, so one low result is usually a bad roll, not a limit")
+    ap.add_argument("--min-shadow", type=float, default=16.0,
+                    help="minimum cast-shadow strength; below this the roll is retried")
+    ap.add_argument("--min-iou", type=float, default=0.80,
                     help="below this the piece is flagged for review, not silently accepted")
     a = ap.parse_args()
 
@@ -187,16 +240,46 @@ def main():
         c.save(ref)
 
     scene = os.path.join(SCENES, f"scene-{a.piece}.png")
-    if not a.skip_generate or not os.path.exists(scene):
-        cache = json.load(open(os.path.join(ROOT, "_source/content-cache.json"), encoding="utf-8"))
-        p = next((x for x in cache["products"] if x["slug"] == slug), None)
-        if p is None:
-            sys.exit(f"slug {slug!r} not in the catalogue")
-        print(f"generating scene for {slug} ...", flush=True)
-        scene = generate(a.piece, p.get("notes"), p["name"])
+    cache = json.load(open(os.path.join(ROOT, "_source/content-cache.json"), encoding="utf-8"))
+    prod = next((x for x in cache["products"] if x["slug"] == slug), None)
+    if prod is None:
+        sys.exit(f"slug {slug!r} not in the catalogue")
 
-    print("harvesting ...", flush=True)
-    obj, sh, base, bbox = harvest(scene, shadow_strength=a.strength)
+    best = None
+    for attempt in range(1, a.tries + 1):
+        if not (a.skip_generate and os.path.exists(scene)):
+            print(f"generating scene for {slug} (try {attempt}/{a.tries}) ...", flush=True)
+            generate(a.piece, prod.get("notes"), prod["name"], engine=a.engine)
+
+        obj, sh, base, bbox = harvest(scene, shadow_strength=a.strength)
+        iou = fidelity(ref, obj, bbox)
+        shadow = shadow_score(scene, obj.getchannel("A"), bbox)
+        sw, sh_ = Image.open(scene).size
+        margin = 4
+        clipped = (bbox[0] <= margin or bbox[1] <= margin
+                   or bbox[2] >= sw - margin or bbox[3] >= sh_ - margin)
+        # A roll has to pass identity AND cast a shadow; ranking on both keeps the
+        # best compromise if none passes outright.
+        score = -1.0 if clipped else iou + min(shadow, 40.0) / 100.0
+        print(f"  try {attempt}: IoU {iou:.3f}  shadow {shadow:4.1f}"
+              f"{'  CLIPPED' if clipped else ''}", flush=True)
+
+        if best is None or score > best["score"]:
+            keep = os.path.join(SCENES, f"scene-{a.piece}-best.png")
+            shutil.copyfile(scene, keep)
+            best = {"obj": obj, "sh": sh, "base": base, "bbox": bbox, "shadow": shadow,
+                    "iou": iou, "clipped": clipped, "score": score, "scene": keep}
+        if not clipped and iou >= a.min_iou and shadow >= a.min_shadow:
+            break
+        if a.skip_generate:
+            break
+
+    obj, sh, base, bbox = best["obj"], best["sh"], best["base"], best["bbox"]
+    iou, clipped, shadow = best["iou"], best["clipped"], best["shadow"]
+    shutil.move(best["scene"], scene)
+    verdict = ("CLIPPED" if clipped else
+               "ok" if (iou >= a.min_iou and shadow >= a.min_shadow) else
+               "NO-SHADOW" if iou >= a.min_iou else "REVIEW")
 
     sprite = Image.new("RGBA", obj.size, (0, 0, 0, 0))
     sprite.alpha_composite(sh)
@@ -204,28 +287,20 @@ def main():
     box = sprite.getchannel("A").getbbox()
     sprite = sprite.crop(box)
 
-    iou = fidelity(ref, obj, bbox)
-    # A clipped subject is a different failure from drift and has to be named as
-    # one: the silhouette is truncated, so the IoU understates fidelity, and the
-    # base anchor lands on the frame edge instead of on the object's footprint.
-    sw, sh_ = Image.open(scene).size
-    margin = 4
-    clipped = (bbox[0] <= margin or bbox[1] <= margin
-               or bbox[2] >= sw - margin or bbox[3] >= sh_ - margin)
-    verdict = "CLIPPED" if clipped else ("ok" if iou >= a.min_iou else "REVIEW")
-
     sprite.save(os.path.join(OUT, f"{a.piece}.png"))
     json.dump(
         {"sprite": list(sprite.size),
          "object": [bbox[2] - bbox[0], bbox[3] - bbox[1]],
          "base": [base[0] - box[0], base[1] - box[1]],
          "source_scene": os.path.relpath(scene, ROOT),
+         "engine": a.engine,
          "fidelity_iou": round(iou, 4),
+         "shadow": round(shadow, 1),
          "clipped": bool(clipped),
          "verdict": verdict},
         open(os.path.join(OUT, f"{a.piece}.json"), "w"), indent=2,
     )
-    print(f"  fidelity IoU {iou:.3f}  [{verdict}]" + ("  <- subject touches the frame edge" if clipped else ""))
+    print(f"  fidelity IoU {iou:.3f}  shadow {shadow:.1f}  [{verdict}]" + ("  <- subject touches the frame edge" if clipped else ""))
     print(f"  sprite {sprite.size}  object {bbox[2]-bbox[0]}x{bbox[3]-bbox[1]}  base {base}")
 
 

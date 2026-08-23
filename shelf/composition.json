@@ -1,0 +1,119 @@
+{
+  "_comment": "Which piece sits where. x is the object's centre, y is where its base meets the shelf, both as fractions of the plate. px_per_mm sets the scale of a whole scene; real sizes come from the catalogue notes.",
+  "_mm_estimates": "The nine bronzes carry real dimensions in their notes. None of the silver does, so the sizes below are ESTIMATES and should be replaced with measured values before launch.",
+  "mm": {
+    "zuma-ring": 22,
+    "eclipse-ring": 22,
+    "sietch-aperture": 24,
+    "lunar-canyon-ring": 22,
+    "meridian-egg-ring": 22,
+    "ear-cuff": 26,
+    "wonderhorn-talisman": 34
+  },
+  "scenes": [
+    {
+      "id": "threshold",
+      "plate": "shelf/plates/plate-threshold.png",
+      "px_per_mm": 4.4,
+      "sink_px": 12,
+      "objects": [
+        {
+          "slug": "milo",
+          "x": 0.46,
+          "y": 0.742
+        }
+      ]
+    },
+    {
+      "id": "bronze",
+      "plate": "shelf/plates/plate-shelf-bronze.png",
+      "px_per_mm": 3.2,
+      "sink_px": 12,
+      "objects": [
+        {
+          "slug": "ren",
+          "x": 0.22,
+          "y": 0.447
+        },
+        {
+          "slug": "zuma",
+          "x": 0.4,
+          "y": 0.447
+        },
+        {
+          "slug": "ori",
+          "x": 0.58,
+          "y": 0.447
+        },
+        {
+          "slug": "eleph",
+          "x": 0.76,
+          "y": 0.447
+        }
+      ]
+    },
+    {
+      "id": "tall",
+      "plate": "shelf/plates/plate-shelf-tall.png",
+      "px_per_mm": 3.6,
+      "sink_px": 14,
+      "objects": [
+        {
+          "slug": "rebi",
+          "x": 0.18,
+          "y": 0.437
+        },
+        {
+          "slug": "ibi",
+          "x": 0.4,
+          "y": 0.437
+        },
+        {
+          "slug": "pip",
+          "x": 0.62,
+          "y": 0.437
+        },
+        {
+          "slug": "yael",
+          "x": 0.82,
+          "y": 0.437
+        },
+        {
+          "slug": "zuma-ring",
+          "x": 0.18,
+          "y": 0.645
+        },
+        {
+          "slug": "eclipse-ring",
+          "x": 0.39,
+          "y": 0.645
+        },
+        {
+          "slug": "sietch-aperture",
+          "x": 0.6,
+          "y": 0.645
+        },
+        {
+          "slug": "lunar-canyon-ring",
+          "x": 0.81,
+          "y": 0.645
+        },
+        {
+          "slug": "meridian-egg-ring",
+          "x": 0.24,
+          "y": 0.85
+        },
+        {
+          "slug": "ear-cuff",
+          "x": 0.5,
+          "y": 0.85
+        },
+        {
+          "slug": "wonderhorn-talisman",
+          "x": 0.76,
+          "y": 0.85
+        }
+      ]
+    }
+  ]
+}

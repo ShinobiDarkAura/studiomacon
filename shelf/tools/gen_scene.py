@@ -5,7 +5,7 @@ Split out from harvest.py so the network call is a separate process — a hung o
 rate-limited request can be killed without losing the harvest state, and the same
 scene can be re-harvested with different shadow settings for free.
 """
-import argparse, base64, os, sys, requests
+import argparse, base64, os, sys, time, requests
 
 ENV = "/Users/aco/Documents/git/pipeline/.env"
 
@@ -28,17 +28,29 @@ def main():
     hdr = {"Authorization": f"Bearer {key()}"}
     body = {"model": "gpt-image-2", "prompt": a.prompt,
             "size": a.size, "quality": "high", "n": 1}
-    if a.ref:
-        r = requests.post(
-            "https://api.openai.com/v1/images/edits", headers=hdr,
-            files={"image[]": (os.path.basename(a.ref), open(a.ref, "rb"), "image/png")},
-            data=body, timeout=900,
-        )
-    else:
-        r = requests.post(
-            "https://api.openai.com/v1/images/generations", headers=hdr,
-            json=body, timeout=900,
-        )
+    # 429s are routine when several pieces run back to back; back off rather than
+    # dropping the piece, since a rate limit says nothing about the result.
+    for attempt in range(6):
+        if a.ref:
+            r = requests.post(
+                "https://api.openai.com/v1/images/edits", headers=hdr,
+                files={"image[]": (os.path.basename(a.ref), open(a.ref, "rb"), "image/png")},
+                data=body, timeout=900,
+            )
+        else:
+            r = requests.post(
+                "https://api.openai.com/v1/images/generations", headers=hdr,
+                json=body, timeout=900,
+            )
+        if r.status_code != 429:
+            break
+        # A 429 is either burst throttling (worth waiting out) or an empty
+        # account (never clears). Waiting on the latter just burns ten minutes.
+        if "insufficient_quota" in r.text or "credit_balance" in r.text:
+            sys.exit("OpenAI account is out of credits — top up to continue")
+        wait = min(90, 15 * (attempt + 1))
+        print(f"  rate limited, waiting {wait}s", flush=True)
+        time.sleep(wait)
     if r.status_code != 200:
         sys.exit(f"HTTP {r.status_code}: {r.text[:600]}")
     open(a.out, "wb").write(base64.b64decode(r.json()["data"][0]["b64_json"]))

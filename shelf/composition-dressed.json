@@ -1,0 +1,113 @@
+{
+  "_comment": "All 16 pieces across the re-dressed plates, totems and jewellery interspersed rather than grouped by material. Scale is DELIBERATELY BROKEN — pieces run about 1.8x life size so they read against 250mm books. Not truthful next to the props; that is the trade, chosen knowingly. The empty-plate composition keeps true scale.",
+  "mm": {
+    "zuma-ring": 22,
+    "eclipse-ring": 22,
+    "sietch-aperture": 24,
+    "lunar-canyon-ring": 22,
+    "meridian-egg-ring": 22,
+    "ear-cuff": 26,
+    "wonderhorn-talisman": 34
+  },
+  "scenes": [
+    {
+      "id": "d-threshold",
+      "plate": "shelf/plates/dressed/dressed-thresh-b.png",
+      "px_per_mm": 3.6,
+      "sink_px": 6,
+      "objects": [
+        {
+          "slug": "milo",
+          "x": 0.435,
+          "y": 0.742
+        },
+        {
+          "slug": "zuma-ring",
+          "x": 0.56,
+          "y": 0.742
+        }
+      ]
+    },
+    {
+      "id": "d-bronze",
+      "plate": "shelf/plates/dressed/dressed-bronze-b.png",
+      "px_per_mm": 3.8,
+      "sink_px": 6,
+      "objects": [
+        {
+          "slug": "ren",
+          "x": 0.385,
+          "y": 0.468
+        },
+        {
+          "slug": "sietch-aperture",
+          "x": 0.475,
+          "y": 0.468
+        },
+        {
+          "slug": "zuma",
+          "x": 0.56,
+          "y": 0.468
+        },
+        {
+          "slug": "ibi",
+          "x": 0.32,
+          "y": 0.925
+        },
+        {
+          "slug": "ear-cuff",
+          "x": 0.455,
+          "y": 0.925
+        },
+        {
+          "slug": "eleph",
+          "x": 0.595,
+          "y": 0.925
+        }
+      ]
+    },
+    {
+      "id": "d-tall",
+      "plate": "shelf/plates/dressed/dressed-tall-b.png",
+      "px_per_mm": 2.4,
+      "sink_px": 5,
+      "objects": [
+        {
+          "slug": "rebi",
+          "x": 0.38,
+          "y": 0.47
+        },
+        {
+          "slug": "lunar-canyon-ring",
+          "x": 0.53,
+          "y": 0.47
+        },
+        {
+          "slug": "ori",
+          "x": 0.675,
+          "y": 0.47
+        },
+        {
+          "slug": "yael",
+          "x": 0.42,
+          "y": 0.685
+        },
+        {
+          "slug": "pip",
+          "x": 0.58,
+          "y": 0.685
+        },
+        {
+          "slug": "meridian-egg-ring",
+          "x": 0.35,
+          "y": 0.905
+        },
+        {
+          "slug": "wonderhorn-talisman",
+          "x": 0.6,
+          "y": 0.905
+        }
+      ]
+    }
+  ]
+}

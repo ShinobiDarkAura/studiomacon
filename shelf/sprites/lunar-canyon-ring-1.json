@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    544,
+    365
+  ],
+  "object": [
+    319,
+    351
+  ],
+  "base": [
+    158,
+    348
+  ],
+  "source_scene": "shelf/scenes/scene-lunar-canyon-ring-1.png",
+  "engine": "fal",
+  "fidelity_iou": 0.9409,
+  "shadow": 18.7,
+  "clipped": false,
+  "verdict": "ok"
+}

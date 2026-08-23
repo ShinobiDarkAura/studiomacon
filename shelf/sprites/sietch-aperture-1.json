@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    491,
+    378
+  ],
+  "object": [
+    287,
+    342
+  ],
+  "base": [
+    143,
+    339
+  ],
+  "source_scene": "shelf/scenes/scene-sietch-aperture-1.png",
+  "engine": "fal",
+  "fidelity_iou": 0.7282,
+  "shadow": 18.5,
+  "clipped": false,
+  "verdict": "REVIEW"
+}

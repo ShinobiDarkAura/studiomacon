@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    692,
+    471
+  ],
+  "object": [
+    417,
+    471
+  ],
+  "base": [
+    208,
+    469
+  ],
+  "source_scene": "shelf/scenes/scene-eleph-1.png",
+  "engine": "fal",
+  "fidelity_iou": 0.9819,
+  "shadow": 19.2,
+  "clipped": false,
+  "verdict": "ok"
+}

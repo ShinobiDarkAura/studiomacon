@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    831,
+    351
+  ],
+  "object": [
+    490,
+    350
+  ],
+  "base": [
+    245,
+    349
+  ],
+  "source_scene": "shelf/scenes/scene-zuma-1.png",
+  "engine": "fal",
+  "fidelity_iou": 0.9739,
+  "shadow": 23.3,
+  "clipped": false,
+  "verdict": "ok"
+}

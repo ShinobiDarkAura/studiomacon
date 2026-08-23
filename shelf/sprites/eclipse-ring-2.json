@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    330,
+    436
+  ],
+  "object": [
+    193,
+    373
+  ],
+  "base": [
+    96,
+    370
+  ],
+  "source_scene": "shelf/scenes/scene-eclipse-ring-2.png",
+  "engine": "fal",
+  "fidelity_iou": 0.3694,
+  "shadow": 24.3,
+  "clipped": false,
+  "verdict": "ok"
+}

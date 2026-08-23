@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    740,
+    343
+  ],
+  "object": [
+    443,
+    341
+  ],
+  "base": [
+    221,
+    340
+  ],
+  "source_scene": "shelf/scenes/scene-pip-2.png",
+  "engine": "fal",
+  "fidelity_iou": 0.9369,
+  "shadow": 19.2,
+  "clipped": false,
+  "verdict": "ok"
+}

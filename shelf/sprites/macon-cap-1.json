@@ -1,0 +1,19 @@
+{
+  "sprite": [
+    772,
+    388
+  ],
+  "object": [
+    401,
+    352
+  ],
+  "base": [
+    257,
+    350
+  ],
+  "source_scene": "shelf/scenes/scene-macon-cap-1.png",
+  "engine": "fal",
+  "fidelity_iou": 0.888,
+  "clipped": false,
+  "verdict": "REVIEW"
+}

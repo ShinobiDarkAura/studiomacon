@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    510,
+    429
+  ],
+  "object": [
+    363,
+    338
+  ],
+  "base": [
+    276,
+    336
+  ],
+  "source_scene": "shelf/scenes/scene-ear-cuff-2.png",
+  "engine": "fal",
+  "fidelity_iou": 0.9603,
+  "shadow": 8.5,
+  "clipped": false,
+  "verdict": "NO-SHADOW"
+}

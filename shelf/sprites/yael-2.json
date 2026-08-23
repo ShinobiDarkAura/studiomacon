@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    872,
+    474
+  ],
+  "object": [
+    541,
+    474
+  ],
+  "base": [
+    270,
+    473
+  ],
+  "source_scene": "shelf/scenes/scene-yael-2.png",
+  "engine": "fal",
+  "fidelity_iou": 0.9536,
+  "shadow": 19.2,
+  "clipped": false,
+  "verdict": "ok"
+}

@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    647,
+    354
+  ],
+  "object": [
+    391,
+    351
+  ],
+  "base": [
+    195,
+    350
+  ],
+  "source_scene": "shelf/scenes/scene-meridian-egg-ring-1.png",
+  "engine": "fal",
+  "fidelity_iou": 0.863,
+  "shadow": 12.4,
+  "clipped": false,
+  "verdict": "NO-SHADOW"
+}

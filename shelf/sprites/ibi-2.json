@@ -1,0 +1,20 @@
+{
+  "sprite": [
+    717,
+    712
+  ],
+  "object": [
+    471,
+    546
+  ],
+  "base": [
+    235,
+    544
+  ],
+  "source_scene": "shelf/scenes/scene-ibi-2.png",
+  "engine": "fal",
+  "fidelity_iou": 0.9771,
+  "shadow": 25.4,
+  "clipped": false,
+  "verdict": "ok"
+}

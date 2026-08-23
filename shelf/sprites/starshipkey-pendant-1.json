@@ -1,0 +1,19 @@
+{
+  "sprite": [
+    572,
+    571
+  ],
+  "object": [
+    207,
+    549
+  ],
+  "base": [
+    172,
+    547
+  ],
+  "source_scene": "shelf/scenes/scene-starshipkey-pendant-1.png",
+  "engine": "fal",
+  "fidelity_iou": 0.4226,
+  "clipped": false,
+  "verdict": "REVIEW"
+}
