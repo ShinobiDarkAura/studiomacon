@@ -171,14 +171,14 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
   window.addEventListener('scroll', mark, {{passive: true}});
 }})();
 
-// Opening: the mark plays large and centred, wipes up, then settles into the nav
-// and the two icons follow it in. Skipped entirely if motion is unwelcome.
+// Opening: the mark plays large and centred, fades out, then fades back in at
+// nav size with the two icons following. Skipped entirely if motion is unwelcome.
 (function () {{
   var body = document.body;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{
     body.classList.remove('intro'); return;
   }}
-  // the mark's own animation runs 4.13s — let it finish before the wipe
+  // the mark's own animation runs 4.13s — let it finish before it fades
   setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 4200);
   setTimeout(function () {{ body.classList.remove('intro'); body.classList.add('intro-done'); }}, 4850);
 }})();
