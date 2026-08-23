@@ -43,17 +43,20 @@
         {
           "slug": "ibi",
           "x": 0.32,
-          "y": 0.925
+          "y": 0.925,
+          "label_dy": 0.026
         },
         {
           "slug": "ear-cuff",
           "x": 0.455,
-          "y": 0.925
+          "y": 0.925,
+          "label_dy": 0.026
         },
         {
           "slug": "eleph",
           "x": 0.595,
-          "y": 0.925
+          "y": 0.925,
+          "label_dy": 0.026
         }
       ],
       "label_dy": 0.046
@@ -97,17 +100,20 @@
         {
           "slug": "meridian-egg-ring",
           "x": 0.28,
-          "y": 0.905
+          "y": 0.905,
+          "label_dy": 0.026
         },
         {
           "slug": "wonderhorn-talisman",
           "x": 0.52,
-          "y": 0.905
+          "y": 0.905,
+          "label_dy": 0.026
         },
         {
           "slug": "milo",
           "x": 0.76,
-          "y": 0.905
+          "y": 0.905,
+          "label_dy": 0.026
         }
       ],
       "label_dy": 0.026

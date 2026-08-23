@@ -1,20 +1,31 @@
 #!/usr/bin/env python3
-"""Emit the shelf page: scenes, labels, hotspots, nav, index.
+"""Emit the shelf page: bare plates, pieces as elements, labels, nav, record.
 
-Positions come from the same composition file the images were rendered from, so a
-label can never drift away from the piece it names — move a piece and its label
-and its click target move with it.
+The pieces are laid over the plate in the browser rather than burned into it.
+Same sprites and the same arithmetic compose.py uses, so the result is identical
+at rest — but each piece is now its own element, which is what lets it respond to
+a cursor. Baked into the JPEG it could never move, and lifting a copy over the top
+would just show the original still sitting underneath.
 
     python3 shelf/tools/build_shelf.py
 """
-import html, json, os, re, sys
+import html, json, os, re, shutil
+from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "shelf", "_site")
+PIECE_W = 320          # plenty: pieces display around 90-180px
 
 
 def money(v):
     return f"${float(v):,.0f}" if v else ""
+
+
+def longest_mm(notes):
+    for n in notes or []:
+        nums = [float(x) for x in re.findall(r"(\d+(?:\.\d+)?)\s*(?=[x×]|\s*mm)", n)]
+        if nums:
+            return max(nums)
 
 
 def main():
@@ -22,9 +33,9 @@ def main():
     pieces = json.load(open(os.path.join(ROOT, "shelf/pieces.json"), encoding="utf-8"))
     cache = json.load(open(os.path.join(ROOT, "_source/content-cache.json"), encoding="utf-8"))
     prod = {p["slug"]: p for p in cache["products"]}
-    excl = set(pieces.get("_shelf_exclude", {}))
-
+    overrides = comp.get("mm", {})
     tagline = next((x["value"] for x in cache.get("settings", []) if x["key"] == "tagline"), "")
+    os.makedirs(OUT, exist_ok=True)
 
     hero_copy = f'''
       <div class="hero-copy">
@@ -35,27 +46,56 @@ def main():
 
     scenes_html = []
     for si, scene in enumerate(comp["scenes"]):
+        plate_src = os.path.join(ROOT, scene["plate"])
+        plate = Image.open(plate_src)
+        W, H = plate.size
+        plate_name = f"plate-{scene['id']}.jpg"
+        plate.convert("RGB").save(os.path.join(OUT, plate_name), quality=90)
+
+        ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
+        scene_dy = scene.get("label_dy", 0.045)
         marks = []
-        # Labels sit on the shelf's front face, below the surface the piece stands
-        # on, the way a museum card is fixed to the shelf edge rather than floating.
-        dy = scene.get("label_dy", 0.045)
         for o in scene["objects"]:
-            p = prod[o["slug"]]
-            # Label sits just under the piece on the shelf, the way a museum card does.
+            slug = o["slug"]
+            p = prod[slug]
+            piece = pieces[slug]
+            meta = json.load(open(os.path.join(ROOT, "shelf/sprites", f"{piece}.json")))
+            dy = o.get("label_dy", scene_dy)
+            mm = overrides.get(slug) or longest_mm(p.get("notes"))
+            s = (mm * ppmm) / max(meta["object"])
+
+            sw, sh = meta["sprite"][0] * s, meta["sprite"][1] * s
+            bx, by = meta["base"][0] * s, meta["base"][1] * s
+            left = (W * o["x"] - bx) / W * 100
+            top = (H * o["y"] - by + sink) / H * 100
+
+            sp = Image.open(os.path.join(ROOT, "shelf/sprites", f"{piece}.png")).convert("RGBA")
+            tw = min(PIECE_W, sp.width)
+            sp.resize((tw, max(1, round(sp.height * tw / sp.width))), Image.LANCZOS)\
+              .save(os.path.join(OUT, f"piece-{slug}.webp"), quality=88, method=6)
+
+            # The card is positioned inside the piece element, so its offsets are
+            # percentages of the SPRITE, not of the plate: drop from the object's
+            # base by the shelf-front distance, and centre on the base, not on the
+            # sprite (whose width includes the shadow and is off-centre).
+            card_top = (by + dy * H) / sh * 100
+            card_left = bx / sw * 100
+
             marks.append(
-                f'''      <a class="mark" style="left:{o['x']*100:.3f}%;top:{(o['y']+dy)*100:.3f}%"
-         href="/product/{o['slug']}.html" aria-label="{html.escape(p['name'])}, view piece">
-        <span class="hit" style="height:{dy*100:.2f}vw"></span>
-        <span class="card"><span class="nm">{html.escape(p['name'])}</span>'''
-                f'''<span class="pr">{money(p.get('price'))}</span></span>
+                f'''      <a class="mark" href="/product/{slug}.html"
+         aria-label="{html.escape(p['name'])}, view piece"
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%">
+        <img class="piece" src="piece-{slug}.webp" alt="{html.escape(p['name'])}" loading="lazy">
+        <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
+          <span class="nm">{html.escape(p['name'])}</span>
+          <span class="pr">{money(p.get('price'))}</span>
+        </span>
       </a>''')
-        # The first scene is the hero: full viewport, title centred over it. It is
-        # cropped to fill, which would drag any label off its piece — so it carries
-        # none, and its pieces live on the shelves below.
+
         is_hero = si == 0
         scenes_html.append(
             f'''    <section class="scene{' hero' if is_hero else ''}">
-      <img src="scene-{scene['id']}.jpg" alt=""{'' if is_hero else ' loading="lazy"'}>
+      <img class="plate" src="{plate_name}" alt=""{'' if is_hero else ' loading="lazy"'}>
 {hero_copy if is_hero else ''}
 {chr(10).join(marks)}
     </section>''')
@@ -75,12 +115,18 @@ def main():
 <meta name="description" content="Studio Maçon — cast bronze and silver, shelf concept.">
 <link rel="icon" href="/assets/favicon.png">
 <link rel="stylesheet" href="shelf.css">
-</head><body>
+</head><body class="intro">
+
+  <div class="curtain" aria-hidden="true">
+    <img src="/assets/goat-logo.gif" alt="">
+  </div>
 
   <nav class="nav">
-    <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M8 3h8M9 3c0 2 1 3 3 3s3-1 3-3M7 8c0-1.5 2-2 5-2s5 .5 5 2c0 5-2 8-5 12-3-4-5-7-5-12Z"/></svg>
-    <a class="logo" href="/index.html"><img src="/assets/goat-logo.gif" alt="Studio Maçon"></a>
     <button class="menu" data-menu-toggle aria-label="Menu"><span class="bars"><i></i><i></i><i></i></span></button>
+    <a class="logo" href="/index.html"><img src="/assets/goat-logo.gif" alt="Studio Maçon"></a>
+    <a class="bag" href="/contact.html" aria-label="Bag">
+      <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M8 3h8M9 3c0 2 1 3 3 3s3-1 3-3M7 8c0-1.5 2-2 5-2s5 .5 5 2c0 5-2 8-5 12-3-4-5-7-5-12Z"/></svg>
+    </a>
   </nav>
 
   <div class="menu-overlay" role="dialog" aria-label="Menu">
@@ -97,31 +143,37 @@ def main():
     </section>
   </main>
 
-  <footer>
-    <div class="fine">HANDMADE IN L.A.</div>
-  </footer>
+  <footer><div class="fine">HANDMADE IN L.A.</div></footer>
 
 <script>
 document.querySelector('[data-menu-toggle]').addEventListener('click', function () {{
   document.body.classList.toggle('menu-open');
 }});
-// The nav sits on cream over the hero and on photography below it.
+
+// Nav is white over photography and ink once the Record is behind it.
 (function () {{
   var nav = document.querySelector('.nav'), rec = document.querySelector('.index');
-  function mark() {{
-    // white while the nav is over photography, ink once the Record is behind it
-    nav.classList.toggle('over-art', window.scrollY + 80 < rec.offsetTop);
-  }}
+  function mark() {{ nav.classList.toggle('over-art', window.scrollY + 80 < rec.offsetTop); }}
   mark();
   window.addEventListener('scroll', mark, {{passive: true}});
+}})();
+
+// Opening: the mark plays large and centred, wipes up, then settles into the nav
+// and the two icons follow it in. Skipped entirely if motion is unwelcome.
+(function () {{
+  var body = document.body;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{
+    body.classList.remove('intro'); return;
+  }}
+  setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 2100);
+  setTimeout(function () {{ body.classList.remove('intro'); body.classList.add('intro-done'); }}, 2750);
 }})();
 </script>
 </body></html>
 '''
-    os.makedirs(OUT, exist_ok=True)
     open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(page)
     n = sum(len(s["objects"]) for s in comp["scenes"])
-    print(f"index.html — {len(comp['scenes'])} scenes, {n} labelled pieces, {len(live)} in the record")
+    print(f"index.html — {len(comp['scenes'])} plates, {n} pieces as elements, {len(live)} in the record")
 
 
 if __name__ == "__main__":
