@@ -113,7 +113,8 @@
       "plate": "shelf/plates/dressed/dressed-tall-coda.png",
       "px_per_mm": 3.8,
       "objects": [],
-      "shelf_fronts": []
+      "shelf_fronts": [],
+      "inset": true
     }
   ],
   "_retired": {

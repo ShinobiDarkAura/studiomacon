@@ -162,6 +162,11 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 
 /* ---- scenes ---- */
 .scene{position:relative;line-height:0}
+/* The closing bay comes off a narrower plate, so full-bleed would magnify it
+   past everything above. Held to the ratio of the two plates' widths, its
+   objects sit at the same scale as the pieces. */
+.scene.inset{background:var(--paper);padding:0 0 5vw}
+.scene.inset .plate{width:70.54%;margin:0 auto}
 .scene .plate{width:100%;height:auto;display:block}
 
 /* Each piece is its own element sitting on the plate, so it can answer a cursor. */
@@ -241,7 +246,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* the dark ribbon cut, not the light one — this is the bold of the family */
   font-family:"Gabriele",Georgia,serif;font-weight:400;
   font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.02em;
-  color:var(--ink-label);
+  color:var(--ink);
 }
 
 /* a quiet separator, arriving with the price */
@@ -253,7 +258,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   font-family:"Gabriele",Georgia,serif;font-weight:400;
   /* the same size as the name, at rest and on hover — nothing resizes */
   font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.05em;
-  color:var(--ink);
+  color:var(--ink-label);
   max-width:0;opacity:0;margin-left:0;transform:translateX(.45em);
   transition:max-width .36s cubic-bezier(.22,.9,.28,1),opacity .28s ease,
              margin-left .36s ease,transform .36s cubic-bezier(.22,.9,.28,1);

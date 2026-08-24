@@ -172,7 +172,7 @@ def main():
 
         is_hero = si == 0
         scenes_html.append(
-            f'''    <section class="scene{' hero' if is_hero else ''}">
+            f'''    <section class="scene{' hero' if is_hero else ''}{' inset' if scene.get('inset') else ''}">
       <img class="plate" src="{plate_name}?v={stamp(plate_path)}" alt=""{'' if is_hero else ' loading="lazy"'}>
 {hero_copy if is_hero else ''}
 {chr(10).join(marks)}
