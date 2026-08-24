@@ -251,8 +251,8 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 }
 .mark .nm{
   display:block;
-  /* the light cut; the price keeps the dark ribbon */
-  font-family:"GabrieleLight","Gabriele",Georgia,serif;font-weight:400;
+  /* the dark ribbon cut: with no paper behind it the light one went thin */
+  font-family:"Gabriele",Georgia,serif;font-weight:400;
   font-size:clamp(9px,calc(1.34vw - 4px),19px);letter-spacing:.02em;
   /* Over plaster that is itself pale, so it carries its own soft shade —
      without it the words vanish wherever the wall is lit. */
