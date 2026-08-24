@@ -71,6 +71,7 @@ SHUFFLE = """
   var panel = document.querySelector('.ed');
   if (!panel) return;
   var sel = null, dragging = null, on = false;
+  var STORE = 'macon-shelf-edits';
   var f = {
     tint: document.getElementById('ed-tint'),
     warmth: document.getElementById('ed-warmth'),
@@ -141,7 +142,43 @@ SHUFFLE = """
     });
   }
 
-  function mark(el) { dirty[el.dataset.scene + '/' + el.dataset.slug] = el; }
+  function mark(el) {
+    dirty[el.dataset.scene + '/' + el.dataset.slug] = el;
+    save_local();
+  }
+
+  /* Pending edits survive a refresh. Tuning by eye means reloading constantly —
+     to see a rebuild, to check a cache, to clear a stuck animation — and losing
+     an hour of nudges to a stray Cmd-R is not acceptable. Held until a save is
+     confirmed, at which point the built page carries them and the copy here is
+     stale by definition. */
+  function save_local() {
+    var out = {};
+    Object.keys(dirty).forEach(function (k) {
+      var el = dirty[k];
+      out[k] = { x: num(el, 'x'), y: num(el, 'y'), scale: num(el, 'scale'), dx: num(el, 'dx'),
+                 warmth: num(el, 'warmth'), tint: num(el, 'tint'),
+                 bright: num(el, 'bright'), contrast: num(el, 'contrast') };
+    });
+    try { localStorage.setItem(STORE, JSON.stringify(out)); } catch (e) {}
+  }
+
+  function load_local() {
+    var raw;
+    try { raw = JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return 0; }
+    var n = 0;
+    document.querySelectorAll('.mark').forEach(function (el) {
+      var v = raw[el.dataset.scene + '/' + el.dataset.slug];
+      if (!v) return;
+      ['x', 'y', 'scale', 'dx', 'warmth', 'tint', 'bright', 'contrast'].forEach(function (k) {
+        if (v[k] !== undefined) el.dataset[k] = v[k];
+      });
+      place(el); apply(el);
+      dirty[el.dataset.scene + '/' + el.dataset.slug] = el;
+      n++;
+    });
+    return n;
+  }
 
   function setOn(v) {
     on = v; panel.hidden = !v;
@@ -259,13 +296,91 @@ SHUFFLE = """
                                 body: JSON.stringify({ pieces: pieces }) })
       .then(function (r) { return r.json(); })
       .then(function (r) {
-        msg.textContent = r.error ? ('failed: ' + r.error) : ('saved ' + r.saved + ' — reload to see the built page');
-        if (!r.error) dirty = {};
+        if (r.error) { msg.textContent = 'failed: ' + r.error; return; }
+        // the rebuilt page now carries these, so the local copy is stale
+        try { localStorage.removeItem(STORE); } catch (e) {}
+        dirty = {};
+        msg.textContent = 'saved ' + r.saved + ' — reloading';
+        location.reload();
       })
       .catch(function (err) { msg.textContent = 'failed: ' + err.message; });
   });
 
-  if (new URLSearchParams(location.search).has('edit')) setOn(true);
+  var restored = load_local();
+  if (restored) {
+    setOn(true);
+    panel.querySelector('.ed-msg').textContent = restored + ' unsaved edit' + (restored > 1 ? 's' : '') + ' restored';
+  } else if (new URLSearchParams(location.search).has('edit')) {
+    setOn(true);
+  }
+})();
+</script>
+<script>
+/* A struck-bar tap when a piece is pointed at.
+
+   Synthesised rather than a file: a few hundred bytes of code instead of an
+   audio request, detunable per piece so twelve hovers do not sound like one
+   sample twelve times, and no media element for an autoplay policy to block.
+   The partials are the ideal bar ratios - 1, 2.76, 5.40 - which is what makes a
+   strike read as struck wood or bronze rather than as a beep, and the higher
+   ones are damped faster, as they are in a real bar.
+
+   A browser will not start an audio context before a gesture, and hover is not
+   one, so the context is built on the first real interaction and stays silent
+   until then. */
+(function () {
+  var ac = null, last = 0;
+  function wake() {
+    if (!ac) {
+      var C = window.AudioContext || window.webkitAudioContext;
+      if (!C) return;
+      ac = new C();
+    }
+    if (ac.state === 'suspended') ac.resume();
+  }
+  ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (e) {
+    window.addEventListener(e, wake, { passive: true });
+  });
+
+  function tap(seed) {
+    if (!ac || ac.state !== 'running') return;
+    var now = ac.currentTime;
+    if (now - last < 0.04) return;            /* no machine-gunning on a fast sweep */
+    last = now;
+    var f = 430 + (seed % 7) * 26;            /* a slightly different bar per piece */
+    var out = ac.createGain();
+    out.gain.value = 0.055;
+    out.connect(ac.destination);
+
+    [[1, 0.115, 1], [2.76, 0.075, 0.5], [5.40, 0.045, 0.22]].forEach(function (m) {
+      var o = ac.createOscillator(), g = ac.createGain();
+      o.type = 'sine';
+      o.frequency.value = f * m[0];
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(m[2], now + 0.002);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + m[1]);
+      o.connect(g); g.connect(out);
+      o.start(now); o.stop(now + m[1] + 0.02);
+    });
+
+    /* the contact itself: four milliseconds of filtered noise, felt not heard */
+    var n = 0.004, buf = ac.createBuffer(1, Math.ceil(ac.sampleRate * n), ac.sampleRate);
+    var d = buf.getChannelData(0);
+    for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    var src = ac.createBufferSource(), bp = ac.createBiquadFilter(), ng = ac.createGain();
+    src.buffer = buf;
+    bp.type = 'bandpass'; bp.frequency.value = 1900; bp.Q.value = 0.8;
+    ng.gain.value = 0.5;
+    src.connect(bp); bp.connect(ng); ng.connect(out);
+    src.start(now);
+  }
+
+  document.querySelectorAll('.mark').forEach(function (el, i) {
+    el.addEventListener('pointerenter', function () {
+      if (document.body.classList.contains('editing')) return;   /* silent while tuning */
+      tap(i + el.dataset.slug.length);
+    });
+  });
 })();
 </script>
 </body></html>"""

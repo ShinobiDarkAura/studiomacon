@@ -91,6 +91,10 @@ body.menu-open .menu-overlay{opacity:1;pointer-events:auto}
 
 /* ---- opening: the mark large and centred, wiping up into the nav ---- */
 .curtain{
+  /* Decorative only. It covers the viewport for the whole opening, so without
+     this it swallows every pointer event and nothing in the nav answers a hover
+     until the mark has finished. */
+  pointer-events:none;
   position:fixed;inset:0;z-index:90;display:none;
   align-items:center;justify-content:center;
   background:transparent;   /* the shelf shows through; the mark plays on top of it */
