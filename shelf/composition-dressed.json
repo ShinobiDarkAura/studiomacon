@@ -63,7 +63,8 @@
           "slug": "ori",
           "x": 0.47121,
           "y": 0.45773,
-          "flip": true
+          "flip": true,
+          "dx_px": 12
         },
         {
           "slug": "zuma",
@@ -116,31 +117,32 @@
       "objects": [
         {
           "slug": "lunar-canyon-ring",
-          "x": 0.38,
-          "y": 0.3721,
-          "scale": 1.16
+          "x": 0.31,
+          "y": 0.36038,
+          "scale": 1.334
         },
         {
           "slug": "meridian-egg-ring",
-          "x": 0.5,
-          "y": 0.3721,
-          "scale": 1.16
+          "x": 0.46,
+          "y": 0.36038,
+          "scale": 1.334
         },
         {
           "slug": "ear-cuff",
-          "x": 0.62,
-          "y": 0.3721
+          "x": 0.61,
+          "y": 0.36038,
+          "scale": 1.25
         },
         {
           "slug": "zuma-ring",
-          "x": 0.46,
-          "y": 0.8193,
-          "scale": 1.16
+          "x": 0.44,
+          "y": 0.78805,
+          "scale": 1.334
         },
         {
           "slug": "wonderhorn-talisman",
-          "x": 0.59,
-          "y": 0.8193,
+          "x": 0.6,
+          "y": 0.78805,
           "scale": 0.8
         }
       ],
@@ -159,7 +161,8 @@
             0.96
           ]
         }
-      ]
+      ],
+      "carrier": "washi-tape"
     }
   ],
   "_retired": {

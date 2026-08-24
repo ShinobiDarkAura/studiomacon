@@ -142,7 +142,9 @@ def main():
             obj_w = meta["object"][0] * s / sw * 100
 
             tilt = TILTS[len(marks) % len(TILTS)]
-            carrier = CARRIERS[0]
+            # a scene can name its own paper; the closing bays need a wider
+            # one for names like "Ida's Wonder Horn"
+            carrier = scene.get("carrier", CARRIERS[0])
             g = GEO[carrier]
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
