@@ -212,27 +212,6 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     return;
   }}
   // the mark's own animation runs 4.13s — let it finish before it fades
-  // Put the opening mark exactly where the logotype will be, so the handover is
-  // a swap in place. The curtain is centred on the viewport; the logotype is
-  // centred inside the hero and sits above its tagline, so the two do not
-  // coincide on their own.
-  (function align() {{
-    var mark = document.querySelector('.curtain img'),
-        target = document.querySelector('.logotype');
-    if (!mark || !target) return;
-    function put() {{
-      var r = target.getBoundingClientRect();
-      if (!r.height) return;
-      var dx = (r.left + r.width / 2) - window.innerWidth / 2,
-          dy = (r.top + r.height / 2) - window.innerHeight / 2;
-      mark.style.setProperty('--dx', dx.toFixed(1) + 'px');
-      mark.style.setProperty('--dy', dy.toFixed(1) + 'px');
-    }}
-    put();
-    window.addEventListener('resize', put);
-    if (target.complete) put(); else target.addEventListener('load', put);
-  }})();
-
   setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 4200);
   setTimeout(function () {{
     body.classList.remove('intro');
