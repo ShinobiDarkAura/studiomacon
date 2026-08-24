@@ -248,11 +248,11 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
    Absolute rather than a flex child, so it cannot push the words off centre. */
 .mark .card::after{
   content:"";position:absolute;left:50%;top:100%;
-  width:5px;height:1px;background:var(--mark-tint);
+  width:8px;height:1px;background:var(--logo-tint);opacity:.8;
   transform:translate(-50%,12px);
   transition:width .3s cubic-bezier(.2,.85,.3,1);
 }
-.mark:hover .card::after,.mark:focus-visible .card::after{width:10px}
+.mark:hover .card::after,.mark:focus-visible .card::after{width:24px}
 
 /* One wrapper so the pair moves and turns together; transforming each span
    separately rotated them about their own centres and pulled them apart. The
