@@ -541,7 +541,7 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
       var i = 0;
       (function tick() {{
         render(++i);
-        if (i < text.length) setTimeout(tick, i === PAUSE_AFTER ? 1000 : 58);
+        if (i < text.length) setTimeout(tick, i === PAUSE_AFTER ? 250 : 58);
       }})();
     }}, 400);
   }});
@@ -610,8 +610,10 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     document.dispatchEvent(new Event('macon:introdone'));
   }}
 
-  var t1 = setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 4200);
-  var t2 = setTimeout(finish, 4850);
+  // 34 frames at 120ms is 4130ms; ten frames from the end is 2930ms. The wipe
+  // takes those ten frames, so the mark is gone the moment its loop ends.
+  var t1 = setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 2930);
+  var t2 = setTimeout(finish, 4180);
 
   // Scrolling away during the opening dismisses the mark on the scroll itself,
   // rather than leaving it hanging there while the timers run out.
