@@ -93,8 +93,8 @@ def main():
             # the carrier the label is written on
             car = Image.open(os.path.join(ROOT, "shelf/carriers",
                                           CARRIERS[oi % len(CARRIERS)] + ".png")).convert("RGBA")
-            tw = int(d.textlength(name, font=serif) + serif.size * 1.5)
-            th = int(serif.size * 2.0)
+            tw = int(d.textlength(name, font=serif) + serif.size * 6.6)
+            th = int(serif.size * 5.0)
             car = car.resize((max(8, tw), max(6, th)), Image.LANCZOS)
             plate.alpha_composite(car, (int(cx - tw / 2), int(mid * H - th / 2)))
             d.text((cx, mid * H), name, fill=(43, 39, 34), font=serif, anchor="mm")

@@ -12,7 +12,7 @@
   "scenes": [
     {
       "id": "d-threshold",
-      "plate": "shelf/plates/dressed/dressed-thresh-b-wall.png",
+      "plate": "shelf/plates/dressed/dressed-thresh-b-trim.png",
       "px_per_mm": 3.6,
       "sink_px": 6,
       "objects": [
