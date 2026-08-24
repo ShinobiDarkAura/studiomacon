@@ -241,7 +241,10 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* dead-centre on the shelf face; the earlier 5px lift fought that.
      No paper any more, so no tilt either — a rotated line with nothing under it
      reads as a mistake rather than as a label lying on a sheet. */
-  transform:translate(-50%,-50%);
+  /* --card-dy is edit mode only. The build pins the label to the shelf's front
+     face whatever the piece's y is, so moving a piece up or down must not carry
+     its name with it — this keeps the preview honest about that. */
+  transform:translate(-50%,calc(-50% + var(--card-dy,0px)));
   /* A fixed-size row, centred. The price opens to the right of the name and the
      pair recentres, so nothing changes size — the carrier least of all. */
   display:flex;flex-direction:row;align-items:center;justify-content:center;

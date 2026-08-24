@@ -50,6 +50,7 @@ SHUFFLE = """
   <div class="ed-h"><b>Shelf editor</b><span class="ed-x">esc</span></div>
   <div class="ed-sel">click a piece</div>
   <div class="ed-scale">scale <b id="ed-scaleval">1.000</b> <span>drag the corner</span></div>
+  <label>red&ndash;yel <input type="range" id="ed-tint" min="-0.3" max="0.3" step="0.005"><i>0.000</i></label>
   <label>warmth <input type="range" id="ed-warmth" min="-0.35" max="0.35" step="0.005"><i>0.000</i></label>
   <label>bright <input type="range" id="ed-bright" min="0.5" max="1.6" step="0.005"><i>1.000</i></label>
   <label>contrast <input type="range" id="ed-contrast" min="0.5" max="1.8" step="0.005"><i>1.000</i></label>
@@ -71,6 +72,7 @@ SHUFFLE = """
   if (!panel) return;
   var sel = null, dragging = null, on = false;
   var f = {
+    tint: document.getElementById('ed-tint'),
     warmth: document.getElementById('ed-warmth'),
     bright: document.getElementById('ed-bright'),
     contrast: document.getElementById('ed-contrast')
@@ -86,8 +88,8 @@ SHUFFLE = """
     img.style.transformOrigin = getComputedStyle(el).getPropertyValue('--bx') + ' ' +
                                 getComputedStyle(el).getPropertyValue('--by');
     img.style.transform = 'translateX(' + num(el, 'dx') + 'px) scale(' + k + ')';
-    var w = num(el, 'warmth'), b = num(el, 'bright'), c = num(el, 'contrast');
-    if (!w && b === 1 && c === 1) { img.style.filter = ''; return; }
+    var w = num(el, 'warmth'), g = num(el, 'tint'), b = num(el, 'bright'), c = num(el, 'contrast');
+    if (!w && !g && b === 1 && c === 1) { img.style.filter = ''; return; }
     var id = 'tone-live-' + el.dataset.scene + '-' + el.dataset.slug;
     var fl = document.getElementById(id);
     if (!fl) {
@@ -97,7 +99,8 @@ SHUFFLE = """
       fl.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'feColorMatrix'));
       defs.appendChild(fl);
     }
-    var gr = (1 + w) * b * c, gg = b * c, gb = (1 - w) * b * c, off = 0.5 * (1 - c);
+    var gr = (1 + w) * (1 - g * 0.5) * b * c, gg = (1 + g) * b * c,
+        gb = (1 - w) * (1 - g * 0.5) * b * c, off = 0.5 * (1 - c);
     fl.firstChild.setAttribute('type', 'matrix');
     fl.firstChild.setAttribute('values',
       gr + ' 0 0 0 ' + off + ' 0 ' + gg + ' 0 0 ' + off + ' 0 0 ' + gb + ' 0 ' + off + ' 0 0 0 1 0');
@@ -110,13 +113,19 @@ SHUFFLE = """
     var scene = el.closest('.scene').getBoundingClientRect();
     el.style.left = (parseFloat(el.dataset.left0) + (num(el, 'x') - parseFloat(el.dataset.x0)) * 100) + '%';
     el.style.top = (parseFloat(el.dataset.top0) + (num(el, 'y') - parseFloat(el.dataset.y0)) * 100) + '%';
+    // Hold the label on the shelf face. The card rides inside the mark, so
+    // raising or lowering a piece would drag its name along — but the build
+    // recomputes the card against the shelf front and keeps it put, so the
+    // preview has to cancel the same amount or it lies about the result.
+    var dy = (num(el, 'y') - parseFloat(el.dataset.y0)) * scene.height;
+    el.style.setProperty('--card-dy', (-dy) + 'px');
   }
 
   function show() {
     if (!sel) { panel.querySelector('.ed-sel').textContent = 'click a piece'; return; }
     panel.querySelector('.ed-sel').textContent = sel.dataset.slug + '  ·  ' + sel.dataset.scene;
     document.getElementById('ed-scaleval').textContent = num(sel, 'scale').toFixed(3);
-    ['warmth', 'bright', 'contrast'].forEach(function (k) {
+    ['tint', 'warmth', 'bright', 'contrast'].forEach(function (k) {
       f[k].value = num(sel, k);
       f[k].nextElementSibling.textContent = (+num(sel, k)).toFixed(3);
     });
@@ -207,7 +216,8 @@ SHUFFLE = """
     if (!sel) return;
     sel.dataset.x = sel.dataset.x0; sel.dataset.y = sel.dataset.y0;
     sel.dataset.scale = sel.dataset.scale0;
-    sel.dataset.warmth = 0; sel.dataset.bright = 1; sel.dataset.contrast = 1;
+    sel.dataset.warmth = 0; sel.dataset.tint = 0;
+    sel.dataset.bright = 1; sel.dataset.contrast = 1;
     place(sel); apply(sel); show(); mark(sel);
   });
 
@@ -217,6 +227,7 @@ SHUFFLE = """
       var el = dirty[k];
       var t = {};
       if (num(el, 'warmth')) t.warmth = +num(el, 'warmth').toFixed(4);
+      if (num(el, 'tint')) t.tint = +num(el, 'tint').toFixed(4);
       if (num(el, 'bright') !== 1) t.bright = +num(el, 'bright').toFixed(4);
       if (num(el, 'contrast') !== 1) t.contrast = +num(el, 'contrast').toFixed(4);
       return { scene: el.dataset.scene, slug: el.dataset.slug,
@@ -283,9 +294,15 @@ def tone_matrix(t):
     sprite on disk.
     """
     w = float(t.get("warmth", 0.0))
+    g = float(t.get("tint", 0.0))
     b = float(t.get("bright", 1.0))
     c = float(t.get("contrast", 1.0))
-    gr, gg, gb = (1.0 + w) * b * c, b * c, (1.0 - w) * b * c
+    # warmth swings red against blue; tint swings green against both, which is
+    # the axis that separates a red bronze from a yellow one. Red and blue are
+    # pulled back by half of it so the piece does not brighten as it yellows.
+    gr = (1.0 + w) * (1.0 - g * 0.5) * b * c
+    gg = (1.0 + g) * b * c
+    gb = (1.0 - w) * (1.0 - g * 0.5) * b * c
     off = 0.5 * (1.0 - c)
     return (f"{gr:.4f} 0 0 0 {off:.4f}  0 {gg:.4f} 0 0 {off:.4f}  "
             f"0 0 {gb:.4f} 0 {off:.4f}  0 0 0 1 0")
@@ -419,7 +436,7 @@ def main():
          data-scene="{scene['id']}" data-slug="{slug}"
          data-x="{o['x']}" data-y="{o['y']}" data-scale="{float(o.get('scale', 1.0))}"
          data-dx="{o.get('dx_px', 0)}"
-         data-warmth="{tone.get('warmth', 0)}" data-bright="{tone.get('bright', 1)}"
+         data-warmth="{tone.get('warmth', 0)}" data-tint="{tone.get('tint', 0)}" data-bright="{tone.get('bright', 1)}"
          data-contrast="{tone.get('contrast', 1)}"
          style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 8.80:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 4.13:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy"{tone_attr}>
