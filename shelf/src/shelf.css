@@ -257,7 +257,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
      regular, and a synthesised bold at 161% of its ink. A hairline stroke is
      the only way to sit between them — this lands near 140%, one step back. */
   -webkit-text-stroke:0.38px currentColor;
-  font-size:clamp(9px,calc(1.34vw - 4px),19px);letter-spacing:.02em;
+  font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.02em;
   color:#fff;
 }
 
@@ -273,7 +273,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
      the only way to sit between them — this lands near 140%, one step back. */
   -webkit-text-stroke:0.38px currentColor;
   /* deliberately larger than the name now */
-  font-size:clamp(9px,calc(1.34vw - 4px),19px);letter-spacing:.05em;
+  font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.05em;
   color:#fff;
   max-width:0;opacity:0;margin-left:0;transform:translateX(.45em);
   transition:max-width .36s cubic-bezier(.22,.9,.28,1),opacity .28s ease,
