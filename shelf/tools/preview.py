@@ -42,13 +42,14 @@ def main():
     prod = {p["slug"]: p for p in cache["products"]}
     over = comp.get("mm", {})
 
-    CARRIERS = ["torn-paper", "washi-tape", "vellum-strip", "graph-slip", "ledger-strip"]
+    CARRIER = "torn-paper"
+    TILTS = [-2.4, 1.7, -1.1, 2.3, -1.8, 0.9]
     for scene in comp["scenes"]:
         plate = Image.open(os.path.join(SITE, f"plate-{scene['id']}.jpg")).convert("RGBA")
         W, H = plate.size
         d = ImageDraw.Draw(plate)
         serif = font(["/Users/aco/Documents/aco/Work/Resources/Fonts/Fonts/gabriele/gabriele-d.ttf",
-                      "/System/Library/Fonts/Supplemental/Georgia.ttf"], max(19, int(W * 0.0134) + 6))
+                      "/System/Library/Fonts/Supplemental/Georgia.ttf"], max(10, int(W * 0.0134) - 3))
         mono = font(["/System/Library/Fonts/Supplemental/Courier New.ttf",
                      "/System/Library/Fonts/Menlo.ttc"], max(9, int(W * 0.0088)))
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
@@ -90,12 +91,12 @@ def main():
             name, price = p["name"], (f"${float(p['price']):,.0f}" if p.get("price") else "")
             # at rest the page shows the name only; the price appears on hover
             # the carrier the label is written on
-            car = Image.open(os.path.join(ROOT, "shelf/carriers",
-                                          CARRIERS[oi % len(CARRIERS)] + ".png")).convert("RGBA")
-            tw = int(d.textlength(name, font=serif) + serif.size * 6.6)
-            th = int(serif.size * 5.0)
+            car = Image.open(os.path.join(ROOT, "shelf/carriers", CARRIER + ".png")).convert("RGBA")
+            tw = int(d.textlength(name, font=serif) + serif.size * 7.8)
+            th = int(serif.size * 5.9)
             car = car.resize((max(8, tw), max(6, th)), Image.LANCZOS)
-            plate.alpha_composite(car, (int(cx - tw / 2), int(mid * H - th / 2)))
+            car = car.rotate(-TILTS[oi % len(TILTS)], expand=True, resample=Image.BICUBIC)
+            plate.alpha_composite(car, (int(cx - car.width / 2), int(mid * H - car.height / 2)))
             d.text((cx, mid * H), name, fill=(43, 39, 34), font=serif, anchor="mm")
 
         out = os.path.join(ROOT, "shelf/_test", f"preview-{scene['id']}.jpg")

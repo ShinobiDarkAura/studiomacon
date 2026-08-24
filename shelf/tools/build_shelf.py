@@ -15,9 +15,10 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "shelf", "_site")
 PIECE_W = 320          # plenty: pieces display around 90-180px
-# Labels sit on a real carrier rather than floating on the shelf. Rotated so the
-# shelf does not read as a printed row.
-CARRIERS = ["torn-paper", "washi-tape", "vellum-strip", "graph-slip", "ledger-strip"]
+# One carrier for every label — torn paper — but each set at its own slight angle,
+# so a shelf reads as hand-labelled rather than as a printed row.
+CARRIER = "torn-paper"
+TILTS = ["-2.4deg", "1.7deg", "-1.1deg", "2.3deg", "-1.8deg", "0.9deg"]
 
 
 def stamp(path):
@@ -122,11 +123,11 @@ def main():
             base_x, base_y = bx / sw * 100, by / sh * 100
             obj_w = meta["object"][0] * s / sw * 100
 
-            carrier = CARRIERS[len(marks) % len(CARRIERS)]
+            tilt = TILTS[len(marks) % len(TILTS)]
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
-         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp)">
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{CARRIER}.webp);--tilt:{tilt}">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="nm">{html.escape(p['name'])}</span>
