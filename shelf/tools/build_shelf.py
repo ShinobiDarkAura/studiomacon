@@ -82,8 +82,11 @@ def main():
 
             sw, sh = meta["sprite"][0] * s, meta["sprite"][1] * s
             bx, by = meta["base"][0] * s, meta["base"][1] * s
-            left = (W * o["x"] - bx) / W * 100
-            top = (H * o["y"] - by + sink) / H * 100
+            # Keep these in plate pixels; convert to percentages only when they
+            # are written out. Mixing the two is what threw every label off.
+            left_px = W * o["x"] - bx
+            top_px = H * o["y"] - by + sink
+            left, top = left_px / W * 100, top_px / H * 100
 
             sp = Image.open(os.path.join(ROOT, "shelf/sprites", f"{piece}.png")).convert("RGBA")
             tw = min(PIECE_W, sp.width)
@@ -94,7 +97,7 @@ def main():
             # percentages of the SPRITE, not of the plate: drop from the object's
             # base by the shelf-front distance, and centre on the base, not on the
             # sprite (whose width includes the shadow and is off-centre).
-            card_top = (mid * H - top) / sh * 100      # centred on the shelf front
+            card_top = (mid * H - top_px) / sh * 100   # centred on the shelf front
             card_left = bx / sw * 100
 
             marks.append(
@@ -165,6 +168,22 @@ def main():
 document.querySelector('[data-menu-toggle]').addEventListener('click', function () {{
   document.body.classList.toggle('menu-open');
 }});
+
+// The logotype drifts slower than the shelf behind it.
+(function () {{
+  var copy = document.querySelector('.hero-copy'), hero = document.querySelector('.scene.hero');
+  if (!copy || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var RATE = 0.34, ticking = false;
+  function place() {{
+    var y = window.scrollY;
+    if (y < hero.offsetHeight * 1.2) copy.style.transform = 'translateY(' + (y * RATE) + 'px)';
+    ticking = false;
+  }}
+  window.addEventListener('scroll', function () {{
+    if (!ticking) {{ ticking = true; requestAnimationFrame(place); }}
+  }}, {{passive: true}});
+  place();
+}})();
 
 // Nav is white over photography and ink once the Record is behind it.
 (function () {{
