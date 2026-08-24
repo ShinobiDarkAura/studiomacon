@@ -16,13 +16,15 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SPR = os.path.join(ROOT, "shelf", "sprites")
 
-# slug: (saturation gain, warmth gain, luminance where the effect starts)
-PIECES = {"ren": (1.34, 1.16, 0.42), "zuma": (1.34, 1.16, 0.42)}
+# slug: (saturation, warmth, luminance knee, brightness)
+# Applied in place and cumulative, so re-harvest the piece before re-running.
+PIECES = {"ren":  (1.34, 1.16, 0.42, 1.00),
+          "zuma": (1.58, 1.26, 0.36, 1.14)}
 
 
 def main():
     pieces = json.load(open(os.path.join(ROOT, "shelf/pieces.json"), encoding="utf-8"))
-    for slug, (sat, warm, knee) in PIECES.items():
+    for slug, (sat, warm, knee, lift) in PIECES.items():
         path = os.path.join(SPR, f"{pieces[slug]}.png")
         a = np.asarray(Image.open(path).convert("RGBA")).astype(np.float32)
         rgb, al = a[..., :3], a[..., 3:4] / 255.0
@@ -33,6 +35,7 @@ def main():
         boosted = grey + (rgb - grey) * sat
         boosted[..., 0] *= warm
         boosted[..., 2] /= warm
+        boosted *= lift
         out = np.clip(rgb * (1 - w) + boosted * w, 0, 255)
         before = rgb[(al[..., 0] > .5) & (lum[..., 0] > knee)]
         after = out[(al[..., 0] > .5) & (lum[..., 0] > knee)]
