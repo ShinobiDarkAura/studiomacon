@@ -12,39 +12,39 @@
   "scenes": [
     {
       "id": "d-threshold",
-      "plate": "shelf/plates/dressed/dressed-thresh-b-trim.png",
+      "plate": "shelf/plates/dressed/dressed-thresh-b-tall.png",
       "px_per_mm": 3.6,
       "sink_px": 6,
       "objects": [
         {
           "slug": "milo",
           "x": 0.3388,
-          "y": 0.90989,
+          "y": 0.8653,
           "scale": 0.9592
         },
         {
           "slug": "pip",
           "x": 0.5,
-          "y": 0.90989,
+          "y": 0.8653,
           "scale": 1.15
         },
         {
           "slug": "yael",
           "x": 0.65521,
-          "y": 0.90989,
+          "y": 0.8653,
           "scale": 1.08
         }
       ],
       "shelf_fronts": [
         {
-          "y": 0.90989,
+          "y": 0.8653,
           "front": [
-            0.94332,
-            0.99711
+            0.8963,
+            0.9906
           ]
         }
       ],
-      "_note": "Uprights cropped off (they were invented per plate and never matched) and the plate squared off. Fractions below are mapped through that crop."
+      "_note": "Canvas extended 52px and the bronze plate's deep shelf face grafted onto the lower shelf, so both scenes show the same depth of shelf. Fractions rescaled by 1009/1061."
     },
     {
       "id": "d-bronze",

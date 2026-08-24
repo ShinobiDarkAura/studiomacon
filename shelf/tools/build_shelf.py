@@ -15,9 +15,9 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, "shelf", "_site")
 PIECE_W = 320          # plenty: pieces display around 90-180px
-# One carrier for every label — torn paper — but each set at its own slight angle,
-# so a shelf reads as hand-labelled rather than as a printed row.
-CARRIER = "torn-paper"
+# Carriers rotate through the shelf, each also set at its own slight angle, so a
+# shelf reads as hand-labelled rather than as a printed row.
+CARRIERS = ["torn-paper", "washi-tape", "graph-slip", "ledger-strip"]
 TILTS = ["-2.4deg", "1.7deg", "-1.1deg", "2.3deg", "-1.8deg", "0.9deg"]
 
 
@@ -58,10 +58,10 @@ def main():
                    "ashcroft-light.woff2", "ashcroft-regular.woff2"):
         shutil.copyfile(os.path.join(ROOT, "shelf/assets", _asset), os.path.join(OUT, _asset))
 
-    # The card is given the carrier's own proportions, so stretching a torn edge
-    # to fit a word never happens — the box follows the paper, not the other way.
-    _car = Image.open(os.path.join(ROOT, "shelf/carriers", CARRIER + ".png"))
-    CAR_AR = _car.width / _car.height
+    # Each carrier's own proportions, angle and centre, measured from the file.
+    # The box follows the paper — never the other way — and the words are offset
+    # and turned onto the sheet, which is neither level nor centred in its frame.
+    GEO = json.load(open(os.path.join(ROOT, "shelf/carriers/geometry.json"), encoding="utf-8"))
 
     hero_copy = f'''
       <div class="hero-copy">
@@ -137,10 +137,12 @@ def main():
             obj_w = meta["object"][0] * s / sw * 100
 
             tilt = TILTS[len(marks) % len(TILTS)]
+            carrier = CARRIERS[len(marks) % len(CARRIERS)]
+            g = GEO[carrier]
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
-         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{CARRIER}.webp);--tilt:{tilt};--car-ar:{CAR_AR:.4f}">
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 13.1:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 6.16:.3f}em;--paper-tilt:{g['tilt']}deg">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="ink">
@@ -238,17 +240,19 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
       var i = 0;
       (function tick() {{
         render(++i);
-        if (i < text.length) setTimeout(tick, 78);
+        if (i < text.length) setTimeout(tick, 58);
       }})();
     }}, 400);
   }});
 
   document.addEventListener('macon:introdone', function () {{
-    setTimeout(function () {{
+    var skipped = document.body.classList.contains('intro-skipped');
+    var arm = function () {{
       copy.style.transition = 'none';   // scroll drives opacity directly from here
       armed = true;
       place();
-    }}, 850);
+    }};
+    if (skipped) arm(); else setTimeout(arm, 850);
   }});
 }})();
 
@@ -301,6 +305,10 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     if (mark) mark.style.opacity = String(Math.max(0, 1 - y / 220));
     if (y > 200) {{
       window.removeEventListener('scroll', onEarly);
+      // Scrolled away before the mark finished: the wordmark never gets its
+      // entrance. Its opacity is handed straight to the scroll position, which
+      // at this point is already zero.
+      body.classList.add('intro-skipped');
       body.classList.add('intro-wipe');
       finish();
     }}

@@ -80,6 +80,7 @@ body.intro-wipe .curtain{transition:opacity .34s ease;opacity:0}
 body.intro .nav .logo{opacity:0}
 body.intro .hero-copy{opacity:0}
 .hero-copy{transition:opacity .38s ease .05s}
+body.intro-skipped .hero-copy{transition:none}
 body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .nav .menu,.nav .bag{animation:fadeIn .7s ease both}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -95,10 +96,12 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .hero-copy{
   position:fixed;inset:0;z-index:6;pointer-events:none;
   will-change:opacity;
-  /* Projected, not painted on. Screen adds light to the wall instead of
-     replacing it, so the plaster's grain and the window shadows still read
-     through the letterforms and dim them where they fall. */
-  mix-blend-mode:screen;
+  /* Projected, not painted on. Overlay rather than screen: screen carries only
+     about 23 levels of the wall's own light into the mark across its full range,
+     which is why the light from the window never showed. Overlay carries 83 — it
+     screens where the plaster is lit and multiplies where it is in shadow, so the
+     mark brightens toward the window and darkens as the shadows cross it. */
+  mix-blend-mode:overlay;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;color:#fff;padding:24px;line-height:1.2;
 }
@@ -115,9 +118,9 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
      from flat white, which is why nothing appeared to change. This yields about
      (215,205,186), which screens to 237 on lit plaster and 227 in the leaf
      shadow: the wall reads through, and the shadows dim the mark as they cross. */
-  filter:brightness(0) invert(1) sepia(.42) saturate(.9) brightness(.74)
-         drop-shadow(0 0 30px rgba(255,232,196,.26));
-  opacity:.9;
+  filter:brightness(0) invert(1) sepia(.36) saturate(.8) brightness(.86)
+         drop-shadow(0 0 30px rgba(255,232,196,.22));
+  opacity:.95;
 }
 @media(max-width:700px){.logotype{height:151px}}
 .hero-copy .tagline{
@@ -125,14 +128,14 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   font-family:"Index",ui-monospace,monospace;
   /* Index ships as a single weight, so this is a synthesised bold */
   font-weight:700;
-  font-size:19px;letter-spacing:.085em;color:#d8cdb8;opacity:.9;
+  font-size:19px;letter-spacing:.085em;color:#e8dcc4;opacity:.95;
   text-shadow:0 0 18px rgba(255,236,206,.2);
   /* typed one character at a time; the width is fixed first so the line does not
      grow from its centre and shuffle sideways as it fills */
   white-space:pre;text-align:left;display:inline-block;
 }
 .hero-copy .tagline .dot{
-  display:inline-block;font-size:13px;transform:translateY(1px);
+  display:inline-block;font-size:13px;transform:translateY(0);
 }
 
 .hero-copy .eyebrow{
@@ -156,8 +159,10 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .mark{position:absolute;line-height:0;z-index:5;display:block}
 .mark .piece{
   width:100%;height:auto;display:block;
-  transition:filter .42s ease;
+  transform-origin:50% 100%;
+  transition:filter .42s ease,transform .42s cubic-bezier(.22,.9,.28,1);
 }
+.mark:hover .piece,.mark:focus-visible .piece{transform:scale(1.01)}
 /* Warm bounce: a pool of light blooms on the shelf beneath the piece as it
    lifts, so the movement reads as lit rather than merely displaced. Sized in
    percentages of the piece so it holds at any width. */
@@ -169,12 +174,12 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   width:calc(var(--ow,60%) * 1.9);height:calc(var(--ow,60%) * 0.5);
   transform:translate(-50%,-42%);
   background:radial-gradient(ellipse at 50% 50%,
-    rgba(255,203,132,.44) 0%, rgba(255,203,132,.20) 44%, rgba(255,203,132,0) 74%);
-  opacity:.55;pointer-events:none;z-index:-1;
+    rgba(255,198,120,.62) 0%, rgba(255,198,120,.30) 44%, rgba(255,198,120,0) 74%);
+  opacity:.78;pointer-events:none;z-index:-1;
   transition:opacity .42s ease,transform .42s ease;
 }
 .mark:hover::after,.mark:focus-visible::after{
-  opacity:1;transform:translate(-50%,-42%) scale(1.14);
+  opacity:1;transform:translate(-50%,-42%) scale(1.2);
 }
 
 /* A piece picked up off a shelf lifts and turns very slightly toward you; the
@@ -194,7 +199,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* The sheet sits slightly off-centre and 0.55deg off level inside its own file.
      Nudging the words by that much lands them on the paper rather than on the box
      that holds it. */
-  --paper-dx:.68em; --paper-dy:.31em; --paper-tilt:.55deg;
+  /* per-carrier values arrive inline from the build */
   /* The box takes the carrier's own proportions and the background fills it
      exactly, so the paper is scaled rather than stretched. */
   box-sizing:border-box;height:6.16em;aspect-ratio:var(--car-ar,2.13);width:auto;
