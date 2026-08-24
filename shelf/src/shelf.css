@@ -14,7 +14,9 @@
   --ink:#2b2722;            /* warm near-black, never pure black */
   /* Label ink: a warm reddish orange, held back from a pure orange so it reads
      as stamped pigment on the plaster rather than as a UI accent. */
-  --ink-label:#b4502a;
+  --ink-label:#8f3a1e;      /* darker, closer to iron-oxide than to orange */
+  /* the wordmark, tuned to the subtitle so the two read as one voice */
+  --logo-tint:#e8dcc4;
   --paper:#efe9df;
   --tan:#8d8375;
   --olive:#5a5348;
@@ -117,13 +119,16 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* An ivory beam rather than pure white: screened white stays white whatever is
      beneath it, and the wall would never show through. The bloom is the light
      scattering off the plaster; a projection casts no shadow of its own. */
-  /* The beam has to be well below white. The first attempt filtered to
-     (252,248,240) — screened over the wall that lands on 249, indistinguishable
-     from flat white, which is why nothing appeared to change. This yields about
-     (215,205,186), which screens to 237 on lit plaster and 227 in the leaf
-     shadow: the wall reads through, and the shadows dim the mark as they cross. */
-  filter:brightness(0) invert(1) sepia(.36) saturate(.8) brightness(.86)
-         drop-shadow(0 0 30px rgba(255,232,196,.22));
+  /* Painted, not filtered. The mark's texture lives entirely in its alpha — the
+     colour underneath is a flat near-black — so masking with it and filling
+     behind gives an exact tone with every speckle intact. The old filter chain
+     could not have got here: on white, sepia only pulls blue down about 6%, so
+     it bottomed out around (215,205,186), barely warm at all. */
+  background-color:var(--logo-tint);
+  -webkit-mask:url("logotype.png") center/contain no-repeat;
+          mask:url("logotype.png") center/contain no-repeat;
+  aspect-ratio:888/331;width:auto;
+  filter:drop-shadow(0 0 30px rgba(255,232,196,.22));
   opacity:.95;
 }
 @media(max-width:700px){.logotype{height:151px}}
@@ -217,7 +222,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* per-carrier values arrive inline from the build */
   /* The box takes the carrier's own proportions and the background fills it
      exactly, so the paper is scaled rather than stretched. */
-  box-sizing:border-box;height:3.77em;aspect-ratio:var(--car-ar,2.13);width:auto;
+  box-sizing:border-box;height:4.22em;aspect-ratio:var(--car-ar,2.13);width:auto;
   padding:0 1.1em;
   text-align:center;white-space:nowrap;line-height:1.15;
   /* contain, not 100% 100%: the box can still end up a few percent off the
@@ -240,7 +245,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   display:block;
   /* the dark ribbon cut, not the light one — this is the bold of the family */
   font-family:"Gabriele",Georgia,serif;font-weight:400;
-  font-size:clamp(6px,calc(1.34vw - 7px),16px);letter-spacing:.02em;
+  font-size:clamp(7px,calc(1.34vw - 6px),17px);letter-spacing:.02em;
   color:var(--ink);
 }
 
@@ -252,7 +257,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* the same dark ribbon cut as the name, so the pair reads as one stamp */
   font-family:"Gabriele",Georgia,serif;font-weight:400;
   /* deliberately larger than the name now */
-  font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.05em;
+  font-size:clamp(6px,calc(1.34vw - 7px),16px);letter-spacing:.05em;
   color:var(--ink-label);
   max-width:0;opacity:0;margin-left:0;transform:translateX(.45em);
   transition:max-width .36s cubic-bezier(.22,.9,.28,1),opacity .28s ease,
