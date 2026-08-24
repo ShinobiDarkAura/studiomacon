@@ -6,9 +6,8 @@ arithmetic cannot be caught by looking at the composed plate. This replays the
 exact percentages the page emits — same plate, same sprites, same offsets — so the
 layout can be checked when a browser is not cooperating.
 
-Type is approximated with a system serif. The page sets labels in Ashcroft Light,
-which ships here as woff2 only and cannot be loaded by PIL — so judge type on the
-page, not here. Positions and sizes are faithful.
+Type is approximated with a system serif. Labels are drawn in Gabriele Dark, the same face the page uses — it exists here
+as a TTF, so for once the preview shows the real lettering.
 
     python3 shelf/tools/preview.py
 """
@@ -48,8 +47,8 @@ def main():
         plate = Image.open(os.path.join(SITE, f"plate-{scene['id']}.jpg")).convert("RGBA")
         W, H = plate.size
         d = ImageDraw.Draw(plate)
-        serif = font(["/System/Library/Fonts/Supplemental/Georgia.ttf",
-                      "/System/Library/Fonts/Supplemental/Times New Roman.ttf"], max(19, int(W * 0.0134) + 6))
+        serif = font(["/Users/aco/Documents/aco/Work/Resources/Fonts/Fonts/gabriele/gabriele-d.ttf",
+                      "/System/Library/Fonts/Supplemental/Georgia.ttf"], max(19, int(W * 0.0134) + 6))
         mono = font(["/System/Library/Fonts/Supplemental/Courier New.ttf",
                      "/System/Library/Fonts/Menlo.ttc"], max(9, int(W * 0.0088)))
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
