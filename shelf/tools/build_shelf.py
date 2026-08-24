@@ -57,7 +57,7 @@ def main():
         <h1>Cast by hand, one at a time</h1>
         -->
         <img class="logotype" src="logotype.png?v={stamp(os.path.join(OUT, "logotype.png"))}" alt="Studio Ma&ccedil;on">
-        <p class="tagline" data-type="Artifacts of Love"></p>
+        <p class="tagline" data-type="Artifacts of Love &bull; Handmade in VT"></p>
         <!-- <p class="lede">{html.escape(tagline)}</p> -->
       </div>'''
 
