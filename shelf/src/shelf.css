@@ -244,6 +244,16 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 }
 .mark:hover .card,.mark:focus-visible .card{opacity:1}
 
+/* A short rule under the name, which draws out as the piece is pointed at.
+   Absolute rather than a flex child, so it cannot push the words off centre. */
+.mark .card::after{
+  content:"";position:absolute;left:50%;top:100%;
+  width:5px;height:1px;background:var(--mark-tint);
+  transform:translate(-50%,12px);
+  transition:width .3s cubic-bezier(.2,.85,.3,1);
+}
+.mark:hover .card::after,.mark:focus-visible .card::after{width:10px}
+
 /* One wrapper so the pair moves and turns together; transforming each span
    separately rotated them about their own centres and pulled them apart. The
    offsets are a share of the CARD, so they are set here where the card's own
@@ -297,3 +307,30 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   .scene.hero .mark{opacity:1;transform:none;transition:none}
 }
 
+
+
+/* ---- edit mode: hidden unless ?edit=1 or e is pressed ---- */
+.ed{
+  position:fixed;left:14px;bottom:14px;z-index:300;width:230px;
+  font:11px/1.45 ui-sans-serif,system-ui,sans-serif;color:#efe7d9;
+  background:rgba(26,22,18,.9);backdrop-filter:blur(10px);
+  border-radius:9px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;
+}
+.ed[hidden]{display:none}
+.ed-h{display:flex;justify-content:space-between;align-items:baseline;opacity:.85}
+.ed-x{opacity:.5}
+.ed-sel{padding:4px 6px;border-radius:5px;background:rgba(255,226,182,.14);
+  font-family:ui-monospace,monospace;font-size:10.5px}
+.ed label{display:grid;grid-template-columns:52px 1fr 42px;align-items:center;gap:6px}
+.ed label i{font-style:normal;font-family:ui-monospace,monospace;opacity:.7;text-align:right}
+.ed input[type=range]{width:100%;accent-color:#e8c88a}
+.ed-tip{opacity:.5}
+.ed-b{display:flex;gap:6px}
+.ed button{flex:1;border:0;cursor:pointer;border-radius:5px;padding:6px 4px;
+  background:rgba(255,226,182,.2);color:#f6efe2;font:inherit}
+.ed button:hover{background:rgba(255,226,182,.32)}
+.ed-msg{min-height:14px;opacity:.75}
+/* while editing, pieces answer the pointer rather than the link */
+body.editing .mark{cursor:grab}
+body.editing .mark.ed-on{outline:1px dashed rgba(255,226,182,.8);outline-offset:3px}
+body.editing .mark .card{opacity:1}

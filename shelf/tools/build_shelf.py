@@ -43,7 +43,182 @@ def longest_mm(notes):
             return max(nums)
 
 
-SHUFFLE = """</body></html>"""
+SHUFFLE = """
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>__TONE_DEFS__</defs></svg>
+
+<div class="ed" hidden>
+  <div class="ed-h"><b>Shelf editor</b><span class="ed-x">esc</span></div>
+  <div class="ed-sel">click a piece</div>
+  <label>scale <input type="range" id="ed-scale" min="0.3" max="3" step="0.005"><i>1.000</i></label>
+  <label>warmth <input type="range" id="ed-warmth" min="-0.35" max="0.35" step="0.005"><i>0.000</i></label>
+  <label>bright <input type="range" id="ed-bright" min="0.5" max="1.6" step="0.005"><i>1.000</i></label>
+  <label>contrast <input type="range" id="ed-contrast" min="0.5" max="1.8" step="0.005"><i>1.000</i></label>
+  <div class="ed-tip">drag to move &middot; arrows nudge &middot; shift = 10px</div>
+  <div class="ed-b"><button id="ed-reset">reset piece</button><button id="ed-save">save &amp; rebuild</button></div>
+  <div class="ed-msg"></div>
+</div>
+
+<script>
+/* Edit mode. Off unless the page is opened with ?edit=1 or e is pressed, so the
+   published page carries it but never shows it.
+
+   Everything is previewed exactly as it will ship: position moves the same
+   fractions the composition stores, scale turns about the piece's own base so it
+   stays standing on the shelf, and tone goes through the same colour matrix the
+   build writes. Save posts the changed pieces back and rebuilds. */
+(function () {
+  var panel = document.querySelector('.ed');
+  if (!panel) return;
+  var sel = null, dragging = null, on = false;
+  var f = {
+    scale: document.getElementById('ed-scale'),
+    warmth: document.getElementById('ed-warmth'),
+    bright: document.getElementById('ed-bright'),
+    contrast: document.getElementById('ed-contrast')
+  };
+  var dirty = {};
+
+  function num(el, k) { return parseFloat(el.dataset[k]); }
+
+  function apply(el) {
+    var img = el.querySelector('.piece');
+    var k = num(el, 'scale') / parseFloat(el.dataset.scale0);
+    // turn about the base: the piece stands on that point, so it must not drift
+    img.style.transformOrigin = getComputedStyle(el).getPropertyValue('--bx') + ' ' +
+                                getComputedStyle(el).getPropertyValue('--by');
+    img.style.transform = 'translateX(' + num(el, 'dx') + 'px) scale(' + k + ')';
+    var w = num(el, 'warmth'), b = num(el, 'bright'), c = num(el, 'contrast');
+    if (!w && b === 1 && c === 1) { img.style.filter = ''; return; }
+    var id = 'tone-live-' + el.dataset.scene + '-' + el.dataset.slug;
+    var fl = document.getElementById(id);
+    if (!fl) {
+      var defs = document.querySelector('svg defs');
+      fl = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+      fl.id = id; fl.setAttribute('color-interpolation-filters', 'sRGB');
+      fl.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'feColorMatrix'));
+      defs.appendChild(fl);
+    }
+    var gr = (1 + w) * b * c, gg = b * c, gb = (1 - w) * b * c, off = 0.5 * (1 - c);
+    fl.firstChild.setAttribute('type', 'matrix');
+    fl.firstChild.setAttribute('values',
+      gr + ' 0 0 0 ' + off + ' 0 ' + gg + ' 0 0 ' + off + ' 0 0 ' + gb + ' 0 ' + off + ' 0 0 0 1 0');
+    img.style.filter = 'url(#' + id + ')';
+  }
+
+  function place(el) {
+    // left is (plate width * x) minus the base offset; only x moved, so shift by
+    // the same fraction of the scene's rendered width
+    var scene = el.closest('.scene').getBoundingClientRect();
+    el.style.left = (parseFloat(el.dataset.left0) + (num(el, 'x') - parseFloat(el.dataset.x0)) * 100) + '%';
+    el.style.top = (parseFloat(el.dataset.top0) + (num(el, 'y') - parseFloat(el.dataset.y0)) * 100) + '%';
+  }
+
+  function show() {
+    if (!sel) { panel.querySelector('.ed-sel').textContent = 'click a piece'; return; }
+    panel.querySelector('.ed-sel').textContent = sel.dataset.slug + '  ·  ' + sel.dataset.scene;
+    ['scale', 'warmth', 'bright', 'contrast'].forEach(function (k) {
+      f[k].value = num(sel, k);
+      f[k].nextElementSibling.textContent = (+num(sel, k)).toFixed(3);
+    });
+  }
+
+  function mark(el) { dirty[el.dataset.scene + '/' + el.dataset.slug] = el; }
+
+  function setOn(v) {
+    on = v; panel.hidden = !v;
+    document.body.classList.toggle('editing', v);
+    if (!v && sel) { sel.classList.remove('ed-on'); sel = null; }
+  }
+
+  document.querySelectorAll('.mark').forEach(function (el) {
+    el.dataset.scale0 = el.dataset.scale;
+    el.dataset.x0 = el.dataset.x; el.dataset.y0 = el.dataset.y;
+    el.dataset.left0 = parseFloat(el.style.left); el.dataset.top0 = parseFloat(el.style.top);
+    el.addEventListener('click', function (e) {
+      if (!on) return;
+      e.preventDefault(); e.stopPropagation();
+      if (sel) sel.classList.remove('ed-on');
+      sel = el; el.classList.add('ed-on'); show();
+    });
+    el.addEventListener('pointerdown', function (e) {
+      if (!on) return;
+      e.preventDefault();
+      if (sel) sel.classList.remove('ed-on');
+      sel = el; el.classList.add('ed-on'); show();
+      var r = el.closest('.scene').getBoundingClientRect();
+      dragging = { sx: e.clientX, sy: e.clientY, x: num(el, 'x'), y: num(el, 'y'), w: r.width, h: r.height };
+      el.setPointerCapture(e.pointerId);
+    });
+    el.addEventListener('pointermove', function (e) {
+      if (!dragging || sel !== el) return;
+      el.dataset.x = dragging.x + (e.clientX - dragging.sx) / dragging.w;
+      el.dataset.y = dragging.y + (e.clientY - dragging.sy) / dragging.h;
+      place(el); mark(el);
+    });
+    el.addEventListener('pointerup', function () { dragging = null; });
+  });
+
+  Object.keys(f).forEach(function (k) {
+    f[k].addEventListener('input', function () {
+      if (!sel) return;
+      sel.dataset[k] = f[k].value;
+      f[k].nextElementSibling.textContent = (+f[k].value).toFixed(3);
+      apply(sel); mark(sel);
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'e' && !e.metaKey && !e.ctrlKey && e.target === document.body) { setOn(!on); return; }
+    if (!on) return;
+    if (e.key === 'Escape') { setOn(false); return; }
+    if (!sel || e.key.indexOf('Arrow') !== 0) return;
+    e.preventDefault();
+    var r = sel.closest('.scene').getBoundingClientRect();
+    var step = (e.shiftKey ? 10 : 1);
+    if (e.key === 'ArrowLeft') sel.dataset.x = num(sel, 'x') - step / r.width;
+    if (e.key === 'ArrowRight') sel.dataset.x = num(sel, 'x') + step / r.width;
+    if (e.key === 'ArrowUp') sel.dataset.y = num(sel, 'y') - step / r.height;
+    if (e.key === 'ArrowDown') sel.dataset.y = num(sel, 'y') + step / r.height;
+    place(sel); mark(sel);
+  });
+
+  document.getElementById('ed-reset').addEventListener('click', function () {
+    if (!sel) return;
+    sel.dataset.x = sel.dataset.x0; sel.dataset.y = sel.dataset.y0;
+    sel.dataset.scale = sel.dataset.scale0;
+    sel.dataset.warmth = 0; sel.dataset.bright = 1; sel.dataset.contrast = 1;
+    place(sel); apply(sel); show(); mark(sel);
+  });
+
+  document.getElementById('ed-save').addEventListener('click', function () {
+    var msg = panel.querySelector('.ed-msg');
+    var pieces = Object.keys(dirty).map(function (k) {
+      var el = dirty[k];
+      var t = {};
+      if (num(el, 'warmth')) t.warmth = +num(el, 'warmth').toFixed(4);
+      if (num(el, 'bright') !== 1) t.bright = +num(el, 'bright').toFixed(4);
+      if (num(el, 'contrast') !== 1) t.contrast = +num(el, 'contrast').toFixed(4);
+      return { scene: el.dataset.scene, slug: el.dataset.slug,
+               x: +num(el, 'x').toFixed(5), y: +num(el, 'y').toFixed(5),
+               scale: +num(el, 'scale').toFixed(4), dx_px: Math.round(num(el, 'dx')),
+               tone: Object.keys(t).length ? t : null };
+    });
+    if (!pieces.length) { msg.textContent = 'nothing changed'; return; }
+    msg.textContent = 'saving ' + pieces.length + '...';
+    fetch('/api/composition', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ pieces: pieces }) })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        msg.textContent = r.error ? ('failed: ' + r.error) : ('saved ' + r.saved + ' — reload to see the built page');
+        if (!r.error) dirty = {};
+      })
+      .catch(function (err) { msg.textContent = 'failed: ' + err.message; });
+  });
+
+  if (new URLSearchParams(location.search).has('edit')) setOn(true);
+})();
+</script>
+</body></html>"""
 
 
 # A patch of bare wall, matching plate_tone.py so the two agree.
@@ -75,6 +250,24 @@ def tone_to(sp, balance):
     gain = np.clip(balance / (own / own.mean()), *TONE_CLAMP)
     a[..., :3] = np.clip(a[..., :3] * gain, 0, 255)
     return Image.fromarray(a.astype(np.uint8))
+
+
+def tone_matrix(t):
+    """feColorMatrix values for a piece's tone.
+
+    Kept as a matrix rather than a stack of CSS filter functions because warmth
+    is a per-channel gain and CSS has no primitive for that — sepia and
+    hue-rotate only approximate it. Green is the hinge, so warmth moves the cast
+    without moving the brightness, the same convention used when correcting a
+    sprite on disk.
+    """
+    w = float(t.get("warmth", 0.0))
+    b = float(t.get("bright", 1.0))
+    c = float(t.get("contrast", 1.0))
+    gr, gg, gb = (1.0 + w) * b * c, b * c, (1.0 - w) * b * c
+    off = 0.5 * (1.0 - c)
+    return (f"{gr:.4f} 0 0 0 {off:.4f}  0 {gg:.4f} 0 0 {off:.4f}  "
+            f"0 0 {gb:.4f} 0 {off:.4f}  0 0 0 1 0")
 
 
 def main():
@@ -112,6 +305,7 @@ def main():
       </div>'''
 
     scenes_html = []
+    tone_defs = []
     for si, scene in enumerate(comp["scenes"]):
         plate_src = os.path.join(ROOT, scene["plate"])
         plate = Image.open(plate_src)
@@ -189,11 +383,24 @@ def main():
             tilt = TILTS[len(marks) % len(TILTS)]
             carrier = CARRIERS[0]
             g = GEO[carrier]
+            tone = o.get("tone") or {}
+            if tone:
+                tid = f"tone-{scene['id']}-{slug}"
+                tone_defs.append(f'<filter id="{tid}" color-interpolation-filters="sRGB">'
+                                 f'<feColorMatrix type="matrix" values="{tone_matrix(tone)}"/></filter>')
+                tone_attr = f' style="filter:url(#{tid})"'
+            else:
+                tone_attr = ""
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
+         data-scene="{scene['id']}" data-slug="{slug}"
+         data-x="{o['x']}" data-y="{o['y']}" data-scale="{float(o.get('scale', 1.0))}"
+         data-dx="{o.get('dx_px', 0)}"
+         data-warmth="{tone.get('warmth', 0)}" data-bright="{tone.get('bright', 1)}"
+         data-contrast="{tone.get('contrast', 1)}"
          style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 8.80:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 4.13:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px">
-        <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
+        <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy"{tone_attr}>
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="ink">
             <span class="nm">{html.escape(p['name'])}</span>
@@ -386,7 +593,7 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
   }}, {{passive: true}});
 }})();
 </script>
-''' + SHUFFLE
+''' + SHUFFLE.replace('__TONE_DEFS__', ''.join(tone_defs))
     open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(page)
     n = sum(len(s["objects"]) for s in comp["scenes"])
     print(f"index.html — {len(comp['scenes'])} plates, {n} pieces as elements")
