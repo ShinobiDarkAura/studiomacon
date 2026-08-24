@@ -49,106 +49,111 @@
     },
     {
       "id": "d-bronze",
-      "plate": "shelf/plates/dressed/dressed-bronze-b-eq-trim.png",
+      "plate": "shelf/plates/dressed/dressed-bronze-b-eq-trim-cut.png",
       "px_per_mm": 3.8,
       "sink_px": 6,
       "objects": [
         {
           "slug": "ren",
           "x": 0.35485,
-          "y": 0.42751,
+          "y": 0.45773,
           "scale": 0.893
         },
         {
           "slug": "ori",
           "x": 0.47121,
-          "y": 0.42751
+          "y": 0.45773,
+          "flip": true
         },
         {
           "slug": "zuma",
           "x": 0.5983,
-          "y": 0.42751,
+          "y": 0.45773,
           "scale": 0.893
         },
         {
           "slug": "ibi",
           "x": 0.31074,
-          "y": 0.81641,
+          "y": 0.87411,
           "scale": 0.92
         },
         {
           "slug": "rebi",
           "x": 0.46618,
-          "y": 0.82176,
+          "y": 0.87984,
           "scale": 0.966
         },
         {
           "slug": "eleph",
           "x": 0.62737,
-          "y": 0.82176,
+          "y": 0.87984,
           "scale": 1.058
         }
       ],
       "shelf_fronts": [
         {
-          "y": 0.42751,
+          "y": 0.45773,
           "front": [
-            0.46221,
-            0.54534
+            0.49488,
+            0.58388
           ]
         },
         {
-          "y": 0.84496,
+          "y": 0.90468,
           "front": [
-            0.85013,
-            0.93395
+            0.91022,
+            0.99996
           ]
         }
       ],
-      "_note": "Uprights cropped off (they were invented per plate and never matched) and the plate squared off. Fractions below are mapped through that crop."
+      "_note": "Uprights cropped off and the plate squared off; fractions are mapped through that crop. Now also cut at the foot of the lower shelf face, so none of the shelf below shows and the join to the next section is seamless. 1121px -> 1047px."
     },
     {
       "id": "d-coda",
-      "_note": "Closing bays, rebuilt wide on GPT Image 2 from the cropped tall plate. Nano was tried first and left the outpaint pads untouched. Full width, so no inset is needed.",
+      "_note": "Closing bays, GPT Image 2. Regenerated a second time to put the light on the LEFT like every other plate — the first pass lit it from the right, so its shadows fell the wrong way — and to push the props into the outer thirds, clearing the middle for the jewellery.",
       "plate": "shelf/plates/dressed/dressed-coda-wide.png",
       "px_per_mm": 2.83,
       "objects": [
         {
           "slug": "lunar-canyon-ring",
-          "x": 0.09,
-          "y": 0.3711
+          "x": 0.38,
+          "y": 0.3721,
+          "scale": 1.16
         },
         {
           "slug": "meridian-egg-ring",
-          "x": 0.455,
-          "y": 0.3711
+          "x": 0.5,
+          "y": 0.3721,
+          "scale": 1.16
         },
         {
           "slug": "ear-cuff",
-          "x": 0.925,
-          "y": 0.3711
+          "x": 0.62,
+          "y": 0.3721
         },
         {
           "slug": "zuma-ring",
-          "x": 0.075,
-          "y": 0.8184
+          "x": 0.46,
+          "y": 0.8193,
+          "scale": 1.16
         },
         {
           "slug": "wonderhorn-talisman",
-          "x": 0.935,
-          "y": 0.8184
+          "x": 0.59,
+          "y": 0.8193,
+          "scale": 0.8
         }
       ],
       "shelf_fronts": [
         {
-          "y": 0.3711,
+          "y": 0.3721,
           "front": [
             0.3857,
-            0.4561
+            0.4541
           ]
         },
         {
-          "y": 0.8184,
+          "y": 0.8193,
           "front": [
             0.86,
             0.96

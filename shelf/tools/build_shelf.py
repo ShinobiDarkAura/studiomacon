@@ -17,8 +17,8 @@ OUT = os.path.join(ROOT, "shelf", "_site")
 PIECE_W = 320          # plenty: pieces display around 90-180px
 # Carriers rotate through the shelf, each also set at its own slight angle, so a
 # shelf reads as hand-labelled rather than as a printed row.
-# The lined ledger strip alone. The per-load shuffle went with the second carrier.
-CARRIERS = ["ledger-strip"]
+# The graph slip alone. The per-load shuffle went with the second carrier.
+CARRIERS = ["graph-slip"]
 TILTS = ["-2.4deg", "1.7deg", "-1.1deg", "2.3deg", "-1.8deg", "0.9deg"]
 
 
@@ -147,7 +147,7 @@ def main():
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
-         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 9.00:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 4.22:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px">
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 9.00:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 4.22:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px;--piece-flip:{-1 if o.get("flip") else 1}">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="ink">
@@ -175,12 +175,12 @@ def main():
 </head><body class="intro">
 
   <div class="curtain" aria-hidden="true">
-    <img src="/assets/goat-logo.gif" alt="">
+    <img src="/assets/goat-logo-warm.gif" alt="">
   </div>
 
   <nav class="nav">
     <button class="menu" data-menu-toggle aria-label="Menu"><span class="bars"><i></i><i></i><i></i></span></button>
-    <a class="logo" href="/index.html"><img src="/assets/goat-logo.gif" alt="Studio Maçon"></a>
+    <a class="logo" href="/index.html"><img src="/assets/goat-logo-warm.gif" alt="Studio Maçon"></a>
     <a class="bag" href="/contact.html" aria-label="Bag">
       <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="lip" d="M8.4 2h7.2"/><path d="M10.3 2c.2 1.5.1 2.7-.2 3.6M13.7 2c-.2 1.5-.1 2.7.2 3.6"/><path d="M10.1 5.5C7.9 7.7 6.5 10.3 6.5 13.3c0 3.4 1.8 5.6 3.7 6.7M13.9 5.5c2.2 2.2 3.6 4.8 3.6 7.8 0 3.4-1.8 5.6-3.7 6.7"/><path d="M10.2 20.1h3.6M9.1 23.2h5.8"/><path d="M10.2 3.9C7.6 4.2 5.8 6.1 6.1 8.9M13.8 3.9c2.6.3 4.4 2.2 4.1 5"/></svg>
     </a>
@@ -263,6 +263,22 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
       place();
     }};
     if (skipped) arm(); else setTimeout(arm, 850);
+  }});
+}})();
+
+// Replay the mark's blink on hover. The GIF is authored to play once, and
+// nothing in CSS can rewind it — reassigning the source is what restarts it.
+// The frames are already cached, so this costs no request.
+(function () {{
+  var img = document.querySelector('.nav .logo img');
+  if (!img) return;
+  // Alternating between two URLs is what forces the decoder to start over — a
+  // fragment change is not reliable, and a fresh query each time would miss the
+  // cache on every hover. Two URLs, both cached after first use.
+  var base = img.getAttribute('src').split('#')[0], n = 0;
+  document.querySelector('.nav .logo').addEventListener('mouseenter', function () {{
+    n ^= 1;
+    img.src = base + (base.indexOf('?') < 0 ? '?' : '&') + 'b=' + n;
   }});
 }})();
 
