@@ -374,12 +374,26 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .ed-msg{min-height:14px;opacity:.75}
 /* while editing, pieces answer the pointer rather than the link */
 body.editing .mark{cursor:grab}
-body.editing .mark.ed-on{outline:1px dashed rgba(255,226,182,.8);outline-offset:3px}
-/* the resize anchor, on the piece rather than in the panel */
-.ed-grip{display:none}
-body.editing .mark.ed-on .ed-grip{
-  display:block;position:absolute;right:-7px;bottom:-7px;width:11px;height:11px;
-  border-radius:2px;background:#e8c88a;box-shadow:0 0 0 1px rgba(40,32,22,.55);
-  cursor:nwse-resize;z-index:9;
+/* The box hugs the object. --bx/--by are the base — bottom-centre of the
+   object's own footprint — and --ow/--oh its size, all as percentages of the
+   sprite, so the shadow is left outside. */
+.ed-box{display:none}
+body.editing .mark.ed-on .ed-box{
+  display:block;position:absolute;pointer-events:none;
+  left:calc(var(--bx,50%) - var(--ow,60%) / 2);
+  top:calc(var(--by,100%) - var(--oh,100%));
+  width:var(--ow,60%);height:var(--oh,100%);
+  outline:1px dashed rgba(255,226,182,.85);outline-offset:2px;z-index:8;
 }
+.ed-grip{
+  position:absolute;width:11px;height:11px;border-radius:2px;
+  /* the box may be under a live scale; the handles should not be */
+  transform:scale(calc(1 / var(--ed-k, 1)));
+  background:#e8c88a;box-shadow:0 0 0 1px rgba(40,32,22,.55);
+  pointer-events:auto;z-index:9;
+}
+.ed-nw{left:-8px;top:-8px;cursor:nwse-resize}
+.ed-ne{right:-8px;top:-8px;cursor:nesw-resize}
+.ed-sw{left:-8px;bottom:-8px;cursor:nesw-resize}
+.ed-se{right:-8px;bottom:-8px;cursor:nwse-resize}
 body.editing .mark .card{opacity:1}

@@ -85,9 +85,19 @@ SHUFFLE = """
     var img = el.querySelector('.piece');
     var k = num(el, 'scale') / parseFloat(el.dataset.scale0);
     // turn about the base: the piece stands on that point, so it must not drift
-    img.style.transformOrigin = getComputedStyle(el).getPropertyValue('--bx') + ' ' +
-                                getComputedStyle(el).getPropertyValue('--by');
+    var origin = getComputedStyle(el).getPropertyValue('--bx') + ' ' +
+                 getComputedStyle(el).getPropertyValue('--by');
+    img.style.transformOrigin = origin;
     img.style.transform = 'translateX(' + num(el, 'dx') + 'px) scale(' + k + ')';
+    // the box is drawn from the sprite's own measurements, which do not know
+    // about a live scale, so it has to be carried along by the same transform
+    var box = el.querySelector('.ed-box');
+    if (box) {
+      box.style.transformOrigin = origin;
+      box.style.transform = 'translateX(' + num(el, 'dx') + 'px) scale(' + k + ')';
+      box.style.setProperty('--ed-k', k);        // keeps the handles at size
+      box.style.outlineWidth = (1 / k) + 'px';
+    }
     var w = num(el, 'warmth'), g = num(el, 'tint'), b = num(el, 'bright'), c = num(el, 'contrast');
     if (!w && !g && b === 1 && c === 1) { img.style.filter = ''; return; }
     var id = 'tone-live-' + el.dataset.scene + '-' + el.dataset.slug;
@@ -141,9 +151,17 @@ SHUFFLE = """
 
   document.querySelectorAll('.mark').forEach(function (el) {
     el.dataset.scale0 = el.dataset.scale;
-    var grip = document.createElement('span');
-    grip.className = 'ed-grip';
-    el.appendChild(grip);
+    // Box the object, not the sprite. A sprite's width is mostly cast shadow,
+    // so outlining the element would draw a rectangle with the piece off in one
+    // corner of it.
+    var box = document.createElement('span');
+    box.className = 'ed-box';
+    ['nw', 'ne', 'sw', 'se'].forEach(function (c) {
+      var g = document.createElement('i');
+      g.className = 'ed-grip ed-' + c;
+      box.appendChild(g);
+    });
+    el.appendChild(box);
     el.dataset.x0 = el.dataset.x; el.dataset.y0 = el.dataset.y;
     el.dataset.left0 = parseFloat(el.style.left); el.dataset.top0 = parseFloat(el.style.top);
     el.addEventListener('click', function (e) {
@@ -418,6 +436,9 @@ def main():
             # rather than under the piece.
             base_x, base_y = bx / sw * 100, by / sh * 100
             obj_w = meta["object"][0] * s / sw * 100
+            # the object's own height, so edit mode can box the shape rather
+            # than the sprite, whose width and depth are mostly cast shadow
+            obj_h = meta["object"][1] * s / sh * 100
 
             tilt = TILTS[len(marks) % len(TILTS)]
             carrier = CARRIERS[0]
@@ -438,7 +459,7 @@ def main():
          data-dx="{o.get('dx_px', 0)}"
          data-warmth="{tone.get('warmth', 0)}" data-tint="{tone.get('tint', 0)}" data-bright="{tone.get('bright', 1)}"
          data-contrast="{tone.get('contrast', 1)}"
-         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 8.80:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 4.13:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px">
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--oh:{obj_h:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 8.80:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 4.13:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy"{tone_attr}>
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="ink">
