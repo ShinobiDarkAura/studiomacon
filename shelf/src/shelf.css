@@ -212,16 +212,18 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 /* Warm bounce: a pool of light blooms on the shelf beneath the piece as it
    lifts, so the movement reads as lit rather than merely displaced. Sized in
    percentages of the piece so it holds at any width. */
-/* Every piece sits in its own pool of warm light at rest; hovering simply turns
-   it up. Anchored on the object's base, which the harvest records — the sprite's
-   own bottom edge is the far side of the shadow, well below the foot. */
+/* The pool of light is off at rest and only comes up on hover.
+   It used to sit under every piece permanently, and that is what read as a
+   white halo: it lifts the shelf about 9 luma right where a dark silhouette
+   meets it, so it traces the contour. The pieces carry real generated shadows
+   now, so nothing is lost by holding it back for the pointer. */
 .mark::after{
   content:"";position:absolute;left:var(--bx,50%);top:var(--by,100%);
   width:calc(var(--ow,60%) * 1.9);height:calc(var(--ow,60%) * 0.5);
   transform:translate(-50%,-42%);
   background:radial-gradient(ellipse at 50% 50%,
     rgba(255,201,128,.42) 0%, rgba(255,201,128,.19) 44%, rgba(255,201,128,0) 74%);
-  opacity:.5;pointer-events:none;z-index:-1;
+  opacity:0;pointer-events:none;z-index:-1;
   transition:opacity .42s ease,transform .42s ease;
 }
 .mark:hover::after,.mark:focus-visible::after{
