@@ -75,7 +75,7 @@ def main():
         <h1>Cast by hand, one at a time</h1>
         -->
         <span class="logotype" role="img" aria-label="Studio Ma&ccedil;on"></span>
-        <p class="tagline" data-type="Artifacts of Love &bull; Handmade in VT"></p>
+        <p class="tagline" data-type="Artifacts of Love &bull; Handmade in the U.S."></p>
         <!-- <p class="lede">{html.escape(tagline)}</p> -->
       </div>'''
 
