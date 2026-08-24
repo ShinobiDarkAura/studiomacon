@@ -12,94 +12,97 @@
   "scenes": [
     {
       "id": "d-threshold",
-      "plate": "shelf/plates/dressed/dressed-thresh-b.png",
+      "plate": "shelf/plates/dressed/dressed-thresh-b-trim.png",
       "px_per_mm": 3.6,
       "sink_px": 6,
       "objects": [
         {
           "slug": "milo",
-          "x": 0.36,
-          "y": 0.89656,
+          "x": 0.3388,
+          "y": 0.90989,
           "scale": 0.9592
         },
         {
           "slug": "pip",
           "x": 0.5,
-          "y": 0.89656,
+          "y": 0.90989,
           "scale": 1.15
         },
         {
           "slug": "yael",
-          "x": 0.64,
-          "y": 0.89656
+          "x": 0.65521,
+          "y": 0.90989,
+          "scale": 1.08
         }
       ],
       "shelf_fronts": [
         {
-          "y": 0.89656,
+          "y": 0.90989,
           "front": [
-            0.9295,
-            0.9825
+            0.94332,
+            0.99711
           ]
         }
       ],
-      "_note": "Both slabs on this plate measure 62px already — the graft that copied one onto the other changed nothing and was reverted."
+      "_note": "Uprights cropped off (they were invented per plate and never matched) and the plate squared off. Fractions below are mapped through that crop."
     },
     {
       "id": "d-bronze",
-      "plate": "shelf/plates/dressed/dressed-bronze-b-eq.png",
+      "plate": "shelf/plates/dressed/dressed-bronze-b-eq-trim.png",
       "px_per_mm": 3.8,
       "sink_px": 6,
       "objects": [
         {
           "slug": "ren",
-          "x": 0.385,
-          "y": 0.45339
+          "x": 0.31086,
+          "y": 0.42751,
+          "scale": 0.95
         },
         {
           "slug": "sietch-aperture",
-          "x": 0.475,
-          "y": 0.45339
+          "x": 0.47121,
+          "y": 0.42751
         },
         {
           "slug": "zuma",
-          "x": 0.56781,
-          "y": 0.45339
+          "x": 0.6348,
+          "y": 0.42751,
+          "scale": 0.95
         },
         {
           "slug": "ibi",
-          "x": 0.33563,
-          "y": 0.89612
+          "x": 0.31074,
+          "y": 0.81641
         },
         {
           "slug": "rebi",
-          "x": 0.47063,
-          "y": 0.89612
+          "x": 0.46618,
+          "y": 0.81641
         },
         {
           "slug": "eleph",
-          "x": 0.61062,
-          "y": 0.89612,
+          "x": 0.62737,
+          "y": 0.81641,
           "scale": 1.15
         }
       ],
       "shelf_fronts": [
         {
-          "y": 0.45339,
+          "y": 0.42751,
           "front": [
-            0.4902,
-            0.57836
+            0.46221,
+            0.54534
           ]
         },
         {
-          "y": 0.89612,
+          "y": 0.84496,
           "front": [
-            0.9016,
-            0.9905
+            0.85013,
+            0.93395
           ]
         }
       ],
-      "_note": "Canvas extended 33px and the upper shelf's full front face grafted onto the bottom shelf, whose own face was sliced by the frame. All fractions below are rescaled by 1024/1057 to suit the taller plate."
+      "_note": "Uprights cropped off (they were invented per plate and never matched) and the plate squared off. Fractions below are mapped through that crop."
     }
   ],
   "_retired": {

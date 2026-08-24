@@ -53,6 +53,7 @@ def main():
         <h1>Cast by hand, one at a time</h1>
         -->
         <img class="logotype" src="logotype.png?v={stamp(os.path.join(OUT, "logotype.png"))}" alt="Studio Ma&ccedil;on">
+        <p class="tagline">Artifacts of Love &bull; Handmade in LA</p>
         <!-- <p class="lede">{html.escape(tagline)}</p> -->
       </div>'''
 
@@ -131,14 +132,6 @@ def main():
 {chr(10).join(marks)}
     </section>''')
 
-    live = [p for p in cache["products"] if p.get("status") == "live"]
-    index_rows = "".join(
-        f'''        <a class="row" href="/product/{p['slug']}.html">
-          <span class="n">{html.escape(p['name'])}</span>
-          <span class="m">{html.escape((p.get('notes') or [''])[0])}</span>
-          <span class="p">{money(p.get('price'))}</span>
-        </a>\n''' for p in live)
-
     page = f'''<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -167,13 +160,7 @@ def main():
   <main>
 {chr(10).join(scenes_html)}
 
-    <section class="index">
-      <div class="rows">
-{index_rows}      </div>
-    </section>
-  </main>
 
-  <footer><div class="fine">HANDMADE IN L.A.</div></footer>
 
 <script>
 document.querySelector('[data-menu-toggle]').addEventListener('click', function () {{
@@ -190,7 +177,10 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
   function place() {{
     ticking = false;
     if (!armed) return;
-    copy.style.opacity = Math.max(0, 1 - window.scrollY / (hero.offsetHeight * 0.45));
+    var y = window.scrollY;
+    copy.style.opacity = Math.max(0, 1 - y / (hero.offsetHeight * 0.45));
+    copy.style.transform = 'translateY(' + (y * 0.34) + 'px)';
+    hero.classList.toggle('pieces-in', y > 40);
   }}
   window.addEventListener('scroll', function () {{
     if (!ticking) {{ ticking = true; requestAnimationFrame(place); }}
@@ -206,8 +196,8 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
 
 // Nav is white over photography and ink once the Record is behind it.
 (function () {{
-  var nav = document.querySelector('.nav'), rec = document.querySelector('.index');
-  function mark() {{ nav.classList.toggle('over-art', window.scrollY + 80 < rec.offsetTop); }}
+  var nav = document.querySelector('.nav');
+  function mark() {{ nav.classList.add('over-art'); }}   // the page is photography throughout
   mark();
   window.addEventListener('scroll', mark, {{passive: true}});
 }})();
@@ -234,7 +224,7 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
 '''
     open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(page)
     n = sum(len(s["objects"]) for s in comp["scenes"])
-    print(f"index.html — {len(comp['scenes'])} plates, {n} pieces as elements, {len(live)} in the record")
+    print(f"index.html — {len(comp['scenes'])} plates, {n} pieces as elements")
 
 
 if __name__ == "__main__":
