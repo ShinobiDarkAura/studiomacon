@@ -15,7 +15,7 @@ partial alpha.
 
     python3 shelf/tools/carriers.py
 """
-import os, sys
+import argparse, json, os, sys
 import numpy as np
 import cv2
 from PIL import Image
@@ -61,7 +61,37 @@ def object_mask(cell, sess):
     return cv2.GaussianBlur(m.astype(np.float32), (0, 0), 1.2), True
 
 
+def measure(path):
+    """Proportions, angle and ink centre of a finished carrier.
+
+    Measured here rather than kept in a hand-written file: the alpha box moves
+    whenever the cut changes (dropping the shadow shortened every sprite), and a
+    stale ratio stretches the paper without anything failing.
+    """
+    a = np.asarray(Image.open(path).convert("RGBA"))[..., 3]
+    h, w = a.shape
+    ys, xs = np.nonzero(a > 8)
+    m = (a > 128).astype(np.uint8)
+    rect = cv2.minAreaRect(cv2.findNonZero(m))
+    # minAreaRect's angle convention differs between OpenCV versions — one
+    # returns [-90,0), another (0,90]. Folding into (-45,45] is right for both,
+    # and a carrier is never more than a couple of degrees off level anyway.
+    ang = rect[2] % 90
+    if ang > 45:
+        ang -= 90
+    return {"ar": round(w / h, 4), "tilt": round(float(ang), 2),
+            "cx": round(float(xs.mean()) / w, 3), "cy": round(float(ys.mean()) / h, 3)}
+
+
+NO_SHADOW = False
+
+
 def main():
+    global NO_SHADOW
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--no-shadow", action="store_true",
+                    help="keep the object only; discard the grid's contact shadow")
+    NO_SHADOW = ap.parse_args().no_shadow
     im = Image.open(SRC).convert("RGB")
     W, H = im.size
     cw, ch = W / COLS, H / ROWS
@@ -108,7 +138,10 @@ def main():
         # Object pixels keep their real colour; shadow pixels become a warm dark
         # whose alpha does the darkening.
         SHADOW_RGB = np.array([58, 48, 38], np.float32)
-        alpha = np.clip(np.maximum(obj, shade * 0.9), 0, 1)
+        # The baked contact shadow reads as a drawn-on drop shadow once the
+        # carrier is small and sitting on a photographed shelf, so it can be
+        # dropped and the object alpha used alone.
+        alpha = obj if NO_SHADOW else np.clip(np.maximum(obj, shade * 0.9), 0, 1)
         is_obj = (obj > 0.5)[..., None]
         rgb = np.where(is_obj, arr, SHADOW_RGB[None, None, :])
         # feather the handover so the object's own edge does not show a dark rim
@@ -123,6 +156,16 @@ def main():
         note = " keyed" if keyed else ""
         note += f"  dropped {stray}px of neighbour" if stray > 40 else ""
         print(f"{num:>2} {name:18} {out.size}{note}")
+    write_geometry()
+
+
+def write_geometry():
+    geo = {n: measure(os.path.join(OUT, n + ".png")) for n in sorted(NAMES.values())
+           if os.path.exists(os.path.join(OUT, n + ".png"))}
+    with open(os.path.join(OUT, "geometry.json"), "w", encoding="utf-8") as f:
+        json.dump(geo, f, indent=2)
+    for n, g in geo.items():
+        print(f"  {n:18} ar {g['ar']:.4f}  tilt {g['tilt']:+.2f}  centre {g['cx']:.3f},{g['cy']:.3f}")
 
 
 if __name__ == "__main__":

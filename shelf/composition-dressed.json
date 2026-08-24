@@ -32,7 +32,8 @@
           "slug": "yael",
           "x": 0.65521,
           "y": 0.90989,
-          "scale": 1.08
+          "scale": 1.08,
+          "dx_px": -8
         }
       ],
       "shelf_fronts": [
@@ -59,7 +60,7 @@
           "scale": 0.893
         },
         {
-          "slug": "sietch-aperture",
+          "slug": "ori",
           "x": 0.47121,
           "y": 0.42751
         },
@@ -105,6 +106,14 @@
         }
       ],
       "_note": "Uprights cropped off (they were invented per plate and never matched) and the plate squared off. Fractions below are mapped through that crop."
+    },
+    {
+      "id": "d-coda",
+      "_note": "Closing bay: the last two shelves of dressed-shelf-tall, cropped below the top board. Dressing only — no pieces sit here.",
+      "plate": "shelf/plates/dressed/dressed-tall-coda.png",
+      "px_per_mm": 3.8,
+      "objects": [],
+      "shelf_fronts": []
     }
   ],
   "_retired": {

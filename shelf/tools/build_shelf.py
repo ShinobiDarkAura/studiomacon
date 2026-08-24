@@ -9,7 +9,7 @@ would just show the original still sitting underneath.
 
     python3 shelf/tools/build_shelf.py
 """
-import html, json, os, re, shutil, zlib
+import html, json, os, re, shutil
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -17,11 +17,8 @@ OUT = os.path.join(ROOT, "shelf", "_site")
 PIECE_W = 320          # plenty: pieces display around 90-180px
 # Carriers rotate through the shelf, each also set at its own slight angle, so a
 # shelf reads as hand-labelled rather than as a printed row.
-# Only the graph slip and the ledger strip, dealt out per piece. The pick is
-# seeded from the slug rather than genuinely random, so a rebuild produces the
-# same page — a shuffle that changed every build would make previews and diffs
-# untrustworthy.
-CARRIERS = ["graph-slip", "ledger-strip"]
+# The lined ledger strip alone. The per-load shuffle went with the second carrier.
+CARRIERS = ["ledger-strip"]
 TILTS = ["-2.4deg", "1.7deg", "-1.1deg", "2.3deg", "-1.8deg", "0.9deg"]
 
 
@@ -45,23 +42,7 @@ def longest_mm(notes):
             return max(nums)
 
 
-SHUFFLE = """<script>
-/* Carriers are re-dealt on every load, so the shelf is never quite the same
-   twice. This runs at the end of the body, before first paint, so the swap
-   never flashes over the carrier baked into the markup. */
-(function(){
-  var G = {"graph-slip": {"slug": "graph-slip", "ar": 2.0632, "dx": 0.043, "dy": -0.354, "tilt": -0.08}, "ledger-strip": {"slug": "ledger-strip", "ar": 2.4574, "dx": 0.032, "dy": -0.227, "tilt": 0.21}}, names = Object.keys(G);
-  document.querySelectorAll('.mark').forEach(function(m){
-    var g = G[names[Math.floor(Math.random() * names.length)]];
-    m.style.setProperty('--carrier', 'url(carrier-' + g.slug + '.webp)');
-    m.style.setProperty('--car-ar', g.ar);
-    m.style.setProperty('--paper-dx', g.dx + 'em');
-    m.style.setProperty('--paper-dy', g.dy + 'em');
-    m.style.setProperty('--paper-tilt', g.tilt + 'deg');
-  });
-})();
-</script>
-</body></html>"""
+SHUFFLE = """</body></html>"""
 
 
 def main():
@@ -70,6 +51,7 @@ def main():
     cache = json.load(open(os.path.join(ROOT, "_source/content-cache.json"), encoding="utf-8"))
     prod = {p["slug"]: p for p in cache["products"]}
     overrides = comp.get("mm", {})
+    _ltv = stamp(os.path.join(OUT, "logotype.png"))
     tagline = next((x["value"] for x in cache.get("settings", []) if x["key"] == "tagline"), "")
     os.makedirs(OUT, exist_ok=True)
 
@@ -92,7 +74,20 @@ def main():
         <p class="eyebrow">Studio Ma&ccedil;on</p>
         <h1>Cast by hand, one at a time</h1>
         -->
-        <img class="logotype" src="logotype.png?v={stamp(os.path.join(OUT, "logotype.png"))}" alt="Studio Ma&ccedil;on">
+        <span class="lt">
+          <img class="logotype" src="logotype.png?v={_ltv}" alt="Studio Ma&ccedil;on">
+          <!-- Same mark clipped into five columns, measured off the alpha: four
+               glyphs stand alone and the fifth boundary is a valley inside a
+               merged pair. Only the hand-set variant shows these. -->
+          <span class="lt-letters" aria-hidden="true">
+          <img src="logotype.png?v={_ltv}" alt="" style="clip-path:inset(0 80.293% 0 0.000%);--n:0">
+          <img src="logotype.png?v={_ltv}" alt="" style="clip-path:inset(0 61.261% 0 19.707%);--n:1">
+          <img src="logotype.png?v={_ltv}" alt="" style="clip-path:inset(0 46.059% 0 38.739%);--n:2">
+          <img src="logotype.png?v={_ltv}" alt="" style="clip-path:inset(0 16.779% 0 53.941%);--n:3">
+          <img src="logotype.png?v={_ltv}" alt="" style="clip-path:inset(0 0.000% 0 83.221%);--n:4">
+          </span>
+          <span class="lt-flare" aria-hidden="true"></span>
+        </span>
         <p class="tagline" data-type="Artifacts of Love &bull; Handmade in VT"></p>
         <!-- <p class="lede">{html.escape(tagline)}</p> -->
       </div>'''
@@ -160,14 +155,12 @@ def main():
             obj_w = meta["object"][0] * s / sw * 100
 
             tilt = TILTS[len(marks) % len(TILTS)]
-            # A carrier so the markup is correct before any script runs; the
-            # shuffle appended below re-deals it on every load.
-            carrier = CARRIERS[zlib.crc32(slug.encode()) % len(CARRIERS)]
+            carrier = CARRIERS[0]
             g = GEO[carrier]
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
-         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 10.75:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 5.05:.3f}em;--paper-tilt:{g['tilt']}deg">
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 7.31:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 3.43:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="ink">
@@ -261,11 +254,16 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     el.style.height = box.height + 'px';
     render(0);
     // starts a beat after the logotype has settled, and types unhurriedly
+    // The line lands in two breaths: the phrase, a pause, then the place it is
+    // made. Measured off the words rather than a fixed index so rewording the
+    // tagline cannot put the pause mid-word.
+    var PAUSE_AFTER = text.indexOf('Love');
+    PAUSE_AFTER = PAUSE_AFTER < 0 ? -1 : PAUSE_AFTER + 4;
     setTimeout(function () {{
       var i = 0;
       (function tick() {{
         render(++i);
-        if (i < text.length) setTimeout(tick, 58);
+        if (i < text.length) setTimeout(tick, i === PAUSE_AFTER ? 1000 : 58);
       }})();
     }}, 400);
   }});
@@ -318,8 +316,27 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     document.dispatchEvent(new Event('macon:introdone'));
   }}
 
-  var t1 = setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 4200);
-  var t2 = setTimeout(finish, 4850);
+  // Fly the mark to its seat in the nav. Both positions are read from the page,
+  // so the landing is exact whatever the viewport does to either one.
+  var FLIGHT = 900;
+  function flyToNav() {{
+    var seat = document.querySelector('.nav .logo img');
+    if (!seat || !mark) {{ body.classList.add('intro-wipe'); return; }}
+    var a = mark.getBoundingClientRect(), b = seat.getBoundingClientRect();
+    if (!a.height || !b.height) {{ body.classList.add('intro-wipe'); return; }}
+    mark.classList.add('flying');           // drops the entrance keyframes
+    mark.style.transform = 'none';
+    a = mark.getBoundingClientRect();       // re-read: the entrance may have left a transform
+    var k = b.height / a.height,
+        dx = (b.left + b.width / 2) - (a.left + a.width / 2),
+        dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+    mark.style.transition = 'transform ' + FLIGHT + 'ms cubic-bezier(.66,0,.16,1)';
+    void mark.offsetWidth;                  // flush, or the two styles coalesce
+    mark.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + k + ')';
+    body.classList.add('intro-flew');       // the nav mark must not also fade in
+  }}
+  var t1 = setTimeout(flyToNav, 4200);
+  var t2 = setTimeout(finish, 4200 + FLIGHT);
 
   // Scrolling away during the opening dismisses the mark on the scroll itself,
   // rather than leaving it hanging there while the timers run out.
@@ -338,6 +355,40 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
       finish();
     }}
   }}, {{passive: true}});
+}})();
+</script>
+
+<!-- Temporary: four logotype entrances side by side. Remove once one is chosen. -->
+<div class="lt-pick" role="group" aria-label="Logotype entrance">
+  <button data-lt="sweep">Sweep</button>
+  <button data-lt="focus">Focus</button>
+  <button data-lt="hand">By hand</button>
+  <button data-lt="wall">Wall</button>
+</div>
+<script>
+(function () {{
+  var body = document.body, KEY = 'macon-lt';
+  var btns = [].slice.call(document.querySelectorAll('.lt-pick button'));
+  function apply(v, replay) {{
+    btns.forEach(function (b) {{
+      body.classList.remove('lt-' + b.dataset.lt);
+      b.setAttribute('aria-pressed', String(b.dataset.lt === v));
+    }});
+    body.classList.add('lt-' + v);
+    try {{ localStorage.setItem(KEY, v); }} catch (e) {{}}
+    if (!replay) return;
+    // Restart the entrance: the class alone will not re-fire a keyframe that has
+    // already run, so intro-done is dropped and re-added around a reflow.
+    body.classList.remove('intro-done');
+    void body.offsetWidth;
+    body.classList.add('intro-done');
+  }}
+  var saved = 'sweep';
+  try {{ saved = localStorage.getItem(KEY) || 'sweep'; }} catch (e) {{}}
+  apply(saved, false);
+  btns.forEach(function (b) {{
+    b.addEventListener('click', function () {{ apply(b.dataset.lt, true); }});
+  }});
 }})();
 </script>
 ''' + SHUFFLE

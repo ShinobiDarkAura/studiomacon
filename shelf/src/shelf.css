@@ -12,6 +12,9 @@
 
 :root{
   --ink:#2b2722;            /* warm near-black, never pure black */
+  /* Label ink: a warm reddish orange, held back from a pure orange so it reads
+     as stamped pigment on the plaster rather than as a UI accent. */
+  --ink-label:#b4502a;
   --paper:#efe9df;
   --tan:#8d8375;
   --olive:#5a5348;
@@ -36,21 +39,22 @@ a{color:inherit;text-decoration:none}
   color:var(--ink);
   transition:color .25s ease;
 }
-.nav .urn{width:39px;height:39px;color:currentColor;display:block}   /* basket, 1.6x */
+.nav .urn{width:35px;height:35px;color:currentColor;display:block;
+  transform:translateY(5px)}                                          /* amphora, sat 5px low */
 .nav .logo img{height:42px;display:block;transition:filter .25s ease}
 /* the logo art is dark; this renders it white without a second asset */
 .nav.over-art .logo img{filter:brightness(0) invert(1)}
 .nav.over-art{color:#fff}
 .nav.over-art .bars i{background:#fff}
 .nav .menu{background:none;border:0;padding:6px;cursor:pointer}
-.nav .bars{display:block;width:21px}                                  /* menu, 20% smaller */
+.nav .bars{display:block;width:26px}                                  /* menu */
 .nav .bars i{
-  display:block;height:1.6px;background:currentColor;margin:4.5px 0;border-radius:1px;
+  display:block;height:1.6px;background:currentColor;margin:5.6px 0;border-radius:1px;
   transition:transform .22s ease,opacity .18s ease;
 }
-body.menu-open .bars i:nth-child(1){transform:translateY(6.1px) rotate(45deg)}
+body.menu-open .bars i:nth-child(1){transform:translateY(7.2px) rotate(45deg)}
 body.menu-open .bars i:nth-child(2){opacity:0}
-body.menu-open .bars i:nth-child(3){transform:translateY(-6.1px) rotate(-45deg)}
+body.menu-open .bars i:nth-child(3){transform:translateY(-7.2px) rotate(-45deg)}
 
 .menu-overlay{
   position:fixed;inset:0;z-index:30;background:var(--paper);
@@ -73,7 +77,12 @@ body.intro .curtain{display:flex}
   animation:markIn .7s cubic-bezier(.2,.8,.25,1) both;
 }
 @keyframes markIn{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
-/* the mark simply fades away once its animation has played out */
+/* The mark travels to its place in the nav rather than fading out and back in.
+   The flight is measured in script — from where it actually is to where the nav
+   logo actually sits — so it lands exactly, at exactly the nav's size. */
+.curtain img.flying{animation:none!important}
+/* It flew there, so it must not also fade in underneath. */
+body.intro-flew .nav .logo{animation:none!important;opacity:1}
 body.intro-wipe .curtain{transition:opacity .34s ease;opacity:0}
 
 /* the nav assembles after it: mark first, then the two icons */
@@ -160,9 +169,14 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .mark .piece{
   width:100%;height:auto;display:block;
   transform-origin:50% 100%;
+  /* --piece-dx moves the image only. The label is a sibling, so a piece can be
+     nudged off its measured position without dragging its name along. */
+  transform:translateX(var(--piece-dx,0));
   transition:filter .42s ease,transform .42s cubic-bezier(.22,.9,.28,1);
 }
-.mark:hover .piece,.mark:focus-visible .piece{transform:scale(1.01)}
+.mark:hover .piece,.mark:focus-visible .piece{
+  transform:translateX(var(--piece-dx,0)) scale(1.01);
+}
 /* Warm bounce: a pool of light blooms on the shelf beneath the piece as it
    lifts, so the movement reads as lit rather than merely displaced. Sized in
    percentages of the piece so it holds at any width. */
@@ -203,7 +217,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* per-carrier values arrive inline from the build */
   /* The box takes the carrier's own proportions and the background fills it
      exactly, so the paper is scaled rather than stretched. */
-  box-sizing:border-box;height:5.05em;aspect-ratio:var(--car-ar,2.13);width:auto;
+  box-sizing:border-box;height:3.43em;aspect-ratio:var(--car-ar,2.13);width:auto;
   padding:0 1.1em;
   text-align:center;white-space:nowrap;line-height:1.15;
   /* contain, not 100% 100%: the box can still end up a few percent off the
@@ -224,9 +238,10 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 }
 .mark .nm{
   display:block;
-  font-family:"GabrieleLight","Gabriele",Georgia,serif;font-weight:400;
-  font-size:clamp(6px,calc(1.34vw - 7px),16px);letter-spacing:.02em;
-  color:var(--ink);
+  /* the dark ribbon cut, not the light one — this is the bold of the family */
+  font-family:"Gabriele",Georgia,serif;font-weight:400;
+  font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.02em;
+  color:var(--ink-label);
 }
 
 /* a quiet separator, arriving with the price */
@@ -234,9 +249,10 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   display:inline-block;font-size:.76em;transform:translateY(1px)}
 .mark .pr{
   display:block;overflow:hidden;white-space:nowrap;
-  font-family:"Index",ui-monospace,monospace;font-weight:700;
+  /* the same dark ribbon cut as the name, so the pair reads as one stamp */
+  font-family:"Gabriele",Georgia,serif;font-weight:400;
   /* the same size as the name, at rest and on hover — nothing resizes */
-  font-size:clamp(6px,calc(1.34vw - 7px),16px);letter-spacing:.05em;
+  font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.05em;
   color:var(--ink);
   max-width:0;opacity:0;margin-left:0;transform:translateX(.45em);
   transition:max-width .36s cubic-bezier(.22,.9,.28,1),opacity .28s ease,
@@ -255,4 +271,87 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .scene.hero .mark:nth-of-type(3){transition-delay:.12s}
 @media(prefers-reduced-motion:reduce){
   .scene.hero .mark{opacity:1;transform:none;transition:none}
+}
+
+
+/* ---- logotype entrances: four to compare, one class each on <body> ---- */
+.lt{position:relative;display:inline-block;line-height:0}
+.lt-letters,.lt-flare{display:none}
+.lt-letters img{position:absolute;left:0;top:0;height:100%;width:auto}
+
+/* Raking light: a band travels left to right and the letters exist only where
+   it has already passed. The soft mask edge is the light itself. */
+body.lt-sweep .logotype{
+  -webkit-mask-image:linear-gradient(95deg,#000 0 50%,rgba(0,0,0,0) 76% 100%);
+          mask-image:linear-gradient(95deg,#000 0 50%,rgba(0,0,0,0) 76% 100%);
+  -webkit-mask-size:300% 100%;mask-size:300% 100%;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+}
+body.lt-sweep.intro-done .logotype{animation:ltSweep 1.65s cubic-bezier(.32,.72,.2,1) both}
+@keyframes ltSweep{
+  from{-webkit-mask-position:100% 0;mask-position:100% 0}
+  to{-webkit-mask-position:0% 0;mask-position:0% 0}
+}
+/* the warm edge of that band, riding across the plaster ahead of the letters */
+body.lt-sweep .lt-flare{
+  display:block;position:absolute;inset:-14% -6%;pointer-events:none;
+  mix-blend-mode:screen;opacity:0;
+  background:linear-gradient(95deg,rgba(255,226,182,0) 42%,
+             rgba(255,226,182,.5) 50%,rgba(255,226,182,0) 58%);
+  background-size:300% 100%;background-repeat:no-repeat;
+}
+body.lt-sweep.intro-done .lt-flare{animation:ltFlare 1.65s cubic-bezier(.32,.72,.2,1) both}
+@keyframes ltFlare{
+  0%{background-position:100% 0;opacity:0}
+  18%{opacity:1}
+  82%{opacity:1}
+  100%{background-position:0% 0;opacity:0}
+}
+
+/* Focus pull: a soft glow on the plaster resolving to a sharp mark. */
+body.lt-focus.intro-done .logotype{animation:ltFocus 1.5s cubic-bezier(.22,.75,.2,1) both}
+@keyframes ltFocus{
+  from{opacity:0;filter:brightness(0) invert(1) blur(15px);transform:scale(1.03)}
+  40%{opacity:.95}
+  to{opacity:.95;filter:brightness(0) invert(1) sepia(.36) saturate(.8) brightness(.86)
+       drop-shadow(0 0 30px rgba(255,232,196,.22));transform:none}
+}
+
+/* Set by hand: each column drops a hair and turns level, in quick succession,
+   the way type is set in a stick. */
+body.lt-hand .logotype{opacity:0}
+body.lt-hand .lt-letters{display:block;position:absolute;inset:0}
+body.lt-hand.intro-done .lt-letters img{
+  animation:ltHand .52s cubic-bezier(.2,.9,.25,1) both;
+  animation-delay:calc(var(--n) * .085s);
+  transform-origin:50% 100%;
+}
+@keyframes ltHand{
+  from{opacity:0;transform:translateY(-9px) rotate(-1.6deg)}
+  to{opacity:1;transform:none}
+}
+
+/* Emerges from the wall: oversized and soft, hardening into place. */
+body.lt-wall.intro-done .logotype{animation:ltWall 1.35s cubic-bezier(.2,.8,.22,1) both}
+@keyframes ltWall{
+  from{opacity:0;transform:scale(1.09);filter:brightness(0) invert(1) blur(9px)}
+  to{opacity:.95;transform:none;
+     filter:brightness(0) invert(1) sepia(.36) saturate(.8) brightness(.86)
+            drop-shadow(0 0 30px rgba(255,232,196,.22))}
+}
+
+/* ---- the comparison toggle, temporary ---- */
+.lt-pick{
+  position:fixed;right:14px;bottom:14px;z-index:200;display:flex;gap:4px;
+  font:11px/1 ui-sans-serif,system-ui,sans-serif;
+  background:rgba(28,24,20,.62);backdrop-filter:blur(8px);
+  padding:4px;border-radius:7px;
+}
+.lt-pick button{
+  border:0;cursor:pointer;color:#efe6d8;background:transparent;
+  padding:5px 8px;border-radius:4px;letter-spacing:.03em;
+}
+.lt-pick button[aria-pressed="true"]{background:rgba(255,226,182,.22);color:#fff}
+@media(prefers-reduced-motion:reduce){
+  .lt-letters img,.logotype,.lt-flare{animation:none!important}
 }
