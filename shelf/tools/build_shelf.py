@@ -200,15 +200,19 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     if (!el) return;
     var text = el.getAttribute('data-type') || '';
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{ el.textContent = text; return; }}
+    // Reserve the finished line's box before typing. Clearing the text collapses
+    // the element and lifts the logotype, which then drops again as it fills.
     el.textContent = text;
-    el.style.width = el.getBoundingClientRect().width + 'px';
+    var box = el.getBoundingClientRect();
+    el.style.width = box.width + 'px';
+    el.style.height = box.height + 'px';
     el.textContent = '';
     // starts a beat after the logotype has settled, and types unhurriedly
     setTimeout(function () {{
       var i = 0;
       (function tick() {{
         el.textContent = text.slice(0, ++i);
-        if (i < text.length) setTimeout(tick, 115);
+        if (i < text.length) setTimeout(tick, 78);
       }})();
     }}, 400);
   }});
@@ -240,12 +244,41 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     return;
   }}
   // the mark's own animation runs 4.13s — let it finish before it fades
-  setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 4200);
-  setTimeout(function () {{
+  var curtain = document.querySelector('.curtain'),
+      mark = curtain && curtain.querySelector('img'),
+      finished = false;
+
+  // Hold the page still until the mark is actually on screen, so nobody scrolls
+  // past it before it has appeared.
+  var root = document.documentElement;
+  root.style.overflow = 'hidden';
+  setTimeout(function () {{ root.style.overflow = ''; }}, 780);
+
+  function finish() {{
+    if (finished) return;
+    finished = true;
+    clearTimeout(t1); clearTimeout(t2);
     body.classList.remove('intro');
     body.classList.add('intro-done');
     document.dispatchEvent(new Event('macon:introdone'));
-  }}, 4850);
+  }}
+
+  var t1 = setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 4200);
+  var t2 = setTimeout(finish, 4850);
+
+  // Scrolling away during the opening dismisses the mark on the scroll itself,
+  // rather than leaving it hanging there while the timers run out.
+  window.addEventListener('scroll', function onEarly() {{
+    if (finished) return;
+    var y = window.scrollY;
+    if (y <= 0) return;
+    if (mark) mark.style.opacity = String(Math.max(0, 1 - y / 220));
+    if (y > 200) {{
+      window.removeEventListener('scroll', onEarly);
+      body.classList.add('intro-wipe');
+      finish();
+    }}
+  }}, {{passive: true}});
 }})();
 </script>
 </body></html>

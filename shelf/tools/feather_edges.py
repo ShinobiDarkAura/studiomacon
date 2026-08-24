@@ -29,6 +29,10 @@ NEAR = 6.0          # colour distance within which a pixel is the shadow tint
 FLOOR = 0.05        # alpha below this is nothing
 MIN_RUN = 12        # ignore a handful of stray pixels
 DRY = "--dry" in sys.argv
+# How far the fade runs, as a share of the sprite. Short ramps still read as a cut
+# edge — the alpha is simply falling fast rather than stopping dead. A long taper
+# is what actually looks like a shadow running out.
+MARGIN = 0.32
 
 
 def ramp(n, m):
@@ -68,7 +72,7 @@ def main():
         if DRY:
             print(f"{slug:22} would fade {detail}")
             continue
-        mw, mh = max(12, int(w * 0.12)), max(12, int(h * 0.12))
+        mw, mh = max(12, int(w * MARGIN)), max(12, int(h * MARGIN))
         if "left" in cut:   al *= ramp(w, mw)[None, :]
         if "right" in cut:  al *= ramp(w, mw)[::-1][None, :]
         if "top" in cut:    al *= ramp(h, mh)[:, None]
