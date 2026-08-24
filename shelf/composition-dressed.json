@@ -49,67 +49,67 @@
     },
     {
       "id": "d-bronze",
-      "plate": "shelf/plates/dressed/dressed-bronze-b-eq-trim-cut.png",
+      "plate": "shelf/plates/dressed/dressed-bronze-b-eq-trim-cut2.png",
       "px_per_mm": 3.8,
       "sink_px": 6,
       "objects": [
         {
           "slug": "ren",
           "x": 0.35485,
-          "y": 0.45773,
+          "y": 0.32249,
           "scale": 0.893,
           "dx_px": 0
         },
         {
           "slug": "ori",
           "x": 0.47121,
-          "y": 0.45773,
+          "y": 0.32249,
           "dx_px": 12
         },
         {
           "slug": "zuma",
           "x": 0.63302,
-          "y": 0.45773,
+          "y": 0.32249,
           "scale": 0.893,
           "dx_px": 0
         },
         {
           "slug": "ibi",
           "x": 0.32741,
-          "y": 0.87411,
+          "y": 0.84271,
           "scale": 0.92,
           "dx_px": 0
         },
         {
           "slug": "rebi",
           "x": 0.46618,
-          "y": 0.87984,
+          "y": 0.84987,
           "scale": 0.966
         },
         {
           "slug": "eleph",
           "x": 0.6107,
-          "y": 0.87984,
+          "y": 0.84987,
           "scale": 1.058
         }
       ],
       "shelf_fronts": [
         {
-          "y": 0.45773,
+          "y": 0.32249,
           "front": [
-            0.49488,
-            0.58388
+            0.3689,
+            0.4801
           ]
         },
         {
-          "y": 0.90468,
+          "y": 0.88091,
           "front": [
-            0.91022,
-            0.99996
+            0.88783,
+            0.99995
           ]
         }
       ],
-      "_note": "Uprights cropped off and the plate squared off; fractions are mapped through that crop. Now also cut at the foot of the lower shelf face, so none of the shelf below shows and the join to the next section is seamless. 1121px -> 1047px."
+      "_note": "Uprights cropped off and the plate squared off; fractions are mapped through that crop. Cut at the foot of the lower shelf face so none of the shelf below shows, then the top 20% taken off so it opens closer under the first shelf. 1047px -> 838px."
     },
     {
       "id": "d-coda",
