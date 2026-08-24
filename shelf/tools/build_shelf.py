@@ -176,7 +176,11 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
   var RATE = 0.34, ticking = false;
   function place() {{
     var y = window.scrollY;
-    if (y < hero.offsetHeight * 1.2) copy.style.transform = 'translateY(' + (y * RATE) + 'px)';
+    if (y < hero.offsetHeight * 1.2) {{
+      copy.style.transform = 'translateY(' + (y * RATE) + 'px)';
+      // fades out unhurriedly — gone by the time the shelf below is in view
+      copy.style.opacity = Math.max(0, 1 - y / (hero.offsetHeight * 0.78));
+    }}
     ticking = false;
   }}
   window.addEventListener('scroll', function () {{

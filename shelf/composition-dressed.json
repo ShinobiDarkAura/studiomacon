@@ -12,35 +12,38 @@
   "scenes": [
     {
       "id": "d-threshold",
-      "plate": "shelf/plates/dressed/dressed-thresh-b.png",
+      "plate": "shelf/plates/dressed/dressed-thresh-b-eq.png",
       "px_per_mm": 3.6,
       "sink_px": 6,
       "objects": [
         {
           "slug": "milo",
           "x": 0.36,
-          "y": 0.92
+          "y": 0.89656,
+          "scale": 0.88
         },
         {
           "slug": "pip",
           "x": 0.5,
-          "y": 0.92
+          "y": 0.89656,
+          "scale": 1.15
         },
         {
           "slug": "yael",
           "x": 0.64,
-          "y": 0.92
+          "y": 0.89656
         }
       ],
       "shelf_fronts": [
         {
-          "y": 0.92,
+          "y": 0.89656,
           "front": [
-            0.928,
-            0.98
+            0.9295,
+            0.9825
           ]
         }
-      ]
+      ],
+      "_note": "Lower shelf slab grafted from the upper one so both read the same thickness."
     },
     {
       "id": "d-bronze",

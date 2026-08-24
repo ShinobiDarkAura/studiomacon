@@ -46,9 +46,9 @@ def main():
         W, H = plate.size
         d = ImageDraw.Draw(plate)
         serif = font(["/System/Library/Fonts/Supplemental/Georgia.ttf",
-                      "/System/Library/Fonts/Supplemental/Times New Roman.ttf"], max(15, int(W * 0.0145)))
+                      "/System/Library/Fonts/Supplemental/Times New Roman.ttf"], max(13, int(W * 0.0134)))
         mono = font(["/System/Library/Fonts/Supplemental/Courier New.ttf",
-                     "/System/Library/Fonts/Menlo.ttc"], max(11, int(W * 0.010)))
+                     "/System/Library/Fonts/Menlo.ttc"], max(9, int(W * 0.0088)))
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
         fronts = scene.get("shelf_fronts", [])
 
@@ -79,7 +79,7 @@ def main():
             sp = sp.resize((max(1, round(sw)), max(1, round(sh))), Image.LANCZOS)
             plate.alpha_composite(sp, (round(left), round(top)))
 
-            gap = 6
+            gap = 0
             name_h, price_h = serif.size, mono.size
             block = name_h + gap + price_h
             cx = left + bx
