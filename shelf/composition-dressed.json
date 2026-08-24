@@ -114,7 +114,10 @@
       "_note": "Closing bays, GPT Image 2. Regenerated a second time to put the light on the LEFT like every other plate — the first pass lit it from the right, so its shadows fell the wrong way — and to push the props into the outer thirds, clearing the middle for the jewellery.",
       "plate": "shelf/plates/dressed/dressed-coda-wide.png",
       "px_per_mm": 2.83,
-      "objects": [
+      "objects": [],
+      "shelf_fronts": [],
+      "tone_to_plate": true,
+      "_objects_off": [
         {
           "slug": "lunar-canyon-ring",
           "x": 0.345,
@@ -146,7 +149,8 @@
           "scale": 0.8
         }
       ],
-      "shelf_fronts": [
+      "_objects_off_note": "Jewellery parked. Move _objects_off back to objects to restore.",
+      "_shelf_fronts_off": [
         {
           "y": 0.3721,
           "front": [
@@ -161,8 +165,7 @@
             0.96
           ]
         }
-      ],
-      "tone_to_plate": true
+      ]
     }
   ],
   "_retired": {

@@ -40,10 +40,17 @@ def frame_size(ref_path):
     A tall piece rendered into a landscape frame gets scaled up to fill it and
     walks off the bottom edge, taking its contact shadow with it and truncating
     the silhouette the fidelity score is measured against.
+
+    But matching proportions too closely is its own trap. The shadow falls to the
+    RIGHT, so a tall narrow piece in a tall narrow frame has nowhere to put it:
+    Rebi came back with 31px to the right of itself, 7% of its own width, against
+    75% for Zuma and 83% for Ren, and its shadow was cut off hard at the border.
+    A portrait piece therefore gets the square frame, which costs some height and
+    buys the room the shadow actually needs.
     """
     w, h = Image.open(ref_path).size
     if h > w * 1.15:
-        return "1024x1536"
+        return "1024x1024"
     if w > h * 1.15:
         return "1536x1024"
     return "1024x1024"
