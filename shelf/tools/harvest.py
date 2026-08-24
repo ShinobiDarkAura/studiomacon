@@ -130,6 +130,29 @@ def generate(piece, notes, name, engine="gpt"):
     return dst
 
 
+def defringe(obj, scene):
+    """Take the backdrop back out of the object's soft edge.
+
+    The segmenter returns a matte, not a cut: an edge pixel at alpha 0.4 still
+    holds 60% of whatever was behind it. On a pale warm ground that shows as a
+    cream rim tracing every contour — most visible where a dark piece curves
+    against the light, like the inside of Ori's arch.
+
+    Observed = a*true + (1-a)*backdrop, so the true colour is recoverable. Only
+    the soft edge is touched, and the correction is capped: at very low alpha the
+    division explodes and would punch holes of noise into the outline.
+    """
+    a = np.asarray(obj).astype(np.float32)
+    al = a[..., 3:4] / 255.0
+    sc = np.asarray(scene.convert("RGB")).astype(np.float32)
+    # backdrop = the plain surface, read where the object is not
+    bg = np.percentile(sc[np.asarray(obj)[..., 3] < 8], 60, axis=0) if (np.asarray(obj)[..., 3] < 8).any() else np.array([200., 195., 185.])
+    soft = (al[..., 0] > 0.02) & (al[..., 0] < 0.97)
+    unmixed = (a[..., :3] - (1.0 - al) * bg) / np.maximum(al, 0.25)
+    a[..., :3] = np.where(soft[..., None], np.clip(unmixed, 0, 255), a[..., :3])
+    return Image.fromarray(a.astype(np.uint8)), bg
+
+
 def harvest(scene_path, shadow_strength=1.0, kernel=0.22):
     """Split a generated scene into (object RGBA, shadow RGBA, object base point)."""
     import cv2
@@ -139,6 +162,8 @@ def harvest(scene_path, shadow_strength=1.0, kernel=0.22):
     obj = remove(scene, session=offline_session()).convert("RGBA")
     a = clean_alpha(obj.getchannel("A"))
     obj.putalpha(a)
+    obj, _bg = defringe(obj, scene)
+    obj.putalpha(a)                    # unmixing must not disturb the matte
     bbox = a.getbbox()
     if not bbox:
         sys.exit("nothing segmented in " + scene_path)
