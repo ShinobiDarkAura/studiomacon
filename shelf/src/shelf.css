@@ -8,6 +8,7 @@
 /* Gabriele Dark Ribbon — a typewriter face, and free for commercial use, unlike
    the Ashcroft test cut it replaces on the labels. */
 @font-face{font-family:"Gabriele";src:url("gabriele-dark.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"GabrieleLight";src:url("gabriele-light.woff2") format("woff2");font-display:swap}
 
 :root{
   --ink:#2b2722;            /* warm near-black, never pure black */
@@ -94,6 +95,10 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .hero-copy{
   position:fixed;inset:0;z-index:6;pointer-events:none;
   will-change:opacity;
+  /* Projected, not painted on. Screen adds light to the wall instead of
+     replacing it, so the plaster's grain and the window shadows still read
+     through the letterforms and dim them where they fall. */
+  mix-blend-mode:screen;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;color:#fff;padding:24px;line-height:1.2;
 }
@@ -102,7 +107,12 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
    filter:none to show it black. */
 .logotype{
   height:231px;width:auto;display:block;margin:0 auto;
-  filter:brightness(0) invert(1);
+  /* An ivory beam rather than pure white: screened white stays white whatever is
+     beneath it, and the wall would never show through. The bloom is the light
+     scattering off the plaster; a projection casts no shadow of its own. */
+  filter:brightness(0) invert(1) sepia(.22) saturate(.55) brightness(.93)
+         drop-shadow(0 0 26px rgba(255,236,206,.22));
+  opacity:.93;
 }
 @media(max-width:700px){.logotype{height:151px}}
 .hero-copy .tagline{
@@ -110,7 +120,8 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   font-family:"Index",ui-monospace,monospace;
   /* Index ships as a single weight, so this is a synthesised bold */
   font-weight:700;
-  font-size:19px;letter-spacing:.085em;color:#fff;opacity:.92;
+  font-size:19px;letter-spacing:.085em;color:#fff5e6;opacity:.85;
+  text-shadow:0 0 18px rgba(255,236,206,.2);
   /* typed one character at a time; the width is fixed first so the line does not
      grow from its centre and shuffle sideways as it fills */
   white-space:pre;text-align:left;display:inline-block;
@@ -189,16 +200,18 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 
 .mark .nm{
   display:block;
-  font-family:"Gabriele","Ashcroft",Georgia,serif;font-weight:400;
-  font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.02em;
+  font-family:"GabrieleLight","Gabriele",Georgia,serif;font-weight:400;
+  font-size:clamp(6px,calc(1.34vw - 7px),16px);letter-spacing:.02em;
   color:var(--ink);
 }
 
+/* a quiet separator, arriving with the price */
+.mark .pr::before{content:"\2022";opacity:.5;margin-right:.55em}
 .mark .pr{
   display:block;overflow:hidden;white-space:nowrap;
   font-family:"Index",ui-monospace,monospace;font-weight:700;
   /* the same size as the name, at rest and on hover — nothing resizes */
-  font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.05em;
+  font-size:clamp(6px,calc(1.34vw - 7px),16px);letter-spacing:.05em;
   color:var(--ink);
   max-width:0;opacity:0;margin-left:0;transform:translateX(.45em);
   transition:max-width .36s cubic-bezier(.22,.9,.28,1),opacity .28s ease,

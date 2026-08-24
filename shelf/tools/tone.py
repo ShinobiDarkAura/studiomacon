@@ -16,15 +16,18 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SPR = os.path.join(ROOT, "shelf", "sprites")
 
-# slug: (saturation, warmth, luminance knee, brightness)
+# slug: (saturation, red gain, blue gain, luminance knee, brightness)
+# Red and blue are separate because tying them together — lifting red while
+# dividing blue — warms and darkens at the same time, so brightness could not be
+# raised without the warmth pulling it back down.
 # Applied in place and cumulative, so re-harvest the piece before re-running.
-PIECES = {"ren":  (1.34, 1.16, 0.42, 1.00),
-          "zuma": (1.58, 1.26, 0.36, 1.14)}
+PIECES = {"ren":  (1.34, 1.16, 0.86, 0.42, 1.00),
+          "zuma": (1.28, 1.10, 0.95, 0.15, 1.62)}
 
 
 def main():
     pieces = json.load(open(os.path.join(ROOT, "shelf/pieces.json"), encoding="utf-8"))
-    for slug, (sat, warm, knee, lift) in PIECES.items():
+    for slug, (sat, rg, bg, knee, lift) in PIECES.items():
         path = os.path.join(SPR, f"{pieces[slug]}.png")
         a = np.asarray(Image.open(path).convert("RGBA")).astype(np.float32)
         rgb, al = a[..., :3], a[..., 3:4] / 255.0
@@ -33,8 +36,8 @@ def main():
         w = np.clip((lum - knee) / (1.0 - knee), 0, 1) ** 0.8 * (al > 0.5)
         grey = rgb.mean(axis=2, keepdims=True)
         boosted = grey + (rgb - grey) * sat
-        boosted[..., 0] *= warm
-        boosted[..., 2] /= warm
+        boosted[..., 0] *= rg
+        boosted[..., 2] *= bg
         boosted *= lift
         out = np.clip(rgb * (1 - w) + boosted * w, 0, 255)
         before = rgb[(al[..., 0] > .5) & (lum[..., 0] > knee)]

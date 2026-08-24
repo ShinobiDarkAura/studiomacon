@@ -54,7 +54,7 @@ def main():
     # there. The stylesheet, the logotype and the faces are sources kept under
     # shelf/src and shelf/assets, and copied in on every build.
     shutil.copyfile(os.path.join(ROOT, "shelf/src/shelf.css"), os.path.join(OUT, "shelf.css"))
-    for _asset in ("logotype.png", "gabriele-dark.woff2",
+    for _asset in ("logotype.png", "gabriele-dark.woff2", "gabriele-light.woff2",
                    "ashcroft-light.woff2", "ashcroft-regular.woff2"):
         shutil.copyfile(os.path.join(ROOT, "shelf/assets", _asset), os.path.join(OUT, _asset))
 
