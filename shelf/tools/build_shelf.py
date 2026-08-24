@@ -209,19 +209,25 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     var el = document.querySelector('.tagline');
     if (!el) return;
     var text = el.getAttribute('data-type') || '';
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{ el.textContent = text; return; }}
+    // The bullet is set apart from the words, so it is written as its own element
+    // as the line types rather than as a plain character.
+    function render(n) {{
+      var part = text.slice(0, n);
+      el.innerHTML = part.split('\u2022').join('<span class="dot">\u2022</span>');
+    }}
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{ render(text.length); return; }}
     // Reserve the finished line's box before typing. Clearing the text collapses
     // the element and lifts the logotype, which then drops again as it fills.
-    el.textContent = text;
+    render(text.length);
     var box = el.getBoundingClientRect();
     el.style.width = box.width + 'px';
     el.style.height = box.height + 'px';
-    el.textContent = '';
+    render(0);
     // starts a beat after the logotype has settled, and types unhurriedly
     setTimeout(function () {{
       var i = 0;
       (function tick() {{
-        el.textContent = text.slice(0, ++i);
+        render(++i);
         if (i < text.length) setTimeout(tick, 78);
       }})();
     }}, 400);
