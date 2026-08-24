@@ -83,6 +83,10 @@ body.menu-open .menu-overlay{opacity:1;pointer-events:auto}
 body.intro .curtain{display:flex}
 .curtain img{
   height:103px;
+  /* The opening mark reads a little lighter than the one that settles in the
+     nav: the same warm file, desaturated slightly and lifted, which lands on
+     #F0E9DB against the nav's #E8DCC4. */
+  filter:saturate(.55) brightness(1.06);
   animation:markIn .7s cubic-bezier(.2,.8,.25,1) both;
 }
 @keyframes markIn{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
