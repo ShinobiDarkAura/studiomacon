@@ -222,8 +222,10 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 /* Centred on the shelf's front face, whose band is measured off each plate. */
 .mark .card{
   position:absolute;
-  /* dead-centre on the shelf face; the earlier 5px lift fought that */
-  transform:translate(-50%,-50%) rotate(var(--tilt,0deg));
+  /* dead-centre on the shelf face; the earlier 5px lift fought that.
+     No paper any more, so no tilt either — a rotated line with nothing under it
+     reads as a mistake rather than as a label lying on a sheet. */
+  transform:translate(-50%,-50%);
   /* A fixed-size row, centred. The price opens to the right of the name and the
      pair recentres, so nothing changes size — the carrier least of all. */
   display:flex;flex-direction:row;align-items:center;justify-content:center;
@@ -233,13 +235,8 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* per-carrier values arrive inline from the build */
   /* The box takes the carrier's own proportions and the background fills it
      exactly, so the paper is scaled rather than stretched. */
-  box-sizing:border-box;height:3.50em;aspect-ratio:var(--car-ar,2.13);width:auto;
-  padding:0 1.1em;
+  box-sizing:border-box;
   text-align:center;white-space:nowrap;line-height:1.15;
-  /* contain, not 100% 100%: the box can still end up a few percent off the
-     carrier's ratio once padding and content have their say, and stretching a
-     torn edge by even that much shows. contain cannot distort it. */
-  background:var(--carrier) center/contain no-repeat;
   opacity:.98;transition:opacity .3s ease;
 }
 .mark:hover .card,.mark:focus-visible .card{opacity:1}
@@ -250,14 +247,16 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
    size applies. */
 .mark .ink{
   display:flex;flex-direction:row;align-items:center;justify-content:center;
-  transform:translate(var(--paper-dx),var(--paper-dy)) rotate(var(--paper-tilt));
+  /* the paper offsets went with the paper */
 }
 .mark .nm{
   display:block;
-  /* the dark ribbon cut, not the light one — this is the bold of the family */
-  font-family:"Gabriele",Georgia,serif;font-weight:400;
-  font-size:clamp(7px,calc(1.34vw - 6px),17px);letter-spacing:.02em;
-  color:var(--ink);
+  /* the light cut; the price keeps the dark ribbon */
+  font-family:"GabrieleLight","Gabriele",Georgia,serif;font-weight:400;
+  font-size:clamp(9px,calc(1.34vw - 4px),19px);letter-spacing:.02em;
+  /* Over plaster that is itself pale, so it carries its own soft shade —
+     without it the words vanish wherever the wall is lit. */
+  color:#fff;text-shadow:0 1px 3px rgba(48,38,26,.55),0 0 12px rgba(48,38,26,.3);
 }
 
 /* a quiet separator, arriving with the price */
@@ -268,8 +267,8 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* the same dark ribbon cut as the name, so the pair reads as one stamp */
   font-family:"Gabriele",Georgia,serif;font-weight:400;
   /* deliberately larger than the name now */
-  font-size:clamp(6px,calc(1.34vw - 7px),16px);letter-spacing:.05em;
-  color:var(--ink-label);
+  font-size:clamp(9px,calc(1.34vw - 4px),19px);letter-spacing:.05em;
+  color:#fff;text-shadow:0 1px 3px rgba(48,38,26,.55),0 0 12px rgba(48,38,26,.3);
   max-width:0;opacity:0;margin-left:0;transform:translateX(.45em);
   transition:max-width .36s cubic-bezier(.22,.9,.28,1),opacity .28s ease,
              margin-left .36s ease,transform .36s cubic-bezier(.22,.9,.28,1);
