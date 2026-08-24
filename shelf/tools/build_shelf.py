@@ -45,6 +45,25 @@ def longest_mm(notes):
             return max(nums)
 
 
+SHUFFLE = """<script>
+/* Carriers are re-dealt on every load, so the shelf is never quite the same
+   twice. This runs at the end of the body, before first paint, so the swap
+   never flashes over the carrier baked into the markup. */
+(function(){
+  var G = {"graph-slip": {"slug": "graph-slip", "ar": 2.0632, "dx": 0.043, "dy": -0.354, "tilt": -0.08}, "ledger-strip": {"slug": "ledger-strip", "ar": 2.4574, "dx": 0.032, "dy": -0.227, "tilt": 0.21}}, names = Object.keys(G);
+  document.querySelectorAll('.mark').forEach(function(m){
+    var g = G[names[Math.floor(Math.random() * names.length)]];
+    m.style.setProperty('--carrier', 'url(carrier-' + g.slug + '.webp)');
+    m.style.setProperty('--car-ar', g.ar);
+    m.style.setProperty('--paper-dx', g.dx + 'em');
+    m.style.setProperty('--paper-dy', g.dy + 'em');
+    m.style.setProperty('--paper-tilt', g.tilt + 'deg');
+  });
+})();
+</script>
+</body></html>"""
+
+
 def main():
     comp = json.load(open(os.path.join(ROOT, "shelf/composition-dressed.json"), encoding="utf-8"))
     pieces = json.load(open(os.path.join(ROOT, "shelf/pieces.json"), encoding="utf-8"))
@@ -141,6 +160,8 @@ def main():
             obj_w = meta["object"][0] * s / sw * 100
 
             tilt = TILTS[len(marks) % len(TILTS)]
+            # A carrier so the markup is correct before any script runs; the
+            # shuffle appended below re-deals it on every load.
             carrier = CARRIERS[zlib.crc32(slug.encode()) % len(CARRIERS)]
             g = GEO[carrier]
             marks.append(
@@ -319,8 +340,7 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
   }}, {{passive: true}});
 }})();
 </script>
-</body></html>
-'''
+''' + SHUFFLE
     open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(page)
     n = sum(len(s["objects"]) for s in comp["scenes"])
     print(f"index.html — {len(comp['scenes'])} plates, {n} pieces as elements")
