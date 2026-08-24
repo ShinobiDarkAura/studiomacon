@@ -149,7 +149,7 @@ def main():
     <button class="menu" data-menu-toggle aria-label="Menu"><span class="bars"><i></i><i></i><i></i></span></button>
     <a class="logo" href="/index.html"><img src="/assets/goat-logo.gif" alt="Studio Maçon"></a>
     <a class="bag" href="/contact.html" aria-label="Bag">
-      <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M8 3h8M9 3c0 2 1 3 3 3s3-1 3-3M7 8c0-1.5 2-2 5-2s5 .5 5 2c0 5-2 8-5 12-3-4-5-7-5-12Z"/></svg>
+      <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.2 3.2h5.6"/><path d="M10.1 3.2v2.6M13.9 3.2v2.6"/><path d="M10.1 5.8C8 7.2 7 9.6 7 12.2c0 3.2 1.6 5.8 3.4 7.2M13.9 5.8c2.1 1.4 3.1 3.8 3.1 6.4 0 3.2-1.6 5.8-3.4 7.2"/><path d="M10.4 19h3.2M9.4 20.6h5.2"/><path d="M10.1 4.6C7.9 4.9 6.2 6.4 6.5 8.8M13.9 4.6c2.2.3 3.9 1.8 3.6 4.2"/></svg>
     </a>
   </nav>
 
