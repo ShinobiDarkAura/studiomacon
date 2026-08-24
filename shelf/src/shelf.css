@@ -1,0 +1,220 @@
+/* Shelf concept — its own stylesheet. Deliberately does not share assets/site.css:
+   sharing it is what would eventually force an edit to the live design. */
+@font-face{font-family:"Index";src:url("/assets/fonts/index.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Louize";src:url("/assets/fonts/louize.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"SwimClub";src:url("/assets/fonts/swimclub.woff2") format("woff2");font-display:swap}
+@font-face{font-family:"Ashcroft";src:url("ashcroft-light.woff2") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Ashcroft";src:url("ashcroft-regular.woff2") format("woff2");font-weight:400;font-display:swap}
+/* Gabriele Dark Ribbon — a typewriter face, and free for commercial use, unlike
+   the Ashcroft test cut it replaces on the labels. */
+@font-face{font-family:"Gabriele";src:url("gabriele-dark.woff2") format("woff2");font-display:swap}
+
+:root{
+  --ink:#2b2722;            /* warm near-black, never pure black */
+  --paper:#efe9df;
+  --tan:#8d8375;
+  --olive:#5a5348;
+  --hair:rgba(43,39,34,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Louize",Georgia,"Times New Roman",serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+
+/* ---- nav: white, floating over the imagery ---- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 28px;
+  /* Ink over the pale hero, white once it is over the shelf imagery — white on
+     cream is invisible, and the shelves are too dark for ink. */
+  color:var(--ink);
+  transition:color .25s ease;
+}
+.nav .urn{width:39px;height:39px;color:currentColor;display:block}   /* basket, 1.6x */
+.nav .logo img{height:42px;display:block;transition:filter .25s ease}
+/* the logo art is dark; this renders it white without a second asset */
+.nav.over-art .logo img{filter:brightness(0) invert(1)}
+.nav.over-art{color:#fff}
+.nav.over-art .bars i{background:#fff}
+.nav .menu{background:none;border:0;padding:6px;cursor:pointer}
+.nav .bars{display:block;width:21px}                                  /* menu, 20% smaller */
+.nav .bars i{
+  display:block;height:1.6px;background:currentColor;margin:4.5px 0;border-radius:1px;
+  transition:transform .22s ease,opacity .18s ease;
+}
+body.menu-open .bars i:nth-child(1){transform:translateY(6.1px) rotate(45deg)}
+body.menu-open .bars i:nth-child(2){opacity:0}
+body.menu-open .bars i:nth-child(3){transform:translateY(-6.1px) rotate(-45deg)}
+
+.menu-overlay{
+  position:fixed;inset:0;z-index:30;background:var(--paper);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+  opacity:0;pointer-events:none;transition:opacity .25s ease;
+  font-size:26px;
+}
+body.menu-open .menu-overlay{opacity:1;pointer-events:auto}
+
+/* ---- opening: the mark large and centred, wiping up into the nav ---- */
+.curtain{
+  position:fixed;inset:0;z-index:90;display:none;
+  align-items:center;justify-content:center;
+  background:transparent;   /* the shelf shows through; the mark plays on top of it */
+}
+body.intro .curtain{display:flex}
+.curtain img{
+  height:103px;
+  filter:brightness(0) invert(1);
+  animation:markIn .7s cubic-bezier(.2,.8,.25,1) both;
+}
+@keyframes markIn{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+/* the mark simply fades away once its animation has played out */
+body.intro-wipe .curtain{transition:opacity .34s ease;opacity:0}
+
+/* the nav assembles after it: mark first, then the two icons */
+body.intro .nav .logo{opacity:0}
+body.intro .hero-copy{opacity:0}
+.hero-copy{transition:opacity .38s ease .05s}
+body.intro-done .nav .logo{animation:fadeIn .55s ease both}
+.nav .menu,.nav .bag{animation:fadeIn .7s ease both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+  .curtain,.curtain img,.nav .logo,.nav .menu,.nav .bag{animation:none!important;transition:none!important}
+}
+
+/* ---- hero: the first shelf, full viewport, title over it ---- */
+/* No crop: the plate keeps its own proportions like every other scene, so the
+   lower shelf's full thickness stays in frame and its labels line up. Cropping
+   is also what forced the hero to carry no pieces. */
+.scene.hero{height:auto;min-height:0;overflow:visible}
+.hero-copy{
+  position:fixed;inset:0;z-index:6;pointer-events:none;
+  will-change:opacity;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;color:#fff;padding:24px;line-height:1.2;
+}
+/* The file is black on transparency; this renders it white without a second
+   asset, the same way the nav mark is handled. Swap to
+   filter:none to show it black. */
+.logotype{
+  height:231px;width:auto;display:block;margin:0 auto;
+  filter:brightness(0) invert(1);
+}
+@media(max-width:700px){.logotype{height:151px}}
+.hero-copy .tagline{
+  margin:30px 0 0;
+  font-family:"Index",ui-monospace,monospace;
+  /* Index ships as a single weight, so this is a synthesised bold */
+  font-weight:700;
+  font-size:19px;letter-spacing:.085em;color:#fff;opacity:.92;
+  /* typed one character at a time; the width is fixed first so the line does not
+     grow from its centre and shuffle sideways as it fills */
+  white-space:pre;text-align:left;display:inline-block;
+}
+.hero-copy .tagline .dot{
+  display:inline-block;font-size:13px;transform:translateY(1px);
+}
+
+.hero-copy .eyebrow{
+  font-family:"SwimClub","Index",monospace;
+  font-size:clamp(10px,.85vw,13px);letter-spacing:.3em;text-transform:uppercase;
+  margin:0 0 24px;opacity:.92;
+}
+.hero-copy h1{
+  font-family:"Louize",Georgia,serif;font-weight:400;
+  font-size:clamp(32px,4.6vw,68px);line-height:1.1;letter-spacing:.005em;margin:0 0 22px;
+}
+.hero-copy .lede{
+  font-size:clamp(15px,1.35vw,20px);line-height:1.7;max-width:44ch;margin:0;opacity:.94;
+}
+
+/* ---- scenes ---- */
+.scene{position:relative;line-height:0}
+.scene .plate{width:100%;height:auto;display:block}
+
+/* Each piece is its own element sitting on the plate, so it can answer a cursor. */
+.mark{position:absolute;line-height:0;z-index:5;display:block}
+.mark .piece{
+  width:100%;height:auto;display:block;
+  transition:filter .42s ease;
+}
+/* Warm bounce: a pool of light blooms on the shelf beneath the piece as it
+   lifts, so the movement reads as lit rather than merely displaced. Sized in
+   percentages of the piece so it holds at any width. */
+/* Every piece sits in its own pool of warm light at rest; hovering simply turns
+   it up. Anchored on the object's base, which the harvest records — the sprite's
+   own bottom edge is the far side of the shadow, well below the foot. */
+.mark::after{
+  content:"";position:absolute;left:var(--bx,50%);top:var(--by,100%);
+  width:calc(var(--ow,60%) * 1.9);height:calc(var(--ow,60%) * 0.5);
+  transform:translate(-50%,-42%);
+  background:radial-gradient(ellipse at 50% 50%,
+    rgba(255,203,132,.44) 0%, rgba(255,203,132,.20) 44%, rgba(255,203,132,0) 74%);
+  opacity:.55;pointer-events:none;z-index:-1;
+  transition:opacity .42s ease,transform .42s ease;
+}
+.mark:hover::after,.mark:focus-visible::after{
+  opacity:1;transform:translate(-50%,-42%) scale(1.14);
+}
+
+/* A piece picked up off a shelf lifts and turns very slightly toward you; the
+   shadow it carries deepens because it is closer to the surface it sits on. */
+/* The piece itself does not move or grow — only the light under it comes up and
+   the label opens. */
+.mark:hover .piece,.mark:focus-visible .piece{
+  filter:drop-shadow(0 .2vw .3vw rgba(48,40,30,.18));
+}
+/* Centred on the shelf's front face, whose band is measured off each plate. */
+.mark .card{
+  position:absolute;transform:translate(-50%,calc(-50% - 5px)) rotate(var(--tilt,0deg));
+  /* A fixed-size row, centred. The price opens to the right of the name and the
+     pair recentres, so nothing changes size — the carrier least of all. */
+  display:flex;flex-direction:row;align-items:center;justify-content:center;
+  /* The box takes the carrier's own proportions and the background fills it
+     exactly, so the paper is scaled rather than stretched. */
+  box-sizing:border-box;height:6.16em;aspect-ratio:var(--car-ar,2.13);width:auto;
+  padding:0 1.1em;
+  text-align:center;white-space:nowrap;line-height:1.15;
+  /* contain, not 100% 100%: the box can still end up a few percent off the
+     carrier's ratio once padding and content have their say, and stretching a
+     torn edge by even that much shows. contain cannot distort it. */
+  background:var(--carrier) center/contain no-repeat;
+  opacity:.98;transition:opacity .3s ease;
+}
+.mark:hover .card,.mark:focus-visible .card{opacity:1}
+
+.mark .nm{
+  display:block;
+  font-family:"Gabriele","Ashcroft",Georgia,serif;font-weight:400;
+  font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.02em;
+  color:var(--ink);
+}
+
+.mark .pr{
+  display:block;overflow:hidden;white-space:nowrap;
+  font-family:"Index",ui-monospace,monospace;font-weight:700;
+  /* the same size as the name, at rest and on hover — nothing resizes */
+  font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.05em;
+  color:var(--ink);
+  max-width:0;opacity:0;margin-left:0;transform:translateX(.45em);
+  transition:max-width .36s cubic-bezier(.22,.9,.28,1),opacity .28s ease,
+             margin-left .36s ease,transform .36s cubic-bezier(.22,.9,.28,1);
+}
+.mark:hover .pr,.mark:focus-visible .pr{
+  max-width:7em;opacity:.72;margin-left:.6em;transform:translateX(0);
+}
+
+/* The hero's pieces settle in from above once scrolling starts, rather than
+   being there from the first frame while the mark is still playing. */
+.scene.hero .mark{opacity:0;transform:translateY(-30px);
+  transition:opacity .8s ease,transform .9s cubic-bezier(.19,.9,.28,1)}
+.scene.hero.pieces-in .mark{opacity:1;transform:none}
+.scene.hero .mark:nth-of-type(2){transition-delay:.06s}
+.scene.hero .mark:nth-of-type(3){transition-delay:.12s}
+@media(prefers-reduced-motion:reduce){
+  .scene.hero .mark{opacity:1;transform:none;transition:none}
+}

@@ -50,6 +50,14 @@ def main():
     tagline = next((x["value"] for x in cache.get("settings", []) if x["key"] == "tagline"), "")
     os.makedirs(OUT, exist_ok=True)
 
+    # _site is build output and is gitignored, so nothing hand-written may live
+    # there. The stylesheet, the logotype and the faces are sources kept under
+    # shelf/src and shelf/assets, and copied in on every build.
+    shutil.copyfile(os.path.join(ROOT, "shelf/src/shelf.css"), os.path.join(OUT, "shelf.css"))
+    for _asset in ("logotype.png", "gabriele-dark.woff2",
+                   "ashcroft-light.woff2", "ashcroft-regular.woff2"):
+        shutil.copyfile(os.path.join(ROOT, "shelf/assets", _asset), os.path.join(OUT, _asset))
+
     # The card is given the carrier's own proportions, so stretching a torn edge
     # to fit a word never happens — the box follows the paper, not the other way.
     _car = Image.open(os.path.join(ROOT, "shelf/carriers", CARRIER + ".png"))
