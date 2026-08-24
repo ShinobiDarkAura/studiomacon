@@ -168,7 +168,6 @@ def main():
 {chr(10).join(scenes_html)}
 
     <section class="index">
-      <h2>The Record</h2>
       <div class="rows">
 {index_rows}      </div>
     </section>
@@ -181,21 +180,28 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
   document.body.classList.toggle('menu-open');
 }});
 
-// The logotype fades the moment scrolling starts; opacity is tied straight to
-// scroll position, with no movement of its own.
+// The logotype fades on scroll — but only once the opening has handed over to
+// it. Setting opacity before then overrode the rule hiding it during the
+// opening, so the logotype and the animated mark were on screen together.
 (function () {{
   var copy = document.querySelector('.hero-copy'), hero = document.querySelector('.scene.hero');
   if (!copy || !hero) return;
-  var ticking = false;
+  var armed = false, ticking = false;
   function place() {{
-    var span = hero.offsetHeight * 0.45;
-    copy.style.opacity = Math.max(0, 1 - window.scrollY / span);
     ticking = false;
+    if (!armed) return;
+    copy.style.opacity = Math.max(0, 1 - window.scrollY / (hero.offsetHeight * 0.45));
   }}
   window.addEventListener('scroll', function () {{
     if (!ticking) {{ ticking = true; requestAnimationFrame(place); }}
   }}, {{passive: true}});
-  place();
+  document.addEventListener('macon:introdone', function () {{
+    setTimeout(function () {{
+      copy.style.transition = 'none';   // scroll drives opacity directly from here
+      armed = true;
+      place();
+    }}, 850);
+  }});
 }})();
 
 // Nav is white over photography and ink once the Record is behind it.
@@ -211,11 +217,17 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
 (function () {{
   var body = document.body;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{
-    body.classList.remove('intro'); return;
+    body.classList.remove('intro');
+    document.dispatchEvent(new Event('macon:introdone'));
+    return;
   }}
   // the mark's own animation runs 4.13s — let it finish before it fades
   setTimeout(function () {{ body.classList.add('intro-wipe'); }}, 4200);
-  setTimeout(function () {{ body.classList.remove('intro'); body.classList.add('intro-done'); }}, 4850);
+  setTimeout(function () {{
+    body.classList.remove('intro');
+    body.classList.add('intro-done');
+    document.dispatchEvent(new Event('macon:introdone'));
+  }}, 4850);
 }})();
 </script>
 </body></html>
