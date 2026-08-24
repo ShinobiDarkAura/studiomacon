@@ -56,6 +56,34 @@ def frame_size(ref_path):
     return "1024x1024"
 
 
+def shadow_room(ref_path):
+    """Give the reference frame somewhere to put the shadow.
+
+    frame_size only steers GPT: gen_scene_fal.py accepts --size and ignores it,
+    because fal takes the output's proportions from the reference image. So a
+    tall narrow cutout produced a tall narrow scene, and Rebi's shadow — which
+    falls to the RIGHT — hit the border still at full strength with 7% of its own
+    width of frame to spare.
+
+    Padding the reference fixes both engines at once: the object is set left of
+    centre on a square canvas so the room is where the shadow is going. Square
+    rather than landscape: a tall piece dropped into a wide frame gets scaled
+    down to fit and loses the detail the fidelity score depends on. Returns the
+    original path when it already has room, so nothing is rewritten needlessly.
+    """
+    im = Image.open(ref_path).convert("RGBA")
+    w, h = im.size
+    want_w = max(w, h)
+    if want_w <= w * 1.05:
+        return ref_path
+    pad = Image.new("RGBA", (want_w, h), (0, 0, 0, 0))
+    pad.paste(im, (int((want_w - w) * 0.34), 0))    # left of centre; shadow goes right
+    out = ref_path.replace(".png", "-roomy.png")
+    pad.save(out)
+    print(f"  padded reference {w}x{h} -> {want_w}x{h} so the shadow has somewhere to fall")
+    return out
+
+
 def generate(piece, notes, name, engine="gpt"):
     """Render the piece into a shelf scene. Material comes from the catalogue."""
     material = "; ".join(n for n in (notes or []) if not any(c.isdigit() for c in n)) or "cast metal"
@@ -92,7 +120,7 @@ def generate(piece, notes, name, engine="gpt"):
     )
     os.makedirs(SCENES, exist_ok=True)
     dst = os.path.join(SCENES, f"scene-{piece}.png")
-    ref = os.path.join(CUTS, f"obj-{piece}.png")
+    ref = shadow_room(os.path.join(CUTS, f"obj-{piece}.png"))
     script = "gen_scene_fal.py" if engine == "fal" else "gen_scene.py"
     subprocess.run(
         [sys.executable, os.path.join(ROOT, "shelf/tools", script),
