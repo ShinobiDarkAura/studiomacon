@@ -117,31 +117,31 @@
       "objects": [
         {
           "slug": "lunar-canyon-ring",
-          "x": 0.31,
+          "x": 0.345,
           "y": 0.36038,
-          "scale": 1.334
+          "scale": 1.6008
         },
         {
           "slug": "meridian-egg-ring",
-          "x": 0.46,
+          "x": 0.475,
           "y": 0.36038,
-          "scale": 1.334
+          "scale": 1.6008
         },
         {
           "slug": "ear-cuff",
-          "x": 0.61,
+          "x": 0.605,
           "y": 0.36038,
           "scale": 1.25
         },
         {
           "slug": "zuma-ring",
-          "x": 0.44,
+          "x": 0.455,
           "y": 0.78805,
-          "scale": 1.334
+          "scale": 1.6008
         },
         {
           "slug": "wonderhorn-talisman",
-          "x": 0.6,
+          "x": 0.585,
           "y": 0.78805,
           "scale": 0.8
         }
@@ -162,7 +162,7 @@
           ]
         }
       ],
-      "carrier": "washi-tape"
+      "tone_to_plate": true
     }
   ],
   "_retired": {

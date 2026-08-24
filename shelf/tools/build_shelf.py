@@ -10,6 +10,7 @@ would just show the original still sitting underneath.
     python3 shelf/tools/build_shelf.py
 """
 import html, json, os, re, shutil
+import numpy as np
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -17,8 +18,8 @@ OUT = os.path.join(ROOT, "shelf", "_site")
 PIECE_W = 320          # plenty: pieces display around 90-180px
 # Carriers rotate through the shelf, each also set at its own slight angle, so a
 # shelf reads as hand-labelled rather than as a printed row.
-# The graph slip alone. The per-load shuffle went with the second carrier.
-CARRIERS = ["graph-slip"]
+# The torn sheet, on every label.
+CARRIERS = ["torn-paper"]
 TILTS = ["-2.4deg", "1.7deg", "-1.1deg", "2.3deg", "-1.8deg", "0.9deg"]
 
 
@@ -43,6 +44,37 @@ def longest_mm(notes):
 
 
 SHUFFLE = """</body></html>"""
+
+
+# A patch of bare wall, matching plate_tone.py so the two agree.
+WALL = (0.42, 0.58, 0.05, 0.28)
+TONE_CLAMP = (0.86, 1.16)
+
+
+def wall_balance(plate):
+    """The plate's colour cast, normalised so it carries no brightness."""
+    a = np.asarray(Image.open(plate).convert("RGB")).astype(float)
+    H, W, _ = a.shape
+    x0, x1, y0, y1 = WALL
+    m = a[int(H * y0):int(H * y1), int(W * x0):int(W * x1)].reshape(-1, 3).mean(0)
+    return m / m.mean()
+
+
+def tone_to(sp, balance):
+    """Move a sprite's cast onto the plate's, leaving its brightness alone.
+
+    Balances are normalised on both sides, so this only ever rotates colour —
+    a silver piece stays as light as it was, it just stops reading cool against
+    warm plaster.
+    """
+    a = np.asarray(sp).astype(float)
+    m = a[..., 3] > 200
+    if not m.any():
+        return sp
+    own = a[..., :3][m].mean(0)
+    gain = np.clip(balance / (own / own.mean()), *TONE_CLAMP)
+    a[..., :3] = np.clip(a[..., :3] * gain, 0, 255)
+    return Image.fromarray(a.astype(np.uint8))
 
 
 def main():
@@ -88,6 +120,9 @@ def main():
         plate_path = os.path.join(OUT, plate_name)
         plate.convert("RGB").save(plate_path, quality=90)
 
+        # measured on the source plate, before it is flattened to jpeg
+        plate_balance = (wall_balance(os.path.join(ROOT, scene["plate"]))
+                         if scene.get("tone_to_plate") else None)
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
         fronts = scene.get("shelf_fronts", [])
 
@@ -117,11 +152,21 @@ def main():
             bx, by = meta["base"][0] * s, meta["base"][1] * s
             # Keep these in plate pixels; convert to percentages only when they
             # are written out. Mixing the two is what threw every label off.
+            if o.get("flip"):
+                bx = sw - bx                     # bx is already scaled; mirror it in the same units
             left_px = W * o["x"] - bx
             top_px = H * o["y"] - by + sink
             left, top = left_px / W * 100, top_px / H * 100
 
             sp = Image.open(os.path.join(ROOT, "shelf/sprites", f"{piece}.png")).convert("RGBA")
+            if scene.get("tone_to_plate"):
+                sp = tone_to(sp, plate_balance)
+            if o.get("flip"):
+                # Mirrored here rather than in CSS: scaleX(-1) gives the element a
+                # negative-determinant matrix, which the browser decomposes into a
+                # 180-degree rotation, so the hover transition span the piece round
+                # instead of easing its scale.
+                sp = sp.transpose(Image.FLIP_LEFT_RIGHT)
             tw = min(PIECE_W, sp.width)
             piece_path = os.path.join(OUT, f"piece-{slug}.webp")
             sp.resize((tw, max(1, round(sp.height * tw / sp.width))), Image.LANCZOS)\
@@ -142,14 +187,12 @@ def main():
             obj_w = meta["object"][0] * s / sw * 100
 
             tilt = TILTS[len(marks) % len(TILTS)]
-            # a scene can name its own paper; the closing bays need a wider
-            # one for names like "Ida's Wonder Horn"
-            carrier = scene.get("carrier", CARRIERS[0])
+            carrier = CARRIERS[0]
             g = GEO[carrier]
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
-         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 9.00:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 4.22:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px;--piece-flip:{-1 if o.get("flip") else 1}">
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 7.46:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 3.50:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="ink">

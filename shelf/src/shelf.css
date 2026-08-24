@@ -187,11 +187,11 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   transform-origin:50% 100%;
   /* --piece-dx moves the image only. The label is a sibling, so a piece can be
      nudged off its measured position without dragging its name along. */
-  transform:translateX(var(--piece-dx,0)) scaleX(var(--piece-flip,1));
+  transform:translateX(var(--piece-dx,0));
   transition:filter .42s ease,transform .42s cubic-bezier(.22,.9,.28,1);
 }
 .mark:hover .piece,.mark:focus-visible .piece{
-  transform:translateX(var(--piece-dx,0)) scale(1.01) scaleX(var(--piece-flip,1));
+  transform:translateX(var(--piece-dx,0)) scale(1.01);
 }
 /* Warm bounce: a pool of light blooms on the shelf beneath the piece as it
    lifts, so the movement reads as lit rather than merely displaced. Sized in
@@ -233,7 +233,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* per-carrier values arrive inline from the build */
   /* The box takes the carrier's own proportions and the background fills it
      exactly, so the paper is scaled rather than stretched. */
-  box-sizing:border-box;height:4.22em;aspect-ratio:var(--car-ar,2.13);width:auto;
+  box-sizing:border-box;height:3.50em;aspect-ratio:var(--car-ar,2.13);width:auto;
   padding:0 1.1em;
   text-align:center;white-space:nowrap;line-height:1.15;
   /* contain, not 100% 100%: the box can still end up a few percent off the
