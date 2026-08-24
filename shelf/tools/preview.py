@@ -49,7 +49,7 @@ def main():
         W, H = plate.size
         d = ImageDraw.Draw(plate)
         serif = font(["/Users/aco/Documents/aco/Work/Resources/Fonts/Fonts/gabriele/gabriele-d.ttf",
-                      "/System/Library/Fonts/Supplemental/Georgia.ttf"], max(10, int(W * 0.0134) - 3))
+                      "/System/Library/Fonts/Supplemental/Georgia.ttf"], max(8, int(W * 0.0134) - 5))
         mono = font(["/System/Library/Fonts/Supplemental/Courier New.ttf",
                      "/System/Library/Fonts/Menlo.ttc"], max(9, int(W * 0.0088)))
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
@@ -92,8 +92,9 @@ def main():
             # at rest the page shows the name only; the price appears on hover
             # the carrier the label is written on
             car = Image.open(os.path.join(ROOT, "shelf/carriers", CARRIER + ".png")).convert("RGBA")
-            tw = int(d.textlength(name, font=serif) + serif.size * 7.8)
-            th = int(serif.size * 5.9)
+            # scale the carrier proportionally, never stretched
+            th = int(serif.size * 5.4)
+            tw = int(th * (car.width / car.height))
             car = car.resize((max(8, tw), max(6, th)), Image.LANCZOS)
             car = car.rotate(-TILTS[oi % len(TILTS)], expand=True, resample=Image.BICUBIC)
             plate.alpha_composite(car, (int(cx - car.width / 2), int(mid * H - car.height / 2)))

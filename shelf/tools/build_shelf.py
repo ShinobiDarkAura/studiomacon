@@ -50,6 +50,11 @@ def main():
     tagline = next((x["value"] for x in cache.get("settings", []) if x["key"] == "tagline"), "")
     os.makedirs(OUT, exist_ok=True)
 
+    # The card is given the carrier's own proportions, so stretching a torn edge
+    # to fit a word never happens — the box follows the paper, not the other way.
+    _car = Image.open(os.path.join(ROOT, "shelf/carriers", CARRIER + ".png"))
+    CAR_AR = _car.width / _car.height
+
     hero_copy = f'''
       <div class="hero-copy">
         <!-- Replaced by the logotype; kept in case the wording is wanted back.
@@ -127,7 +132,7 @@ def main():
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
-         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{CARRIER}.webp);--tilt:{tilt}">
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{CARRIER}.webp);--tilt:{tilt};--car-ar:{CAR_AR:.4f}">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="nm">{html.escape(p['name'])}</span>
