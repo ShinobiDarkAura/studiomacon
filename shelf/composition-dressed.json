@@ -99,67 +99,70 @@
           ]
         }
       ]
-    },
-    {
-      "id": "d-tall",
-      "plate": "shelf/plates/dressed/dressed-tall-b.png",
-      "px_per_mm": 2.4,
-      "sink_px": 5,
-      "objects": [
-        {
-          "slug": "ear-cuff",
-          "x": 0.33,
-          "y": 0.47
-        },
-        {
-          "slug": "lunar-canyon-ring",
-          "x": 0.5,
-          "y": 0.47
-        },
-        {
-          "slug": "ori",
-          "x": 0.67,
-          "y": 0.47
-        },
-        {
-          "slug": "zuma-ring",
-          "x": 0.42,
-          "y": 0.685
-        },
-        {
-          "slug": "meridian-egg-ring",
-          "x": 0.58,
-          "y": 0.685
-        },
-        {
-          "slug": "wonderhorn-talisman",
-          "x": 0.5,
-          "y": 0.905
-        }
-      ],
-      "shelf_fronts": [
-        {
-          "y": 0.47,
-          "front": [
-            0.478,
-            0.503
-          ]
-        },
-        {
-          "y": 0.685,
-          "front": [
-            0.686,
-            0.712
-          ]
-        },
-        {
-          "y": 0.905,
-          "front": [
-            0.908,
-            0.936
-          ]
-        }
-      ]
     }
-  ]
+  ],
+  "_retired": {
+    "d-tall": "Pulled from the page: it is the portrait plate, only 1024px wide, so it is blown up 25% at full width and reads soft beside the landscape ones. Its layout is kept here so it can come back if the plate is redone in landscape."
+  },
+  "_retired_scene": {
+    "id": "d-tall",
+    "plate": "shelf/plates/dressed/dressed-tall-b.png",
+    "px_per_mm": 2.4,
+    "sink_px": 5,
+    "objects": [
+      {
+        "slug": "ear-cuff",
+        "x": 0.33,
+        "y": 0.47
+      },
+      {
+        "slug": "lunar-canyon-ring",
+        "x": 0.5,
+        "y": 0.47
+      },
+      {
+        "slug": "ori",
+        "x": 0.67,
+        "y": 0.47
+      },
+      {
+        "slug": "zuma-ring",
+        "x": 0.42,
+        "y": 0.685
+      },
+      {
+        "slug": "meridian-egg-ring",
+        "x": 0.58,
+        "y": 0.685
+      },
+      {
+        "slug": "wonderhorn-talisman",
+        "x": 0.5,
+        "y": 0.905
+      }
+    ],
+    "shelf_fronts": [
+      {
+        "y": 0.47,
+        "front": [
+          0.478,
+          0.503
+        ]
+      },
+      {
+        "y": 0.685,
+        "front": [
+          0.686,
+          0.712
+        ]
+      },
+      {
+        "y": 0.905,
+        "front": [
+          0.908,
+          0.936
+        ]
+      }
+    ]
+  }
 }

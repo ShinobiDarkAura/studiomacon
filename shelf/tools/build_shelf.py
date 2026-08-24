@@ -17,6 +17,15 @@ OUT = os.path.join(ROOT, "shelf", "_site")
 PIECE_W = 320          # plenty: pieces display around 90-180px
 
 
+def stamp(path):
+    """Content stamp for a URL. Without one, a refreshed page keeps serving the
+    old plate and the change looks like it never happened."""
+    try:
+        return int(os.path.getmtime(path))
+    except OSError:
+        return 0
+
+
 def money(v):
     return f"${float(v):,.0f}" if v else ""
 
@@ -43,7 +52,7 @@ def main():
         <p class="eyebrow">Studio Ma&ccedil;on</p>
         <h1>Cast by hand, one at a time</h1>
         -->
-        <img class="logotype" src="logotype.png" alt="Studio Ma&ccedil;on">
+        <img class="logotype" src="logotype.png?v={stamp(os.path.join(OUT, "logotype.png"))}" alt="Studio Ma&ccedil;on">
         <!-- <p class="lede">{html.escape(tagline)}</p> -->
       </div>'''
 
@@ -53,7 +62,8 @@ def main():
         plate = Image.open(plate_src)
         W, H = plate.size
         plate_name = f"plate-{scene['id']}.jpg"
-        plate.convert("RGB").save(os.path.join(OUT, plate_name), quality=90)
+        plate_path = os.path.join(OUT, plate_name)
+        plate.convert("RGB").save(plate_path, quality=90)
 
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
         fronts = scene.get("shelf_fronts", [])
@@ -90,8 +100,10 @@ def main():
 
             sp = Image.open(os.path.join(ROOT, "shelf/sprites", f"{piece}.png")).convert("RGBA")
             tw = min(PIECE_W, sp.width)
+            piece_path = os.path.join(OUT, f"piece-{slug}.webp")
             sp.resize((tw, max(1, round(sp.height * tw / sp.width))), Image.LANCZOS)\
-              .save(os.path.join(OUT, f"piece-{slug}.webp"), quality=88, method=6)
+              .save(piece_path, quality=88, method=6)
+            piece_v = stamp(piece_path)
 
             # The card is positioned inside the piece element, so its offsets are
             # percentages of the SPRITE, not of the plate: drop from the object's
@@ -104,7 +116,7 @@ def main():
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
          style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%">
-        <img class="piece" src="piece-{slug}.webp" alt="{html.escape(p['name'])}" loading="lazy">
+        <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="nm">{html.escape(p['name'])}</span>
           <span class="pr">{money(p.get('price'))}</span>
@@ -114,7 +126,7 @@ def main():
         is_hero = si == 0
         scenes_html.append(
             f'''    <section class="scene{' hero' if is_hero else ''}">
-      <img class="plate" src="{plate_name}" alt=""{'' if is_hero else ' loading="lazy"'}>
+      <img class="plate" src="{plate_name}?v={stamp(plate_path)}" alt=""{'' if is_hero else ' loading="lazy"'}>
 {hero_copy if is_hero else ''}
 {chr(10).join(marks)}
     </section>''')
@@ -133,7 +145,7 @@ def main():
 <title>Shelf ⚚ Studio Maçon</title>
 <meta name="description" content="Studio Maçon — cast bronze and silver, shelf concept.">
 <link rel="icon" href="/assets/favicon.png">
-<link rel="stylesheet" href="shelf.css">
+<link rel="stylesheet" href="shelf.css?v={stamp(os.path.join(OUT, "shelf.css"))}">
 </head><body class="intro">
 
   <div class="curtain" aria-hidden="true">
@@ -169,18 +181,15 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
   document.body.classList.toggle('menu-open');
 }});
 
-// The logotype drifts slower than the shelf behind it.
+// The logotype fades the moment scrolling starts; opacity is tied straight to
+// scroll position, with no movement of its own.
 (function () {{
   var copy = document.querySelector('.hero-copy'), hero = document.querySelector('.scene.hero');
-  if (!copy || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var RATE = 0.34, ticking = false;
+  if (!copy || !hero) return;
+  var ticking = false;
   function place() {{
-    var y = window.scrollY;
-    if (y < hero.offsetHeight * 1.2) {{
-      copy.style.transform = 'translateY(' + (y * RATE) + 'px)';
-      // fades out unhurriedly — gone by the time the shelf below is in view
-      copy.style.opacity = Math.max(0, 1 - y / (hero.offsetHeight * 0.78));
-    }}
+    var span = hero.offsetHeight * 0.45;
+    copy.style.opacity = Math.max(0, 1 - window.scrollY / span);
     ticking = false;
   }}
   window.addEventListener('scroll', function () {{
