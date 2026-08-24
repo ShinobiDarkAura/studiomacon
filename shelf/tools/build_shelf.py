@@ -112,11 +112,17 @@ def main():
             # sprite (whose width includes the shadow and is off-centre).
             card_top = (mid * H - top_px) / sh * 100   # centred on the shelf front
             card_left = bx / sw * 100
+            # Where the object actually meets the shelf, as a share of the sprite.
+            # The sprite's own bottom is the far edge of its shadow, which is well
+            # below the base — anchoring the light there put it under the shadow
+            # rather than under the piece.
+            base_x, base_y = bx / sw * 100, by / sh * 100
+            obj_w = meta["object"][0] * s / sw * 100
 
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
-         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%">
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="nm">{html.escape(p['name'])}</span>
@@ -197,13 +203,14 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     el.textContent = text;
     el.style.width = el.getBoundingClientRect().width + 'px';
     el.textContent = '';
-    copy.classList.add('typing');
-    var i = 0;
-    (function tick() {{
-      el.textContent = text.slice(0, ++i);
-      if (i < text.length) setTimeout(tick, 62);
-      else setTimeout(function () {{ copy.classList.remove('typing'); }}, 900);
-    }})();
+    // starts a beat after the logotype has settled, and types unhurriedly
+    setTimeout(function () {{
+      var i = 0;
+      (function tick() {{
+        el.textContent = text.slice(0, ++i);
+        if (i < text.length) setTimeout(tick, 115);
+      }})();
+    }}, 400);
   }});
 
   document.addEventListener('macon:introdone', function () {{
