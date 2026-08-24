@@ -325,7 +325,12 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   font-family:ui-monospace,monospace;font-size:10.5px}
 .ed label{display:grid;grid-template-columns:52px 1fr 42px;align-items:center;gap:6px}
 .ed label i{font-style:normal;font-family:ui-monospace,monospace;opacity:.7;text-align:right}
-.ed input[type=range]{width:100%;accent-color:#e8c88a}
+.ed input[type=range]{width:100%;accent-color:#e8c88a;background:transparent;border:0;outline:0}
+.ed input[type=range]:focus,.ed input[type=range]:focus-visible{outline:0;box-shadow:none}
+.ed button:focus,.ed button:focus-visible{outline:0}
+.ed-scale{display:flex;gap:6px;align-items:baseline}
+.ed-scale b{font-family:ui-monospace,monospace;font-weight:400}
+.ed-scale span{opacity:.5;margin-left:auto}
 .ed-tip{opacity:.5}
 .ed-b{display:flex;gap:6px}
 .ed button{flex:1;border:0;cursor:pointer;border-radius:5px;padding:6px 4px;
@@ -335,4 +340,11 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 /* while editing, pieces answer the pointer rather than the link */
 body.editing .mark{cursor:grab}
 body.editing .mark.ed-on{outline:1px dashed rgba(255,226,182,.8);outline-offset:3px}
+/* the resize anchor, on the piece rather than in the panel */
+.ed-grip{display:none}
+body.editing .mark.ed-on .ed-grip{
+  display:block;position:absolute;right:-7px;bottom:-7px;width:11px;height:11px;
+  border-radius:2px;background:#e8c88a;box-shadow:0 0 0 1px rgba(40,32,22,.55);
+  cursor:nwse-resize;z-index:9;
+}
 body.editing .mark .card{opacity:1}

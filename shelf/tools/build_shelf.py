@@ -49,7 +49,7 @@ SHUFFLE = """
 <div class="ed" hidden>
   <div class="ed-h"><b>Shelf editor</b><span class="ed-x">esc</span></div>
   <div class="ed-sel">click a piece</div>
-  <label>scale <input type="range" id="ed-scale" min="0.3" max="3" step="0.005"><i>1.000</i></label>
+  <div class="ed-scale">scale <b id="ed-scaleval">1.000</b> <span>drag the corner</span></div>
   <label>warmth <input type="range" id="ed-warmth" min="-0.35" max="0.35" step="0.005"><i>0.000</i></label>
   <label>bright <input type="range" id="ed-bright" min="0.5" max="1.6" step="0.005"><i>1.000</i></label>
   <label>contrast <input type="range" id="ed-contrast" min="0.5" max="1.8" step="0.005"><i>1.000</i></label>
@@ -71,7 +71,6 @@ SHUFFLE = """
   if (!panel) return;
   var sel = null, dragging = null, on = false;
   var f = {
-    scale: document.getElementById('ed-scale'),
     warmth: document.getElementById('ed-warmth'),
     bright: document.getElementById('ed-bright'),
     contrast: document.getElementById('ed-contrast')
@@ -116,7 +115,8 @@ SHUFFLE = """
   function show() {
     if (!sel) { panel.querySelector('.ed-sel').textContent = 'click a piece'; return; }
     panel.querySelector('.ed-sel').textContent = sel.dataset.slug + '  ·  ' + sel.dataset.scene;
-    ['scale', 'warmth', 'bright', 'contrast'].forEach(function (k) {
+    document.getElementById('ed-scaleval').textContent = num(sel, 'scale').toFixed(3);
+    ['warmth', 'bright', 'contrast'].forEach(function (k) {
       f[k].value = num(sel, k);
       f[k].nextElementSibling.textContent = (+num(sel, k)).toFixed(3);
     });
@@ -132,6 +132,9 @@ SHUFFLE = """
 
   document.querySelectorAll('.mark').forEach(function (el) {
     el.dataset.scale0 = el.dataset.scale;
+    var grip = document.createElement('span');
+    grip.className = 'ed-grip';
+    el.appendChild(grip);
     el.dataset.x0 = el.dataset.x; el.dataset.y0 = el.dataset.y;
     el.dataset.left0 = parseFloat(el.style.left); el.dataset.top0 = parseFloat(el.style.top);
     el.addEventListener('click', function (e) {
@@ -146,11 +149,29 @@ SHUFFLE = """
       if (sel) sel.classList.remove('ed-on');
       sel = el; el.classList.add('ed-on'); show();
       var r = el.closest('.scene').getBoundingClientRect();
-      dragging = { sx: e.clientX, sy: e.clientY, x: num(el, 'x'), y: num(el, 'y'), w: r.width, h: r.height };
+      if (e.target.classList.contains('ed-grip')) {
+        // Scale about the piece's own base, the point it stands on, so growing
+        // it never lifts it off the shelf or slides it along.
+        var b = el.getBoundingClientRect();
+        var cs = getComputedStyle(el);
+        var bx = b.left + b.width * parseFloat(cs.getPropertyValue('--bx')) / 100;
+        var by = b.top + b.height * parseFloat(cs.getPropertyValue('--by')) / 100;
+        var d0 = Math.hypot(e.clientX - bx, e.clientY - by) || 1;
+        dragging = { grip: true, bx: bx, by: by, d0: d0, s0: num(el, 'scale') };
+      } else {
+        dragging = { sx: e.clientX, sy: e.clientY, x: num(el, 'x'), y: num(el, 'y'), w: r.width, h: r.height };
+      }
       el.setPointerCapture(e.pointerId);
     });
     el.addEventListener('pointermove', function (e) {
       if (!dragging || sel !== el) return;
+      if (dragging.grip) {
+        var d = Math.hypot(e.clientX - dragging.bx, e.clientY - dragging.by);
+        el.dataset.scale = Math.max(0.15, dragging.s0 * (d / dragging.d0));
+        document.getElementById('ed-scaleval').textContent = num(el, 'scale').toFixed(3);
+        apply(el); mark(el);
+        return;
+      }
       el.dataset.x = dragging.x + (e.clientX - dragging.sx) / dragging.w;
       el.dataset.y = dragging.y + (e.clientY - dragging.sy) / dragging.h;
       place(el); mark(el);
