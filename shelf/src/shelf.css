@@ -339,8 +339,26 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   font-family:ui-monospace,monospace;font-size:10.5px}
 .ed label{display:grid;grid-template-columns:52px 1fr 42px;align-items:center;gap:6px}
 .ed label i{font-style:normal;font-family:ui-monospace,monospace;opacity:.7;text-align:right}
-.ed input[type=range]{width:100%;accent-color:#e8c88a;background:transparent;border:0;outline:0}
+/* Drawn rather than themed: accent-color leaves the platform's own track, and
+   that track carries a border no amount of outline:0 removes. */
+.ed input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:14px;background:transparent;border:0;outline:0;margin:0;
+}
 .ed input[type=range]:focus,.ed input[type=range]:focus-visible{outline:0;box-shadow:none}
+.ed input[type=range]::-webkit-slider-runnable-track{
+  height:3px;border:0;border-radius:2px;background:rgba(255,226,182,.22);
+}
+.ed input[type=range]::-moz-range-track{
+  height:3px;border:0;border-radius:2px;background:rgba(255,226,182,.22);
+}
+.ed input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:11px;height:11px;margin-top:-4px;border:0;border-radius:50%;background:#e8c88a;
+}
+.ed input[type=range]::-moz-range-thumb{
+  width:11px;height:11px;border:0;border-radius:50%;background:#e8c88a;
+}
 .ed button:focus,.ed button:focus-visible{outline:0}
 .ed-scale{display:flex;gap:6px;align-items:baseline}
 .ed-scale b{font-family:ui-monospace,monospace;font-weight:400}
