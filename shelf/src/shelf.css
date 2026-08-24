@@ -16,10 +16,12 @@
      as stamped pigment on the plaster rather than as a UI accent. */
   --ink-label:#8f3a1e;      /* darker, closer to iron-oxide than to orange */
   /* the wordmark, tuned to the subtitle so the two read as one voice */
-  --logo-tint:#e8dcc4;
-  /* The mark, the nav icons and the labels: near white, only just warm. The
-     wordmark stays on --logo-tint, which was tuned to the subtitle. */
+  /* Near white, only just warm: the mark, the nav icons, the labels, and now
+     the wordmark and its subtitle too. */
   --mark-tint:#f7f3ea;
+  /* The old wordmark tone, kept for the one thing still meant to read warm
+     against all that: the rule under each label. */
+  --rule-tint:#e8dcc4;
   --paper:#efe9df;
   --tan:#8d8375;
   --olive:#5a5348;
@@ -138,7 +140,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
      behind gives an exact tone with every speckle intact. The old filter chain
      could not have got here: on white, sepia only pulls blue down about 6%, so
      it bottomed out around (215,205,186), barely warm at all. */
-  background-color:var(--logo-tint);
+  background-color:var(--mark-tint);
   -webkit-mask:url("logotype.png") center/contain no-repeat;
           mask:url("logotype.png") center/contain no-repeat;
   aspect-ratio:888/331;width:auto;
@@ -151,7 +153,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   font-family:"Index",ui-monospace,monospace;
   /* Index ships as a single weight, so this is a synthesised bold */
   font-weight:700;
-  font-size:19px;letter-spacing:.085em;color:#e8dcc4;opacity:.95;
+  font-size:19px;letter-spacing:.085em;color:var(--mark-tint);opacity:.95;
   text-shadow:0 0 18px rgba(255,236,206,.2);
   /* typed one character at a time; the width is fixed first so the line does not
      grow from its centre and shuffle sideways as it fills */
@@ -248,7 +250,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
    Absolute rather than a flex child, so it cannot push the words off centre. */
 .mark .card::after{
   content:"";position:absolute;left:50%;top:100%;
-  width:8px;height:1px;background:var(--logo-tint);opacity:.8;
+  width:8px;height:1px;background:var(--rule-tint);opacity:.8;
   transform:translate(-50%,12px);
   transition:width .3s cubic-bezier(.2,.85,.3,1);
 }
