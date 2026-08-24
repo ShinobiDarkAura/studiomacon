@@ -252,11 +252,11 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .mark .nm{
   display:block;
   /* the dark ribbon cut: with no paper behind it the light one went thin */
-  font-family:"Gabriele",Georgia,serif;font-weight:400;
+  font-family:"Gabriele",Georgia,serif;font-weight:700;   /* single-weight face: synthesised */
   font-size:clamp(9px,calc(1.34vw - 4px),19px);letter-spacing:.02em;
   /* Over plaster that is itself pale, so it carries its own soft shade —
      without it the words vanish wherever the wall is lit. */
-  color:#fff;text-shadow:0 1px 3px rgba(48,38,26,.55),0 0 12px rgba(48,38,26,.3);
+  color:#fff;text-shadow:0 1px 3px rgba(44,34,22,.72),0 0 14px rgba(44,34,22,.45);
 }
 
 /* a quiet separator, arriving with the price */
@@ -265,10 +265,10 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .mark .pr{
   display:block;overflow:hidden;white-space:nowrap;
   /* the same dark ribbon cut as the name, so the pair reads as one stamp */
-  font-family:"Gabriele",Georgia,serif;font-weight:400;
+  font-family:"Gabriele",Georgia,serif;font-weight:700;   /* single-weight face: synthesised */
   /* deliberately larger than the name now */
   font-size:clamp(9px,calc(1.34vw - 4px),19px);letter-spacing:.05em;
-  color:#fff;text-shadow:0 1px 3px rgba(48,38,26,.55),0 0 12px rgba(48,38,26,.3);
+  color:#fff;text-shadow:0 1px 3px rgba(44,34,22,.72),0 0 14px rgba(44,34,22,.45);
   max-width:0;opacity:0;margin-left:0;transform:translateX(.45em);
   transition:max-width .36s cubic-bezier(.22,.9,.28,1),opacity .28s ease,
              margin-left .36s ease,transform .36s cubic-bezier(.22,.9,.28,1);
