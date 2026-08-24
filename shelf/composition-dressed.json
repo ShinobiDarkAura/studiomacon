@@ -109,12 +109,52 @@
     },
     {
       "id": "d-coda",
-      "_note": "Closing bay: the last two shelves of dressed-shelf-tall, cropped below the top board. Dressing only — no pieces sit here.",
-      "plate": "shelf/plates/dressed/dressed-tall-coda.png",
-      "px_per_mm": 3.8,
-      "objects": [],
-      "shelf_fronts": [],
-      "inset": true
+      "_note": "Closing bays, rebuilt wide on GPT Image 2 from the cropped tall plate. Nano was tried first and left the outpaint pads untouched. Full width, so no inset is needed.",
+      "plate": "shelf/plates/dressed/dressed-coda-wide.png",
+      "px_per_mm": 2.83,
+      "objects": [
+        {
+          "slug": "lunar-canyon-ring",
+          "x": 0.09,
+          "y": 0.3711
+        },
+        {
+          "slug": "meridian-egg-ring",
+          "x": 0.455,
+          "y": 0.3711
+        },
+        {
+          "slug": "ear-cuff",
+          "x": 0.925,
+          "y": 0.3711
+        },
+        {
+          "slug": "zuma-ring",
+          "x": 0.075,
+          "y": 0.8184
+        },
+        {
+          "slug": "wonderhorn-talisman",
+          "x": 0.935,
+          "y": 0.8184
+        }
+      ],
+      "shelf_fronts": [
+        {
+          "y": 0.3711,
+          "front": [
+            0.3857,
+            0.4561
+          ]
+        },
+        {
+          "y": 0.8184,
+          "front": [
+            0.86,
+            0.96
+          ]
+        }
+      ]
     }
   ],
   "_retired": {
