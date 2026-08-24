@@ -53,7 +53,7 @@ def main():
         <h1>Cast by hand, one at a time</h1>
         -->
         <img class="logotype" src="logotype.png?v={stamp(os.path.join(OUT, "logotype.png"))}" alt="Studio Ma&ccedil;on">
-        <p class="tagline">Handmade artifacts of love</p>
+        <p class="tagline" data-type="Artifacts of Love"></p>
         <!-- <p class="lede">{html.escape(tagline)}</p> -->
       </div>'''
 
@@ -149,7 +149,7 @@ def main():
     <button class="menu" data-menu-toggle aria-label="Menu"><span class="bars"><i></i><i></i><i></i></span></button>
     <a class="logo" href="/index.html"><img src="/assets/goat-logo.gif" alt="Studio Maçon"></a>
     <a class="bag" href="/contact.html" aria-label="Bag">
-      <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.4 2.2h7.2"/><path d="M10.3 2.2c.2 1.5.1 2.7-.2 3.6M13.7 2.2c-.2 1.5-.1 2.7.2 3.6"/><path d="M10.1 5.7C7.9 7.9 6.5 10.5 6.5 13.5c0 3.4 1.8 5.6 3.7 6.7M13.9 5.7c2.2 2.2 3.6 4.8 3.6 7.8 0 3.4-1.8 5.6-3.7 6.7"/><path d="M10.2 20.3h3.6M9.1 22.4h5.8"/><path d="M10.2 4.1C7.6 4.4 5.8 6.3 6.1 9.1M13.8 4.1c2.6.3 4.4 2.2 4.1 5"/></svg>
+      <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.4 2h7.2"/><path d="M10.3 2c.2 1.5.1 2.7-.2 3.6M13.7 2c-.2 1.5-.1 2.7.2 3.6"/><path d="M10.1 5.5C7.9 7.7 6.5 10.3 6.5 13.3c0 3.4 1.8 5.6 3.7 6.7M13.9 5.5c2.2 2.2 3.6 4.8 3.6 7.8 0 3.4-1.8 5.6-3.7 6.7"/><path d="M10.2 20.1h3.6M9.1 23.2h5.8"/><path d="M10.2 3.9C7.6 4.2 5.8 6.1 6.1 8.9M13.8 3.9c2.6.3 4.4 2.2 4.1 5"/></svg>
     </a>
   </nav>
 
@@ -181,12 +181,31 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     ticking = false;
     if (!armed) return;
     var y = window.scrollY;
-    copy.style.opacity = Math.max(0, 1 - y / (hero.offsetHeight * 0.45));
+    copy.style.opacity = Math.max(0, 1 - y / (hero.offsetHeight * 0.22));
     hero.classList.toggle('pieces-in', y > 40);
   }}
   window.addEventListener('scroll', function () {{
     if (!ticking) {{ ticking = true; requestAnimationFrame(place); }}
   }}, {{passive: true}});
+  // Type the line out after the logotype lands. The width is measured and fixed
+  // first, so a centred line does not shuffle sideways as characters arrive.
+  document.addEventListener('macon:introdone', function () {{
+    var el = document.querySelector('.tagline');
+    if (!el) return;
+    var text = el.getAttribute('data-type') || '';
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {{ el.textContent = text; return; }}
+    el.textContent = text;
+    el.style.width = el.getBoundingClientRect().width + 'px';
+    el.textContent = '';
+    copy.classList.add('typing');
+    var i = 0;
+    (function tick() {{
+      el.textContent = text.slice(0, ++i);
+      if (i < text.length) setTimeout(tick, 62);
+      else setTimeout(function () {{ copy.classList.remove('typing'); }}, 900);
+    }})();
+  }});
+
   document.addEventListener('macon:introdone', function () {{
     setTimeout(function () {{
       copy.style.transition = 'none';   // scroll drives opacity directly from here

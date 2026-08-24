@@ -1,20 +1,20 @@
 {
   "sprite": [
-    500,
-    793
+    505,
+    787
   ],
   "object": [
-    328,
-    792
+    321,
+    784
   ],
   "base": [
-    163,
-    790
+    159,
+    783
   ],
   "source_scene": "shelf/scenes/scene-rebi-1.png",
   "engine": "fal",
-  "fidelity_iou": 0.9434,
-  "shadow": 31.1,
+  "fidelity_iou": 0.9556,
+  "shadow": 25.6,
   "clipped": false,
   "verdict": "ok"
 }
