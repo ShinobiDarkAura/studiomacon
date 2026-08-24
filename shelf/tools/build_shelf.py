@@ -44,7 +44,7 @@ def main():
         <h1>Cast by hand, one at a time</h1>
         -->
         <img class="logotype" src="logotype.png" alt="Studio Ma&ccedil;on">
-        <p class="lede">{html.escape(tagline)}</p>
+        <!-- <p class="lede">{html.escape(tagline)}</p> -->
       </div>'''
 
     scenes_html = []
