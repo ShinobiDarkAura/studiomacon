@@ -9,7 +9,7 @@ would just show the original still sitting underneath.
 
     python3 shelf/tools/build_shelf.py
 """
-import html, json, os, re, shutil
+import html, json, os, re, shutil, zlib
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -17,7 +17,11 @@ OUT = os.path.join(ROOT, "shelf", "_site")
 PIECE_W = 320          # plenty: pieces display around 90-180px
 # Carriers rotate through the shelf, each also set at its own slight angle, so a
 # shelf reads as hand-labelled rather than as a printed row.
-CARRIERS = ["torn-paper", "washi-tape", "graph-slip", "ledger-strip"]
+# Only the graph slip and the ledger strip, dealt out per piece. The pick is
+# seeded from the slug rather than genuinely random, so a rebuild produces the
+# same page — a shuffle that changed every build would make previews and diffs
+# untrustworthy.
+CARRIERS = ["graph-slip", "ledger-strip"]
 TILTS = ["-2.4deg", "1.7deg", "-1.1deg", "2.3deg", "-1.8deg", "0.9deg"]
 
 
@@ -137,12 +141,12 @@ def main():
             obj_w = meta["object"][0] * s / sw * 100
 
             tilt = TILTS[len(marks) % len(TILTS)]
-            carrier = CARRIERS[len(marks) % len(CARRIERS)]
+            carrier = CARRIERS[zlib.crc32(slug.encode()) % len(CARRIERS)]
             g = GEO[carrier]
             marks.append(
                 f'''      <a class="mark" href="/product/{slug}.html"
          aria-label="{html.escape(p['name'])}, view piece"
-         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 13.1:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 6.16:.3f}em;--paper-tilt:{g['tilt']}deg">
+         style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 10.75:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 5.05:.3f}em;--paper-tilt:{g['tilt']}deg">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
           <span class="ink">

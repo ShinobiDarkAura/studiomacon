@@ -174,12 +174,12 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   width:calc(var(--ow,60%) * 1.9);height:calc(var(--ow,60%) * 0.5);
   transform:translate(-50%,-42%);
   background:radial-gradient(ellipse at 50% 50%,
-    rgba(255,198,120,.62) 0%, rgba(255,198,120,.30) 44%, rgba(255,198,120,0) 74%);
-  opacity:.78;pointer-events:none;z-index:-1;
+    rgba(255,201,128,.42) 0%, rgba(255,201,128,.19) 44%, rgba(255,201,128,0) 74%);
+  opacity:.5;pointer-events:none;z-index:-1;
   transition:opacity .42s ease,transform .42s ease;
 }
 .mark:hover::after,.mark:focus-visible::after{
-  opacity:1;transform:translate(-50%,-42%) scale(1.2);
+  opacity:.82;transform:translate(-50%,-42%) scale(1.1);
 }
 
 /* A piece picked up off a shelf lifts and turns very slightly toward you; the
@@ -192,7 +192,8 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 /* Centred on the shelf's front face, whose band is measured off each plate. */
 .mark .card{
   position:absolute;
-  transform:translate(-50%,calc(-50% - 5px)) rotate(var(--tilt,0deg));
+  /* dead-centre on the shelf face; the earlier 5px lift fought that */
+  transform:translate(-50%,-50%) rotate(var(--tilt,0deg));
   /* A fixed-size row, centred. The price opens to the right of the name and the
      pair recentres, so nothing changes size — the carrier least of all. */
   display:flex;flex-direction:row;align-items:center;justify-content:center;
@@ -202,7 +203,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   /* per-carrier values arrive inline from the build */
   /* The box takes the carrier's own proportions and the background fills it
      exactly, so the paper is scaled rather than stretched. */
-  box-sizing:border-box;height:6.16em;aspect-ratio:var(--car-ar,2.13);width:auto;
+  box-sizing:border-box;height:5.05em;aspect-ratio:var(--car-ar,2.13);width:auto;
   padding:0 1.1em;
   text-align:center;white-space:nowrap;line-height:1.15;
   /* contain, not 100% 100%: the box can still end up a few percent off the
