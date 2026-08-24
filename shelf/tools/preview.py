@@ -46,7 +46,7 @@ def main():
         W, H = plate.size
         d = ImageDraw.Draw(plate)
         serif = font(["/System/Library/Fonts/Supplemental/Georgia.ttf",
-                      "/System/Library/Fonts/Supplemental/Times New Roman.ttf"], max(13, int(W * 0.0134)))
+                      "/System/Library/Fonts/Supplemental/Times New Roman.ttf"], max(19, int(W * 0.0134) + 6))
         mono = font(["/System/Library/Fonts/Supplemental/Courier New.ttf",
                      "/System/Library/Fonts/Menlo.ttc"], max(9, int(W * 0.0088)))
         ppmm, sink = scene["px_per_mm"], scene.get("sink_px", 0)
@@ -86,8 +86,8 @@ def main():
             name_mid = mid * H - block / 2 + name_h / 2
             price_mid = mid * H + block / 2 - price_h / 2
             name, price = p["name"], (f"${float(p['price']):,.0f}" if p.get("price") else "")
-            d.text((cx, name_mid), name, fill=(255, 255, 255), font=serif, anchor="mm")
-            d.text((cx, price_mid), price, fill=(246, 243, 238), font=mono, anchor="mm")
+            # at rest the page shows the name only; the price appears on hover
+            d.text((cx, mid * H), name, fill=(255, 255, 255), font=serif, anchor="mm")
 
         out = os.path.join(ROOT, "shelf/_test", f"preview-{scene['id']}.jpg")
         plate.convert("RGB").save(out, quality=92)
