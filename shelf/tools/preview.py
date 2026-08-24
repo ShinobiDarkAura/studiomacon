@@ -6,7 +6,9 @@ arithmetic cannot be caught by looking at the composed plate. This replays the
 exact percentages the page emits — same plate, same sprites, same offsets — so the
 layout can be checked when a browser is not cooperating.
 
-Type is approximated with a system serif; the page itself uses Louize and Index.
+Type is approximated with a system serif. The page sets labels in Ashcroft Light,
+which ships here as woff2 only and cannot be loaded by PIL — so judge type on the
+page, not here. Positions and sizes are faithful.
 
     python3 shelf/tools/preview.py
 """

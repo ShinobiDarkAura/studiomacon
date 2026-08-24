@@ -149,7 +149,7 @@ def main():
     <button class="menu" data-menu-toggle aria-label="Menu"><span class="bars"><i></i><i></i><i></i></span></button>
     <a class="logo" href="/index.html"><img src="/assets/goat-logo.gif" alt="Studio Maçon"></a>
     <a class="bag" href="/contact.html" aria-label="Bag">
-      <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.2 3.2h5.6"/><path d="M10.1 3.2v2.6M13.9 3.2v2.6"/><path d="M10.1 5.8C8 7.2 7 9.6 7 12.2c0 3.2 1.6 5.8 3.4 7.2M13.9 5.8c2.1 1.4 3.1 3.8 3.1 6.4 0 3.2-1.6 5.8-3.4 7.2"/><path d="M10.4 19h3.2M9.4 20.6h5.2"/><path d="M10.1 4.6C7.9 4.9 6.2 6.4 6.5 8.8M13.9 4.6c2.2.3 3.9 1.8 3.6 4.2"/></svg>
+      <svg class="urn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.4 2.2h7.2"/><path d="M10.3 2.2c.2 1.5.1 2.7-.2 3.6M13.7 2.2c-.2 1.5-.1 2.7.2 3.6"/><path d="M10.1 5.7C7.9 7.9 6.5 10.5 6.5 13.5c0 3.4 1.8 5.6 3.7 6.7M13.9 5.7c2.2 2.2 3.6 4.8 3.6 7.8 0 3.4-1.8 5.6-3.7 6.7"/><path d="M10.2 20.3h3.6M9.1 22.4h5.8"/><path d="M10.2 4.1C7.6 4.4 5.8 6.3 6.1 9.1M13.8 4.1c2.6.3 4.4 2.2 4.1 5"/></svg>
     </a>
   </nav>
 
@@ -163,6 +163,9 @@ def main():
 
 
 <script>
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 document.querySelector('[data-menu-toggle]').addEventListener('click', function () {{
   document.body.classList.toggle('menu-open');
 }});
