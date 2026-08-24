@@ -252,7 +252,11 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .mark .nm{
   display:block;
   /* the dark ribbon cut: with no paper behind it the light one went thin */
-  font-family:"Gabriele",Georgia,serif;font-weight:700;   /* single-weight face: synthesised */
+  font-family:"Gabriele",Georgia,serif;font-weight:400;
+  /* The face has one weight, so the browser offers exactly two renderings:
+     regular, and a synthesised bold at 161% of its ink. A hairline stroke is
+     the only way to sit between them — this lands near 140%, one step back. */
+  -webkit-text-stroke:0.38px currentColor;
   font-size:clamp(9px,calc(1.34vw - 4px),19px);letter-spacing:.02em;
   color:#fff;
 }
@@ -263,7 +267,11 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .mark .pr{
   display:block;overflow:hidden;white-space:nowrap;
   /* the same dark ribbon cut as the name, so the pair reads as one stamp */
-  font-family:"Gabriele",Georgia,serif;font-weight:700;   /* single-weight face: synthesised */
+  font-family:"Gabriele",Georgia,serif;font-weight:400;
+  /* The face has one weight, so the browser offers exactly two renderings:
+     regular, and a synthesised bold at 161% of its ink. A hairline stroke is
+     the only way to sit between them — this lands near 140%, one step back. */
+  -webkit-text-stroke:0.38px currentColor;
   /* deliberately larger than the name now */
   font-size:clamp(9px,calc(1.34vw - 4px),19px);letter-spacing:.05em;
   color:#fff;
@@ -272,7 +280,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
              margin-left .36s ease,transform .36s cubic-bezier(.22,.9,.28,1);
 }
 .mark:hover .pr,.mark:focus-visible .pr{
-  max-width:7em;opacity:.72;margin-left:.6em;transform:translateX(0);
+  max-width:7em;opacity:1;margin-left:.6em;transform:translateX(0);
 }
 
 /* The hero's pieces settle in from above once scrolling starts, rather than
