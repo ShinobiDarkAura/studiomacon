@@ -18,6 +18,24 @@ PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 3411
 
 
 class Handler(SimpleHTTPRequestHandler):
+    def _cors(self):
+        """Let the page saved from one local port post to another.
+
+        The LaunchAgent that normally serves this cannot write inside
+        ~/Documents, so the editor falls back to the terminal-started server on
+        another port. That is cross-origin, and without these it is refused
+        before the request is even sent.
+        """
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self._cors()
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
     def do_POST(self):
         """Save the shelf layout back to the composition, then rebuild.
 
@@ -57,12 +75,14 @@ class Handler(SimpleHTTPRequestHandler):
         except Exception as exc:                       # report it to the page, do not die
             self.send_response(500)
             self.send_header("Content-Type", "application/json")
+            self._cors()
             self.end_headers()
             self.wfile.write(json.dumps({"error": str(exc)}).encode())
             return
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(msg)))
+        self._cors()
         self.end_headers()
         self.wfile.write(msg)
 

@@ -292,18 +292,37 @@ SHUFFLE = """
     });
     if (!pieces.length) { msg.textContent = 'nothing changed'; return; }
     msg.textContent = 'saving ' + pieces.length + '...';
-    fetch('/api/composition', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ pieces: pieces }) })
-      .then(function (r) { return r.json(); })
-      .then(function (r) {
-        if (r.error) { msg.textContent = 'failed: ' + r.error; return; }
-        // the rebuilt page now carries these, so the local copy is stale
-        try { localStorage.removeItem(STORE); } catch (e) {}
-        dirty = {};
-        msg.textContent = 'saved ' + r.saved + ' — reloading';
-        location.reload();
-      })
-      .catch(function (err) { msg.textContent = 'failed: ' + err.message; });
+
+    /* The everyday server runs as a LaunchAgent, and macOS lets a launchd job
+       read inside ~/Documents but not write there — so saving against it fails
+       with "Operation not permitted". Rather than make you notice the port, try
+       this origin first and fall back to the terminal-started one, which has the
+       access. */
+    var body = JSON.stringify({ pieces: pieces });
+    function post(base) {
+      return fetch(base + '/api/composition', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body
+      }).then(function (r) { return r.json(); });
+    }
+    function done(r) {
+      try { localStorage.removeItem(STORE); } catch (e) {}
+      dirty = {};
+      msg.textContent = 'saved ' + r.saved + ' - reloading';
+      location.reload();
+    }
+    var FALLBACK = 'http://localhost:3412';
+    post('').then(function (r) {
+      if (!r.error) return done(r);
+      if (location.origin === FALLBACK) throw new Error(r.error);
+      msg.textContent = 'this server cannot write - trying the edit server...';
+      return post(FALLBACK).then(function (r2) {
+        if (r2.error) throw new Error(r2.error);
+        done(r2);
+      });
+    }).catch(function (err) {
+      msg.textContent = 'could not save: ' + err.message +
+        ' - start it with: python3 shelf/tools/edit_server.py';
+    });
   });
 
   var restored = load_local();
