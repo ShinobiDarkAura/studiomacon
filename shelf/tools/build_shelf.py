@@ -143,8 +143,10 @@ def main():
          style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--carrier:url(carrier-{CARRIER}.webp);--tilt:{tilt};--car-ar:{CAR_AR:.4f}">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy">
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
-          <span class="nm">{html.escape(p['name'])}</span>
-          <span class="pr">{money(p.get('price'))}</span>
+          <span class="ink">
+            <span class="nm">{html.escape(p['name'])}</span>
+            <span class="pr">{money(p.get('price'))}</span>
+          </span>
         </span>
       </a>''')
 

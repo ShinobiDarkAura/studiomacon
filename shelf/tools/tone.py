@@ -21,8 +21,8 @@ SPR = os.path.join(ROOT, "shelf", "sprites")
 # dividing blue — warms and darkens at the same time, so brightness could not be
 # raised without the warmth pulling it back down.
 # Applied in place and cumulative, so re-harvest the piece before re-running.
-PIECES = {"ren":  (1.34, 1.16, 0.86, 0.42, 1.00),
-          "zuma": (1.28, 1.10, 0.95, 0.15, 1.62)}
+# Zuma is deliberately absent: it is left exactly as harvested.
+PIECES = {"ren":  (1.34, 1.16, 0.86, 0.42, 1.00)}
 
 
 def main():
