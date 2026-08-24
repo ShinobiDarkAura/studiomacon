@@ -179,7 +179,6 @@ document.querySelector('[data-menu-toggle]').addEventListener('click', function 
     if (!armed) return;
     var y = window.scrollY;
     copy.style.opacity = Math.max(0, 1 - y / (hero.offsetHeight * 0.45));
-    copy.style.transform = 'translateY(' + (y * 0.34) + 'px)';
     hero.classList.toggle('pieces-in', y > 40);
   }}
   window.addEventListener('scroll', function () {{
