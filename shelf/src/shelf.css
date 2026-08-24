@@ -17,6 +17,9 @@
   --ink-label:#8f3a1e;      /* darker, closer to iron-oxide than to orange */
   /* the wordmark, tuned to the subtitle so the two read as one voice */
   --logo-tint:#e8dcc4;
+  /* The mark, the nav icons and the labels: near white, only just warm. The
+     wordmark stays on --logo-tint, which was tuned to the subtitle. */
+  --mark-tint:#f7f3ea;
   --paper:#efe9df;
   --tan:#8d8375;
   --olive:#5a5348;
@@ -50,8 +53,8 @@ a{color:inherit;text-decoration:none}
 .nav .logo img{height:42px;display:block;transition:filter .25s ease}
 /* the logo art is dark; this renders it white without a second asset */
 /* the file is already the right colour; nothing to filter */
-.nav.over-art{color:var(--logo-tint)}
-.nav.over-art .bars i{background:var(--logo-tint)}
+.nav.over-art{color:var(--mark-tint)}
+.nav.over-art .bars i{background:var(--mark-tint)}
 .nav .menu{background:none;border:0;padding:6px;cursor:pointer}
 .nav .bars{display:block;width:26px}                                  /* menu */
 .nav .urn .lip{transition:transform .26s cubic-bezier(.2,.85,.3,1)}
@@ -83,10 +86,6 @@ body.menu-open .menu-overlay{opacity:1;pointer-events:auto}
 body.intro .curtain{display:flex}
 .curtain img{
   height:103px;
-  /* The opening mark reads a little lighter than the one that settles in the
-     nav: the same warm file, desaturated slightly and lifted, which lands on
-     #F0E9DB against the nav's #E8DCC4. */
-  filter:saturate(.55) brightness(1.06);
   animation:markIn .7s cubic-bezier(.2,.8,.25,1) both;
 }
 @keyframes markIn{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
@@ -262,7 +261,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
      the only way to sit between them — this lands near 140%, one step back. */
   -webkit-text-stroke:0.38px currentColor;
   font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.02em;
-  color:#fff;
+  color:var(--mark-tint);
 }
 
 /* a quiet separator, arriving with the price */
@@ -278,7 +277,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   -webkit-text-stroke:0.38px currentColor;
   /* deliberately larger than the name now */
   font-size:clamp(8px,calc(1.34vw - 5px),18px);letter-spacing:.05em;
-  color:#fff;
+  color:var(--mark-tint);
   max-width:0;opacity:0;margin-left:0;transform:translateX(.45em);
   transition:max-width .36s cubic-bezier(.22,.9,.28,1),opacity .28s ease,
              margin-left .36s ease,transform .36s cubic-bezier(.22,.9,.28,1);

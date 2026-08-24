@@ -1,20 +1,20 @@
 {
   "sprite": [
-    443,
-    550
+    739,
+    546
   ],
   "object": [
-    341,
-    550
+    332,
+    544
   ],
   "base": [
-    272,
-    548
+    200,
+    543
   ],
   "source_scene": "shelf/scenes/scene-ori-2.png",
   "engine": "fal",
-  "fidelity_iou": 0.9803,
-  "shadow": 20.1,
+  "fidelity_iou": 0.9296,
+  "shadow": 18.0,
   "clipped": false,
   "verdict": "ok"
 }

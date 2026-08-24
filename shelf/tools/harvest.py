@@ -165,11 +165,19 @@ def harvest(scene_path, shadow_strength=1.0, kernel=0.22):
     # The mask is an ellipse, not a rectangle: a blurred box leaves faint straight
     # edges that read as a pale panel behind the piece once it is composited onto
     # a flat plate. Offset to the right because the light is camera-left.
+    # The mask has to be lopsided, because the shadow is. It used to be near
+    # enough symmetric — centre offset 18%, radius 0.95 of the object's width —
+    # which throttled the one direction the shadow actually goes. On Rebi the
+    # scene held a shadow reaching 125% of the object's width; the mask took it
+    # to 65% and the noise floor below took it to 40%. Neither the frame nor the
+    # model was losing it. This does.
     x0, y0, x1, y1 = bbox
     ow, oh = x1 - x0, y1 - y0
-    cx, cy = (x0 + x1) / 2 + ow * 0.18, y1
-    ry_, rx_ = max(8.0, oh * 0.55), max(8.0, ow * 0.95)
+    cx, cy = (x0 + x1) / 2, y1
+    ry_ = max(8.0, oh * 0.55)
+    rx_right, rx_left = max(8.0, ow * 2.0), max(8.0, ow * 0.7)
     yy, xx = np.ogrid[:dark.shape[0], :dark.shape[1]]
+    rx_ = np.where(xx >= cx, rx_right, rx_left)
     d = ((xx - cx) / rx_) ** 2 + ((yy - cy) / ry_) ** 2
     keep = np.clip(1.35 - d, 0.0, 1.0).astype(np.float32)
     keep = cv2.GaussianBlur(keep, (0, 0), max(4, ow * 0.05))
@@ -178,7 +186,7 @@ def harvest(scene_path, shadow_strength=1.0, kernel=0.22):
     # Anything this faint is measurement noise on a flat backdrop, and it is
     # exactly what shows up as a halo against the plate. Cut it, then ease the
     # remainder so there is no hard step where it was cut.
-    dark = np.clip((dark - 0.06) / 0.94, 0.0, 1.0)
+    dark = np.clip((dark - 0.025) / 0.975, 0.0, 1.0)
     dark = dark * dark * (3 - 2 * dark)
 
     sh = Image.new("RGBA", scene.size, SHADOW_RGB + (0,))
