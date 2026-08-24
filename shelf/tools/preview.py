@@ -43,6 +43,7 @@ def main():
     prod = {p["slug"]: p for p in cache["products"]}
     over = comp.get("mm", {})
 
+    CARRIERS = ["torn-paper", "washi-tape", "vellum-strip", "graph-slip", "ledger-strip"]
     for scene in comp["scenes"]:
         plate = Image.open(os.path.join(SITE, f"plate-{scene['id']}.jpg")).convert("RGBA")
         W, H = plate.size
@@ -67,7 +68,7 @@ def main():
             f = min(fronts, key=lambda f: abs(f["y"] - y))["front"]
             return (f[0] + f[1]) / 2.0
 
-        for o in scene["objects"]:
+        for oi, o in enumerate(scene["objects"]):
             slug = o["slug"]; p = prod[slug]
             meta = json.load(open(os.path.join(ROOT, "shelf/sprites", f"{pieces[slug]}.json")))
             mid = front_mid(o["y"])
@@ -89,7 +90,14 @@ def main():
             price_mid = mid * H + block / 2 - price_h / 2
             name, price = p["name"], (f"${float(p['price']):,.0f}" if p.get("price") else "")
             # at rest the page shows the name only; the price appears on hover
-            d.text((cx, mid * H), name, fill=(255, 255, 255), font=serif, anchor="mm")
+            # the carrier the label is written on
+            car = Image.open(os.path.join(ROOT, "shelf/carriers",
+                                          CARRIERS[oi % len(CARRIERS)] + ".png")).convert("RGBA")
+            tw = int(d.textlength(name, font=serif) + serif.size * 1.5)
+            th = int(serif.size * 2.0)
+            car = car.resize((max(8, tw), max(6, th)), Image.LANCZOS)
+            plate.alpha_composite(car, (int(cx - tw / 2), int(mid * H - th / 2)))
+            d.text((cx, mid * H), name, fill=(43, 39, 34), font=serif, anchor="mm")
 
         out = os.path.join(ROOT, "shelf/_test", f"preview-{scene['id']}.jpg")
         plate.convert("RGB").save(out, quality=92)
