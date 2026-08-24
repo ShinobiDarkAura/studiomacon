@@ -102,8 +102,19 @@ def main():
             stray += int((shade > 0.05).sum() - ((shade > 0.05) & reach).sum())
             shade = shade * reach
 
+        # A shadow pixel must be DARK, not pale. Carrying the backdrop's own cream
+        # into a partially transparent pixel lightens whatever it lands on, which
+        # is the white halo: the matte was right but the colour under it was not.
+        # Object pixels keep their real colour; shadow pixels become a warm dark
+        # whose alpha does the darkening.
+        SHADOW_RGB = np.array([58, 48, 38], np.float32)
         alpha = np.clip(np.maximum(obj, shade * 0.9), 0, 1)
-        rgba = np.dstack([arr, alpha * 255.0]).astype(np.uint8)
+        is_obj = (obj > 0.5)[..., None]
+        rgb = np.where(is_obj, arr, SHADOW_RGB[None, None, :])
+        # feather the handover so the object's own edge does not show a dark rim
+        edge = np.clip((obj - 0.15) / 0.5, 0, 1)[..., None]
+        rgb = rgb * (1 - edge) + arr * edge
+        rgba = np.dstack([rgb, alpha * 255.0]).astype(np.uint8)
         out = Image.fromarray(rgba, "RGBA")
         bb = out.getchannel("A").getbbox()
         if bb:
