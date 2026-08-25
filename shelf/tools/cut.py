@@ -42,12 +42,15 @@ def offline_session(model="isnet-general-use"):
     so the output is identical to the stock path.
     """
     import onnxruntime as ort
-    from rembg.sessions.dis_general_use import DisSession
+    if model == "birefnet-general":
+        from rembg.sessions.birefnet_general import BiRefNetSessionGeneral as Session
+    else:
+        from rembg.sessions.dis_general_use import DisSession as Session
 
     path = os.path.join(os.path.expanduser(os.getenv("U2NET_HOME", "~/.u2net")), f"{model}.onnx")
     if not os.path.exists(path):
         sys.exit(f"model not cached: {path}\nrun once with network access to fetch it")
-    cls = type("OfflineDisSession", (DisSession,),
+    cls = type("OfflineSession", (Session,),
                {"download_models": classmethod(lambda c, *a, **k: path)})
     return cls(model, ort.SessionOptions(), providers=["CPUExecutionProvider"])
 

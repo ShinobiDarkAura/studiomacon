@@ -153,13 +153,14 @@ def defringe(obj, scene):
     return Image.fromarray(a.astype(np.uint8)), bg
 
 
-def harvest(scene_path, shadow_strength=1.0, kernel=0.22):
+def harvest(scene_path, shadow_strength=1.0, kernel=0.22,
+            cut_model="isnet-general-use"):
     """Split a generated scene into (object RGBA, shadow RGBA, object base point)."""
     import cv2
     from rembg import remove
 
     scene = Image.open(scene_path).convert("RGB")
-    obj = remove(scene, session=offline_session()).convert("RGBA")
+    obj = remove(scene, session=offline_session(cut_model)).convert("RGBA")
     a = clean_alpha(obj.getchannel("A"))
     obj.putalpha(a)
     obj, _bg = defringe(obj, scene)
@@ -295,6 +296,9 @@ def main():
                     help="minimum cast-shadow strength; below this the roll is retried")
     ap.add_argument("--min-iou", type=float, default=0.80,
                     help="below this the piece is flagged for review, not silently accepted")
+    ap.add_argument("--cut-model", choices=("isnet-general-use", "birefnet-general"),
+                    default="isnet-general-use",
+                    help="segmentation model used to lift the relit object from its scene")
     a = ap.parse_args()
 
     slug = a.slug or a.piece.rsplit("-", 1)[0]
@@ -319,7 +323,8 @@ def main():
             print(f"generating scene for {slug} (try {attempt}/{a.tries}) ...", flush=True)
             generate(a.piece, prod.get("notes"), prod["name"], engine=a.engine)
 
-        obj, sh, base, bbox = harvest(scene, shadow_strength=a.strength)
+        obj, sh, base, bbox = harvest(scene, shadow_strength=a.strength,
+                                     cut_model=a.cut_model)
         iou = fidelity(ref, obj, bbox)
         shadow = shadow_score(scene, obj.getchannel("A"), bbox)
         sw, sh_ = Image.open(scene).size
@@ -362,6 +367,7 @@ def main():
          "base": [base[0] - box[0], base[1] - box[1]],
          "source_scene": os.path.relpath(scene, ROOT),
          "engine": a.engine,
+         "cut_model": a.cut_model,
          "fidelity_iou": round(iou, 4),
          "shadow": round(shadow, 1),
          "clipped": bool(clipped),

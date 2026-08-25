@@ -5,7 +5,7 @@
   ],
   "object": [
     237,
-    382
+    381
   ],
   "base": [
     118,
@@ -13,7 +13,8 @@
   ],
   "source_scene": "shelf/scenes/scene-ori-2.png",
   "engine": "fal",
-  "fidelity_iou": 0.8909,
+  "cut_model": "birefnet-general",
+  "fidelity_iou": 0.9447,
   "shadow": 27.7,
   "clipped": false,
   "verdict": "ok"
