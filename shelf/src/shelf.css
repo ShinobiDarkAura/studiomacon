@@ -134,8 +134,8 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .hero-copy{
   position:fixed;inset:0;z-index:6;pointer-events:none;
   will-change:opacity;
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-  text-align:center;color:#fff;padding:clamp(74px,7.5vw,112px) 24px 24px;line-height:1.2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;color:#fff;padding:24px;line-height:1.2;
 }
 /* The file is black on transparency; this renders it white without a second
    asset, the same way the nav mark is handled. Swap to
