@@ -141,7 +141,7 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
    asset, the same way the nav mark is handled. Swap to
    filter:none to show it black. */
 .logotype{
-  width:clamp(300px,52vw,740px);max-width:calc(100vw - 48px);height:auto;display:block;margin:0 auto;
+  width:30vw;max-width:740px;height:auto;display:block;margin:0 auto;
   /* Painted, not filtered. The mark's texture lives entirely in its alpha — the
      colour underneath is a flat near-black — so masking with it and filling
      behind gives an exact tone with every speckle intact. The old filter chain
@@ -322,6 +322,8 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
    breathing room and label size to remain a considered composition, instead
    of reducing the desktop triptychs to thumbnail scale. */
 @media(max-width:700px){
+  .logotype{width:78vw;max-width:calc(100vw - 48px)}
+
   .scene.hero .mark[data-slug="pip"],
   .scene:not(.hero) .mark[data-slug="zuma"],
   .scene:not(.hero) .mark[data-slug="rebi"]{display:none}
