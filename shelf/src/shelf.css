@@ -134,22 +134,22 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .hero-copy{
   position:fixed;inset:0;z-index:6;pointer-events:none;
   will-change:opacity;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;color:#fff;padding:24px;line-height:1.2;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  text-align:center;color:#fff;padding:clamp(74px,7.5vw,112px) 24px 24px;line-height:1.2;
 }
 /* The file is black on transparency; this renders it white without a second
    asset, the same way the nav mark is handled. Swap to
    filter:none to show it black. */
 .logotype{
-  width:min(78vw,980px);height:auto;display:block;margin:0 auto;
+  width:clamp(300px,52vw,740px);max-width:calc(100vw - 48px);height:auto;display:block;margin:0 auto;
   /* Painted, not filtered. The mark's texture lives entirely in its alpha — the
      colour underneath is a flat near-black — so masking with it and filling
      behind gives an exact tone with every speckle intact. The old filter chain
      could not have got here: on white, sepia only pulls blue down about 6%, so
      it bottomed out around (215,205,186), barely warm at all. */
   background-color:var(--mark-tint);
-  -webkit-mask:url("logotype.png") center/contain no-repeat;
-          mask:url("logotype.png") center/contain no-repeat;
+  -webkit-mask:url("logotype-solid.png") center/contain no-repeat;
+          mask:url("logotype-solid.png") center/contain no-repeat;
   aspect-ratio:888/331;
   opacity:1;
 }
@@ -316,6 +316,27 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
 .scene.hero .mark:nth-of-type(3){transition-delay:.12s}
 @media(prefers-reduced-motion:reduce){
   .scene.hero .mark{opacity:1;transform:none;transition:none}
+}
+
+/* Two pieces per physical shelf on phones: the paired objects gain enough
+   breathing room and label size to remain a considered composition, instead
+   of reducing the desktop triptychs to thumbnail scale. */
+@media(max-width:700px){
+  .scene.hero .mark[data-slug="pip"],
+  .scene:not(.hero) .mark[data-slug="zuma"],
+  .scene:not(.hero) .mark[data-slug="rebi"]{display:none}
+
+  .scene.hero .mark[data-slug="milo"]{left:25.5%!important;width:21%!important}
+  .scene.hero .mark[data-slug="yael"]{left:61%!important;width:20%!important}
+
+  .scene:not(.hero) .mark[data-slug="ren"]{left:26%!important;width:18%!important}
+  .scene:not(.hero) .mark[data-slug="ori"]{left:58%!important;width:22%!important}
+  .scene:not(.hero) .mark[data-slug="ibi"]{left:24%!important;width:20%!important}
+  .scene:not(.hero) .mark[data-slug="eleph"]{left:57%!important;width:22%!important}
+
+  .mark .nm,.mark .pr{font-size:clamp(11px,3vw,15px)}
+  .mark .pr{max-width:7em;opacity:1;margin-left:.5em;transform:none}
+  .mark .card::after{width:16px}
 }
 
 
