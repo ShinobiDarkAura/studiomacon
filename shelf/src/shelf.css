@@ -136,22 +136,19 @@ body.intro-done .nav .logo{animation:fadeIn .55s ease both}
   will-change:opacity;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;color:#fff;padding:24px;line-height:1.2;
+  mix-blend-mode:overlay;
 }
-/* The file is black on transparency; this renders it white without a second
-   asset, the same way the nav mark is handled. Swap to
-   filter:none to show it black. */
+/* Use the textured alpha mask so the shelf can show through the projected mark. */
 .logotype{
-  width:30vw;max-width:740px;height:auto;display:block;margin:0 auto;
-  /* Painted, not filtered. The mark's texture lives entirely in its alpha — the
-     colour underneath is a flat near-black — so masking with it and filling
-     behind gives an exact tone with every speckle intact. The old filter chain
-     could not have got here: on white, sepia only pulls blue down about 6%, so
-     it bottomed out around (215,205,186), barely warm at all. */
+  width:50vw;max-width:740px;height:auto;display:block;margin:0 auto;
+  /* The original mask carries the worn/translucent texture; overlay supplies
+     the projected-light interaction with the plate beneath it. */
   background-color:var(--mark-tint);
-  -webkit-mask:url("logotype-solid.png") center/contain no-repeat;
-          mask:url("logotype-solid.png") center/contain no-repeat;
+  -webkit-mask:url("logotype.png") center/contain no-repeat;
+          mask:url("logotype.png") center/contain no-repeat;
   aspect-ratio:888/331;
-  opacity:1;
+  filter:drop-shadow(0 0 30px rgba(255,232,196,.22));
+  opacity:.95;
 }
 .hero-copy .tagline{
   margin:clamp(16px,2vw,30px) 0 0;

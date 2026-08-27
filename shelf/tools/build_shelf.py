@@ -52,6 +52,7 @@ SHUFFLE = """
   <div class="ed-scale">scale <b id="ed-scaleval">1.000</b> <span>drag the corner</span></div>
   <label>red&ndash;yel <input type="range" id="ed-tint" min="-0.3" max="0.3" step="0.005"><i>0.000</i></label>
   <label>warmth <input type="range" id="ed-warmth" min="-0.35" max="0.35" step="0.005"><i>0.000</i></label>
+  <label>saturate <input type="range" id="ed-saturation" min="0" max="2" step="0.005"><i>1.000</i></label>
   <label>bright <input type="range" id="ed-bright" min="0.5" max="1.6" step="0.005"><i>1.000</i></label>
   <label>contrast <input type="range" id="ed-contrast" min="0.5" max="1.8" step="0.005"><i>1.000</i></label>
   <div class="ed-tip">drag to move &middot; arrows nudge &middot; shift = 10px</div>
@@ -75,6 +76,7 @@ SHUFFLE = """
   var f = {
     tint: document.getElementById('ed-tint'),
     warmth: document.getElementById('ed-warmth'),
+    saturation: document.getElementById('ed-saturation'),
     bright: document.getElementById('ed-bright'),
     contrast: document.getElementById('ed-contrast')
   };
@@ -99,8 +101,9 @@ SHUFFLE = """
       box.style.setProperty('--ed-k', k);        // keeps the handles at size
       box.style.outlineWidth = (1 / k) + 'px';
     }
-    var w = num(el, 'warmth'), g = num(el, 'tint'), b = num(el, 'bright'), c = num(el, 'contrast');
-    if (!w && !g && b === 1 && c === 1) { img.style.filter = ''; return; }
+    var w = num(el, 'warmth'), g = num(el, 'tint'), s = num(el, 'saturation'),
+        b = num(el, 'bright'), c = num(el, 'contrast');
+    if (!w && !g && s === 1 && b === 1 && c === 1) { img.style.filter = ''; return; }
     var id = 'tone-live-' + el.dataset.scene + '-' + el.dataset.slug;
     var fl = document.getElementById(id);
     if (!fl) {
@@ -113,8 +116,11 @@ SHUFFLE = """
     var gr = (1 + w) * (1 - g * 0.5) * b * c, gg = (1 + g) * b * c,
         gb = (1 - w) * (1 - g * 0.5) * b * c, off = 0.5 * (1 - c);
     fl.firstChild.setAttribute('type', 'matrix');
+    var inv = 1 - s, lr = 0.2126 * inv, lg = 0.7152 * inv, lb = 0.0722 * inv;
     fl.firstChild.setAttribute('values',
-      gr + ' 0 0 0 ' + off + ' 0 ' + gg + ' 0 0 ' + off + ' 0 0 ' + gb + ' 0 ' + off + ' 0 0 0 1 0');
+      (gr * (lr + s)) + ' ' + (gr * lg) + ' ' + (gr * lb) + ' 0 ' + off + ' ' +
+      (gg * lr) + ' ' + (gg * (lg + s)) + ' ' + (gg * lb) + ' 0 ' + off + ' ' +
+      (gb * lr) + ' ' + (gb * lg) + ' ' + (gb * (lb + s)) + ' 0 ' + off + ' 0 0 0 1 0');
     img.style.filter = 'url(#' + id + ')';
   }
 
@@ -136,7 +142,7 @@ SHUFFLE = """
     if (!sel) { panel.querySelector('.ed-sel').textContent = 'click a piece'; return; }
     panel.querySelector('.ed-sel').textContent = sel.dataset.slug + '  ·  ' + sel.dataset.scene;
     document.getElementById('ed-scaleval').textContent = num(sel, 'scale').toFixed(3);
-    ['tint', 'warmth', 'bright', 'contrast'].forEach(function (k) {
+    ['tint', 'warmth', 'saturation', 'bright', 'contrast'].forEach(function (k) {
       f[k].value = num(sel, k);
       f[k].nextElementSibling.textContent = (+num(sel, k)).toFixed(3);
     });
@@ -157,7 +163,7 @@ SHUFFLE = """
     Object.keys(dirty).forEach(function (k) {
       var el = dirty[k];
       out[k] = { x: num(el, 'x'), y: num(el, 'y'), scale: num(el, 'scale'), dx: num(el, 'dx'),
-                 warmth: num(el, 'warmth'), tint: num(el, 'tint'),
+                 warmth: num(el, 'warmth'), tint: num(el, 'tint'), saturation: num(el, 'saturation'),
                  bright: num(el, 'bright'), contrast: num(el, 'contrast') };
     });
     try { localStorage.setItem(STORE, JSON.stringify(out)); } catch (e) {}
@@ -170,7 +176,7 @@ SHUFFLE = """
     document.querySelectorAll('.mark').forEach(function (el) {
       var v = raw[el.dataset.scene + '/' + el.dataset.slug];
       if (!v) return;
-      ['x', 'y', 'scale', 'dx', 'warmth', 'tint', 'bright', 'contrast'].forEach(function (k) {
+      ['x', 'y', 'scale', 'dx', 'warmth', 'tint', 'saturation', 'bright', 'contrast'].forEach(function (k) {
         if (v[k] !== undefined) el.dataset[k] = v[k];
       });
       place(el); apply(el);
@@ -272,7 +278,7 @@ SHUFFLE = """
     sel.dataset.x = sel.dataset.x0; sel.dataset.y = sel.dataset.y0;
     sel.dataset.scale = sel.dataset.scale0;
     sel.dataset.warmth = 0; sel.dataset.tint = 0;
-    sel.dataset.bright = 1; sel.dataset.contrast = 1;
+    sel.dataset.saturation = 1; sel.dataset.bright = 1; sel.dataset.contrast = 1;
     place(sel); apply(sel); show(); mark(sel);
   });
 
@@ -283,6 +289,7 @@ SHUFFLE = """
       var t = {};
       if (num(el, 'warmth')) t.warmth = +num(el, 'warmth').toFixed(4);
       if (num(el, 'tint')) t.tint = +num(el, 'tint').toFixed(4);
+      if (num(el, 'saturation') !== 1) t.saturation = +num(el, 'saturation').toFixed(4);
       if (num(el, 'bright') !== 1) t.bright = +num(el, 'bright').toFixed(4);
       if (num(el, 'contrast') !== 1) t.contrast = +num(el, 'contrast').toFixed(4);
       return { scene: el.dataset.scene, slug: el.dataset.slug,
@@ -449,6 +456,7 @@ def tone_matrix(t):
     g = float(t.get("tint", 0.0))
     b = float(t.get("bright", 1.0))
     c = float(t.get("contrast", 1.0))
+    s = float(t.get("saturation", 1.0))
     # warmth swings red against blue; tint swings green against both, which is
     # the axis that separates a red bronze from a yellow one. Red and blue are
     # pulled back by half of it so the piece does not brighten as it yellows.
@@ -456,8 +464,11 @@ def tone_matrix(t):
     gg = (1.0 + g) * b * c
     gb = (1.0 - w) * (1.0 - g * 0.5) * b * c
     off = 0.5 * (1.0 - c)
-    return (f"{gr:.4f} 0 0 0 {off:.4f}  0 {gg:.4f} 0 0 {off:.4f}  "
-            f"0 0 {gb:.4f} 0 {off:.4f}  0 0 0 1 0")
+    inv = 1.0 - s
+    lr, lg, lb = 0.2126 * inv, 0.7152 * inv, 0.0722 * inv
+    return (f"{gr*(lr+s):.4f} {gr*lg:.4f} {gr*lb:.4f} 0 {off:.4f}  "
+            f"{gg*lr:.4f} {gg*(lg+s):.4f} {gg*lb:.4f} 0 {off:.4f}  "
+            f"{gb*lr:.4f} {gb*lg:.4f} {gb*(lb+s):.4f} 0 {off:.4f}  0 0 0 1 0")
 
 
 def main():
@@ -475,7 +486,7 @@ def main():
     # there. The stylesheet, the logotype and the faces are sources kept under
     # shelf/src and shelf/assets, and copied in on every build.
     shutil.copyfile(os.path.join(ROOT, "shelf/src/shelf.css"), os.path.join(OUT, "shelf.css"))
-    for _asset in ("logotype.png", "logotype-solid.png", "gabriele-dark.woff2", "gabriele-light.woff2",
+    for _asset in ("logotype.png", "gabriele-dark.woff2", "gabriele-light.woff2",
                    "ashcroft-light.woff2", "ashcroft-regular.woff2"):
         shutil.copyfile(os.path.join(ROOT, "shelf/assets", _asset), os.path.join(OUT, _asset))
 
@@ -592,7 +603,7 @@ def main():
          data-x="{o['x']}" data-y="{o['y']}" data-scale="{float(o.get('scale', 1.0))}"
          data-dx="{o.get('dx_px', 0)}"
          data-warmth="{tone.get('warmth', 0)}" data-tint="{tone.get('tint', 0)}" data-bright="{tone.get('bright', 1)}"
-         data-contrast="{tone.get('contrast', 1)}"
+         data-saturation="{tone.get('saturation', 1)}" data-contrast="{tone.get('contrast', 1)}"
          style="left:{left:.4f}%;top:{top:.4f}%;width:{sw / W * 100:.4f}%;--bx:{base_x:.3f}%;--by:{base_y:.3f}%;--ow:{obj_w:.3f}%;--oh:{obj_h:.3f}%;--carrier:url(carrier-{carrier}.webp);--tilt:{tilt};--car-ar:{g['ar']:.4f};--paper-dx:{(g['cx'] - 0.5) * 8.80:.3f}em;--paper-dy:{(g['cy'] - 0.5) * 4.13:.3f}em;--paper-tilt:{g['tilt']}deg;--piece-dx:{o.get("dx_px", 0)}px">
         <img class="piece" src="piece-{slug}.webp?v={piece_v}" alt="{html.escape(p['name'])}" loading="lazy"{tone_attr}>
         <span class="card" style="top:{card_top:.4f}%;left:{card_left:.4f}%">
