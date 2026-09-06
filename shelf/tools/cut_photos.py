@@ -104,8 +104,19 @@ def transmission(img, obj_alpha, clutter=None, kernel=0.22):
         return np.ones_like(arr)
     ow = xs.max() - xs.min() + 1
     k = max(15, int(ow * kernel) | 1)
-    se = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (k, k))
-    lit = cv2.GaussianBlur(cv2.morphologyEx(arr, cv2.MORPH_CLOSE, se), (0, 0), k * 0.35)
+
+    # Estimate the lit paper at low resolution. Morphology with a non-rectangular
+    # kernel costs the kernel's AREA per pixel, and this kernel scales with the
+    # piece — 169x169 on a typical frame, which is 22 of the 25 seconds each
+    # photograph was taking, against 0.6s for the actual segmentation. The thing
+    # being estimated is a smooth shadow-free field, so it carries no detail that
+    # survives to full resolution anyway.
+    scale = min(1.0, 480.0 / max(arr.shape[:2]))
+    small = cv2.resize(arr, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
+    ks = max(5, int(k * scale) | 1)
+    se = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (ks, ks))
+    lit_s = cv2.GaussianBlur(cv2.morphologyEx(small, cv2.MORPH_CLOSE, se), (0, 0), ks * 0.35)
+    lit = cv2.resize(lit_s, (arr.shape[1], arr.shape[0]), interpolation=cv2.INTER_CUBIC)
     T = np.clip(arr / np.maximum(lit, 1e-4), 0.0, 1.0)
 
     # Bound it to the ground around the subject. A photograph has other dark
@@ -184,7 +195,14 @@ def main():
             print(f"  [{i+1}/{len(stems)}] {stem}: not in source"); continue
         img = load(os.path.join(a.src, f), a.width)
         alpha = np.asarray(clean_alpha(remove(img, session=sess).convert("RGBA").getchannel("A")))
+        full = alpha.copy()
         alpha, clutter = drop_clutter(alpha)
+        clipped = False
+        if alpha.max() < 40 and full.max() >= 40:
+            # Everything touched the border - usually because the piece sits on
+            # a prop that runs off the frame, so the two segment as one region.
+            # Better a flagged cutout than no cutout.
+            alpha, clutter, clipped = full, None, True
         if alpha.max() < 40:
             print(f"  [{i+1}/{len(stems)}] {stem}: nothing left after clutter removal"); continue
 
@@ -217,8 +235,10 @@ def main():
                        "object_box": [int(ox.min()), int(oy.min()), int(ox.max()), int(oy.max())]
                        if len(ox) else None,
                        "base": [int((ox.min() + ox.max()) / 2), int(oy.max())] if len(ox) else None,
-                       "shadow_depth": round(float(1 - T[sl].min()), 3)})
-        print(f"  [{i+1}/{len(stems)}] {stem}  {w}x{h}  shadow depth {report[-1]['shadow_depth']:.2f}")
+                       "shadow_depth": round(float(1 - T[sl].min()), 3),
+                       "clipped": clipped})
+        print(f"  [{i+1}/{len(stems)}] {stem}  {w}x{h}"
+              f"  depth {report[-1]['shadow_depth']:.2f}{'  CLIPPED' if clipped else ''}")
 
     json.dump(report, open(os.path.join(a.out, "_report.json"), "w"), indent=1)
     print(f"\ndone: {len(report)} photographs")
