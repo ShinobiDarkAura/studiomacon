@@ -63,10 +63,11 @@ def load(path, long_edge):
 def drop_clutter(alpha, margin_frac=0.012):
     """Discard anything touching the frame edge.
 
-    A lamp arm leans into the corner of most of these frames. The segmenter is
-    right to call it foreground, but it is not the subject, and left in it both
-    gets cut out and drags the crop out to the corner. The jewellery never
-    touches the border; the clutter always does.
+    The lightbox sweep curves up at the sides, and that curve reads as a dark
+    band in the corner of most frames. The segmenter sometimes calls it
+    foreground; it is background, so leaving it in both cuts it out and drags
+    the crop to the corner. The jewellery never touches the border; the sweep
+    always does.
     """
     h, w = alpha.shape
     mg = max(4, int(min(h, w) * margin_frac))
@@ -80,9 +81,9 @@ def drop_clutter(alpha, margin_frac=0.012):
         if x <= mg or y <= mg or x + ww >= w - mg or y + hh >= h - mg:
             continue
         keep |= (lab == i)
-    # The clutter is returned too, not just discarded: it is dark, so if it is
-    # only removed from the object it reappears in the shadow map as a streak
-    # of attenuation that belongs to a lamp rather than to the piece.
+    # Returned too, not just discarded: it is dark, so removing it only from the
+    # object leaves it in the shadow map as attenuation belonging to the
+    # backdrop rather than to the piece.
     clutter = (alpha > 40) & ~keep
     clutter = cv2.dilate(clutter.astype(np.uint8),
                          cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31))).astype(bool)
@@ -116,10 +117,19 @@ def transmission(img, obj_alpha, clutter=None, kernel=0.22):
 
     raw = np.clip(1.0 - T, 0, 1)
 
-    # Find what is leaning into the shot BEFORE the shadow is bounded to the
-    # subject. Bounding already zeroes the frame border, so afterwards the lamp
-    # blob no longer touches an edge and the test cannot see it - which is why
-    # the first attempt at this changed nothing.
+    # Remove the lightbox sweep BEFORE the shadow is bounded to the subject.
+    #
+    # The curve is out of focus, so the segmenter never called it foreground and
+    # taking clutter out of the OBJECT mask did not touch it — it exists only
+    # here, as darkness the background estimate reads as attenuation. In
+    # principle a wide enough closing would fold the sweep into the lit estimate
+    # and it would cancel in C/L, but the curve is far broader than any kernel
+    # that still preserves a shadow, so it is removed explicitly instead.
+    #
+    # It has to happen before bounding: bounding zeroes the frame border, after
+    # which the blob touches no edge and this test cannot see it. Being backdrop
+    # rather than an object, anything connected to the frame edge here is always
+    # safe to drop.
     d1 = raw.max(axis=2)
     h, w = d1.shape
     mgn = max(3, int(min(h, w) * 0.01))
