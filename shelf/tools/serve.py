@@ -52,7 +52,7 @@ class Handler(SimpleHTTPRequestHandler):
             n = 0
             for sc in comp["scenes"]:
                 for o in sc.get("objects", []):
-                    e = edits.get((sc["id"], o["slug"]))
+                    e = edits.get((sc["id"], o.get("key", o["slug"])))
                     if not e:
                         continue
                     for k in ("x", "y", "scale", "dx_px", "option", "width"):

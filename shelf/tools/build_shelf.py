@@ -655,6 +655,14 @@ def main():
                         '<img class="ph-object" data-opt="%d" src="photo-object-%s.png" alt="%s"%s loading="lazy">'
                         % (oi, st, hide, oi, st, html.escape(p["name"]), hide))
 
+                card_html = (
+                    '<span class="card" style="top:%.4f%%;left:%.4f%%">'
+                    '<span class="ink">'
+                    '<span class="nm">%s</span>'
+                    '<span class="pr">%s</span>'
+                    '</span></span>'
+                    % (card_top, card_left, html.escape(p["name"]), money(p.get("price"))))
+
                 marks.append(
                     '      <a class="mark photo" href="/product/%s.html"\n'
                     '         aria-label="%s, view piece"\n'
@@ -667,21 +675,16 @@ def main():
                     '         style="left:%.4f%%;top:%.4f%%;width:%.4f%%;'
                     '--bx:%.3f%%;--by:%.3f%%;--ow:%.3f%%;--oh:%.3f%%">\n'
                     '        %s\n'
-                    '        <span class="card" style="top:%.4f%%;left:%.4f%%">\n'
-                    '          <span class="ink">\n'
-                    '            <span class="nm">%s</span>\n'
-                    '            <span class="pr">%s</span>\n'
-                    '          </span>\n'
-                    '        </span>\n'
+                    '        %s\n'
                     '      </a>'
-                    % (slug, html.escape(p["name"]), scene["id"], slug, o["x"], o["y"],
+                    % (slug, html.escape(p["name"]), scene["id"],
+                       o.get("key", slug), o["x"], o["y"],
                        len(opts), pick, o.get("width", 0.16), "|".join(geoms),
                        left_px / W * 100, top_px / H * 100, sw / W * 100,
                        man["base"][0] / cw * 100, man["base"][1] / ch * 100,
                        (man["object_box"][2] - man["object_box"][0]) / cw * 100,
                        (man["object_box"][3] - man["object_box"][1]) / ch * 100,
-                       "".join(imgs), card_top, card_left,
-                       html.escape(p["name"]), money(p.get("price"))))
+                       "".join(imgs), "" if o.get("no_label") else card_html))
                 continue
 
             piece = v6_centered_pieces.get(slug, pieces[slug])
