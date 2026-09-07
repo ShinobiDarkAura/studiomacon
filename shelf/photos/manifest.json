@@ -209,5 +209,43 @@
    627,
    611
   ]
+ },
+ {
+  "object": "object/with-bronze--IMG_6068--1.png",
+  "shadow": "shadow/with-bronze--IMG_6068--1.png",
+  "source": "with-bronze--IMG_6068",
+  "canvas": [
+   1015,
+   782
+  ],
+  "object_box": [
+   172,
+   157,
+   796,
+   580
+  ],
+  "base": [
+   484,
+   580
+  ]
+ },
+ {
+  "object": "object/with-bronze--IMG_6068--2.png",
+  "shadow": "shadow/with-bronze--IMG_6068--2.png",
+  "source": "with-bronze--IMG_6068",
+  "canvas": [
+   603,
+   679
+  ],
+  "object_box": [
+   183,
+   177,
+   569,
+   480
+  ],
+  "base": [
+   376,
+   480
+  ]
  }
 ]

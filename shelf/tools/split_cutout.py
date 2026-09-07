@@ -22,7 +22,7 @@ import cv2
 from PIL import Image
 
 
-def split(cut_dir, name, out_dir, min_frac):
+def split(cut_dir, name, out_dir, min_frac, erode=0):
     obj = np.asarray(Image.open(os.path.join(cut_dir, "object", name)).convert("RGBA"))
     shd = np.asarray(Image.open(os.path.join(cut_dir, "shadow", name)).convert("RGB"))
     al = obj[..., 3]
@@ -30,7 +30,11 @@ def split(cut_dir, name, out_dir, min_frac):
 
     solid = (al > 128).astype(np.uint8)
     solid = cv2.morphologyEx(solid, cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
-    n, lab, st, _ = cv2.connectedComponentsWithStats(solid, 8)
+    # Pieces that lean on one another are a single blob. Eroding first breaks the
+    # narrow bridge between them; the seeds are grown back over the full
+    # silhouette below, so nothing is actually shaved off the pieces.
+    seeded = cv2.erode(solid, np.ones((erode, erode), np.uint8)) if erode else solid
+    n, lab, st, _ = cv2.connectedComponentsWithStats(seeded, 8)
     keep = [i for i in range(1, n) if st[i, cv2.CC_STAT_AREA] >= min_frac * h * w]
     if len(keep) < 2:
         print(f"  {name}: one object only, nothing to split")
@@ -56,7 +60,7 @@ def split(cut_dir, name, out_dir, min_frac):
     made = []
     for k, i in enumerate(keep, start=1):
         mine = (owner == k)
-        a = al * (lab == i)
+        a = al * (mine & (solid > 0))
         s = np.where(mine[..., None], shd, 255).astype(np.uint8)
         has = (a > 8) | (s.min(axis=2) < 250)
         box = cv2.boundingRect(has.astype(np.uint8))
@@ -79,11 +83,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("cut_dir"); ap.add_argument("names", nargs="+")
     ap.add_argument("--out"); ap.add_argument("--min", type=float, default=0.01)
+    ap.add_argument("--erode", type=int, default=0,
+                    help="break touching pieces apart before labelling")
     a = ap.parse_args()
     out = a.out or os.path.join(a.cut_dir, "split")
     all_made = []
     for nm in a.names:
-        all_made += split(a.cut_dir, nm, out, a.min)
+        all_made += split(a.cut_dir, nm, out, a.min, a.erode)
     if all_made:
         p = os.path.join(out, "manifest.json")
         old = json.load(open(p)) if os.path.exists(p) else []
