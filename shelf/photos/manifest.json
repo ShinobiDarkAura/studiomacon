@@ -108,5 +108,87 @@
    1035,
    651
   ]
+ },
+ {
+  "object": "object/on-stone--IMG_6099--1.png",
+  "shadow": "shadow/on-stone--IMG_6099--1.png",
+  "source": "on-stone--IMG_6099",
+  "canvas": [
+   1568,
+   1781
+  ],
+  "object_box": [
+   511,
+   501,
+   1398,
+   1206
+  ],
+  "base": [
+   954,
+   1206
+  ]
+ },
+ {
+  "object": "object/with-bronze--IMG_6027--2.png",
+  "shadow": "shadow/with-bronze--IMG_6027--2.png",
+  "source": "with-bronze--IMG_6027",
+  "canvas": [
+   911,
+   712
+  ],
+  "object_box": [
+   360,
+   199,
+   744,
+   489
+  ],
+  "base": [
+   552,
+   489
+  ]
+ },
+ {
+  "piece_group": "with-bronze",
+  "source": "IMG_6048",
+  "object": "object/with-bronze--IMG_6048.png",
+  "shadow": "shadow/with-bronze--IMG_6048.png",
+  "preview": "preview/with-bronze--IMG_6048.jpg",
+  "canvas": [
+   859,
+   882
+  ],
+  "base": [
+   392,
+   727
+  ],
+  "clipped": false,
+  "object_box": [
+   108,
+   145,
+   677,
+   727
+  ]
+ },
+ {
+  "piece_group": "on-stone",
+  "source": "IMG_6285",
+  "object": "object/on-stone--IMG_6285.png",
+  "shadow": "shadow/on-stone--IMG_6285.png",
+  "preview": "preview/on-stone--IMG_6285.jpg",
+  "canvas": [
+   1151,
+   1157
+  ],
+  "base": [
+   568,
+   868
+  ],
+  "clipped": false,
+  "object_box": [
+   185,
+   172,
+   952,
+   868
+  ]
  }
 ]
