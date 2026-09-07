@@ -85,13 +85,21 @@ SHUFFLE = """
   function num(el, k) { return parseFloat(el.dataset[k]); }
 
   function apply(el) {
+    // A photographed piece has two layers and no .piece, so scaling only the
+    // first element did nothing at all - the grip appeared dead. Both layers
+    // must take the same transform or the shadow slides off its object.
     var img = el.querySelector('.piece');
+    var photo = !img;
+    var targets = photo ? el.querySelectorAll('.ph-object,.ph-shadow') : [img];
+    if (photo) img = targets[0];
     var k = num(el, 'scale') / parseFloat(el.dataset.scale0);
     // turn about the base: the piece stands on that point, so it must not drift
     var origin = getComputedStyle(el).getPropertyValue('--bx') + ' ' +
                  getComputedStyle(el).getPropertyValue('--by');
-    img.style.transformOrigin = origin;
-    img.style.transform = 'translateX(' + num(el, 'dx') + 'px) scale(' + k + ')';
+    targets.forEach(function (t) {
+      t.style.transformOrigin = origin;
+      t.style.transform = 'translateX(' + num(el, 'dx') + 'px) scale(' + k + ')';
+    });
     // the box is drawn from the sprite's own measurements, which do not know
     // about a live scale, so it has to be carried along by the same transform
     var box = el.querySelector('.ed-box');
@@ -121,7 +129,10 @@ SHUFFLE = """
       (gr * (lr + s)) + ' ' + (gr * lg) + ' ' + (gr * lb) + ' 0 ' + off + ' ' +
       (gg * lr) + ' ' + (gg * (lg + s)) + ' ' + (gg * lb) + ' 0 ' + off + ' ' +
       (gb * lr) + ' ' + (gb * lg) + ' ' + (gb * (lb + s)) + ' 0 ' + off + ' 0 0 0 1 0');
-    img.style.filter = 'url(#' + id + ')';
+    // tone the object only; the shadow is a transmission map and recolouring it
+    // would change how much light it lets through
+    (photo ? el.querySelectorAll('.ph-object') : targets)
+      .forEach(function (t) { t.style.filter = 'url(#' + id + ')'; });
   }
 
   function place(el) {
@@ -303,8 +314,11 @@ SHUFFLE = """
       if (num(el, 'saturation') !== 1) t.saturation = +num(el, 'saturation').toFixed(4);
       if (num(el, 'bright') !== 1) t.bright = +num(el, 'bright').toFixed(4);
       if (num(el, 'contrast') !== 1) t.contrast = +num(el, 'contrast').toFixed(4);
+      var isPhoto = !!el.querySelector('.ph-object');
       return { scene: el.dataset.scene, slug: el.dataset.slug,
                option: el.dataset.option !== undefined ? +el.dataset.option : undefined,
+               width: isPhoto ? +(num(el, 'width') * (num(el, 'scale') /
+                                  parseFloat(el.dataset.scale0))).toFixed(5) : undefined,
                x: +num(el, 'x').toFixed(5), y: +num(el, 'y').toFixed(5),
                scale: +num(el, 'scale').toFixed(4), dx_px: Math.round(num(el, 'dx')),
                tone: Object.keys(t).length ? t : null };
@@ -463,10 +477,14 @@ def photo_meta(name):
     """Canvas size and base point of a cutout, read from its own manifest."""
     global _photo_manifest
     if _photo_manifest is None:
-        _photo_manifest = {os.path.basename(e["object"]): e
-                           for e in json.load(open(os.path.join(PHOTOS, "manifest.json")))}
+        man = {os.path.basename(e["object"]): e
+               for e in json.load(open(os.path.join(PHOTOS, "manifest.json")))}
+        rep = {r["stem"]: r for r in json.load(open(os.path.join(PHOTOS, "_report.json")))}
+        for k, e in man.items():
+            e["object_box"] = rep[e["source"]]["object_box"]
+        _photo_manifest = man
     e = _photo_manifest[name]
-    return {"canvas": e["canvas"], "base": e["base"]}
+    return {"canvas": e["canvas"], "base": e["base"], "object_box": e["object_box"]}
 
 
 def tone_matrix(t):
@@ -615,7 +633,8 @@ def main():
                     '         data-x="%s" data-y="%s" data-scale="1" data-dx="0"\n'
                     '         data-warmth="0" data-tint="0" data-bright="1" data-contrast="1"\n'
                     '         data-options="%d" data-option="%d" data-width="%s"\n'
-                    '         style="left:%.4f%%;top:%.4f%%;width:%.4f%%">\n'
+                    '         style="left:%.4f%%;top:%.4f%%;width:%.4f%%;'
+                    '--bx:%.3f%%;--by:%.3f%%;--ow:%.3f%%;--oh:%.3f%%">\n'
                     '        %s\n'
                     '        <span class="card" style="top:%.4f%%;left:%.4f%%">\n'
                     '          <span class="ink">\n'
@@ -627,6 +646,9 @@ def main():
                     % (slug, html.escape(p["name"]), scene["id"], slug, o["x"], o["y"],
                        len(opts), pick, o.get("width", 0.16),
                        left_px / W * 100, top_px / H * 100, sw / W * 100,
+                       man["base"][0] / cw * 100, man["base"][1] / ch * 100,
+                       (man["object_box"][2] - man["object_box"][0]) / cw * 100,
+                       (man["object_box"][3] - man["object_box"][1]) / ch * 100,
                        "".join(imgs), card_top, card_left,
                        html.escape(p["name"]), money(p.get("price"))))
                 continue
