@@ -116,7 +116,7 @@
           "slug": "rebi",
           "x": 0.49185,
           "y": 0.85645,
-          "scale": 0.9607,
+          "scale": 0.9347,
           "dx_px": 0,
           "tone": {
             "warmth": 0.095,
@@ -170,8 +170,10 @@
           ],
           "option": 0,
           "x": 0.5,
-          "y": 0.3721,
-          "width": 0.185
+          "y": 0.3722,
+          "width": 0.185,
+          "scale": 1,
+          "dx_px": 0
         },
         {
           "slug": "lunar-canyon-ring",
@@ -180,22 +182,21 @@
             "trio--IMG_6249.png"
           ],
           "option": 0,
-          "x": 0.42,
-          "y": 0.8193,
+          "x": 0.4425,
+          "y": 0.78526,
           "width": 0.115,
-          "scale": 1.3918,
-          "dx_px": 0,
-          "tone": {
-            "saturation": null
-          }
+          "scale": 0.8053,
+          "dx_px": 0
         },
         {
           "slug": "wonderhorn-talisman",
           "photo": "with-bronze--IMG_6068.png",
           "option": 0,
-          "x": 0.575,
-          "y": 0.8193,
-          "width": 0.175
+          "x": 0.57052,
+          "y": 0.79999,
+          "width": 0.175,
+          "scale": 1.336,
+          "dx_px": 0
         }
       ],
       "shelf_fronts": [
