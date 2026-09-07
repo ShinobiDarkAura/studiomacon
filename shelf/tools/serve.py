@@ -67,6 +67,13 @@ class Handler(SimpleHTTPRequestHandler):
                 json.dump(comp, f, indent=2, ensure_ascii=False)
             out = subprocess.run([sys.executable, os.path.join(REPO, "shelf/tools/build_shelf.py")],
                                  cwd=REPO, capture_output=True, text=True)
+            if out.returncode != 0:
+                # A failed rebuild used to be reported as success: the page then
+                # cleared the editor's local copy and reloaded a stale build, so
+                # the work looked lost even though the composition on disk had
+                # it. Say so instead, and let the page keep its edits.
+                raise RuntimeError("rebuild failed, composition saved:\n"
+                                   + (out.stderr or out.stdout).strip()[-500:])
             for name in ("index.html", "shelf.css"):
                 src = os.path.join(REPO, "shelf/_site", name)
                 if os.path.exists(src):

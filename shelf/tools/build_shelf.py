@@ -490,7 +490,11 @@ def tone_to(sp, balance):
     return Image.fromarray(a.astype(np.uint8))
 
 
-PHOTOS = os.path.expanduser("~/Downloads/Maçon/Shelf Cutouts")
+# The cutouts in use live in the repo, not in Downloads. A launchd job cannot
+# read ~/Downloads at all, so a build triggered by the everyday server died
+# there — after it had already written the composition, which is how an edit
+# could vanish and take the page back to a stale build.
+PHOTOS = os.path.join(ROOT, "shelf/photos")
 _photo_manifest = None
 
 
@@ -498,12 +502,8 @@ def photo_meta(name):
     """Canvas size and base point of a cutout, read from its own manifest."""
     global _photo_manifest
     if _photo_manifest is None:
-        man = {os.path.basename(e["object"]): e
-               for e in json.load(open(os.path.join(PHOTOS, "manifest.json")))}
-        rep = {r["stem"]: r for r in json.load(open(os.path.join(PHOTOS, "_report.json")))}
-        for k, e in man.items():
-            e["object_box"] = rep[e["source"]]["object_box"]
-        _photo_manifest = man
+        _photo_manifest = {os.path.basename(e["object"]): e
+                           for e in json.load(open(os.path.join(PHOTOS, "manifest.json")))}
     e = _photo_manifest[name]
     return {"canvas": e["canvas"], "base": e["base"], "object_box": e["object_box"]}
 

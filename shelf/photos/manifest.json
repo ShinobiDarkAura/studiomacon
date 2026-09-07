@@ -1,0 +1,112 @@
+[
+ {
+  "piece_group": "on-stone",
+  "source": "IMG_6089",
+  "object": "object/on-stone--IMG_6089.png",
+  "shadow": "shadow/on-stone--IMG_6089.png",
+  "preview": "preview/on-stone--IMG_6089.jpg",
+  "canvas": [
+   2102,
+   1319
+  ],
+  "base": [
+   1078,
+   993
+  ],
+  "clipped": false,
+  "object_box": [
+   450,
+   410,
+   1707,
+   993
+  ]
+ },
+ {
+  "piece_group": "on-stone",
+  "source": "IMG_6099",
+  "object": "object/on-stone--IMG_6099.png",
+  "shadow": "shadow/on-stone--IMG_6099.png",
+  "preview": "preview/on-stone--IMG_6099.jpg",
+  "canvas": [
+   2400,
+   1782
+  ],
+  "base": [
+   1301,
+   1275
+  ],
+  "clipped": false,
+  "object_box": [
+   511,
+   501,
+   2091,
+   1275
+  ]
+ },
+ {
+  "piece_group": "solo",
+  "source": "IMG_6180",
+  "object": "object/solo--IMG_6180.png",
+  "shadow": "shadow/solo--IMG_6180.png",
+  "preview": "preview/solo--IMG_6180.jpg",
+  "canvas": [
+   414,
+   396
+  ],
+  "base": [
+   203,
+   347
+  ],
+  "clipped": false,
+  "object_box": [
+   62,
+   58,
+   344,
+   347
+  ]
+ },
+ {
+  "piece_group": "trio",
+  "source": "IMG_6249",
+  "object": "object/trio--IMG_6249.png",
+  "shadow": "shadow/trio--IMG_6249.png",
+  "preview": "preview/trio--IMG_6249.jpg",
+  "canvas": [
+   1389,
+   673
+  ],
+  "base": [
+   655,
+   437
+  ],
+  "clipped": false,
+  "object_box": [
+   195,
+   166,
+   1116,
+   437
+  ]
+ },
+ {
+  "piece_group": "with-bronze",
+  "source": "IMG_6068",
+  "object": "object/with-bronze--IMG_6068.png",
+  "shadow": "shadow/with-bronze--IMG_6068.png",
+  "preview": "preview/with-bronze--IMG_6068.jpg",
+  "canvas": [
+   1254,
+   850
+  ],
+  "base": [
+   609,
+   651
+  ],
+  "clipped": false,
+  "object_box": [
+   183,
+   157,
+   1035,
+   651
+  ]
+ }
+]
