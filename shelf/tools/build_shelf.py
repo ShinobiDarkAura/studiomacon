@@ -82,7 +82,16 @@ SHUFFLE = """
   };
   var dirty = {};
 
-  function num(el, k) { return parseFloat(el.dataset[k]); }
+  var DEFAULTS = { scale: 1, dx: 0, warmth: 0, tint: 0, saturation: 1,
+                   bright: 1, contrast: 1, width: 0.16, option: 0 };
+  function num(el, k) {
+    // A single missing attribute used to turn into NaN, and NaN spreads: it is
+    // written into the stored edits as null, restored as NaN on the next load,
+    // and any control reading it goes dead. The resize grip died exactly that
+    // way when photo marks shipped without data-saturation.
+    var v = parseFloat(el.dataset[k]);
+    return isFinite(v) ? v : (DEFAULTS[k] !== undefined ? DEFAULTS[k] : 0);
+  }
 
   function apply(el) {
     // A photographed piece has two layers and no .piece, so scaling only the
@@ -188,7 +197,8 @@ SHUFFLE = """
       var v = raw[el.dataset.scene + '/' + el.dataset.slug];
       if (!v) return;
       ['x', 'y', 'scale', 'dx', 'warmth', 'tint', 'saturation', 'bright', 'contrast'].forEach(function (k) {
-        if (v[k] !== undefined) el.dataset[k] = v[k];
+        if (v[k] === undefined || v[k] === null || !isFinite(v[k])) return;
+        el.dataset[k] = v[k];
       });
       place(el); apply(el);
       dirty[el.dataset.scene + '/' + el.dataset.slug] = el;
@@ -650,7 +660,8 @@ def main():
                     '         aria-label="%s, view piece"\n'
                     '         data-scene="%s" data-slug="%s"\n'
                     '         data-x="%s" data-y="%s" data-scale="1" data-dx="0"\n'
-                    '         data-warmth="0" data-tint="0" data-bright="1" data-contrast="1"\n'
+                    '         data-warmth="0" data-tint="0" data-saturation="1"'
+                    ' data-bright="1" data-contrast="1"\n'
                     '         data-options="%d" data-option="%d" data-width="%s"\n'
                     '         data-geoms="%s"\n'
                     '         style="left:%.4f%%;top:%.4f%%;width:%.4f%%;'
