@@ -409,3 +409,27 @@ body.editing .mark.ed-on .ed-box{
 .ed-sw{left:-8px;bottom:-8px;cursor:nesw-resize}
 .ed-se{right:-8px;bottom:-8px;cursor:nwse-resize}
 body.editing .mark .card{opacity:1}
+
+
+/* ---- photographed pieces: object over a multiplied shadow ---- */
+/* The shadow file is a transmission map, not a picture of a shadow. Multiply is
+   not a look here, it is the only correct operator: white passes the shelf
+   through untouched and darker attenuates it, so the same photograph lands
+   correctly on plaster, on bronze, on anything. Drawn normally it would paste a
+   grey rectangle of the studio sweep onto the shelf. */
+/* z-index:auto is load-bearing. .mark carries z-index:5, which makes it a
+   stacking context, and mix-blend-mode can only blend inside the context it
+   sits in - so the shadow blended against the mark's own empty backdrop and
+   rendered as an opaque white tile. Without the z-index the mark still paints
+   above the plate, because the plate comes first in the DOM, and the shadow can
+   reach it. */
+.mark.photo{line-height:0;z-index:auto}
+.mark.photo img{position:absolute;left:0;top:0;width:100%;height:auto;display:block}
+.mark.photo .ph-shadow{mix-blend-mode:multiply;z-index:1;pointer-events:none}
+.mark.photo .ph-object{z-index:2;
+  transition:transform .42s cubic-bezier(.22,.9,.28,1);transform-origin:50% 100%}
+.mark.photo:hover .ph-object,.mark.photo:focus-visible .ph-object{transform:scale(1.01)}
+.mark.photo .card{z-index:3}
+/* the element must have height, and the object image gives it */
+.mark.photo .ph-object[hidden],.mark.photo .ph-shadow[hidden]{display:none!important}
+.mark.photo .ph-object:not([hidden]){position:relative}

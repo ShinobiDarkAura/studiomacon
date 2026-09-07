@@ -55,7 +55,7 @@ class Handler(SimpleHTTPRequestHandler):
                     e = edits.get((sc["id"], o["slug"]))
                     if not e:
                         continue
-                    for k in ("x", "y", "scale", "dx_px"):
+                    for k in ("x", "y", "scale", "dx_px", "option", "width"):
                         if k in e:
                             o[k] = e[k]
                     if e.get("tone"):

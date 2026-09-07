@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    1004,
+    858
+  ],
+  "object": [
+    594,
+    830
+  ],
+  "base": [
+    297,
+    829
+  ],
+  "source_scene": "shelf/scenes/v3/ibi-2-right-head-toward-camera-v2.png",
+  "layers": {
+    "object": "ibi-2-object.png",
+    "cast_shadow": "ibi-2-cast-shadow.png",
+    "contact_shadow": "ibi-2-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.8065,
+  "shadow": 21.9,
+  "clipped": false,
+  "verdict": "ok"
+}

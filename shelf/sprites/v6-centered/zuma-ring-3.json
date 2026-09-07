@@ -1,0 +1,27 @@
+{
+  "sprite": [
+    140,
+    120
+  ],
+  "object": [
+    83,
+    111
+  ],
+  "base": [
+    50,
+    112
+  ],
+  "source_scene": "shelf/scenes/v6-centered/crops/zuma-ring-3.png",
+  "object_source": "shelf/sprites/v4-context/zuma-ring-3-object.png",
+  "layers": {
+    "object": "zuma-ring-3-object.png",
+    "cast_shadow": "zuma-ring-3-cast-shadow.png",
+    "contact_shadow": "zuma-ring-3-contact-shadow.png"
+  },
+  "engine": "hybrid-approved-object-scene-shadow",
+  "cut_model": "birefnet-general",
+  "fidelity_iou": 0.6583,
+  "shadow": 23.5,
+  "clipped": false,
+  "verdict": "APPROVED_OBJECT_WITH_SCENE_SHADOW"
+}

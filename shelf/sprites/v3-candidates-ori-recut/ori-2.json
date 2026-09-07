@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    837,
+    893
+  ],
+  "object": [
+    555,
+    893
+  ],
+  "base": [
+    313,
+    891
+  ],
+  "source_scene": "shelf/scenes/v3/ori-2-left-window-v1.png",
+  "layers": {
+    "object": "ori-2-object.png",
+    "cast_shadow": "ori-2-cast-shadow.png",
+    "contact_shadow": "ori-2-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.9665,
+  "shadow": 20.8,
+  "clipped": false,
+  "verdict": "ok"
+}

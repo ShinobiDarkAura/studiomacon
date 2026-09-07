@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    146,
+    143
+  ],
+  "object": [
+    107,
+    140
+  ],
+  "base": [
+    53,
+    139
+  ],
+  "source_scene": "shelf/scenes/v4-context/crops/sietch-aperture-1-context-crop-v1.png",
+  "layers": {
+    "object": "sietch-aperture-1-object.png",
+    "cast_shadow": "sietch-aperture-1-cast-shadow.png",
+    "contact_shadow": "sietch-aperture-1-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "birefnet-general",
+  "fidelity_iou": 0.8174,
+  "shadow": 18.5,
+  "clipped": false,
+  "verdict": "ok"
+}

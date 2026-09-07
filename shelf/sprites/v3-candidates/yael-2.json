@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    922,
+    773
+  ],
+  "object": [
+    662,
+    773
+  ],
+  "base": [
+    330,
+    771
+  ],
+  "source_scene": "shelf/scenes/v3/yael-2-three-quarter-v2.png",
+  "layers": {
+    "object": "yael-2-object.png",
+    "cast_shadow": "yael-2-cast-shadow.png",
+    "contact_shadow": "yael-2-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.7034,
+  "shadow": 8.4,
+  "clipped": false,
+  "verdict": "REVIEW"
+}

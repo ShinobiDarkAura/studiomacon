@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    99,
+    70
+  ],
+  "object": [
+    88,
+    70
+  ],
+  "base": [
+    43,
+    69
+  ],
+  "source_scene": "shelf/scenes/v6-centered/crops/eclipse-ring-2.png",
+  "layers": {
+    "object": "eclipse-ring-2-object.png",
+    "cast_shadow": "eclipse-ring-2-cast-shadow.png",
+    "contact_shadow": "eclipse-ring-2-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "birefnet-general",
+  "fidelity_iou": 0.7911,
+  "shadow": 26.7,
+  "clipped": false,
+  "verdict": "REVIEW"
+}

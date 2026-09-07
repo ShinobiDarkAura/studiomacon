@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    1097,
+    625
+  ],
+  "object": [
+    561,
+    625
+  ],
+  "base": [
+    280,
+    624
+  ],
+  "source_scene": "shelf/scenes/v3/eleph-1-left-window-v1.png",
+  "layers": {
+    "object": "eleph-1-object.png",
+    "cast_shadow": "eleph-1-cast-shadow.png",
+    "contact_shadow": "eleph-1-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.955,
+  "shadow": 17.2,
+  "clipped": false,
+  "verdict": "ok"
+}

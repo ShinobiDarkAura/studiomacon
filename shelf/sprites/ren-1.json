@@ -1,7 +1,7 @@
 {
   "sprite": [
-    611,
-    547
+    661,
+    550
   ],
   "object": [
     364,
@@ -12,7 +12,13 @@
     545
   ],
   "source_scene": "shelf/scenes/scene-ren-1.png",
+  "layers": {
+    "object": "ren-1-object.png",
+    "cast_shadow": "ren-1-cast-shadow.png",
+    "contact_shadow": "ren-1-contact-shadow.png"
+  },
   "engine": "fal",
+  "cut_model": "isnet-general-use",
   "fidelity_iou": 0.9296,
   "shadow": 21.1,
   "clipped": false,

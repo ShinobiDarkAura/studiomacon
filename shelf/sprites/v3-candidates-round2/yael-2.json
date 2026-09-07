@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    756,
+    679
+  ],
+  "object": [
+    550,
+    679
+  ],
+  "base": [
+    274,
+    678
+  ],
+  "source_scene": "shelf/scenes/v3/yael-2-three-quarter-away-v3.png",
+  "layers": {
+    "object": "yael-2-object.png",
+    "cast_shadow": "yael-2-cast-shadow.png",
+    "contact_shadow": "yael-2-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.6997,
+  "shadow": 6.7,
+  "clipped": false,
+  "verdict": "REVIEW"
+}

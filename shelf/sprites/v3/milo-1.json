@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    930,
+    488
+  ],
+  "object": [
+    613,
+    486
+  ],
+  "base": [
+    306,
+    485
+  ],
+  "source_scene": "shelf/scenes/v3/milo-1-three-quarter-v2.png",
+  "layers": {
+    "object": "milo-1-object.png",
+    "cast_shadow": "milo-1-cast-shadow.png",
+    "contact_shadow": "milo-1-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.7565,
+  "shadow": 14.0,
+  "clipped": false,
+  "verdict": "REVIEW"
+}

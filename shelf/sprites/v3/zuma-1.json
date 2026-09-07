@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    1202,
+    662
+  ],
+  "object": [
+    915,
+    662
+  ],
+  "base": [
+    457,
+    661
+  ],
+  "source_scene": "shelf/scenes/v3/zuma-1-left-window-v1.png",
+  "layers": {
+    "object": "zuma-1-object.png",
+    "cast_shadow": "zuma-1-cast-shadow.png",
+    "contact_shadow": "zuma-1-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.9682,
+  "shadow": 17.6,
+  "clipped": false,
+  "verdict": "ok"
+}

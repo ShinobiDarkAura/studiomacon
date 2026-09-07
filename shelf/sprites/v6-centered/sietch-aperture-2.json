@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    121,
+    162
+  ],
+  "object": [
+    95,
+    118
+  ],
+  "base": [
+    46,
+    117
+  ],
+  "source_scene": "shelf/scenes/v6-centered/crops/sietch-ring-3.png",
+  "layers": {
+    "object": "sietch-aperture-2-object.png",
+    "cast_shadow": "sietch-aperture-2-cast-shadow.png",
+    "contact_shadow": "sietch-aperture-2-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "birefnet-general",
+  "fidelity_iou": 0.2599,
+  "shadow": 24.4,
+  "clipped": false,
+  "verdict": "REVIEW"
+}

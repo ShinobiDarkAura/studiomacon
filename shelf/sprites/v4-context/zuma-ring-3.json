@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    129,
+    116
+  ],
+  "object": [
+    83,
+    111
+  ],
+  "base": [
+    50,
+    110
+  ],
+  "source_scene": "shelf/scenes/v4-context/crops/zuma-ring-3-context-crop-v1.png",
+  "layers": {
+    "object": "zuma-ring-3-object.png",
+    "cast_shadow": "zuma-ring-3-cast-shadow.png",
+    "contact_shadow": "zuma-ring-3-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "birefnet-general",
+  "fidelity_iou": 0.6583,
+  "shadow": 23.8,
+  "clipped": false,
+  "verdict": "REVIEW"
+}

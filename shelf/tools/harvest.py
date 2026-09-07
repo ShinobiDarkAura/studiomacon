@@ -154,7 +154,7 @@ def defringe(obj, scene):
 
 
 def harvest(scene_path, shadow_strength=1.0, kernel=0.22,
-            cut_model="isnet-general-use"):
+            cut_model="isnet-general-use", noise_floor=0.025):
     """Split a generated scene into (object RGBA, shadow RGBA, object base point)."""
     import cv2
     from rembg import remove
@@ -212,11 +212,12 @@ def harvest(scene_path, shadow_strength=1.0, kernel=0.22,
     # Anything this faint is measurement noise on a flat backdrop, and it is
     # exactly what shows up as a halo against the plate. Cut it, then ease the
     # remainder so there is no hard step where it was cut.
-    dark = np.clip((dark - 0.025) / 0.975, 0.0, 1.0)
+    dark = np.clip((dark - noise_floor) / max(1e-4, 1.0 - noise_floor), 0.0, 1.0)
     dark = dark * dark * (3 - 2 * dark)
 
     sh = Image.new("RGBA", scene.size, SHADOW_RGB + (0,))
     sh.putalpha(Image.fromarray((np.clip(dark, 0, 1) * 255).astype(np.uint8)))
+    sh.putalpha(clean_alpha(sh.getchannel("A"), min_frac=0.003))
 
     # base = bottom-centre of the object's footprint
     cols = np.where(mask.max(axis=0) > 0.15)[0]
@@ -249,6 +250,29 @@ def shadow_score(scene_path, obj_alpha, bbox):
         return 0.0
     clean = np.percentile(arr[band], 92)
     return float((clean - arr[band]).clip(0).mean())
+
+
+def split_shadow_layers(shadow, bbox, base):
+    """Split recovered darkening into movable cast and local contact layers.
+
+    The generated scene provides one continuous shadow. A compact Gaussian at
+    the stored base anchor isolates the grounding/occlusion component; the
+    remainder stays directional and may be tuned independently per plate.
+    """
+    a = np.asarray(shadow.getchannel("A"), np.float32) / 255.0
+    x0, y0, x1, y1 = bbox
+    ow, oh = x1 - x0, y1 - y0
+    yy, xx = np.ogrid[:a.shape[0], :a.shape[1]]
+    sx, sy = max(6.0, ow * 0.30), max(4.0, oh * 0.075)
+    near = np.exp(-0.5 * (((xx - base[0]) / sx) ** 2 + ((yy - base[1]) / sy) ** 2))
+    contact_a = np.clip(a * near, 0.0, 1.0)
+    cast_a = np.clip(a - contact_a, 0.0, 1.0)
+
+    cast = Image.new("RGBA", shadow.size, SHADOW_RGB + (0,))
+    cast.putalpha(Image.fromarray((cast_a * 255).astype(np.uint8)))
+    contact = Image.new("RGBA", shadow.size, SHADOW_RGB + (0,))
+    contact.putalpha(Image.fromarray((contact_a * 255).astype(np.uint8)))
+    return cast, contact
 
 
 def fidelity(ref_path, obj, bbox, H=520):
@@ -284,9 +308,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("piece")
     ap.add_argument("--slug", help="catalogue slug (defaults to piece minus trailing -N)")
+    ap.add_argument("--scene", help="existing generated lighting scene to harvest")
+    ap.add_argument("--out-dir", help="output directory (defaults to shelf/sprites)")
     ap.add_argument("--skip-generate", action="store_true")
     ap.add_argument("--width", type=int, default=900, help="reference cutout width")
     ap.add_argument("--strength", type=float, default=1.0)
+    ap.add_argument("--noise-floor", type=float, default=0.025,
+                    help="discard recovered darkening below this level")
     ap.add_argument("--engine", choices=("gpt", "fal"), default="fal",
                     help="fal = Nano Banana (cheap, for relighting pieces); gpt = GPT Image 2")
     ap.add_argument("--tries", type=int, default=3,
@@ -302,7 +330,8 @@ def main():
     a = ap.parse_args()
 
     slug = a.slug or a.piece.rsplit("-", 1)[0]
-    os.makedirs(CUTS, exist_ok=True); os.makedirs(OUT, exist_ok=True)
+    out_dir = os.path.abspath(a.out_dir) if a.out_dir else OUT
+    os.makedirs(CUTS, exist_ok=True); os.makedirs(out_dir, exist_ok=True)
 
     ref = os.path.join(CUTS, f"obj-{a.piece}.png")
     if not os.path.exists(ref):
@@ -311,7 +340,7 @@ def main():
         c = c.resize((a.width, round(c.height * a.width / c.width)), Image.LANCZOS)
         c.save(ref)
 
-    scene = os.path.join(SCENES, f"scene-{a.piece}.png")
+    scene = os.path.abspath(a.scene) if a.scene else os.path.join(SCENES, f"scene-{a.piece}.png")
     cache = json.load(open(os.path.join(ROOT, "_source/content-cache.json"), encoding="utf-8"))
     prod = next((x for x in cache["products"] if x["slug"] == slug), None)
     if prod is None:
@@ -324,7 +353,7 @@ def main():
             generate(a.piece, prod.get("notes"), prod["name"], engine=a.engine)
 
         obj, sh, base, bbox = harvest(scene, shadow_strength=a.strength,
-                                     cut_model=a.cut_model)
+                                     cut_model=a.cut_model, noise_floor=a.noise_floor)
         iou = fidelity(ref, obj, bbox)
         shadow = shadow_score(scene, obj.getchannel("A"), bbox)
         sw, sh_ = Image.open(scene).size
@@ -354,25 +383,34 @@ def main():
                "ok" if (iou >= a.min_iou and shadow >= a.min_shadow) else
                "NO-SHADOW" if iou >= a.min_iou else "REVIEW")
 
+    cast, contact = split_shadow_layers(sh, bbox, base)
     sprite = Image.new("RGBA", obj.size, (0, 0, 0, 0))
     sprite.alpha_composite(sh)
     sprite.alpha_composite(obj)
     box = sprite.getchannel("A").getbbox()
     sprite = sprite.crop(box)
 
-    sprite.save(os.path.join(OUT, f"{a.piece}.png"))
+    sprite.save(os.path.join(out_dir, f"{a.piece}.png"))
+    obj.crop(box).save(os.path.join(out_dir, f"{a.piece}-object.png"))
+    cast.crop(box).save(os.path.join(out_dir, f"{a.piece}-cast-shadow.png"))
+    contact.crop(box).save(os.path.join(out_dir, f"{a.piece}-contact-shadow.png"))
     json.dump(
         {"sprite": list(sprite.size),
          "object": [bbox[2] - bbox[0], bbox[3] - bbox[1]],
          "base": [base[0] - box[0], base[1] - box[1]],
          "source_scene": os.path.relpath(scene, ROOT),
+         "layers": {
+             "object": f"{a.piece}-object.png",
+             "cast_shadow": f"{a.piece}-cast-shadow.png",
+             "contact_shadow": f"{a.piece}-contact-shadow.png"
+         },
          "engine": a.engine,
          "cut_model": a.cut_model,
          "fidelity_iou": round(iou, 4),
          "shadow": round(shadow, 1),
          "clipped": bool(clipped),
          "verdict": verdict},
-        open(os.path.join(OUT, f"{a.piece}.json"), "w"), indent=2,
+        open(os.path.join(out_dir, f"{a.piece}.json"), "w"), indent=2,
     )
     print(f"  fidelity IoU {iou:.3f}  shadow {shadow:.1f}  [{verdict}]" + ("  <- subject touches the frame edge" if clipped else ""))
     print(f"  sprite {sprite.size}  object {bbox[2]-bbox[0]}x{bbox[3]-bbox[1]}  base {base}")

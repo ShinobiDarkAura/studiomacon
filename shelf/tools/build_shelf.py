@@ -55,7 +55,7 @@ SHUFFLE = """
   <label>saturate <input type="range" id="ed-saturation" min="0" max="2" step="0.005"><i>1.000</i></label>
   <label>bright <input type="range" id="ed-bright" min="0.5" max="1.6" step="0.005"><i>1.000</i></label>
   <label>contrast <input type="range" id="ed-contrast" min="0.5" max="1.8" step="0.005"><i>1.000</i></label>
-  <div class="ed-tip">drag to move &middot; arrows nudge &middot; shift = 10px</div>
+  <div class="ed-tip">drag to move &middot; arrows nudge &middot; shift = 10px &middot; o = next option</div>
   <div class="ed-b"><button id="ed-reset">reset piece</button><button id="ed-save">save &amp; rebuild</button></div>
   <div class="ed-msg"></div>
 </div>
@@ -262,6 +262,17 @@ SHUFFLE = """
     if (e.key === 'e' && !e.metaKey && !e.ctrlKey && e.target === document.body) { setOn(!on); return; }
     if (!on) return;
     if (e.key === 'Escape') { setOn(false); return; }
+    if (e.key === 'o' && sel && +sel.dataset.options > 1) {
+      // cycle the wired alternates for a photographed piece
+      var n = +sel.dataset.options, cur = +sel.dataset.option, nxt = (cur + 1) % n;
+      sel.dataset.option = nxt;
+      sel.querySelectorAll('.ph-object,.ph-shadow').forEach(function (im) {
+        im.hidden = (+im.dataset.opt !== nxt);
+      });
+      panel.querySelector('.ed-msg').textContent = 'option ' + (nxt + 1) + ' of ' + n;
+      mark(sel);
+      return;
+    }
     if (!sel || e.key.indexOf('Arrow') !== 0) return;
     e.preventDefault();
     var r = sel.closest('.scene').getBoundingClientRect();
@@ -293,6 +304,7 @@ SHUFFLE = """
       if (num(el, 'bright') !== 1) t.bright = +num(el, 'bright').toFixed(4);
       if (num(el, 'contrast') !== 1) t.contrast = +num(el, 'contrast').toFixed(4);
       return { scene: el.dataset.scene, slug: el.dataset.slug,
+               option: el.dataset.option !== undefined ? +el.dataset.option : undefined,
                x: +num(el, 'x').toFixed(5), y: +num(el, 'y').toFixed(5),
                scale: +num(el, 'scale').toFixed(4), dx_px: Math.round(num(el, 'dx')),
                tone: Object.keys(t).length ? t : null };
@@ -443,6 +455,20 @@ def tone_to(sp, balance):
     return Image.fromarray(a.astype(np.uint8))
 
 
+PHOTOS = os.path.expanduser("~/Downloads/Maçon/Shelf Cutouts")
+_photo_manifest = None
+
+
+def photo_meta(name):
+    """Canvas size and base point of a cutout, read from its own manifest."""
+    global _photo_manifest
+    if _photo_manifest is None:
+        _photo_manifest = {os.path.basename(e["object"]): e
+                           for e in json.load(open(os.path.join(PHOTOS, "manifest.json")))}
+    e = _photo_manifest[name]
+    return {"canvas": e["canvas"], "base": e["base"]}
+
+
 def tone_matrix(t):
     """feColorMatrix values for a piece's tone.
 
@@ -477,6 +503,13 @@ def main():
     cache = json.load(open(os.path.join(ROOT, "_source/content-cache.json"), encoding="utf-8"))
     prod = {p["slug"]: p for p in cache["products"]}
     overrides = comp.get("mm", {})
+    v3_products = {"milo", "ren", "rebi", "zuma", "ori", "pip", "yael", "eleph", "ibi"}
+    v6_centered_products = {"zuma-ring", "eclipse-ring", "sietch-aperture",
+                            "lunar-canyon-ring", "meridian-egg-ring"}
+    v6_centered_pieces = {
+        "lunar-canyon-ring": "lunar-canyon-ring-3",
+        "sietch-aperture": "sietch-aperture-2",
+    }
     _ltv = stamp(os.path.join(OUT, "logotype.png"))
     _markv = int(os.path.getmtime(os.path.join(ROOT, "assets/goat-logo-warm.gif")))
     tagline = next((x["value"] for x in cache.get("settings", []) if x["key"] == "tagline"), "")
@@ -538,8 +571,74 @@ def main():
         for o in scene["objects"]:
             slug = o["slug"]
             p = prod[slug]
-            piece = pieces[slug]
-            meta = json.load(open(os.path.join(ROOT, "shelf/sprites", f"{piece}.json")))
+
+            if o.get("photo"):
+                # A photographed piece: two registered layers instead of one
+                # sprite. The shadow is a transmission map and MUST be
+                # multiplied — stacked normally it paints a grey rectangle —
+                # which is what lets one photograph sit on any shelf.
+                opts = [o["photo"]] + list(o.get("alt", []))
+                pick = int(o.get("option", 0)) % len(opts)
+                layers = []
+                for oi, ph in enumerate(opts):
+                    for kind in ("object", "shadow"):
+                        dst = "photo-%s-%s.png" % (kind, os.path.splitext(ph)[0])
+                        if not os.path.exists(os.path.join(OUT, dst)):
+                            shutil.copyfile(os.path.join(PHOTOS, kind, ph),
+                                            os.path.join(OUT, dst))
+                    layers.append((oi, ph, photo_meta(ph)))
+
+                man = layers[pick][2]
+                cw, ch = man["canvas"]
+                sc_ = (W * float(o.get("width", 0.16))) / cw
+                sw, sh = cw * sc_, ch * sc_
+                bx, by = man["base"][0] * sc_, man["base"][1] * sc_
+                left_px = W * o["x"] - bx
+                top_px = H * o["y"] - by + sink
+                mid = front_mid(o["y"])
+                card_top = (mid * H - top_px) / sh * 100
+                card_left = bx / sw * 100
+
+                imgs = []
+                for oi, ph, _m in layers:
+                    st = os.path.splitext(ph)[0]
+                    hide = "" if oi == pick else " hidden"
+                    imgs.append(
+                        '<img class="ph-shadow" data-opt="%d" src="photo-shadow-%s.png" alt=""%s loading="lazy">'
+                        '<img class="ph-object" data-opt="%d" src="photo-object-%s.png" alt="%s"%s loading="lazy">'
+                        % (oi, st, hide, oi, st, html.escape(p["name"]), hide))
+
+                marks.append(
+                    '      <a class="mark photo" href="/product/%s.html"\n'
+                    '         aria-label="%s, view piece"\n'
+                    '         data-scene="%s" data-slug="%s"\n'
+                    '         data-x="%s" data-y="%s" data-scale="1" data-dx="0"\n'
+                    '         data-warmth="0" data-tint="0" data-bright="1" data-contrast="1"\n'
+                    '         data-options="%d" data-option="%d" data-width="%s"\n'
+                    '         style="left:%.4f%%;top:%.4f%%;width:%.4f%%">\n'
+                    '        %s\n'
+                    '        <span class="card" style="top:%.4f%%;left:%.4f%%">\n'
+                    '          <span class="ink">\n'
+                    '            <span class="nm">%s</span>\n'
+                    '            <span class="pr">%s</span>\n'
+                    '          </span>\n'
+                    '        </span>\n'
+                    '      </a>'
+                    % (slug, html.escape(p["name"]), scene["id"], slug, o["x"], o["y"],
+                       len(opts), pick, o.get("width", 0.16),
+                       left_px / W * 100, top_px / H * 100, sw / W * 100,
+                       "".join(imgs), card_top, card_left,
+                       html.escape(p["name"]), money(p.get("price"))))
+                continue
+
+            piece = v6_centered_pieces.get(slug, pieces[slug])
+            if slug in v6_centered_products:
+                sprite_dir = "shelf/sprites/v6-centered"
+            elif slug in v3_products:
+                sprite_dir = "shelf/sprites/v3"
+            else:
+                sprite_dir = "shelf/sprites"
+            meta = json.load(open(os.path.join(ROOT, sprite_dir, f"{piece}.json")))
             mid = front_mid(o["y"])
             mm = overrides.get(slug) or longest_mm(p.get("notes"))
             s = (mm * ppmm) / max(meta["object"]) * float(o.get("scale", 1.0))
@@ -554,7 +653,7 @@ def main():
             top_px = H * o["y"] - by + sink
             left, top = left_px / W * 100, top_px / H * 100
 
-            sp = Image.open(os.path.join(ROOT, "shelf/sprites", f"{piece}.png")).convert("RGBA")
+            sp = Image.open(os.path.join(ROOT, sprite_dir, f"{piece}.png")).convert("RGBA")
             if scene.get("tone_to_plate"):
                 sp = tone_to(sp, plate_balance)
             if o.get("flip"):

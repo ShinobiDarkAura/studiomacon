@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    157,
+    57
+  ],
+  "object": [
+    104,
+    55
+  ],
+  "base": [
+    51,
+    54
+  ],
+  "source_scene": "shelf/scenes/v6-centered/crops/lunar-canyon-ring-4.png",
+  "layers": {
+    "object": "lunar-canyon-ring-3-object.png",
+    "cast_shadow": "lunar-canyon-ring-3-cast-shadow.png",
+    "contact_shadow": "lunar-canyon-ring-3-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "birefnet-general",
+  "fidelity_iou": 0.8637,
+  "shadow": 23.9,
+  "clipped": false,
+  "verdict": "ok"
+}

@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    801,
+    528
+  ],
+  "object": [
+    332,
+    527
+  ],
+  "base": [
+    165,
+    526
+  ],
+  "source_scene": "shelf/scenes/v3/ori-2-long-shadow-v2.png",
+  "layers": {
+    "object": "ori-2-object.png",
+    "cast_shadow": "ori-2-cast-shadow.png",
+    "contact_shadow": "ori-2-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.9711,
+  "shadow": 14.6,
+  "clipped": false,
+  "verdict": "NO-SHADOW"
+}

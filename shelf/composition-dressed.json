@@ -18,21 +18,26 @@
       "objects": [
         {
           "slug": "milo",
-          "x": 0.35411,
-          "y": 0.90953,
-          "scale": 0.9592,
-          "dx_px": 0
+          "x": 0.36077,
+          "y": 0.90406,
+          "scale": 0.9163,
+          "dx_px": 0,
+          "tone": {
+            "warmth": -0.03,
+            "bright": 0.92
+          }
         },
         {
           "slug": "pip",
-          "x": 0.5,
-          "y": 0.90989,
-          "scale": 1.15
+          "x": 0.49356,
+          "y": 0.91934,
+          "scale": 1.266,
+          "dx_px": 0
         },
         {
           "slug": "yael",
-          "x": 0.63641,
-          "y": 0.91122,
+          "x": 0.61815,
+          "y": 0.91112,
           "scale": 1.08,
           "dx_px": -8
         }
@@ -56,66 +61,81 @@
       "objects": [
         {
           "slug": "ren",
-          "x": 0.36868,
-          "y": 0.42684,
-          "scale": 0.893,
+          "x": 0.59705,
+          "y": 0.43263,
+          "scale": 0.9311,
           "dx_px": 0,
           "tone": {
-            "warmth": -0.015,
-            "tint": -0.015,
-            "bright": 1.02,
-            "contrast": 1.065
+            "warmth": 0.08,
+            "tint": 0.035,
+            "bright": 0.82,
+            "contrast": 0.975
           }
         },
         {
           "slug": "ori",
-          "x": 0.46611,
-          "y": 0.41979,
+          "x": 0.48856,
+          "y": 0.40527,
           "dx_px": 12,
-          "scale": 0.9786,
+          "scale": 0.9157,
           "tone": {
-            "warmth": -0.065,
-            "tint": -0.03,
-            "bright": 0.955,
-            "contrast": 0.875
+            "warmth": 0.155,
+            "tint": 0.04,
+            "bright": 0.75,
+            "contrast": 0.9
           }
         },
         {
           "slug": "zuma",
-          "x": 0.59684,
-          "y": 0.41841,
-          "scale": 0.893,
+          "x": 0.38808,
+          "y": 0.42302,
+          "scale": 0.9472,
           "dx_px": 0,
           "tone": {
-            "bright": 1.5,
-            "contrast": 1.095
+            "warmth": 0.15,
+            "tint": 0.035,
+            "saturation": 0.44,
+            "bright": 1.125,
+            "contrast": 1.08
           }
         },
         {
           "slug": "ibi",
-          "x": 0.32741,
-          "y": 0.86327,
-          "scale": 0.92,
-          "dx_px": 0
+          "x": 0.3898,
+          "y": 0.87897,
+          "scale": 0.943,
+          "dx_px": 0,
+          "tone": {
+            "warmth": 0.045,
+            "tint": 0.035,
+            "bright": 0.97,
+            "contrast": 1.05
+          }
         },
         {
           "slug": "rebi",
-          "x": 0.46618,
-          "y": 0.86949,
-          "scale": 0.966,
+          "x": 0.49185,
+          "y": 0.85645,
+          "scale": 0.9607,
           "dx_px": 0,
           "tone": {
-            "warmth": 0.025,
-            "tint": -0.025,
-            "bright": 0.875,
-            "contrast": 0.96
+            "warmth": 0.095,
+            "bright": 0.75,
+            "contrast": 1.04
           }
         },
         {
           "slug": "eleph",
-          "x": 0.6107,
-          "y": 0.86949,
-          "scale": 1.058
+          "x": 0.59745,
+          "y": 0.87472,
+          "scale": 0.9374,
+          "dx_px": 0,
+          "tone": {
+            "warmth": 0.045,
+            "tint": 0.005,
+            "bright": 1.04,
+            "contrast": 1.07
+          }
         }
       ],
       "shelf_fronts": [
@@ -138,11 +158,57 @@
     },
     {
       "id": "d-coda",
-      "_note": "Closing bays, GPT Image 2. Regenerated a second time to put the light on the LEFT like every other plate — the first pass lit it from the right, so its shadows fell the wrong way — and to push the props into the outer thirds, clearing the middle for the jewellery.",
+      "_note": "Original coda plate restored as an empty approval baseline while the jewelry still-life is rebuilt.",
       "plate": "shelf/plates/dressed/dressed-coda-wide.png",
       "px_per_mm": 2.83,
-      "objects": [],
-      "shelf_fronts": [],
+      "objects": [
+        {
+          "slug": "sietch-aperture",
+          "photo": "on-stone--IMG_6099.png",
+          "alt": [
+            "on-stone--IMG_6089.png"
+          ],
+          "option": 0,
+          "x": 0.5,
+          "y": 0.3721,
+          "width": 0.185
+        },
+        {
+          "slug": "lunar-canyon-ring",
+          "photo": "solo--IMG_6180.png",
+          "alt": [
+            "trio--IMG_6249.png"
+          ],
+          "option": 0,
+          "x": 0.42,
+          "y": 0.8193,
+          "width": 0.115
+        },
+        {
+          "slug": "wonderhorn-talisman",
+          "photo": "with-bronze--IMG_6068.png",
+          "option": 0,
+          "x": 0.575,
+          "y": 0.8193,
+          "width": 0.175
+        }
+      ],
+      "shelf_fronts": [
+        {
+          "y": 0.36038,
+          "front": [
+            0.3857,
+            0.4541
+          ]
+        },
+        {
+          "y": 0.78805,
+          "front": [
+            0.86,
+            0.96
+          ]
+        }
+      ],
       "tone_to_plate": true,
       "_objects_off": [
         {

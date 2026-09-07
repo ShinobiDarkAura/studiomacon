@@ -1,0 +1,52 @@
+{
+  "version": 3,
+  "canonical_plate": "shelf/plates/dressed/shelf-master-wood-v2.png",
+  "plate_size": [1334, 964],
+  "geometry": {
+    "camera": "straight-on",
+    "shelf_top_y": 0.756,
+    "shelf_front_y": 0.823,
+    "shelf_front_bottom": 1.0,
+    "opaque": true
+  },
+  "lighting_rig": {
+    "id": "left-window-v1",
+    "window": "one tall window immediately off frame-left",
+    "direction": "left to right and slightly down",
+    "temperature_k": 4300,
+    "product_mode": "broad diffused universal light",
+    "plate_mode": "unique botanical gobo with fixed physical direction"
+  },
+  "plates": {
+    "d-threshold": {"gobo": "sparse-olive", "product_zone": [0.23, 0.77]},
+    "d-bronze": {"gobo": "fern-vine", "product_zone": [0.25, 0.78]},
+    "d-coda": {"gobo": "eucalyptus-lace", "product_zone": [0.24, 0.76]}
+  },
+  "display_classes": {
+    "totem": {"view": "eye-level three-quarter", "yaw_degrees": [15, 25], "placement": "free-standing", "extrapolation": "newly visible side surfaces only"},
+    "ring_lean": {"view": "three-quarter", "placement": "leaning against a small prop or rear wall", "extrapolation": "controlled completion of unseen sidewalls and underside"},
+    "ring_flat": {"view": "slightly elevated three-quarter/top-down", "placement": "lying naturally on shelf", "extrapolation": "controlled completion of unseen sidewalls and underside"},
+    "pendant": {"view": "three-quarter", "placement": "chain draped naturally on a low support"},
+    "cuff": {"view": "three-quarter", "placement": "resting or leaning on a small support"}
+  },
+  "products": {
+    "milo": {"source": "milo-1", "class": "totem"},
+    "ren": {"source": "ren-1", "class": "totem"},
+    "rebi": {"source": "rebi-1", "class": "totem"},
+    "zuma": {"source": "zuma-1", "class": "totem"},
+    "ori": {"source": "ori-2", "class": "totem"},
+    "pip": {"source": "pip-2", "class": "totem"},
+    "yael": {"source": "yael-2", "class": "totem"},
+    "eleph": {"source": "eleph-1", "class": "totem"},
+    "ibi": {"source": "ibi-2", "class": "totem"},
+    "zuma-ring": {"source": "zuma-ring-3", "class": "ring_lean"},
+    "eclipse-ring": {"source": "eclipse-ring-2", "class": "ring_flat"},
+    "sietch-aperture": {"source": "sietch-aperture-1", "class": "ring_lean"},
+    "lunar-canyon-ring": {"source": "lunar-canyon-ring-1", "class": "ring_flat"},
+    "meridian-egg-ring": {"source": "meridian-egg-ring-3", "class": "ring_lean"},
+    "ear-cuff": {"source": "ear-cuff-2", "class": "cuff"},
+    "wonderhorn-talisman": {"source": "wonderhorn-talisman-3", "class": "pendant"},
+    "starshipkey-pendant": {"source": "starshipkey-pendant-1", "class": "pendant", "status": "needs-chain-safe-reference"},
+    "macon-cap": {"source": "macon-cap-1", "class": "excluded", "status": "not-a-shelf-object"}
+  }
+}

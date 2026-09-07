@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    1062,
+    603
+  ],
+  "object": [
+    775,
+    603
+  ],
+  "base": [
+    387,
+    601
+  ],
+  "source_scene": "shelf/scenes/v3/pip-2-left-window-v1.png",
+  "layers": {
+    "object": "pip-2-object.png",
+    "cast_shadow": "pip-2-cast-shadow.png",
+    "contact_shadow": "pip-2-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.9837,
+  "shadow": 8.2,
+  "clipped": false,
+  "verdict": "NO-SHADOW"
+}

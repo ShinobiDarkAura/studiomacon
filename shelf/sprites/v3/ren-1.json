@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    958,
+    743
+  ],
+  "object": [
+    522,
+    740
+  ],
+  "base": [
+    260,
+    739
+  ],
+  "source_scene": "shelf/scenes/v3/ren-1-left-window-v1.png",
+  "layers": {
+    "object": "ren-1-object.png",
+    "cast_shadow": "ren-1-cast-shadow.png",
+    "contact_shadow": "ren-1-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "isnet-general-use",
+  "fidelity_iou": 0.982,
+  "shadow": 17.6,
+  "clipped": false,
+  "verdict": "ok"
+}

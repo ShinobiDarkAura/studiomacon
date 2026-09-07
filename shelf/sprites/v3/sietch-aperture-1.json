@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    942,
+    654
+  ],
+  "object": [
+    491,
+    634
+  ],
+  "base": [
+    245,
+    632
+  ],
+  "source_scene": "shelf/scenes/v3/sietch-aperture-1-wall-lean-v1.png",
+  "layers": {
+    "object": "sietch-aperture-1-object.png",
+    "cast_shadow": "sietch-aperture-1-cast-shadow.png",
+    "contact_shadow": "sietch-aperture-1-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "birefnet-general",
+  "fidelity_iou": 0.8232,
+  "shadow": 23.7,
+  "clipped": false,
+  "verdict": "ok"
+}

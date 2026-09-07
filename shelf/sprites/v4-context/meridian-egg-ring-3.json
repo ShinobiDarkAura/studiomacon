@@ -1,0 +1,26 @@
+{
+  "sprite": [
+    168,
+    139
+  ],
+  "object": [
+    107,
+    134
+  ],
+  "base": [
+    63,
+    133
+  ],
+  "source_scene": "shelf/scenes/v4-context/crops/meridian-egg-ring-3-context-crop-v1.png",
+  "layers": {
+    "object": "meridian-egg-ring-3-object.png",
+    "cast_shadow": "meridian-egg-ring-3-cast-shadow.png",
+    "contact_shadow": "meridian-egg-ring-3-contact-shadow.png"
+  },
+  "engine": "fal",
+  "cut_model": "birefnet-general",
+  "fidelity_iou": 0.8728,
+  "shadow": 26.3,
+  "clipped": false,
+  "verdict": "ok"
+}
