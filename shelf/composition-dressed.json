@@ -1,335 +1,338 @@
 {
-  "_comment": "All 16 pieces across the re-dressed plates, totems and jewellery interspersed rather than grouped by material. Scale is DELIBERATELY BROKEN — pieces run about 1.8x life size so they read against 250mm books. Not truthful next to the props; that is the trade, chosen knowingly. The empty-plate composition keeps true scale.",
-  "mm": {
-    "zuma-ring": 22,
-    "eclipse-ring": 22,
-    "sietch-aperture": 24,
-    "lunar-canyon-ring": 22,
-    "meridian-egg-ring": 22,
-    "ear-cuff": 26,
-    "wonderhorn-talisman": 34
-  },
-  "scenes": [
+ "_comment": "All 16 pieces across the re-dressed plates, totems and jewellery interspersed rather than grouped by material. Scale is DELIBERATELY BROKEN \u2014 pieces run about 1.8x life size so they read against 250mm books. Not truthful next to the props; that is the trade, chosen knowingly. The empty-plate composition keeps true scale.",
+ "mm": {
+  "zuma-ring": 22,
+  "eclipse-ring": 22,
+  "sietch-aperture": 24,
+  "lunar-canyon-ring": 22,
+  "meridian-egg-ring": 22,
+  "ear-cuff": 26,
+  "wonderhorn-talisman": 34
+ },
+ "scenes": [
+  {
+   "id": "d-threshold",
+   "plate": "shelf/plates/dressed/dressed-thresh-b-eq-trim.png",
+   "px_per_mm": 3.6,
+   "sink_px": 6,
+   "objects": [
     {
-      "id": "d-threshold",
-      "plate": "shelf/plates/dressed/dressed-thresh-b-eq-trim.png",
-      "px_per_mm": 3.6,
-      "sink_px": 6,
-      "objects": [
-        {
-          "slug": "milo",
-          "x": 0.36077,
-          "y": 0.90406,
-          "scale": 0.9163,
-          "dx_px": 0,
-          "tone": {
-            "warmth": -0.03,
-            "bright": 0.92
-          }
-        },
-        {
-          "slug": "pip",
-          "x": 0.49356,
-          "y": 0.91934,
-          "scale": 1.266,
-          "dx_px": 0
-        },
-        {
-          "slug": "yael",
-          "x": 0.61815,
-          "y": 0.91112,
-          "scale": 1.08,
-          "dx_px": -8
-        }
-      ],
-      "shelf_fronts": [
-        {
-          "y": 0.90989,
-          "front": [
-            0.94332,
-            0.99711
-          ]
-        }
-      ],
-      "_note": "Uprights cropped and the plate squared off. The lower shelf's deeper front face is grafted here from the matching historical plate while preserving the plate's original dimensions and object placement."
+     "slug": "milo",
+     "x": 0.36077,
+     "y": 0.90406,
+     "scale": 0.9163,
+     "dx_px": 0,
+     "tone": {
+      "warmth": -0.03,
+      "bright": 0.92
+     }
     },
     {
-      "id": "d-bronze",
-      "plate": "shelf/plates/dressed/dressed-bronze-b-eq-trim-cut15.png",
-      "px_per_mm": 3.8,
-      "sink_px": 6,
-      "objects": [
-        {
-          "slug": "ren",
-          "x": 0.59705,
-          "y": 0.43263,
-          "scale": 0.9311,
-          "dx_px": 0,
-          "tone": {
-            "warmth": 0.08,
-            "tint": 0.035,
-            "bright": 0.82,
-            "contrast": 0.975
-          }
-        },
-        {
-          "slug": "ori",
-          "x": 0.48856,
-          "y": 0.40527,
-          "dx_px": 12,
-          "scale": 0.9157,
-          "tone": {
-            "warmth": 0.155,
-            "tint": 0.04,
-            "bright": 0.75,
-            "contrast": 0.9
-          }
-        },
-        {
-          "slug": "zuma",
-          "x": 0.38808,
-          "y": 0.42302,
-          "scale": 0.9472,
-          "dx_px": 0,
-          "tone": {
-            "warmth": 0.15,
-            "tint": 0.035,
-            "saturation": 0.44,
-            "bright": 1.125,
-            "contrast": 1.08
-          }
-        },
-        {
-          "slug": "ibi",
-          "x": 0.3898,
-          "y": 0.87897,
-          "scale": 0.943,
-          "dx_px": 0,
-          "tone": {
-            "warmth": 0.045,
-            "tint": 0.035,
-            "bright": 0.97,
-            "contrast": 1.05
-          }
-        },
-        {
-          "slug": "rebi",
-          "x": 0.49185,
-          "y": 0.85645,
-          "scale": 0.9347,
-          "dx_px": 0,
-          "tone": {
-            "warmth": 0.095,
-            "bright": 0.75,
-            "contrast": 1.04
-          }
-        },
-        {
-          "slug": "eleph",
-          "x": 0.59745,
-          "y": 0.87472,
-          "scale": 0.9374,
-          "dx_px": 0,
-          "tone": {
-            "warmth": 0.045,
-            "tint": 0.005,
-            "bright": 1.04,
-            "contrast": 1.07
-          }
-        }
-      ],
-      "shelf_fronts": [
-        {
-          "y": 0.41104,
-          "front": [
-            0.45139,
-            0.54805
-          ]
-        },
-        {
-          "y": 0.89648,
-          "front": [
-            0.90208,
-            0.99996
-          ]
-        }
-      ],
-      "_note": "Uprights cropped off and the plate squared off. Restored 126px of the original space above the first shelf (15% of the former 838px plate), making the plate 964px tall; object and shelf-front fractions were remapped to preserve their exact pixel positions."
+     "slug": "pip",
+     "x": 0.49356,
+     "y": 0.91934,
+     "scale": 1.266,
+     "dx_px": 0
     },
     {
-      "id": "d-coda",
-      "_note": "Original coda plate restored as an empty approval baseline while the jewelry still-life is rebuilt.",
-      "plate": "shelf/plates/dressed/dressed-coda-wide.png",
-      "px_per_mm": 2.83,
-      "objects": [
-        {
-          "slug": "sietch-aperture",
-          "photo": "on-stone--IMG_6099--1.png",
-          "alt": [
-            "on-stone--IMG_6089.png",
-            "on-stone--IMG_6285.png"
-          ],
-          "option": 0,
-          "x": 0.5,
-          "y": 0.3722,
-          "width": 0.185,
-          "scale": 1.2728,
-          "dx_px": 0
-        },
-        {
-          "slug": "lunar-canyon-ring",
-          "photo": "solo--IMG_6180.png",
-          "alt": [
-            "trio--IMG_6249.png"
-          ],
-          "option": 0,
-          "x": 0.4425,
-          "y": 0.78526,
-          "width": 0.115,
-          "scale": 0.8053,
-          "dx_px": 0
-        },
-        {
-          "slug": "wonderhorn-talisman",
-          "photo": "with-bronze--IMG_6068.png",
-          "option": 0,
-          "x": 0.57052,
-          "y": 0.79999,
-          "width": 0.175,
-          "scale": 1.3207,
-          "dx_px": 0
-        }
-      ],
-      "shelf_fronts": [
-        {
-          "y": 0.36038,
-          "front": [
-            0.3857,
-            0.4541
-          ]
-        },
-        {
-          "y": 0.78805,
-          "front": [
-            0.86,
-            0.96
-          ]
-        }
-      ],
-      "tone_to_plate": true,
-      "_objects_off": [
-        {
-          "slug": "lunar-canyon-ring",
-          "x": 0.345,
-          "y": 0.36038,
-          "scale": 1.6008
-        },
-        {
-          "slug": "meridian-egg-ring",
-          "x": 0.475,
-          "y": 0.36038,
-          "scale": 1.7531
-        },
-        {
-          "slug": "ear-cuff",
-          "x": 0.605,
-          "y": 0.36038,
-          "scale": 1.6215
-        },
-        {
-          "slug": "zuma-ring",
-          "x": 0.455,
-          "y": 0.78805,
-          "scale": 1.6008
-        },
-        {
-          "slug": "wonderhorn-talisman",
-          "x": 0.585,
-          "y": 0.78805,
-          "scale": 0.8
-        }
-      ],
-      "_objects_off_note": "Jewellery parked. Move _objects_off back to objects to restore.",
-      "_shelf_fronts_off": [
-        {
-          "y": 0.3721,
-          "front": [
-            0.3857,
-            0.4541
-          ]
-        },
-        {
-          "y": 0.8193,
-          "front": [
-            0.86,
-            0.96
-          ]
-        }
-      ]
+     "slug": "yael",
+     "x": 0.61815,
+     "y": 0.91112,
+     "scale": 1.08,
+     "dx_px": -8
     }
-  ],
-  "_retired": {
-    "d-tall": "Pulled from the page: it is the portrait plate, only 1024px wide, so it is blown up 25% at full width and reads soft beside the landscape ones. Its layout is kept here so it can come back if the plate is redone in landscape."
+   ],
+   "shelf_fronts": [
+    {
+     "y": 0.90989,
+     "front": [
+      0.94332,
+      0.99711
+     ]
+    }
+   ],
+   "_note": "Uprights cropped and the plate squared off. The lower shelf's deeper front face is grafted here from the matching historical plate while preserving the plate's original dimensions and object placement."
   },
-  "_retired_scene": {
-    "id": "d-tall",
-    "plate": "shelf/plates/dressed/dressed-tall-b.png",
-    "px_per_mm": 2.4,
-    "sink_px": 5,
-    "objects": [
-      {
-        "slug": "ear-cuff",
-        "x": 0.33,
-        "y": 0.47
-      },
-      {
-        "slug": "lunar-canyon-ring",
-        "x": 0.5,
-        "y": 0.47
-      },
-      {
-        "slug": "ori",
-        "x": 0.67,
-        "y": 0.47
-      },
-      {
-        "slug": "zuma-ring",
-        "x": 0.42,
-        "y": 0.685
-      },
-      {
-        "slug": "meridian-egg-ring",
-        "x": 0.58,
-        "y": 0.685
-      },
-      {
-        "slug": "wonderhorn-talisman",
-        "x": 0.5,
-        "y": 0.905
-      }
-    ],
-    "shelf_fronts": [
-      {
-        "y": 0.47,
-        "front": [
-          0.478,
-          0.503
-        ]
-      },
-      {
-        "y": 0.685,
-        "front": [
-          0.686,
-          0.712
-        ]
-      },
-      {
-        "y": 0.905,
-        "front": [
-          0.908,
-          0.936
-        ]
-      }
-    ]
+  {
+   "id": "d-bronze",
+   "plate": "shelf/plates/dressed/dressed-bronze-b-eq-trim-cut15.png",
+   "px_per_mm": 3.8,
+   "sink_px": 6,
+   "objects": [
+    {
+     "slug": "ren",
+     "x": 0.59705,
+     "y": 0.43263,
+     "scale": 0.9311,
+     "dx_px": 0,
+     "tone": {
+      "warmth": 0.08,
+      "tint": 0.035,
+      "bright": 0.82,
+      "contrast": 0.975
+     }
+    },
+    {
+     "slug": "ori",
+     "x": 0.48856,
+     "y": 0.40527,
+     "dx_px": 12,
+     "scale": 0.9157,
+     "tone": {
+      "warmth": 0.155,
+      "tint": 0.04,
+      "bright": 0.75,
+      "contrast": 0.9
+     }
+    },
+    {
+     "slug": "zuma",
+     "x": 0.38808,
+     "y": 0.42302,
+     "scale": 0.9472,
+     "dx_px": 0,
+     "tone": {
+      "warmth": 0.15,
+      "tint": 0.035,
+      "saturation": 0.44,
+      "bright": 1.125,
+      "contrast": 1.08
+     }
+    },
+    {
+     "slug": "ibi",
+     "x": 0.3898,
+     "y": 0.87897,
+     "scale": 0.943,
+     "dx_px": 0,
+     "tone": {
+      "warmth": 0.045,
+      "tint": 0.035,
+      "bright": 0.97,
+      "contrast": 1.05
+     }
+    },
+    {
+     "slug": "rebi",
+     "x": 0.49185,
+     "y": 0.85645,
+     "scale": 0.9347,
+     "dx_px": 0,
+     "tone": {
+      "warmth": 0.095,
+      "bright": 0.75,
+      "contrast": 1.04
+     }
+    },
+    {
+     "slug": "eleph",
+     "x": 0.59745,
+     "y": 0.87472,
+     "scale": 0.9374,
+     "dx_px": 0,
+     "tone": {
+      "warmth": 0.045,
+      "tint": 0.005,
+      "bright": 1.04,
+      "contrast": 1.07
+     }
+    }
+   ],
+   "shelf_fronts": [
+    {
+     "y": 0.41104,
+     "front": [
+      0.45139,
+      0.54805
+     ]
+    },
+    {
+     "y": 0.89648,
+     "front": [
+      0.90208,
+      0.99996
+     ]
+    }
+   ],
+   "_note": "Uprights cropped off and the plate squared off. Restored 126px of the original space above the first shelf (15% of the former 838px plate), making the plate 964px tall; object and shelf-front fractions were remapped to preserve their exact pixel positions."
+  },
+  {
+   "id": "d-coda",
+   "_note": "Original coda plate restored as an empty approval baseline while the jewelry still-life is rebuilt.",
+   "plate": "shelf/plates/dressed/dressed-coda-wide.png",
+   "px_per_mm": 2.83,
+   "objects": [
+    {
+     "slug": "sietch-aperture",
+     "photo": "on-stone--IMG_6099--1.png",
+     "alt": [
+      "on-stone--IMG_6089.png",
+      "on-stone--IMG_6285.png"
+     ],
+     "option": 0,
+     "x": 0.5,
+     "y": 0.3722,
+     "width": 0.185,
+     "scale": 1.2728,
+     "dx_px": 0
+    },
+    {
+     "slug": "lunar-canyon-ring",
+     "photo": "solo--IMG_6180.png",
+     "alt": [
+      "trio--IMG_6249.png"
+     ],
+     "option": 0,
+     "x": 0.4425,
+     "y": 0.78526,
+     "width": 0.115,
+     "scale": 0.8053,
+     "dx_px": 0
+    },
+    {
+     "slug": "ear-cuff",
+     "photo": "with-bronze--IMG_6068.png",
+     "option": 0,
+     "x": 0.57052,
+     "y": 0.79999,
+     "width": 0.175,
+     "scale": 1.3207,
+     "dx_px": 0,
+     "alt": [
+      "with-bronze--IMG_6027--2.png"
+     ]
+    }
+   ],
+   "shelf_fronts": [
+    {
+     "y": 0.36038,
+     "front": [
+      0.3857,
+      0.4541
+     ]
+    },
+    {
+     "y": 0.78805,
+     "front": [
+      0.86,
+      0.96
+     ]
+    }
+   ],
+   "tone_to_plate": true,
+   "_objects_off": [
+    {
+     "slug": "lunar-canyon-ring",
+     "x": 0.345,
+     "y": 0.36038,
+     "scale": 1.6008
+    },
+    {
+     "slug": "meridian-egg-ring",
+     "x": 0.475,
+     "y": 0.36038,
+     "scale": 1.7531
+    },
+    {
+     "slug": "ear-cuff",
+     "x": 0.605,
+     "y": 0.36038,
+     "scale": 1.6215
+    },
+    {
+     "slug": "zuma-ring",
+     "x": 0.455,
+     "y": 0.78805,
+     "scale": 1.6008
+    },
+    {
+     "slug": "wonderhorn-talisman",
+     "x": 0.585,
+     "y": 0.78805,
+     "scale": 0.8
+    }
+   ],
+   "_objects_off_note": "Jewellery parked. Move _objects_off back to objects to restore.",
+   "_shelf_fronts_off": [
+    {
+     "y": 0.3721,
+     "front": [
+      0.3857,
+      0.4541
+     ]
+    },
+    {
+     "y": 0.8193,
+     "front": [
+      0.86,
+      0.96
+     ]
+    }
+   ]
   }
+ ],
+ "_retired": {
+  "d-tall": "Pulled from the page: it is the portrait plate, only 1024px wide, so it is blown up 25% at full width and reads soft beside the landscape ones. Its layout is kept here so it can come back if the plate is redone in landscape."
+ },
+ "_retired_scene": {
+  "id": "d-tall",
+  "plate": "shelf/plates/dressed/dressed-tall-b.png",
+  "px_per_mm": 2.4,
+  "sink_px": 5,
+  "objects": [
+   {
+    "slug": "ear-cuff",
+    "x": 0.33,
+    "y": 0.47
+   },
+   {
+    "slug": "lunar-canyon-ring",
+    "x": 0.5,
+    "y": 0.47
+   },
+   {
+    "slug": "ori",
+    "x": 0.67,
+    "y": 0.47
+   },
+   {
+    "slug": "zuma-ring",
+    "x": 0.42,
+    "y": 0.685
+   },
+   {
+    "slug": "meridian-egg-ring",
+    "x": 0.58,
+    "y": 0.685
+   },
+   {
+    "slug": "wonderhorn-talisman",
+    "x": 0.5,
+    "y": 0.905
+   }
+  ],
+  "shelf_fronts": [
+   {
+    "y": 0.47,
+    "front": [
+     0.478,
+     0.503
+    ]
+   },
+   {
+    "y": 0.685,
+    "front": [
+     0.686,
+     0.712
+    ]
+   },
+   {
+    "y": 0.905,
+    "front": [
+     0.908,
+     0.936
+    ]
+   }
+  ]
+ }
 }
