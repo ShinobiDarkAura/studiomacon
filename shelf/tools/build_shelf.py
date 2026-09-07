@@ -620,12 +620,18 @@ def main():
                 pick = int(o.get("option", 0)) % len(opts)
                 layers = []
                 for oi, ph in enumerate(opts):
+                    vs = {}
                     for kind in ("object", "shadow"):
-                        dst = "photo-%s-%s.png" % (kind, os.path.splitext(ph)[0])
-                        if not os.path.exists(os.path.join(OUT, dst)):
-                            shutil.copyfile(os.path.join(PHOTOS, kind, ph),
-                                            os.path.join(OUT, dst))
-                    layers.append((oi, ph, photo_meta(ph)))
+                        src = os.path.join(PHOTOS, kind, ph)
+                        dst = os.path.join(OUT, "photo-%s-%s.png" % (kind, os.path.splitext(ph)[0]))
+                        # Re-copy when the source has moved on. Copying only when
+                        # the destination is missing meant a cutout re-cut or
+                        # cleaned up by hand never reached the page at all.
+                        if (not os.path.exists(dst)
+                                or os.path.getmtime(src) > os.path.getmtime(dst)):
+                            shutil.copyfile(src, dst)
+                        vs[kind] = stamp(dst)
+                    layers.append((oi, ph, photo_meta(ph), vs))
 
                 man = layers[pick][2]
                 cw, ch = man["canvas"]
@@ -639,7 +645,7 @@ def main():
                 card_left = bx / sw * 100
 
                 geoms = []
-                for oi, ph, m2 in layers:
+                for oi, ph, m2, _v in layers:
                     c2w, c2h = m2["canvas"]
                     ob = m2["object_box"]
                     geoms.append("%.3f,%.3f,%.3f,%.3f" % (
@@ -647,13 +653,14 @@ def main():
                         (ob[2] - ob[0]) / c2w * 100, (ob[3] - ob[1]) / c2h * 100))
 
                 imgs = []
-                for oi, ph, _m in layers:
+                for oi, ph, _m, vs in layers:
                     st = os.path.splitext(ph)[0]
                     hide = "" if oi == pick else " hidden"
                     imgs.append(
-                        '<img class="ph-shadow" data-opt="%d" src="photo-shadow-%s.png" alt=""%s loading="lazy">'
-                        '<img class="ph-object" data-opt="%d" src="photo-object-%s.png" alt="%s"%s loading="lazy">'
-                        % (oi, st, hide, oi, st, html.escape(p["name"]), hide))
+                        '<img class="ph-shadow" data-opt="%d" src="photo-shadow-%s.png?v=%s" alt=""%s loading="lazy">'
+                        '<img class="ph-object" data-opt="%d" src="photo-object-%s.png?v=%s" alt="%s"%s loading="lazy">'
+                        % (oi, st, vs["shadow"], hide, oi, st, vs["object"],
+                           html.escape(p["name"]), hide))
 
                 card_html = (
                     '<span class="card" style="top:%.4f%%;left:%.4f%%">'
