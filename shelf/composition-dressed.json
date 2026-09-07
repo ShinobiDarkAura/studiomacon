@@ -164,8 +164,9 @@
    "objects": [
     {
      "slug": "sietch-aperture",
-     "photo": "on-stone--IMG_6099--1.png",
+     "photo": "on-stone--IMG_6099--2.png",
      "alt": [
+      "on-stone--IMG_6099--1.png",
       "on-stone--IMG_6089.png",
       "on-stone--IMG_6285.png"
      ],
@@ -173,7 +174,7 @@
      "x": 0.5,
      "y": 0.3722,
      "width": 0.185,
-     "scale": 1.2728,
+     "scale": 1.52,
      "dx_px": 0
     },
     {

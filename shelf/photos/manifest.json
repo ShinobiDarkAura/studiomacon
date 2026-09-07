@@ -190,5 +190,24 @@
    952,
    868
   ]
+ },
+ {
+  "object": "object/on-stone--IMG_6099--2.png",
+  "shadow": "shadow/on-stone--IMG_6099--2.png",
+  "source": "on-stone--IMG_6099",
+  "canvas": [
+   1227,
+   1118
+  ],
+  "object_box": [
+   336,
+   304,
+   918,
+   611
+  ],
+  "base": [
+   627,
+   611
+  ]
  }
 ]
