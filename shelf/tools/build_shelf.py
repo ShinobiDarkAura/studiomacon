@@ -280,6 +280,17 @@ SHUFFLE = """
       sel.querySelectorAll('.ph-object,.ph-shadow').forEach(function (im) {
         im.hidden = (+im.dataset.opt !== nxt);
       });
+      // Each alternate is a different photograph, so its base point and object
+      // box differ. Without this the selection box and the resize pivot stay on
+      // the first option's geometry and end up somewhere off the piece.
+      var gs = (sel.dataset.geoms || '').split('|');
+      if (gs[nxt]) {
+        var v = gs[nxt].split(',');
+        sel.style.setProperty('--bx', v[0] + '%');
+        sel.style.setProperty('--by', v[1] + '%');
+        sel.style.setProperty('--ow', v[2] + '%');
+        sel.style.setProperty('--oh', v[3] + '%');
+      }
       panel.querySelector('.ed-msg').textContent = 'option ' + (nxt + 1) + ' of ' + n;
       mark(sel);
       return;
@@ -617,6 +628,14 @@ def main():
                 card_top = (mid * H - top_px) / sh * 100
                 card_left = bx / sw * 100
 
+                geoms = []
+                for oi, ph, m2 in layers:
+                    c2w, c2h = m2["canvas"]
+                    ob = m2["object_box"]
+                    geoms.append("%.3f,%.3f,%.3f,%.3f" % (
+                        m2["base"][0] / c2w * 100, m2["base"][1] / c2h * 100,
+                        (ob[2] - ob[0]) / c2w * 100, (ob[3] - ob[1]) / c2h * 100))
+
                 imgs = []
                 for oi, ph, _m in layers:
                     st = os.path.splitext(ph)[0]
@@ -633,6 +652,7 @@ def main():
                     '         data-x="%s" data-y="%s" data-scale="1" data-dx="0"\n'
                     '         data-warmth="0" data-tint="0" data-bright="1" data-contrast="1"\n'
                     '         data-options="%d" data-option="%d" data-width="%s"\n'
+                    '         data-geoms="%s"\n'
                     '         style="left:%.4f%%;top:%.4f%%;width:%.4f%%;'
                     '--bx:%.3f%%;--by:%.3f%%;--ow:%.3f%%;--oh:%.3f%%">\n'
                     '        %s\n'
@@ -644,7 +664,7 @@ def main():
                     '        </span>\n'
                     '      </a>'
                     % (slug, html.escape(p["name"]), scene["id"], slug, o["x"], o["y"],
-                       len(opts), pick, o.get("width", 0.16),
+                       len(opts), pick, o.get("width", 0.16), "|".join(geoms),
                        left_px / W * 100, top_px / H * 100, sw / W * 100,
                        man["base"][0] / cw * 100, man["base"][1] / ch * 100,
                        (man["object_box"][2] - man["object_box"][0]) / cw * 100,
