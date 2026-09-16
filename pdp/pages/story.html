@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <style>
   .opening{display:grid;gap:40px;padding:calc(var(--head) + 48px) calc(var(--pad) + 12px) 0}
-  .opening .intro{padding:0;text-align:left}
+  .opening .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
   .opening .intro p.lede{margin:0;max-width:460px}
   .opening .intro p.lede + p.lede{margin-top:1em}
   .opening .intro h1{margin-bottom:38px}
@@ -18,12 +18,12 @@
   .steps figure{margin:0;text-align:center}
   .steps .art{padding:10% 0}
   .steps img{margin:0 auto;width:269px;max-width:100%}          /* 30% larger than before */
-  .childhood{display:grid;grid-template-columns:1fr;gap:12px}
+  .childhood{display:grid;grid-template-columns:1fr;gap:12px;padding-top:32px}
   .childhood figure{margin:0}
   .childhood img{width:100%;aspect-ratio:3/2;object-fit:cover}
   @media (min-width:768px){
     .steps{grid-template-columns:repeat(3,1fr);gap:24px;padding:0 var(--pad)}
-    .childhood{grid-template-columns:1fr 1fr;gap:24px;margin:0 calc(var(--pad) + 12px)}
+    .childhood{grid-template-columns:1fr 1fr;gap:24px;margin:0 calc(var(--pad) + 12px);padding-top:32px}
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     .opening{grid-template-columns:1fr 1fr;align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
   }
@@ -39,7 +39,7 @@
       <p class="eyebrow">Our Story</p>
       <h1>We Discover<br>by Holding</h1>
       <p class="lede">Maçon was founded by two creative and life partners, Alex and Hannah. Their work is inspired by ancient artifacts, and by the intimate, personal objects they cared for when they were children.</p>
-      <p class="lede">Every piece is meant to be held: carried in a pocket, turned over in the palm, kept close. Like the talismans and keepsakes that inspired them, they grow more familiar with time, and slowly take on a little of the story of whoever keeps them.</p>
+      <p class="lede">Every piece is meant to be held: carried in a pocket, turned over in the palm, kept close. Like the talismans and keepsakes that inspired them, each one slowly takes on the story of whoever keeps it.</p>
     </div>
     <figure class="hand"><img src="img/pages/hand-milo-original.png" alt="Illustration of a hand holding a small bronze piece"></figure>
   </section>
