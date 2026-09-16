@@ -81,16 +81,17 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .field input,.field textarea{flex:1;border:0;outline:0;font-size:18px;background:none;min-width:0;resize:none}
 .field input::placeholder,.field textarea::placeholder{color:#777}
 
-/* ── footer ────────────────────────────────────────── */
-footer{--fine-gap:64px;padding:96px var(--pad) var(--fine-gap);text-align:center}
-footer .mark{display:block;width:auto;height:64px;margin:0 auto 56px}
-footer .news{max-width:560px;margin:0 auto}
-footer .news p{margin:0 0 30px;font-size:calc(17px - 3pt);line-height:1.5}
-footer .field input,footer .field button{font-size:calc(17px - 3pt)}
-footer .field button{padding:0 18px}
-footer .links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 56px;margin:72px 0 0;font-size:calc(17px - 3pt)}
-/* same gap above and below, so it sits centred between the links and the page edge */
-footer .fine{margin:var(--fine-gap) 0 0;font:400 calc(32px - 5pt)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
+/* ── footer: brand left, links centre, newsletter right ─ */
+footer{display:grid;gap:56px;padding:96px var(--pad) 24px;--f-size:calc(17px - 2pt)}
+footer .brand{order:3}
+footer .mark{display:block;width:auto;height:64px;margin:0 0 32px}
+footer .fine{margin:0;font:400 calc(32px - 5pt)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
+footer .links{order:2;display:flex;flex-wrap:wrap;gap:10px 28px;margin:0;font-size:var(--f-size)}
+footer .news{order:1;max-width:460px}
+footer .news p{margin:0 0 22px;font-size:var(--f-size);line-height:1.5}
+footer .field{padding-left:0}
+footer .field input,footer .field button{font-size:var(--f-size)}
+footer .field button{padding:0 0 0 18px}
 
 @media (min-width:768px){
   :root{--pad:40px;--head:110px}
@@ -100,7 +101,10 @@ footer .fine{margin:var(--fine-gap) 0 0;font:400 calc(32px - 5pt)/1.05 var(--ser
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
-  footer{--fine-gap:80px;padding:140px var(--pad) var(--fine-gap)}
+  footer{grid-template-columns:1fr auto 1fr;align-items:end;gap:40px;padding:140px var(--pad) 24px}
+  footer .brand,footer .links,footer .news{order:0}
+  footer .links{justify-self:center;justify-content:center}
+  footer .news{justify-self:end;width:100%;max-width:420px}
 }
 @media (min-width:1200px){
   h1{font-size:60px}

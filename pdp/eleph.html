@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Eleph | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789599629">
+<link rel="stylesheet" href="site.css?v=1789599803">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -131,13 +131,9 @@
 </main>
 
 <footer>
-  <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
-  <div class="news">
-    <p>Subscribe to hear about new pieces before anyone else,<br>and the stories behind them.</p>
-    <form class="field" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thank you'">
-      <input type="email" placeholder="Email address" aria-label="Email address" required>
-      <button>Submit</button>
-    </form>
+  <div class="brand">
+    <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
+    <p class="fine">Artifacts of Love,<br>Made to Order.</p>
   </div>
   <nav class="links">
     <a class="hover-line" href="story.html">Story</a>
@@ -146,7 +142,13 @@
     <a class="hover-line" href="contact.html">Contact</a>
     <a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">Instagram</a>
   </nav>
-  <p class="fine">Artifacts of Love,<br>Made to Order.</p>
+  <div class="news">
+    <p>Subscribe to hear about new pieces before anyone else,<br>and the stories behind them.</p>
+    <form class="field" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thank you'">
+      <input type="email" placeholder="Email address" aria-label="Email address" required>
+      <button>Submit</button>
+    </form>
+  </div>
 </footer>
 
 <button class="dock" id="dock" aria-label="Add to Bag, $220"><span>Add to Bag</span><span>$220</span></button>
