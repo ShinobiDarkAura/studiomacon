@@ -273,8 +273,8 @@ def main():
     .gallery{grid-column:1;grid-row:1}
     .gallery figure + figure{margin-top:0}
     .gallery .hero img,.gallery figure + figure img{aspect-ratio:3/2;object-fit:cover}
-    .info{grid-column:1;grid-row:1;justify-self:end;align-self:start;width:38%;height:100vh;top:0;
-      background:transparent;color:#fff;padding:calc(var(--head) + 8px) var(--pad) 48px;--rule:rgba(255,255,255,.35)}
+    .info{grid-column:1;grid-row:1;justify-self:end;align-self:start;width:calc(38% + 24px);height:100vh;top:0;
+      background:linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,.3) 30%,rgba(0,0,0,.45));color:#fff;padding:calc(var(--head) + 8px) var(--pad) 48px 64px;--rule:rgba(255,255,255,.35)}
     .info .label{color:rgba(255,255,255,.7)}
     .info .acc-head{color:#fff}
     .info .acc-head::after{color:#fff}
@@ -282,7 +282,7 @@ def main():
     .info .size{border-color:rgba(255,255,255,.5)}
     .info .size select{color:#fff}
     .info .acc-body a{color:#fff}
-    .head .right{color:#fff}
+    .head:not(.ink) .right{color:#fff}
   }
 </style>
 </head>"""
