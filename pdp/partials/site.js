@@ -24,10 +24,11 @@
   // first time about 16% of it is on screen. It never fades back out (toggling
   // flickered), and anything added later is picked up too.
   (function () {
-    var BLOCKS = '.gallery figure, .info > *, .closing > *, .intro > *, .panel, .prose > *, ' +
-                 '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, .policies';
+    var BLOCKS = '.gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+                 '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
+                 '.policies, .ways > *, .form > *, footer > *';
     // side-by-side groups cascade instead of arriving at once
-    var GROUPS = ['.steps', '.childhood', '.info', '.intro', '.split .copy'];
+    var GROUPS = ['.steps', '.childhood', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {

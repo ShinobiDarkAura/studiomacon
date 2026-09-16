@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rebi | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789600875">
+<link rel="stylesheet" href="site.css?v=1789600958">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -28,7 +28,7 @@
     .apple-pay > *{display:none}
   }
   .desc-block{text-align:left;margin:42px 0 0;padding:0 0 42px;border-bottom:1px solid var(--rule)}
-  .desc-block .label{margin:0 0 22px}
+  .desc-block .label{margin:0 0 30px}
   .desc{margin:0;font-size:17px;line-height:1.55}
 
   /* ── closing: big stacked images, two centred chunks ─ */
@@ -177,10 +177,11 @@
   // first time about 16% of it is on screen. It never fades back out (toggling
   // flickered), and anything added later is picked up too.
   (function () {
-    var BLOCKS = '.gallery figure, .info > *, .closing > *, .intro > *, .panel, .prose > *, ' +
-                 '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, .policies';
+    var BLOCKS = '.gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+                 '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
+                 '.policies, .ways > *, .form > *, footer > *';
     // side-by-side groups cascade instead of arriving at once
-    var GROUPS = ['.steps', '.childhood', '.info', '.intro', '.split .copy'];
+    var GROUPS = ['.steps', '.childhood', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
