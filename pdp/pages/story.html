@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Our Story | Studio Maçon</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="site.css?v={{CSSV}}">
+<style>
+  .hand{padding:10% 18%}
+  .steps{display:grid;grid-template-columns:1fr;gap:56px;max-width:1100px;margin:0 auto;padding:0 var(--pad)}
+  .steps figure{margin:0;text-align:center}
+  .steps .art{background:var(--field);padding:14% 18%}
+  .steps img{margin:0 auto;width:100%;max-width:260px}
+  .childhood{display:grid;grid-template-columns:1fr;gap:12px}
+  .childhood figure{margin:0}
+  .childhood .art{background:var(--field)}
+  @media (min-width:768px){
+    .steps{grid-template-columns:repeat(3,1fr);gap:24px;padding:0 var(--pad)}
+    .childhood{grid-template-columns:1fr 1fr;margin:0 var(--pad)}
+  }
+</style>
+</head>
+<body>
+
+{{NAV}}
+
+<main>
+  <section class="intro">
+    <p class="eyebrow">Our Story</p>
+    <h1>We Discover<br>by Holding</h1>
+    <p class="lede">Maçon was founded by two creative and life partners, Alex and Hannah. Their work is inspired by ancient artifacts, and by the intimate, personal objects they cared for when they were children.</p>
+  </section>
+
+  <figure class="panel hand"><img src="img/pages/hand-milo.png" alt="Illustration of a hand holding a small bronze piece"></figure>
+
+  <section class="section">
+    <div class="prose">
+      <h2>Our Practice</h2>
+      <p>Each piece begins as a sketch on paper. Next, the object is carved by hand, first in wax, then fine-tuned in metal. We work closely with a local foundry to cast the wax carvings in bronze, silver or gold, and each piece is then refined and polished in our studio.</p>
+      <p>If its path is to become a collection piece, a rubber mold is made so that we can make the children of that original and share them with you. If it's a custom piece, it is one of a kind.</p>
+    </div>
+  </section>
+
+  <div class="steps">
+    <figure><div class="art"><img src="img/pages/draw.png" alt="Illustration of sketching"></div><figcaption class="label caption">Concept &amp; Sketch</figcaption></figure>
+    <figure><div class="art"><img src="img/pages/cast.png" alt="Illustration of casting"></div><figcaption class="label caption">Carve &amp; Cast</figcaption></figure>
+    <figure><div class="art"><img src="img/pages/polish.png" alt="Illustration of polishing"></div><figcaption class="label caption">Polish &amp; Patina</figcaption></figure>
+  </div>
+
+  <section class="section">
+    <div class="prose">
+      <h2>Our History</h2>
+      <p>Maçon is based in Southern California, but Alex and Hannah met at RISD in 2008. They had figure drawing class together freshman year, and quickly became close friends.</p>
+      <p>After graduating, their resilient love for each other, despite gaps in distance and time, never waned. Eventually they found their way back to each other, and married in 2023. Both Maçon and their union were born out of a desire to live and create as one.</p>
+    </div>
+  </section>
+
+  <div class="childhood">
+    <figure><div class="art"><img src="img/pages/hannah.png" alt="Hannah as a child, drawing"></div><figcaption class="label caption">Hannah</figcaption></figure>
+    <figure><div class="art"><img src="img/pages/alex.png" alt="Alex as a child, drawing"></div><figcaption class="label caption">Alex</figcaption></figure>
+  </div>
+</main>
+
+{{FOOTER}}
+{{SITEJS}}
+</body>
+</html>

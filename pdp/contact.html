@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Contact | Studio Maçon</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="site.css?v=1789599001">
+<style>
+  .split .pics figure{display:grid;place-items:center;aspect-ratio:4/5}
+  .split .pics img{width:78%}
+  .split .copy p.body{margin:0 0 36px;font-size:17px;line-height:1.55}
+  .ways{display:grid;grid-template-columns:auto 1fr;gap:10px 28px;align-items:baseline;margin:0 0 48px}
+  .ways a{font-size:17px}
+  .form{display:grid;gap:30px}
+  .form .row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .form .field{padding-left:0}
+  .form textarea{min-height:120px}
+  .form .cta{margin-top:10px}
+  .sent{margin:0;font-size:17px}
+  @media (min-width:768px){ .split .pics figure{aspect-ratio:auto;height:100vh} }
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="left">
+    <a href="#" class="mob hover-line">Menu</a>
+    <a href="index.html" class="desk hover-line">Shop</a>
+    <a href="story.html" class="desk hover-line">Story</a>
+    <a href="custom.html" class="desk hover-line">Custom</a>
+  </div>
+  <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
+  <div class="right"><a href="#">Bag (0)</a></div>
+</header>
+
+<main>
+  <section class="split">
+    <div class="pics">
+      <figure><img src="img/pages/leaves.png" alt="Storybook illustration of bird of paradise leaves" fetchpriority="high"></figure>
+    </div>
+
+    <div class="copy">
+      <p class="eyebrow">Say Hello</p>
+      <h1>Contact</h1>
+      <p class="body">Questions about a piece, an order, or a commission. We read everything, and we'll write back.</p>
+
+      <div class="ways">
+        <span class="label">Email</span><a class="hover-line" href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a>
+        <span class="label">Instagram</span><a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">@studiomacon</a>
+      </div>
+
+      <form class="form" onsubmit="event.preventDefault();this.outerHTML='<p class=&quot;sent&quot;>Sent, thanks!</p>'">
+        <div class="row">
+          <label class="field"><input name="first" placeholder="First Name" aria-label="First Name" required></label>
+          <label class="field"><input name="last" placeholder="Last Name" aria-label="Last Name"></label>
+        </div>
+        <label class="field"><input type="email" name="email" placeholder="Email" aria-label="Email" required></label>
+        <label class="field"><textarea name="message" placeholder="Message" aria-label="Message" required></textarea></label>
+        <button class="cta">Send</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
+  <div class="news">
+    <p>Subscribe to hear about new pieces before anyone else,<br>and the stories behind them.</p>
+    <form class="field" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thank you'">
+      <input type="email" placeholder="Email address" aria-label="Email address" required>
+      <button>Submit</button>
+    </form>
+  </div>
+  <nav class="links">
+    <a class="hover-line" href="story.html">Story</a>
+    <a class="hover-line" href="custom.html">Custom</a>
+    <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
+    <a class="hover-line" href="contact.html">Contact</a>
+    <a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">Instagram</a>
+  </nav>
+  <p class="fine">Artifacts of Love, Made to Order.</p>
+</footer>
+<script>
+  // Accordions: the height eases through a grid-row transition, so nothing is
+  // measured in script and a panel of any length opens at the same pace.
+  document.querySelectorAll('.acc-head').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var item = b.parentElement, open = !item.classList.contains('open');
+      item.classList.toggle('open', open);
+      b.setAttribute('aria-expanded', open);
+    });
+  });
+
+  // Nav items are white while they sit over photography (anything marked
+  // data-under-nav) and black everywhere else. Bag (0) stays black.
+  (function () {
+    var head = document.querySelector('.head'), art = document.querySelector('[data-under-nav]');
+    function tone() {
+      var over = art && art.getBoundingClientRect().bottom >= head.offsetHeight * 0.6;
+      head.classList.toggle('ink', !over);
+    }
+    addEventListener('scroll', tone, {passive: true}); addEventListener('resize', tone); tone();
+  })();
+</script>
+</body>
+</html>

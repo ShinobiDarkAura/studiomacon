@@ -213,10 +213,24 @@ def page(p, template):
             .replace("{{CLOSING}}", close))
 
 
+def shared(doc):
+    """Fill the pieces every page has in common: header, footer, shared script."""
+    part = lambda n: open(os.path.join(OUT, "partials", n), encoding="utf-8").read().rstrip()
+    return (doc.replace("{{NAV}}", part("nav.html"))
+               .replace("{{FOOTER}}", part("footer.html"))
+               .replace("{{SITEJS}}", part("site.js"))
+               .replace("{{CSSV}}", str(int(os.path.getmtime(os.path.join(OUT, "site.css"))))))
+
+
 def main():
     products = json.load(open(os.path.join(ROOT, "_source/products.json")))
-    template = open(os.path.join(OUT, "template.html"), encoding="utf-8").read()
+    template = shared(open(os.path.join(OUT, "template.html"), encoding="utf-8").read())
     links = []
+    # info pages: story, custom, contact, shipping
+    for f in sorted(os.listdir(os.path.join(OUT, "pages"))):
+        doc = shared(open(os.path.join(OUT, "pages", f), encoding="utf-8").read())
+        open(os.path.join(OUT, f), "w", encoding="utf-8").write(doc)
+        print("  ", f)
     for p in products:
         open(os.path.join(OUT, f"{p['slug']}.html"), "w", encoding="utf-8").write(page(p, template))
         links.append(f'<li><a href="{p["slug"]}.html">{html.escape(p["name"])}</a> <span>${p["price"]}</span></li>')
