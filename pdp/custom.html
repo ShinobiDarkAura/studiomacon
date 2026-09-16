@@ -176,7 +176,7 @@
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
                  '.policies, .ways > *, .form > *, footer > *';
     // side-by-side groups cascade instead of arriving at once
-    var GROUPS = ['.steps', '.childhood', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
+    var GROUPS = ['.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
@@ -190,9 +190,21 @@
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge')) return;
+          // hide instantly: the transition is for arriving, not for going away
+          el.style.transition = 'none';
           el.classList.add('dr-emerge');
+          void el.offsetWidth;
+          el.style.transition = '';
           if (still) { el.classList.add('is-seen'); return; }
-          io.observe(el);
+          // let the hidden state paint first, or blocks already on screen at load
+          // would jump straight to their resting place without animating
+          // (and wait for the stylesheet: until the hidden state has actually taken
+          // effect there is nothing to animate from)
+          var tries = 0;
+          (function ready() {
+            if (getComputedStyle(el).opacity !== '0' && tries++ < 120) return requestAnimationFrame(ready);
+            requestAnimationFrame(function () { io.observe(el); });
+          })();
         });
     }
     GROUPS.forEach(function (g) {

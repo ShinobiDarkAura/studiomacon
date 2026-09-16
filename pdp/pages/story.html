@@ -14,17 +14,32 @@
   .opening .intro p.lede + p.lede{margin-top:1em}
   .opening .intro h1{margin-bottom:38px}
   .prose h1,.prose h2{margin-bottom:44px}
+  .opening{overflow-x:clip}
   .opening .hand{margin:0}
+  .opening .hand img{width:120%;max-width:none;margin-left:-15%}          /* 20% larger than its column */
+  /* opening sequence: the hand slides in from the right, then each text block rises in turn */
+  .opening .hand.dr-emerge{transform:translateX(160px);filter:blur(10px);transition-duration:1.3s;--stagger:0ms !important}
+  .opening .intro > .dr-emerge{transform:translateY(48px)}
+  .opening .intro > .dr-emerge.is-seen,.opening .hand.dr-emerge.is-seen{transform:none;filter:none}
+  .opening .intro > :nth-child(1){--stagger:350ms !important}
+  .opening .intro > :nth-child(2){--stagger:550ms !important}
+  .opening .intro > :nth-child(3){--stagger:750ms !important}
+  .opening .intro > :nth-child(4){--stagger:950ms !important}
   .steps{display:grid;grid-template-columns:1fr;gap:56px;max-width:1100px;margin:0 auto;padding:0 var(--pad)}
   .steps figure{margin:0;text-align:center}
   .steps .art{padding:10% 0}
   .steps img{margin:0 auto;width:269px;max-width:100%}          /* 30% larger than before */
-  .childhood{display:grid;grid-template-columns:1fr;gap:12px;padding-top:32px}
+  .history{display:grid;gap:40px;padding:172px calc(var(--pad) + 12px) 0}
+  .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
+  .history .intro p.lede{margin:0;max-width:460px}
+  .history .intro p.lede + p.lede{margin-top:1em}
+  .history .intro h1{margin-bottom:38px}
+  .childhood{display:grid;grid-template-columns:1fr;gap:24px}
   .childhood figure{margin:0}
   .childhood img{width:100%;aspect-ratio:3/2;object-fit:cover}
   @media (min-width:768px){
     .steps{grid-template-columns:repeat(3,1fr);gap:24px;padding:0 var(--pad)}
-    .childhood{grid-template-columns:1fr 1fr;gap:24px;margin:0 calc(var(--pad) + 12px);padding-top:32px}
+    .history{grid-template-columns:1fr 1fr;align-items:center}
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     .opening{grid-template-columns:1fr 1fr;align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
   }
@@ -60,18 +75,18 @@
     <figure><div class="art"><img src="img/pages/polish.png" alt="Illustration of polishing"></div></figure>
   </div>
 
-  <section class="section">
-    <div class="prose">
-      <h2>Our History</h2>
-      <p>Maçon is based in Southern California, but Alex and Hannah met at RISD in 2008. They had figure drawing class together freshman year, and quickly became close friends.</p>
-      <p>After graduating, their resilient love for each other, despite gaps in distance and time, never waned. Eventually they found their way back to each other, and married in 2023. Both Maçon and their union were born out of a desire to live and create as one.</p>
+  <section class="history">
+    <div class="childhood">
+      <figure><img src="img/pages/hannah-flat.jpg" alt="Hannah as a child, drawing"></figure>
+      <figure><img src="img/pages/alex-flat.jpg" alt="Alex as a child, drawing"></figure>
+    </div>
+    <div class="intro">
+      <p class="eyebrow">Our History</p>
+      <h1>Drawn<br>Together</h1>
+      <p class="lede">Maçon is based in Southern California, but Alex and Hannah met at RISD in 2008. They had figure drawing class together freshman year, and quickly became close friends.</p>
+      <p class="lede">After graduating, their love for each other never waned, despite gaps in distance and time. Eventually they found their way back to each other, and married in 2023. Both Maçon and their union were born of a desire to live and create as one.</p>
     </div>
   </section>
-
-  <div class="childhood">
-    <figure><img src="img/pages/hannah-flat.jpg" alt="Hannah as a child, drawing"></figure>
-    <figure><img src="img/pages/alex-flat.jpg" alt="Alex as a child, drawing"></figure>
-  </div>
 </main>
 
 {{FOOTER}}
