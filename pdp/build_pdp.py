@@ -266,29 +266,6 @@ def main():
         open(os.path.join(OUT, f"{p['slug']}.html"), "w", encoding="utf-8").write(one_block(page(p, template)))
         links.append(f'<li><a href="{p["slug"]}.html">{html.escape(p["name"])}</a> <span>${p["price"]}</span></li>')
         print("  ", p["slug"])
-    # Layout study: photographs edge to edge, product column a pinned white panel over them.
-    bleed = """<style>
-  @media (min-width:768px){
-    .product{grid-template-columns:1fr;margin:0}
-    .gallery{grid-column:1;grid-row:1}
-    .gallery figure + figure{margin-top:0}
-    .gallery .hero img,.gallery figure + figure img{aspect-ratio:3/2;object-fit:cover}
-    .info{grid-column:1;grid-row:1;justify-self:end;align-self:start;width:calc(38% + 24px);height:100vh;top:0;
-      background:linear-gradient(to right,rgba(0,0,0,0),rgba(0,0,0,.3) 30%,rgba(0,0,0,.45));color:#fff;padding:calc(var(--head) + 8px) var(--pad) 48px 64px;--rule:rgba(255,255,255,.35)}
-    .info .label{color:rgba(255,255,255,.7)}
-    .info .acc-head{color:#fff}
-    .info .acc-head::after{color:#fff}
-    .info .cta{background:#fff;color:#000}
-    .info .size{border-color:rgba(255,255,255,.5)}
-    .info .size select{color:#fff}
-    .info .acc-body a{color:#fff}
-    .head:not(.ink) .right{color:#fff}
-  }
-</style>
-</head>"""
-    study = open(os.path.join(OUT, "starshipkey-pendant.html"), encoding="utf-8").read().replace("</head>", bleed, 1)
-    open(os.path.join(OUT, "study-edge-to-edge.html"), "w", encoding="utf-8").write(study)
-
     open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(
         '<!doctype html><meta charset="utf-8"><title>Product pages · preview</title>'
         '<style>body{font:17px/1.8 "Helvetica Neue",Arial,sans-serif;margin:60px}a{color:#111}span{color:#888}</style>'

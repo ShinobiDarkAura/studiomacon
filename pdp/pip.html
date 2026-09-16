@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pip | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789600601">
+<link rel="stylesheet" href="site.css?v=1789600709">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -34,8 +34,8 @@
   /* ── closing: big stacked images, two centred chunks ─ */
   .closing{padding:128px 0 0}
   .big{--w:min(calc((100% - 2 * var(--pad)) * 1.1), 100%);width:var(--w);margin-left:calc((100% - var(--w)) / 2);
-    aspect-ratio:2.75/1;background:#d9d9d9;border-radius:6px}          /* 3:1 made 10% wider and 20% taller */
-  .chunk{margin:96px auto;padding:0 calc(var(--pad) + 16px);max-width:620px;
+    aspect-ratio:2.2917/1;background:#d9d9d9;border-radius:6px}          /* 3:1 made 10% wider, then 20% taller twice */
+  .chunk{margin:120px auto;padding:0 calc(var(--pad) + 16px);max-width:620px;
     text-align:center;font-size:17px;line-height:1.55}
 
   /* ── sticky bag bar (mobile) ───────────────────────── */
@@ -47,7 +47,7 @@
   .dock span:last-child{text-transform:none}
 
   @media (min-width:768px){
-    .product{display:grid;grid-template-columns:minmax(0,62fr) minmax(0,38fr);gap:0 48px;
+    .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
       margin:0 var(--pad) 0 0;align-items:start}
     .gallery figure + figure{display:block;margin-top:12px}
     .gallery figure img{width:100%}
@@ -62,7 +62,7 @@
 
     .closing{max-width:1100px;margin:0 auto;padding:204px var(--pad) 0}
     .big{--w:110%}
-    .chunk{margin:150px auto;max-width:620px;padding:0}
+    .chunk{margin:188px auto;max-width:620px;padding:0}
     .dock{display:none}
   }
 </style>
