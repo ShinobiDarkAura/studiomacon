@@ -54,14 +54,14 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .acc{text-align:left}
 .acc-item{border-bottom:1px solid var(--rule)}
 .acc-head{display:flex;width:100%;justify-content:space-between;align-items:center;
-  padding:19px 0;font-size:calc(17px - 2pt);letter-spacing:.12em;text-transform:uppercase;text-align:left;color:rgba(0,0,0,.5)}
-.acc-head::after{content:"";width:13px;height:13px;flex:none;
-  background:linear-gradient(currentColor,currentColor) center/13px 1.5px no-repeat,
-             linear-gradient(currentColor,currentColor) center/1.5px 13px no-repeat;
-  color:#000;opacity:.5;transition:transform .45s var(--ease),opacity .2s ease}
+  padding:19px 0;font-size:calc(17px - 3pt);letter-spacing:.14em;text-transform:uppercase;text-align:left;color:#000}
+.acc-head::after{content:"";width:10px;height:10px;flex:none;
+  background:linear-gradient(currentColor,currentColor) center/10px 1.5px no-repeat,
+             linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat;
+  color:#000;opacity:.35;transition:transform .45s var(--ease),opacity .2s ease}
 .acc-head:hover::after{opacity:1}
 .acc-item.open .acc-head::after{transform:rotate(90deg);
-  background:linear-gradient(currentColor,currentColor) center/1.5px 13px no-repeat}
+  background:linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat}
 .acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
 .acc-item.open .acc-panel{grid-template-rows:1fr}
 .acc-inner{overflow:hidden}
