@@ -39,7 +39,7 @@ button{background:none;border:0;padding:0;cursor:pointer}
 .head .desk{display:none}
 .logotype{display:block;aspect-ratio:888/331;background:currentColor;
   -webkit-mask:url(img/logotype.png) center/contain no-repeat;mask:url(img/logotype.png) center/contain no-repeat}
-.head .logotype{width:118px}
+.head .logotype{width:97px}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
@@ -95,7 +95,7 @@ footer .fine{margin:var(--fine-gap) 0 0;font:400 calc(32px - 3pt)/1.05 var(--ser
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:200px}
+  .head .logotype{width:164px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
