@@ -50,15 +50,18 @@
     border:1px solid var(--rule);padding:0 0 0 16px;text-align:left}
   .size span{font-size:15px;text-transform:uppercase}
   .size select{border:0;background:transparent;height:52px;padding:0 16px;font-size:16px;cursor:pointer}
-  .cta{display:flex;align-items:center;justify-content:center;width:100%;height:58px;
-    background:#000;color:#fff;font-size:18px;text-transform:uppercase;letter-spacing:.01em}
-  .desc{text-align:left;margin:30px 0 8px;font-size:17px;line-height:1.55;padding-bottom:26px;border-bottom:1px solid var(--rule)}
+  .cta{display:flex;align-items:center;justify-content:center;width:100%;height:55px;
+    background:#000;color:#fff;font-size:calc(18px - 1pt);text-transform:uppercase;letter-spacing:.08em}
+  .label{font-size:calc(17px - 1pt);letter-spacing:.08em;text-transform:uppercase}
+  .desc-block{text-align:left;margin:30px 0 0;padding:0 0 26px;border-bottom:1px solid var(--rule)}
+  .desc-block .label{margin:0 0 16px}
+  .desc{margin:0;font-size:17px;line-height:1.55}
 
   /* accordions: height eases open and shut */
   .acc{text-align:left}
   .acc-item{border-bottom:1px solid var(--rule)}
   .acc-head{display:flex;width:100%;justify-content:space-between;align-items:center;
-    padding:26px 0;font-size:17px;text-transform:uppercase;text-align:left}
+    padding:26px 0;font-size:calc(17px - 1pt);letter-spacing:.08em;text-transform:uppercase;text-align:left}
   .acc-head::after{content:"";width:13px;height:13px;flex:none;
     background:linear-gradient(currentColor,currentColor) center/13px 1.5px no-repeat,
                linear-gradient(currentColor,currentColor) center/1.5px 13px no-repeat;
@@ -77,40 +80,38 @@
   .acc-body dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px}
   .acc-body dt{text-transform:uppercase;font-size:14px;padding-top:2px}
   .acc-body dd{margin:0}
+  .acc-body .after-dl{margin-top:18px}
   .todo{background:#fff4c2;padding:0 3px}
 
   /* ── closing: big stacked images, two centred chunks ─ */
   .closing{padding:64px 0 0}
-  .big{margin:0 var(--pad);background:var(--field)}
-  .big img{width:100%}
-  .big.drawing{display:grid;place-items:center;padding:14% 0}
-  .big.drawing img{width:auto;max-width:62%;max-height:78vh}
+  .big{margin:0 var(--pad);aspect-ratio:3/1;background:#d9d9d9}
   .chunk{margin:64px auto;padding:0 calc(var(--pad) + 16px);max-width:680px;
-    text-align:center;font-size:22px;line-height:1.45}
+    text-align:center;font-size:16pt;line-height:1.45}
 
   /* ── the casting ───────────────────────────────────── */
   .casting{padding:40px var(--pad) 0;text-align:center}
-  .casting h2{font:400 15px/1 var(--sans);text-transform:uppercase;letter-spacing:.08em;margin:0 0 22px}
   .casting p{margin:0 auto 1em;max-width:620px;font-size:18px;line-height:1.55}
 
   /* ── footer ────────────────────────────────────────── */
-  footer{padding:96px var(--pad) 150px;text-align:center}
-  footer .logotype{width:200px;aspect-ratio:888/331;margin:0 auto 22px;background:var(--ink);
+  footer{--fine-gap:64px;padding:96px var(--pad) var(--fine-gap);text-align:center}
+  footer .logotype{width:140px;aspect-ratio:888/331;margin:0 auto 22px;background:var(--ink);
     -webkit-mask:url(img/logotype.png) center/contain no-repeat;mask:url(img/logotype.png) center/contain no-repeat}
   footer .tag{font:400 32px/1.05 var(--serif);text-transform:uppercase;margin:0 0 56px}
   footer .news{max-width:560px;margin:0 auto}
   footer .news p{margin:0 0 30px;font-size:18px;line-height:1.45}
-  footer form{display:flex;border-bottom:2px solid rgba(0,0,0,.25);padding:0 0 10px 18px}
+  footer form{display:flex;border-bottom:1.5px solid rgba(0,0,0,.25);padding:0 0 10px 18px}
   footer input{flex:1;border:0;outline:0;font:inherit;font-size:18px;background:none;min-width:0}
   footer input::placeholder{color:#777}
   footer form button{font-size:18px;padding:0 18px}
   footer .links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 64px;margin:72px 0 0;font-size:17px}
-  footer .fine{margin:40px 0 0;font:400 15px/1 var(--serif);letter-spacing:.02em;text-transform:uppercase}
+  /* same gap above and below, so it sits centred between the links and the page edge */
+  footer .fine{margin:var(--fine-gap) 0 0;font:400 calc(15px + 3pt)/1 var(--serif);letter-spacing:.02em;text-transform:uppercase}
 
   /* ── sticky bag bar (mobile) ───────────────────────── */
   .dock{position:fixed;left:var(--pad);right:var(--pad);bottom:24px;z-index:15;
     display:flex;align-items:center;justify-content:center;gap:26px;height:84px;
-    background:#fff;border:1.5px solid var(--ink);font-size:18px;text-transform:uppercase;
+    background:#fff;border:1.5px solid var(--ink);font-size:calc(18px - 1pt);letter-spacing:.08em;text-transform:uppercase;
     transform:translateY(140%);transition:transform .35s var(--ease)}
   .dock.on{transform:none}
   .dock span:last-child{text-transform:none}
@@ -129,19 +130,21 @@
     .gallery figure + figure img{aspect-ratio:4/5;object-fit:cover}
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
-    .info{position:sticky;top:var(--head);max-height:calc(100vh - var(--head));overflow-y:auto;
-      overscroll-behavior:contain;scrollbar-width:none;text-align:left;padding:24px 0 48px}
+    .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
+      overscroll-behavior:contain;scrollbar-width:none;text-align:left;padding:24px 0 48px;
+      display:flex;flex-direction:column;justify-content:safe center}
+    .info > *{flex:none}
     .info::-webkit-scrollbar{display:none}
     .eyebrow{font-size:16px}
     h1{font-size:53px}
 
     .closing{max-width:1100px;margin:0 auto;padding:140px var(--pad) 0}
     .big{margin:0}
-    .chunk{margin:110px auto;font-size:28px;max-width:760px;padding:0}
+    .chunk{margin:110px auto;max-width:720px;padding:0}
 
     .casting{padding:40px var(--pad) 0}
     .casting p{font-size:19px}
-    footer{padding:140px var(--pad) 80px}
+    footer{--fine-gap:80px;padding:140px var(--pad) var(--fine-gap)}
     .dock{display:none}
   }
   @media (min-width:1200px){
@@ -178,7 +181,7 @@
       <p class="price">$220</p>
       
       <button class="cta" id="bag">Add to Bag</button>
-      <p class="desc">Zuma and the ring were drawn in one sitting, so the ring looks taken from the totem rather than made to match it. Small enough for a coat pocket, which is where they tend to end up. Each one is made by hand.</p>
+      <div class="desc-block"><p class="label">Description</p><p class="desc">Zuma and the ring were drawn in one sitting, so the ring looks taken from the totem rather than made to match it. Small enough for a coat pocket, which is where they tend to end up. Each one is made by hand.</p></div>
       <div class="acc">
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Care</button>
@@ -190,11 +193,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Sizing &amp; Info</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><dl><dt>Dimensions</dt><dd>38 × 25 × 13 mm</dd></dl></div></div></div>
-        </div>
-        <div class="acc-item">
-          <button class="acc-head" aria-expanded="false">Resizing &amp; Repair</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>If your piece takes a knock or needs adjusting, write to <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and <span class="todo">we'll look after it</span>.</p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><dl><dt>Dimensions</dt><dd>38 × 25 × 13 mm</dd></dl><p class="after-dl">If your piece needs resizing, takes a knock, or needs adjusting, write to <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and <span class="todo">we'll look after it</span>.</p></div></div></div>
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
@@ -205,15 +204,14 @@
   </section>
 
   <section class="closing">
-    <figure class="big drawing"><img src="img/zuma/drawing.jpg" alt="" loading="lazy"></figure>
-    <p class="chunk">Desert spirit present. Namesake ring awakens dormant essence; ancient runes suggest sacred link.</p>
-    <figure class="big"><img src="img/zuma/hand-1.jpg" alt="" loading="lazy"></figure>
-    <p class="chunk">Made to order. Please allow up to two weeks for us to make yours.</p>
-    <figure class="big"><img src="img/zuma/plain-1.jpg" alt="" loading="lazy"></figure>
+    <div class="big" role="presentation"></div>
+    <p class="chunk">A desert spirit, present and patient. Its namesake ring awakens a dormant essence, and ancient runes suggest a sacred link between the two. Zuma keeps the warmth of a long afternoon in the sand, long after the sun has gone down.</p>
+    <div class="big" role="presentation"></div>
+    <p class="chunk">Every piece is made to order in our studio. Each begins as a sketch, is carved by hand in wax, and is cast at a local foundry before we refine and polish it. Please allow up to two weeks for us to make yours.</p>
+    <div class="big" role="presentation"></div>
   </section>
 
   <section class="casting">
-    <h2>The Casting</h2>
     <p>Each piece begins as a sketch on paper. It is carved by hand, first in wax, then fine-tuned in metal. A local foundry casts the wax carving in bronze or silver, and the piece comes back to our studio to be refined and polished.</p>
     <p>Collection pieces are made from a mold of that first original, so every one is a child of the piece we carved.</p>
   </section>

@@ -36,16 +36,35 @@ EYEBROW = {
     "meridian-egg-ring": "Heavier Than It Looks",
 }
 
-# Pieces whose closing line says something other than "made to order".
-MADE_LINE = {
-    "eleph": "Cast only when someone asks. If that is you, write to us and we'll make one.",
-    "ibi": "Cast on request. Write to us and we'll make one for you.",
-    "macon-cap": "Made in small runs, with our mark on the front.",
+# The two centred blocks at the bottom of each page — at least 30 words each.
+# First: the lore, grown from the Wix line. Second: how it comes to you.
+LORE = {
+    "pip": "Tiny keeper of tenderness. Proximity induces unexpected comfort, and scholars remain blissfully baffled as to why. Kept in a pocket, Pip has been known to settle a racing heart and soften the edges of a long, difficult day.",
+    "rebi": "Exhibits fluid properties; the perceived silhouette is always in flux. Researchers report heightened reflexes after handling. Turn Rebi in the light and a hare becomes something else entirely, and the animal you find is usually the one you needed.",
+    "ren": "Steward of forgotten paths. Dawn light lingers unusually long upon the golden mane. Ren is said to know the way back through any wood, and to carry whoever holds it a little further than they meant to go.",
+    "zuma": "A desert spirit, present and patient. Its namesake ring awakens a dormant essence, and ancient runes suggest a sacred link between the two. Zuma keeps the warmth of a long afternoon in the sand, long after the sun has gone down.",
+    "ori": "Faithful guardian of the forests and rivers. A subtle warmth radiates from Ori during the winter solstice. Set on a windowsill, it keeps watch over the house through the long nights, asking nothing in return but the occasional hand.",
+    "yael": "Inimitable poise suggests prophecy in metal. Mountaintop altar bells are said to resonate in its presence. Yaël stands where the footing is narrowest and the air is thinnest, and seems entirely unbothered by either, which is the whole lesson.",
+    "zuma-ring": "Sand spirit, distilled to a sacred heirloom. Unearthed glyphs show evidence of rituals performed with its paired totem. Worn on the hand, the Zuma Ring carries a small piece of the desert with you, warm and quiet and very old.",
+    "milo": "An ancient wanderer, seeking home. The surface adapts to its handler, and the bond deepens with patina over time. Milo has crossed a great deal of country to reach you, and seems glad, in its quiet way, to finally stop moving.",
+    "eclipse-ring": "Asymmetric ellipses, locked in patient equilibrium. The space between them holds questions only the stars can answer. Two shapes that never quite match, held at exactly the distance where they stop competing and begin, very quietly, to belong together.",
+    "sietch-aperture": "Recovered from the wake of a passing comet. The aperture reveals an oscillating presence of landscapes that appear on no map. Hold it to your eye and look through; what you see on the other side is yours to keep secret.",
+    "lunar-canyon-ring": "A sundered artifact, forged from the core of a distant moon. Social gatherings reportedly ebb and flow in time with the wearer's presence. The folds of white rock are cool to the touch, and warm slowly, the way moonlight does.",
+    "eleph": "Breath suspended in solid bronze. Distant trumpeting has been reported by independent observers, usually late at night and always just out of sight. Eleph remembers everything, and forgives most of it, and asks only to be held now and then.",
+    "wonderhorn-talisman": "In the story Hannah grew up with, a girl named Ida plays her wonder horn so sweetly that the goblins who stole her sister cannot help but dance, faster and faster, until they dance themselves clean out of the window and away.",
+    "macon-cap": "A tasteful cap adorned with a mystic symbol. It offers a modicum of protection from the sun, and a considerable amount of protection from people who might otherwise ask what you've been making lately. Wear it to the studio, or anywhere.",
+    "ibi": "The eternal watcher, believed to guard ancestral secrets. Every attempt to transmit its likeness has been met with lens fog. Ibi does not photograph well because it would rather be held than looked at, and it makes no apology for that.",
+    "ear-cuff": "Perfect geometries betray a cosmic provenance. Light fractures into otherworldly spectra across the mirrored edge. The Caldera Arc follows the rim of a volcano, a long drop on one side the whole way round, held gently against the curve of the ear.",
+    "starshipkey-pendant": "An elegant device of stellar origin. Prolonged exposure is known to cause wanderlust, and researchers who study it tend to forget to come back. Worn close, the Starship Key seems to hum faintly whenever the night sky is especially clear.",
+    "meridian-egg-ring": "Its weight exceeds every material expectation. Metaphysical analysis detects an abyss gazing back. Everyone who picks up the Meridian Egg says the same thing about how heavy it is, and then, a moment later, quietly declines to put it down.",
 }
 
-# Hand-written story for the exemplar; every other piece uses its Wix lore line.
-LORE = {
-    "wonderhorn-talisman": "In the story Hannah grew up with, a girl named Ida plays her wonder horn so sweetly that the goblins who stole her sister cannot help but dance — faster and faster, until they dance themselves clean out of the window and away. We can't promise goblins. We can promise every horn is made with that much love.",
+MADE = ("Every piece is made to order in our studio. Each begins as a sketch, is carved by hand in wax, "
+        "and is cast at a local foundry before we refine and polish it. Please allow up to two weeks for us to make yours.")
+MADE_LINE = {
+    "eleph": "We love Eleph, though it rarely sells, so it is cast only when someone asks for one. If that is you, write to us, and we will carve, cast and polish yours by hand in our studio, just for you.",
+    "ibi": "Ibi is cast on request rather than kept in stock. Write to us and we will make one for you by hand, carved in wax, cast at a local foundry, and refined and polished in our studio before it comes to you.",
+    "macon-cap": "We made these because we each wanted one, with our mark on the front and a little shade for long days outside. They are made in small runs, so when a colour is gone, it may be gone for a while.",
 }
 
 TODO = '<span class="todo">{}</span>'
@@ -124,17 +143,16 @@ def accordions(slug, k, notes):
     if k == "apparel":
         rows.append(("Fit", TODO.format("to confirm")))
     sizing = "<dl>" + "".join(f"<dt>{a}</dt><dd>{b}</dd>" for a, b in rows) + "</dl>"
+    if k != "apparel":
+        sizing += ('<p class="after-dl">If your piece needs resizing, takes a knock, or needs adjusting, write to '
+                   '<a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and '
+                   + TODO.format("we'll look after it") + ".</p>")
 
     items = [
         ("Care" if k in ("totem", "apparel") else "Wearing &amp; Care", care),
         ("Materials", f"<p>{html.escape(mat)}</p>"),
         ("Sizing &amp; Info", sizing),
     ]
-    if k != "apparel":
-        items.append(("Resizing &amp; Repair",
-                      '<p>If your piece takes a knock or needs adjusting, write to '
-                      '<a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and '
-                      + TODO.format("we'll look after it") + ".</p>"))
     items.append(("Shipping &amp; Returns",
                   "<p>Each piece is made to order. Please allow up to 10 business days for us to make yours before it heads out to you. Standard shipping takes 3–7 business days; international shipping generally takes 5–10.</p>"
                   "<p>We accept pieces (excluding custom work) in their original condition for store credit toward your next purchase, within 14 days of delivery. If a piece doesn't fit, we'll gladly work with you to find the right size. "
@@ -167,17 +185,13 @@ def page(p, template):
                            hero, *gallery] if x]
     closing = list(dict.fromkeys(closing))[:3]
 
-    lore = LORE.get(slug) or lore_line(p["desc"])
-    made = MADE_LINE.get(slug, "Made to order. Please allow up to two weeks for us to make yours.")
+    lore = LORE[slug]
+    made = MADE_LINE.get(slug, MADE)
+    for block in (lore, made):
+        assert len(block.split()) >= 30, (slug, len(block.split()))
 
-    def pic(src, cls=""):
-        return f'<figure class="big{cls}"><img src="{src}" alt="" loading="lazy"></figure>'
-
-    close = pic(closing[0], " drawing" if closing[0] == drawing else "")
-    close += f'\n    <p class="chunk">{html.escape(lore)}</p>\n    '
-    close += pic(closing[1]) if len(closing) > 1 else ""
-    close += f'\n    <p class="chunk">{html.escape(made)}</p>\n    '
-    close += pic(closing[2]) if len(closing) > 2 else ""
+    ph = '<div class="big" role="presentation"></div>'
+    close = f'{ph}\n    <p class="chunk">{html.escape(lore)}</p>\n    {ph}\n    <p class="chunk">{html.escape(made)}</p>\n    {ph}'
 
     size_select = ""
     if k == "ring":
