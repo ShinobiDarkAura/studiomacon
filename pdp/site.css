@@ -60,6 +60,8 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
              linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat;
   color:#000;opacity:.35;transition:transform .45s var(--ease),opacity .2s ease}
 .acc-head:hover::after{opacity:1}
+.acc-head{transition:padding-bottom .5s var(--ease)}
+.acc-item.open .acc-head{padding-bottom:27px}
 .acc-item.open .acc-head::after{transform:rotate(90deg);
   background:linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat}
 .acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
