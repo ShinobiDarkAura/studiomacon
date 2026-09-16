@@ -32,9 +32,10 @@ button{background:none;border:0;padding:0;cursor:pointer}
 .head{position:fixed;inset:0 0 auto;z-index:20;height:var(--head);pointer-events:none;
   display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 calc(var(--pad) + 12px);font-size:calc(16px - 1pt)}
 .head > *{pointer-events:auto}
-.head .left{justify-self:start;display:flex;gap:32px;color:#fff;transition:color .3s ease}
-.head .logotype{color:#fff;transition:color .3s ease}
-.head.ink .left,.head.ink .logotype{color:#000}
+/* each part of the nav reads what is under it: black on white or very light, white on anything darker */
+.head .left,.head .logotype,.head .right{color:#000;transition:color .3s ease}
+.head .on-dark{color:#fff}
+.head .left{justify-self:start;display:flex;gap:32px}
 .head .right{justify-self:end;white-space:nowrap}
 .head .desk{display:none}
 .logotype{display:block;aspect-ratio:888/331;background:currentColor;
