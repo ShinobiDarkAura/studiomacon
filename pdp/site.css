@@ -88,10 +88,9 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 footer{display:grid;gap:56px;align-content:end;min-height:100vh;min-height:100svh;padding:96px calc(var(--pad) + 12px) 40px;--f-size:calc(17px - 2pt)}
 footer .brand{order:3}
 footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
-footer .mark{display:block;width:auto;height:44px;margin:0}
-footer .middle{margin-bottom:16px}
+footer .mark{display:block;width:auto;height:38px;margin:0 0 48px}
 footer .fine{margin:0;font:400 calc((32px - 5pt) * 1.2)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
-footer .links{align-items:center;display:flex;flex-wrap:wrap;gap:10px 28px;margin:0;font-size:var(--f-size)}
+footer .links{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0;font-size:var(--f-size)}
 footer .news{order:1;max-width:460px}
 footer .news p{margin:0 0 22px;font-size:var(--f-size);line-height:1.5}
 footer .field{padding-left:0;border-bottom:1px solid rgba(0,0,0,.2)}
