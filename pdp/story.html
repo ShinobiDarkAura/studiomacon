@@ -28,7 +28,7 @@
   .steps{display:grid;grid-template-columns:1fr;gap:56px;max-width:1100px;margin:0 auto;padding:0 var(--pad)}
   .steps figure{margin:0;text-align:center}
   .steps .art{padding:10% 0}
-  .steps img{margin:0 auto;width:269px;max-width:100%}          /* 30% larger than before */
+  .steps img{margin:0 auto;width:323px;max-width:100%}
   .history{display:grid;gap:40px;padding:172px calc(var(--pad) + 12px) 0}
   .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
   .history .intro p.lede{margin:0;max-width:460px}
@@ -38,7 +38,7 @@
   .childhood figure{margin:0}
   .childhood img{width:100%;aspect-ratio:3/2;object-fit:cover}
   @media (min-width:768px){
-    .steps{grid-template-columns:repeat(3,1fr);gap:24px;padding:0 var(--pad)}
+    .steps{grid-template-columns:repeat(3,323px);column-gap:60px;justify-content:center;max-width:none;padding:0 var(--pad);margin-top:-52px}
     .history{grid-template-columns:1fr 1fr;align-items:center}
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     .opening{grid-template-columns:1fr 1fr;align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
