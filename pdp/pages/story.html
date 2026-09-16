@@ -7,16 +7,22 @@
 <link rel="icon" href="../assets/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <style>
-  .hand{padding:10% 18%;background:none}
+  .opening{display:grid;gap:40px;padding:calc(var(--head) + 48px) calc(var(--pad) + 12px) 0}
+  .opening .intro{padding:0;text-align:left}
+  .opening .intro p.lede{margin:0;max-width:460px}
+  .opening .hand{margin:0}
   .steps{display:grid;grid-template-columns:1fr;gap:56px;max-width:1100px;margin:0 auto;padding:0 var(--pad)}
   .steps figure{margin:0;text-align:center}
   .steps .art{padding:14% 18%}
   .steps img{margin:0 auto;width:100%;max-width:260px}
   .childhood{display:grid;grid-template-columns:1fr;gap:12px}
   .childhood figure{margin:0}
+  .childhood img{width:100%;aspect-ratio:3/2;object-fit:cover}
   @media (min-width:768px){
     .steps{grid-template-columns:repeat(3,1fr);gap:24px;padding:0 var(--pad)}
-    .childhood{grid-template-columns:1fr 1fr;margin:0 var(--pad)}
+    .childhood{grid-template-columns:1fr 1fr;gap:24px;margin:0 calc(var(--pad) + 12px)}
+    /* opening fills the first screen: copy left, hand right, both centred on the viewport */
+    .opening{grid-template-columns:1fr 1fr;align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
   }
 </style>
 </head>
@@ -25,13 +31,14 @@
 {{NAV}}
 
 <main>
-  <section class="intro">
-    <p class="eyebrow">Our Story</p>
-    <h1>We Discover<br>by Holding</h1>
-    <p class="lede">Maçon was founded by two creative and life partners, Alex and Hannah. Their work is inspired by ancient artifacts, and by the intimate, personal objects they cared for when they were children.</p>
+  <section class="opening">
+    <div class="intro">
+      <p class="eyebrow">Our Story</p>
+      <h1>We Discover<br>by Holding</h1>
+      <p class="lede">Maçon was founded by two creative and life partners, Alex and Hannah. Their work is inspired by ancient artifacts, and by the intimate, personal objects they cared for when they were children.</p>
+    </div>
+    <figure class="hand"><img src="img/pages/hand-milo.png" alt="Illustration of a hand holding a small bronze piece"></figure>
   </section>
-
-  <figure class="panel hand"><img src="img/pages/hand-milo.png" alt="Illustration of a hand holding a small bronze piece"></figure>
 
   <section class="section">
     <div class="prose">
@@ -56,8 +63,8 @@
   </section>
 
   <div class="childhood">
-    <figure><div class="art"><img src="img/pages/hannah.png" alt="Hannah as a child, drawing"></div><figcaption class="label caption">Hannah</figcaption></figure>
-    <figure><div class="art"><img src="img/pages/alex.png" alt="Alex as a child, drawing"></div><figcaption class="label caption">Alex</figcaption></figure>
+    <figure><img src="img/pages/hannah-flat.jpg" alt="Hannah as a child, drawing"></figure>
+    <figure><img src="img/pages/alex-flat.jpg" alt="Alex as a child, drawing"></figure>
   </div>
 </main>
 

@@ -176,7 +176,7 @@
   // first time about 16% of it is on screen. It never fades back out (toggling
   // flickered), and anything added later is picked up too.
   (function () {
-    var BLOCKS = '.gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+    var BLOCKS = '.opening .hand, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
                  '.policies, .ways > *, .form > *, footer > *';
     // side-by-side groups cascade instead of arriving at once
@@ -205,6 +205,14 @@
       });
     });
     arm(document);
+    // Blocks in the last few pixels of the page can't rise past the trigger
+    // line, so reveal whatever is on screen once the bottom is reached.
+    addEventListener('scroll', function () {
+      if (still || innerHeight + scrollY < document.documentElement.scrollHeight - 2) return;
+      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
+      });
+    }, {passive: true});
     new MutationObserver(function (muts) {
       muts.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) arm(n); }); });
     }).observe(document.body, {childList: true, subtree: true});
