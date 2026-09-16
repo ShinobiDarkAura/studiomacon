@@ -89,7 +89,7 @@
   (function () {
     var BLOCKS = '.opening .hand, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
-                 '.policies, .ways > *, .form > *, footer > *';
+                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head';
     // side-by-side groups cascade instead of arriving at once
     var GROUPS = ['.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -122,6 +122,10 @@
           })();
         });
     }
+    // wall pieces cascade by their position in the row, so each row settles left to right
+    document.querySelectorAll('.wall figure').forEach(function (f) {
+      f.style.setProperty('--stagger', Math.round(f.getBoundingClientRect().left / innerWidth * 4) * 80 + 'ms');
+    });
     GROUPS.forEach(function (g) {
       document.querySelectorAll(g).forEach(function (group) {
         [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });

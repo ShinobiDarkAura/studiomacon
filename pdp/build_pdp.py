@@ -260,6 +260,12 @@ def main():
     # info pages: story, custom, contact, shipping
     for f in sorted(os.listdir(os.path.join(OUT, "pages"))):
         doc = shared(open(os.path.join(OUT, "pages", f), encoding="utf-8").read())
+        if "{{GRID}}" in doc:
+            imgs = json.load(open(os.path.join(OUT, "img", "inspiration", "index.json")))
+            doc = (doc.replace("{{COUNT}}", str(len(imgs)))
+                      .replace("{{GRID}}", "\n".join(
+                          f'    <figure><img src="img/inspiration/{n}" width="{w}" height="{h}" alt="" loading="lazy"></figure>'
+                          for n, w, h in imgs)))
         open(os.path.join(OUT, f), "w", encoding="utf-8").write(one_block(doc))
         print("  ", f)
     for p in products:
