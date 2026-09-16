@@ -36,6 +36,29 @@ EYEBROW = {
     "meridian-egg-ring": "Heavier Than It Looks",
 }
 
+# The description under the price. Third person throughout, in the Kindred
+# Black manner: the object, its material and making, then its lore.
+DESC = {
+    "pip": "A tiny keeper of tenderness in solid bronze. Cast from a hand-carved wax original and finished with an ombré patina, Pip is heavier than it looks, and its presence is said to bring unexpected comfort. The patina deepens where the thumb rests, so over time it records exactly how it has been held.",
+    "rebi": "A solid bronze totem whose silhouette refuses to settle. From one angle it is a hare, from another something else entirely, and the animal found in it tends to be the one most needed. Hand carved in wax, cast in bronze and finished with an ombré patina. Handling is said to sharpen the reflexes.",
+    "ren": "A steward of forgotten paths, cast in solid bronze. Part painted Swedish horse, part the little wooden mare who carries a girl into the woods, Ren wears a bright golden mane above a body left to darken: two ages of bronze on one small animal. Dawn light is said to linger on it longer than it should.",
+    "zuma": "A desert spirit in solid bronze, small enough for a coat pocket. Zuma was drawn in the same sitting as its namesake ring, and ancient runes suggest a sacred link between the two, the ring said to awaken something dormant in the totem. Hand carved in wax, cast in bronze and finished with an ombré patina.",
+    "ori": "A faithful guardian of forests and rivers, cast in solid bronze. There are no claws and barely a snout, and still everyone who holds Ori knows exactly what it is. A subtle warmth is said to radiate from it around the winter solstice. Hand carved in wax and finished with an ombré patina.",
+    "yael": "An ibex in solid bronze, poised as if in prophecy. Yaël means ibex, the animal of narrow ledges and thin mountain air, and mountaintop altar bells are said to resonate in its presence. Hand carved in wax, cast in bronze and finished with an ombré patina that darkens gently with handling.",
+    "zuma-ring": "Sand spirit, distilled to a sacred heirloom. A sterling silver band that repeats the shoulder line of the Zuma totem it was drawn beside, and unearthed glyphs show evidence of rituals performed with the two as a pair. Hand carved in wax and cast in sterling silver, it warms quickly against the skin.",
+    "milo": "An ancient wanderer, seeking home. Milo was the first form made to embody the Maçon mark, its name borrowed later from an island. Cast in solid bronze from a hand-carved original, its surface adapts to whoever holds it, and the bond is said to deepen as the ombré patina darkens over time.",
+    "eclipse-ring": "Two asymmetric ellipses locked in patient equilibrium, cast in sterling silver. The forms never quite match, and are held at exactly the distance where they stop competing: a shape about marriage that took a long time to make this plain. The space between them is said to hold questions only the stars can answer.",
+    "sietch-aperture": "A sterling silver ring recovered from the wake of a passing comet. Its form recalls a shelter cut deep into desert rock, where water is kept and secrets are held, and its aperture is the point of it. Look through, and landscapes that appear on no map are said to flicker into view.",
+    "lunar-canyon-ring": "A sundered artifact, forged from the core of a distant moon. Its folds follow a canyon of white rock that looks more like the lunar surface than anywhere on earth should. Hand carved in wax and cast in sterling silver. Social gatherings reportedly ebb and flow in time with the wearer's presence.",
+    "eleph": "Breath suspended in solid bronze. A small elephant cast from a hand-carved wax original, finished with an ombré patina, and made only when someone asks for one. Distant trumpeting has been reported by independent observers, usually late at night and always just out of sight.",
+    "wonderhorn-talisman": "A spiral resonator in sterling silver, worn long on a thirty inch chain. Named for Ida, who played her wonder horn until the goblins danced out the window, it is said to reveal undiscovered chords. Lab equipment vibrates sympathetically in its presence, and nearby children have been known to develop perfect pitch.",
+    "macon-cap": "A tasteful cap adorned with a mystic symbol, the Maçon mark worn on the front. Made in small runs for long days outside, it offers a modicum of protection from the sun, and a considerable amount of protection from questions about what is being made in the studio.",
+    "ibi": "An eternal watcher believed to guard ancestral secrets, cast in solid bronze. Every attempt to transmit its likeness has been met with lens fog, and no photograph has yet captured what it is like to hold. Hand carved in wax, finished with an ombré patina, and cast only on request.",
+    "ear-cuff": "Perfect geometries betray a cosmic provenance. A sterling silver ear cuff that follows the rim of a volcanic caldera, a long drop on one side the whole way round. No piercing is needed: it grips, warms, and is soon forgotten. Light fractures into otherworldly spectra across its mirrored edge.",
+    "starshipkey-pendant": "An elegant device of stellar origin, cast in sterling silver and worn on a thirty inch chain. Its form recalls a chrome, unarmed royal starship, ancient and futuristic in the same hull. Prolonged exposure is known to cause wanderlust, and researchers who study it tend to forget to return.",
+    "meridian-egg-ring": "A sterling silver ring whose weight exceeds every material expectation. Everyone who picks up the Meridian Egg mentions how heavy it is, and then quietly declines to put it down. Hand carved in wax, cast in sterling silver and sized to the finger. Metaphysical analysis detects an abyss gazing back.",
+}
+
 # The two centred blocks at the bottom of each page — at least 30 words each.
 # First: the lore, grown from the Wix line. Second: how it comes to you.
 LORE = {
@@ -186,6 +209,7 @@ def page(p, template):
     closing = list(dict.fromkeys(closing))[:3]
 
     lore = LORE[slug]
+    assert not re.search(r"\b(we|i|our|us)\b", DESC[slug], re.I), (slug, "first person in description")
     made = MADE_LINE.get(slug, MADE)
     for block in (lore, made):
         assert len(block.split()) >= 30, (slug, len(block.split()))
@@ -204,7 +228,7 @@ def page(p, template):
             .replace("{{TITLE}}", html.escape(name))
             .replace("{{EYEBROW}}", html.escape(EYEBROW[slug]))
             .replace("{{PRICE}}", f"${price}")
-            .replace("{{DESC}}", html.escape(desc))
+            .replace("{{DESC}}", html.escape(DESC[slug]))
             .replace("{{SIZE}}", size_select)
             .replace("{{HERO}}", hero)
             .replace("{{GALLERY}}", "\n      ".join(
