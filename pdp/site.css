@@ -23,10 +23,10 @@ button,select,input,textarea{font:inherit;color:inherit}
 button{background:none;border:0;padding:0;cursor:pointer}
 
 /* underline that appears 3px below a link on hover */
-.hover-line{text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;
+.hover-line{text-decoration:underline;text-decoration-color:transparent;text-underline-offset:6px;
   text-decoration-thickness:1px;transition:text-decoration-color .2s ease}
 .hover-line:hover{text-decoration-color:currentColor}
-.head .hover-line{text-underline-offset:6px}
+.head .hover-line{text-underline-offset:9px}
 
 /* ── header: no background, ever ───────────────────── */
 .head{position:fixed;inset:0 0 auto;z-index:20;height:var(--head);pointer-events:none;
@@ -86,7 +86,7 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 /* ── footer: brand left, links centre, newsletter right ─ */
 footer{display:grid;gap:56px;padding:96px calc(var(--pad) + 12px) 40px;--f-size:calc(17px - 2pt)}
 footer .brand{order:3}
-footer .mark{display:block;width:auto;height:48px;margin:0 0 32px}
+footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
 footer .fine{margin:0;font:400 calc(32px - 5pt)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
 footer .links{order:2;display:flex;flex-wrap:wrap;gap:10px 28px;margin:0;font-size:var(--f-size)}
 footer .news{order:1;max-width:460px}
