@@ -51,9 +51,9 @@ body.white-right .head .right.on-dark{color:#000}
 @keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
 .head .right a{display:inline-block}
 .head .desk{display:none}
-.logotype{display:block;aspect-ratio:294/72;background:currentColor;
-  -webkit-mask:url(img/logotype-objects.svg) center/contain no-repeat;mask:url(img/logotype-objects.svg) center/contain no-repeat}
-.head .logotype{width:88px;position:relative;top:6px}
+.logotype{display:block;aspect-ratio:294/112;background:currentColor;
+  -webkit-mask:url(img/lockup-artifacts.svg) center/contain no-repeat;mask:url(img/lockup-artifacts.svg) center/contain no-repeat}
+.head .logotype{width:106px;position:relative;top:6px}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
@@ -116,7 +116,7 @@ footer .field button{padding:0 0 0 18px}
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:147px}
+  .head .logotype{width:176px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
