@@ -29,6 +29,8 @@
   .set:first-of-type::after{content:"";display:block;height:calc(120px + 10vh)}
   /* each section title rides along under the nav until the next section's title pushes it off */
   .set{position:relative}
+  /* FOLLOWING TITLES — switched off. To bring them back, add class="follow-titles" to <body> below. */
+  body:not(.follow-titles) .wall-head{position:relative !important;top:auto !important}
   .wall-head{position:sticky;z-index:6;top:calc(var(--head) - 25vh);pointer-events:none;transition:color .35s ease}
   /* riding over the pictures, the title is white type with nothing behind it */
   .wall-head.compact{color:#fff}
@@ -120,6 +122,7 @@
   (function () {
     var heads = [].slice.call(document.querySelectorAll('.wall-head'));
     var headH = function () { return document.querySelector('.head').offsetHeight; };
+    if (!document.body.classList.contains('follow-titles')) return;          // feature switched off
     function check() {
       heads.forEach(function (h) {
         var t = h.querySelector('h1').getBoundingClientRect().top;
