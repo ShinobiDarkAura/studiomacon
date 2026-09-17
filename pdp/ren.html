@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ren | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789612100">
+<link rel="stylesheet" href="site.css?v=1789612440">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -363,18 +363,30 @@
   })();
 
 
-  // Nav: tuck away while scrolling down, return on scroll up, any click or tap, or 5s of stillness
+
+  // Bag: a count that persists between pages, and a short toast under it when a piece is added
   (function () {
-    var head = document.querySelector('.head'), lastY = scrollY, idle = null;
-    function show() { head.classList.remove('tucked'); }
-    addEventListener('scroll', function () {
-      var y = scrollY;
-      if (y > lastY + 4 && y > head.offsetHeight) head.classList.add('tucked');
-      else if (y < lastY - 4 || y <= head.offsetHeight) show();
-      lastY = y;
-      clearTimeout(idle); idle = setTimeout(show, 5000);
-    }, {passive: true});
-    addEventListener('pointerdown', show, {passive: true});
+    var bag = document.querySelector('.head .right a'); if (!bag) return;
+    var KEY = 'macon-bag', n = 0;
+    try { n = +localStorage.getItem(KEY) || 0; } catch (e) {}
+    function paint() { bag.textContent = 'Bag (' + n + ')'; }
+    paint();
+    var toast = document.createElement('div');
+    toast.className = 'bag-toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
+    document.querySelector('.head .right').appendChild(toast);
+    var timer = null;
+    document.querySelectorAll('.cta, .dock').forEach(function (b) {
+      if (!/add to bag/i.test(b.textContent)) return;
+      b.addEventListener('click', function () {
+        n += 1; try { localStorage.setItem(KEY, n); } catch (e) {} paint();
+        var title = document.querySelector('h1'), hero = document.querySelector('.gallery .hero img');
+        toast.innerHTML = (hero ? '<img src="' + hero.getAttribute('src') + '" alt="">' : '') +
+          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + '</span>';
+        bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
+        toast.classList.add('on'); clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
+      });
+    });
   })();
 </script>
 <script>
