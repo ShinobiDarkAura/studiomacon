@@ -8,7 +8,9 @@
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <style>
   /* the film fills the first screen; the nav sits over it in white */
-  .film{position:relative;height:100vh;height:100svh;overflow:hidden;background:#111}
+  .film{position:relative;height:100vh;height:100dvh;overflow:hidden;background:#111}          /* follows the phone's toolbar, so it always fills the screen */
+  /* phones: no rubber-band pull at the top, which showed a strip of white above the film */
+  @media (max-width:767px){ html{overscroll-behavior-y:none;background:#111} body{background:#fff} }
   .film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   /* scroll cue: a mouse outline with a dot that drifts down and fades, on a slow loop */
   .scroll-cue{position:absolute;left:50%;bottom:64px;scale:1.2;transform-origin:bottom center;z-index:2;width:22px;height:34px;margin-left:-11px;
