@@ -1,12 +1,20 @@
 {
  "frame": "1/1",
+ "removed": [
+  "added-1789609022-custom-totem-06.png",
+  "16.png",
+  "14.png",
+  "chess-0.jpg"
+ ],
  "order": [
+  "02.png",
+  "04.png",
+  "15.png",
+  "20.png",
   "added-1789609019-custom-totem-01.png",
   "added-1789609020-custom-totem-02.png",
   "added-1789609021-custom-totem-03.png",
   "added-1789609021-custom-totem-04.png",
-  "added-1789609022-custom-totem-05.jpg",
-  "added-1789609022-custom-totem-06.png",
   "added-1789609023-custom-totem-07.png",
   "added-1789609024-custom-totem-08.png",
   "17.png",
@@ -15,20 +23,84 @@
   "05.png",
   "01.png",
   "06.png",
-  "16.png",
   "21.png",
   "13.png",
-  "02.png",
-  "04.png",
   "09.png",
-  "14.png",
-  "15.png",
-  "20.png",
-  "chess-0.jpg",
   "chess-2.jpg",
+  "added-1789609022-custom-totem-05.jpg",
   "chess-1.jpg"
  ],
  "pieces": {
+  "02.png": {
+   "s": 0.7,
+   "x": 0.0,
+   "y": 0.0,
+   "name": "",
+   "date": ""
+  },
+  "04.png": {
+   "s": 0.6,
+   "x": 0.0,
+   "y": 0.0,
+   "name": "",
+   "date": ""
+  },
+  "15.png": {
+   "s": 0.58,
+   "x": 0.0,
+   "y": 0.0,
+   "name": "",
+   "date": ""
+  },
+  "20.png": {
+   "s": 0.74,
+   "x": 0.0,
+   "y": 0.0,
+   "name": "",
+   "date": ""
+  },
+  "added-1789609019-custom-totem-01.png": {
+   "s": 0.85,
+   "x": 0.0,
+   "y": 0.0,
+   "name": "",
+   "date": ""
+  },
+  "added-1789609020-custom-totem-02.png": {
+   "s": 0.88,
+   "x": 0.0,
+   "y": 0.0,
+   "name": "",
+   "date": ""
+  },
+  "added-1789609021-custom-totem-03.png": {
+   "s": 0.73,
+   "x": 2.0,
+   "y": -17.0,
+   "name": "",
+   "date": ""
+  },
+  "added-1789609021-custom-totem-04.png": {
+   "s": 0.89,
+   "x": 2.0,
+   "y": -5.0,
+   "name": "",
+   "date": ""
+  },
+  "added-1789609023-custom-totem-07.png": {
+   "s": 0.74,
+   "x": -4.0,
+   "y": -3.0,
+   "name": "",
+   "date": ""
+  },
+  "added-1789609024-custom-totem-08.png": {
+   "s": 0.75,
+   "x": 1.0,
+   "y": -4.0,
+   "name": "",
+   "date": ""
+  },
   "17.png": {
    "s": 1.0,
    "x": 0.0,
@@ -71,20 +143,6 @@
    "name": "",
    "date": ""
   },
-  "16.png": {
-   "s": 1.65,
-   "x": -8.0,
-   "y": 5.0,
-   "name": "",
-   "date": ""
-  },
-  "chess-0.jpg": {
-   "s": 1.0,
-   "x": 0.0,
-   "y": 0.0,
-   "name": "",
-   "date": ""
-  },
   "21.png": {
    "s": 1.89,
    "x": 8.0,
@@ -99,7 +157,21 @@
    "name": "",
    "date": ""
   },
+  "09.png": {
+   "s": 0.62,
+   "x": 0.0,
+   "y": 0.0,
+   "name": "",
+   "date": ""
+  },
   "chess-2.jpg": {
+   "s": 1.0,
+   "x": 0.0,
+   "y": 0.0,
+   "name": "",
+   "date": ""
+  },
+  "added-1789609022-custom-totem-05.jpg": {
    "s": 1.0,
    "x": 0.0,
    "y": 0.0,
@@ -113,6 +185,5 @@
    "name": "",
    "date": ""
   }
- },
- "removed": []
+ }
 }

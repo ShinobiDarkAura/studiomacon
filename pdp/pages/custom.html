@@ -63,6 +63,7 @@
   body.editing .ed-toggle{display:none}
   .order{padding:48px calc(var(--pad) + 12px) 0}
 
+  .head .logotype.on-dark{color:#000}
   .examples .lead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .examples .lead{aspect-ratio:4/5;border-radius:0;background:#e9e1cf}
   .kept{font-size:46px;white-space:normal}
@@ -193,11 +194,18 @@
           <div class="q">
             <span class="label">What would you like made? <span class="req">*</span></span>
             <div class="choices two" data-choice="kind">
-              <button type="button" aria-pressed="false" data-kind="totem">A Totem</button>
+              <button type="button" aria-pressed="false" data-kind="totem">Totem</button>
               <button type="button" aria-pressed="false" data-kind="jewelry">Jewelry</button>
             </div>
           </div>
 
+        </div></div></div>
+      </div>
+
+      <!-- 2 -->
+      <div class="acc-item step locked" data-step="2">
+        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">02</span>Details &amp; Photos<span class="done" hidden>Done</span></button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="branch" data-for="totem"><div class="branch-inner">
             <div class="q">
               <span class="label">Species <span class="req">*</span></span>
@@ -256,14 +264,6 @@
             </div>
           </div></div>
 
-          <button type="button" class="next" data-next data-always>Continue to Photos</button>
-        </div></div></div>
-      </div>
-
-      <!-- 2 -->
-      <div class="acc-item step locked" data-step="2">
-        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">02</span>Photographs<span class="done" hidden>Done</span></button>
-        <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="q">
             <span class="label">Upload Photos <span class="req only-totem">*</span></span>
             <p class="hint" data-hint-totem="Three are required: front, side and a close-up of the face. A fourth angle helps." data-hint-jewelry="Optional: anything that inspires the piece, or photos of a ring that fits well.">Three are required: front, side and a close-up of the face. A fourth angle helps.</p>
@@ -385,6 +385,16 @@
       }, true);
     });
 
+    function advance(step) {
+      var i = steps.indexOf(step), after = steps[i + 1];
+      step.querySelector('.done') && (step.querySelector('.done').hidden = false);
+      setTimeout(function () { setOpen(step, false); }, 180);
+      if (after) {
+        after.classList.remove('locked');
+        after.querySelector('.acc-head').removeAttribute('aria-disabled');
+        setTimeout(function () { setOpen(after, true); }, 420);
+      }
+    }
     function ready(step) {
       var ok = true;
       step.querySelectorAll('[data-choice]').forEach(function (g) {
@@ -401,7 +411,7 @@
       step.querySelectorAll('[data-choice] button').forEach(function (b) {
         b.addEventListener('click', function () {
           b.parentElement.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
-          if (b.dataset.kind) setKind(b.dataset.kind);
+          if (b.dataset.kind) { setKind(b.dataset.kind); advance(step); }
           var other = b.closest('.q').querySelector('.other');
           if (other) {
             var on = b.textContent.trim() === 'Other';
@@ -421,17 +431,7 @@
         });
       });
       var next = step.querySelector('[data-next]');
-      if (next) next.addEventListener('click', function () {
-        if (next.disabled) return;
-        var i = steps.indexOf(step), after = steps[i + 1];
-        step.querySelector('.done') && (step.querySelector('.done').hidden = false);
-        setOpen(step, false);
-        if (after) {
-          after.classList.remove('locked');
-          after.querySelector('.acc-head').removeAttribute('aria-disabled');
-          setTimeout(function () { setOpen(after, true); }, 250);
-        }
-      });
+      if (next) next.addEventListener('click', function () { if (!next.disabled) advance(step); });
     });
     var payButtons = [].slice.call(document.querySelectorAll('[data-pay]'));
     var email = document.getElementById('c-email');
