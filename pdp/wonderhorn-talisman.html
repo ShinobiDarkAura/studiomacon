@@ -67,7 +67,8 @@
       margin:0 calc(var(--pad) + 12px) 0 0;align-items:start}
     .gallery figure + figure{display:block;margin-top:12px}
     .gallery figure img{width:100%}
-    .gallery figure + figure img{aspect-ratio:4/5;object-fit:cover}
+    /* every gallery photograph fills one full screen height */
+    .gallery figure img,.gallery .hero img,.gallery figure + figure img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
