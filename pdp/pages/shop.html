@@ -35,6 +35,8 @@
   body.hero-quiet .scroll-cue{opacity:1}
   body.hero-quiet.logo-hero .head .logotype{opacity:0;transition:opacity 1.2s ease,transform .7s var(--ease),color .3s ease}
   body.hero-quiet .film .tagline{opacity:0}
+  .logo-build{transition:opacity 1.2s ease}
+  body.hero-quiet .logo-build{opacity:0}
   /* once it has faded away, it simply reappears in the nav: no shrinking flight back up */
   body.hero-quiet:not(.logo-hero) .head .logotype{transition:opacity .6s ease,color .3s ease}
   /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
@@ -247,9 +249,8 @@
       timers.forEach(clearTimeout); document.body.classList.remove('logo-anim');
       if (build && build.parentNode) build.remove();
       chars.forEach(function (c) { c.classList.add('on'); });
-      removeEventListener('scroll', early);
     }
-    function early() { if (scrollY > 40) finish(); }
+    function early() { if (scrollY > 40) { finish(); removeEventListener('scroll', early); } }
     if (skip) { finish(); if (scrollY <= 40) setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000); return; }
     document.body.classList.add('logo-anim');
     addEventListener('scroll', early, {passive: true});
@@ -258,10 +259,10 @@
     var t = 1150;
     later(function () { build.querySelector('.ll-c').classList.add('lift'); }, t);
     t += 1050;
-    // hand over to the real logotype in one frame: the drop animation holds the stand-in's opacity, so it must go, not fade
-    later(function () { document.body.classList.remove('logo-anim'); build.remove(); }, t);
+    // the stand-in stays on screen (the real, scaled-up logotype renders its grain slightly differently);
+    // it only hands over once you scroll, when the logotype is already moving
+    later(function () { build.classList.remove('drop'); }, 1100);
     chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
-    later(finish, t + 150 + chars.length * 55 + 300);
     setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000);
   })();
   function cue() { var on = scrollY > 40; document.querySelector('.film').classList.toggle('scrolled', on); document.body.classList.toggle('logo-hero', !on); }

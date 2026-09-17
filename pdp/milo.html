@@ -566,7 +566,7 @@
   (function () {
     var gallery = document.querySelector('.gallery'), hero = gallery.querySelector('.hero');
     var figs = [].slice.call(gallery.querySelectorAll('figure'));
-    if (figs.length > 3) figs = figs.slice(0, -2);          // the last two pictures stay off the strip
+    if (figs.length > 5) figs = figs.slice(0, -2);          // long galleries: the last two pictures stay off the strip
     if (figs.length < 2) return;
     var original = hero.innerHTML, strip = document.createElement('div');
     strip.className = 'thumbs'; strip.setAttribute('aria-label', 'More pictures');
