@@ -923,7 +923,10 @@
         if (b.disabled) return;
         var body = b.closest('.acc-body'), order = document.querySelector('.order'), details = {kind: kind};
         order.querySelectorAll('input[id], textarea[id]').forEach(function (i) { if (i.type !== 'file' && i.value) details[(i.placeholder || i.id).replace(/^e\.g\.\s*/, '').slice(0, 40)] = i.value; });
-        order.querySelectorAll('[aria-pressed="true"]').forEach(function (c, n) { details['choice ' + (n + 1)] = c.textContent.trim(); });
+        order.querySelectorAll('[aria-pressed="true"]').forEach(function (c, n) {          // named after the step, so the studio's email reads "Species: Dog"
+          var g = c.closest('[data-choice]');
+          details[(g && g.getAttribute('data-choice')) || ('choice ' + (n + 1))] = c.textContent.trim();
+        });
         var photos = [].slice.call(order.querySelectorAll('.tile.filled')).map(function (t) { return t._photo; }).filter(Boolean);
         b.disabled = true;
         MaconEnquiry({form: 'commission', email: email.value, name: (document.getElementById('c-name') || {}).value || '',
