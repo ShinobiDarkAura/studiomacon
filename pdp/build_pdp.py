@@ -103,7 +103,7 @@ MADE_LINE = {
 # pieces whose page still builds but which are left off the shop and Also Worth Keeping for now
 HIDE_FROM_SHOP = {"macon-cap"}          # remove a slug here to bring it back
 
-HIDE_FROM_GALLERY = {"img/rebi/hand-1.jpg", "img/ori/hand-1.jpg", "img/ori/plain-2.jpg"}
+HIDE_FROM_GALLERY = {"img/ori/plain-2.jpg"} | {f"img/{t}/hand-1.jpg" for t in ("pip", "rebi", "ren", "zuma", "ori", "yael", "milo", "eleph", "ibi")}          # totems: the first in-hand shot repeats the second
 
 TODO = '<span class="todo">{}</span>'
 
