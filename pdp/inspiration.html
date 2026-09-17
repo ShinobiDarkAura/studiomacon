@@ -8,7 +8,9 @@
 <link rel="stylesheet" href="site.css?v=1789602634">
 <style>
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px) 24px}
-  .wall-head h1{margin:0}
+  .wall-head h1{margin:0;font-size:57.5px}
+  @media (min-width:768px){ .wall-head h1{font-size:66.25px} }
+  @media (min-width:1200px){ .wall-head h1{font-size:75px} }
   .wall-head .count{font-size:13px;color:rgba(0,0,0,.45)}
   /* masonry: columns fill top to bottom, each picture keeps its own proportions */
   .wall{columns:2;column-gap:10px;padding:0 calc(var(--pad) + 12px)}
