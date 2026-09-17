@@ -25,7 +25,8 @@
   }
   .film.scrolled .scroll-cue{opacity:0}
   /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
-  .head .logotype{transition:transform .7s var(--ease),color .3s ease}
+  .head .logotype{transition:transform .7s var(--ease),color .3s ease;animation:logo-in 1.4s ease .3s both}
+  @keyframes logo-in{from{opacity:0}to{opacity:1}}
   body.logo-hero .head .logotype{transform:translateY(calc(50vh - 12px - var(--head) / 2 - 6px)) scale(3.125)}
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:140px 0 0}
@@ -161,6 +162,17 @@
   </div>
 </footer>
 <script>
+  // A refresh always starts at the top of the page; Back and Forward still return to where you were
+  (function () {
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    if (nav && nav.type === 'reload') {
+      history.scrollRestoration = 'manual';
+      scrollTo(0, 0);
+      addEventListener('load', function () { scrollTo(0, 0); });
+    }
+    addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
+  })();
+
   // Accordions: the height eases through a grid-row transition, so nothing is
   // measured in script and a panel of any length opens at the same pace.
   document.querySelectorAll('.acc-head').forEach(function (b) {
