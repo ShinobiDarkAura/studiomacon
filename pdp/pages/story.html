@@ -27,9 +27,11 @@
   .opening .intro > :nth-child(4){--stagger:1150ms !important}
   .steps{display:grid;grid-template-columns:1fr;gap:56px;max-width:1100px;margin:0 auto;padding:0 var(--pad)}
   .steps figure{margin:0;text-align:center}
-  .steps .art{padding:10% 0}
+  @font-face{font-family:"Henry";src:url(fonts/henry-italic.otf) format("opentype");font-style:italic;font-weight:400;font-display:swap}
+  .step-name{margin:6px 0 0;font:italic 400 14pt/1.2 "Henry",var(--serif)}
+  .steps .art{padding:10% 0;display:grid;place-items:center;aspect-ratio:1/1.05}          /* same box for all three, so the labels line up */
   .steps img{margin:0 auto;width:323px;max-width:100%}
-  .history{display:grid;gap:40px;padding:172px calc(var(--pad) + 12px) 0}
+  .history{display:grid;gap:40px;padding:236px calc(var(--pad) + 12px) 0}
   .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
   .history .intro p.lede{margin:0;max-width:460px}
   .history .intro p.lede + p.lede{margin-top:1em}
@@ -54,7 +56,8 @@
     <div class="intro">
       <p class="eyebrow">Our Story</p>
       <h1>We Discover<br>by Holding</h1>
-      <p class="lede">Maçon was founded by two creative and life partners, Alex and Hannah, whose work is inspired by ancient artifacts and the personal objects they cared for as children. Every piece is meant to be held: carried in a pocket, turned over in the palm, kept close. Like the talismans that inspired them, each one slowly takes on the story of whoever keeps it.</p>
+      <p class="lede">Maçon was founded by two creative and life partners, Alex and Hannah, whose work is inspired by ancient artifacts and the personal objects they cared for as children.</p>
+      <p class="lede">Every piece is meant to be held: carried in a pocket, turned over in the palm, kept close. Like the talismans that inspired them, each one slowly takes on the story of whoever keeps it.</p>
     </div>
     <figure class="hand"><img src="img/pages/hand-milo-original.png" alt="Illustration of a hand holding a small bronze piece"></figure>
   </section>
@@ -69,9 +72,9 @@
   </section>
 
   <div class="steps">
-    <figure><div class="art"><img src="img/pages/draw.png" alt="Illustration of sketching"></div></figure>
-    <figure><div class="art"><img src="img/pages/cast.png" alt="Illustration of casting"></div></figure>
-    <figure><div class="art"><img src="img/pages/polish.png" alt="Illustration of polishing"></div></figure>
+    <figure><div class="art"><img src="img/pages/draw.png" alt="Illustration of sketching"></div><figcaption class="step-name">Concept &amp; Sketch</figcaption></figure>
+    <figure><div class="art"><img src="img/pages/cast.png" alt="Illustration of casting"></div><figcaption class="step-name">Carve &amp; Cast</figcaption></figure>
+    <figure><div class="art"><img src="img/pages/polish.png" alt="Illustration of polishing"></div><figcaption class="step-name">Polish &amp; Patina</figcaption></figure>
   </div>
 
   <section class="history">
