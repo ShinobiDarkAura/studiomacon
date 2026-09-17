@@ -71,11 +71,15 @@
   /* phones: two across, 12px from the edges, 8px between */
   @media (max-width:767px){
     .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 8px}
-    .wall .piece .over{padding:32px 10px 10px;gap:4px;font-size:12px}
-    .wall .piece .name{font-size:calc(13px + 8pt)}
-    /* name bottom left, price bottom right */
-    .wall .piece .over{flex-direction:row;align-items:flex-end;justify-content:space-between}
-    .wall .piece .cost{order:1;flex:none;margin-left:8px}
+    /* labels sit under each picture, as in Also Worth Keeping */
+    .wall figure{overflow:visible;background:none;border-radius:0}
+    .wall .piece{aspect-ratio:auto;overflow:visible;color:#000}
+    .wall .piece img:not(.held){position:relative;display:block;aspect-ratio:4/5;height:auto;border-radius:6px;background:var(--field)}
+    .wall .piece .held{bottom:auto;aspect-ratio:4/5;height:auto;border-radius:6px}
+    .wall .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:6px}
+    .wall .piece .over{position:static;opacity:1;transform:none;background:none;padding:10px 0 14px;gap:2px}
+    .wall .piece .name{order:0;font:400 18px/1 var(--serif);text-transform:uppercase}
+    .wall .piece .cost{order:1;font-size:13px;color:rgba(0,0,0,.55)}
   }
   @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} }
 
