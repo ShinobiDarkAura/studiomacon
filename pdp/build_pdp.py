@@ -174,8 +174,9 @@ def accordions(slug, k, notes):
     items = [
         ("Care" if k in ("totem", "apparel") else "Wear &amp; Care", care),
         ("Materials", f"<p>{html.escape(mat)}</p>"),
-        ("Sizing", sizing),
     ]
+    if k != "totem":                       # totems carry no sizing row
+        items.append(("Sizing", sizing))
     items.append(("Shipping &amp; Returns",
                   "<p>Each piece is made to order. Please allow up to 10 business days for us to make yours before it heads out to you. Standard shipping takes 3–7 business days; international shipping generally takes 5–10.</p>"
                   "<p>We accept pieces (excluding custom work) in their original condition for store credit toward your next purchase, within 14 days of delivery. If a piece doesn't fit, we'll gladly work with you to find the right size. "
