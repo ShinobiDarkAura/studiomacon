@@ -12,27 +12,27 @@
   sitemap.xml, robots.txt; noindex on bag/checkout/hidden pages
 - Old Wix addresses → new pages: _redirects
 - Policy drafts: shopify/policies/*.md
-- Enquiry function deployed (contact + commission forms reach the Bureau and save). Emails still blocked
-  on Resend domain verification.
+- Contact + commission forms DONE end to end: enquiry function deployed, Resend verified, both paths
+  tested. Studio copy reaches hello@/alex@/hannah@ with Reply-To set to the sender; auto-reply goes out.
+  Checked in Gmail: SPF, DKIM and DMARC all pass, inbox not spam.
 - DNS moved to Cloudflare (2026-09-17): zone rebuilt from live records in pdp/dns/studiomacon.co.zone,
   nameservers at GoDaddy now kobe/rachel.ns.cloudflare.com. Fixed on the way: all five Google MX records
   (only alt3 existed) and an SPF record (none existed).
 
 ## Needs Alex / Hannah (logins, IDs, bank)
-1. Payments: Settings → Payments → Shopify Payments (Private multi-member LLC, Macon Studio LLC, EIN, bank). Turn on Apple Pay + Shop Pay.
-2. Plan: Settings → Plan → Basic (removes the store password so checkout opens).
-3. California sales tax: Settings → Taxes and duties → United States → California "Set up tax collection" (needs seller's permit number).
+1. Payments: DONE — Shopify Payments live, out of test mode.
+2. Plan: DONE — Basic; storefront password removed, checkout verified working end to end.
+3. California sales tax: DONE — permit 247-073440 (MACON STUDIO LLC).
+   Open item: CDTFA had 11 unread notices, and the old ADACUS account 102-658559 may need formally closing.
 4. Shipping: DONE by Claude — Domestic: live USPS (Ground Advantage, Priority, Priority Express); Rest of World (every country in Markets: Asia, Europe, Canada, Oceania): live USPS International. To ship to more countries, add them in Settings → Markets first. Still set your real box: Settings → Shipping and delivery → Packages.
 5. Weigh pieces (grams) — current weights are estimates (totems 60 g, rings 12 g, pendants 20 g, cuff 10 g).
-6. Klaviyo: Integrations → Shopify → connect w3nidi-ny.myshopify.com (keep Wix connected until switch day).
-7. Policies: paste the drafts from shopify/policies into Settings → Policies (edit first).
-8. Sietch Ring: Products → Sietch Ring → Type: change "Ear Cuff" to "Ring".
+6. Klaviyo: installed. Still needed from Alex: Klaviyo public key + list id for the footer signup.
+7. Policies: DONE — pasted.
+8. Sietch Ring: DONE — typed Ring.
 
 ## Next for Claude (after the above)
 - Klaviyo footer signup (needs the Klaviyo public key + list id)
-- Contact + commission forms: site side DONE; Bureau function DEPLOYED with all four secrets set, saving
-  enquiries. Emails do NOT send yet: studiomacon.co is unverified in Resend. Remaining: add Resend's three
-  CNAME/TXT records at Cloudflare, hit Verify, then test the form end to end.
-  Branch `website-forms` at git/macon-archive-web-forms still needs merging to main.
+- Branch `website-forms` at git/macon-archive-web-forms still needs merging to main (deployed from the branch).
+- Test data to clear before launch: 4 test enquiries in the `inquiries` table (Wiring/Second/Third/Fourth Test).
 - Newsletter footer: Shopify signup (per Alex) — to wire once the store password is removed
 - Hosting (Cloudflare Pages), domain records at switch day, Search Console + Google & YouTube app
