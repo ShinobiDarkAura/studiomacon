@@ -15,7 +15,7 @@
   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
-  .examples figure.cutout{background:#eeeeec;display:grid;place-items:center}
+  .examples figure.cutout{background:#f3efe8;display:grid;place-items:center}
   /* --s scales a piece inside its frame, --x/--y nudge it (in % of the frame); set by hand in edit mode */
   .examples figure.cutout img{width:70%;height:58%;object-fit:contain;
     transform:translate(calc(var(--x,0) * 1%),calc(var(--y,0) * 1%)) scale(var(--s,1))}
@@ -75,6 +75,7 @@
   .terms dd{margin:0}
 
   /* steps: accordions that unlock in order */
+  .order .price{font-size:19px;margin:0 0 22px}
   .start{margin:4px 0 34px}
   .steps-acc{border-top:1px solid #000}
   .step[data-step="1"]{border-bottom-color:#000}
@@ -177,20 +178,15 @@
 
   <section class="order" aria-label="Commission a piece">
     <p class="eyebrow">Custom Heirlooms</p>
-    <h1 class="kept">Let's Make Something Real</h1>
+    <h1 class="kept">Let's Make<br>Something Real</h1>
     <p class="body">A one-of-a-kind piece, sketched for you, carved by hand in wax and cast at our local foundry. A bronze totem of the animal you love most, or a ring, pendant or cuff in silver, bronze or gold. Never molded or repeated.</p>
-    <dl class="terms">
-      <dt>Totems</dt><dd>$925</dd>
-      <dt>Jewelry</dt><dd>Priced after a short consultation</dd>
-      <dt>Payment</dt><dd>25% deposit, 75% after casting</dd>
-      <dt>Timing</dt><dd>2–3 weeks</dd>
-    </dl>
+    <p class="price">$925</p>
     <button type="button" class="next start" id="start">Start a Commission</button>
 
     <div class="steps-acc" id="steps">
       <!-- 1 -->
-      <div class="acc-item step" data-step="1">
-        <button class="acc-head" aria-expanded="false"><span class="n">01</span>Your Piece<span class="done" hidden>Done</span></button>
+      <div class="acc-item step locked" data-step="1">
+        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">01</span>Your Piece<span class="done" hidden>Done</span></button>
         <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="q">
             <span class="label">What would you like made? <span class="req">*</span></span>
@@ -373,7 +369,9 @@
 
     // Start a Commission opens the first step and brings it into view
     document.getElementById('start').addEventListener('click', function () {
-      var first = steps[0]; setOpen(first, true);
+      var first = steps[0];
+      first.classList.remove('locked'); first.querySelector('.acc-head').removeAttribute('aria-disabled');
+      setOpen(first, true);
       setTimeout(function () { first.scrollIntoView({block: 'nearest', behavior: 'smooth'}); }, 200);
     });
     function setOpen(step, on) {
