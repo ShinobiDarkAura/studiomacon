@@ -7,13 +7,13 @@
 <link rel="icon" href="../assets/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <style>
-  .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px) 24px}
+  .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px + 5vw) 24px}
   .wall-head h1{margin:0;font-size:57.5px}
   .wall-head .count{font-size:13px;color:rgba(0,0,0,.45)}
   @media (min-width:768px){ .wall-head h1{font-size:66.25px} }
   @media (min-width:1200px){ .wall-head h1{font-size:75px} }
 
-  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 12px + 10vw)}
+  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 12px + 5vw)}
   .wall figure{margin:0;border-radius:6px;overflow:hidden;background:var(--field)}
   .wall figure.dr-emerge{filter:none;transform:translateY(90px);
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
