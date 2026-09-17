@@ -31,8 +31,11 @@
   .film.scrolled .tagline{opacity:0}
   .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden}
   /* the cue waits 5s before fading in */
-  .scroll-cue{animation:cue-wait .8s ease 5s both}
-  @keyframes cue-wait{from{opacity:0}to{opacity:1}}
+  /* after a while on the film: the centred logotype and tagline fade away, the scroll cue fades in */
+  .scroll-cue{opacity:0;transition:opacity 1.2s ease}
+  body.hero-quiet .scroll-cue{opacity:1}
+  body.hero-quiet.logo-hero .head .logotype{opacity:0;transition:opacity 1.2s ease,transform .7s var(--ease),color .3s ease}
+  body.hero-quiet .film .tagline{opacity:0}
   /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
   .head .logotype{transition:transform .7s var(--ease),color .3s ease}
   body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(2.8125)}
@@ -171,7 +174,7 @@
     </video>
     <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:154;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:172;--g:17"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:123;--g:-10"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:240;--g:20"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:123;--g:20"><i class="ll-glyph"></i></span></div>
     <p class="tagline">Artifacts of Love</p>
-    <!-- scroll cue removed for now -->
+    <span class="scroll-cue" aria-hidden="true"><i></i></span>
   </section>
   <section class="section welcome">
     <div class="prose">
@@ -619,7 +622,7 @@
       removeEventListener('scroll', early);
     }
     function early() { if (scrollY > 40) finish(); }
-    if (skip) return finish();
+    if (skip) { finish(); if (scrollY <= 40) setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 10000); return; }
     document.body.classList.add('logo-anim');
     addEventListener('scroll', early, {passive: true});
     [].forEach.call(build.querySelectorAll('.ll'), function (l) { l.classList.add('in'); });
@@ -631,6 +634,7 @@
     later(function () { document.body.classList.remove('logo-anim'); build.remove(); }, t);
     chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
     later(finish, t + 150 + chars.length * 55 + 300);
+    setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 10000);
   })();
   function cue() { var on = scrollY > 40; document.querySelector('.film').classList.toggle('scrolled', on); document.body.classList.toggle('logo-hero', !on); }
   addEventListener('scroll', cue, {passive: true}); cue();
