@@ -43,6 +43,8 @@
   body.hero-quiet:not(.logo-hero) .head .logotype{transition:opacity .6s ease,color .3s ease}
   /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
   .head .logotype{transition:transform .7s var(--ease),color .3s ease}
+  /* arriving back from a piece, it is simply already the right size: no flight */
+  body.logo-still .head .logotype{transition:none}
   body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(2.8125)}
 
   /* ── load-in: MAÇON arrives letter by letter, kept centred; the cedilla rises last and lifts the C; then the tagline types out ── */
@@ -67,10 +69,17 @@
   /* the C rises with its cedilla: same distance, same timing, so they travel as one */
   .logo-build .ll-c.lift .ll-glyph{transform:none;transition:transform .9s cubic-bezier(.34,1.25,.5,1)}
   .ll-c.lift .ll-ced{opacity:1;transform:none}
-  /* the whole word drops in from above, the C still on the baseline */
-  .logo-build.drop{animation:word-drop 1s cubic-bezier(.16,1,.3,1) both}
-  .logo-build.drop .ll,.logo-build.drop .ll-glyph{transition:none}
-  @keyframes word-drop{from{opacity:0;transform:translate(-50%,calc(-50% - 60px))}to{opacity:1;transform:translate(-50%,-50%)}}
+  /* each letter falls into place under its own weight, left to right */
+  .logo-build.fall .ll{animation:ll-fall .62s cubic-bezier(.45,.02,.78,.26) both}
+  .logo-build.fall .ll-glyph{opacity:1;transition:none;transform:none}
+  .logo-build.fall .ll-c .ll-glyph{transform:translateY(calc(var(--lh) * 56 / 331))}   /* the C waits low until the cedilla lifts it */
+  /* the cedilla's lift must still win while the fall rules are on the element */
+  .logo-build.fall .ll-c.lift .ll-glyph{transform:none;transition:transform .9s cubic-bezier(.34,1.25,.5,1)}
+  @keyframes ll-fall{
+    0%{transform:translateY(-135%);opacity:0}
+    45%{opacity:1}
+    88%{transform:translateY(2.5%)}                                                     /* the small settle of something landing */
+    100%{transform:translateY(0);opacity:1}}
   body.logo-anim .head .logotype{opacity:0}
   .tagline .ch{opacity:0}
   .tagline .ch.on{opacity:1}
@@ -222,7 +231,11 @@
   (function () {
     var stamp = document.querySelector('.stamped .stamp'), tile = document.querySelectorAll('.stamped figure')[2];
     if (!stamp || !tile) return;
-    function land() { stamp.classList.add('on'); }
+    // the stamp presses down the moment the third totem has finished arriving
+    function land() {
+      var ms = (parseFloat(getComputedStyle(tile).getPropertyValue('--stagger')) || 0);
+      setTimeout(function () { stamp.classList.add('on'); }, ms + 620);
+    }
     if (tile.classList.contains('is-seen') || !tile.classList.contains('dr-emerge')) return land();
     new MutationObserver(function (m, o) { if (tile.classList.contains('is-seen')) { o.disconnect(); land(); } })
       .observe(tile, {attributes: true, attributeFilter: ['class']});
@@ -261,19 +274,32 @@
     if (skip) { finish(); if (scrollY <= 40) setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000); return; }
     document.body.classList.add('logo-anim');
     addEventListener('scroll', early, {passive: true});
-    [].forEach.call(build.querySelectorAll('.ll'), function (l) { l.classList.add('in'); });
-    build.classList.add('drop');
+    [].forEach.call(build.querySelectorAll('.ll'), function (l, i) {
+      l.classList.add('in');
+      l.style.animationDelay = (i * 95) + 'ms';                                         // M, then A, then the C, and so on
+    });
+    build.classList.add('fall');
     var t = 1150;
     later(function () { build.querySelector('.ll-c').classList.add('lift'); }, t);
     t += 1050;
     // the stand-in stays on screen (the real, scaled-up logotype renders its grain slightly differently);
     // it only hands over once you scroll, when the logotype is already moving
-    later(function () { build.classList.remove('drop'); }, 1100);
+    later(function () { build.classList.remove('fall'); }, 1250);
     chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
     setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000);
   })();
   function cue() { var on = scrollY > 40; document.querySelector('.film').classList.toggle('scrolled', on); document.body.classList.toggle('logo-hero', !on); }
-  addEventListener('scroll', cue, {passive: true}); cue();
+  // the first pass sets the size outright; only later changes are allowed to animate
+  document.body.classList.add('logo-still');
+  cue();
+  requestAnimationFrame(function () { requestAnimationFrame(function () { document.body.classList.remove('logo-still'); }); });
+  addEventListener('scroll', cue, {passive: true});
+  addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;                       // returning to a cached page: settle it before it can animate
+    document.body.classList.add('logo-still');
+    cue();
+    requestAnimationFrame(function () { requestAnimationFrame(function () { document.body.classList.remove('logo-still'); }); });
+  });
 </script>
 </body>
 </html>
