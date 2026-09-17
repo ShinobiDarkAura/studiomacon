@@ -17,7 +17,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Hollow Keeper", "description": "A small solid bronze vessel in fitted parts, the lid lifting away to reveal a hollow meant for a single small thing. Whatever is placed inside is said to keep better than expected; keepers report finding it exactly where they left it. Unique, carved and patinated by hand.", "image": ["https://studiomacon.co/img/ooak-vessel/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ooak-vessel", "offers": [{"@type": "Offer", "price": "780.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ooak-vessel.html"}]}</script>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789633705">
+<link rel="stylesheet" href="site.css?v=1789677693">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -480,7 +480,8 @@
     }).then(function (r) { return r.json(); }).then(function (d) {
       var res = d && d.data && d.data.cartCreate;
       if (!res || !res.cart) throw new Error((res && res.userErrors[0] && res.userErrors[0].message) || 'Checkout is unavailable right now');
-      if (!button || button.id === 'checkout') MaconBag.write([]);          // the cart now lives in Shopify (abandoned-checkout emails bring shoppers back to it)
+      // the bag is left alone here: a shopper who backs out of Shopify's checkout
+      // must find their pieces still waiting. It is emptied on the thank-you page.
       location.href = res.cart.checkoutUrl;
     }).catch(function (e) {
       if (button) { button.removeAttribute('aria-busy'); button.textContent = button.dataset.label; }
@@ -578,7 +579,15 @@
   })();
 
   addEventListener('pageshow', function (e) {
-    if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+    if (!e.persisted) return;
+    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+    // a shopper who backs out of Shopify's checkout returns to a cached page:
+    // put any button that was mid-handoff back the way they found it
+    document.querySelectorAll('[aria-busy="true"]').forEach(function (b) {
+      b.removeAttribute('aria-busy');
+      if (b.dataset.label) b.textContent = b.dataset.label;
+      b.disabled = false;
+    });
   });
 
   // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column

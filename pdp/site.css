@@ -76,7 +76,11 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
              linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat;
   color:#000;opacity:.35;transition:transform .45s var(--ease),opacity .45s ease}
 .acc-head:hover::after,.acc-item:hover .acc-head::after{opacity:1}
-.acc-head{transition:padding-bottom .5s var(--ease)}
+/* hovering a row lifts its text along with the rule under it */
+.acc-head:hover,.acc-item:hover .acc-head{color:#000}
+.acc-head:hover .n,.acc-item:hover .acc-head .n{color:rgba(0,0,0,.65)}
+.acc-head{transition:padding-bottom .5s var(--ease),color .25s ease}
+.acc-head .n{transition:color .25s ease}
 .acc-item.open .acc-head{padding-bottom:27px}
 .acc-item.open .acc-head::after{transform:rotate(90deg);
   background:linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat}

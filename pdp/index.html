@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789633705">
+<link rel="stylesheet" href="site.css?v=1789677693">
 <style>
   /* the film fills the first screen; the nav sits over it in white */
   .film{position:relative;height:100vh;height:100dvh;overflow:hidden;background:#111}          /* follows the phone's toolbar, so it always fills the screen */
@@ -507,7 +507,8 @@
     }).then(function (r) { return r.json(); }).then(function (d) {
       var res = d && d.data && d.data.cartCreate;
       if (!res || !res.cart) throw new Error((res && res.userErrors[0] && res.userErrors[0].message) || 'Checkout is unavailable right now');
-      if (!button || button.id === 'checkout') MaconBag.write([]);          // the cart now lives in Shopify (abandoned-checkout emails bring shoppers back to it)
+      // the bag is left alone here: a shopper who backs out of Shopify's checkout
+      // must find their pieces still waiting. It is emptied on the thank-you page.
       location.href = res.cart.checkoutUrl;
     }).catch(function (e) {
       if (button) { button.removeAttribute('aria-busy'); button.textContent = button.dataset.label; }
@@ -605,7 +606,15 @@
   })();
 
   addEventListener('pageshow', function (e) {
-    if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+    if (!e.persisted) return;
+    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+    // a shopper who backs out of Shopify's checkout returns to a cached page:
+    // put any button that was mid-handoff back the way they found it
+    document.querySelectorAll('[aria-busy="true"]').forEach(function (b) {
+      b.removeAttribute('aria-busy');
+      if (b.dataset.label) b.textContent = b.dataset.label;
+      b.disabled = false;
+    });
   });
 
   // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
@@ -671,10 +680,7 @@
   (function () {
     var stamp = document.querySelector('.stamped .stamp'), tile = document.querySelectorAll('.stamped figure')[2];
     if (!stamp || !tile) return;
-    function land() {
-      var wait = (parseFloat(getComputedStyle(tile).getPropertyValue('--stagger')) || 0) + 900;
-      setTimeout(function () { stamp.classList.add('on'); }, wait);
-    }
+    function land() { stamp.classList.add('on'); }
     if (tile.classList.contains('is-seen') || !tile.classList.contains('dr-emerge')) return land();
     new MutationObserver(function (m, o) { if (tile.classList.contains('is-seen')) { o.disconnect(); land(); } })
       .observe(tile, {attributes: true, attributeFilter: ['class']});
@@ -694,7 +700,11 @@
   (function () {
     var build = document.querySelector('.logo-build'), tag = document.querySelector('.film .tagline');
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-    var skip = matchMedia('(prefers-reduced-motion: reduce)').matches || (nav && nav.type === 'back_forward') || scrollY > 40;
+    // the intro belongs to the first arrival: coming back from a piece, the logotype is simply already there
+    var seen = false;
+    try { seen = sessionStorage.getItem('macon-intro') === '1'; } catch (e) {}
+    var skip = matchMedia('(prefers-reduced-motion: reduce)').matches || (nav && nav.type === 'back_forward') || scrollY > 40 || seen;
+    try { sessionStorage.setItem('macon-intro', '1'); } catch (e) {}
     var text = tag.textContent; tag.textContent = '';
     var chars = text.split('').map(function (c) { var s = document.createElement('span'); s.className = 'ch'; s.textContent = c; tag.appendChild(s); return s; });
     tag.setAttribute('aria-label', text);
