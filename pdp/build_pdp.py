@@ -310,7 +310,8 @@ def shop_config():
         c = json.load(f)
     tc = SHOPIFY.get("totem-commission", {}).get("variants", [{}])[0].get("id", "")
     return ('<script>window.MACON_SHOP = ' + json.dumps({"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"],
-                                                          "enquiry": c.get("enquiryUrl", ""), "totemCommission": tc}) + ';</script>\n')
+                                                          "enquiry": c.get("enquiryUrl", ""), "totemCommission": tc,
+                                                          "klaviyo": c.get("klaviyo", ""), "klaviyoList": c.get("klaviyoList", "")}) + ';</script>\n')
 
 
 def shared(doc):
