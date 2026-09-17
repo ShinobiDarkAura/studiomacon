@@ -16,9 +16,15 @@
   "01.png",
   "06.png",
   "16.png",
-  "chess-0.jpg",
   "21.png",
   "13.png",
+  "02.png",
+  "04.png",
+  "09.png",
+  "14.png",
+  "15.png",
+  "20.png",
+  "chess-0.jpg",
   "chess-2.jpg",
   "chess-1.jpg"
  ],
@@ -107,5 +113,6 @@
    "name": "",
    "date": ""
   }
- }
+ },
+ "removed": []
 }

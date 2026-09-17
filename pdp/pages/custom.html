@@ -63,17 +63,25 @@
   body.editing .ed-toggle{display:none}
   .order{padding:48px calc(var(--pad) + 12px) 0}
 
-  .price{font-size:19px;margin:0 0 18px}
-  .kept{font-size:52.9px;white-space:nowrap}
-  @media (min-width:768px){ .kept{font-size:60.95px} }
-  @media (min-width:1200px){ .kept{font-size:69px} }
+  .examples .lead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .examples .lead{aspect-ratio:4/5;border-radius:0;background:#e9e1cf}
+  .kept{font-size:46px;white-space:normal}
+  @media (min-width:768px){ .kept{font-size:53px} }
+  @media (min-width:1200px){ .kept{font-size:60px} }
   .order .body{margin:0 0 30px;font-size:17px;line-height:1.55;max-width:460px}
   .terms{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:0 0 34px;font-size:15px}
   .terms dt{font-size:calc(17px - 4pt);letter-spacing:.14em;text-transform:uppercase;padding-top:3px;color:rgba(0,0,0,.5)}
   .terms dd{margin:0}
 
   /* steps: accordions that unlock in order */
-  .steps-acc{border-top:1px solid var(--rule)}
+  .start{margin:4px 0 34px}
+  .steps-acc{border-top:1px solid #000}
+  .step[data-step="1"]{border-bottom-color:#000}
+  .choices.two{grid-template-columns:repeat(2,1fr)}
+  .choices.three{grid-template-columns:repeat(3,1fr)}
+  .branch{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .5s var(--ease),opacity .35s ease}
+  .branch.on{grid-template-rows:1fr;opacity:1}
+  .branch-inner{overflow:hidden}
   .step .acc-head{font-size:calc(17px - 4pt);letter-spacing:.14em;justify-content:flex-start}
   .step .acc-head:not(:has(.done:not([hidden])))::after{margin-left:auto}
   .step .acc-head .n{color:rgba(0,0,0,.4);margin-right:14px}
@@ -145,7 +153,8 @@
   @media (min-width:768px){
     .commission{display:grid;grid-template-columns:minmax(0,62fr) minmax(0,38fr);gap:0 48px;align-items:start;
       padding-right:calc(var(--pad) + 12px)}
-    .examples{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;padding:calc(var(--head) + 24px) 0 0 calc(var(--pad) + 12px)}
+    .examples{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;padding:0}
+    .examples .lead{grid-column:1/-1;aspect-ratio:auto;height:100vh;border-radius:0}
     .examples figure{margin:0}
     /* pinned beside the wall, and scrolls on its own as steps open */
     .order{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;overscroll-behavior:contain;
@@ -164,43 +173,89 @@
 {{EXAMPLES}}
   </section>
 
-  <section class="order" aria-label="Commission a totem">
-    <p class="eyebrow">Custom Totems</p>
-    <h1 class="kept">Kept in Bronze</h1>
-    <p class="price">$925</p>
-    <p class="body">A one-of-a-kind bronze totem of the animal you love most, sketched from your photographs, carved by hand in wax and cast at our local foundry. It is never molded or repeated.</p>
+  <section class="order" aria-label="Commission a piece">
+    <p class="eyebrow">Custom Heirlooms</p>
+    <h1 class="kept">Let's Make Something Real</h1>
+    <p class="body">A one-of-a-kind piece, sketched for you, carved by hand in wax and cast at our local foundry. A bronze totem of the animal you love most, or a ring, pendant or cuff in silver, bronze or gold. Never molded or repeated.</p>
     <dl class="terms">
+      <dt>Totems</dt><dd>$925</dd>
+      <dt>Jewelry</dt><dd>Priced after a short consultation</dd>
       <dt>Payment</dt><dd>25% deposit, 75% after casting</dd>
       <dt>Timing</dt><dd>2–3 weeks</dd>
     </dl>
+    <button type="button" class="next start" id="start">Start a Commission</button>
 
     <div class="steps-acc" id="steps">
       <!-- 1 -->
       <div class="acc-item step" data-step="1">
-        <button class="acc-head" aria-expanded="false"><span class="n">01</span>Your Animal<span class="done" hidden>Done</span></button>
+        <button class="acc-head" aria-expanded="false"><span class="n">01</span>Your Piece<span class="done" hidden>Done</span></button>
         <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="q">
-            <span class="label">Species <span class="req">*</span></span>
-            <div class="choices" data-choice="species">
-              <button type="button" aria-pressed="false">Dog</button>
-              <button type="button" aria-pressed="false">Cat</button>
-              <button type="button" aria-pressed="false">Horse</button>
-              <button type="button" aria-pressed="false">Other</button>
+            <span class="label">What would you like made? <span class="req">*</span></span>
+            <div class="choices two" data-choice="kind">
+              <button type="button" aria-pressed="false" data-kind="totem">A Totem</button>
+              <button type="button" aria-pressed="false" data-kind="jewelry">Jewelry</button>
             </div>
-            <div class="other" aria-hidden="true"><div class="other-inner">
-              <span class="line"><input id="c-other" placeholder="What kind of animal?"></span>
-            </div></div>
           </div>
-          <div class="pair">
-          <div class="q">
-            <label class="label" for="c-name">Their Name</label>
-            <span class="line"><input id="c-name" placeholder="Their name"></span>
-          </div>
-          <div class="q details-q">
-            <div class="label-row"><label class="label" for="c-breed">Details</label></div>
-            <span class="line"><input id="c-breed" placeholder="e.g. Whippet, brindle coat, one ear that flops, always sits leaning left"></span>
-          </div>
-          </div>
+
+          <div class="branch" data-for="totem"><div class="branch-inner">
+            <div class="q">
+              <span class="label">Species <span class="req">*</span></span>
+              <div class="choices" data-choice="species">
+                <button type="button" aria-pressed="false">Dog</button>
+                <button type="button" aria-pressed="false">Cat</button>
+                <button type="button" aria-pressed="false">Horse</button>
+                <button type="button" aria-pressed="false">Other</button>
+              </div>
+              <div class="other" aria-hidden="true"><div class="other-inner">
+                <span class="line"><input id="c-other" placeholder="What kind of animal?"></span>
+              </div></div>
+            </div>
+            <div class="pair">
+              <div class="q">
+                <label class="label" for="c-name">Their Name</label>
+                <span class="line"><input id="c-name" placeholder="Their name"></span>
+              </div>
+              <div class="q details-q">
+                <div class="label-row"><label class="label" for="c-breed">Details</label></div>
+                <span class="line"><input id="c-breed" placeholder="e.g. Whippet, brindle coat, one ear that flops, always sits leaning left"></span>
+              </div>
+            </div>
+          </div></div>
+
+          <div class="branch" data-for="jewelry"><div class="branch-inner">
+            <div class="q">
+              <span class="label">Piece <span class="req">*</span></span>
+              <div class="choices" data-choice="piece">
+                <button type="button" aria-pressed="false">Ring</button>
+                <button type="button" aria-pressed="false">Pendant</button>
+                <button type="button" aria-pressed="false">Ear Cuff</button>
+                <button type="button" aria-pressed="false">Other</button>
+              </div>
+              <div class="other" aria-hidden="true"><div class="other-inner">
+                <span class="line"><input id="c-piece-other" placeholder="What would you like made?"></span>
+              </div></div>
+            </div>
+            <div class="q">
+              <span class="label">Metal</span>
+              <div class="choices three" data-choice="metal" data-optional>
+                <button type="button" aria-pressed="false">Silver</button>
+                <button type="button" aria-pressed="false">Bronze</button>
+                <button type="button" aria-pressed="false">Gold</button>
+              </div>
+            </div>
+            <div class="pair">
+              <div class="q">
+                <label class="label" for="c-size">Ring Size</label>
+                <span class="line"><input id="c-size" placeholder="If you know it"></span>
+              </div>
+              <div class="q details-q">
+                <div class="label-row"><label class="label" for="c-idea">The Idea</label></div>
+                <span class="line"><input id="c-idea" placeholder="e.g. a wedding band with a laurel leaf, for our tenth anniversary"></span>
+              </div>
+            </div>
+          </div></div>
+
           <button type="button" class="next" data-next data-always>Continue to Photos</button>
         </div></div></div>
       </div>
@@ -210,42 +265,48 @@
         <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">02</span>Photographs<span class="done" hidden>Done</span></button>
         <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="q">
-            <span class="label">Upload Photos <span class="req">*</span></span>
-            <p class="hint">Three are required: front, side and a close-up of the face. A fourth angle helps.</p>
+            <span class="label">Upload Photos <span class="req only-totem">*</span></span>
+            <p class="hint" data-hint-totem="Three are required: front, side and a close-up of the face. A fourth angle helps." data-hint-jewelry="Optional: anything that inspires the piece, or photos of a ring that fits well.">Three are required: front, side and a close-up of the face. A fourth angle helps.</p>
             <div class="uploads">
-              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span>Front</span></label>
-              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span>Side</span></label>
-              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span>Face</span></label>
+              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Front" data-j="Photo">Front</span></span></label>
+              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Side" data-j="Photo">Side</span></span></label>
+              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Face" data-j="Photo">Face</span></span></label>
               <label class="tile optional"><input type="file" accept="image/*"><span><span class="plus">+</span>Optional</span></label>
             </div>
           </div>
           <div class="q notes-q">
             <label class="label" for="c-notes">Notes for Us</label>
-            <span class="line"><textarea rows="1" id="c-notes" placeholder="e.g. One ear always flops, and he sleeps curled nose to tail."></textarea></span>
+            <span class="line"><textarea rows="1" id="c-notes" placeholder="Anything else we should know"></textarea></span>
           </div>
-          <button type="button" class="next" data-next disabled>Continue to Deposit</button>
+          <button type="button" class="next" data-next disabled>Continue</button>
         </div></div></div>
       </div>
 
       <!-- 3 -->
       <div class="acc-item step locked" data-step="3">
-        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">03</span>Deposit</button>
+        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">03</span><span class="step3-title">Payment</span></button>
         <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="q">
             <label class="label" for="c-email">Email <span class="req">*</span></label>
             <span class="line"><input id="c-email" type="email" data-required placeholder="you@example.com"></span>
             <p class="reassure">For your commission updates only. We never share your email.</p>
           </div>
-          <div class="summary">
-            <span>Bronze totem commission</span><span>$925.00</span>
-            <span class="total">Deposit due today (25%)</span><span class="total due">$231.25</span>
-            <span>Balance, after casting (75%)</span><span>$693.75</span>
+          <div class="for-totem">
+            <div class="summary">
+              <span>Bronze totem commission</span><span>$925.00</span>
+              <span class="total">Deposit due today (25%)</span><span class="total due">$231.25</span>
+              <span>Balance, after casting (75%)</span><span>$693.75</span>
+            </div>
+            <div class="pay">
+              <button type="button" class="next" data-pay>Pay Deposit</button>
+              <button type="button" class="apple-pay" data-pay aria-label="Pay deposit with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+            </div>
+            <p class="fine-print">Your deposit reserves a place in the studio and begins the sketch. <span class="todo">Refund terms to confirm</span>.</p>
           </div>
-          <div class="pay">
-            <button type="button" class="next" data-pay>Pay Deposit</button>
-            <button type="button" class="apple-pay" data-pay aria-label="Pay deposit with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+          <div class="for-jewelry" hidden>
+            <p class="fine-print" style="margin:0 0 18px">Every jewelry commission is priced after a short consultation. We will write back within a few days with a sketch direction and a quote; the 25% deposit is only taken once you approve it.</p>
+            <button type="button" class="next" data-pay>Send Request</button>
           </div>
-          <p class="fine-print">Your deposit reserves a place in the studio and begins the sketch. <span class="todo">Refund terms to confirm</span>.</p>
         </div></div></div>
       </div>
     </div>
@@ -292,7 +353,28 @@
   // Commission steps. The shared accordion script toggles any .acc-head, so this
   // runs in the capture phase and stops locked steps from opening at all.
   (function () {
-    var steps = [].slice.call(document.querySelectorAll('.step'));
+    var steps = [].slice.call(document.querySelectorAll('.step')), kind = null;
+
+    // Totem or jewelry: swaps the questions in step 1 and the wording of steps 2 and 3
+    function setKind(k) {
+      kind = k;
+      document.querySelectorAll('.branch').forEach(function (b) { b.classList.toggle('on', b.dataset.for === k); });
+      var jew = k === 'jewelry';
+      var hint = document.querySelector('[data-hint-totem]');
+      hint.textContent = jew ? hint.dataset.hintJewelry : hint.dataset.hintTotem;
+      document.querySelectorAll('[data-t]').forEach(function (x) { x.textContent = jew ? x.dataset.j : x.dataset.t; });
+      document.querySelectorAll('.only-totem').forEach(function (x) { x.hidden = jew; });
+      document.querySelector('.step3-title').textContent = jew ? 'Request' : 'Payment';
+      document.querySelector('.for-totem').hidden = jew;
+      document.querySelector('.for-jewelry').hidden = !jew;
+      steps.forEach(ready);
+    }
+
+    // Start a Commission opens the first step and brings it into view
+    document.getElementById('start').addEventListener('click', function () {
+      var first = steps[0]; setOpen(first, true);
+      setTimeout(function () { first.scrollIntoView({block: 'nearest', behavior: 'smooth'}); }, 200);
+    });
     function setOpen(step, on) {
       step.classList.toggle('open', on);
       step.querySelector('.acc-head').setAttribute('aria-expanded', on);
@@ -305,9 +387,13 @@
 
     function ready(step) {
       var ok = true;
-      step.querySelectorAll('[data-choice]').forEach(function (g) { if (!g.querySelector('[aria-pressed="true"]')) ok = false; });
+      step.querySelectorAll('[data-choice]').forEach(function (g) {
+        if (g.hasAttribute('data-optional')) return;
+        var br = g.closest('.branch'); if (br && !br.classList.contains('on')) return;
+        if (!g.querySelector('[aria-pressed="true"]')) ok = false;
+      });
       step.querySelectorAll('[data-required]').forEach(function (i) { if (!i.value.trim() || (i.type === 'email' && !/.+@.+\..+/.test(i.value))) ok = false; });
-      step.querySelectorAll('[data-required-tile]').forEach(function (t) { if (!t.classList.contains('filled')) ok = false; });
+      if (kind !== 'jewelry') step.querySelectorAll('[data-required-tile]').forEach(function (t) { if (!t.classList.contains('filled')) ok = false; });
       var btn = step.querySelector('[data-next]'); if (btn && !btn.hasAttribute('data-always')) btn.disabled = !ok;
     }
     steps.forEach(function (step) {
@@ -315,6 +401,7 @@
       step.querySelectorAll('[data-choice] button').forEach(function (b) {
         b.addEventListener('click', function () {
           b.parentElement.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+          if (b.dataset.kind) setKind(b.dataset.kind);
           var other = b.closest('.q').querySelector('.other');
           if (other) {
             var on = b.textContent.trim() === 'Other';
@@ -354,7 +441,9 @@
       b.addEventListener('click', function () {
         if (b.disabled) return;
         var body = b.closest('.acc-body');
-        body.innerHTML = '<p class="thanks">Thank you. Your deposit is noted, and we will be in touch by email within a few days to begin the first sketch.</p>';
+        body.innerHTML = kind === 'jewelry'
+          ? '<p class="thanks">Thank you. Your request is with us, and we will write back within a few days with a sketch direction and a quote.</p>'
+          : '<p class="thanks">Thank you. Your deposit is noted, and we will be in touch by email within a few days to begin the first sketch.</p>';
       });
     });
   })();
@@ -366,7 +455,7 @@
     var wall = document.querySelector('.examples'), ed = document.querySelector('.ed');
     var q = function (c) { return ed.querySelector(c); };
     var sel = null, dragged = null;
-    var figs = function () { return [].slice.call(wall.querySelectorAll('figure')); };
+    var figs = function () { return [].slice.call(wall.querySelectorAll('figure:not([data-lead])')); };
     var num = function (f, k, d) { var v = parseFloat(f.style.getPropertyValue('--' + k)); return isNaN(v) ? d : v; };
 
     function open(on) {

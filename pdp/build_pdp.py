@@ -281,6 +281,7 @@ def main():
                     f'<img src="img/commissions-cut/{n}" width="{w}" height="{h}" alt="{html.escape(t.get("name", ""))}" loading="{"eager" if i < 8 else "lazy"}" draggable="false">'
                     f'<span class="over"><span class="date">{html.escape(t.get("date", ""))}</span>'
                     f'<span class="name">{html.escape(t.get("name", ""))}</span></span></figure>')
+            figs.insert(0, '    <figure class="lead" data-lead><img src="img/commissions-cut/hero-band.jpg" alt="A gold band carved with a spiral, a custom commission" fetchpriority="high"></figure>')
             doc = (doc.replace("{{EXAMPLES}}", "\n".join(figs)).replace("{{FRAME}}", lay.get("frame", "3/4"))
                       .replace("{{REMOVED}}", html.escape(json.dumps(sorted(gone)))))
         if "{{GRID}}" in doc:

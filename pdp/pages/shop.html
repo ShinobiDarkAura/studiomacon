@@ -9,6 +9,10 @@
 <style>
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px) 24px}
   .wall-head.next-set{padding-top:calc(120px + 10vh)}
+  /* each section title rides along under the nav until the next section's title pushes it off */
+  .set{position:relative}
+  .wall-head{position:sticky;z-index:6;background:#fff;top:calc(var(--head) - 25vh)}
+  .wall-head.next-set{top:calc(var(--head) - 120px - 10vh)}
   .placeholder{aspect-ratio:4/5;background:#d9d9d9}
   .wall-head h1{margin:0;font-size:57.5px}
   .wall-head .count{font-size:13px;color:rgba(0,0,0,.45)}
@@ -48,6 +52,7 @@
 {{NAV}}
 
 <main>
+  <div class="set">
   <header class="wall-head">
     <h1>Ephemeral</h1><span class="count">3</span>
   </header>
@@ -56,13 +61,16 @@
     <figure><div class="placeholder"></div></figure>
     <figure><div class="placeholder"></div></figure>
   </section>
+  </div>
 
+  <div class="set">
   <header class="wall-head next-set">
     <h1>Perennial</h1><span class="count">{{SHOPCOUNT}}</span>
   </header>
   <section class="wall shop-wall">
 {{SHOPGRID}}
   </section>
+  </div>
 </main>
 
 {{FOOTER}}
