@@ -1,0 +1,6 @@
+{
+  "note": "Storefront API public token: safe to ship in the website (read-only product/cart access). Never put the private token here.",
+  "shop": "w3nidi-ny.myshopify.com",
+  "storefrontToken": "82e89606c89ba23c139fd3d9cf91d344",
+  "apiVersion": "2025-07"
+}
