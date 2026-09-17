@@ -53,7 +53,7 @@ body.white-right .head .right.on-dark{color:#000}
 .head .desk{display:none}
 .logotype{display:block;aspect-ratio:1683/273;background:currentColor;
   -webkit-mask:url(img/logotype-signature.png) center/contain no-repeat;mask:url(img/logotype-signature.png) center/contain no-repeat}
-.head .logotype{width:120px;position:relative;top:4px}
+.head .logotype{width:138px;position:relative;top:4px}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
@@ -116,7 +116,7 @@ footer .field button{padding:0 0 0 18px}
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:180px}
+  .head .logotype{width:207px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
