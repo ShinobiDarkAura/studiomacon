@@ -63,15 +63,15 @@
    "s": 0.85,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Border Collie",
+   "date": "2026"
   },
   "added-1789609020-custom-totem-02.png": {
    "s": 0.88,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Border Collie",
+   "date": "2026"
   },
   "added-1789609021-custom-totem-03.png": {
    "s": 0.73,
@@ -133,8 +133,8 @@
    "s": 0.77,
    "x": 0.0,
    "y": -2.0,
-   "name": "",
-   "date": ""
+   "name": "Westie",
+   "date": "2025"
   },
   "06.png": {
    "s": 0.77,
@@ -154,8 +154,8 @@
    "s": 0.84,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Seal on the Rocks",
+   "date": "2025"
   },
   "09.png": {
    "s": 0.62,
@@ -168,8 +168,8 @@
    "s": 1.0,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Frog Chess Set",
+   "date": "2025"
   },
   "added-1789609022-custom-totem-05.jpg": {
    "s": 1.0,
@@ -182,8 +182,15 @@
    "s": 1.0,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Frog Chess Set",
+   "date": "2025"
+  },
+  "chess-0.jpg": {
+   "s": 1,
+   "x": 0,
+   "y": 0,
+   "name": "Frog Chess Set",
+   "date": "2025"
   }
  }
 }

@@ -8,13 +8,21 @@
 <link rel="stylesheet" href="site.css?v=1789609823">
 <style>
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px) 24px}
-  .wall-head.next-set{padding-top:calc(120px + 10vh)}
+  .wall-head.next-set{padding-top:0}
+  .set:first-child::after{content:"";display:block;height:calc(120px + 10vh)}
   /* each section title rides along under the nav until the next section's title pushes it off */
   .set{position:relative}
   .wall-head{position:sticky;z-index:6;background:#fff;top:calc(var(--head) - 25vh)}
-  .wall-head.next-set{top:calc(var(--head) - 120px - 10vh)}
-  .placeholder{aspect-ratio:4/5;background:#d9d9d9}
-  .wall-head h1{margin:0;font-size:57.5px}
+  .wall-head.next-set{top:var(--head)}
+  .placeholder{position:relative;aspect-ratio:4/5;background:#d9d9d9;overflow:hidden}
+  .placeholder img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .wall-head h1{margin:0;font-size:57.5px;transition:font-size .45s var(--ease)}
+  .wall-head{transition:padding-bottom .45s var(--ease)}
+  /* once a title is riding under the nav it shrinks, and its white strip with it */
+  @media (min-width:768px){
+    .wall-head.compact h1{font-size:46.375px !important}
+  }
+  @media (min-width:1200px){ .wall-head.compact h1{font-size:52.5px !important} }
   .wall-head .count{font-size:13px;color:rgba(0,0,0,.45)}
   @media (min-width:768px){ .wall-head h1{font-size:66.25px} }
   @media (min-width:1200px){ .wall-head h1{font-size:75px} }
@@ -55,6 +63,7 @@
     <a href="index.html" class="desk hover-line">Shop</a>
     <a href="custom.html" class="desk hover-line">Custom</a>
     <a href="inspiration.html" class="desk hover-line">Inspiration</a>
+    <a href="story.html" class="desk hover-line">About</a>
   </div>
   <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
@@ -66,9 +75,9 @@
     <h1>Ephemeral</h1><span class="count">3</span>
   </header>
   <section class="wall shop-wall">
-    <figure><div class="placeholder"></div></figure>
-    <figure><div class="placeholder"></div></figure>
-    <figure><div class="placeholder"></div></figure>
+    <figure><div class="placeholder"><img src="img/ephemeral/01.jpg" alt=""></div></figure>
+    <figure><div class="placeholder"><img src="img/ephemeral/02.jpg" alt=""></div></figure>
+    <figure><div class="placeholder"><img src="img/ephemeral/03.jpg" alt=""></div></figure>
   </section>
   </div>
 
@@ -307,6 +316,19 @@
     new MutationObserver(function (muts) {
       muts.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) arm(n); }); });
     }).observe(document.body, {childList: true, subtree: true});
+  })();
+</script>
+<script>
+  (function () {
+    var heads = [].slice.call(document.querySelectorAll('.wall-head'));
+    var headH = function () { return document.querySelector('.head').offsetHeight; };
+    function check() {
+      heads.forEach(function (h) {
+        var t = h.querySelector('h1').getBoundingClientRect().top;
+        h.classList.toggle('compact', t <= headH() + 2 && h.parentElement.getBoundingClientRect().bottom > headH() + 40);
+      });
+    }
+    addEventListener('scroll', check, {passive: true}); addEventListener('resize', check); check();
   })();
 </script>
 </body>
