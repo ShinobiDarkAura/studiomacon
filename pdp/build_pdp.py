@@ -348,10 +348,10 @@ def main():
         held = os.path.exists(os.path.join(OUT, "img", p["slug"], hover))
         lazy = "eager" if i < 3 else "lazy"
         tiles.append(
-            f'    <figure><a class="piece" href="{p["slug"]}.html"><span class="frame">'
+            f'    <figure><a class="piece" href="{p["slug"]}.html">'
             f'<img src="img/{p["slug"]}/{still}" alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held" src="img/{p["slug"]}/{hover}" alt="" loading="lazy">' if held else "")
-            + f'</span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
+            + f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
     shop = shop.replace("{{SHOPCOUNT}}", str(len(products))).replace("{{SHOPGRID}}", "\n".join(tiles))
