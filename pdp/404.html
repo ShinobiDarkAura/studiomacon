@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Not Found | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613409">
+<link rel="stylesheet" href="site.css?v=1789613506">
 <style>
   .lost{max-width:620px;margin:0 auto;min-height:70vh;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--head) + 40px) calc(var(--pad) + 12px) 64px}
   .lost p.lede{margin:0 0 32px;font-size:17px;line-height:1.55}
@@ -324,6 +324,12 @@
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
+
+  // Arriving through the shop transition: skip the load-in so the drawer arrives already filled
+  addEventListener('pagereveal', function (e) {
+    if (!e.viewTransition) return;
+    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
 </script>
 </body>
 </html>

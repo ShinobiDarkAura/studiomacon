@@ -183,3 +183,19 @@ footer .field button{padding:0 0 0 18px}
 
 /* ── size picker nudge when Add to Bag is pressed without a size ── */
 [data-size].need{border-color:#c8321e;transition:border-color .2s}
+
+/* ── shop → product: the tile grows into the hero, the details slide in as a drawer, everything else fades ── */
+@view-transition{navigation:auto}
+.gallery .hero img{view-transition-name:piece-hero}
+.product .info{view-transition-name:drawer}
+.head{view-transition-name:site-head}
+::view-transition-group(piece-hero){animation-duration:.75s;animation-timing-function:cubic-bezier(.65,0,.25,1)}
+::view-transition-old(piece-hero),::view-transition-new(piece-hero){animation:none;mix-blend-mode:normal;height:100%;object-fit:cover}
+::view-transition-new(drawer){animation:drawer-in .75s cubic-bezier(.2,.8,.2,1) both}
+::view-transition-old(root){animation:vt-fade-out .35s ease both}
+::view-transition-new(root){animation:vt-fade-in .5s ease .25s both}
+::view-transition-group(site-head){animation:none}
+@keyframes drawer-in{from{transform:translateX(105%)}to{transform:none}}
+@keyframes vt-fade-out{to{opacity:0}}
+@keyframes vt-fade-in{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){ @view-transition{navigation:none} }

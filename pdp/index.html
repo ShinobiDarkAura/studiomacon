@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Shop | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613409">
+<link rel="stylesheet" href="site.css?v=1789613506">
 <style>
   /* the film fills the first screen; the nav sits over it in white */
   .film{position:relative;height:100vh;height:100svh;overflow:hidden;background:#111}
@@ -435,6 +435,12 @@
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
+
+  // Arriving through the shop transition: skip the load-in so the drawer arrives already filled
+  addEventListener('pagereveal', function (e) {
+    if (!e.viewTransition) return;
+    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
 </script>
 <script>
   (function () {
@@ -452,6 +458,18 @@
 </script>
 <script>
   addEventListener('scroll', function () { document.querySelector('.film').classList.toggle('scrolled', scrollY > 40); }, {passive: true});
+</script>
+<script>
+  // Only the clicked tile's photograph takes part in the grow-into-hero transition
+  document.querySelectorAll('.shop-wall .piece').forEach(function (a) {
+    a.addEventListener('click', function () {
+      document.querySelectorAll('.shop-wall .piece img').forEach(function (i) { i.style.viewTransitionName = 'none'; });
+      var still = a.querySelector('img:not(.held)'); if (still) still.style.viewTransitionName = 'piece-hero';
+    });
+  });
+  addEventListener('pageshow', function () {
+    document.querySelectorAll('.shop-wall .piece img').forEach(function (i) { i.style.viewTransitionName = ''; });
+  });
 </script>
 </body>
 </html>

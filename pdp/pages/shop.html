@@ -136,5 +136,17 @@
 <script>
   addEventListener('scroll', function () { document.querySelector('.film').classList.toggle('scrolled', scrollY > 40); }, {passive: true});
 </script>
+<script>
+  // Only the clicked tile's photograph takes part in the grow-into-hero transition
+  document.querySelectorAll('.shop-wall .piece').forEach(function (a) {
+    a.addEventListener('click', function () {
+      document.querySelectorAll('.shop-wall .piece img').forEach(function (i) { i.style.viewTransitionName = 'none'; });
+      var still = a.querySelector('img:not(.held)'); if (still) still.style.viewTransitionName = 'piece-hero';
+    });
+  });
+  addEventListener('pageshow', function () {
+    document.querySelectorAll('.shop-wall .piece img').forEach(function (i) { i.style.viewTransitionName = ''; });
+  });
+</script>
 </body>
 </html>

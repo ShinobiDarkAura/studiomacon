@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Commission a Totem | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613409">
+<link rel="stylesheet" href="site.css?v=1789613506">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -678,6 +678,12 @@
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
+
+  // Arriving through the shop transition: skip the load-in so the drawer arrives already filled
+  addEventListener('pagereveal', function (e) {
+    if (!e.viewTransition) return;
+    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
 </script>
 <script>
   // Commission steps. The shared accordion script toggles any .acc-head, so this

@@ -268,4 +268,10 @@
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
+
+  // Arriving through the shop transition: skip the load-in so the drawer arrives already filled
+  addEventListener('pagereveal', function (e) {
+    if (!e.viewTransition) return;
+    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
 </script>
