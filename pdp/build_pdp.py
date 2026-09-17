@@ -358,7 +358,9 @@ def main():
     tiles = []
     # totems together, then jewellery, then the cap at the very end
     group = lambda p: 2 if p["slug"] == "macon-cap" else (0 if kind(p["slug"], read_port(p["slug"])[1]) == "totem" else 1)
-    for i, p in enumerate(sorted(products, key=group)):
+    products = sorted(products, key=group)
+    totems = [p for p in products if group(p) == 0]
+    for i, p in enumerate(products):
         # the Wonder Horn's hero is a pale cut-out; its linen photograph sits with the others
         still = "plain-3.jpg" if p["slug"] == "wonderhorn-talisman" else "hero.jpg"
         # pendants show the photograph of the piece being worn; everything else, in the hand
@@ -372,7 +374,8 @@ def main():
             + f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
-    shop = shop.replace("{{SHOPCOUNT}}", str(len(products))).replace("{{SHOPGRID}}", "\n".join(tiles))
+    shop = (shop.replace("{{TOTEMCOUNT}}", str(len(totems))).replace("{{JEWELRYCOUNT}}", str(len(products) - len(totems)))
+                .replace("{{TOTEMGRID}}", "\n".join(tiles[:len(totems)])).replace("{{JEWELRYGRID}}", "\n".join(tiles[len(totems):])))
     save("index.html", shop)
     print(f"{len(products)} pages")
 
