@@ -30,9 +30,14 @@
   .head .logotype{transition:transform .7s var(--ease),color .3s ease}
   body.logo-hero .head .logotype{transform:translateY(calc(50vh - 12px - var(--head) / 2 - 6px)) scale(3.125)}
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
-  .welcome{margin:0;height:70vh;height:70svh;display:flex;align-items:center;justify-content:center}
+  .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
   .welcome .prose h1{margin-bottom:44px}
   .welcome + .set .wall-head{padding-top:0}
+  /* the Bureau of Provenance stamp: angled over the top of the last tile, its bottom 18% overlapping the picture */
+  .ephemeral{position:relative}
+  .ephemeral .stamp{position:absolute;z-index:3;width:clamp(120px,13vw,200px);right:calc(var(--pad) + 24px + 4%);top:0;
+    transform:translateY(-82%) rotate(-14deg);pointer-events:none}
+  @media (max-width:599px){ .ephemeral .stamp{display:none} }
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head.next-set{padding-top:0}
   .set:first-of-type::after{content:"";display:block;height:calc(120px + 10vh)}
@@ -96,7 +101,8 @@
   <header class="wall-head">
     <h2 class="set-title">Ephemeral</h2><span class="count">3</span>
   </header>
-  <section class="wall shop-wall">
+  <section class="wall shop-wall ephemeral">
+    <img class="stamp" src="img/provenance-stamp.png" alt="Maçon Bureau of Provenance stamp" data-no-emerge>
     <figure><a class="piece" aria-disabled="true" tabindex="-1" onclick="return false"><span class="placeholder-fill"></span><span class="over"><span class="name">Bearer of Small Things</span><span class="cost">$240</span></span></a></figure>
     <figure><a class="piece" aria-disabled="true" tabindex="-1" onclick="return false"><span class="placeholder-fill"></span><span class="over"><span class="name">Horn Ring</span><span class="cost">$380</span></span></a></figure>
     <figure><a class="piece" aria-disabled="true" tabindex="-1" onclick="return false"><span class="placeholder-fill"></span><span class="over"><span class="name">Egg of Quiet</span><span class="cost">$290</span></span></a></figure>
