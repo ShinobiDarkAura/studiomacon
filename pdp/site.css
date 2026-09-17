@@ -51,8 +51,8 @@ body.white-right .head .right.on-dark{color:#000}
 @keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
 .head .right a{display:inline-block}
 .head .desk{display:none}
-.logotype{display:block;aspect-ratio:351/459;background:currentColor;
-  -webkit-mask:url(img/moonsun.png) center/contain no-repeat;mask:url(img/moonsun.png) center/contain no-repeat}
+.logotype{display:block;aspect-ratio:1200/1191;background:currentColor;
+  -webkit-mask:url(img/sunburst.png) center/contain no-repeat;mask:url(img/sunburst.png) center/contain no-repeat}
 .head .logotype{width:52px;position:relative;top:6px}
 
 /* ── type ──────────────────────────────────────────── */
