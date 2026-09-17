@@ -51,8 +51,8 @@ body.white-right .head .right.on-dark{color:#000}
 @keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
 .head .right a{display:inline-block}
 .head .desk{display:none}
-.logotype{display:block;aspect-ratio:295/127;background:currentColor;
-  -webkit-mask:url(img/logotype-objects.png) center/contain no-repeat;mask:url(img/logotype-objects.png) center/contain no-repeat}
+.logotype{display:block;aspect-ratio:294/72;background:currentColor;
+  -webkit-mask:url(img/logotype-objects.svg) center/contain no-repeat;mask:url(img/logotype-objects.svg) center/contain no-repeat}
 .head .logotype{width:88px;position:relative;top:6px}
 
 /* ── type ──────────────────────────────────────────── */
