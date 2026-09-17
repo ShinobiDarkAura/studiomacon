@@ -43,6 +43,7 @@
   .wall-head.compact h1,.wall-head.compact .count{transform:translateX(32px)}
   .wall-head.compact h1::before{transform:scaleX(1)}
   .wall-head.next-set{top:var(--head)}
+  .placeholder-fill{position:absolute;inset:0;background:#e6e6e4}
   .placeholder{position:relative;aspect-ratio:4/5;background:#d9d9d9;overflow:hidden}
   .placeholder img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .wall-head h1{margin:0;font-size:57.5px;transition:font-size .45s var(--ease)}
@@ -100,9 +101,9 @@
     <h1>Ephemeral</h1><span class="count">3</span>
   </header>
   <section class="wall shop-wall">
-    <figure><a class="piece" href="#"><img src="img/ephemeral/01.jpg" alt="Bearer of Small Things"><span class="over"><span class="name">Bearer of Small Things</span><span class="cost">$240</span></span></a></figure>
-    <figure><a class="piece" href="#"><img src="img/ephemeral/02.jpg" alt="Horn Ring"><span class="over"><span class="name">Horn Ring</span><span class="cost">$380</span></span></a></figure>
-    <figure><a class="piece" href="#"><img src="img/ephemeral/03.jpg" alt="Egg of Quiet"><span class="over"><span class="name">Egg of Quiet</span><span class="cost">$290</span></span></a></figure>
+    <figure><a class="piece" href="#"><span class="placeholder-fill"></span><span class="over"><span class="name">Bearer of Small Things</span><span class="cost">$240</span></span></a></figure>
+    <figure><a class="piece" href="#"><span class="placeholder-fill"></span><span class="over"><span class="name">Horn Ring</span><span class="cost">$380</span></span></a></figure>
+    <figure><a class="piece" href="#"><span class="placeholder-fill"></span><span class="over"><span class="name">Egg of Quiet</span><span class="cost">$290</span></span></a></figure>
   </section>
   </div>
 
