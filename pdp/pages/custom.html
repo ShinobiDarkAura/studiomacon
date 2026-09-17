@@ -471,7 +471,7 @@
     document.querySelectorAll('[data-pay]').forEach(function (b) {
       b.addEventListener('click', function () {
         if (b.disabled) return;
-        var body = b.closest('.acc-body'), order = document.querySelector('.order'), details = {kind: kind};
+        var body = b.closest('.acc-body'), order = document.querySelector('.order'), details = {kind: kind.charAt(0).toUpperCase() + kind.slice(1)};
         order.querySelectorAll('input[id], textarea[id]').forEach(function (i) { if (i.type !== 'file' && i.value) details[(i.placeholder || i.id).replace(/^e\.g\.\s*/, '').slice(0, 40)] = i.value; });
         order.querySelectorAll('[aria-pressed="true"]').forEach(function (c, n) {          // named after the step, so the studio's email reads "Species: Dog"
           var g = c.closest('[data-choice]');
