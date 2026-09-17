@@ -237,7 +237,7 @@
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
     // side-by-side groups cascade instead of arriving at once
-    var GROUPS = ['.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
+    var GROUPS = ['.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
