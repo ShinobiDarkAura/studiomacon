@@ -1,0 +1,25 @@
+# Old Wix addresses -> new pages (Cloudflare Pages / Netlify format). 301 = permanent, so search rankings carry over.
+/shop                 /#pieces            301
+/story                /story.html         301
+/custom               /custom.html        301
+/contact              /contact.html       301
+/shipping-and-returns /shipping.html      301
+/cart-page            /bag.html           301
+/product-page/pip                    /pip.html 301
+/product-page/rebi                   /rebi.html 301
+/product-page/ren                    /ren.html 301
+/product-page/zuma                   /zuma.html 301
+/product-page/ori                    /ori.html 301
+/product-page/yael                   /yael.html 301
+/product-page/milo                   /milo.html 301
+/product-page/eleph                  /eleph.html 301
+/product-page/ibi                    /ibi.html 301
+/product-page/zuma-ring              /zuma-ring.html 301
+/product-page/eclipse-ring           /eclipse-ring.html 301
+/product-page/sietch-aperture        /sietch-aperture.html 301
+/product-page/lunar-canyon-ring      /lunar-canyon-ring.html 301
+/product-page/wonderhorn-talisman    /wonderhorn-talisman.html 301
+/product-page/ear-cuff               /ear-cuff.html 301
+/product-page/starshipkey-pendant    /starshipkey-pendant.html 301
+/product-page/meridian-egg-ring      /meridian-egg-ring.html 301
+/product-page/macon-cap              /index.html 301

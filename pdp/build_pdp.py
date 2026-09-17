@@ -346,7 +346,50 @@ def light(doc):
     return re.sub(r'<img [^>]*?src="(img/[^"]+?\.(?:jpg|png))"[^>]*>', one, doc)
 
 
-def save(name, doc):
+SITE = "https://studiomacon.co"
+PAGE_META = {          # search and share descriptions for the non-product pages
+    "index.html": "Handmade bronze totems and silver jewelry, sketched, carved in wax and cast by hand in Southern California. Made to order.",
+    "custom.html": "Commission a one-of-a-kind bronze totem or piece of jewelry, sketched for you, carved by hand in wax and cast at a local foundry.",
+    "story.html": "Studio Maçon was founded by Alex and Hannah, whose work is inspired by ancient artifacts and the objects they cared for as children.",
+    "contact.html": "Questions about a piece, an order or a commission. Write to Studio Maçon.",
+    "shipping.html": "Every piece is made to order. Delivery times, international shipping, sizing and returns.",
+    "inspiration.html": "The images, objects and places behind Studio Maçon's artifacts.",
+    "bag.html": "Your bag at Studio Maçon.",
+}
+NOINDEX = {"bag.html", "checkout.html", "confirmation.html", "404.html"} | {f"{x}.html" for x in ("ooak-vessel", "ooak-pendant", "ooak-pouch", "macon-cap")}
+SITEMAP = []
+
+
+def seo(name, doc, product=None):
+    """Description, canonical, share tags, and product details for Google, added to <head>."""
+    title = re.search(r"<title>(.*?)</title>", doc).group(1)
+    url = SITE + ("/" if name == "index.html" else "/" + name)
+    if product:
+        desc, image = DESC[product["slug"]], f'{SITE}/img/{product["slug"]}/hero.jpg'
+    else:
+        desc, image = PAGE_META.get(name, PAGE_META["index.html"]), f"{SITE}/video/poster-process.jpg"
+    desc = html.escape(desc[:300], quote=True)
+    tags = [f'<meta name="description" content="{desc}">', f'<link rel="canonical" href="{url}">',
+            '<meta property="og:site_name" content="Studio Maçon">', f'<meta property="og:title" content="{title}">',
+            f'<meta property="og:description" content="{desc}">', f'<meta property="og:url" content="{url}">',
+            f'<meta property="og:image" content="{image}">', f'<meta property="og:type" content="{"product" if product else "website"}">',
+            '<meta name="twitter:card" content="summary_large_image">']
+    if name in NOINDEX:
+        tags.append('<meta name="robots" content="noindex">')
+    else:
+        SITEMAP.append(url)
+    if product:
+        offers = [{"@type": "Offer", "price": f'{v["price"]:.2f}', "priceCurrency": "USD", "availability": "https://schema.org/InStock",
+                   "url": url} for v in SHOPIFY.get(product["slug"], {}).get("variants", [])] or \
+                 [{"@type": "Offer", "price": f'{float(product["price"]):.2f}', "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": url}]
+        ld = {"@context": "https://schema.org", "@type": "Product", "name": product["name"], "description": DESC[product["slug"]],
+              "image": [image], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": product["slug"], "offers": offers}
+        tags.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + '</script>')
+    return doc.replace("</title>", "</title>\n" + "\n".join(tags), 1)
+
+
+def save(name, doc, product=None):
+    doc = seo(name, doc, product)
     doc = light(doc)
     left = re.findall(r"\{\{[A-Z]+\}\}", doc)
     assert not left, (name, "unfilled template tokens", left)
@@ -422,7 +465,7 @@ def main():
         save(f, one_block(doc))
         print("  ", f)
     for p in products:
-        save(f"{p['slug']}.html", one_block(page(p, template, related_block(p, products))))
+        save(f"{p['slug']}.html", one_block(page(p, template, related_block(p, products))), product=p)
         print("  ", p["slug"])
     # Shop: every piece on one wall, linking to its page
     tiles = []
@@ -447,6 +490,11 @@ def main():
     shop = (shop.replace("{{TOTEMCOUNT}}", str(len(totems))).replace("{{JEWELRYCOUNT}}", str(len(products) - len(totems)))
                 .replace("{{TOTEMGRID}}", "\n".join(tiles[:len(totems)])).replace("{{JEWELRYGRID}}", "\n".join(tiles[len(totems):])))
     save("index.html", shop)
+    with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                + "".join(f"  <url><loc>{u}</loc></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")
+    with open(os.path.join(OUT, "robots.txt"), "w") as f:
+        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nSitemap: {SITE}/sitemap.xml\n")
     print(f"{len(products)} pages")
 
 
