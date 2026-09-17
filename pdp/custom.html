@@ -55,7 +55,7 @@
 
   .line{display:block;border-bottom:.5px solid rgba(0,0,0,.2);padding:0 0 6px}
   .line input,.line textarea,.line select{width:100%;border:0;outline:0;background:none;font-size:16px;resize:none}
-  .line input::placeholder,.line textarea::placeholder{color:rgba(0,0,0,.35)}
+  .line input::placeholder,.line textarea::placeholder{color:rgba(0,0,0,.25)}
   .line textarea{min-height:0;height:26px;line-height:26px;padding:0;overflow:hidden}
   .notes-q{margin-bottom:26px}
   .reassure{margin:10px 0 0;font-size:13px;color:rgba(0,0,0,.5)}
@@ -159,8 +159,8 @@
 
     <div class="steps-acc" id="steps">
       <!-- 1 -->
-      <div class="acc-item step open" data-step="1">
-        <button class="acc-head" aria-expanded="true"><span class="n">01</span>Your Animal<span class="done" hidden>Done</span></button>
+      <div class="acc-item step" data-step="1">
+        <button class="acc-head" aria-expanded="false"><span class="n">01</span>Your Animal<span class="done" hidden>Done</span></button>
         <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="q">
             <span class="label">Species <span class="req">*</span></span>
@@ -179,7 +179,7 @@
             <span class="line"><input id="c-name" data-required placeholder="Their name"></span>
           </div>
           <div class="q details-q">
-            <div class="label-row"><label class="label" for="c-breed">Details <span class="req">*</span></label><span class="hint-side">Helps us capture their exact features.</span></div>
+            <div class="label-row"><label class="label" for="c-breed">Details <span class="req">*</span></label></div>
             <span class="line"><input id="c-breed" data-required placeholder="e.g. Whippet, brindle coat, one ear that flops, always sits leaning left"></span>
           </div>
           <button type="button" class="next" data-next disabled>Continue to Photos</button>
