@@ -100,13 +100,13 @@
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
   .welcome .prose h1{margin-bottom:44px}
   .welcome + .set .wall-head{padding-top:0}
-  /* the Bureau of Provenance stamp: angled over the top of the last tile, its bottom 18% overlapping the picture */
-  .stamped{position:relative}
-  .stamped .stamp{position:absolute;z-index:3;width:clamp(120px,13vw,200px);right:calc(var(--pad) + 24px + 4%);top:0;
-    transform:translateY(-82%) rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;
+  /* the Bureau of Provenance stamp: pressed onto the bottom edge of the film, angled, its top tenth over the picture */
+  .film-wrap{position:relative}
+  .stamped .stamp{position:absolute;z-index:3;width:clamp(120px,13vw,200px);right:11.4vw;bottom:0;
+    transform:translateY(98.3%) rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;
     transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
-  /* pressed down once the third tile has settled */
-  .stamped .stamp.on{opacity:1;transform:translateY(-82%) rotate(-14deg)}
+  /* pressed down onto the edge of the film, its top tenth overlapping the picture */
+  .stamped .stamp.on{opacity:1;transform:translateY(98.3%) rotate(-14deg)}
   @media (max-width:599px){ .stamped .stamp{display:none} }
   /* Back to Shop lands here, with the Ephemeral title just under the nav */
   #pieces{scroll-margin-top:calc(var(--head) + 36px)}
@@ -123,7 +123,8 @@
   @media (min-width:768px){ .wall-head h2{font-size:66.25px} }
   @media (min-width:1200px){ .wall-head h2{font-size:75px} }
 
-  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 24px)}
+  /* the grid sits further in than the rest of the page, so the pieces read smaller and calmer */
+  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 24px + 7.5vw)}
   .wall figure{margin:0;border-radius:6px;overflow:hidden;background:var(--field)}
   .wall figure.dr-emerge{filter:none;transform:translateY(90px);
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
@@ -193,6 +194,7 @@
 </header>
 
 <main>
+  <div class="film-wrap stamped">
   <section class="film" aria-label="Studio Maçon film">
     <video autoplay muted loop playsinline preload="metadata" poster="video/poster-process.jpg">
       <source src="video/film-process-480.mp4" type="video/mp4" media="(max-width:700px)">
@@ -202,6 +204,8 @@
     <p class="tagline">Artifacts of Love</p>
     <span class="scroll-cue" aria-hidden="true"><i></i></span>
   </section>
+  <img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="Maçon Bureau of Provenance stamp" data-no-emerge>
+  </div>
   <section class="section welcome">
     <div class="prose">
       <p class="eyebrow">Studio Maçon</p>
@@ -228,8 +232,7 @@
   <header class="wall-head">
     <h2 class="set-title">Totems</h2><span class="count">9</span>
   </header>
-  <section class="wall shop-wall stamped">
-    <img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="Maçon Bureau of Provenance stamp" data-no-emerge>
+  <section class="wall shop-wall">
     <figure><a class="piece" href="pip.html"><img width="1370" height="934" src="img/pip/hero.jpg.webp" alt="Pip" loading="eager"><img width="764" height="1018" class="held" src="img/pip/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="rebi.html"><img width="1600" height="1066" src="img/rebi/hero.jpg.webp" alt="Rebi" loading="eager"><img width="613" height="816" class="held" src="img/rebi/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Rebi</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="ren.html"><img width="1600" height="1216" src="img/ren/hero.jpg.webp" alt="Ren" loading="eager"><img width="814" height="1084" class="held" src="img/ren/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Ren</span><span class="cost">$220</span></span></a></figure>
@@ -686,18 +689,11 @@
   })();
 </script>
 <script>
-  // The stamp lands after the third tile in the Totems row has finished arriving
+  // The stamp presses down once the logotype has finished arriving
   (function () {
-    var stamp = document.querySelector('.stamped .stamp'), tile = document.querySelectorAll('.stamped figure')[2];
-    if (!stamp || !tile) return;
-    // the stamp presses down the moment the third totem has finished arriving
-    function land() {
-      var ms = (parseFloat(getComputedStyle(tile).getPropertyValue('--stagger')) || 0);
-      setTimeout(function () { stamp.classList.add('on'); }, ms + 620);
-    }
-    if (tile.classList.contains('is-seen') || !tile.classList.contains('dr-emerge')) return land();
-    new MutationObserver(function (m, o) { if (tile.classList.contains('is-seen')) { o.disconnect(); land(); } })
-      .observe(tile, {attributes: true, attributeFilter: ['class']});
+    var stamp = document.querySelector('.stamped .stamp'); if (!stamp) return;
+    var wait = scrollY > 40 || matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 2900;
+    setTimeout(function () { stamp.classList.add('on'); }, wait);
   })();
 
   // The logotype rests in the middle of the film for eight seconds, then fades and hands
