@@ -13,6 +13,7 @@
   --pad:24px;
   --head:84px;
   --ease:cubic-bezier(.22,.7,.2,1);
+  --tile-name:calc(18px + 3pt);          /* piece names under pictures: shop grid (phones) and Also Worth Keeping, always the same */
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
