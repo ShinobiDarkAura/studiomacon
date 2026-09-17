@@ -221,11 +221,15 @@
           el.classList.add('dr-emerge');
           // the inspiration wall is already in place wherever it fills the first
           // screen; only pieces further down slide in as you scroll
-          var settled = el.closest('.wall, .wall-head') && el.getBoundingClientRect().top < innerHeight;
-          if (settled) el.classList.add('is-seen');
           void el.offsetWidth;
           el.style.transition = '';
-          if (still || settled) { el.classList.add('is-seen'); return; }
+          if (still) { el.classList.add('is-seen'); return; }
+          // the inspiration wall's first screen plays in full on load, even the
+          // pieces only partly in view, so no part of the screen is left empty
+          if (el.closest('.wall, .wall-head') && el.getBoundingClientRect().top < innerHeight) {
+            requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-seen'); }); });
+            return;
+          }
           // let the hidden state paint first, or blocks already on screen at load
           // would jump straight to their resting place without animating
           // (and wait for the stylesheet: until the hidden state has actually taken
@@ -238,9 +242,14 @@
         });
     }
     // wall pieces cascade by their position in the row, so each row settles left to right
+    // pieces already on screen at load arrive top to bottom, the rest by column
     document.querySelectorAll('.wall figure').forEach(function (f) {
-      f.style.setProperty('--stagger', Math.round(f.getBoundingClientRect().left / innerWidth * 4) * 80 + 'ms');
+      var r = f.getBoundingClientRect();
+      var d = r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 + r.left / innerWidth * 120
+                                  : Math.round(r.left / innerWidth * 4) * 80;
+      f.style.setProperty('--stagger', Math.round(d) + 'ms');
     });
+    document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
     GROUPS.forEach(function (g) {
       document.querySelectorAll(g).forEach(function (group) {
         [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });

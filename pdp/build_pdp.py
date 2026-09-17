@@ -264,10 +264,11 @@ def main():
     for f in sorted(os.listdir(os.path.join(OUT, "pages"))):
         doc = shared(open(os.path.join(OUT, "pages", f), encoding="utf-8").read())
         if "{{EXAMPLES}}" in doc:
+            CUT = ' class="cutout"'
             imgs = json.load(open(os.path.join(OUT, "img", "commissions", "index.json")))
             doc = doc.replace("{{EXAMPLES}}", "\n".join(
-                f'    <figure><img src="img/commissions/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 9 else "lazy"}"></figure>'
-                for i, (n, w, h) in enumerate(imgs)))
+                f'    <figure{CUT if cut else ""}><img src="img/commissions/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 8 else "lazy"}"></figure>'
+                for i, (n, w, h, cut) in enumerate(imgs)))
         if "{{GRID}}" in doc:
             imgs = json.load(open(os.path.join(OUT, "img", "inspiration", "index.json")))
             doc = (doc.replace("{{COUNT}}", str(len(imgs)))
