@@ -200,33 +200,38 @@
       return 1;
     }
 
-    var queued = false;
+    var queued = false, held = null, head = document.querySelector('.head');
     function tone() {
       queued = false;
+      // the whole nav is one unit: read under each part, then colour every part the same
+      var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
+      var grid = null;
+      document.elementsFromPoint(innerWidth / 2, mid).some(function (el) {
+        if (el.closest('.head')) return false;
+        grid = el.closest('.wall, .examples, .gallery'); return true;
+      });
+      if (grid && held === grid) return;          // over an image grid: keep the colour until the grid has passed
+      held = grid;
+      var dark = 0, counted = 0;
       parts.forEach(function (p) {
         var r = p.getBoundingClientRect(); if (!r.width) return;
-        // sample a few points across the part and go by the darkest reading
         var y = r.top + r.height / 2, l = 1, seen = false;
-        // over an image grid, keep the colour the nav had when it entered the grid, and only
-        // read again once the whole grid has scrolled past
-        var grid = null;
-        document.elementsFromPoint(r.left + r.width / 2, y).some(function (el) {
-          if (el.closest('.head')) return false;
-          grid = el.closest('.wall, .examples, .gallery'); return true;
-        });
-        if (grid && p._grid === grid) return;
-        p._grid = grid;
         [0.15, 0.5, 0.85].forEach(function (f) {
           var v = lumaAt(r.left + r.width * f, y);
           if (v === null) return;
           seen = true; l = Math.min(l, v);
         });
-        if (seen) p.classList.toggle('on-dark', l < LIGHT);
+        if (!seen) return;
+        counted++; if (l < LIGHT) dark++;
       });
+      if (!counted) return;
+      var onDark = dark * 2 > counted;              // most of the nav sits over something dark
+      parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
     }
     function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
     addEventListener('scroll', soon, {passive: true}); addEventListener('resize', soon);
-    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', soon); });
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', function () { held = null; soon(); }); });
+    addEventListener('load', function () { held = null; soon(); });
     tone();
   })();
 
