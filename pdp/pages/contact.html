@@ -21,7 +21,11 @@
   .form textarea{min-height:120px}
   .form .cta{margin-top:10px}
   .sent{margin:0;font-size:17px}
-  @media (min-width:768px){ .split .pics figure{aspect-ratio:auto;height:100vh} }
+  @media (min-width:768px){
+    .split .pics figure{aspect-ratio:auto;height:100vh}
+    /* email and Instagram pinned to the foot of the screen, 1px off the bottom edge */
+    .split .copy .ways{position:absolute;left:0;right:0;bottom:1px;margin:0}
+  }
 </style>
 </head>
 <body>
@@ -35,6 +39,7 @@
     </div>
 
     <div class="copy">
+      <a class="back hover-line" href="index.html">← Back to Shop</a>
       <p class="eyebrow">Say Hello</p>
       <h1>Contact</h1>
       <p class="body">Questions about a piece, an order, or a commission.<br>We read everything, and we'll write back.</p>
@@ -49,7 +54,7 @@
         <label class="field"><textarea name="message" placeholder="Message" aria-label="Message" required></textarea></label>
         <button class="cta">Send</button>
       </form>
-      <p class="ways"><a class="hover-line" href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a><span class="dot" aria-hidden="true">•</span><a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">@studiomacon</a></p>
+      <p class="ways" data-no-emerge><a data-no-emerge class="hover-line" href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a><span class="dot" data-no-emerge aria-hidden="true">•</span><a data-no-emerge class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">@studiomacon</a></p>
     </div>
   </section>
 </main>

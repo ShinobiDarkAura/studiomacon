@@ -188,6 +188,10 @@ body.fit{display:flex;flex-direction:column;min-height:100vh;min-height:100svh}
 body.fit main{flex:1;display:flex;flex-direction:column;justify-content:center;width:100%}
 body.fit footer{min-height:0;padding-top:48px}
 
+/* light grey way back to the shop, at the top of a right-hand column */
+.back{align-self:flex-start;display:inline-block;margin:0 0 28px;font-size:13px;color:rgba(0,0,0,.4)}
+.back:hover{color:#000}
+
 /* keyboard focus */
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
 .field:focus-within{border-bottom-color:#000}
