@@ -84,6 +84,8 @@
   .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}
   .piece .name{font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
   .piece .cost{font-size:14px;color:rgba(0,0,0,.55)}
+  /* desktop: square pictures */
+  @media (min-width:768px){ .piece img,.piece .placeholder-fill{aspect-ratio:1/1} }
   @media (max-width:767px){
     .piece .over{padding:10px 0 14px;gap:2px}
     .piece .name{font-size:var(--tile-name)}
