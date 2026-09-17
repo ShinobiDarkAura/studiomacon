@@ -14,7 +14,7 @@
   // else, the background colour. Only very light ground keeps the nav black.
   (function () {
     var LIGHT = 0.82;                      // "super light": white, pale grey, paper
-    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .mark, .head .right'));
+    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .logotype, .head .right'));
     var maps = new WeakMap();
 
     function lumaOf(r, g, b) { return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }
@@ -193,27 +193,4 @@
     }).observe(document.body, {childList: true, subtree: true});
   })();
 
-  // Opening: the mark starts large in the middle of the screen, then glides up into
-  // the nav after a moment, or as soon as the visitor starts scrolling.
-  (function () {
-    var mark = document.querySelector('.head .mark'); if (!mark) return;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (scrollY > 40) return;                               // reloaded partway down: no intro
-    var r = mark.getBoundingClientRect();
-    var s = 3.2, dx = innerWidth / 2 - (r.left + r.width / 2), dy = innerHeight / 2 - (r.top + r.height / 2);
-    mark.style.transition = 'none';
-    mark.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + s + ')';
-    mark.style.zIndex = 30;
-    var done = false;
-    function dock() {
-      if (done) return; done = true;
-      mark.style.transition = 'transform 1.1s cubic-bezier(.65,0,.25,1)';
-      mark.style.transform = '';
-      removeEventListener('scroll', dock); removeEventListener('wheel', dock); removeEventListener('touchmove', dock);
-    }
-    requestAnimationFrame(function () { requestAnimationFrame(function () {
-      setTimeout(dock, 2600);
-      addEventListener('scroll', dock, {passive: true}); addEventListener('wheel', dock, {passive: true}); addEventListener('touchmove', dock, {passive: true});
-    }); });
-  })();
 </script>
