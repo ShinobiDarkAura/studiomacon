@@ -78,8 +78,11 @@
   /* steps: accordions that unlock in order */
   .order .price{font-size:19px;margin:0 0 22px}
   .start{margin:4px 0 34px}
-  .steps-acc{border-top:1px solid #000}
-  .step[data-step="1"]{border-bottom-color:#000}
+  .steps-acc{border-top:1px solid var(--rule);transition:border-color .4s ease}
+  .step[data-step="1"]{transition:border-color .4s ease}
+  /* the first row is outlined in black only once a commission has been started */
+  .steps-acc.started{border-top-color:#000}
+  .steps-acc.started .step[data-step="1"]{border-bottom-color:#000}
   .choices.two{grid-template-columns:repeat(2,1fr)}
   .choices.three{grid-template-columns:repeat(3,1fr)}
   .branch{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .5s var(--ease),opacity .35s ease}
@@ -633,6 +636,7 @@
     // Start a Commission opens the first step and brings it into view
     document.getElementById('start').addEventListener('click', function () {
       var first = steps[0];
+      document.getElementById('steps').classList.add('started');
       first.classList.remove('locked'); first.querySelector('.acc-head').removeAttribute('aria-disabled');
       setOpen(first, true);
       setTimeout(function () { first.scrollIntoView({block: 'nearest', behavior: 'smooth'}); }, 200);
