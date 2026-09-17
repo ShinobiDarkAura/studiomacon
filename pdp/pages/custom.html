@@ -39,6 +39,9 @@
   .q > .label{display:block;margin:0 0 12px;font-size:calc(17px - 4pt);color:#000}
   .q .req{color:#c8321e;font-size:calc(1em + 2pt);line-height:0}
   .hint{margin:-6px 0 12px;font-size:14px;color:rgba(0,0,0,.55)}
+  .label-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin:0 0 12px}
+  .label-row .label{margin:0;font-size:calc(17px - 4pt);color:#000}
+  .hint-side{font-size:13px;color:rgba(0,0,0,.5);text-align:right}
 
   .choices{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
   .choices button{height:48px;border:1px solid var(--rule);font-size:15px;transition:border-color .2s,background .2s,color .2s}
@@ -143,8 +146,7 @@
             <span class="line"><input id="c-name" data-required placeholder="Their name"></span>
           </div>
           <div class="q">
-            <label class="label" for="c-breed">Details <span class="req">*</span></label>
-            <p class="hint">Helps us capture their exact features.</p>
+            <div class="label-row"><label class="label" for="c-breed">Details <span class="req">*</span></label><span class="hint-side">Helps us capture their exact features.</span></div>
             <span class="line"><input id="c-breed" data-required placeholder="e.g. Whippet, brindle coat, one ear that flops, always sits leaning left"></span>
           </div>
           <button type="button" class="next" data-next disabled>Continue to Photos</button>
