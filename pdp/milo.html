@@ -6,7 +6,7 @@
 <title>Milo | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789632519">
+<link rel="stylesheet" href="site.css?v=1789632717">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -96,7 +96,17 @@
   @media (prefers-reduced-motion:reduce){ .thumbs button{animation:none} }
   @media (min-width:768px){ .thumbs{display:none} }
   /* phones: other pieces, one full screen, 2 × 2 */
-  .related{display:none}
+  /* desktop: four across under the product, title centred above */
+  .related{padding:180px calc(var(--pad) + 24px) 160px;text-align:center}
+  .related h2{margin:0 0 20px;font:400 53px/1 var(--serif);text-transform:uppercase}
+  .related .rel-blurb{margin:0 auto 56px;max-width:480px;font-size:16px;line-height:1.55}
+  .rel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:left}
+  .rel-piece{display:block;color:#000}
+  .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--field)}
+  .rel-frame img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .rel-piece:hover .rel-frame img{transform:scale(1.02)}
+  .rel-name{display:block;margin:14px 0 4px;font:400 22px/1 var(--serif);text-transform:uppercase}
+  .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
   @media (max-width:767px){
     .related{display:flex;flex-direction:column;justify-content:center;min-height:100vh;min-height:100svh;padding:72px 8px 48px;text-align:center}
     .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
@@ -187,6 +197,7 @@
 
   <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2><p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p><div class="rel-grid"><a class="rel-piece" href="ibi.html"><span class="rel-frame"><img width="1600" height="1131" src="img/ibi/hero.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Ibi</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="pip.html"><span class="rel-frame"><img width="1370" height="934" src="img/pip/hero.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Pip</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="rebi.html"><span class="rel-frame"><img width="1600" height="1066" src="img/rebi/hero.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Rebi</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="ren.html"><span class="rel-frame"><img width="1600" height="1216" src="img/ren/hero.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Ren</span><span class="rel-cost">$220</span></a></div></section>
 
+  <!-- lore and making blocks, parked for now
   <section class="closing">
     <div class="big" role="presentation"></div>
     <p class="chunk">Milo has crossed a great deal of country to arrive here, and seems glad, in its quiet way, to finally stop moving. Its surface takes on the character of whoever holds it most. Over the years, the two tend to grow alike.</p>
@@ -194,6 +205,7 @@
     <p class="chunk">Each piece is made to order. It begins as a sketch on paper, is carved by hand in wax, and passes through a local foundry before being refined and polished at the bench. Allow up to two weeks for yours to take shape.</p>
     <div class="big" role="presentation"></div>
   </section>
+  -->
 </main>
 
 <footer>
@@ -575,6 +587,12 @@
   })();
 </script>
 <script>
+  // Desktop: Back to Shop belongs to the product's right column, so it fades away once that column has scrolled past
+  (function () {
+    var back = document.querySelector('.back'), product = document.querySelector('.product');
+    if (!back || !product || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (e) { back.classList.toggle('gone', !e[0].isIntersecting); }, {rootMargin: '-120px 0px 0px 0px'}).observe(product);
+  })();
   // Ring size: the bordered block opens a panel of sizes; picking one closes it.
   document.querySelectorAll('[data-size]').forEach(function (box) {
     var toggle = box.querySelector('.size-toggle'), value = box.querySelector('.size-value');

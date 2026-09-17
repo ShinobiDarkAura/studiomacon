@@ -207,6 +207,8 @@ body.fit footer{min-height:0;padding-top:48px}
 /* light grey way back to the shop, at the top of a right-hand column */
 .back{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin:0 0 28px;font-size:calc(16px - 1pt);color:rgba(0,0,0,.4);transition:color .2s ease}
 .back:hover{color:#000}
+.back{transition:color .2s ease,opacity .35s ease}
+.back.gone{opacity:0;pointer-events:none}
 .back-icon{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ease)}
 .back:hover .back-icon{transform:translateX(-4px)}
 /* desktop: it moves up into the nav row, lined up with the left edge of its column and level with Bag */
