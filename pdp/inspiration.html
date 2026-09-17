@@ -30,9 +30,9 @@
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
     <a href="index.html" class="desk hover-line">Shop</a>
-    <a href="story.html" class="desk hover-line">Story</a>
-    <a href="custom.html" class="desk hover-line">Commissions</a>
+    <a href="custom.html" class="desk hover-line">Commission</a>
     <a href="inspiration.html" class="desk hover-line">Inspiration</a>
+    <a href="story.html" class="desk hover-line">Story</a>
   </div>
   <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
@@ -393,6 +393,15 @@
         io.unobserve(e.target);
       });
     }, {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});
+    // the footer sits against the page's bottom edge, where the main trigger line
+    // can never be crossed, so it reveals as soon as any of it is on screen
+    var edge = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        edge.unobserve(e.target);
+      });
+    }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
 
     function arm(root) {
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
@@ -415,7 +424,7 @@
           var tries = 0;
           (function ready() {
             if (getComputedStyle(el).opacity !== '0' && tries++ < 120) return requestAnimationFrame(ready);
-            requestAnimationFrame(function () { io.observe(el); });
+            requestAnimationFrame(function () { (el.closest('footer') ? edge : io).observe(el); });
           })();
         });
     }
@@ -431,12 +440,16 @@
     arm(document);
     // Blocks in the last few pixels of the page can't rise past the trigger
     // line, so reveal whatever is on screen once the bottom is reached.
-    addEventListener('scroll', function () {
+    function atBottom() {
       if (still || innerHeight + scrollY < document.documentElement.scrollHeight - 2) return;
       document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
         if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
       });
-    }, {passive: true});
+    }
+    addEventListener('scroll', atBottom, {passive: true});
+    // a reload lands back at the old scroll position without necessarily scrolling,
+    // so check once everything has loaded and been armed as well
+    addEventListener('load', function () { setTimeout(atBottom, 80); setTimeout(atBottom, 400); });
     new MutationObserver(function (muts) {
       muts.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) arm(n); }); });
     }).observe(document.body, {childList: true, subtree: true});

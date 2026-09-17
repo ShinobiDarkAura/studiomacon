@@ -14,13 +14,25 @@
 
   .info{padding:28px var(--pad) 0;text-align:center}
   .price{font-size:19px;margin:0 0 18px}
-  .size{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 12px;
-    border:1px solid var(--rule);padding:0 0 0 16px;text-align:left}
-  .size span{font-size:15px;text-transform:uppercase}
-  .size select{border:0;height:52px;padding:0 44px 0 16px;font-size:16px;cursor:pointer;
-    -webkit-appearance:none;appearance:none;
-    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.3'/%3E%3C/svg%3E") no-repeat right 20px center / 12px 8px}
-  .acc-head{font-size:calc(17px - 4pt)}          /* product pages run their accordions a point smaller */
+  /* ring size: the whole bordered block is the control; sizes open beneath it */
+  .size{position:relative;margin:0 0 12px;border:1px solid var(--rule);text-align:left}
+  .size-toggle{display:flex;align-items:center;gap:16px;width:100%;height:52px;padding:0 20px 0 16px;cursor:pointer}
+  .size-label{font-size:15px;text-transform:uppercase;margin-right:auto}
+  .size-value{font-size:16px}
+  .size.picked .size-value{font-weight:500}
+  .chev{width:12px;height:8px;flex:none;transition:transform .35s var(--ease);
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.3'/%3E%3C/svg%3E") center/12px 8px no-repeat}
+  .size.open .chev{transform:rotate(180deg)}
+  .size-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+  .size.open .size-panel{grid-template-rows:1fr}
+  .size-inner{overflow:hidden}
+  .size-list{list-style:none;margin:0;padding:4px 16px 16px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+    border-top:1px solid var(--rule);padding-top:16px;opacity:0;transition:opacity .3s ease}
+  .size.open .size-list{opacity:1;transition-delay:.08s}
+  .size-list li{display:grid;place-items:center;height:40px;border:1px solid var(--rule);font-size:15px;cursor:pointer;
+    transition:border-color .2s ease,background .2s ease,color .2s ease}
+  .size-list li:hover,.size-list li:focus{border-color:#000;outline:none}
+  .size-list li[aria-selected="true"]{background:#000;color:#fff;border-color:#000}
   .buy{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .apple-pay{display:flex;align-items:center;justify-content:center;width:100%;height:55px;background:#000;color:#fff;
     gap:5px;letter-spacing:-.01em;font:500 23px/1 -apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
@@ -76,9 +88,9 @@
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
     <a href="index.html" class="desk hover-line">Shop</a>
-    <a href="story.html" class="desk hover-line">Story</a>
-    <a href="custom.html" class="desk hover-line">Commissions</a>
+    <a href="custom.html" class="desk hover-line">Commission</a>
     <a href="inspiration.html" class="desk hover-line">Inspiration</a>
+    <a href="story.html" class="desk hover-line">Story</a>
   </div>
   <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
@@ -96,7 +108,7 @@
       <p class="eyebrow">Ellipses in Patient Equilibrium</p>
       <h1>Eclipse Ring</h1>
       <p class="price">$340</p>
-      <label class="size"><span>Size</span><select><option>Select size</option><option>4</option><option>4.5</option><option>5</option><option>5.5</option><option>6</option><option>6.5</option><option>7</option><option>7.5</option><option>8</option><option>8.5</option><option>9</option><option>9.5</option><option>10</option><option>10.5</option><option>11</option></select></label>
+      <div class="size" data-size><button type="button" class="size-toggle" aria-haspopup="listbox" aria-expanded="false"><span class="size-label">Size</span><span class="size-value">Select size</span><i class="chev" aria-hidden="true"></i></button><div class="size-panel"><div class="size-inner"><ul class="size-list" role="listbox" aria-label="Ring size"><li role="option" aria-selected="false" tabindex="-1" data-value="4">4</li><li role="option" aria-selected="false" tabindex="-1" data-value="4.5">4.5</li><li role="option" aria-selected="false" tabindex="-1" data-value="5">5</li><li role="option" aria-selected="false" tabindex="-1" data-value="5.5">5.5</li><li role="option" aria-selected="false" tabindex="-1" data-value="6">6</li><li role="option" aria-selected="false" tabindex="-1" data-value="6.5">6.5</li><li role="option" aria-selected="false" tabindex="-1" data-value="7">7</li><li role="option" aria-selected="false" tabindex="-1" data-value="7.5">7.5</li><li role="option" aria-selected="false" tabindex="-1" data-value="8">8</li><li role="option" aria-selected="false" tabindex="-1" data-value="8.5">8.5</li><li role="option" aria-selected="false" tabindex="-1" data-value="9">9</li><li role="option" aria-selected="false" tabindex="-1" data-value="9.5">9.5</li><li role="option" aria-selected="false" tabindex="-1" data-value="10">10</li><li role="option" aria-selected="false" tabindex="-1" data-value="10.5">10.5</li><li role="option" aria-selected="false" tabindex="-1" data-value="11">11</li></ul></div></div></div>
       <div class="buy" id="bag">
         <button class="cta">Add to Bag</button>
         <button class="apple-pay" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
@@ -259,6 +271,15 @@
         io.unobserve(e.target);
       });
     }, {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});
+    // the footer sits against the page's bottom edge, where the main trigger line
+    // can never be crossed, so it reveals as soon as any of it is on screen
+    var edge = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        edge.unobserve(e.target);
+      });
+    }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
 
     function arm(root) {
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
@@ -281,7 +302,7 @@
           var tries = 0;
           (function ready() {
             if (getComputedStyle(el).opacity !== '0' && tries++ < 120) return requestAnimationFrame(ready);
-            requestAnimationFrame(function () { io.observe(el); });
+            requestAnimationFrame(function () { (el.closest('footer') ? edge : io).observe(el); });
           })();
         });
     }
@@ -297,16 +318,38 @@
     arm(document);
     // Blocks in the last few pixels of the page can't rise past the trigger
     // line, so reveal whatever is on screen once the bottom is reached.
-    addEventListener('scroll', function () {
+    function atBottom() {
       if (still || innerHeight + scrollY < document.documentElement.scrollHeight - 2) return;
       document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
         if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
       });
-    }, {passive: true});
+    }
+    addEventListener('scroll', atBottom, {passive: true});
+    // a reload lands back at the old scroll position without necessarily scrolling,
+    // so check once everything has loaded and been armed as well
+    addEventListener('load', function () { setTimeout(atBottom, 80); setTimeout(atBottom, 400); });
     new MutationObserver(function (muts) {
       muts.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) arm(n); }); });
     }).observe(document.body, {childList: true, subtree: true});
   })();
+</script>
+<script>
+  // Ring size: the bordered block opens a panel of sizes; picking one closes it.
+  document.querySelectorAll('[data-size]').forEach(function (box) {
+    var toggle = box.querySelector('.size-toggle'), value = box.querySelector('.size-value');
+    var items = [].slice.call(box.querySelectorAll('li'));
+    function open(on) { box.classList.toggle('open', on); toggle.setAttribute('aria-expanded', on); }
+    toggle.addEventListener('click', function () { open(!box.classList.contains('open')); });
+    items.forEach(function (li) {
+      li.addEventListener('click', function () {
+        items.forEach(function (x) { x.setAttribute('aria-selected', x === li); });
+        value.textContent = li.dataset.value; box.classList.add('picked'); open(false);
+      });
+      li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); } });
+    });
+    document.addEventListener('click', function (e) { if (!box.contains(e.target)) open(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') open(false); });
+  });
 </script>
 <script>
   // The bag bar appears once the real button has scrolled away, and steps

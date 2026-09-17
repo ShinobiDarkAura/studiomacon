@@ -219,10 +219,13 @@ def page(p, template):
 
     size_select = ""
     if k == "ring":
-        size_select = ('<label class="size"><span>Size</span><select><option>Select size</option>'
-                       + "".join(f"<option>{s}</option>" for s in
-                                 ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11"])
-                       + "</select></label>")
+        sizes = ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11"]
+        size_select = ('<div class="size" data-size>'
+                       '<button type="button" class="size-toggle" aria-haspopup="listbox" aria-expanded="false">'
+                       '<span class="size-label">Size</span><span class="size-value">Select size</span><i class="chev" aria-hidden="true"></i></button>'
+                       '<div class="size-panel"><div class="size-inner"><ul class="size-list" role="listbox" aria-label="Ring size">'
+                       + "".join(f'<li role="option" aria-selected="false" tabindex="-1" data-value="{v}">{v}</li>' for v in sizes)
+                       + '</ul></div></div></div>')
 
     return (template
             .replace("{{TITLE}}", html.escape(name))
