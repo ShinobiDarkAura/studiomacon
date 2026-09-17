@@ -250,6 +250,21 @@
       .then(function (r) { if (!r.ok) throw new Error('enquiry failed (' + r.status + ')'); return r.json(); });
   };
 
+  // Newsletter (footer): signs the address up as a Shopify customer who accepts marketing; Klaviyo picks it up from Shopify
+  document.querySelectorAll('form[data-newsletter]').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var cfg = window.MACON_SHOP || {}, email = f.querySelector('input[type=email]').value, btn = f.querySelector('button');
+      var body = new FormData();
+      body.append('form_type', 'customer'); body.append('utf8', '\u2713');
+      body.append('contact[email]', email); body.append('contact[tags]', 'newsletter'); body.append('contact[accepts_marketing]', 'true');
+      btn.textContent = '…';
+      fetch('https://' + cfg.shop + '/contact', {method: 'POST', mode: 'no-cors', body: body})          // Shopify's own signup form; the reply can't be read cross-site
+        .then(function () { btn.textContent = 'Thank you'; f.querySelector('input').value = ''; })
+        .catch(function () { btn.textContent = 'Try again'; });
+    });
+  });
+
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
