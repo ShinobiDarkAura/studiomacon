@@ -250,7 +250,7 @@
       removeEventListener('scroll', early);
     }
     function early() { if (scrollY > 40) finish(); }
-    if (skip) { finish(); if (scrollY <= 40) setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 10000); return; }
+    if (skip) { finish(); if (scrollY <= 40) setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000); return; }
     document.body.classList.add('logo-anim');
     addEventListener('scroll', early, {passive: true});
     [].forEach.call(build.querySelectorAll('.ll'), function (l) { l.classList.add('in'); });
@@ -262,7 +262,7 @@
     later(function () { document.body.classList.remove('logo-anim'); build.remove(); }, t);
     chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
     later(finish, t + 150 + chars.length * 55 + 300);
-    setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 10000);
+    setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000);
   })();
   function cue() { var on = scrollY > 40; document.querySelector('.film').classList.toggle('scrolled', on); document.body.classList.toggle('logo-hero', !on); }
   addEventListener('scroll', cue, {passive: true}); cue();
