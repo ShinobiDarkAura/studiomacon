@@ -91,6 +91,9 @@ MADE_LINE = {
 }
 
 # pictures kept on disk (the shop hover may use them) but left off a product page's gallery
+# pieces whose page still builds but which are left off the shop and Also Worth Keeping for now
+HIDE_FROM_SHOP = {"macon-cap"}          # remove a slug here to bring it back
+
 HIDE_FROM_GALLERY = {"img/rebi/hand-1.jpg", "img/ori/hand-1.jpg", "img/ori/plain-2.jpg"}
 
 TODO = '<span class="todo">{}</span>'
@@ -325,6 +328,7 @@ def related_block(p, products):
     def family(x):
         return "cap" if x["slug"] == "macon-cap" else ("totem" if kind(x["slug"], read_port(x["slug"])[1]) == "totem" else "jewelry")
     mine = family(p)
+    products = [x for x in products if x["slug"] not in HIDE_FROM_SHOP]
     same = [x for x in products if x["slug"] != p["slug"] and family(x) == mine]
     rest = [x for x in products if x["slug"] != p["slug"] and family(x) != mine]
     start = [x["slug"] for x in products].index(p["slug"]) % max(1, len(same))
@@ -382,7 +386,7 @@ def main():
     tiles = []
     # totems together, then jewellery, then the cap at the very end
     group = lambda p: 2 if p["slug"] == "macon-cap" else (0 if kind(p["slug"], read_port(p["slug"])[1]) == "totem" else 1)
-    products = sorted(products, key=group)
+    products = sorted((x for x in products if x["slug"] not in HIDE_FROM_SHOP), key=group)
     totems = [p for p in products if group(p) == 0]
     for i, p in enumerate(products):
         # the Wonder Horn's hero is a pale cut-out; its linen photograph sits with the others
