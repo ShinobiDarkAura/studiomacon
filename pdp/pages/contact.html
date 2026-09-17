@@ -10,11 +10,15 @@
   .split .pics figure{display:grid;place-items:center;aspect-ratio:4/5}
   .split .pics img{width:78%}
   .split .copy p.body{margin:0 0 36px;font-size:17px;line-height:1.55}
-  .ways{display:grid;grid-template-columns:auto 1fr;gap:10px 28px;align-items:baseline;margin:0 0 48px}
-  .ways a{font-size:17px}
+  .ways{display:flex;justify-content:center;align-items:baseline;gap:12px;margin:0 0 48px;font-size:calc(17px - 2pt)}
+  .ways .dot{opacity:.5}
+  /* desktop: email and Instagram sit together at the foot of the first screen, centred under the form column */
+  @media (min-width:768px){ .split .copy .ways{position:absolute;left:0;right:0;bottom:16px;margin:0} }
   .form{display:grid;gap:30px}
   .form .row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-  .form .field{padding-left:0}
+  .form .field{padding:0 0 6px;border-bottom:.5px solid rgba(0,0,0,.2)}
+  .form .field input,.form .field textarea{font-size:calc(17px - 2pt);opacity:.8}
+  .form .field input::placeholder,.form .field textarea::placeholder{color:rgba(0,0,0,.35)}
   .form textarea{min-height:120px}
   .form .cta{margin-top:10px}
   .sent{margin:0;font-size:17px}
@@ -34,12 +38,9 @@
     <div class="copy">
       <p class="eyebrow">Say Hello</p>
       <h1>Contact</h1>
-      <p class="body">Questions about a piece, an order, or a commission. We read everything, and we'll write back.</p>
+      <p class="body">Questions about a piece, an order, or a commission.<br>We read everything, and we'll write back.</p>
 
-      <div class="ways">
-        <span class="label">Email</span><a class="hover-line" href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a>
-        <span class="label">Instagram</span><a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">@studiomacon</a>
-      </div>
+      <p class="ways"><a class="hover-line" href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a><span class="dot" aria-hidden="true">•</span><a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">@studiomacon</a></p>
 
       <form class="form" onsubmit="event.preventDefault();this.outerHTML='<p class=&quot;sent&quot;>Sent, thanks!</p>'">
         <div class="row">
