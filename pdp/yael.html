@@ -6,7 +6,7 @@
 <title>Yaël | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789620411">
+<link rel="stylesheet" href="site.css?v=1789620834">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -35,6 +35,12 @@
   .size-list li:hover,.size-list li:focus{border-color:#000;outline:none}
   .size-list li[aria-selected="true"]{background:#000;color:#fff;border-color:#000}
   .buy{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  /* Add to Bag: an arrow slides out to the right of the words on hover */
+  .buy .cta::after{content:"";width:0;height:14px;margin-left:0;opacity:0;background:currentColor;flex:none;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") left center/14px 14px no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") left center/14px 14px no-repeat;
+    transition:width .35s var(--ease),margin-left .35s var(--ease),opacity .25s ease}
+  .buy .cta:hover::after{width:14px;margin-left:10px;opacity:1}
   .apple-pay{display:flex;align-items:center;justify-content:center;width:100%;height:55px;background:#000;color:#fff;
     gap:5px;letter-spacing:-.01em;font:500 23px/1 -apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
   .apple-pay svg{width:19px;height:23px;margin-top:-3px;fill:#fff}
@@ -66,7 +72,7 @@
   @media (min-width:768px){
     .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
       margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
-    .gallery figure + figure{display:block;margin-top:12px;border-radius:6px;overflow:hidden}
+    .gallery figure + figure{display:block;margin-top:0;border-radius:6px;overflow:hidden}
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
     .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
