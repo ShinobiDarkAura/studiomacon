@@ -202,6 +202,11 @@ body.fit footer{min-height:0;padding-top:48px}
 .logo-artifacts .logotype{-webkit-mask-image:url(img/lockup-artifacts.svg);mask-image:url(img/lockup-artifacts.svg)}
 .logo-objects .logotype{-webkit-mask-image:url(img/lockup-objects.svg);mask-image:url(img/lockup-objects.svg)}
 
+/* Lune & Soleil trial: ?logo=lune */
+.logo-lune .logotype{aspect-ratio:839/242;-webkit-mask-image:url(img/lockup-lune-soleil.png);mask-image:url(img/lockup-lune-soleil.png)}
+.logo-lune .head .logotype{width:120px;top:8px}
+@media (min-width:768px){ .logo-lune .head .logotype{width:180px} }
+
 /* keyboard focus */
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
 .field:focus-within{border-bottom-color:#000}
