@@ -11,8 +11,9 @@
   .commission{display:block}
   .examples{columns:2;column-gap:10px;padding:calc(var(--head) + 24px) calc(var(--pad) + 12px) 0}
   .examples figure{margin:0 0 10px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
-  .examples img{width:100%;height:auto}
-  .examples figure.cutout{background:none}
+  .examples img{display:block;width:100%;height:auto}
+  /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
+  .examples figure.cutout{background:#eeeeec;padding:15%}
   .order{padding:48px calc(var(--pad) + 12px) 0}
 
   .price{font-size:19px;margin:0 0 18px}
@@ -91,7 +92,7 @@
   @media (min-width:768px){
     .commission{display:grid;grid-template-columns:minmax(0,62fr) minmax(0,38fr);gap:0 48px;align-items:start;
       padding-right:calc(var(--pad) + 12px)}
-    .examples{columns:2;column-gap:12px;padding:calc(var(--head) + 24px) 0 0 calc(var(--pad) + 12px)}
+    .examples{columns:3;column-gap:12px;padding:calc(var(--head) + 24px) 0 0 calc(var(--pad) + 12px)}
     .examples figure{margin-bottom:12px}
     /* pinned beside the wall, and scrolls on its own as steps open */
     .order{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;overscroll-behavior:contain;

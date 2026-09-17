@@ -11,8 +11,9 @@
   .commission{display:block}
   .examples{columns:2;column-gap:10px;padding:calc(var(--head) + 24px) calc(var(--pad) + 12px) 0}
   .examples figure{margin:0 0 10px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
-  .examples img{width:100%;height:auto}
-  .examples figure.cutout{background:none}
+  .examples img{display:block;width:100%;height:auto}
+  /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
+  .examples figure.cutout{background:#eeeeec;padding:15%}
   .order{padding:48px calc(var(--pad) + 12px) 0}
 
   .price{font-size:19px;margin:0 0 18px}
@@ -91,7 +92,7 @@
   @media (min-width:768px){
     .commission{display:grid;grid-template-columns:minmax(0,62fr) minmax(0,38fr);gap:0 48px;align-items:start;
       padding-right:calc(var(--pad) + 12px)}
-    .examples{columns:2;column-gap:12px;padding:calc(var(--head) + 24px) 0 0 calc(var(--pad) + 12px)}
+    .examples{columns:3;column-gap:12px;padding:calc(var(--head) + 24px) 0 0 calc(var(--pad) + 12px)}
     .examples figure{margin-bottom:12px}
     /* pinned beside the wall, and scrolls on its own as steps open */
     .order{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;overscroll-behavior:contain;
@@ -117,28 +118,28 @@
 
 <main class="commission">
   <section class="examples wall" aria-label="Past commissions">
-    <figure class="cutout"><img src="img/commissions/00.jpg" width="1100" height="1186" alt="" loading="eager"></figure>
+    <figure class="cutout"><img src="img/commissions/00.png" width="1035" height="1129" alt="" loading="eager"></figure>
     <figure><img src="img/commissions/01.jpg" width="1100" height="1290" alt="" loading="eager"></figure>
     <figure><img src="img/commissions/02.jpg" width="1100" height="911" alt="" loading="eager"></figure>
     <figure><img src="img/commissions/03.jpg" width="1100" height="693" alt="" loading="eager"></figure>
     <figure><img src="img/commissions/04.jpg" width="1100" height="960" alt="" loading="eager"></figure>
-    <figure class="cutout"><img src="img/commissions/05.jpg" width="990" height="1517" alt="" loading="eager"></figure>
+    <figure class="cutout"><img src="img/commissions/05.png" width="990" height="1475" alt="" loading="eager"></figure>
     <figure><img src="img/commissions/06.jpg" width="1100" height="1368" alt="" loading="eager"></figure>
-    <figure class="cutout"><img src="img/commissions/07.jpg" width="732" height="499" alt="" loading="eager"></figure>
+    <figure class="cutout"><img src="img/commissions/07.png" width="728" height="492" alt="" loading="eager"></figure>
     <figure><img src="img/commissions/08.jpg" width="1100" height="1467" alt="" loading="lazy"></figure>
     <figure><img src="img/commissions/09.jpg" width="1100" height="1467" alt="" loading="lazy"></figure>
     <figure><img src="img/commissions/10.jpg" width="1100" height="742" alt="" loading="lazy"></figure>
-    <figure class="cutout"><img src="img/commissions/11.jpg" width="1100" height="786" alt="" loading="lazy"></figure>
+    <figure class="cutout"><img src="img/commissions/11.png" width="1100" height="782" alt="" loading="lazy"></figure>
     <figure><img src="img/commissions/12.jpg" width="1100" height="737" alt="" loading="lazy"></figure>
     <figure><img src="img/commissions/13.jpg" width="1100" height="1293" alt="" loading="lazy"></figure>
     <figure><img src="img/commissions/14.jpg" width="1100" height="720" alt="" loading="lazy"></figure>
     <figure><img src="img/commissions/15.jpg" width="1100" height="695" alt="" loading="lazy"></figure>
-    <figure class="cutout"><img src="img/commissions/16.jpg" width="1100" height="1261" alt="" loading="lazy"></figure>
-    <figure class="cutout"><img src="img/commissions/17.jpg" width="512" height="162" alt="" loading="lazy"></figure>
+    <figure class="cutout"><img src="img/commissions/16.png" width="1100" height="1261" alt="" loading="lazy"></figure>
+    <figure class="cutout"><img src="img/commissions/17.png" width="512" height="162" alt="" loading="lazy"></figure>
     <figure><img src="img/commissions/18.jpg" width="1100" height="1100" alt="" loading="lazy"></figure>
     <figure><img src="img/commissions/19.jpg" width="1100" height="1124" alt="" loading="lazy"></figure>
     <figure><img src="img/commissions/20.jpg" width="1100" height="717" alt="" loading="lazy"></figure>
-    <figure class="cutout"><img src="img/commissions/21.jpg" width="647" height="785" alt="" loading="lazy"></figure>
+    <figure class="cutout"><img src="img/commissions/21.png" width="646" height="784" alt="" loading="lazy"></figure>
   </section>
 
   <section class="order" aria-label="Commission a totem">
