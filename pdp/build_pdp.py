@@ -264,11 +264,22 @@ def main():
     for f in sorted(x for x in os.listdir(os.path.join(OUT, "pages")) if x != "shop.html"):
         doc = shared(open(os.path.join(OUT, "pages", f), encoding="utf-8").read())
         if "{{EXAMPLES}}" in doc:
-            CUT = ' class="cutout"'
-            imgs = json.load(open(os.path.join(OUT, "img", "commissions-cut", "index.json")))
-            doc = doc.replace("{{EXAMPLES}}", "\n".join(
-                f'    <figure{CUT if cut else ""}><img src="img/commissions-cut/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 8 else "lazy"}"></figure>'
-                for i, (n, w, h, cut) in enumerate(imgs)))
+            base = os.path.join(OUT, "img", "commissions-cut")
+            imgs = json.load(open(os.path.join(base, "index.json")))
+            lay = json.load(open(os.path.join(base, "layout.json"))) if os.path.exists(os.path.join(base, "layout.json")) else {}
+            rank = {n: i for i, n in enumerate(lay.get("order", []))}
+            imgs.sort(key=lambda x: rank.get(x[0], len(rank)))          # saved order first, anything new after
+            tweaks = lay.get("pieces", {})
+            figs = []
+            for i, (n, w, h, cut) in enumerate(imgs):
+                t = tweaks.get(n, {})
+                figs.append(
+                    f'    <figure class="{"cutout" if cut else "photo"}" data-name="{n}" '
+                    f'style="--s:{t.get("s", 1)};--x:{t.get("x", 0)};--y:{t.get("y", 0)}">'
+                    f'<img src="img/commissions-cut/{n}" width="{w}" height="{h}" alt="{html.escape(t.get("name", ""))}" loading="{"eager" if i < 8 else "lazy"}" draggable="false">'
+                    f'<span class="over"><span class="date">{html.escape(t.get("date", ""))}</span>'
+                    f'<span class="name">{html.escape(t.get("name", ""))}</span></span></figure>')
+            doc = doc.replace("{{EXAMPLES}}", "\n".join(figs)).replace("{{FRAME}}", lay.get("frame", "3/4"))
         if "{{GRID}}" in doc:
             imgs = json.load(open(os.path.join(OUT, "img", "inspiration", "index.json")))
             doc = (doc.replace("{{COUNT}}", str(len(imgs)))
