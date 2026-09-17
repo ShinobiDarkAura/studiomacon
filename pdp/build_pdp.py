@@ -268,6 +268,8 @@ def main():
             imgs = json.load(open(os.path.join(base, "index.json")))
             lay = json.load(open(os.path.join(base, "layout.json"))) if os.path.exists(os.path.join(base, "layout.json")) else {}
             rank = {n: i for i, n in enumerate(lay.get("order", []))}
+            gone = set(lay.get("removed", []))
+            imgs = [x for x in imgs if x[0] not in gone]                  # removed in the editor; the file itself is kept
             imgs.sort(key=lambda x: rank.get(x[0], len(rank)))          # saved order first, anything new after
             tweaks = lay.get("pieces", {})
             figs = []
@@ -279,7 +281,8 @@ def main():
                     f'<img src="img/commissions-cut/{n}" width="{w}" height="{h}" alt="{html.escape(t.get("name", ""))}" loading="{"eager" if i < 8 else "lazy"}" draggable="false">'
                     f'<span class="over"><span class="date">{html.escape(t.get("date", ""))}</span>'
                     f'<span class="name">{html.escape(t.get("name", ""))}</span></span></figure>')
-            doc = doc.replace("{{EXAMPLES}}", "\n".join(figs)).replace("{{FRAME}}", lay.get("frame", "3/4"))
+            doc = (doc.replace("{{EXAMPLES}}", "\n".join(figs)).replace("{{FRAME}}", lay.get("frame", "3/4"))
+                      .replace("{{REMOVED}}", html.escape(json.dumps(sorted(gone)))))
         if "{{GRID}}" in doc:
             imgs = json.load(open(os.path.join(OUT, "img", "inspiration", "index.json")))
             doc = (doc.replace("{{COUNT}}", str(len(imgs)))

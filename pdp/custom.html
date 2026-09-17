@@ -52,6 +52,11 @@
   .ed input[type=text]{width:100%;border:0;border-bottom:1px solid rgba(0,0,0,.25);padding:4px 0;font-size:13px;outline:0}
   .ed .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
   .ed .acts .save{background:#000;color:#fff;border-color:#000}
+  .ed .addbtn{display:inline-block;border:1px solid #000;padding:5px 10px;font-size:12px;cursor:pointer}
+  .ed .cutopt{display:flex;align-items:center;gap:6px;margin:8px 0 0;font-size:12px}
+  .ed .restore{display:block;margin:8px 0 0;border:1px solid rgba(0,0,0,.25);padding:5px 8px;font-size:12px}
+  .ed .remove{color:#c8321e;border-color:rgba(200,50,30,.4)!important}
+  .ed{max-height:calc(100vh - 32px);overflow-y:auto}
   .ed .hint{margin:10px 0 0;font-size:11px;color:rgba(0,0,0,.5)}
   .ed .msg{margin:8px 0 0;font-size:12px}
   .ed-toggle{position:fixed;left:16px;bottom:16px;z-index:49;padding:7px 11px;background:#fff;border:1px solid rgba(0,0,0,.3);font-size:12px}
@@ -165,14 +170,14 @@
 
 <main class="commission">
   <section class="examples wall" aria-label="Past commissions" style="--frame:1/1">
+    <figure class="cutout" data-name="17.png" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/17.png" width="512" height="162" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
     <figure class="cutout" data-name="00.png" style="--s:0.76;--x:0.0;--y:1.0"><img src="img/commissions-cut/00.png" width="1008" height="1100" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
-    <figure class="cutout" data-name="01.png" style="--s:0.77;--x:0.0;--y:-2.0"><img src="img/commissions-cut/01.png" width="630" height="861" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
+    <figure class="cutout" data-name="18.png" style="--s:0.93;--x:0.0;--y:-5.0"><img src="img/commissions-cut/18.png" width="1100" height="669" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
     <figure class="cutout" data-name="05.png" style="--s:0.94;--x:0.0;--y:-6.0"><img src="img/commissions-cut/05.png" width="738" height="1100" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
+    <figure class="cutout" data-name="01.png" style="--s:0.77;--x:0.0;--y:-2.0"><img src="img/commissions-cut/01.png" width="630" height="861" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
     <figure class="cutout" data-name="06.png" style="--s:0.77;--x:8.0;--y:0.0"><img src="img/commissions-cut/06.png" width="1100" height="1042" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
     <figure class="cutout" data-name="16.png" style="--s:1.65;--x:-8.0;--y:5.0"><img src="img/commissions-cut/16.png" width="958" height="1100" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
     <figure class="photo" data-name="chess-0.jpg" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/chess-0.jpg" width="1400" height="882" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
-    <figure class="cutout" data-name="17.png" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/17.png" width="512" height="162" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
-    <figure class="cutout" data-name="18.png" style="--s:0.93;--x:0.0;--y:-5.0"><img src="img/commissions-cut/18.png" width="1100" height="669" alt="" loading="eager" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
     <figure class="cutout" data-name="21.png" style="--s:1.89;--x:8.0;--y:9.0"><img src="img/commissions-cut/21.png" width="642" height="780" alt="" loading="lazy" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
     <figure class="cutout" data-name="13.png" style="--s:0.84;--x:0.0;--y:0.0"><img src="img/commissions-cut/13.png" width="1100" height="491" alt="" loading="lazy" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
     <figure class="photo" data-name="chess-2.jpg" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/chess-2.jpg" width="1400" height="938" alt="" loading="lazy" draggable="false"><span class="over"><span class="date"></span><span class="name"></span></span></figure>
@@ -291,7 +296,7 @@
 </footer>
 
 <button class="ed-toggle" type="button">Edit wall</button>
-<div class="ed" role="dialog" aria-label="Edit the commission wall">
+<div class="ed" role="dialog" aria-label="Edit the commission wall" data-removed="[]">
   <h3>Edit wall</h3>
   <div class="row"><span>Frame</span>
     <div class="frames">
@@ -311,8 +316,14 @@
   <div class="row"><span>Up / down <b class="yv">0</b></span><input class="yr" type="range" min="-40" max="40" value="0" disabled></div>
   <div class="acts">
     <button type="button" class="reset-one">Reset piece</button>
+    <button type="button" class="remove">Remove piece</button>
     <button type="button" class="done">Close</button>
     <button type="button" class="save">Save</button>
+  </div>
+  <div class="row add"><span>Add images</span>
+    <label class="addbtn"><input type="file" accept="image/*" multiple hidden>+ Add images</label>
+    <label class="cutopt"><input type="checkbox" checked> Cut out the background</label>
+    <button type="button" class="restore" hidden>Restore removed (<b class="rc">0</b>)</button>
   </div>
   <p class="hint">Click a piece, then use Earlier / Later (or the ← → keys) to move it. Numbers show the order, left to right. Shift + arrows nudge it inside its frame.</p>
   <p class="msg"></p>
@@ -637,6 +648,35 @@
     ['.size', '.xr', '.yr'].forEach(function (c) { q(c).addEventListener('change', function () { this.blur(); }); });
     q('.xr').addEventListener('input', function () { set('x', +this.value); });
     q('.yr').addEventListener('input', function () { set('y', +this.value); });
+    // remove: hidden from the wall on save; the image file itself is kept, so it can be restored
+    var removed = JSON.parse(ed.dataset.removed || '[]');
+    function showRestore() { q('.restore').hidden = !removed.length; q('.rc').textContent = removed.length; }
+    showRestore();
+    q('.remove').addEventListener('click', function () {
+      if (!sel) return;
+      removed.push(sel.dataset.name); var gone = sel; pick(null); gone.remove(); number(); showRestore();
+      q('.msg').textContent = 'Unsaved changes';
+    });
+    q('.restore').addEventListener('click', function () {
+      removed = []; showRestore(); save().then(function (ok) { if (ok) location.href = location.pathname + '?edit'; });
+    });
+    // add: save what's here first, then send each picture to be added, then reload into edit mode
+    q('.addbtn input').addEventListener('change', function () {
+      var files = [].slice.call(this.files), cut = q('.cutopt input').checked ? 1 : 0;
+      if (!files.length) return;
+      q('.msg').textContent = 'Saving, then adding ' + files.length + (files.length > 1 ? ' images' : ' image') + (cut ? ' and cutting them out' : '') + '…';
+      save().then(function (ok) {
+        if (!ok) return;
+        return files.reduce(function (p, f) {
+          return p.then(function () {
+            return fetch('/api/commission-image?cut=' + cut + '&name=' + encodeURIComponent(f.name), {method: 'POST', body: f})
+              .then(function (r) { return r.json(); })
+              .then(function (d) { if (d.error) throw new Error(d.error); });
+          });
+        }, Promise.resolve()).then(function () { location.href = location.pathname + '?edit'; })
+          .catch(function (e) { q('.msg').textContent = 'Not added: ' + e.message; });
+      });
+    });
     q('.earlier').addEventListener('click', function () { move(-1); });
     q('.later').addEventListener('click', function () { move(1); });
     q('.reset-one').addEventListener('click', function () { if (sel) { ['s', 'x', 'y'].forEach(function (k) { sel.style.setProperty('--' + k, k === 's' ? 1 : 0); }); sync(); } });
@@ -651,16 +691,17 @@
     });
     frame(wall.style.getPropertyValue('--frame').trim() || '3/4');
 
-    q('.save').addEventListener('click', function () {
+    function save() {
       var pieces = {};
       figs().forEach(function (f) { pieces[f.dataset.name] = {s: num(f, 's', 1), x: num(f, 'x', 0), y: num(f, 'y', 0), name: f.querySelector('.name').textContent, date: f.querySelector('.date').textContent}; });
-      var body = {frame: wall.style.getPropertyValue('--frame').trim() || '3/4', order: figs().map(function (f) { return f.dataset.name; }), pieces: pieces};
+      var body = {frame: wall.style.getPropertyValue('--frame').trim() || '3/4', order: figs().map(function (f) { return f.dataset.name; }), pieces: pieces, removed: removed};
       q('.msg').textContent = 'Saving…';
-      fetch('/api/commission-layout', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)})
+      return fetch('/api/commission-layout', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)})
         .then(function (r) { return r.json(); })
-        .then(function (d) { q('.msg').textContent = d.saved ? 'Saved. Reload to confirm.' : 'Not saved: ' + d.error; })
-        .catch(function () { q('.msg').textContent = 'Not saved: the preview server is not the editing one.'; });
-    });
+        .then(function (d) { q('.msg').textContent = d.saved ? 'Saved.' : 'Not saved: ' + d.error; return !!d.saved; })
+        .catch(function () { q('.msg').textContent = 'Not saved: the preview server is not the editing one.'; return false; });
+    }
+    q('.save').addEventListener('click', function () { save(); });
     if (/[?&]edit\b/.test(location.search)) open(true);
   })();
 </script>
