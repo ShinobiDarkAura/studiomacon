@@ -51,9 +51,9 @@ body.white-right .head .right.on-dark{color:#000}
 @keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
 .head .right a{display:inline-block}
 .head .desk{display:none}
-.logotype{display:block;aspect-ratio:1334/533;background:currentColor;
-  -webkit-mask:url(img/lockup-les-macons.png) center/contain no-repeat;mask:url(img/lockup-les-macons.png) center/contain no-repeat}
-.head .logotype{width:110px;position:relative;top:6px}
+.logotype{display:block;aspect-ratio:641/975;background:currentColor;
+  -webkit-mask:url(img/emblem-objets-dart.png) center/contain no-repeat;mask:url(img/emblem-objets-dart.png) center/contain no-repeat}
+.head .logotype{width:44px;position:relative;top:10px}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
@@ -116,7 +116,7 @@ footer .field button{padding:0 0 0 18px}
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:170px}
+  .head .logotype{width:62px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
@@ -199,11 +199,6 @@ body.fit footer{min-height:0;padding-top:48px}
 .logo-artifacts .logotype,.logo-objects .logotype{aspect-ratio:294/112}
 .logo-artifacts .logotype{-webkit-mask-image:url(img/lockup-artifacts.svg);mask-image:url(img/lockup-artifacts.svg)}
 .logo-objects .logotype{-webkit-mask-image:url(img/lockup-objects.svg);mask-image:url(img/lockup-objects.svg)}
-
-/* oval emblem trial: ?logo=emblem */
-.logo-emblem .logotype{aspect-ratio:641/975;-webkit-mask-image:url(img/emblem-objets-dart.png);mask-image:url(img/emblem-objets-dart.png)}
-.logo-emblem .head .logotype{width:44px;top:10px}
-@media (min-width:768px){ .logo-emblem .head .logotype{width:62px} }
 
 /* keyboard focus */
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
