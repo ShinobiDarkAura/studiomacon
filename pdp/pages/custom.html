@@ -32,7 +32,7 @@
   @media (hover:none){ .examples .over{opacity:1;transform:none} }
 
   /* ── edit mode ───────────────────────────────────────── */
-  body.editing .examples figure{cursor:grab;transition:none!important;opacity:1!important;filter:none!important;transform:none!important}
+  body.editing .examples figure{cursor:pointer;transition:none!important;opacity:1!important;filter:none!important;transform:none!important}
   body.editing .examples figure:hover{outline:1px dashed rgba(0,0,0,.35);outline-offset:-1px}
   body.editing .examples figure.sel{outline:2px solid #000;outline-offset:-2px}
   body.editing .examples figure.dragging{opacity:.35!important}
@@ -268,7 +268,7 @@
     <button type="button" class="done">Close</button>
     <button type="button" class="save">Save</button>
   </div>
-  <p class="hint">Drag a frame onto another to move it before it. Arrow keys nudge the selected piece; + and − resize. Press E to open or close.</p>
+  <p class="hint">Click a piece, then use the arrow keys to move it earlier or later in the wall. Shift + arrows nudge it inside its frame; + and − resize. Press E to open or close.</p>
   <p class="msg"></p>
 </div>
 {{SITEJS}}
@@ -355,7 +355,7 @@
 
     function open(on) {
       document.body.classList.toggle('editing', on);
-      figs().forEach(function (f) { f.classList.add('is-seen'); f.draggable = on; });
+      figs().forEach(function (f) { f.classList.add('is-seen'); });
       if (!on) pick(null);
     }
     document.querySelector('.ed-toggle').addEventListener('click', function () { open(true); });
@@ -364,8 +364,18 @@
       if (e.target.closest('input, textarea')) return;
       if (e.key === 'e' || e.key === 'E') { open(!document.body.classList.contains('editing')); return; }
       if (!document.body.classList.contains('editing') || !sel) return;
-      var step = e.shiftKey ? 5 : 1, m = {ArrowLeft: ['x', -step], ArrowRight: ['x', step], ArrowUp: ['y', -step], ArrowDown: ['y', step]}[e.key];
-      if (m) { e.preventDefault(); set(m[0], num(sel, m[0], 0) + m[1]); }
+      // arrows move the selected frame through the wall; Shift + arrows nudge the piece inside it
+      if (e.shiftKey) {
+        var m = {ArrowLeft: ['x', -1], ArrowRight: ['x', 1], ArrowUp: ['y', -1], ArrowDown: ['y', 1]}[e.key];
+        if (m) { e.preventDefault(); set(m[0], num(sel, m[0], 0) + m[1]); }
+      } else if (/^Arrow/.test(e.key)) {
+        e.preventDefault();
+        var all = figs(), i = all.indexOf(sel), j = i + ((e.key === 'ArrowLeft' || e.key === 'ArrowUp') ? -1 : 1);
+        if (j < 0 || j >= all.length) return;
+        if (j < i) wall.insertBefore(sel, all[j]); else wall.insertBefore(sel, all[j].nextSibling);
+        sel.scrollIntoView({block: 'nearest'});
+        q('.msg').textContent = 'Unsaved changes';
+      }
       if (e.key === '+' || e.key === '=') set('s', +(num(sel, 's', 1) + .05).toFixed(2));
       if (e.key === '-' || e.key === '_') set('s', +(num(sel, 's', 1) - .05).toFixed(2));
     });
@@ -413,23 +423,6 @@
       b.addEventListener('click', function () { frame(b.dataset.frame); q('.msg').textContent = 'Unsaved changes'; });
     });
     frame(wall.style.getPropertyValue('--frame').trim() || '3/4');
-
-    // drag a frame onto another to place it before that one
-    wall.addEventListener('dragstart', function (e) {
-      dragged = e.target.closest('figure'); if (!dragged) return;
-      dragged.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', '');
-    });
-    wall.addEventListener('dragover', function (e) {
-      var f = e.target.closest('figure'); if (!dragged || !f || f === dragged) return;
-      e.preventDefault(); figs().forEach(function (x) { x.classList.toggle('drop-before', x === f); });
-    });
-    wall.addEventListener('drop', function (e) {
-      var f = e.target.closest('figure'); if (!dragged || !f || f === dragged) return;
-      e.preventDefault(); wall.insertBefore(dragged, f); q('.msg').textContent = 'Unsaved changes';
-    });
-    wall.addEventListener('dragend', function () {
-      figs().forEach(function (x) { x.classList.remove('drop-before', 'dragging'); }); dragged = null;
-    });
 
     q('.save').addEventListener('click', function () {
       var pieces = {};
