@@ -627,7 +627,8 @@
     var t = 1150;
     later(function () { build.querySelector('.ll-c').classList.add('lift'); }, t);
     t += 1050;
-    later(function () { document.body.classList.remove('logo-anim'); build.style.transition = 'opacity .2s'; build.style.opacity = 0; }, t);
+    // hand over to the real logotype in one frame: the drop animation holds the stand-in's opacity, so it must go, not fade
+    later(function () { document.body.classList.remove('logo-anim'); build.remove(); }, t);
     chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
     later(finish, t + 150 + chars.length * 55 + 300);
   })();
