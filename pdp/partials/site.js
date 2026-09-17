@@ -242,6 +242,14 @@
     });
   };
 
+  // Enquiries (contact + commission forms) go to the Bureau of Provenance, which emails the studio and replies to the sender
+  window.MaconEnquiry = function (payload) {
+    var url = (window.MACON_SHOP || {}).enquiry;
+    if (!url) return Promise.reject(new Error('no enquiry address'));
+    return fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)})
+      .then(function (r) { if (!r.ok) throw new Error('enquiry failed (' + r.status + ')'); return r.json(); });
+  };
+
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';

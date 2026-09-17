@@ -418,7 +418,7 @@
   <p class="hint">Click a piece, then use Earlier / Later (or the ← → keys) to move it. Numbers show the order, left to right. Shift + arrows nudge it inside its frame.</p>
   <p class="msg"></p>
 </div>
-<script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07"};</script>
+<script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581"};</script>
 <script>
   (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
   // A refresh always starts at the top of the page; Back and Forward still return to where you were
@@ -663,6 +663,14 @@
     });
   };
 
+  // Enquiries (contact + commission forms) go to the Bureau of Provenance, which emails the studio and replies to the sender
+  window.MaconEnquiry = function (payload) {
+    var url = (window.MACON_SHOP || {}).enquiry;
+    if (!url) return Promise.reject(new Error('no enquiry address'));
+    return fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)})
+      .then(function (r) { if (!r.ok) throw new Error('enquiry failed (' + r.status + ')'); return r.json(); });
+  };
+
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
@@ -878,7 +886,19 @@
     document.querySelectorAll('[data-pay]').forEach(function (b) {
       b.addEventListener('click', function () {
         if (b.disabled) return;
-        var body = b.closest('.acc-body');
+        var body = b.closest('.acc-body'), order = document.querySelector('.order'), details = {kind: kind};
+        order.querySelectorAll('input[id], textarea[id]').forEach(function (i) { if (i.type !== 'file' && i.value) details[(i.placeholder || i.id).replace(/^e\.g\.\s*/, '').slice(0, 40)] = i.value; });
+        order.querySelectorAll('[aria-pressed="true"]').forEach(function (c, n) { details['choice ' + (n + 1)] = c.textContent.trim(); });
+        var photos = order.querySelectorAll('.tile.filled').length; if (photos) details.photos = photos + ' attached on the form (please ask them to email the photos)';
+        b.disabled = true;
+        MaconEnquiry({form: 'commission', email: email.value, name: (document.getElementById('c-name') || {}).value || '',
+                      subject: kind === 'jewelry' ? 'Jewelry commission' : 'Totem commission', message: (document.getElementById('c-notes') || {}).value || '', details: details})
+          .catch(function () {})          // the thank-you still shows; a failed send is caught by the studio's copy of the checkout or a follow-up email
+          .then(function () {
+            if (kind !== 'jewelry' && (window.MACON_SHOP || {}).totemCommission) {
+              MaconCheckout([{variant: MACON_SHOP.totemCommission, qty: 1}], b).catch(function () {});          // totems are paid in full to begin
+            }
+          });
         body.innerHTML = kind === 'jewelry'
           ? '<p class="thanks">Thank you. Your request is with us, and we will write back within a few days with a sketch direction and a quote.</p>'
           : '<p class="thanks">Thank you. Your deposit is noted, and we will be in touch by email within a few days to begin the first sketch.</p>';

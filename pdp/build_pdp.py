@@ -308,7 +308,9 @@ def one_block(doc):
 def shop_config():
     with open(os.path.join(OUT, "shopify", "config.json")) as f:
         c = json.load(f)
-    return ('<script>window.MACON_SHOP = ' + json.dumps({"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"]}) + ';</script>\n')
+    tc = SHOPIFY.get("totem-commission", {}).get("variants", [{}])[0].get("id", "")
+    return ('<script>window.MACON_SHOP = ' + json.dumps({"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"],
+                                                          "enquiry": c.get("enquiryUrl", ""), "totemCommission": tc}) + ';</script>\n')
 
 
 def shared(doc):

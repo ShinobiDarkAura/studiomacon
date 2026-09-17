@@ -98,7 +98,7 @@
     </form>
   </div>
 </footer>
-<script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07"};</script>
+<script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581"};</script>
 <script>
   (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
   // A refresh always starts at the top of the page; Back and Forward still return to where you were
@@ -341,6 +341,14 @@
       alert('Sorry, checkout could not start: ' + e.message + '. Please try again, or write to hello@studiomacon.co.');
       throw e;
     });
+  };
+
+  // Enquiries (contact + commission forms) go to the Bureau of Provenance, which emails the studio and replies to the sender
+  window.MaconEnquiry = function (payload) {
+    var url = (window.MACON_SHOP || {}).enquiry;
+    if (!url) return Promise.reject(new Error('no enquiry address'));
+    return fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)})
+      .then(function (r) { if (!r.ok) throw new Error('enquiry failed (' + r.status + ')'); return r.json(); });
   };
 
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree

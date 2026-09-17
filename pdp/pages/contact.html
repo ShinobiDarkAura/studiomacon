@@ -45,7 +45,8 @@
       <p class="body">Questions about a piece, an order, or a commission.<br>We read everything, and we'll write back.</p>
 
 
-      <form class="form" onsubmit="event.preventDefault();this.outerHTML='<p class=&quot;sent&quot;>Sent, thanks!</p>'">
+      <form class="form" id="contact-form">
+        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
         <div class="row">
           <label class="field"><input name="first" placeholder="First Name" aria-label="First Name" required></label>
           <label class="field"><input name="last" placeholder="Last Name" aria-label="Last Name"></label>
@@ -61,5 +62,18 @@
 
 {{FOOTER}}
 {{SITEJS}}
+<script>
+  document.getElementById('contact-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = this, btn = f.querySelector('.cta'), v = function (n) { return (f.elements[n] || {}).value || ''; };
+    btn.disabled = true; btn.textContent = 'Sending…';
+    MaconEnquiry({form: 'contact', name: (v('first') + ' ' + v('last')).trim(), email: v('email'), message: v('message'), company: v('company')})
+      .then(function () { f.outerHTML = '<p class="sent">Sent, thank you. A confirmation is on its way to your inbox.</p>'; })
+      .catch(function () {
+        btn.disabled = false; btn.textContent = 'Send';
+        alert('Sorry, that didn\u2019t send. Please write to hello@studiomacon.co and we\u2019ll reply from there.');
+      });
+  });
+</script>
 </body>
 </html>
