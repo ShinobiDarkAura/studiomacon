@@ -17,11 +17,7 @@
 1. Payments: Settings → Payments → Shopify Payments (Private multi-member LLC, Macon Studio LLC, EIN, bank). Turn on Apple Pay + Shop Pay.
 2. Plan: Settings → Plan → Basic (removes the store password so checkout opens).
 3. California sales tax: Settings → Taxes and duties → United States → California "Set up tax collection" (needs seller's permit number).
-4. Shipping (live carrier rates) — Settings → Shipping and delivery → General profile:
-   - Domestic zone: delete Express $15 and Standard (free over $70) via the ••• menu on each
-   - Domestic → Add shipping option → Rate type: "Use carrier or app to calculate rates" → tick USPS/UPS (and DHL) services → Done
-   - Add zone → name "Rest of World" → select all countries except US → Add shipping option → carrier-calculated → Done → Save
-   - Settings → Shipping and delivery → Packages: set your real box size and empty-box weight
+4. Shipping: DONE by Claude — Domestic: live USPS (Ground Advantage, Priority, Priority Express); Rest of World (every country in Markets: Asia, Europe, Canada, Oceania): live USPS International. To ship to more countries, add them in Settings → Markets first. Still set your real box: Settings → Shipping and delivery → Packages.
 5. Weigh pieces (grams) — current weights are estimates (totems 60 g, rings 12 g, pendants 20 g, cuff 10 g).
 6. Klaviyo: Integrations → Shopify → connect w3nidi-ny.myshopify.com (keep Wix connected until switch day).
 7. Policies: paste the drafts from shopify/policies into Settings → Policies (edit first).
@@ -29,5 +25,6 @@
 
 ## Next for Claude (after the above)
 - Klaviyo footer signup (needs the Klaviyo public key + list id)
-- Contact + commission forms → Bureau of Provenance enquiry function, email to hello@, auto-reply
+- Contact + commission forms: site side DONE (posts to the Bureau). Bureau side coded on branch `website-forms` in a worktree at git/macon-archive-web-forms — NOT deployed. To go live: merge, set secrets RESEND_API_KEY, ENQUIRY_FROM="Studio Maçon <hello@studiomacon.co>", ENQUIRY_NOTIFY="hello@studiomacon.co,alex@studiomacon.co,hannah@studiomacon.co", ENQUIRY_ORIGINS="https://studiomacon.co,https://www.studiomacon.co", then `supabase functions deploy enquiry`. Verify studiomacon.co as a sending domain in Resend.
+- Newsletter footer: Shopify signup (per Alex) — to wire once the store password is removed
 - Hosting (Cloudflare Pages), domain records at switch day, Search Console + Google & YouTube app
