@@ -23,7 +23,7 @@
     80%{transform:translateY(13px);opacity:0;filter:blur(1.5px)}
     100%{transform:translateY(13px);opacity:0}
   }
-  .film.scrolled .scroll-cue{opacity:0}
+  .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden}
   /* the cue waits 5s before fading in */
   .scroll-cue{animation:cue-wait .8s ease 5s both}
   @keyframes cue-wait{from{opacity:0}to{opacity:1}}
