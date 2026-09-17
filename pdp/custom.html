@@ -79,6 +79,7 @@
   .next[disabled]{opacity:.1;cursor:not-allowed}
   .step.open .acc-head{padding-bottom:39px}
   .q.details-q{margin-bottom:38px}
+  @media (min-width:768px){ .pair{display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:end} .pair .q{margin-bottom:38px} }
 
   .summary{display:grid;grid-template-columns:1fr auto;gap:10px 18px;margin:0 0 22px;font-size:15px}
   .summary{row-gap:10px;column-gap:0}
@@ -168,15 +169,17 @@
               <span class="line"><input id="c-other" placeholder="What kind of animal?"></span>
             </div></div>
           </div>
+          <div class="pair">
           <div class="q">
-            <label class="label" for="c-name">Their Name <span class="req">*</span></label>
-            <span class="line"><input id="c-name" data-required placeholder="Their name"></span>
+            <label class="label" for="c-name">Their Name</label>
+            <span class="line"><input id="c-name" placeholder="Their name"></span>
           </div>
           <div class="q details-q">
-            <div class="label-row"><label class="label" for="c-breed">Details <span class="req">*</span></label></div>
-            <span class="line"><input id="c-breed" data-required placeholder="e.g. Whippet, brindle coat, one ear that flops, always sits leaning left"></span>
+            <div class="label-row"><label class="label" for="c-breed">Details</label></div>
+            <span class="line"><input id="c-breed" placeholder="e.g. Whippet, brindle coat, one ear that flops, always sits leaning left"></span>
           </div>
-          <button type="button" class="next" data-next disabled>Continue to Photos</button>
+          </div>
+          <button type="button" class="next" data-next data-always>Continue to Photos</button>
         </div></div></div>
       </div>
 
@@ -442,7 +445,7 @@
       step.querySelectorAll('[data-choice]').forEach(function (g) { if (!g.querySelector('[aria-pressed="true"]')) ok = false; });
       step.querySelectorAll('[data-required]').forEach(function (i) { if (!i.value.trim() || (i.type === 'email' && !/.+@.+\..+/.test(i.value))) ok = false; });
       step.querySelectorAll('[data-required-tile]').forEach(function (t) { if (!t.classList.contains('filled')) ok = false; });
-      var btn = step.querySelector('[data-next]'); if (btn) btn.disabled = !ok;
+      var btn = step.querySelector('[data-next]'); if (btn && !btn.hasAttribute('data-always')) btn.disabled = !ok;
     }
     steps.forEach(function (step) {
       step.addEventListener('input', function () { ready(step); });
