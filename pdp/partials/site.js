@@ -1,5 +1,5 @@
 <script>
-  (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects|lune)\b/));
+  (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
   // A refresh always starts at the top of the page; Back and Forward still return to where you were
   (function () {
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];

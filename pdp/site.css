@@ -51,9 +51,9 @@ body.white-right .head .right.on-dark{color:#000}
 @keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
 .head .right a{display:inline-block}
 .head .desk{display:none}
-.logotype{display:block;aspect-ratio:641/975;background:currentColor;
-  -webkit-mask:url(img/emblem-objets-dart.png) center/contain no-repeat;mask:url(img/emblem-objets-dart.png) center/contain no-repeat}
-.head .logotype{width:51px;position:relative;top:10px}
+.logotype{display:block;aspect-ratio:839/242;background:currentColor;
+  -webkit-mask:url(img/lockup-lune-soleil.png) center/contain no-repeat;mask:url(img/lockup-lune-soleil.png) center/contain no-repeat}
+.head .logotype{width:120px;position:relative;top:8px}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
@@ -116,7 +116,7 @@ footer .field button{padding:0 0 0 18px}
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:71px}
+  .head .logotype{width:180px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
@@ -201,11 +201,6 @@ body.fit footer{min-height:0;padding-top:48px}
 @media (min-width:768px){ .logo-artifacts .head .logotype,.logo-objects .head .logotype{width:150px} }
 .logo-artifacts .logotype{-webkit-mask-image:url(img/lockup-artifacts.svg);mask-image:url(img/lockup-artifacts.svg)}
 .logo-objects .logotype{-webkit-mask-image:url(img/lockup-objects.svg);mask-image:url(img/lockup-objects.svg)}
-
-/* Lune & Soleil trial: ?logo=lune */
-.logo-lune .logotype{aspect-ratio:839/242;-webkit-mask-image:url(img/lockup-lune-soleil.png);mask-image:url(img/lockup-lune-soleil.png)}
-.logo-lune .head .logotype{width:120px;top:8px}
-@media (min-width:768px){ .logo-lune .head .logotype{width:180px} }
 
 /* keyboard focus */
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
