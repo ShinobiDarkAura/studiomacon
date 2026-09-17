@@ -103,11 +103,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def do_POST(self):
         path, _, qs = self.path.partition("?")
-        if path not in ("/api/commission-image", "/api/commission-layout"):
+        if path not in ("/api/commission-image", "/api/commission-layout", "/api/picks"):
             return self.send_error(404)
         try:
             data = self.body()
             with LOCK:
+                if path == "/api/picks":          # the photo picker's choices
+                    write_json(os.path.join(ROOT, "pdp", "_picker", "picks.json"), json.loads(data), indent=1)
+                    return self.reply({"saved": True})
                 if path == "/api/commission-image":
                     args = urllib.parse.parse_qs(qs)
                     name = add_image(data, args.get("name", ["piece"])[0], args.get("cut", ["1"])[0] == "1")
