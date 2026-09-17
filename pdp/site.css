@@ -235,6 +235,7 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
 /* phones: bigger logotype sitting a little higher; footer centred and shorter */
 @media (max-width:767px){
   .head .logotype{width:116px;top:-6px}
+  .head{top:4px}          /* 8px higher, centred in the white band above the main image */
   .back{display:none}          /* no Back to Shop on phones */
   footer{min-height:75vh;min-height:75svh;text-align:center}
   footer .middle{align-items:center}
