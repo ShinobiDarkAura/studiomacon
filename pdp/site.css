@@ -200,6 +200,11 @@ body.fit footer{min-height:0;padding-top:48px}
 .logo-artifacts .logotype{-webkit-mask-image:url(img/lockup-artifacts.svg);mask-image:url(img/lockup-artifacts.svg)}
 .logo-objects .logotype{-webkit-mask-image:url(img/lockup-objects.svg);mask-image:url(img/lockup-objects.svg)}
 
+/* stamped LES MAÇONS trial: ?logo=les */
+.logo-les .logotype{aspect-ratio:1334/533;-webkit-mask-image:url(img/lockup-les-macons.png);mask-image:url(img/lockup-les-macons.png)}
+.logo-les .head .logotype{width:110px}
+@media (min-width:768px){ .logo-les .head .logotype{width:170px} }
+
 /* keyboard focus */
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
 .field:focus-within{border-bottom-color:#000}
