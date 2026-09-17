@@ -35,7 +35,7 @@ button{background:none;border:0;padding:0;cursor:pointer}
 /* each part of the nav reads what is under it: black on white or very light, white on anything darker */
 .head .left,.head .logotype,.head .right{color:#000;transition:color .3s ease}
 .head .on-dark{color:#fff}
-.head .left{justify-self:start;display:flex;gap:32px}
+.head .left{justify-self:start;display:flex;gap:28px}
 .head .right{justify-self:end;white-space:nowrap}
 .head .desk{display:none}
 .logotype{display:block;aspect-ratio:888/331;background:currentColor;
