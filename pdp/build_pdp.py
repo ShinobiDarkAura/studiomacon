@@ -27,7 +27,7 @@ EYEBROW = {
     "eclipse-ring": "Ellipses in Patient Equilibrium",
     "sietch-aperture": "Shelter Cut Into Rock",
     "lunar-canyon-ring": "Forged From a Distant Moon",
-    "eleph": "Breath Suspended in Bronze",
+    "eleph": "Breath Suspended",
     "wonderhorn-talisman": "Horn for Undiscovered Chords",
     "macon-cap": "Modicum of Solar Protection",
     "ibi": "Eternal Watcher",
