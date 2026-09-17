@@ -87,7 +87,13 @@
     .thumbs button.on{opacity:1}
     .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#000}
     .thumbs img{width:100%;height:100%;object-fit:cover}
+    /* load-in order: main image, then the thumbnails one by one, then the name, price and buttons */
+    .thumbs button{animation:thumb-in .7s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 70ms + 350ms)}
+    .info > .dr-emerge{transition-delay:calc(var(--stagger,0ms) + 800ms)}
+    .info > .dr-emerge.is-seen{transition-delay:calc(var(--stagger,0ms) + 800ms)}
   }
+  @keyframes thumb-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){ .thumbs button{animation:none} }
   @media (min-width:768px){ .thumbs{display:none} }
 
   @media (min-width:768px){
@@ -542,7 +548,7 @@
       var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Picture ' + (i + 1));
       var t = document.createElement('img'); t.alt = ''; t.loading = 'lazy';
       t.src = media.tagName === 'VIDEO' ? media.getAttribute('poster') : media.getAttribute('src');
-      b.appendChild(t); if (i === 0) b.classList.add('on');
+      b.appendChild(t); b.style.setProperty('--i', i); if (i === 0) b.classList.add('on');
       b.addEventListener('click', function () {
         hero.innerHTML = i === 0 ? original : f.innerHTML;
         var v = hero.querySelector('video'); if (v) { v.muted = true; v.play().catch(function () {}); }
