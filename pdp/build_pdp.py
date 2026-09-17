@@ -82,12 +82,12 @@ LORE = {
     "meridian-egg-ring": "Everyone who picks up the Meridian Egg says the same thing about its weight, and then declines to put it down. Its smooth surface gives nothing away. Those who stare into it for too long report the distinct feeling of being studied in return.",
 }
 
-MADE = ("Every piece is made to order in our studio. Each begins as a sketch, is carved by hand in wax, "
-        "and is cast at a local foundry before we refine and polish it. Please allow up to two weeks for us to make yours.")
+MADE = ("Each piece is made to order. It begins as a sketch on paper, is carved by hand in wax, "
+        "and passes through a local foundry before being refined and polished at the bench. Allow up to two weeks for yours to take shape.")
 MADE_LINE = {
-    "eleph": "We love Eleph, though it rarely sells, so it is cast only when someone asks for one. If that is you, write to us, and we will carve, cast and polish yours by hand in our studio, just for you.",
-    "ibi": "Ibi is cast on request rather than kept in stock. Write to us and we will make one for you by hand, carved in wax, cast at a local foundry, and refined and polished in our studio before it comes to you.",
-    "macon-cap": "We made these because we each wanted one, with our mark on the front and a little shade for long days outside. They are made in small runs, so when a colour is gone, it may be gone for a while.",
+    "eleph": "Eleph is cast only when summoned. The wax is carved by hand, the bronze poured at a local foundry, and the patina coaxed slowly at the bench, so each one arrives carrying a little of the waiting.",
+    "ibi": "Ibi is cast on request and never kept on a shelf for long. Each is carved in wax, poured at a local foundry, and patinated by hand until its long watch settles into the surface.",
+    "macon-cap": "The cap is made in small runs, with the mark stitched on the front and a brim cut for long days between the studio and the sun. When a colour disappears, it may be some time before it returns.",
 }
 
 TODO = '<span class="todo">{}</span>'
@@ -218,6 +218,8 @@ def page(p, template):
     echo = {w for w in re.findall(r"[a-z]+", EYEBROW[slug].lower()) if w not in small} & set(re.findall(r"[a-z]+", DESC[slug].lower()))
     assert not echo, (slug, "description repeats the overline", echo)
     made = MADE_LINE.get(slug, MADE)
+    for block in (DESC[slug], lore, made):          # field-notes voice throughout: never "we" or "I", never about sales
+        assert not re.search(r"\b(we|i|our|us|sells?|sold|stock)\b", block, re.I), (slug, block[:60])
     for block in (lore, made):
         assert len(block.split()) >= 30, (slug, len(block.split()))
 
