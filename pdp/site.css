@@ -85,7 +85,7 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .field input::placeholder,.field textarea::placeholder{color:#777}
 
 /* ── footer: brand left, links centre, newsletter right ─ */
-footer{display:grid;gap:56px;align-content:end;min-height:100vh;min-height:100svh;padding:96px calc(var(--pad) + 12px) 48px;--f-size:calc(17px - 2pt)}
+footer{display:grid;gap:56px;align-content:end;min-height:100vh;min-height:100svh;padding:96px calc(var(--pad) + 12px) 40px;--f-size:calc(17px - 2pt)}
 footer .brand{order:3}
 footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
 footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
@@ -107,7 +107,7 @@ footer .field button{padding:0 0 0 18px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
-  footer{grid-template-columns:1fr auto 1fr;align-items:end;gap:40px;min-height:60vh;padding:96px calc(var(--pad) + 12px) 48px}
+  footer{grid-template-columns:1fr auto 1fr;align-items:end;gap:40px;min-height:50vh;padding:96px calc(var(--pad) + 12px) 40px}
   footer .brand,footer .middle,footer .news{order:0}
   footer .middle{justify-self:center;align-items:center}
   footer .links{justify-content:center}
