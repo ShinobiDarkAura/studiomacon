@@ -214,6 +214,12 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   transition:width .35s var(--ease),margin-left .35s var(--ease),opacity .25s ease}
 .cta:not([disabled]):hover::after,.next:not([disabled]):hover::after{width:14px;margin-left:10px;opacity:1}
 
+/* phones: every title centred */
+@media (max-width:767px){
+  h1,h2,.eyebrow{text-align:center}
+  .wall-head{justify-content:center}
+}
+
 /* keyboard focus */
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
 .field:focus-within{border-bottom-color:#000}

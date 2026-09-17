@@ -67,6 +67,12 @@
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
   .wall figure.dr-emerge.is-seen{transform:none}
   @media (min-width:600px){ .wall{grid-template-columns:repeat(2,1fr)} }
+  /* phones: two across, 12px from the edges, 8px between */
+  @media (max-width:767px){
+    .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 12px}
+    .piece .over{padding:32px 10px 10px;gap:4px;font-size:12px}
+    .piece .name{font-size:20px}
+  }
   @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} }
 
   /* each piece: the photograph, with name and price rising in at the bottom on hover */
