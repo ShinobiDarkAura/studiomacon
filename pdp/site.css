@@ -35,7 +35,7 @@ button{background:none;border:0;padding:0;cursor:pointer}
 /* hides while scrolling down; comes back on scroll up, a click or tap, or a 5-second pause */
 .head{transition:transform .35s var(--ease),opacity .3s ease}
 /* hiding is slow and soft: a long fade with a short drift upward */
-.head.tucked{transform:translateY(-30%);opacity:0;transition:transform 1.4s cubic-bezier(.4,0,.2,1),opacity 1.1s ease}
+.head.tucked{transform:translateY(-30%);opacity:0;transition:transform .8s cubic-bezier(.4,0,.2,1),opacity .6s ease}
 .head.tucked > *{pointer-events:none}
 /* each part of the nav reads what is under it: black on white or very light, white on anything darker */
 .head .left,.head .logotype,.head .right{color:#000;transition:color .3s ease}
