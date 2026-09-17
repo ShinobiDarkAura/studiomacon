@@ -66,6 +66,9 @@
     .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
       margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
     .gallery figure + figure{display:block;margin-top:0}
+    /* 12px inset on the left, and 12px under each picture */
+    .gallery{padding-left:12px}
+    .gallery figure{margin-bottom:12px}
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
     .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
