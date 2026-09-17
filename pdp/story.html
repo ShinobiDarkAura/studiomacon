@@ -83,9 +83,9 @@
   </section>
 
   <div class="steps">
-    <figure><div class="art"><img src="img/pages/draw.png" alt="Illustration of sketching"></div><figcaption class="step-name">Sketch</figcaption></figure>
-    <figure><div class="art"><img src="img/pages/cast.png" alt="Illustration of casting"></div><figcaption class="step-name">Cast</figcaption></figure>
-    <figure><div class="art"><img src="img/pages/polish.png" alt="Illustration of polishing"></div><figcaption class="step-name">Patina</figcaption></figure>
+    <figure><div class="art"><img src="img/pages/draw.png" alt="Illustration of sketching"></div></figure>
+    <figure><div class="art"><img src="img/pages/cast.png" alt="Illustration of casting"></div></figure>
+    <figure><div class="art"><img src="img/pages/polish.png" alt="Illustration of polishing"></div></figure>
   </div>
 
   <section class="history">
@@ -215,7 +215,7 @@
   (function () {
     var BLOCKS = '.opening .hand, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
-                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head';
+                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
     // side-by-side groups cascade instead of arriving at once
     var GROUPS = ['.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches;

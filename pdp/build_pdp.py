@@ -263,6 +263,11 @@ def main():
     # info pages: story, custom, contact, shipping
     for f in sorted(os.listdir(os.path.join(OUT, "pages"))):
         doc = shared(open(os.path.join(OUT, "pages", f), encoding="utf-8").read())
+        if "{{EXAMPLES}}" in doc:
+            imgs = json.load(open(os.path.join(OUT, "img", "commissions", "index.json")))
+            doc = doc.replace("{{EXAMPLES}}", "\n".join(
+                f'    <figure><img src="img/commissions/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 9 else "lazy"}"></figure>'
+                for i, (n, w, h) in enumerate(imgs)))
         if "{{GRID}}" in doc:
             imgs = json.load(open(os.path.join(OUT, "img", "inspiration", "index.json")))
             doc = (doc.replace("{{COUNT}}", str(len(imgs)))
