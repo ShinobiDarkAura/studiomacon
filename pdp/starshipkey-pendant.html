@@ -6,7 +6,7 @@
 <title>Starship Key | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789631207">
+<link rel="stylesheet" href="site.css?v=1789631497">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -36,16 +36,21 @@
   .size-list li:hover,.size-list li:focus{border-color:#000;outline:none}
   .size-list li[aria-selected="true"]{background:#000;color:#fff;border-color:#000}
   .buy{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .apple-pay{display:flex;align-items:center;justify-content:center;width:100%;height:55px;background:#000;color:#fff;
-    gap:5px;letter-spacing:-.01em;font:500 23px/1 -apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
-  .apple-pay svg{width:19px;height:23px;margin-top:-3px;fill:#fff}
+  .apple-pay{display:flex;align-items:center;justify-content:center;width:100%;height:47px;background:#000;color:#fff;
+    gap:4px;letter-spacing:-.01em;font:500 19.5px/1 -apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
+  .apple-pay svg{width:16px;height:19.5px;margin-top:-3px;fill:#fff}
+  /* product buttons: 8px shorter than the site's other black buttons, type and arrow 15% smaller */
+  .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85)}
+  .buy .cta::after{height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
+  .buy .cta:not([disabled]):hover::after{width:12px;margin-left:8px}
   /* Safari draws Apple's own button */
   @supports (-webkit-appearance:-apple-pay-button){
     .apple-pay{-webkit-appearance:-apple-pay-button;-apple-pay-button-type:plain;-apple-pay-button-style:black}
     .apple-pay > *{display:none}
   }
   .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
-  .buy{margin:0 0 42px}          /* buttons follow the description */
+  .buy{margin:0}          /* buttons sit right under the price */
+  .desc-block{margin:36px 0 12px}
   .desc-block .label{margin:0 0 22px}
   .desc{margin:0;font-size:17px;line-height:1.55}
 
@@ -135,12 +140,12 @@
       <p class="eyebrow">Device of Stellar Origin</p>
       <h1>Starship Key</h1>
       <p class="price">$460</p>
-      <div class="desc-block"><p class="label">Field Notes</p><p class="desc">Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad. Its hull is polished meticulously by hand.</p></div>
       
       <div class="buy" id="bag">
         <button class="cta">Add to Bag</button>
         <button class="apple-pay" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
       </div>
+      <div class="desc-block"><p class="label">Field Notes</p><p class="desc">Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad. Its hull is polished meticulously by hand.</p></div>
       <div class="acc">
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Wear &amp; Care</button>
@@ -497,7 +502,7 @@
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
     var menu = document.createElement('nav');
-    menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.hidden = true;
+    menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.inert = true;
     menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
       '<a href="index.html#pieces">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
       '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
@@ -505,10 +510,23 @@
     document.body.appendChild(menu);
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
     var keyboard = false;
-    function set(on) { menu.hidden = !on; [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; }); btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on && keyboard) menu.querySelector('a').focus(); }
+    function set(on) {
+      if (on) {          // Close sits exactly where Menu was
+        var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
+        c.style.left = r.left + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
+      }
+      menu.classList.toggle('open', on); menu.inert = !on; open = on;
+      document.documentElement.classList.toggle('menu-open', on);
+      [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; });
+      btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : '';
+      if (on && keyboard) menu.querySelector('a').focus();
+    }
+    var open = false;
+    // tapping the pushed-over page closes the menu
+    document.addEventListener('click', function (e) { if (open && !menu.contains(e.target) && e.target !== btn) set(false); });
     btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
-    addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
   })();
 </script>
 <script>

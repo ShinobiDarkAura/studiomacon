@@ -173,14 +173,22 @@ footer .field button{padding:0 0 0 18px}
 @media (prefers-reduced-motion:reduce){ .dr-emerge{transition:none} }
 
 /* ── mobile menu ───────────────────────────────────── */
-.menu-sheet{position:fixed;inset:0;z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:0 calc(var(--pad) + 24px)}
+.menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100svh;width:84vw;z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:20px;
+  padding:0 calc(var(--pad) + 24px);transform:translateX(-100%);visibility:hidden;
+  transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s linear .6s}
+.menu-sheet.open{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s}
 .menu-sheet a{font:400 40px/1.05 var(--serif);text-transform:uppercase;color:#000}
+/* the page slides right as the menu comes in from the left edge */
+body > :not(.menu-sheet):not(script):not(.dock){transition:transform .6s cubic-bezier(.65,0,.25,1)}
+html.menu-open body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(84vw)}
+html.menu-open .dock{visibility:hidden}
+html.menu-open,html.menu-open body{overflow:hidden;overflow-x:clip}          /* the pushed page must not widen the screen */
+body{overflow-x:clip}
 /* opening the menu: items rise in one by one, top to bottom */
-.menu-sheet:not([hidden]) a{animation:menu-in .55s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 60ms + 60ms)}
+.menu-sheet.open a{animation:menu-in .55s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 60ms + 220ms)}
 @keyframes menu-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){ .menu-sheet:not([hidden]) a{animation:none} }
-.menu-sheet[hidden]{display:none}
-.menu-close{position:absolute;top:28px;left:calc(var(--pad) + 24px);font-size:15px}
+@media (prefers-reduced-motion:reduce){ .menu-sheet,.menu-sheet.open,body > *{transition:none} .menu-sheet.open a{animation:none} }
+.menu-close{position:absolute;top:28px;left:calc(var(--pad) + 24px);font-size:calc(16px - 1pt);line-height:inherit}
 
 /* ── size picker nudge when Add to Bag is pressed without a size ── */
 [data-size].need{border-color:#c8321e !important;transition:border-color .2s}
@@ -226,7 +234,8 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
 
 /* phones: bigger logotype sitting a little higher; footer centred and shorter */
 @media (max-width:767px){
-  .head .logotype{width:101px;top:-4px}
+  .head .logotype{width:116px;top:-6px}
+  .back{display:none}          /* no Back to Shop on phones */
   footer{min-height:75vh;min-height:75svh;text-align:center}
   footer .middle{align-items:center}
   footer .links{justify-content:center}
