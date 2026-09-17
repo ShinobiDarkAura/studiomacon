@@ -88,6 +88,7 @@
   .step .acc-head{font-size:calc(17px - 4pt);letter-spacing:.14em;justify-content:flex-start}
   .step .acc-head:not(:has(.done:not([hidden])))::after{margin-left:auto}
   .step .acc-head .n{color:rgba(0,0,0,.4);margin-right:14px}
+  .step .acc-head .done .tick{width:10px;height:8px;margin-left:6px;vertical-align:1px}
   .step .acc-head .done{margin-left:auto;margin-right:18px;font-size:12px;letter-spacing:.06em;text-transform:none;color:rgba(0,0,0,.45)}
   .step.locked .acc-head{color:rgba(0,0,0,.3);cursor:default}
   .step.locked .acc-head::after{opacity:.15}
@@ -187,7 +188,7 @@
     <div class="steps-acc" id="steps">
       <!-- 1 -->
       <div class="acc-item step locked" data-step="1">
-        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">01</span>Your Piece<span class="done" hidden>Done</span></button>
+        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">01</span>Your Piece<span class="done" hidden>Done<svg class="tick" viewBox="0 0 12 10" aria-hidden="true"><path d="M1 5.2l3.3 3.3L11 1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span></button>
         <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="q">
             <span class="label">What would you like made? <span class="req">*</span></span>
@@ -202,7 +203,7 @@
 
       <!-- 2 -->
       <div class="acc-item step locked" data-step="2">
-        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">02</span>Details &amp; Photos<span class="done" hidden>Done</span></button>
+        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">02</span>Details &amp; Photos<span class="done" hidden>Done<svg class="tick" viewBox="0 0 12 10" aria-hidden="true"><path d="M1 5.2l3.3 3.3L11 1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span></button>
         <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="branch" data-for="totem"><div class="branch-inner">
             <div class="q">
