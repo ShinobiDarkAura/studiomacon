@@ -13,7 +13,12 @@
   .ways{display:flex;justify-content:center;align-items:baseline;gap:12px;margin:0 0 48px;font-size:calc(17px - 2pt)}
   .ways .dot{opacity:.5}
   /* desktop: email and Instagram sit together at the foot of the first screen, centred under the form column */
-  @media (min-width:768px){ .split .copy .ways{position:absolute;left:0;right:0;bottom:16px;margin:0} }
+  @media (min-width:768px){
+    .split .copy .ways{position:absolute;left:0;right:0;bottom:16px;margin:0}
+    /* it sits in the bottom strip the scroll trigger never reaches, so it fades in on its own after the form */
+    .split .copy .ways.dr-emerge{opacity:0;filter:none;transform:none;transition:none;animation:ways-in 1s ease .9s forwards}
+  }
+  @keyframes ways-in{to{opacity:1}}
   .form{display:grid;gap:30px}
   .form .row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
   .form .field{padding:0 0 10px;border-bottom:.5px solid #000}
