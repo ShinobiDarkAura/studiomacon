@@ -23,8 +23,11 @@
     100%{transform:translateY(13px);opacity:0}
   }
   .film.scrolled .scroll-cue{opacity:0}
+  /* the cue waits 5s before fading in */
+  .scroll-cue{animation:cue-wait .8s ease 5s both}
+  @keyframes cue-wait{from{opacity:0}to{opacity:1}}
   /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
-  .head .logotype{transition:transform .7s var(--ease),color .3s ease;animation:logo-in 1.4s ease .3s both}
+  .head .logotype{transition:transform .7s var(--ease),color .3s ease;animation:logo-in .6s ease .1s both}
   @keyframes logo-in{from{opacity:0}to{opacity:1}}
   body.logo-hero .head .logotype{transform:translateY(calc(50vh - 12px - var(--head) / 2 - 6px)) scale(3.125)}
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
