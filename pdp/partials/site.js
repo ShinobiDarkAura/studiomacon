@@ -281,6 +281,20 @@
     if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
   });
 
+  // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
+  (function () {
+    var link = document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;
+    var home = link.parentElement, next = link.nextSibling, wide = matchMedia('(min-width:768px)');
+    function place() {
+      if (wide.matches) {
+        if (link.parentElement !== head) head.appendChild(link);
+        var x = 0; for (var el = home; el; el = el.offsetParent) x += el.offsetLeft;
+        link.style.left = x + 'px';
+      } else if (link.parentElement !== home) { home.insertBefore(link, next); link.style.left = ''; }
+    }
+    place(); addEventListener('resize', place); addEventListener('load', place);
+  })();
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;

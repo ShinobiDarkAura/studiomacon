@@ -6,7 +6,7 @@
 <title>Meridian Egg | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789615351">
+<link rel="stylesheet" href="site.css?v=1789615437">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -110,7 +110,7 @@
     </div>
 
     <div class="info">
-      <a class="back hover-line" href="index.html">← Back to Shop</a>
+      <a class="back" href="index.html" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span class="hover-line">Back to Shop</span></a>
       <p class="eyebrow">Heavier Than It Looks</p>
       <h1>Meridian Egg</h1>
       <p class="price">$390</p>
@@ -458,6 +458,20 @@
     if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
   });
 
+  // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
+  (function () {
+    var link = document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;
+    var home = link.parentElement, next = link.nextSibling, wide = matchMedia('(min-width:768px)');
+    function place() {
+      if (wide.matches) {
+        if (link.parentElement !== head) head.appendChild(link);
+        var x = 0; for (var el = home; el; el = el.offsetParent) x += el.offsetLeft;
+        link.style.left = x + 'px';
+      } else if (link.parentElement !== home) { home.insertBefore(link, next); link.style.left = ''; }
+    }
+    place(); addEventListener('resize', place); addEventListener('load', place);
+  })();
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
@@ -496,7 +510,7 @@
   // The bag bar appears once the real button has scrolled away, and steps
   // aside at the footer so it never covers the newsletter.
   // Back to Shop returns to the same spot on the shop wall when that is where the visit came from
-  document.querySelector('.info .back').addEventListener('click', function (e) {
+  document.querySelector('.back').addEventListener('click', function (e) {
     if (/\/(index\.html)?$/.test(document.referrer.split('?')[0]) && history.length > 1) { e.preventDefault(); history.back(); }
   });
   (function () {
