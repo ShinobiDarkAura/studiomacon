@@ -297,6 +297,16 @@ def save(name, doc):
         f.write(doc)
 
 
+def align_style(slug):
+    """Move the in-hand photograph so the piece sits where it does in the still (img/hover-align.json)."""
+    path = os.path.join(OUT, "img", "hover-align.json")
+    if not os.path.exists(path):
+        return ""
+    with open(path) as f:
+        a = json.load(f).get(slug)
+    return (f' style="--ox:{a["ox"]}%;--oy:{a["oy"]}%;--tx:{a["tx"]}%;--ty:{a["ty"]}%;--s:{a["s"]}"' if a else "")
+
+
 def main():
     with open(os.path.join(ROOT, "_source/products.json")) as f:
         products = json.load(f)
@@ -350,7 +360,7 @@ def main():
         tiles.append(
             f'    <figure><a class="piece" href="{p["slug"]}.html">'
             f'<img src="img/{p["slug"]}/{still}" alt="{html.escape(p["name"])}" loading="{lazy}">'
-            + (f'<img class="held" src="img/{p["slug"]}/{hover}" alt="" loading="lazy">' if held else "")
+            + (f'<img class="held" src="img/{p["slug"]}/{hover}" alt="" loading="lazy"{align_style(p["slug"])}>' if held else "")
             + f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())

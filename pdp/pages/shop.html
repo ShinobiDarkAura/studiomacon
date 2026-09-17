@@ -66,8 +66,10 @@
   .piece{position:relative;display:block;color:#fff;aspect-ratio:4/5;overflow:hidden}
   /* every tile the same frame; the in-hand photograph fades in over it on hover */
   .piece img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity .5s ease}
-  .piece .held{opacity:0}
+  /* the in-hand photograph swaps in at once, moved so the piece sits where it does in the still */
+  .piece .held{opacity:0;transition:none;transform-origin:var(--ox,50%) var(--oy,50%);transform:translate(var(--tx,0%),var(--ty,0%)) scale(var(--s,1))}
   .piece:hover .held,.piece:focus-visible .held{opacity:1}
+  .piece:hover .held{transform:translate(var(--tx,0%),var(--ty,0%)) scale(var(--s,1))}
   .piece .over{position:absolute;inset:auto 0 0 0;display:flex;flex-direction:column;align-items:flex-start;gap:8px;
     padding:48px 18px 16px;font-size:15px;
     background:linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,0));

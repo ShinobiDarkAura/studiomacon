@@ -23,8 +23,8 @@ button,select,input,textarea{font:inherit;color:inherit}
 button{background:none;border:0;padding:0;cursor:pointer}
 
 /* underline that appears 3px below a link on hover */
-.hover-line{text-decoration:underline;text-decoration-color:transparent;text-underline-offset:6px;
-  text-decoration-thickness:1px;transition:text-decoration-color .2s ease}
+.hover-line{text-decoration:underline;text-decoration-color:rgba(0,0,0,0);text-underline-offset:6px;
+  text-decoration-thickness:1px;transition:text-decoration-color .45s ease}
 .hover-line:hover{text-decoration-color:currentColor}
 .head .hover-line{text-underline-offset:9px}
 
@@ -51,9 +51,9 @@ body.white-right .head .right.on-dark{color:#000}
 @keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
 .head .right a{display:inline-block}
 .head .desk{display:none}
-.logotype{display:block;aspect-ratio:1683/273;background:currentColor;
-  -webkit-mask:url(img/logotype-signature.png) center/contain no-repeat;mask:url(img/logotype-signature.png) center/contain no-repeat}
-.head .logotype{width:138px;position:relative;top:4px}
+.logotype{display:block;aspect-ratio:888/331;background:currentColor;
+  -webkit-mask:url(img/logotype.png) center/contain no-repeat;mask:url(img/logotype.png) center/contain no-repeat}
+.head .logotype{width:88px;position:relative;top:6px}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
@@ -117,7 +117,7 @@ footer .field button{padding:0 0 0 18px}
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:207px}
+  .head .logotype{width:147px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
