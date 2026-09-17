@@ -34,7 +34,34 @@
   @keyframes cue-wait{from{opacity:0}to{opacity:1}}
   /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
   .head .logotype{transition:transform .7s var(--ease),color .3s ease}
-  body.logo-hero .head .logotype{transform:translateY(calc(50vh - 12px - var(--head) / 2 - 6px)) scale(3.125)}
+  body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(3.125)}
+
+  /* ── load-in: MAÇON arrives letter by letter, kept centred; the cedilla rises last and lifts the C; then the tagline types out ── */
+  .logo-build{position:absolute;left:50%;top:50%;z-index:3;display:flex;height:var(--lh);transform:translate(-50%,-50%);pointer-events:none;color:#fff}
+  .ll{position:relative;flex:none;height:100%;width:0;margin-left:0;overflow:visible;
+    transition:width .7s cubic-bezier(.65,0,.25,1),margin-left .7s cubic-bezier(.65,0,.25,1)}
+  .ll.in{width:calc(var(--lh) * var(--w) / 331);margin-left:calc(var(--lh) * var(--g) / 331)}
+  .ll i{position:absolute;top:0;left:0;width:calc(var(--lh) * var(--w) / 331);height:100%;background:currentColor;
+    -webkit-mask:var(--img) left top/100% 100% no-repeat;mask:var(--img) left top/100% 100% no-repeat}
+  .ll .ll-glyph{opacity:0;transform:translateX(calc(var(--lh) * .5));transition:opacity .5s ease .1s,transform .8s cubic-bezier(.16,1,.3,1)}
+  .ll.in .ll-glyph{opacity:1;transform:none}
+  .ll-m .ll-glyph{--img:url(img/logo-letters/m.png)}
+  .ll-a .ll-glyph{--img:url(img/logo-letters/a.png)}
+  .ll-c .ll-glyph{--img:url(img/logo-letters/c.png)}
+  .ll-o .ll-glyph{--img:url(img/logo-letters/o.png)}
+  .ll-n .ll-glyph{--img:url(img/logo-letters/n.png)}
+  .ll-c .ll-ced{--img:url(img/logo-letters/ced.png);clip-path:inset(0 0 calc(100% * (331 - 312) / 331) 0)}
+  /* the C starts sitting on the baseline, its cedilla tucked below out of sight */
+  .ll-c .ll-glyph{transform:translate(calc(var(--lh) * .5), calc(var(--lh) * 56 / 331))}
+  .ll-c.in .ll-glyph{transform:translateY(calc(var(--lh) * 56 / 331))}
+  .ll-c .ll-ced{opacity:0;transform:translateY(calc(var(--lh) * 60 / 331));transition:transform .6s cubic-bezier(.34,1.4,.5,1),opacity .2s ease}
+  .ll-c.lift .ll-glyph{transform:none;transition:transform .6s cubic-bezier(.34,1.4,.5,1)}
+  .ll-c.lift .ll-ced{opacity:1;transform:none}
+  body.logo-anim .head .logotype{opacity:0}
+  .tagline .ch{opacity:0}
+  .tagline .ch.on{opacity:1}
+  @media (max-width:767px){ .logo-build{--lh:calc(108px * 3.125 * 331 / 888)} }
+  @media (min-width:768px){ .logo-build{--lh:calc(147px * 3.125 * 331 / 888)} }
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
   .welcome .prose h1{margin-bottom:44px}
@@ -67,7 +94,7 @@
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
   .wall figure.dr-emerge.is-seen{transform:none}
   @media (min-width:600px){ .wall{grid-template-columns:repeat(2,1fr)} }
-  @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} }
+  @media (min-width:900px){ .wall{grid-template-columns:repeat(4,1fr)} }
   /* phones: two across, 8px from the edges, 8px between */
   @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 8px} }
 
@@ -83,8 +110,6 @@
   .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}
   .piece .name{font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
   .piece .cost{font-size:14px;color:rgba(0,0,0,.55)}
-  /* desktop: square pictures */
-  @media (min-width:768px){ .piece img,.piece .placeholder-fill{aspect-ratio:1/1} }
   @media (max-width:767px){
     .piece .over{padding:10px 0 14px;gap:2px}
     .piece .name{font-size:var(--tile-name)}
@@ -102,6 +127,7 @@
       <source src="video/film-process-480.mp4" type="video/mp4" media="(max-width:700px)">
       <source src="video/film-process.mp4" type="video/mp4">
     </video>
+    <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:154;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:172;--g:17"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:123;--g:-10"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:240;--g:20"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:123;--g:20"><i class="ll-glyph"></i></span></div>
     <p class="tagline">Artifacts of Love</p>
     <!-- scroll cue removed for now -->
   </section>
@@ -158,6 +184,46 @@
     if (tile.classList.contains('is-seen') || !tile.classList.contains('dr-emerge')) return land();
     new MutationObserver(function (m, o) { if (tile.classList.contains('is-seen')) { o.disconnect(); land(); } })
       .observe(tile, {attributes: true, attributeFilter: ['class']});
+  })();
+
+  // The big logotype sits exactly in the middle of the first screen
+  (function () {
+    var logo = document.querySelector('.head .logotype'), head = document.querySelector('.head');
+    function place() {
+      var mid = head.getBoundingClientRect().top + logo.offsetTop + logo.offsetHeight / 2;
+      document.body.style.setProperty('--logo-dy', (innerHeight / 2 - mid) + 'px');
+    }
+    place(); addEventListener('resize', place);
+  })();
+
+  // Load-in: letters one at a time, then the cedilla lifts the C, then the tagline types itself
+  (function () {
+    var build = document.querySelector('.logo-build'), tag = document.querySelector('.film .tagline');
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var skip = matchMedia('(prefers-reduced-motion: reduce)').matches || (nav && nav.type === 'back_forward') || scrollY > 40;
+    var text = tag.textContent; tag.textContent = '';
+    var chars = text.split('').map(function (c) { var s = document.createElement('span'); s.className = 'ch'; s.textContent = c; tag.appendChild(s); return s; });
+    tag.setAttribute('aria-label', text);
+    var timers = [];
+    function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+    function finish() {
+      timers.forEach(clearTimeout); document.body.classList.remove('logo-anim');
+      if (build && build.parentNode) build.remove();
+      chars.forEach(function (c) { c.classList.add('on'); });
+      removeEventListener('scroll', early);
+    }
+    function early() { if (scrollY > 40) finish(); }
+    if (skip) return finish();
+    document.body.classList.add('logo-anim');
+    addEventListener('scroll', early, {passive: true});
+    var letters = [].slice.call(build.querySelectorAll('.ll')), t = 300;
+    letters.forEach(function (l) { later(function () { l.classList.add('in'); }, t); t += 320; });
+    t += 550;
+    later(function () { build.querySelector('.ll-c').classList.add('lift'); }, t);
+    t += 750;
+    later(function () { document.body.classList.remove('logo-anim'); build.style.transition = 'opacity .2s'; build.style.opacity = 0; }, t);
+    chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
+    later(finish, t + 150 + chars.length * 55 + 300);
   })();
   function cue() { var on = scrollY > 40; document.querySelector('.film').classList.toggle('scrolled', on); document.body.classList.toggle('logo-hero', !on); }
   addEventListener('scroll', cue, {passive: true}); cue();

@@ -118,7 +118,7 @@ footer .field button{padding:0 0 0 18px}
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:147px}
+  .head .logotype{width:147px;top:-2px}          /* 8px higher on desktop */
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
