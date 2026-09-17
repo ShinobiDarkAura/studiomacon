@@ -265,9 +265,9 @@ def main():
         doc = shared(open(os.path.join(OUT, "pages", f), encoding="utf-8").read())
         if "{{EXAMPLES}}" in doc:
             CUT = ' class="cutout"'
-            imgs = json.load(open(os.path.join(OUT, "img", "commissions", "index.json")))
+            imgs = json.load(open(os.path.join(OUT, "img", "commissions-cut", "index.json")))
             doc = doc.replace("{{EXAMPLES}}", "\n".join(
-                f'    <figure{CUT if cut else ""}><img src="img/commissions/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 8 else "lazy"}"></figure>'
+                f'    <figure{CUT if cut else ""}><img src="img/commissions-cut/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 8 else "lazy"}"></figure>'
                 for i, (n, w, h, cut) in enumerate(imgs)))
         if "{{GRID}}" in doc:
             imgs = json.load(open(os.path.join(OUT, "img", "inspiration", "index.json")))
