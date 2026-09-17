@@ -34,7 +34,7 @@
   @keyframes cue-wait{from{opacity:0}to{opacity:1}}
   /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
   .head .logotype{transition:transform .7s var(--ease),color .3s ease}
-  body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(3.125)}
+  body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(2.8125)}
 
   /* ── load-in: MAÇON arrives letter by letter, kept centred; the cedilla rises last and lifts the C; then the tagline types out ── */
   .logo-build{position:absolute;left:50%;top:50%;z-index:3;display:flex;height:var(--lh);transform:translate(-50%,-50%);pointer-events:none;color:#fff}
@@ -65,8 +65,8 @@
   body.logo-anim .head .logotype{opacity:0}
   .tagline .ch{opacity:0}
   .tagline .ch.on{opacity:1}
-  @media (max-width:767px){ .logo-build{--lh:calc(108px * 3.125 * 331 / 888)} }
-  @media (min-width:768px){ .logo-build{--lh:calc(147px * 3.125 * 331 / 888)} }
+  @media (max-width:767px){ .logo-build{--lh:calc(108px * 2.8125 * 331 / 888)} }
+  @media (min-width:768px){ .logo-build{--lh:calc(147px * 2.8125 * 331 / 888)} }
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
   .welcome .prose h1{margin-bottom:44px}
