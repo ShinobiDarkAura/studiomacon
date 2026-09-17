@@ -285,12 +285,15 @@ def main():
     from PIL import Image as _I
     tiles = []
     for i, p in enumerate(products):
-        hero = os.path.join(OUT, "img", p["slug"], "hero.jpg")
-        w, h = _I.open(hero).size
+        # the Wonder Horn's hero is a pale cut-out; its linen photograph sits with the others
+        still = "plain-3.jpg" if p["slug"] == "wonderhorn-talisman" else "hero.jpg"
+        held = os.path.exists(os.path.join(OUT, "img", p["slug"], "hand-1.jpg"))
+        lazy = "eager" if i < 6 else "lazy"
         tiles.append(
             f'    <figure><a class="piece" href="{p["slug"]}.html">'
-            f'<img src="img/{p["slug"]}/hero.jpg" width="{w}" height="{h}" alt="{html.escape(p["name"])}" loading="{"eager" if i < 6 else "lazy"}">'
-            f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
+            f'<img src="img/{p["slug"]}/{still}" alt="{html.escape(p["name"])}" loading="{lazy}">'
+            + (f'<img class="held" src="img/{p["slug"]}/hand-1.jpg" alt="" loading="lazy">' if held else "")
+            + f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
     shop = shop.replace("{{SHOPCOUNT}}", str(len(products))).replace("{{SHOPGRID}}", "\n".join(tiles))

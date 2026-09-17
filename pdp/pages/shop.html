@@ -13,24 +13,29 @@
   @media (min-width:768px){ .wall-head h1{font-size:66.25px} }
   @media (min-width:1200px){ .wall-head h1{font-size:75px} }
 
-  .wall{columns:1;column-gap:12px;padding:0 calc(var(--pad) + 12px)}
-  .wall figure{margin:0 0 12px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
+  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 12px)}
+  .wall figure{margin:0;border-radius:6px;overflow:hidden;background:var(--field)}
   .wall figure.dr-emerge{filter:none;transform:translateY(90px);
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
   .wall figure.dr-emerge.is-seen{transform:none}
-  @media (min-width:600px){ .wall{columns:2} }
-  @media (min-width:900px){ .wall{columns:3} }
+  @media (min-width:600px){ .wall{grid-template-columns:repeat(2,1fr)} }
+  @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} }
 
   /* each piece: the photograph, with name and price rising in at the bottom on hover */
-  .piece{position:relative;display:block;color:#fff}
-  .piece img{width:100%;height:auto;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .piece{position:relative;display:block;color:#fff;aspect-ratio:4/5;overflow:hidden}
+  /* every tile the same frame; the in-hand photograph fades in over it on hover */
+  .piece img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity .5s ease}
+  .piece .held{opacity:0}
+  .piece:hover .held,.piece:focus-visible .held{opacity:1}
   .piece .over{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
     padding:48px 18px 16px;font-size:15px;
     background:linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,0));
     opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .45s var(--ease)}
-  .piece .name{font:400 22px/1 var(--serif);text-transform:uppercase;letter-spacing:.01em}
+  .piece .over{z-index:1}
+  .piece .name{font:400 49.5px/.95 var(--serif);text-transform:uppercase;letter-spacing:.01em}
   .piece:hover .over,.piece:focus-visible .over{opacity:1;transform:none}
   .piece:hover img{transform:scale(1.02)}
+  @media (hover:none){ .piece .held{display:none} }
   /* no hover on touch screens, so the details are always shown there */
   @media (hover:none){ .piece .over{opacity:1;transform:none} }
 </style>
