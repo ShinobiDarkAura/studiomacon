@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Our Story | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789612563">
+<link rel="stylesheet" href="site.css?v=1789612856">
 <style>
   .head .on-dark{color:#000}
   .head .mark.on-dark img{filter:none}          /* Story keeps the nav black throughout */
@@ -261,7 +261,7 @@
     function arm(root) {
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
         .forEach(function (el) {
-          if (el.classList.contains('dr-emerge')) return;
+          if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');

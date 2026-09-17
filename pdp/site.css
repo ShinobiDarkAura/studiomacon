@@ -160,7 +160,7 @@ footer .field button{padding:0 0 0 18px}
 @media (min-width:768px){
   .intro{padding-top:calc(var(--head) + 110px)}
   .panel,.section{margin:140px 0}
-  .split{display:grid;grid-template-columns:minmax(0,62fr) minmax(0,38fr);gap:0 48px;margin:0 var(--pad) 0 0;align-items:start}
+  .split{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;margin:0 calc(var(--pad) + 12px) 0 0;align-items:start}
   .split .pics figcaption{padding-left:var(--pad)}
   .split .copy{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;scrollbar-width:none;
     overscroll-behavior:contain;padding:24px 0 48px;display:flex;flex-direction:column;justify-content:safe center}

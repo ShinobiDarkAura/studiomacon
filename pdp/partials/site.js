@@ -135,7 +135,7 @@
     function arm(root) {
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
         .forEach(function (el) {
-          if (el.classList.contains('dr-emerge')) return;
+          if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');

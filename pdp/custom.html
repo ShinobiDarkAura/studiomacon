@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Commission a Totem | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789612563">
+<link rel="stylesheet" href="site.css?v=1789612856">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -165,7 +165,7 @@
   .thanks{padding:8px 0 4px;font-size:16px;line-height:1.55}
 
   @media (min-width:768px){
-    .commission{display:grid;grid-template-columns:minmax(0,62fr) minmax(0,38fr);gap:0 48px;align-items:start;
+    .commission{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;align-items:start;
       padding-right:calc(var(--pad) + 12px)}
     .examples{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;padding:0}
     .examples .lead{grid-column:1/-1;aspect-ratio:auto;height:100vh;border-radius:0}
@@ -545,7 +545,7 @@
     function arm(root) {
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
         .forEach(function (el) {
-          if (el.classList.contains('dr-emerge')) return;
+          if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');

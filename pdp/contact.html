@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Contact | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789612563">
+<link rel="stylesheet" href="site.css?v=1789612856">
 <style>
   .split .pics figure{display:grid;place-items:center;aspect-ratio:4/5}
   .split .pics img{width:78%}
@@ -16,7 +16,7 @@
   @media (min-width:768px){
     .split .copy .ways{position:absolute;left:0;right:0;bottom:16px;margin:0}
     /* it sits in the bottom strip the scroll trigger never reaches, so it fades in on its own after the form */
-    .split .copy .ways.dr-emerge{opacity:0;filter:none;transform:none;transition:none;animation:ways-in 1s ease .9s forwards}
+    .split .copy .ways{opacity:0;animation:ways-in 1s ease .9s forwards}
   }
   @keyframes ways-in{to{opacity:1}}
   .form{display:grid;gap:30px}
@@ -54,7 +54,7 @@
       <h1>Contact</h1>
       <p class="body">Questions about a piece, an order, or a commission.<br>We read everything, and we'll write back.</p>
 
-      <p class="ways"><a class="hover-line" href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a><span class="dot" aria-hidden="true">•</span><a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">@studiomacon</a></p>
+      <p class="ways" data-no-emerge><a class="hover-line" href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a><span class="dot" aria-hidden="true">•</span><a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">@studiomacon</a></p>
 
       <form class="form" onsubmit="event.preventDefault();this.outerHTML='<p class=&quot;sent&quot;>Sent, thanks!</p>'">
         <div class="row">
@@ -228,7 +228,7 @@
     function arm(root) {
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
         .forEach(function (el) {
-          if (el.classList.contains('dr-emerge')) return;
+          if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
