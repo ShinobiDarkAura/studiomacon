@@ -289,12 +289,14 @@ def main():
     for i, p in enumerate(sorted(products, key=group)):
         # the Wonder Horn's hero is a pale cut-out; its linen photograph sits with the others
         still = "plain-3.jpg" if p["slug"] == "wonderhorn-talisman" else "hero.jpg"
-        held = os.path.exists(os.path.join(OUT, "img", p["slug"], "hand-1.jpg"))
+        # pendants show the photograph of the piece being worn; everything else, in the hand
+        hover = {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(p["slug"], "hand-1.jpg")
+        held = os.path.exists(os.path.join(OUT, "img", p["slug"], hover))
         lazy = "eager" if i < 6 else "lazy"
         tiles.append(
             f'    <figure><a class="piece" href="{p["slug"]}.html">'
             f'<img src="img/{p["slug"]}/{still}" alt="{html.escape(p["name"])}" loading="{lazy}">'
-            + (f'<img class="held" src="img/{p["slug"]}/hand-1.jpg" alt="" loading="lazy">' if held else "")
+            + (f'<img class="held" src="img/{p["slug"]}/{hover}" alt="" loading="lazy">' if held else "")
             + f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
