@@ -12,7 +12,7 @@
   .film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px) 24px}
   .wall-head.next-set{padding-top:0}
-  .set:first-child::after{content:"";display:block;height:calc(120px + 10vh)}
+  .set:first-of-type::after{content:"";display:block;height:calc(120px + 10vh)}
   /* each section title rides along under the nav until the next section's title pushes it off */
   .set{position:relative}
   .wall-head{position:sticky;z-index:6;top:calc(var(--head) - 25vh);pointer-events:none;transition:color .35s ease}
