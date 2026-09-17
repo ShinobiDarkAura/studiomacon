@@ -111,7 +111,7 @@ footer .field button{padding:0 0 0 18px}
   footer .brand,footer .middle,footer .news{order:0}
   footer .middle{justify-self:center;align-items:center}
   footer .links{justify-content:center}
-  footer .news{justify-self:end;width:100%;max-width:261px}
+  footer .news{justify-self:end;width:100%;max-width:292px}
 }
 @media (min-width:1200px){
   h1{font-size:60px}
