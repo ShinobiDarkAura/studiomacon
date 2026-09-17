@@ -42,6 +42,8 @@ button{background:none;border:0;padding:0;cursor:pointer}
 .head .mark img{display:block;height:44px;width:auto;transition:filter .3s ease}
 .head .mark.on-dark img{filter:invert(1)}
 .head .on-dark{color:#fff}
+/* pages with a white right-hand column (product, custom): Bag stays black over it */
+body.white-right .head .right.on-dark{color:#000}
 .head .left{justify-self:start;display:flex;gap:28px}
 .head .right{justify-self:end;white-space:nowrap;position:relative}
 /* added-to-bag toast, tucked under the Bag link */
