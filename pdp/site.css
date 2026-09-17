@@ -47,11 +47,12 @@ body.white-right .head .right.on-dark{color:#000}
 .head .left{justify-self:start;display:flex;gap:28px}
 .head .right{justify-self:end;white-space:nowrap;position:relative}
 /* added-to-bag toast, tucked under the Bag link */
-.bag-toast{position:absolute;top:calc(100% + 14px);right:0;display:flex;align-items:center;gap:12px;padding:10px 14px 10px 10px;
+.bag-toast{position:absolute;top:calc(100% + 14px);right:0;width:max-content;border-radius:8px;display:flex;align-items:center;gap:12px;padding:10px 14px 10px 10px;
   background:#fff;color:#000;border:1px solid var(--rule);box-shadow:0 10px 30px rgba(0,0,0,.08);font-size:13px;line-height:1.35;
   white-space:nowrap;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .35s ease,transform .45s var(--ease)}
 .bag-toast.on{opacity:1;transform:none}
 .bag-toast img{width:40px;height:50px;object-fit:cover;border-radius:3px}
+.bag-toast .price-note{color:rgba(0,0,0,.45);margin-left:6px}
 .bag-toast b{display:block;font-weight:500;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
 .head .right a.bump{animation:bump .5s var(--ease)}
 @keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}

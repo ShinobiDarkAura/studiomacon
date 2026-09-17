@@ -210,9 +210,9 @@
       if (!/add to bag/i.test(b.textContent)) return;
       b.addEventListener('click', function () {
         n += 1; try { localStorage.setItem(KEY, n); } catch (e) {} paint();
-        var title = document.querySelector('h1'), hero = document.querySelector('.gallery .hero img');
+        var title = document.querySelector('h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price');
         toast.innerHTML = (hero ? '<img src="' + hero.getAttribute('src') + '" alt="">' : '') +
-          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + '</span>';
+          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + (price ? '<span class="price-note">' + price.textContent + '</span>' : '') + '</span>';
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
