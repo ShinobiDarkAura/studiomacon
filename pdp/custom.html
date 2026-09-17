@@ -13,8 +13,11 @@
   .examples figure{margin:0 0 10px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
   .examples img{display:block;width:100%;height:auto}
   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
-  .examples figure.cutout{background:#eeeeec;padding:15%;aspect-ratio:3/4;display:grid;place-items:center}
-  .examples figure.cutout img{width:100%;height:100%;object-fit:contain}          /* every frame 3:4, the piece fitted inside it */
+  /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
+  .examples figure{aspect-ratio:3/4;position:relative}
+  .examples figure.cutout{background:#eeeeec;display:grid;place-items:center}
+  .examples figure.cutout img{width:70%;height:58%;object-fit:contain}
+  .examples figure:not(.cutout) img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .order{padding:48px calc(var(--pad) + 12px) 0}
 
   .price{font-size:19px;margin:0 0 18px}
@@ -56,7 +59,7 @@
 
   .line{display:block;border-bottom:.5px solid rgba(0,0,0,.2);padding:0 0 6px}
   .line input,.line textarea,.line select{width:100%;border:0;outline:0;background:none;font-size:16px;resize:none}
-  .line input::placeholder,.line textarea::placeholder{color:rgba(0,0,0,.25)}
+  .line input::placeholder,.line textarea::placeholder{color:rgba(0,0,0,.22)}
   .line textarea{min-height:0;height:26px;line-height:26px;padding:0;overflow:hidden}
   .notes-q{margin-bottom:26px}
   .reassure{margin:10px 0 0;font-size:13px;color:rgba(0,0,0,.5)}
@@ -129,10 +132,13 @@
     <figure class="cutout"><img src="img/commissions-cut/06.png" width="1100" height="1042" alt="" loading="eager"></figure>
     <figure class="cutout"><img src="img/commissions-cut/10.png" width="691" height="312" alt="" loading="eager"></figure>
     <figure class="cutout"><img src="img/commissions-cut/13.png" width="1100" height="491" alt="" loading="eager"></figure>
-    <figure class="cutout"><img src="img/commissions-cut/16.png" width="959" height="1100" alt="" loading="eager"></figure>
+    <figure class="cutout"><img src="img/commissions-cut/16.png" width="958" height="1100" alt="" loading="eager"></figure>
     <figure class="cutout"><img src="img/commissions-cut/17.png" width="512" height="162" alt="" loading="eager"></figure>
     <figure class="cutout"><img src="img/commissions-cut/18.png" width="1100" height="669" alt="" loading="lazy"></figure>
-    <figure class="cutout"><img src="img/commissions-cut/21.png" width="646" height="784" alt="" loading="lazy"></figure>
+    <figure class="cutout"><img src="img/commissions-cut/21.png" width="642" height="780" alt="" loading="lazy"></figure>
+    <figure><img src="img/commissions-cut/chess-0.jpg" width="1400" height="882" alt="" loading="lazy"></figure>
+    <figure><img src="img/commissions-cut/chess-1.jpg" width="1400" height="944" alt="" loading="lazy"></figure>
+    <figure><img src="img/commissions-cut/chess-2.jpg" width="1400" height="938" alt="" loading="lazy"></figure>
   </section>
 
   <section class="order" aria-label="Commission a totem">
