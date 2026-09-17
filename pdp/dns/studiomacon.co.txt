@@ -1,0 +1,55 @@
+; studiomacon.co — zone for import into Cloudflare
+; Captured from live DNS 2026-09-17, while nameservers were ns4/ns5.wixdns.net.
+; Import: Cloudflare dashboard > studiomacon.co > DNS > Records > Import and Export > Import.
+; All records are DNS-only (grey cloud) on import; leave them that way until launch day.
+
+$TTL 3600
+
+; --- Wix site (replaced on launch day by the new hosting) ---
+studiomacon.co.            3600 IN A     185.230.63.107
+studiomacon.co.            3600 IN A     185.230.63.186
+studiomacon.co.            3600 IN A     185.230.63.171
+www.studiomacon.co.        3600 IN CNAME cdn3.wixdns.net.
+
+; --- Google Workspace mail ---
+; NOTE: only alt3 exists today; the four other Google MX hosts are missing.
+; Added here so mail has its full set of servers. alt3 keeps its original priority.
+studiomacon.co.            3600 IN MX 1  aspmx.l.google.com.
+studiomacon.co.            3600 IN MX 5  alt1.aspmx.l.google.com.
+studiomacon.co.            3600 IN MX 5  alt2.aspmx.l.google.com.
+studiomacon.co.            3600 IN MX 10 alt3.aspmx.l.google.com.
+studiomacon.co.            3600 IN MX 10 alt4.aspmx.l.google.com.
+
+; --- Verifications ---
+studiomacon.co.            1800 IN TXT   "google-site-verification=8FG8yqNbeeVGNs1geVB6ovn-LIoWKWVJr9ktqXKKSao"
+studiomacon.co.            1800 IN TXT   "google-site-verification=i8fy1RxYPQVq4VLXgK4xz0MTpX7qutlA0k4zf0u4Imc"
+studiomacon.co.            1800 IN TXT   "klaviyo-site-verification=QQsc9L"
+googledc01f90bfceb785d.studiomacon.co. 3600 IN CNAME google.com.
+
+; --- Email policy ---
+; SPF did not exist before. This authorises Google and Resend to send as the domain.
+studiomacon.co.            1800 IN TXT   "v=spf1 include:_spf.google.com include:amazonses.com ~all"
+_dmarc.studiomacon.co.     1800 IN TXT   "v=DMARC1; p=none;"
+
+; --- Mailchimp (legacy — prune once confirmed unused) ---
+k2._domainkey.studiomacon.co.   1800 IN CNAME dkim2.mcsv.net.
+k3._domainkey.studiomacon.co.   1800 IN CNAME dkim3.mcsv.net.
+
+; --- SendGrid (legacy — prune once confirmed unused) ---
+kl._domainkey.studiomacon.co.   3600 IN CNAME kl.domainkey.u161779.wl030.sendgrid.net.
+kl2._domainkey.studiomacon.co.  3600 IN CNAME kl2.domainkey.u161779.wl030.sendgrid.net.
+hello.studiomacon.co.           3600 IN CNAME u161779.wl030.sendgrid.net.
+
+; --- Wix Ascend mail (legacy — prune once off Wix) ---
+s1._domainkey.studiomacon.co.   3600 IN CNAME s1._domainkey.studiomacon.co.s011.ascendbywix.com.
+s2._domainkey.studiomacon.co.   3600 IN CNAME s2._domainkey.studiomacon.co.s011.ascendbywix.com.
+sel1._domainkey.studiomacon.co. 3600 IN CNAME sel1._domainkey.studiomacon.co.s011.ascendbywix.com.
+sg.studiomacon.co.              3600 IN CNAME sg.studiomacon.co.s011.ascendbywix.com.
+
+; --- Klaviyo ---
+newsletter.studiomacon.co. 3600 IN CNAME maon.myklpages.com.
+
+; --- Resend (add after Resend issues them; values differ per account) ---
+; resend._domainkey.studiomacon.co. IN TXT   "p=MIGfMA0GCSqG..."
+; rsend.studiomacon.co.             IN CNAME rsend.fo....mta.net.
+; send.studiomacon.co.              IN CNAME send.for....mta.net.

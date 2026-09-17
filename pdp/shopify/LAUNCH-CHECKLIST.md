@@ -12,6 +12,11 @@
   sitemap.xml, robots.txt; noindex on bag/checkout/hidden pages
 - Old Wix addresses → new pages: _redirects
 - Policy drafts: shopify/policies/*.md
+- Enquiry function deployed (contact + commission forms reach the Bureau and save). Emails still blocked
+  on Resend domain verification.
+- DNS moved to Cloudflare (2026-09-17): zone rebuilt from live records in pdp/dns/studiomacon.co.zone,
+  nameservers at GoDaddy now kobe/rachel.ns.cloudflare.com. Fixed on the way: all five Google MX records
+  (only alt3 existed) and an SPF record (none existed).
 
 ## Needs Alex / Hannah (logins, IDs, bank)
 1. Payments: Settings → Payments → Shopify Payments (Private multi-member LLC, Macon Studio LLC, EIN, bank). Turn on Apple Pay + Shop Pay.
@@ -25,6 +30,9 @@
 
 ## Next for Claude (after the above)
 - Klaviyo footer signup (needs the Klaviyo public key + list id)
-- Contact + commission forms: site side DONE (posts to the Bureau). Bureau side coded on branch `website-forms` in a worktree at git/macon-archive-web-forms — NOT deployed. To go live: merge, set secrets RESEND_API_KEY, ENQUIRY_FROM="Studio Maçon <hello@studiomacon.co>", ENQUIRY_NOTIFY="hello@studiomacon.co,alex@studiomacon.co,hannah@studiomacon.co", ENQUIRY_ORIGINS="https://studiomacon.co,https://www.studiomacon.co", then `supabase functions deploy enquiry`. Verify studiomacon.co as a sending domain in Resend.
+- Contact + commission forms: site side DONE; Bureau function DEPLOYED with all four secrets set, saving
+  enquiries. Emails do NOT send yet: studiomacon.co is unverified in Resend. Remaining: add Resend's three
+  CNAME/TXT records at Cloudflare, hit Verify, then test the form end to end.
+  Branch `website-forms` at git/macon-archive-web-forms still needs merging to main.
 - Newsletter footer: Shopify signup (per Alex) — to wire once the store password is removed
 - Hosting (Cloudflare Pages), domain records at switch day, Search Console + Google & YouTube app
