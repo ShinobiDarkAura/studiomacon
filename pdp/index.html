@@ -25,9 +25,9 @@
   }
   /* the line under the big logotype on the film */
   @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
-  .film .tagline{position:absolute;left:0;right:0;top:calc(50% + 100px);z-index:2;margin:0;text-align:center;color:#fff;
+  .film .tagline{position:fixed;left:0;right:0;top:calc(50vh + 100px);pointer-events:none;z-index:2;margin:0;text-align:center;color:#fff;
     font:italic 400 15pt/1.2 "Henry",var(--serif);transition:opacity .5s ease}
-  @media (max-width:767px){ .film .tagline{top:calc(50% + 70px)} }
+  @media (max-width:767px){ .film .tagline{top:calc(50vh + 70px)} }
   .film.scrolled .tagline{opacity:0}
   .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden}
   /* the cue waits 5s before fading in */
