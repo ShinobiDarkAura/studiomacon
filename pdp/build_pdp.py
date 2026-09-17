@@ -178,8 +178,8 @@ def accordions(slug, k, notes):
     if k != "totem":                       # totems carry no sizing row
         items.append(("Sizing", sizing))
     items.append(("Shipping &amp; Returns",
-                  "<p>Each piece is made to order. Please allow up to 10 business days for us to make yours before it heads out to you. Standard shipping takes 3–7 business days; international shipping generally takes 5–10.</p>"
-                  "<p>We accept pieces (excluding custom work) in their original condition for store credit toward your next purchase, within 14 days of delivery. If a piece doesn't fit, we'll gladly work with you to find the right size. "
+                  "<p>Each piece is made to order; please allow up to 10 business days before it ships. Standard shipping takes 3–7 business days, international 5–10.</p>"
+                  "<p>Pieces in original condition (excluding custom work) may be returned within 14 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size. "
                   '<a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.</p>'))
     return "\n".join(
         f'''        <div class="acc-item">
