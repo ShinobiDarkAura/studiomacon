@@ -13,7 +13,8 @@
   .examples figure{margin:0 0 10px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
   .examples img{display:block;width:100%;height:auto}
   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
-  .examples figure.cutout{background:#eeeeec;padding:15%}
+  .examples figure.cutout{background:#eeeeec;padding:15%;aspect-ratio:3/4;display:grid;place-items:center}
+  .examples figure.cutout img{width:100%;height:100%;object-fit:contain}          /* every frame 3:4, the piece fitted inside it */
   .order{padding:48px calc(var(--pad) + 12px) 0}
 
   .price{font-size:19px;margin:0 0 18px}
