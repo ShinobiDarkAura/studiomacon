@@ -10,7 +10,7 @@
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
-  .gallery figure + figure{display:none}          /* mobile: hero only up top */
+  .gallery figure:not(.hero){display:none}          /* mobile: hero only up top */
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
   .gallery video{display:block;width:100%;height:100vh;height:100svh;object-fit:cover;background:var(--field)}
 
@@ -48,12 +48,6 @@
   .buy{margin:0 0 42px}          /* buttons follow the description */
   .desc-block .label{margin:0 0 22px}
   .desc{margin:0;font-size:17px;line-height:1.55}
-  /* phones: the text column reads left-aligned, buttons stack, closing placeholders are half a screen tall */
-  @media (max-width:767px){
-    .info,.product .info h1,.product .info .eyebrow{text-align:left}
-    .buy{grid-template-columns:1fr}
-    .big{aspect-ratio:auto;height:50vh;height:50svh}
-  }
 
   /* ── closing: big stacked images, two centred chunks ─ */
   .closing{padding:128px 0 0}
@@ -70,17 +64,35 @@
   .dock.on{transform:none}
   .dock span:last-child{text-transform:none}
 
+  /* ── phones: one 24px side margin for the whole page, left-aligned text, stacked buttons ── */
+  @media (max-width:767px){
+    .info,.product .info h1,.product .info .eyebrow{text-align:left}
+    .buy{grid-template-columns:1fr}
+    .gallery{padding:0 var(--pad)}
+    .gallery .hero img,.gallery .hero video{height:auto;aspect-ratio:4/5;border-radius:6px}
+    .closing{padding:96px var(--pad) 0}
+    .big{--w:100%;width:100%;margin-left:0;aspect-ratio:auto;height:50vh;height:50svh}
+    .chunk{padding:0}
+    /* thumbnails of every picture and film, under the main image */
+    .thumbs{display:flex;gap:8px;margin:10px 0 0;overflow-x:auto;scrollbar-width:none}
+    .thumbs::-webkit-scrollbar{display:none}
+    .thumbs button{flex:none;width:56px;height:70px;padding:0;border-radius:4px;overflow:hidden;opacity:.55;outline:1px solid transparent;outline-offset:1px;transition:opacity .25s ease,outline-color .25s ease}
+    .thumbs button.on{opacity:1;outline-color:#000}
+    .thumbs img{width:100%;height:100%;object-fit:cover}
+  }
+  @media (min-width:768px){ .thumbs{display:none} }
+
   @media (min-width:768px){
     .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
       margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
-    .gallery figure + figure{display:block;margin-top:0}
+    .gallery figure:not(.hero){display:block;margin-top:0}
     /* 12px inset on the left, and 12px under each picture */
     .gallery{padding-left:12px}
     .gallery figure{margin-bottom:12px}
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
     .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
-    .gallery figure + figure img,.gallery figure + figure video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
+    .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
@@ -494,6 +506,30 @@
     btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
+  })();
+</script>
+<script>
+  // Phones: a strip of thumbnails under the main image; tapping one shows that picture or film in its place
+  (function () {
+    var gallery = document.querySelector('.gallery'), hero = gallery.querySelector('.hero');
+    var figs = [].slice.call(gallery.querySelectorAll('figure'));
+    if (figs.length < 2) return;
+    var original = hero.innerHTML, strip = document.createElement('div');
+    strip.className = 'thumbs'; strip.setAttribute('aria-label', 'More pictures');
+    figs.forEach(function (f, i) {
+      var media = f.querySelector('img, video'); if (!media) return;
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Picture ' + (i + 1));
+      var t = document.createElement('img'); t.alt = ''; t.loading = 'lazy';
+      t.src = media.tagName === 'VIDEO' ? media.getAttribute('poster') : media.getAttribute('src');
+      b.appendChild(t); if (i === 0) b.classList.add('on');
+      b.addEventListener('click', function () {
+        hero.innerHTML = i === 0 ? original : f.innerHTML;
+        var v = hero.querySelector('video'); if (v) { v.muted = true; v.play().catch(function () {}); }
+        [].forEach.call(strip.children, function (x) { x.classList.toggle('on', x === b); });
+      });
+      strip.appendChild(b);
+    });
+    hero.after(strip);
   })();
 </script>
 <script>
