@@ -255,12 +255,7 @@
   (function () {
     var build = document.querySelector('.logo-build'), tag = document.querySelector('.film .tagline');
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-    // the intro belongs to the first arrival: coming back from a piece, the logotype is simply already there
-    var seen = false;
-    try { seen = sessionStorage.getItem('macon-intro') === '1'; } catch (e) {}
-    if (/[?&]intro/.test(location.search)) seen = false;          // ?intro replays it, for looking at the animation
-    var skip = matchMedia('(prefers-reduced-motion: reduce)').matches || (nav && nav.type === 'back_forward') || scrollY > 40 || seen;
-    try { sessionStorage.setItem('macon-intro', '1'); } catch (e) {}
+    var skip = matchMedia('(prefers-reduced-motion: reduce)').matches || (nav && nav.type === 'back_forward') || scrollY > 40;
     var text = tag.textContent; tag.textContent = '';
     var chars = text.split('').map(function (c) { var s = document.createElement('span'); s.className = 'ch'; s.textContent = c; tag.appendChild(s); return s; });
     tag.setAttribute('aria-label', text);
