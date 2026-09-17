@@ -1,0 +1,512 @@
+{
+ "pip": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985362870637",
+    "price": 220.0,
+    "available": true
+   }
+  ]
+ },
+ "rebi": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985363001709",
+    "price": 220.0,
+    "available": true
+   }
+  ]
+ },
+ "ren": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985363067245",
+    "price": 220.0,
+    "available": true
+   }
+  ]
+ },
+ "zuma": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985363263853",
+    "price": 220.0,
+    "available": true
+   }
+  ]
+ },
+ "ori": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985363329389",
+    "price": 220.0,
+    "available": true
+   }
+  ]
+ },
+ "yael": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985363427693",
+    "price": 220.0,
+    "available": true
+   }
+  ]
+ },
+ "zuma-ring": {
+  "option": "Size",
+  "variants": [
+   {
+    "value": "5.5",
+    "id": "gid://shopify/ProductVariant/53985363525997",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "6",
+    "id": "gid://shopify/ProductVariant/53985363558765",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "6.5",
+    "id": "gid://shopify/ProductVariant/53985363591533",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "7",
+    "id": "gid://shopify/ProductVariant/53985363624301",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "7.5",
+    "id": "gid://shopify/ProductVariant/53985363657069",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "8",
+    "id": "gid://shopify/ProductVariant/53985363689837",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "8.5",
+    "id": "gid://shopify/ProductVariant/53985363722605",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "9",
+    "id": "gid://shopify/ProductVariant/53985363755373",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "9.5",
+    "id": "gid://shopify/ProductVariant/53985363788141",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "10",
+    "id": "gid://shopify/ProductVariant/53985363820909",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "10.5",
+    "id": "gid://shopify/ProductVariant/53985363853677",
+    "price": 320.0,
+    "available": true
+   },
+   {
+    "value": "11",
+    "id": "gid://shopify/ProductVariant/53985363886445",
+    "price": 320.0,
+    "available": true
+   }
+  ]
+ },
+ "milo": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985363984749",
+    "price": 220.0,
+    "available": true
+   }
+  ]
+ },
+ "eclipse-ring": {
+  "option": "Size",
+  "variants": [
+   {
+    "value": "5.5",
+    "id": "gid://shopify/ProductVariant/53985364083053",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "6",
+    "id": "gid://shopify/ProductVariant/53985364115821",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "6.5",
+    "id": "gid://shopify/ProductVariant/53985364148589",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "7",
+    "id": "gid://shopify/ProductVariant/53985364181357",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "7.5",
+    "id": "gid://shopify/ProductVariant/53985364214125",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "8",
+    "id": "gid://shopify/ProductVariant/53985364246893",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "8.5",
+    "id": "gid://shopify/ProductVariant/53985364279661",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "9",
+    "id": "gid://shopify/ProductVariant/53985364312429",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "9.5",
+    "id": "gid://shopify/ProductVariant/53985364345197",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "10",
+    "id": "gid://shopify/ProductVariant/53985364377965",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "10.5",
+    "id": "gid://shopify/ProductVariant/53985364410733",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "11",
+    "id": "gid://shopify/ProductVariant/53985364443501",
+    "price": 340.0,
+    "available": true
+   }
+  ]
+ },
+ "sietch-aperture": {
+  "option": "Size",
+  "variants": [
+   {
+    "value": "5.5",
+    "id": "gid://shopify/ProductVariant/53985364509037",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "6",
+    "id": "gid://shopify/ProductVariant/53985364541805",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "6.5",
+    "id": "gid://shopify/ProductVariant/53985364574573",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "7",
+    "id": "gid://shopify/ProductVariant/53985364607341",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "7.5",
+    "id": "gid://shopify/ProductVariant/53985364640109",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "8",
+    "id": "gid://shopify/ProductVariant/53985364672877",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "8.5",
+    "id": "gid://shopify/ProductVariant/53985364705645",
+    "price": 340.0,
+    "available": true
+   },
+   {
+    "value": "9",
+    "id": "gid://shopify/ProductVariant/53985364738413",
+    "price": 340.0,
+    "available": true
+   }
+  ]
+ },
+ "lunar-canyon-ring": {
+  "option": "Size",
+  "variants": [
+   {
+    "value": "5.5",
+    "id": "gid://shopify/ProductVariant/53985365131629",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "6",
+    "id": "gid://shopify/ProductVariant/53985365164397",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "6.5",
+    "id": "gid://shopify/ProductVariant/53985365197165",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "7",
+    "id": "gid://shopify/ProductVariant/53985365229933",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "7.5",
+    "id": "gid://shopify/ProductVariant/53985365262701",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "8",
+    "id": "gid://shopify/ProductVariant/53985365295469",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "8.5",
+    "id": "gid://shopify/ProductVariant/53985365328237",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "9",
+    "id": "gid://shopify/ProductVariant/53985365361005",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "9.5",
+    "id": "gid://shopify/ProductVariant/53985365393773",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "10",
+    "id": "gid://shopify/ProductVariant/53985365426541",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "10.5",
+    "id": "gid://shopify/ProductVariant/53985365459309",
+    "price": 370.0,
+    "available": true
+   },
+   {
+    "value": "11",
+    "id": "gid://shopify/ProductVariant/53985365492077",
+    "price": 370.0,
+    "available": true
+   }
+  ]
+ },
+ "eleph": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985365590381",
+    "price": 220.0,
+    "available": true
+   }
+  ]
+ },
+ "wonderhorn-talisman": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985365655917",
+    "price": 390.0,
+    "available": true
+   }
+  ]
+ },
+ "ibi": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985365819757",
+    "price": 220.0,
+    "available": true
+   }
+  ]
+ },
+ "starshipkey-pendant": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985365885293",
+    "price": 460.0,
+    "available": true
+   }
+  ]
+ },
+ "meridian-egg-ring": {
+  "option": "Size",
+  "variants": [
+   {
+    "value": "5.5",
+    "id": "gid://shopify/ProductVariant/53985365950829",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "6",
+    "id": "gid://shopify/ProductVariant/53985365983597",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "6.5",
+    "id": "gid://shopify/ProductVariant/53985366016365",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "7",
+    "id": "gid://shopify/ProductVariant/53985366049133",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "7.5",
+    "id": "gid://shopify/ProductVariant/53985366081901",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "8",
+    "id": "gid://shopify/ProductVariant/53985366114669",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "8.5",
+    "id": "gid://shopify/ProductVariant/53985366147437",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "9",
+    "id": "gid://shopify/ProductVariant/53985366180205",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "9.5",
+    "id": "gid://shopify/ProductVariant/53985366212973",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "10",
+    "id": "gid://shopify/ProductVariant/53985366245741",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "10.5",
+    "id": "gid://shopify/ProductVariant/53985366278509",
+    "price": 390.0,
+    "available": true
+   },
+   {
+    "value": "11",
+    "id": "gid://shopify/ProductVariant/53985366311277",
+    "price": 390.0,
+    "available": true
+   }
+  ]
+ },
+ "totem-commission": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/53985366409581",
+    "price": 925.0,
+    "available": true
+   }
+  ]
+ },
+ "ear-cuff": {
+  "option": "Style",
+  "variants": [
+   {
+    "value": "Single",
+    "id": "gid://shopify/ProductVariant/53985373192557",
+    "price": 260.0,
+    "available": true
+   },
+   {
+    "value": "Pair",
+    "id": "gid://shopify/ProductVariant/53985373225325",
+    "price": 490.0,
+    "available": true
+   }
+  ]
+ }
+}

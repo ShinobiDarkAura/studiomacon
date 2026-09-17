@@ -173,7 +173,7 @@
       <h1>Ibi</h1>
       <p class="price">$220</p>
       
-      <div class="buy" id="bag">
+      <div class="buy" id="bag" data-variant="gid://shopify/ProductVariant/53985365819757">
         <button class="cta">Add to Bag</button>
         <button class="apple-pay" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
       </div>
@@ -233,6 +233,7 @@
 
 <button class="dock" id="dock" aria-label="Add to Bag, $220"><span>Add to Bag</span><span>$220</span></button>
 
+<script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07"};</script>
 <script>
   (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
   // A refresh always starts at the top of the page; Back and Forward still return to where you were
@@ -455,17 +456,40 @@
     }).observe(document.body, {childList: true, subtree: true});
   })();
 
+  // Checkout: the bag becomes a Shopify cart, then Shopify's own checkout takes over (cards, Apple Pay, Shop Pay, tax, shipping)
+  window.MaconCheckout = function (items, button) {
+    var cfg = window.MACON_SHOP || {};
+    var lines = items.filter(function (i) { return i.variant; }).map(function (i) { return {merchandiseId: i.variant, quantity: i.qty || 1}; });
+    if (!lines.length) return Promise.reject(new Error('Nothing to check out'));
+    if (button) { button.setAttribute('aria-busy', 'true'); button.dataset.label = button.textContent; button.textContent = 'One moment…'; }
+    return fetch('https://' + cfg.shop + '/api/' + cfg.api + '/graphql.json', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': cfg.token},
+      body: JSON.stringify({query: 'mutation($lines:[CartLineInput!]){cartCreate(input:{lines:$lines}){cart{checkoutUrl} userErrors{message}}}', variables: {lines: lines}})
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      var res = d && d.data && d.data.cartCreate;
+      if (!res || !res.cart) throw new Error((res && res.userErrors[0] && res.userErrors[0].message) || 'Checkout is unavailable right now');
+      if (!button || button.id === 'checkout') MaconBag.write([]);          // the cart now lives in Shopify (abandoned-checkout emails bring shoppers back to it)
+      location.href = res.cart.checkoutUrl;
+    }).catch(function (e) {
+      if (button) { button.removeAttribute('aria-busy'); button.textContent = button.dataset.label; }
+      alert('Sorry, checkout could not start: ' + e.message + '. Please try again, or write to hello@studiomacon.co.');
+      throw e;
+    });
+  };
+
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
     function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
     function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
-    function clean(it) { return {slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
+    function clean(it) { return {variant: /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(it.variant) ? it.variant : '', slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
       size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
     function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
     function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
     function add(item) {
-      var items = read(), same = items.filter(function (i) { return i.slug === item.slug && (i.size || '') === (item.size || ''); })[0];
+      var items = read();
+      var same = items.filter(function (i) { return i.slug === item.slug && (i.size || '') === (item.size || ''); })[0];
       if (same) same.qty = (same.qty || 1) + 1; else { item.qty = 1; items.push(item); }
       write(items);
     }
@@ -497,7 +521,8 @@
         MaconBag.add({
           slug: location.pathname.split('/').pop().replace('.html', ''),
           name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
-          img: hero ? hero.getAttribute('src') : '', size: size
+          img: hero ? hero.getAttribute('src') : '', size: size,
+          variant: sizeBox ? (sizeBox.dataset.variant || '') : ((document.getElementById('bag') || {}).dataset || {}).variant || ''
         });
         toast.textContent = '';
         if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
@@ -529,6 +554,19 @@
     }
     place(); addEventListener('resize', place); addEventListener('load', place);
   })();
+
+  // Apple Pay (product pages): this piece alone, straight to Shopify checkout where Apple Pay is offered
+  document.querySelectorAll('.buy .apple-pay').forEach(function (b) {
+    b.addEventListener('click', function (e) {
+      var sizeBox = document.querySelector('[data-size]');
+      if (sizeBox && !sizeBox.classList.contains('picked')) {
+        e.stopPropagation(); sizeBox.classList.add('open', 'need');
+        setTimeout(function () { sizeBox.classList.remove('need'); }, 1600); return;
+      }
+      var variant = sizeBox ? sizeBox.dataset.variant : document.getElementById('bag').dataset.variant;
+      MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
+    });
+  });
 
   // Mobile menu
   (function () {
@@ -602,7 +640,9 @@
     items.forEach(function (li) {
       li.addEventListener('click', function () {
         items.forEach(function (x) { x.setAttribute('aria-selected', x === li); });
-        value.textContent = li.dataset.value; box.classList.add('picked'); open(false);
+        value.textContent = li.dataset.value; box.classList.add('picked'); box.dataset.variant = li.dataset.variant; open(false);
+        var priceEl = document.querySelector('.info .price');          // e.g. Caldera Arc: Single $260, Pair $490
+        if (priceEl && li.dataset.price) priceEl.textContent = '$' + li.dataset.price;
       });
       li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); } });
     });

@@ -214,6 +214,10 @@ def accordions(slug, k, notes):
         </div>''' for t, b in items)
 
 
+with open(os.path.join(OUT, "shopify", "variants.json")) as _f:
+    SHOPIFY = json.load(_f)
+
+
 def page(p, template, related=""):
     slug, name, price = p["slug"], p["name"], p["price"]
     desc, notes = read_port(slug)
@@ -257,15 +261,20 @@ def page(p, template, related=""):
     ph = '<div class="big" role="presentation"></div>'
     close = f'{ph}\n    <p class="chunk">{html.escape(lore)}</p>\n    {ph}\n    <p class="chunk">{html.escape(made)}</p>\n    {ph}'
 
-    size_select = ""
-    if k == "ring":
-        sizes = ["4", "4.5", "5", "5.5", "6", "6.5", "7", "7.5", "8", "8.5", "9", "9.5", "10", "10.5", "11"]
+    # sizes and styles come from Shopify (shopify/variants.json, made by tools/shopify_sync.py)
+    shop = SHOPIFY.get(slug, {})
+    variants = shop.get("variants", [])
+    size_select, buy_variant = "", ""
+    if len(variants) > 1:
+        label = "Size" if shop["option"].lower() == "size" else shop["option"]
         size_select = ('<div class="size" data-size>'
                        '<button type="button" class="size-toggle" aria-haspopup="listbox" aria-expanded="false">'
-                       '<span class="size-label">Size</span><span class="size-value">Select size</span><i class="chev" aria-hidden="true"></i></button>'
-                       '<div class="size-panel"><div class="size-inner"><ul class="size-list" role="listbox" aria-label="Ring size">'
-                       + "".join(f'<li role="option" aria-selected="false" tabindex="0" data-value="{v}">{v}</li>' for v in sizes)
+                       f'<span class="size-label">{html.escape(label)}</span><span class="size-value">Select {html.escape(label.lower())}</span><i class="chev" aria-hidden="true"></i></button>'
+                       f'<div class="size-panel"><div class="size-inner"><ul class="size-list" role="listbox" aria-label="{html.escape(label)}">'
+                       + "".join(f'<li role="option" aria-selected="false" tabindex="0" data-value="{html.escape(v["value"])}" data-variant="{v["id"]}" data-price="{v["price"]:g}">{html.escape(v["value"])}</li>' for v in variants)
                        + '</ul></div></div></div>')
+    elif variants:
+        buy_variant = variants[0]["id"]
 
     # a short film of the piece sits third, after the hero and first still; a lifestyle composite closes the gallery
     gallery = [g for g in gallery if g not in HIDE_FROM_GALLERY]
@@ -281,6 +290,7 @@ def page(p, template, related=""):
             .replace("{{PRICE}}", f"${price}")
             .replace("{{DESC}}", html.escape(DESC[slug]))
             .replace("{{SIZE}}", size_select)
+            .replace("{{VARIANT}}", buy_variant)
             .replace("{{HERO}}", hero)
             .replace("{{GALLERY}}", "\n      ".join(figs))
             .replace("{{ACCORDIONS}}", accordions(slug, k, notes))
@@ -295,6 +305,12 @@ def one_block(doc):
                   doc, flags=re.S)
 
 
+def shop_config():
+    with open(os.path.join(OUT, "shopify", "config.json")) as f:
+        c = json.load(f)
+    return ('<script>window.MACON_SHOP = ' + json.dumps({"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"]}) + ';</script>\n')
+
+
 def shared(doc):
     """Fill the pieces every page has in common: header, footer, shared script."""
     def part(n):
@@ -303,7 +319,7 @@ def shared(doc):
     doc = doc.replace('<link rel="stylesheet" href="site.css', '<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="site.css', 1)
     return (doc.replace("{{NAV}}", part("nav.html"))
                .replace("{{FOOTER}}", part("footer.html"))
-               .replace("{{SITEJS}}", part("site.js"))
+               .replace("{{SITEJS}}", shop_config() + part("site.js"))
                .replace("{{CSSV}}", str(int(os.path.getmtime(os.path.join(OUT, "site.css"))))))
 
 

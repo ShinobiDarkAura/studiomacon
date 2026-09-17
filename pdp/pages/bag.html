@@ -46,7 +46,7 @@
         <dt>Shipping</dt><dd>Calculated at checkout</dd>
         <dt class="total">Total</dt><dd class="total" id="total">$0</dd>
       </dl>
-      <a class="cta" href="checkout.html">Checkout</a>
+      <button class="cta" type="button" id="checkout">Checkout</button>
       <p class="note">Every piece is made to order. Please allow up to 10 business days before it ships.</p>
     </aside>
   </div>
@@ -91,6 +91,9 @@
     }
     render(); document.addEventListener('bag:change', render);
   })();
+  document.getElementById('checkout').addEventListener('click', function () {
+    MaconCheckout(MaconBag.read(), this).catch(function () {});
+  });
 </script>
 </body>
 </html>
