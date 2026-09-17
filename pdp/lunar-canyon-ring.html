@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lunar Canyon | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789609823">
+<link rel="stylesheet" href="site.css?v=1789610829">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -215,6 +215,7 @@
       for (var i = 0; i < stack.length; i++) {
         var el = stack[i];
         if (el.closest('.head')) continue;
+        if (el.tagName === 'VIDEO') return 0;          // film: always read as dark, so the nav is white
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;

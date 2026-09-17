@@ -42,8 +42,8 @@ button{background:none;border:0;padding:0;cursor:pointer}
   -webkit-mask:url(img/logotype.png) center/contain no-repeat;mask:url(img/logotype.png) center/contain no-repeat}
 .head .logotype{width:88px;position:relative;top:6px}
 /* script signature trial in the header; the footer keeps the original */
-.head .logotype{aspect-ratio:1684/274;width:207px;top:4px;
-  -webkit-mask-image:url(img/logotype-script.png);mask-image:url(img/logotype-script.png)}
+.head .logotype{aspect-ratio:833/246;width:150px;top:4px;
+  -webkit-mask-image:url(img/logotype-script.png?v=3);mask-image:url(img/logotype-script.png?v=3)}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
@@ -106,7 +106,7 @@ footer .field button{padding:0 0 0 18px}
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:303.6px}
+  .head .logotype{width:200px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}

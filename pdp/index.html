@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Shop | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789609823">
+<link rel="stylesheet" href="site.css?v=1789610829">
 <style>
+  /* the film fills the first screen; the nav sits over it in white */
+  .film{position:relative;height:100vh;height:100svh;overflow:hidden;background:#111}
+  .film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px) 24px}
   .wall-head.next-set{padding-top:0}
   .set:first-child::after{content:"";display:block;height:calc(120px + 10vh)}
@@ -80,6 +83,11 @@
 </header>
 
 <main>
+  <section class="film" aria-label="Studio Maçon film">
+    <video autoplay muted loop playsinline preload="auto" poster="video/poster.jpg">
+      <source src="video/film.mp4" type="video/mp4">
+    </video>
+  </section>
   <div class="set">
   <header class="wall-head">
     <h1>Ephemeral</h1><span class="count">3</span>
@@ -184,6 +192,7 @@
       for (var i = 0; i < stack.length; i++) {
         var el = stack[i];
         if (el.closest('.head')) continue;
+        if (el.tagName === 'VIDEO') return 0;          // film: always read as dark, so the nav is white
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;

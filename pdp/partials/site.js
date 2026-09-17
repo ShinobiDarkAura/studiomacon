@@ -42,6 +42,7 @@
       for (var i = 0; i < stack.length; i++) {
         var el = stack[i];
         if (el.closest('.head')) continue;
+        if (el.tagName === 'VIDEO') return 0;          // film: always read as dark, so the nav is white
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
