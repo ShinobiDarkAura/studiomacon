@@ -82,6 +82,11 @@
   .step[data-step="1"]{transition:border-color .4s ease}
   /* the first row is outlined in black only once a commission has been started */
   .steps-acc.started{border-top-color:#000}
+  /* on load the rows arrive one by one, after the Start a Commission button */
+  .steps-acc.dr-emerge{opacity:1;filter:none;transform:none}
+  .steps-acc > .acc-item:nth-child(1){--stagger:520ms !important}
+  .steps-acc > .acc-item:nth-child(2){--stagger:640ms !important}
+  .steps-acc > .acc-item:nth-child(3){--stagger:760ms !important}
   .steps-acc.started .step[data-step="1"]{border-bottom-color:#000}
   .choices.two{grid-template-columns:repeat(2,1fr)}
   .choices.three{grid-template-columns:repeat(3,1fr)}
