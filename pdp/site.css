@@ -32,6 +32,10 @@ button{background:none;border:0;padding:0;cursor:pointer}
 .head{position:fixed;inset:0 0 auto;z-index:20;height:var(--head);pointer-events:none;
   display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 calc(var(--pad) + 12px);font-size:calc(16px - 1pt)}
 .head > *{pointer-events:auto}
+/* hides while scrolling down; comes back on scroll up, a click or tap, or a 5-second pause */
+.head{transition:transform .45s var(--ease),opacity .35s ease}
+.head.tucked{transform:translateY(-100%);opacity:0}
+.head.tucked > *{pointer-events:none}
 /* each part of the nav reads what is under it: black on white or very light, white on anything darker */
 .head .left,.head .logotype,.head .right{color:#000;transition:color .3s ease}
 .head .mark{display:block}
