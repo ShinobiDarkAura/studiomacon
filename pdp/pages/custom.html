@@ -35,9 +35,11 @@
   body.editing .examples figure{cursor:pointer;transition:none!important;opacity:1!important;filter:none!important;transform:none!important}
   body.editing .examples figure:hover{outline:1px dashed rgba(0,0,0,.35);outline-offset:-1px}
   body.editing .examples figure.sel{outline:2px solid #000;outline-offset:-2px}
+  body.editing .examples figure::before{content:attr(data-pos);position:absolute;top:10px;left:10px;z-index:2;min-width:26px;height:26px;
+    padding:0 7px;border-radius:13px;background:#000;color:#fff;font:500 12px/26px var(--sans);text-align:center}
   body.editing .examples figure.dragging{opacity:.35!important}
   body.editing .examples figure.drop-before{box-shadow:inset 0 4px 0 #c8321e}
-  .ed{position:fixed;left:16px;bottom:16px;z-index:50;width:260px;padding:16px;background:#fff;border:1px solid #000;
+  .ed{position:fixed;right:16px;bottom:16px;z-index:50;width:260px;padding:16px;background:#fff;border:1px solid #000;
     font:13px/1.4 var(--sans);box-shadow:0 8px 30px rgba(0,0,0,.12);display:none}
   body.editing .ed{display:block}
   .ed h3{margin:0 0 12px;font:500 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
@@ -138,8 +140,8 @@
   @media (min-width:768px){
     .commission{display:grid;grid-template-columns:minmax(0,62fr) minmax(0,38fr);gap:0 48px;align-items:start;
       padding-right:calc(var(--pad) + 12px)}
-    .examples{columns:2;column-gap:12px;padding:calc(var(--head) + 24px) 0 0 calc(var(--pad) + 12px)}
-    .examples figure{margin-bottom:12px}
+    .examples{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;padding:calc(var(--head) + 24px) 0 0 calc(var(--pad) + 12px)}
+    .examples figure{margin:0}
     /* pinned beside the wall, and scrolls on its own as steps open */
     .order{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;overscroll-behavior:contain;
       scrollbar-width:none;padding:24px 0 48px;display:flex;flex-direction:column;justify-content:safe center}
@@ -258,6 +260,9 @@
     </div>
   </div>
   <div class="row"><span>Selected: <b class="who">click a piece</b></span></div>
+  <div class="row"><span>Position <b class="pv">–</b></span>
+    <div class="acts" style="margin:0"><button type="button" class="earlier">← Earlier</button><button type="button" class="later">Later →</button></div>
+  </div>
   <div class="row"><span>Name</span><input class="nm" type="text" placeholder="e.g. Biscuit" disabled></div>
   <div class="row"><span>Date</span><input class="dt" type="text" placeholder="e.g. 2024" disabled></div>
   <div class="row"><span>Size <b class="sv">100%</b></span><input class="size" type="range" min="30" max="200" value="100" disabled></div>
@@ -268,7 +273,7 @@
     <button type="button" class="done">Close</button>
     <button type="button" class="save">Save</button>
   </div>
-  <p class="hint">Click a piece, then use the arrow keys to move it earlier or later in the wall. Shift + arrows nudge it inside its frame; + and − resize. Press E to open or close.</p>
+  <p class="hint">Click a piece, then use Earlier / Later (or the ← → keys) to move it. Numbers show the order, left to right. Shift + arrows nudge it inside its frame.</p>
   <p class="msg"></p>
 </div>
 {{SITEJS}}
@@ -361,30 +366,36 @@
     document.querySelector('.ed-toggle').addEventListener('click', function () { open(true); });
     q('.done').addEventListener('click', function () { open(false); });
     addEventListener('keydown', function (e) {
-      if (e.target.closest('input, textarea')) return;
+      if (e.target.closest('input[type=text], textarea')) return;
       if (e.key === 'e' || e.key === 'E') { open(!document.body.classList.contains('editing')); return; }
       if (!document.body.classList.contains('editing') || !sel) return;
-      // arrows move the selected frame through the wall; Shift + arrows nudge the piece inside it
+      // Shift + arrows nudge the piece inside its frame; plain arrows move the frame
       if (e.shiftKey) {
         var m = {ArrowLeft: ['x', -1], ArrowRight: ['x', 1], ArrowUp: ['y', -1], ArrowDown: ['y', 1]}[e.key];
         if (m) { e.preventDefault(); set(m[0], num(sel, m[0], 0) + m[1]); }
-      } else if (/^Arrow/.test(e.key)) {
-        e.preventDefault();
-        var all = figs(), i = all.indexOf(sel), j = i + ((e.key === 'ArrowLeft' || e.key === 'ArrowUp') ? -1 : 1);
-        if (j < 0 || j >= all.length) return;
-        if (j < i) wall.insertBefore(sel, all[j]); else wall.insertBefore(sel, all[j].nextSibling);
-        sel.scrollIntoView({block: 'nearest'});
-        q('.msg').textContent = 'Unsaved changes';
-      }
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); move(1); }
       if (e.key === '+' || e.key === '=') set('s', +(num(sel, 's', 1) + .05).toFixed(2));
       if (e.key === '-' || e.key === '_') set('s', +(num(sel, 's', 1) - .05).toFixed(2));
     });
 
+    function number() { figs().forEach(function (f, i) { f.dataset.pos = i + 1; }); if (sel) q('.pv').textContent = sel.dataset.pos + ' of ' + figs().length; }
+    function move(dir) {
+      if (!sel) return;
+      var all = figs(), i = all.indexOf(sel), j = i + dir;
+      if (j < 0 || j >= all.length) return;
+      if (dir < 0) wall.insertBefore(sel, all[j]); else wall.insertBefore(sel, all[j].nextSibling);
+      number(); sel.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+      q('.msg').textContent = 'Unsaved changes';
+    }
+    number();
     function pick(f) {
       figs().forEach(function (x) { x.classList.toggle('sel', x === f); });
       sel = f;
       ['.size', '.xr', '.yr', '.nm', '.dt'].forEach(function (c) { q(c).disabled = !f; });
       q('.who').textContent = f ? f.dataset.name : 'click a piece';
+      q('.pv').textContent = f ? f.dataset.pos + ' of ' + figs().length : '–';
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
       if (f) sync();
     }
     function sync() {
@@ -410,8 +421,11 @@
     q('.nm').addEventListener('input', function () { if (sel) { sel.querySelector('.name').textContent = this.value; label(); q('.msg').textContent = 'Unsaved changes'; } });
     q('.dt').addEventListener('input', function () { if (sel) { sel.querySelector('.date').textContent = this.value; q('.msg').textContent = 'Unsaved changes'; } });
     q('.size').addEventListener('input', function () { set('s', this.value / 100); });
+    ['.size', '.xr', '.yr'].forEach(function (c) { q(c).addEventListener('change', function () { this.blur(); }); });
     q('.xr').addEventListener('input', function () { set('x', +this.value); });
     q('.yr').addEventListener('input', function () { set('y', +this.value); });
+    q('.earlier').addEventListener('click', function () { move(-1); });
+    q('.later').addEventListener('click', function () { move(1); });
     q('.reset-one').addEventListener('click', function () { if (sel) { ['s', 'x', 'y'].forEach(function (k) { sel.style.setProperty('--' + k, k === 's' ? 1 : 0); }); sync(); } });
 
     // frame proportions for the whole wall
