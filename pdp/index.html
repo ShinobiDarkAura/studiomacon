@@ -716,6 +716,7 @@
     // the intro belongs to the first arrival: coming back from a piece, the logotype is simply already there
     var seen = false;
     try { seen = sessionStorage.getItem('macon-intro') === '1'; } catch (e) {}
+    if (/[?&]intro/.test(location.search)) seen = false;          // ?intro replays it, for looking at the animation
     var skip = matchMedia('(prefers-reduced-motion: reduce)').matches || (nav && nav.type === 'back_forward') || scrollY > 40 || seen;
     try { sessionStorage.setItem('macon-intro', '1'); } catch (e) {}
     var text = tag.textContent; tag.textContent = '';

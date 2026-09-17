@@ -11,6 +11,8 @@ pdp/img/<slug>/ so the preview never reaches outside the repo.
 import html, json, os, re
 from PIL import Image
 
+import content as _content          # the studio's own edits, made in pdp/_editor
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "pdp")
 MASTER = os.path.expanduser(os.environ.get("MACON_PIECES", "~/Downloads/Maçon/Pieces Master"))
@@ -219,8 +221,11 @@ with open(os.path.join(OUT, "shopify", "variants.json")) as _f:
 
 
 def page(p, template, related=""):
-    slug, name, price = p["slug"], p["name"], p["price"]
+    slug = p["slug"]
+    name = _content.product(slug, "name", p["name"])
+    price = _content.product(slug, "price", p["price"])
     desc, notes = read_port(slug)
+    notes = _content.product(slug, "notes", notes)
     k = kind(slug, notes)
     plain, hand, drawn = photos(slug, k)
 
@@ -241,22 +246,41 @@ def page(p, template, related=""):
     # three large images close the page, separating the two text chunks
     # drawing first, then a hand shot and the first plain shot — the two ends of
     # the gallery, which are least likely to be near-duplicates of each other
+    hero = _content.product(slug, "hero", hero)
+    chosen = _content.product(slug, "gallery", None)
+    if chosen:                                   # the studio's own order and selection
+        gallery = [g for g in chosen if g != hero]
+
     hands = [g for g in gallery if "/hand-" in g]
     plains = [g for g in gallery if "/plain-" in g]
     closing = [x for x in [drawing, hands[0] if hands else None, plains[0] if plains else None,
                            hero, *gallery] if x]
     closing = list(dict.fromkeys(closing))[:3]
 
-    lore = LORE[slug]
-    assert not re.search(r"\b(we|i|our|us)\b", DESC[slug], re.I), (slug, "first person in description")
+    # the studio's own wording wins wherever it exists
+    eyebrow = _content.product(slug, "eyebrow", EYEBROW[slug])
+    blurb = _content.product(slug, "description", DESC[slug])
+    lore = _content.product(slug, "lore", LORE[slug])
+    made = _content.product(slug, "made", MADE_LINE.get(slug, MADE))
+    edited = set(_content.CONTENT["products"].get(slug, {}))
+
+    # The voice rules are enforced on my defaults and only pointed out on the studio's
+    # own edits: their copy is theirs, and a build should never refuse to run over it.
+    def check(field, text, *tests):
+        for ok, why in tests:
+            if ok(text):
+                continue
+            if field in edited:
+                print(f"   note: {slug} {field} — {why}")
+            else:
+                raise AssertionError((slug, field, why))
+
     small = {"of", "in", "for", "from", "a", "the", "and", "to", "than", "it", "into", "looks"}
-    echo = {w for w in re.findall(r"[a-z]+", EYEBROW[slug].lower()) if w not in small} & set(re.findall(r"[a-z]+", DESC[slug].lower()))
-    assert not echo, (slug, "description repeats the overline", echo)
-    made = MADE_LINE.get(slug, MADE)
-    for block in (DESC[slug], lore, made):          # field-notes voice throughout: never "we" or "I", never about sales
-        assert not re.search(r"\b(we|i|our|us|sells?|sold|stock)\b", block, re.I), (slug, block[:60])
-    for block in (lore, made):
-        assert len(block.split()) >= 30, (slug, len(block.split()))
+    echo = {w for w in re.findall(r"[a-z]+", eyebrow.lower()) if w not in small} & set(re.findall(r"[a-z]+", blurb.lower()))
+    voice = (lambda t: not re.search(r"\b(we|i|our|us|sells?|sold|stock)\b", t, re.I), "first person or sales talk")
+    check("description", blurb, voice, (lambda t: not echo, f"repeats the overline ({', '.join(sorted(echo))})"))
+    check("lore", lore, voice, (lambda t: len(t.split()) >= 30, "shorter than 30 words"))
+    check("made", made, voice, (lambda t: len(t.split()) >= 30, "shorter than 30 words"))
 
     ph = '<div class="big" role="presentation"></div>'
     close = f'{ph}\n    <p class="chunk">{html.escape(lore)}</p>\n    {ph}\n    <p class="chunk">{html.escape(made)}</p>\n    {ph}'
@@ -286,9 +310,9 @@ def page(p, template, related=""):
 
     return (template
             .replace("{{TITLE}}", html.escape(name))
-            .replace("{{EYEBROW}}", html.escape(EYEBROW[slug]))
+            .replace("{{EYEBROW}}", html.escape(eyebrow))
             .replace("{{PRICE}}", f"${price}")
-            .replace("{{DESC}}", html.escape(DESC[slug]))
+            .replace("{{DESC}}", html.escape(blurb))
             .replace("{{SIZE}}", size_select)
             .replace("{{VARIANT}}", buy_variant)
             .replace("{{HERO}}", hero)
