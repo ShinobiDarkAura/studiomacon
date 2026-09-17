@@ -12,6 +12,7 @@
   .gallery figure{margin:0;background:var(--field)}
   .gallery figure + figure{display:none}          /* mobile: hero only up top */
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
+  .gallery video{display:block;width:100%;height:100vh;height:100svh;object-fit:cover;background:var(--field)}
 
   .info{padding:28px var(--pad) 0;text-align:center}
   .price{font-size:19px;margin:0 0 18px}
@@ -73,7 +74,7 @@
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
     .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
-    .gallery figure + figure img{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
+    .gallery figure + figure img,.gallery figure + figure video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
@@ -110,6 +111,7 @@
       <figure><img width="1800" height="1111" src="img/zuma/plain-2.jpg.webp" alt="" loading="lazy"></figure>
       <figure><img width="814" height="1084" src="img/zuma/hand-1.jpg.webp" alt="" loading="lazy"></figure>
       <figure><img width="1600" height="1067" src="img/zuma/hand-2.jpg.webp" alt="" loading="lazy"></figure>
+      <figure><img width="1333" height="2000" src="img/zuma/composite.jpg.webp" alt="" loading="lazy"></figure>
     </div>
 
     <div class="info">

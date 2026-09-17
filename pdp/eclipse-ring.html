@@ -12,6 +12,7 @@
   .gallery figure{margin:0;background:var(--field)}
   .gallery figure + figure{display:none}          /* mobile: hero only up top */
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
+  .gallery video{display:block;width:100%;height:100vh;height:100svh;object-fit:cover;background:var(--field)}
 
   .info{padding:28px var(--pad) 0;text-align:center}
   .price{font-size:19px;margin:0 0 18px}
@@ -73,7 +74,7 @@
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
     .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
-    .gallery figure + figure img{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
+    .gallery figure + figure img,.gallery figure + figure video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
@@ -107,6 +108,7 @@
     <div class="gallery" data-under-nav>
       <figure class="hero"><img width="1389" height="967" src="img/eclipse-ring/hero.jpg.webp" alt="Eclipse Ring" fetchpriority="high"></figure>
       <figure><img width="814" height="1084" src="img/eclipse-ring/hand-1.jpg.webp" alt="" loading="lazy"></figure>
+      <figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/eclipse-ring.jpg" aria-label="Eclipse Ring in motion"><source src="video/pieces/eclipse-ring.mp4" type="video/mp4"></video></figure>
       <figure><img width="1600" height="1067" src="img/eclipse-ring/hand-2.jpg.webp" alt="" loading="lazy"></figure>
     </div>
 

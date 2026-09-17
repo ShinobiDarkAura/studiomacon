@@ -236,6 +236,13 @@ def page(p, template):
                        + "".join(f'<li role="option" aria-selected="false" tabindex="0" data-value="{v}">{v}</li>' for v in sizes)
                        + '</ul></div></div></div>')
 
+    # a short film of the piece sits third, after the hero and first still; a lifestyle composite closes the gallery
+    figs = [f'<figure><img src="{g}" alt="" loading="lazy"></figure>' for g in gallery]
+    if os.path.exists(os.path.join(OUT, "video", "pieces", f"{slug}.mp4")):
+        figs.insert(1, f'<figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/{slug}.jpg" aria-label="{html.escape(name)} in motion"><source src="video/pieces/{slug}.mp4" type="video/mp4"></video></figure>')
+    if os.path.exists(os.path.join(OUT, "img", slug, "composite.jpg")):
+        figs.append(f'<figure><img src="img/{slug}/composite.jpg" alt="" loading="lazy"></figure>')
+
     return (template
             .replace("{{TITLE}}", html.escape(name))
             .replace("{{EYEBROW}}", html.escape(EYEBROW[slug]))
@@ -243,8 +250,7 @@ def page(p, template):
             .replace("{{DESC}}", html.escape(DESC[slug]))
             .replace("{{SIZE}}", size_select)
             .replace("{{HERO}}", hero)
-            .replace("{{GALLERY}}", "\n      ".join(
-                f'<figure><img src="{g}" alt="" loading="lazy"></figure>' for g in gallery))
+            .replace("{{GALLERY}}", "\n      ".join(figs))
             .replace("{{ACCORDIONS}}", accordions(slug, k, notes))
             .replace("{{CLOSING}}", close))
 
