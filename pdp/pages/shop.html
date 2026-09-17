@@ -6,6 +6,7 @@
 <title>Shop | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
+<style>{{STAMP}}</style>
 <style>
   /* the film fills the first screen; the nav sits over it in white */
   .film{position:relative;height:100vh;height:100dvh;overflow:hidden;background:#111}          /* follows the phone's toolbar, so it always fills the screen */
@@ -92,11 +93,12 @@
   .welcome + .set .wall-head{padding-top:0}
   /* the Bureau of Provenance stamp: pressed onto the bottom edge of the film, angled, its top tenth over the picture */
   .film-wrap{position:relative}
-  .stamped .stamp{position:absolute;z-index:3;width:clamp(120px,13vw,200px);right:11.4vw;bottom:0;
-    transform:translateY(98.3%) rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;
+  /* size, place and angle are the studio's to set, in the editor */
+  .stamped .stamp{position:absolute;z-index:3;width:var(--stamp-w);right:var(--stamp-right);bottom:0;
+    transform:translateY(var(--stamp-drop)) rotate(var(--stamp-tilt)) scale(1.35);opacity:0;pointer-events:none;
     transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
   /* pressed down onto the edge of the film, its top tenth overlapping the picture */
-  .stamped .stamp.on{opacity:1;transform:translateY(98.3%) rotate(-14deg)}
+  .stamped .stamp.on{opacity:1;transform:translateY(var(--stamp-drop)) rotate(var(--stamp-tilt))}
   @media (max-width:599px){ .stamped .stamp{display:none} }
   /* Back to Shop lands here, with the Ephemeral title just under the nav */
   #pieces{scroll-margin-top:calc(var(--head) + 36px)}

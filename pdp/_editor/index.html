@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon — Editor</title>
+<style>
+  :root{--rule:#e2e0dc;--ink:#111;--soft:#767068;--bg:#faf9f7;--warn:#9a5b21}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 ui-sans-serif,-apple-system,"Helvetica Neue",sans-serif}
+  header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:16px;
+         padding:14px 22px;background:#fff;border-bottom:1px solid var(--rule)}
+  header h1{margin:0;font-size:15px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+  header .grow{flex:1}
+  .state{font-size:13px;color:var(--soft)}
+  .state.dirty{color:var(--warn)}
+  button{font:inherit;border:1px solid var(--rule);background:#fff;border-radius:7px;padding:7px 13px;cursor:pointer}
+  button:hover{border-color:#999}
+  button.primary{background:#111;color:#fff;border-color:#111}
+  button.primary:disabled{opacity:.35;cursor:default}
+  nav{position:fixed;top:57px;bottom:0;width:212px;overflow:auto;border-right:1px solid var(--rule);background:#fff;padding:10px 0}
+  nav a{display:block;padding:7px 20px;color:var(--ink);text-decoration:none;font-size:14px}
+  nav a:hover{background:var(--bg)}
+  nav a.changed::after{content:"•";color:var(--warn);margin-left:6px}
+  nav .grp{padding:14px 20px 6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+  main{margin-left:212px;padding:26px 30px 120px;max-width:980px}
+  section.card{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:20px 22px;margin:0 0 22px}
+  h2{margin:0 0 4px;font-size:22px}
+  .slug{font-size:12px;color:var(--soft);margin:0 0 18px}
+  label{display:block;margin:0 0 16px}
+  label .lb{display:flex;align-items:baseline;gap:8px;font-size:12px;letter-spacing:.08em;
+            text-transform:uppercase;color:var(--soft);margin-bottom:5px}
+  label .lb .rv{margin-left:auto;text-transform:none;letter-spacing:0;font-size:12px;color:var(--warn);cursor:pointer}
+  input[type=text],input[type=number],textarea{width:100%;padding:9px 11px;border:1px solid var(--rule);
+    border-radius:7px;font:inherit;background:#fff;color:inherit;resize:vertical}
+  textarea{min-height:86px;line-height:1.55}
+  input:focus,textarea:focus{outline:2px solid #111;outline-offset:-1px;border-color:#111}
+  .edited input,.edited textarea{border-color:var(--warn);background:#fffdf9}
+  .row2{display:grid;grid-template-columns:1fr 160px;gap:16px}
+  .notes .n{display:flex;gap:8px;margin-bottom:7px}
+  .notes .n input{flex:1}
+  .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:12px}
+  .ph{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff}
+  .ph img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;background:#eee}
+  .ph .bar{display:flex;gap:4px;padding:6px;font-size:11px;align-items:center}
+  .ph .bar b{flex:1;font-weight:500;color:var(--soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ph button{padding:2px 6px;font-size:11px;border-radius:5px}
+  .ph.hero{border-color:#111;box-shadow:0 0 0 2px #111 inset}
+  .ph.off img{opacity:.28}
+  .ph .tag{position:absolute}
+  .stamp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .hint{font-size:13px;color:var(--soft);margin:-6px 0 16px}
+  .bar-fixed{position:fixed;left:212px;right:0;bottom:0;display:flex;align-items:center;gap:14px;
+             padding:12px 30px;background:#fff;border-top:1px solid var(--rule)}
+  .msg{font-size:13px;color:var(--soft)}
+  .msg.bad{color:#a11}
+  .stampwrap{position:relative;background:#111;border-radius:8px;height:190px;overflow:hidden}
+  .stampwrap .film{position:absolute;inset:0 0 38% 0;background:#242220}
+  .stampwrap img{position:absolute;width:26%;bottom:38%;transform-origin:center}
+</style>
+</head>
+<body>
+<header>
+  <h1>Maçon Editor</h1>
+  <span class="state" id="state">Loading…</span>
+  <span class="grow"></span>
+  <button id="revertAll">Undo all my changes</button>
+  <button class="primary" id="save" disabled>Save &amp; rebuild</button>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+<div class="bar-fixed">
+  <button class="primary" id="save2" disabled>Save &amp; rebuild</button>
+  <a href="/pdp/index.html" target="_blank"><button>Open the shop</button></a>
+  <span class="msg" id="msg"></span>
+</div>
+<script>
+const $ = (s, r) => (r || document).querySelector(s);
+let DATA = null, EDITS = {products: {}, pages: {}, stamp: {}}, dirty = false;
+
+const FIELDS = [
+  ['name',        'Name',              'text'],
+  ['price',       'Price (dollars)',   'number'],
+  ['eyebrow',     'Overline',          'text'],
+  ['description', 'Description',       'area'],
+  ['lore',        'Field note',        'area'],
+  ['made',        'How it is made',    'area'],
+];
+
+function setDirty(on) {
+  dirty = on;
+  $('#state').textContent = on ? 'Unsaved changes' : 'All saved';
+  $('#state').className = 'state' + (on ? ' dirty' : '');
+  $('#save').disabled = $('#save2').disabled = !on;
+}
+
+function edits(slug) { return EDITS.products[slug] || (EDITS.products[slug] = {}); }
+
+function put(slug, field, value, dflt) {
+  const e = edits(slug);
+  const same = JSON.stringify(value) === JSON.stringify(dflt);
+  if (same || value === '' || value === null) delete e[field]; else e[field] = value;
+  if (!Object.keys(e).length) delete EDITS.products[slug];
+  setDirty(true);
+  drawNav();
+}
+
+function field(p, key, label, type) {
+  const d = p.defaults[key], cur = key in (p.edits || {}) ? p.edits[key] : d;
+  const wrap = document.createElement('label');
+  if (key in (p.edits || {})) wrap.className = 'edited';
+  const lb = document.createElement('span'); lb.className = 'lb';
+  lb.innerHTML = '<span>' + label + '</span>';
+  if (key in (p.edits || {})) {
+    const rv = document.createElement('span'); rv.className = 'rv'; rv.textContent = 'undo';
+    rv.onclick = () => { delete p.edits[key]; put(p.slug, key, d, d); draw(p.slug); };
+    lb.appendChild(rv);
+  }
+  const el = document.createElement(type === 'area' ? 'textarea' : 'input');
+  if (type !== 'area') el.type = type;
+  el.value = cur;
+  el.oninput = () => {
+    let v = type === 'number' ? Number(el.value) : el.value;
+    if (type === 'number' && (!el.value.trim() || !(v > 0))) v = '';        // an empty or zero price means "leave it alone"
+    p.edits[key] = v; put(p.slug, key, v, d);
+    wrap.className = (key in p.edits) ? 'edited' : '';
+  };
+  wrap.appendChild(lb); wrap.appendChild(el);
+  return wrap;
+}
+
+function photoBlock(p) {
+  const box = document.createElement('div');
+  const hero = ('hero' in p.edits) ? p.edits.hero : p.defaults.hero;
+  const order = ('gallery' in p.edits) ? p.edits.gallery.slice() : p.defaults.gallery.slice();
+  const shown = new Set(order);
+  const list = [hero, ...order, ...p.photos.filter(f => f !== hero && !shown.has(f))];
+  const seen = new Set(); const all = list.filter(f => !seen.has(f) && seen.add(f));
+
+  const grid = document.createElement('div'); grid.className = 'photos';
+  all.forEach((src, i) => {
+    const card = document.createElement('div');
+    card.className = 'ph' + (src === hero ? ' hero' : '') + (src !== hero && !shown.has(src) ? ' off' : '');
+    const name = src.split('/').pop();
+    card.innerHTML = '<img src="/pdp/' + src + '" alt="" loading="lazy">' +
+      '<div class="bar"><b title="' + name + '">' + name + '</b></div>';
+    const bar = $('.bar', card);
+    const mk = (t, fn, title) => { const b = document.createElement('button'); b.textContent = t; b.title = title || t; b.onclick = fn; bar.appendChild(b); return b; };
+    if (src !== hero) {
+      mk('★', () => {
+        const old = hero;
+        p.edits.hero = src;
+        const g = order.filter(f => f !== src); g.unshift(old);
+        p.edits.gallery = g;
+        put(p.slug, 'hero', src, p.defaults.hero); put(p.slug, 'gallery', g, p.defaults.gallery);
+        draw(p.slug);
+      }, 'Make this the main photograph');
+      mk(shown.has(src) ? 'hide' : 'show', () => {
+        const g = shown.has(src) ? order.filter(f => f !== src) : order.concat([src]);
+        p.edits.gallery = g; put(p.slug, 'gallery', g, p.defaults.gallery); draw(p.slug);
+      });
+      if (shown.has(src)) {
+        mk('←', () => { const j = order.indexOf(src); if (j > 0) { order.splice(j, 1); order.splice(j - 1, 0, src);
+          p.edits.gallery = order; put(p.slug, 'gallery', order, p.defaults.gallery); draw(p.slug); } }, 'Earlier');
+        mk('→', () => { const j = order.indexOf(src); if (j > -1 && j < order.length - 1) { order.splice(j, 1); order.splice(j + 1, 0, src);
+          p.edits.gallery = order; put(p.slug, 'gallery', order, p.defaults.gallery); draw(p.slug); } }, 'Later');
+      }
+    } else {
+      const b = document.createElement('b'); b.textContent = 'Main photograph'; bar.insertBefore(b, bar.firstChild.nextSibling);
+    }
+    grid.appendChild(card);
+  });
+  box.appendChild(grid);
+  return box;
+}
+
+function draw(slug) {
+  const p = DATA.products.find(x => x.slug === slug);
+  const m = $('#main'); m.innerHTML = '';
+  const card = document.createElement('section'); card.className = 'card';
+  const h = document.createElement('h2'); h.textContent = ('name' in p.edits ? p.edits.name : p.defaults.name);
+  const sl = document.createElement('p'); sl.className = 'slug';
+  sl.textContent = p.slug + (p.hidden ? ' — not shown in the shop' : '');
+  card.appendChild(h); card.appendChild(sl);
+  FIELDS.forEach(([k, l, t]) => card.appendChild(field(p, k, l, t)));
+
+  // material rows
+  const nWrap = document.createElement('div'); nWrap.className = 'notes';
+  const lb = document.createElement('span'); lb.className = 'lb'; lb.innerHTML = '<span>Material rows</span>';
+  nWrap.appendChild(lb);
+  const notes = ('notes' in p.edits ? p.edits.notes : p.defaults.notes).slice();
+  notes.forEach((t, i) => {
+    const row = document.createElement('div'); row.className = 'n';
+    const inp = document.createElement('input'); inp.type = 'text'; inp.value = t;
+    inp.oninput = () => { notes[i] = inp.value; p.edits.notes = notes; put(p.slug, 'notes', notes, p.defaults.notes); };
+    const del = document.createElement('button'); del.textContent = '×';
+    del.onclick = () => { notes.splice(i, 1); p.edits.notes = notes; put(p.slug, 'notes', notes, p.defaults.notes); draw(slug); };
+    row.appendChild(inp); row.appendChild(del); nWrap.appendChild(row);
+  });
+  const add = document.createElement('button'); add.textContent = 'Add a row';
+  add.onclick = () => { notes.push(''); p.edits.notes = notes; put(p.slug, 'notes', notes, p.defaults.notes); draw(slug); };
+  nWrap.appendChild(add);
+  card.appendChild(nWrap);
+  m.appendChild(card);
+
+  const pc = document.createElement('section'); pc.className = 'card';
+  pc.innerHTML = '<h2>Photographs</h2><p class="hint">★ makes a photograph the main one. Hidden photographs stay in the folder but leave the page.</p>';
+  pc.appendChild(photoBlock(p));
+  m.appendChild(pc);
+  drawNav(slug);
+}
+
+function drawStamp() {
+  const m = $('#main'); m.innerHTML = '';
+  const d = {w: 13, right: 11.4, drop: 98.3, tilt: -14};
+  const s = Object.assign({}, d, EDITS.stamp);
+  const card = document.createElement('section'); card.className = 'card';
+  card.innerHTML = '<h2>Bureau stamp</h2><p class="hint">Where the stamp presses onto the bottom edge of the film on the shop page.</p>';
+  const prev = document.createElement('div'); prev.className = 'stampwrap';
+  prev.innerHTML = '<div class="film"></div><img src="/pdp/img/provenance-stamp.png" alt="">';
+  const img = $('img', prev);
+  const grid = document.createElement('div'); grid.className = 'stamp-grid';
+  const ctrl = (key, label, min, max, step, unit) => {
+    const w = document.createElement('label');
+    w.innerHTML = '<span class="lb"><span>' + label + '</span></span>';
+    const i = document.createElement('input'); i.type = 'number'; i.value = s[key]; i.min = min; i.max = max; i.step = step;
+    i.oninput = () => { s[key] = Number(i.value); EDITS.stamp = Object.assign({}, s); setDirty(true); paint(); };
+    w.appendChild(i); grid.appendChild(w);
+  };
+  function paint() {
+    img.style.width = s.w * 2 + '%';
+    img.style.right = s.right * 2 + '%';
+    img.style.transform = 'translateY(' + s.drop + '%) rotate(' + s.tilt + 'deg)';
+  }
+  ctrl('w', 'Size (% of screen width)', 4, 30, 0.5);
+  ctrl('right', 'In from the right (% of screen)', 0, 45, 0.5);
+  ctrl('drop', 'Drop past the film edge (%)', 0, 140, 0.5);
+  ctrl('tilt', 'Tilt (degrees)', -45, 45, 1);
+  card.appendChild(prev); card.appendChild(grid);
+  const rv = document.createElement('button'); rv.textContent = 'Back to the original';
+  rv.onclick = () => { EDITS.stamp = {}; setDirty(true); drawStamp(); };
+  card.appendChild(rv);
+  m.appendChild(card);
+  paint();
+  drawNav('__stamp');
+}
+
+function drawNav(active) {
+  const n = $('#nav'); n.innerHTML = '';
+  const g = document.createElement('div'); g.className = 'grp'; g.textContent = 'Pieces'; n.appendChild(g);
+  DATA.products.forEach(p => {
+    const a = document.createElement('a'); a.href = '#' + p.slug;
+    a.textContent = ('name' in (EDITS.products[p.slug] || {}) ? EDITS.products[p.slug].name : p.defaults.name);
+    if (EDITS.products[p.slug]) a.className = 'changed';
+    if (active === p.slug) a.style.background = '#f1efec';
+    a.onclick = e => { e.preventDefault(); location.hash = p.slug; };
+    n.appendChild(a);
+  });
+  const g2 = document.createElement('div'); g2.className = 'grp'; g2.textContent = 'Page'; n.appendChild(g2);
+  const a = document.createElement('a'); a.href = '#stamp'; a.textContent = 'Bureau stamp';
+  if (Object.keys(EDITS.stamp).length) a.className = 'changed';
+  if (active === '__stamp') a.style.background = '#f1efec';
+  a.onclick = e => { e.preventDefault(); location.hash = 'stamp'; };
+  n.appendChild(a);
+}
+
+function route() {
+  const h = location.hash.slice(1);
+  if (h === 'stamp') return drawStamp();
+  const p = DATA.products.find(x => x.slug === h) || DATA.products[0];
+  draw(p.slug);
+}
+
+async function save() {
+  $('#msg').textContent = 'Saving and rebuilding…'; $('#msg').className = 'msg';
+  $('#save').disabled = $('#save2').disabled = true;
+  try {
+    const r = await fetch('/api/content', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(EDITS)});
+    const j = await r.json();
+    if (j.saved) setDirty(false);                       // the words are safe even if the rebuild stumbled
+    if (!r.ok || j.error) throw new Error(j.error || ('HTTP ' + r.status));
+    $('#msg').textContent = 'Saved. The shop has been rebuilt.';
+  } catch (e) {
+    $('#msg').textContent = e.message; $('#msg').className = 'msg bad';
+    if (dirty) { $('#save').disabled = $('#save2').disabled = false; }
+  }
+}
+
+addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+addEventListener('hashchange', route);
+$('#save').onclick = save; $('#save2').onclick = save;
+$('#revertAll').onclick = () => {
+  if (!confirm('Undo every change you have made and go back to the original wording and photographs?')) return;
+  EDITS = {products: {}, pages: {}, stamp: {}};
+  DATA.products.forEach(p => p.edits = {});
+  setDirty(true); route();
+};
+
+fetch('/api/editor').then(r => r.json()).then(d => {
+  if (d.error) throw new Error(d.error);
+  DATA = d;
+  DATA.products.forEach(p => { p.edits = Object.assign({}, p.edits); EDITS.products[p.slug] = Object.assign({}, p.edits); });
+  Object.keys(EDITS.products).forEach(k => { if (!Object.keys(EDITS.products[k]).length) delete EDITS.products[k]; });
+  EDITS.stamp = Object.assign({}, d.stamp || {});
+  EDITS.pages = Object.assign({}, d.pages || {});
+  setDirty(false);
+  route();
+}).catch(e => { $('#state').textContent = 'Could not load: ' + e.message; $('#state').className = 'state dirty'; });
+</script>
+</body>
+</html>

@@ -13,7 +13,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WALL = os.path.join(ROOT, "pdp", "img", "commissions-cut")
 LAYOUT = os.path.join(WALL, "layout.json")
 MAX_UPLOAD = 25 * 1024 * 1024
-HIDDEN = ("/pdp/template.html", "/pdp/pages/", "/pdp/partials/", "/pdp/tools/", "/pdp/serve.py", "/pdp/build_pdp.py")
+HIDDEN = ("/pdp/template.html", "/pdp/pages/", "/pdp/partials/", "/pdp/tools/", "/pdp/serve.py", "/pdp/build_pdp.py", "/pdp/content.py")
 LOCK = threading.Lock()          # one save and rebuild at a time
 _session = None
 
@@ -24,6 +24,49 @@ def write_json(path, obj, **kw):
     with os.fdopen(fd, "w") as f:
         json.dump(obj, f, **kw)
     os.replace(tmp, path)
+
+
+def editor_data():
+    """Everything the editor needs: the builder's own words, the studio's edits on top,
+    and every photograph available for each piece."""
+    sys.path.insert(0, os.path.join(ROOT, "pdp"))
+    import importlib, build_pdp, content
+    importlib.reload(content)
+    importlib.reload(build_pdp)
+    with open(os.path.join(ROOT, "_source/products.json")) as f:
+        products = json.load(f) + build_pdp.OOAK
+    edits = content.load()
+    out = []
+    for p in sorted(products, key=lambda x: x["slug"]):
+        slug = p["slug"]
+        folder = os.path.join(ROOT, "pdp", "img", slug)
+        photos = sorted(f"img/{slug}/{f}" for f in os.listdir(folder)) if os.path.isdir(folder) else []
+        photos = [f for f in photos if f.endswith((".jpg", ".png")) and not f.endswith(".webp")]
+        notes = build_pdp.read_port(slug)[1]
+        out.append({
+            "slug": slug, "hidden": slug in build_pdp.HIDE_FROM_SHOP,
+            "defaults": {"name": p["name"], "price": p["price"], "eyebrow": build_pdp.EYEBROW[slug],
+                          "description": build_pdp.DESC[slug], "lore": build_pdp.LORE[slug],
+                          "made": build_pdp.MADE_LINE.get(slug, build_pdp.MADE), "notes": notes,
+                          "hero": f"img/{slug}/hero.jpg", "gallery": [x for x in photos if "/hero." not in x]},
+            "edits": edits["products"].get(slug, {}),
+            "photos": photos,
+        })
+    return {"products": out, "stamp": edits.get("stamp") or {}, "pages": edits.get("pages") or {}}
+
+
+def keep_backup(path, keep=20):
+    """Copy the current content aside before overwriting it, and keep the last twenty."""
+    if not os.path.exists(path):
+        return
+    folder = os.path.join(os.path.dirname(path), "_editor", "history")
+    os.makedirs(folder, exist_ok=True)
+    stamp = time.strftime("%Y-%m-%d-%H%M%S")
+    with open(path, encoding="utf-8") as src, open(os.path.join(folder, f"content-{stamp}.json"), "w", encoding="utf-8") as dst:
+        dst.write(src.read())
+    old = sorted(f for f in os.listdir(folder) if f.startswith("content-"))
+    for f in old[:-keep]:
+        os.remove(os.path.join(folder, f))
 
 
 def rebuild():
@@ -75,6 +118,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         path = urllib.parse.unquote(self.path.split("?")[0])
+        if path == "/api/editor":
+            try:
+                return self.reply(editor_data())
+            except Exception as e:
+                return self.reply({"error": str(e)}, 500)
         if not path.startswith("/pdp/") and path != "/pdp" or ".." in path or path.startswith(HIDDEN):
             return self.send_error(404)
         return super().do_GET()
@@ -103,11 +151,24 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def do_POST(self):
         path, _, qs = self.path.partition("?")
-        if path not in ("/api/commission-image", "/api/commission-layout", "/api/picks"):
+        if path not in ("/api/commission-image", "/api/commission-layout", "/api/picks", "/api/content"):
             return self.send_error(404)
         try:
             data = self.body()
             with LOCK:
+                if path == "/api/content":        # the studio's own copy and photograph choices
+                    body = json.loads(data)
+                    if not isinstance(body, dict):
+                        raise BadRequest("expected an object")
+                    target = os.path.join(ROOT, "pdp", "content.json")
+                    keep_backup(target)           # yesterday's wording is never more than one file away
+                    write_json(target, {"products": body.get("products") or {}, "pages": body.get("pages") or {},
+                                        "stamp": body.get("stamp") or {}}, indent=1, ensure_ascii=False)
+                    try:
+                        rebuild()
+                    except Exception as e:        # the words are safely saved; only the rebuild failed
+                        return self.reply({"saved": True, "error": "Saved, but the site could not be rebuilt: " + str(e)}, 500)
+                    return self.reply({"saved": True})
                 if path == "/api/picks":          # the photo picker's choices
                     write_json(os.path.join(ROOT, "pdp", "_picker", "picks.json"), json.loads(data), indent=1)
                     return self.reply({"saved": True})
