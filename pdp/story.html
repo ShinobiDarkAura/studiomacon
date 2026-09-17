@@ -230,9 +230,13 @@
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
+          // the inspiration wall is already in place wherever it fills the first
+          // screen; only pieces further down slide in as you scroll
+          var settled = el.closest('.wall, .wall-head') && el.getBoundingClientRect().top < innerHeight;
+          if (settled) el.classList.add('is-seen');
           void el.offsetWidth;
           el.style.transition = '';
-          if (still) { el.classList.add('is-seen'); return; }
+          if (still || settled) { el.classList.add('is-seen'); return; }
           // let the hidden state paint first, or blocks already on screen at load
           // would jump straight to their resting place without animating
           // (and wait for the stylesheet: until the hidden state has actually taken

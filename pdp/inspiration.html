@@ -42,30 +42,30 @@
     <h1>Inspiration</h1><span class="count">223</span>
   </header>
   <section class="wall">
-    <figure><img src="img/inspiration/000.jpg" width="570" height="470" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/001.jpg" width="900" height="1442" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/002.jpg" width="797" height="1200" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/003.jpg" width="900" height="1122" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/004.jpg" width="514" height="640" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/005.jpg" width="900" height="1091" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/006.jpg" width="900" height="600" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/007.jpg" width="570" height="542" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/008.jpg" width="771" height="1085" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/009.jpg" width="900" height="1350" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/010.jpg" width="900" height="1353" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/011.jpg" width="736" height="920" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/012.jpg" width="862" height="976" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/013.jpg" width="900" height="1350" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/014.jpg" width="440" height="440" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/015.jpg" width="900" height="1196" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/016.jpg" width="900" height="1350" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/017.jpg" width="900" height="1350" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/018.jpg" width="882" height="1200" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/019.jpg" width="735" height="923" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/020.jpg" width="473" height="586" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/021.jpg" width="900" height="1349" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/022.jpg" width="735" height="1242" alt="" loading="lazy"></figure>
-    <figure><img src="img/inspiration/023.jpg" width="900" height="690" alt="" loading="lazy"></figure>
+    <figure><img src="img/inspiration/000.jpg" width="570" height="470" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/001.jpg" width="900" height="1442" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/002.jpg" width="797" height="1200" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/003.jpg" width="900" height="1122" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/004.jpg" width="514" height="640" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/005.jpg" width="900" height="1091" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/006.jpg" width="900" height="600" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/007.jpg" width="570" height="542" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/008.jpg" width="771" height="1085" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/009.jpg" width="900" height="1350" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/010.jpg" width="900" height="1353" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/011.jpg" width="736" height="920" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/012.jpg" width="862" height="976" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/013.jpg" width="900" height="1350" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/014.jpg" width="440" height="440" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/015.jpg" width="900" height="1196" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/016.jpg" width="900" height="1350" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/017.jpg" width="900" height="1350" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/018.jpg" width="882" height="1200" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/019.jpg" width="735" height="923" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/020.jpg" width="473" height="586" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/021.jpg" width="900" height="1349" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/022.jpg" width="735" height="1242" alt="" loading="eager"></figure>
+    <figure><img src="img/inspiration/023.jpg" width="900" height="690" alt="" loading="eager"></figure>
     <figure><img src="img/inspiration/024.jpg" width="900" height="697" alt="" loading="lazy"></figure>
     <figure><img src="img/inspiration/025.jpg" width="900" height="1350" alt="" loading="lazy"></figure>
     <figure><img src="img/inspiration/026.jpg" width="671" height="942" alt="" loading="lazy"></figure>
@@ -400,9 +400,13 @@
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
+          // the inspiration wall is already in place wherever it fills the first
+          // screen; only pieces further down slide in as you scroll
+          var settled = el.closest('.wall, .wall-head') && el.getBoundingClientRect().top < innerHeight;
+          if (settled) el.classList.add('is-seen');
           void el.offsetWidth;
           el.style.transition = '';
-          if (still) { el.classList.add('is-seen'); return; }
+          if (still || settled) { el.classList.add('is-seen'); return; }
           // let the hidden state paint first, or blocks already on screen at load
           // would jump straight to their resting place without animating
           // (and wait for the stylesheet: until the hidden state has actually taken

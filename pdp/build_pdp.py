@@ -264,8 +264,8 @@ def main():
             imgs = json.load(open(os.path.join(OUT, "img", "inspiration", "index.json")))
             doc = (doc.replace("{{COUNT}}", str(len(imgs)))
                       .replace("{{GRID}}", "\n".join(
-                          f'    <figure><img src="img/inspiration/{n}" width="{w}" height="{h}" alt="" loading="lazy"></figure>'
-                          for n, w, h in imgs)))
+                          f'    <figure><img src="img/inspiration/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 24 else "lazy"}"></figure>'
+                          for i, (n, w, h) in enumerate(imgs))))
         open(os.path.join(OUT, f), "w", encoding="utf-8").write(one_block(doc))
         print("  ", f)
     for p in products:
