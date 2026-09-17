@@ -35,29 +35,29 @@
    "s": 0.7,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Split Band",
+   "date": "2024"
   },
   "04.png": {
    "s": 0.6,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Faceted Gold Band",
+   "date": "2024"
   },
   "15.png": {
    "s": 0.58,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Birth Band II",
+   "date": "2024"
   },
   "20.png": {
    "s": 0.74,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Aaron's Wedding Band",
+   "date": "2024"
   },
   "added-1789609019-custom-totem-01.png": {
    "s": 0.85,
@@ -77,57 +77,57 @@
    "s": 0.73,
    "x": 2.0,
    "y": -17.0,
-   "name": "",
-   "date": ""
+   "name": "Grey Wolf",
+   "date": "2026"
   },
   "added-1789609021-custom-totem-04.png": {
    "s": 0.89,
    "x": 2.0,
    "y": -5.0,
-   "name": "",
-   "date": ""
+   "name": "Red Fox, Seated",
+   "date": "2026"
   },
   "added-1789609023-custom-totem-07.png": {
    "s": 0.74,
    "x": -4.0,
    "y": -3.0,
-   "name": "",
-   "date": ""
+   "name": "Prowling Fox",
+   "date": "2026"
   },
   "added-1789609024-custom-totem-08.png": {
    "s": 0.75,
    "x": 1.0,
    "y": -4.0,
-   "name": "",
-   "date": ""
+   "name": "Prowling Fox",
+   "date": "2026"
   },
   "17.png": {
    "s": 1.0,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Cheetah",
+   "date": "2025"
   },
   "00.png": {
    "s": 0.76,
    "x": 0.0,
    "y": 1.0,
-   "name": "",
-   "date": ""
+   "name": "Shiba Inu",
+   "date": "2025"
   },
   "18.png": {
    "s": 0.93,
    "x": 0.0,
    "y": -5.0,
-   "name": "",
-   "date": ""
+   "name": "Orca",
+   "date": "2025"
   },
   "05.png": {
    "s": 0.94,
    "x": 0.0,
    "y": -6.0,
-   "name": "",
-   "date": ""
+   "name": "Arctic Tern",
+   "date": "2025"
   },
   "01.png": {
    "s": 0.77,
@@ -140,15 +140,15 @@
    "s": 0.77,
    "x": 8.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Resting Raven",
+   "date": "2025"
   },
   "21.png": {
    "s": 1.89,
    "x": 8.0,
    "y": 9.0,
-   "name": "",
-   "date": ""
+   "name": "Mountain Wolf",
+   "date": "2024"
   },
   "13.png": {
    "s": 0.84,
@@ -161,8 +161,8 @@
    "s": 0.62,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Kingfisher Ring",
+   "date": "2024"
   },
   "chess-2.jpg": {
    "s": 1.0,
@@ -175,8 +175,8 @@
    "s": 1.0,
    "x": 0.0,
    "y": 0.0,
-   "name": "",
-   "date": ""
+   "name": "Woodland Chess Set",
+   "date": "2026"
   },
   "chess-1.jpg": {
    "s": 1.0,
@@ -191,6 +191,27 @@
    "y": 0,
    "name": "Frog Chess Set",
    "date": "2025"
+  },
+  "added-1789609022-custom-totem-06.png": {
+   "s": 1,
+   "x": 0,
+   "y": 0,
+   "name": "Prowling Fox",
+   "date": "2026"
+  },
+  "16.png": {
+   "s": 1,
+   "x": 0,
+   "y": 0,
+   "name": "Pocket Terrier",
+   "date": "2024"
+  },
+  "14.png": {
+   "s": 1,
+   "x": 0,
+   "y": 0,
+   "name": "Birth Band I",
+   "date": "2024"
   }
  }
 }
