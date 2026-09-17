@@ -70,13 +70,14 @@
   .logo-build .ll-c.lift .ll-glyph{transform:none;transition:transform .9s cubic-bezier(.34,1.25,.5,1)}
   .ll-c.lift .ll-ced{opacity:1;transform:none}
   /* each letter falls into place under its own weight, left to right */
-  .logo-build.fall .ll{animation:ll-fall .62s cubic-bezier(.45,.02,.78,.26) both}
+  .logo-build.fall .ll{animation:ll-fall .62s cubic-bezier(.45,.02,.78,.26) both;transition:none}
+  /* every letter holds its final place from the start, so the only movement is downward */
   .logo-build.fall .ll-glyph{opacity:1;transition:none;transform:none}
   .logo-build.fall .ll-c .ll-glyph{transform:translateY(calc(var(--lh) * 56 / 331))}   /* the C waits low until the cedilla lifts it */
   /* the cedilla's lift must still win while the fall rules are on the element */
   .logo-build.fall .ll-c.lift .ll-glyph{transform:none;transition:transform .9s cubic-bezier(.34,1.25,.5,1)}
   @keyframes ll-fall{
-    0%{transform:translateY(-135%);opacity:0}
+    0%{transform:translateY(-55%);opacity:0}
     45%{opacity:1}
     88%{transform:translateY(2.5%)}                                                     /* the small settle of something landing */
     100%{transform:translateY(0);opacity:1}}
@@ -241,6 +242,15 @@
       .observe(tile, {attributes: true, attributeFilter: ['class']});
   })();
 
+  // The logotype rests in the middle of the film for eight seconds, then fades and hands
+  // over to the scroll cue. Scrolling away cancels it; coming back starts the eight over.
+  var quiet;
+  window.MaconHeroQuiet = function () {
+    clearTimeout(quiet);
+    if (scrollY > 40) { document.body.classList.remove('hero-quiet'); return; }
+    quiet = setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000);
+  };
+
   // The big logotype sits exactly in the middle of the first screen
   (function () {
     var logo = document.querySelector('.head .logotype'), head = document.querySelector('.head');
@@ -267,7 +277,7 @@
       chars.forEach(function (c) { c.classList.add('on'); });
     }
     function early() { if (scrollY > 40) { finish(); removeEventListener('scroll', early); } }
-    if (skip) { finish(); if (scrollY <= 40) setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000); return; }
+    if (skip) { finish(); window.MaconHeroQuiet(); return; }
     document.body.classList.add('logo-anim');
     addEventListener('scroll', early, {passive: true});
     [].forEach.call(build.querySelectorAll('.ll'), function (l, i) {
@@ -275,27 +285,35 @@
       l.style.animationDelay = (i * 95) + 'ms';                                         // M, then A, then the C, and so on
     });
     build.classList.add('fall');
-    var t = 1150;
+    var t = 1650;          // the word lands, then a half-second of stillness before the cedilla rises
     later(function () { build.querySelector('.ll-c').classList.add('lift'); }, t);
     t += 1050;
     // the stand-in stays on screen (the real, scaled-up logotype renders its grain slightly differently);
     // it only hands over once you scroll, when the logotype is already moving
-    later(function () { build.classList.remove('fall'); }, 1250);
+    later(function () { build.classList.remove('fall'); }, t + 1000);
     chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
-    setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000);
+    window.MaconHeroQuiet();
   })();
-  function cue() { var on = scrollY > 40; document.querySelector('.film').classList.toggle('scrolled', on); document.body.classList.toggle('logo-hero', !on); }
-  // the first pass sets the size outright; only later changes are allowed to animate
-  document.body.classList.add('logo-still');
-  cue();
-  requestAnimationFrame(function () { requestAnimationFrame(function () { document.body.classList.remove('logo-still'); }); });
-  addEventListener('scroll', cue, {passive: true});
-  addEventListener('pageshow', function (e) {
-    if (!e.persisted) return;                       // returning to a cached page: settle it before it can animate
+  function cue() {
+    var on = scrollY > 40;
+    document.querySelector('.film').classList.toggle('scrolled', on);
+    document.body.classList.toggle('logo-hero', !on);
+    if (on) { clearTimeout(quiet); document.body.classList.remove('hero-quiet'); }
+    else if (!quiet || !document.body.classList.contains('hero-quiet')) window.MaconHeroQuiet();
+  }
+  // While the page finds its starting position the logotype must not animate: arriving
+  // at index.html#pieces, the browser jumps to the anchor a moment after load, and that
+  // jump would otherwise be read as a scroll and fly the logotype down from the hero.
+  var settling;
+  function still() {
     document.body.classList.add('logo-still');
     cue();
-    requestAnimationFrame(function () { requestAnimationFrame(function () { document.body.classList.remove('logo-still'); }); });
-  });
+    clearTimeout(settling);
+    settling = setTimeout(function () { document.body.classList.remove('logo-still'); }, 450);
+  }
+  still();
+  addEventListener('scroll', cue, {passive: true});
+  addEventListener('pageshow', function (e) { if (e.persisted) still(); });
 </script>
 </body>
 </html>
