@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Commission a Totem | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613506">
+<link rel="stylesheet" href="site.css?v=1789613960">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -60,7 +60,7 @@
   .ed .hint{margin:10px 0 0;font-size:11px;color:rgba(0,0,0,.5)}
   .ed .msg{margin:8px 0 0;font-size:12px}
   .ed-toggle{position:fixed;left:16px;bottom:16px;z-index:49;padding:7px 11px;background:#fff;border:1px solid rgba(0,0,0,.3);font-size:12px}
-  body.editing .ed-toggle{display:none}
+  body.editing .ed-toggle,body:not(.can-edit) .ed-toggle{display:none}
   .order{padding:48px calc(var(--pad) + 12px) 0}
 
   .head .on-dark{color:#000}
@@ -615,7 +615,10 @@
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
-    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+    function clean(it) { return {slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
+      size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
     function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
     function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
     function add(item) {
@@ -802,6 +805,7 @@
       figs().forEach(function (f) { f.classList.add('is-seen'); });
       if (!on) pick(null);
     }
+    if (/[?&]edit\b/.test(location.search)) document.body.classList.add('can-edit');
     document.querySelector('.ed-toggle').addEventListener('click', function () { open(true); });
     q('.done').addEventListener('click', function () { open(false); });
     addEventListener('keydown', function (e) {

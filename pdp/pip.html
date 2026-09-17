@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pip | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613506">
+<link rel="stylesheet" href="site.css?v=1789613960">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -377,7 +377,10 @@
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
-    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+    function clean(it) { return {slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
+      size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
     function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
     function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
     function add(item) {
@@ -452,7 +455,7 @@
   document.querySelectorAll('[data-size]').forEach(function (box) {
     var toggle = box.querySelector('.size-toggle'), value = box.querySelector('.size-value');
     var items = [].slice.call(box.querySelectorAll('li'));
-    function open(on) { box.classList.toggle('open', on); toggle.setAttribute('aria-expanded', on); }
+    function open(on) { box.classList.toggle('open', on); toggle.setAttribute('aria-expanded', on); if (on && document.activeElement === toggle) (box.querySelector('[aria-selected="true"]') || items[0]).focus(); }
     toggle.addEventListener('click', function () { open(!box.classList.contains('open')); });
     items.forEach(function (li) {
       li.addEventListener('click', function () {
@@ -469,8 +472,8 @@
   // The bag bar appears once the real button has scrolled away, and steps
   // aside at the footer so it never covers the newsletter.
   (function () {
-    var dock = document.getElementById('dock'), gone = false, foot = false;
-    function sync() { dock.classList.toggle('on', gone && !foot); }
+    var dock = document.getElementById('dock'), gone = false, foot = false; dock.inert = true;
+    function sync() { dock.classList.toggle('on', gone && !foot); dock.inert = !(gone && !foot); }
     new IntersectionObserver(function (e) { gone = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; sync(); })
       .observe(document.getElementById('bag'));
     new IntersectionObserver(function (e) { foot = e[0].isIntersecting; sync(); }, {rootMargin: '0px 0px -40% 0px'})

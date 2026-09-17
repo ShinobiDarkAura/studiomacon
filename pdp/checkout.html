@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Checkout | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613506">
+<link rel="stylesheet" href="site.css?v=1789613960">
 <style>
   .co{max-width:1100px;margin:0 auto;padding:calc(var(--head) + 64px) calc(var(--pad) + 12px) 96px}
   .co h1{margin:0 0 40px}
@@ -16,8 +16,9 @@
   .co .field input,.co .field select{font-size:calc(17px - 2pt);width:100%;border:0;outline:0;background:none}
   .co .field input::placeholder{color:rgba(0,0,0,.35)}
   .co .label{margin:12px 0 -8px}
+  .co .label:first-child{margin-top:0}
   .mini{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule);font-size:14px}
-  .mini img{width:56px;height:70px;object-fit:cover;border-radius:4px}
+  .mini img{width:56px;height:70px;object-fit:cover;border-radius:6px}
   .co dl{display:grid;grid-template-columns:1fr auto;gap:10px 0;margin:18px 0 0;font-size:15px}
   .co dd{margin:0;text-align:right}
   .co .total{padding-top:12px;border-top:1px solid #000;font-weight:500}
@@ -55,7 +56,7 @@
         <label class="field"><input required placeholder="Postal Code" aria-label="Postal code" autocomplete="postal-code"></label>
       </div>
       <label class="field"><input required placeholder="Country" aria-label="Country" autocomplete="country-name"></label>
-      <button class="cta" type="submit">Continue to Payment</button>
+      <button class="cta" type="submit">Place Order</button>
       <p class="note">Payment is not connected in this preview. Continuing shows the order confirmation.</p>
     </form>
     <aside aria-label="Order summary">
@@ -296,7 +297,10 @@
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
-    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+    function clean(it) { return {slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
+      size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
     function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
     function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
     function add(item) {

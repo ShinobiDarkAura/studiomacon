@@ -51,7 +51,7 @@ body.white-right .head .right.on-dark{color:#000}
   background:#fff;color:#000;border:1px solid var(--rule);box-shadow:0 10px 30px rgba(0,0,0,.08);font-size:13px;line-height:1.35;
   white-space:nowrap;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .35s ease,transform .45s var(--ease)}
 .bag-toast.on{opacity:1;transform:none}
-.bag-toast img{width:40px;height:50px;object-fit:cover;border-radius:3px}
+.bag-toast img{width:40px;height:50px;object-fit:cover;border-radius:6px}
 .bag-toast .price-note{color:rgba(0,0,0,.45);margin-left:6px}
 .bag-toast b{display:block;font-weight:500;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:2px}
 .head .right a.bump{animation:bump .5s var(--ease)}
@@ -199,3 +199,7 @@ footer .field button{padding:0 0 0 18px}
 @keyframes vt-fade-out{to{opacity:0}}
 @keyframes vt-fade-in{from{opacity:0}}
 @media (prefers-reduced-motion:reduce){ @view-transition{navigation:none} }
+
+/* keyboard focus */
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.field:focus-within{border-bottom-color:#000}

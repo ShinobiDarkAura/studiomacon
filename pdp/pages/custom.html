@@ -60,7 +60,7 @@
   .ed .hint{margin:10px 0 0;font-size:11px;color:rgba(0,0,0,.5)}
   .ed .msg{margin:8px 0 0;font-size:12px}
   .ed-toggle{position:fixed;left:16px;bottom:16px;z-index:49;padding:7px 11px;background:#fff;border:1px solid rgba(0,0,0,.3);font-size:12px}
-  body.editing .ed-toggle{display:none}
+  body.editing .ed-toggle,body:not(.can-edit) .ed-toggle{display:none}
   .order{padding:48px calc(var(--pad) + 12px) 0}
 
   .head .on-dark{color:#000}
@@ -474,6 +474,7 @@
       figs().forEach(function (f) { f.classList.add('is-seen'); });
       if (!on) pick(null);
     }
+    if (/[?&]edit\b/.test(location.search)) document.body.classList.add('can-edit');
     document.querySelector('.ed-toggle').addEventListener('click', function () { open(true); });
     q('.done').addEventListener('click', function () { open(false); });
     addEventListener('keydown', function (e) {

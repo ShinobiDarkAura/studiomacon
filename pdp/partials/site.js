@@ -205,7 +205,10 @@
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
-    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+    function clean(it) { return {slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
+      size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
     function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
     function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
     function add(item) {
