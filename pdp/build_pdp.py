@@ -183,7 +183,7 @@ def accordions(slug, k, notes):
         </div>''' for t, b in items)
 
 
-def page(p, template):
+def page(p, template, related=""):
     slug, name, price = p["slug"], p["name"], p["price"]
     desc, notes = read_port(slug)
     k = kind(slug, notes)
@@ -252,7 +252,8 @@ def page(p, template):
             .replace("{{HERO}}", hero)
             .replace("{{GALLERY}}", "\n      ".join(figs))
             .replace("{{ACCORDIONS}}", accordions(slug, k, notes))
-            .replace("{{CLOSING}}", close))
+            .replace("{{CLOSING}}", close)
+            .replace("{{RELATED}}", related))
 
 
 def one_block(doc):
@@ -315,6 +316,25 @@ def align_style(slug):
     return (f' style="--ox:{a["ox"]}%;--oy:{a["oy"]}%;--tx:{a["tx"]}%;--ty:{a["ty"]}%;--s:{a["s"]}"' if a else "")
 
 
+def related_block(p, products):
+    """Phones: four other pieces from the same family (totems with totems, jewelry with jewelry), as a 2 × 2 grid."""
+    def family(x):
+        return "cap" if x["slug"] == "macon-cap" else ("totem" if kind(x["slug"], read_port(x["slug"])[1]) == "totem" else "jewelry")
+    mine = family(p)
+    same = [x for x in products if x["slug"] != p["slug"] and family(x) == mine]
+    rest = [x for x in products if x["slug"] != p["slug"] and family(x) != mine]
+    start = [x["slug"] for x in products].index(p["slug"]) % max(1, len(same))
+    pick = (same[start:] + same[:start] + rest)[:4]           # rotate so neighbours differ from page to page
+    tiles = "".join(
+        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-frame"><img src="img/{x["slug"]}/{"plain-3.jpg" if x["slug"] == "wonderhorn-talisman" else "hero.jpg"}" alt="" loading="lazy"></span>'
+        f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>'
+        for x in pick)
+    return ('<section class="related" aria-label="Other pieces">'
+            '<p class="eyebrow">Kindred Artifacts</p><h2>Also Worth<br>Keeping</h2>'
+            '<p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p>'
+            f'<div class="rel-grid">{tiles}</div></section>')
+
+
 def main():
     with open(os.path.join(ROOT, "_source/products.json")) as f:
         products = json.load(f)
@@ -352,7 +372,7 @@ def main():
         save(f, one_block(doc))
         print("  ", f)
     for p in products:
-        save(f"{p['slug']}.html", one_block(page(p, template)))
+        save(f"{p['slug']}.html", one_block(page(p, template, related_block(p, products))))
         print("  ", p["slug"])
     # Shop: every piece on one wall, linking to its page
     tiles = []
