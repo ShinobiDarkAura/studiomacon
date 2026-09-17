@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Shop | Studio Maçon</title>
-<link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613960">
+<link rel="icon" href="img/favicon.png">
+<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=1789614570">
 <style>
   /* the film fills the first screen; the nav sits over it in white */
   .film{position:relative;height:100vh;height:100svh;overflow:hidden;background:#111}
@@ -23,41 +24,22 @@
     100%{transform:translateY(13px);opacity:0}
   }
   .film.scrolled .scroll-cue{opacity:0}
+  /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
+  .head .logotype{transition:transform .7s var(--ease),color .3s ease}
+  body.logo-hero .head .logotype{transform:translateY(calc(50vh - 12px - var(--head) / 2 - 6px)) scale(2.5)}
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
-  .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px) 24px}
+  .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head.next-set{padding-top:0}
   .set:first-of-type::after{content:"";display:block;height:calc(120px + 10vh)}
-  /* each section title rides along under the nav until the next section's title pushes it off */
-  .set{position:relative}
-  /* FOLLOWING TITLES — switched off. To bring them back, add class="follow-titles" to <body> below. */
-  body:not(.follow-titles) .wall-head{position:relative !important;top:auto !important}
-  .wall-head{position:sticky;z-index:6;top:calc(var(--head) - 25vh);pointer-events:none;transition:color .35s ease}
-  /* riding over the pictures, the title is white type with nothing behind it */
-  .wall-head.compact{color:#fff}
-  .wall-head.compact .count{color:rgba(255,255,255,.7)}
-  /* riding titles step in 32px, with a hairline running in from the page edge to just before the word */
-  .wall-head h1,.wall-head .count{transition:transform .45s var(--ease),font-size .45s var(--ease),color .35s ease}
-  .wall-head h1{position:relative}
-  .wall-head h1::before{content:"";position:absolute;top:50%;right:calc(100% + 8px);height:1px;background:currentColor;
-    width:calc(var(--pad) + 12px + 32px - 8px);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
-  .wall-head.compact h1,.wall-head.compact .count{transform:translateX(32px)}
-  .wall-head.compact h1::before{transform:scaleX(1)}
-  .wall-head.next-set{top:var(--head)}
   .placeholder-fill{position:absolute;inset:0;background:#e6e6e4}
   .placeholder{position:relative;aspect-ratio:4/5;background:#d9d9d9;overflow:hidden}
   .placeholder img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .wall-head h1{margin:0;font-size:57.5px;transition:font-size .45s var(--ease)}
-  .wall-head{transition:padding-bottom .45s var(--ease)}
-  /* once a title is riding under the nav it shrinks, and its white strip with it */
-  @media (min-width:768px){
-    .wall-head.compact h1{font-size:46.375px !important}
-  }
-  @media (min-width:1200px){ .wall-head.compact h1{font-size:52.5px !important} }
+  .wall-head h2{margin:0;font-size:57.5px}
   .wall-head .count{font-size:13px;color:rgba(0,0,0,.45)}
-  @media (min-width:768px){ .wall-head h1{font-size:66.25px} }
-  @media (min-width:1200px){ .wall-head h1{font-size:75px} }
+  @media (min-width:768px){ .wall-head h2{font-size:66.25px} }
+  @media (min-width:1200px){ .wall-head h2{font-size:75px} }
 
-  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 12px)}
+  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 24px)}
   .wall figure{margin:0;border-radius:6px;overflow:hidden;background:var(--field)}
   .wall figure.dr-emerge{filter:none;transform:translateY(90px);
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
@@ -82,17 +64,18 @@
   .piece:hover img{transform:scale(1.02)}
   @media (hover:none){ .piece .held{display:none} }
   /* no hover on touch screens, so the details are always shown there */
-  @media (hover:none){ .piece .over{opacity:1;transform:none} }
+  @media (hover:none),(max-width:767px){ .piece .over{opacity:1;transform:none} }
 </style>
 </head>
-<body>
+<body class="logo-hero">
 
 <header class="head">
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
     <a href="index.html" class="desk hover-line">Shop</a>
-    <a href="custom.html" class="desk hover-line">Custom</a>
-    <a href="story.html" class="desk hover-line">About</a>
+    <a href="custom.html" class="desk hover-line">Commission</a>
+    <a href="inspiration.html" class="desk hover-line">Inspiration</a>
+    <a href="story.html" class="desk hover-line">Story</a>
   </div>
   <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
@@ -100,14 +83,15 @@
 
 <main>
   <section class="film" aria-label="Studio Maçon film">
-    <video autoplay muted loop playsinline preload="metadata" poster="video/poster.jpg">
-      <source src="video/film.mp4" type="video/mp4">
+    <video autoplay muted loop playsinline preload="metadata" poster="video/poster-loop.jpg">
+      <source src="video/film-loop-480.mp4" type="video/mp4" media="(max-width:700px)">
+      <source src="video/film-loop.mp4" type="video/mp4">
     </video>
     <span class="scroll-cue" aria-hidden="true"><i></i></span>
   </section>
   <div class="set">
   <header class="wall-head">
-    <h1>Ephemeral</h1><span class="count">3</span>
+    <h2 class="set-title">Ephemeral</h2><span class="count">3</span>
   </header>
   <section class="wall shop-wall">
     <figure><a class="piece" aria-disabled="true" tabindex="-1" onclick="return false"><span class="placeholder-fill"></span><span class="over"><span class="name">Bearer of Small Things</span><span class="cost">$240</span></span></a></figure>
@@ -118,40 +102,40 @@
 
   <div class="set">
   <header class="wall-head next-set">
-    <h1>Perennial</h1><span class="count">18</span>
+    <h2 class="set-title">Perennial</h2><span class="count">18</span>
   </header>
   <section class="wall shop-wall">
-    <figure><a class="piece" href="pip.html"><img src="img/pip/hero.jpg" alt="Pip" loading="eager"><img class="held" src="img/pip/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="rebi.html"><img src="img/rebi/hero.jpg" alt="Rebi" loading="eager"><img class="held" src="img/rebi/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Rebi</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="ren.html"><img src="img/ren/hero.jpg" alt="Ren" loading="eager"><img class="held" src="img/ren/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Ren</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="zuma.html"><img src="img/zuma/hero.jpg" alt="Zuma" loading="eager"><img class="held" src="img/zuma/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Zuma</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="ori.html"><img src="img/ori/hero.jpg" alt="Ori" loading="eager"><img class="held" src="img/ori/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Ori</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="yael.html"><img src="img/yael/hero.jpg" alt="Yaël" loading="eager"><img class="held" src="img/yael/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Yaël</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="milo.html"><img src="img/milo/hero.jpg" alt="Milo" loading="lazy"><img class="held" src="img/milo/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Milo</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="eleph.html"><img src="img/eleph/hero.jpg" alt="Eleph" loading="lazy"><img class="held" src="img/eleph/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Eleph</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="ibi.html"><img src="img/ibi/hero.jpg" alt="Ibi" loading="lazy"><img class="held" src="img/ibi/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Ibi</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="zuma-ring.html"><img src="img/zuma-ring/hero.jpg" alt="Zuma Ring" loading="lazy"><img class="held" src="img/zuma-ring/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Zuma Ring</span><span class="cost">$320</span></span></a></figure>
-    <figure><a class="piece" href="eclipse-ring.html"><img src="img/eclipse-ring/hero.jpg" alt="Eclipse Ring" loading="lazy"><img class="held" src="img/eclipse-ring/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Eclipse Ring</span><span class="cost">$340</span></span></a></figure>
-    <figure><a class="piece" href="sietch-aperture.html"><img src="img/sietch-aperture/hero.jpg" alt="Sietch Ring" loading="lazy"><img class="held" src="img/sietch-aperture/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Sietch Ring</span><span class="cost">$340</span></span></a></figure>
-    <figure><a class="piece" href="lunar-canyon-ring.html"><img src="img/lunar-canyon-ring/hero.jpg" alt="Lunar Canyon" loading="lazy"><img class="held" src="img/lunar-canyon-ring/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Lunar Canyon</span><span class="cost">$370</span></span></a></figure>
-    <figure><a class="piece" href="wonderhorn-talisman.html"><img src="img/wonderhorn-talisman/plain-3.jpg" alt="Ida&#x27;s Wonder Horn" loading="lazy"><img class="held" src="img/wonderhorn-talisman/plain-2.jpg" alt="" loading="lazy"><span class="over"><span class="name">Ida&#x27;s Wonder Horn</span><span class="cost">$390</span></span></a></figure>
-    <figure><a class="piece" href="ear-cuff.html"><img src="img/ear-cuff/hero.jpg" alt="Caldera Arc" loading="lazy"><img class="held" src="img/ear-cuff/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260</span></span></a></figure>
-    <figure><a class="piece" href="starshipkey-pendant.html"><img src="img/starshipkey-pendant/hero.jpg" alt="Starship Key" loading="lazy"><img class="held" src="img/starshipkey-pendant/plain-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Starship Key</span><span class="cost">$460</span></span></a></figure>
-    <figure><a class="piece" href="meridian-egg-ring.html"><img src="img/meridian-egg-ring/hero.jpg" alt="Meridian Egg" loading="lazy"><img class="held" src="img/meridian-egg-ring/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390</span></span></a></figure>
-    <figure><a class="piece" href="macon-cap.html"><img src="img/macon-cap/hero.jpg" alt="Maçon Cap" loading="lazy"><span class="over"><span class="name">Maçon Cap</span><span class="cost">$50</span></span></a></figure>
+    <figure><a class="piece" href="pip.html"><img width="1370" height="934" src="img/pip/hero.jpg.webp" alt="Pip" loading="eager"><img width="764" height="1018" class="held" src="img/pip/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="rebi.html"><img width="1600" height="1066" src="img/rebi/hero.jpg.webp" alt="Rebi" loading="eager"><img width="613" height="816" class="held" src="img/rebi/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Rebi</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ren.html"><img width="1600" height="1216" src="img/ren/hero.jpg.webp" alt="Ren" loading="eager"><img width="814" height="1084" class="held" src="img/ren/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Ren</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="zuma.html"><img width="1353" height="849" src="img/zuma/hero.jpg.webp" alt="Zuma" loading="lazy"><img width="814" height="1084" class="held" src="img/zuma/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Zuma</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ori.html"><img width="1355" height="933" src="img/ori/hero.jpg.webp" alt="Ori" loading="lazy"><img width="765" height="1019" class="held" src="img/ori/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Ori</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="yael.html"><img width="1000" height="760" src="img/yael/hero.jpg.webp" alt="Yaël" loading="lazy"><img width="547" height="728" class="held" src="img/yael/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Yaël</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="milo.html"><img width="1600" height="1233" src="img/milo/hero.jpg.webp" alt="Milo" loading="lazy"><img width="773" height="1030" class="held" src="img/milo/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Milo</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="eleph.html"><img width="1486" height="989" src="img/eleph/hero.jpg.webp" alt="Eleph" loading="lazy"><img width="553" height="737" class="held" src="img/eleph/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Eleph</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ibi.html"><img width="1600" height="1131" src="img/ibi/hero.jpg.webp" alt="Ibi" loading="lazy"><img width="680" height="907" class="held" src="img/ibi/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Ibi</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="zuma-ring.html"><img width="1368" height="858" src="img/zuma-ring/hero.jpg.webp" alt="Zuma Ring" loading="lazy"><img width="814" height="1084" class="held" src="img/zuma-ring/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Zuma Ring</span><span class="cost">$320</span></span></a></figure>
+    <figure><a class="piece" href="eclipse-ring.html"><img width="1389" height="967" src="img/eclipse-ring/hero.jpg.webp" alt="Eclipse Ring" loading="lazy"><img width="814" height="1084" class="held" src="img/eclipse-ring/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Eclipse Ring</span><span class="cost">$340</span></span></a></figure>
+    <figure><a class="piece" href="sietch-aperture.html"><img width="1600" height="1124" src="img/sietch-aperture/hero.jpg.webp" alt="Sietch Ring" loading="lazy"><img width="814" height="1084" class="held" src="img/sietch-aperture/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Sietch Ring</span><span class="cost">$340</span></span></a></figure>
+    <figure><a class="piece" href="lunar-canyon-ring.html"><img width="1600" height="1067" src="img/lunar-canyon-ring/hero.jpg.webp" alt="Lunar Canyon" loading="lazy"><img width="814" height="1084" class="held" src="img/lunar-canyon-ring/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Lunar Canyon</span><span class="cost">$370</span></span></a></figure>
+    <figure><a class="piece" href="wonderhorn-talisman.html"><img width="1800" height="1200" src="img/wonderhorn-talisman/plain-3.jpg.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"><img width="1800" height="1202" class="held" src="img/wonderhorn-talisman/plain-2.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Ida&#x27;s Wonder Horn</span><span class="cost">$390</span></span></a></figure>
+    <figure><a class="piece" href="ear-cuff.html"><img width="1600" height="1068" src="img/ear-cuff/hero.jpg.webp" alt="Caldera Arc" loading="lazy"><img width="814" height="1084" class="held" src="img/ear-cuff/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260</span></span></a></figure>
+    <figure><a class="piece" href="starshipkey-pendant.html"><img width="1400" height="1013" src="img/starshipkey-pendant/hero.jpg.webp" alt="Starship Key" loading="lazy"><img width="1500" height="1957" class="held" src="img/starshipkey-pendant/plain-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Starship Key</span><span class="cost">$460</span></span></a></figure>
+    <figure><a class="piece" href="meridian-egg-ring.html"><img width="1000" height="696" src="img/meridian-egg-ring/hero.jpg.webp" alt="Meridian Egg" loading="lazy"><img width="544" height="724" class="held" src="img/meridian-egg-ring/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390</span></span></a></figure>
+    <figure><a class="piece" href="macon-cap.html"><img width="1600" height="1095" src="img/macon-cap/hero.jpg.webp" alt="Maçon Cap" loading="lazy"><span class="over"><span class="name">Maçon Cap</span><span class="cost">$50</span></span></a></figure>
   </section>
   </div>
 </main>
 
 <footer>
   <div class="brand">
-    <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
+    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
     <p class="fine">Artifacts of Love,<br>Made to Order.</p>
   </div>
   <div class="middle">
   <nav class="links">
-    <a class="hover-line" href="story.html">About</a>
-    <a class="hover-line" href="custom.html">Custom</a>
+    <a class="hover-line" href="story.html">Story</a>
+    <a class="hover-line" href="custom.html">Commission</a>
     <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
     <a class="hover-line" href="inspiration.html">Inspiration</a>
     <a class="hover-line" href="contact.html">Contact</a>
@@ -196,7 +180,12 @@
       var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
     }
 
+    var lumas = new WeakMap();
     function bgLuma(el) {                  // first painted background up the tree, else the white page
+      if (el && lumas.has(el)) return lumas.get(el);
+      var v = paintedLuma(el); if (el) lumas.set(el, v); return v;
+    }
+    function paintedLuma(el) {
       for (; el && el !== document.documentElement; el = el.parentElement) {
         var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
         if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
@@ -210,7 +199,7 @@
         var el = stack[i];
         if (el.closest('.head')) continue;
         if (el.tagName === 'VIDEO') return 0;
-        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them          // film: always read as dark, so the nav is white
+        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
@@ -237,9 +226,11 @@
       return 1;
     }
 
-    var queued = false, held = null, head = document.querySelector('.head');
-    function tone() {
+    var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
+    function tone(force) {
       queued = false;
+      if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
+      lastY = scrollY;
       // the whole nav is one unit: read under each part, then colour every part the same
       var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
       var grid = null;
@@ -266,10 +257,11 @@
       parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
     }
     function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
-    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', soon);
-    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', function () { held = null; soon(); }); });
-    addEventListener('load', function () { held = null; soon(); });
-    tone();
+    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
+    function fresh() { held = null; lastY = -99; soon(); }
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
+    addEventListener('load', fresh);
+    tone(true);
   })();
 
   // Emerge: every image and text block starts hidden and settles into place the
@@ -281,7 +273,9 @@
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
     // side-by-side groups cascade instead of arriving at once
     var GROUPS = ['.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
-    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // coming back (Back button or history) the page simply reappears as it was, with no entrance
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
@@ -300,14 +294,12 @@
     }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
 
     function arm(root) {
-      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
+      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
-          // the inspiration wall is already in place wherever it fills the first
-          // screen; only pieces further down slide in as you scroll
           void el.offsetWidth;
           el.style.transition = '';
           if (still) { el.classList.add('is-seen'); return; }
@@ -367,8 +359,6 @@
     }).observe(document.body, {childList: true, subtree: true});
   })();
 
-
-
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
@@ -413,9 +403,12 @@
           name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
           img: hero ? hero.getAttribute('src') : '', size: size
         });
-        toast.innerHTML = (hero ? '<img src="' + hero.getAttribute('src') + '" alt="">' : '') +
-          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + (size ? ' · Size ' + size : '') +
-          (price ? '<span class="price-note">' + price.textContent + '</span>' : '') + '</span>';
+        toast.textContent = '';
+        if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+        tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+        if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+        toast.appendChild(tx);
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
@@ -423,56 +416,29 @@
     });
   })();
 
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
     var menu = document.createElement('nav');
     menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.hidden = true;
     menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
-      '<a href="index.html">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
-      '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+      '<a href="index.html">Shop</a><a href="custom.html">Commission</a><a href="inspiration.html">Inspiration</a>' +
+      '<a href="story.html">Story</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
     document.body.appendChild(menu);
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
-    function set(on) { menu.hidden = !on; btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
+    function set(on) { menu.hidden = !on; [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; }); btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
     btn.addEventListener('click', function (e) { e.preventDefault(); set(true); });
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
-
-  // Arriving through the shop transition: skip the load-in so the drawer arrives already filled
-  addEventListener('pagereveal', function (e) {
-    if (!e.viewTransition) return;
-    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
-  });
 </script>
 <script>
-  (function () {
-    var heads = [].slice.call(document.querySelectorAll('.wall-head'));
-    var headH = function () { return document.querySelector('.head').offsetHeight; };
-    if (!document.body.classList.contains('follow-titles')) return;          // feature switched off
-    function check() {
-      heads.forEach(function (h) {
-        var t = h.querySelector('h1').getBoundingClientRect().top;
-        h.classList.toggle('compact', t <= headH() + 2);          // stays small and white once it has started riding
-      });
-    }
-    addEventListener('scroll', check, {passive: true}); addEventListener('resize', check); check();
-  })();
-</script>
-<script>
-  addEventListener('scroll', function () { document.querySelector('.film').classList.toggle('scrolled', scrollY > 40); }, {passive: true});
-</script>
-<script>
-  // Only the clicked tile's photograph takes part in the grow-into-hero transition
-  document.querySelectorAll('.shop-wall .piece').forEach(function (a) {
-    a.addEventListener('click', function () {
-      document.querySelectorAll('.shop-wall .piece img').forEach(function (i) { i.style.viewTransitionName = 'none'; });
-      var still = a.querySelector('img:not(.held)'); if (still) still.style.viewTransitionName = 'piece-hero';
-    });
-  });
-  addEventListener('pageshow', function () {
-    document.querySelectorAll('.shop-wall .piece img').forEach(function (i) { i.style.viewTransitionName = ''; });
-  });
+  function cue() { var on = scrollY > 40; document.querySelector('.film').classList.toggle('scrolled', on); document.body.classList.toggle('logo-hero', !on); }
+  addEventListener('scroll', cue, {passive: true}); cue();
 </script>
 </body>
 </html>

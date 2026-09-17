@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Zuma Ring | Studio Maçon</title>
-<link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613960">
+<link rel="icon" href="img/favicon.png">
+<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=1789614570">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -14,6 +15,8 @@
 
   .info{padding:28px var(--pad) 0;text-align:center}
   .price{font-size:19px;margin:0 0 18px}
+  .back{align-self:flex-start;display:inline-block;margin:0 0 28px;font-size:13px;color:rgba(0,0,0,.4)}
+  .back:hover{color:#000}
   /* ring size: the whole bordered block is the control; sizes open beneath it */
   .size{position:relative;margin:0 0 12px;border:1px solid var(--rule);text-align:left}
   .size-toggle{display:flex;align-items:center;gap:16px;width:100%;height:52px;padding:0 20px 0 16px;cursor:pointer}
@@ -45,7 +48,6 @@
   .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
   .buy{margin:0 0 42px}          /* buttons follow the description */
   .desc-block .label{margin:0 0 22px}
-  .desc-block .label{font-size:calc(17px - 3pt);letter-spacing:.14em}          /* matches the accordion titles, as on the early Custom page */
   .desc{margin:0;font-size:17px;line-height:1.55}
 
   /* ── closing: big stacked images, two centred chunks ─ */
@@ -65,11 +67,12 @@
 
   @media (min-width:768px){
     .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
-      margin:0 calc(var(--pad) + 12px) 0 0;align-items:start}
-    .gallery figure + figure{display:block;margin-top:12px}
+      margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
+    .gallery figure + figure{display:block;margin-top:12px;border-radius:6px;overflow:hidden}
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
-    .gallery figure img,.gallery .hero img,.gallery figure + figure img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
+    .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
+    .gallery figure + figure img{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
@@ -91,8 +94,9 @@
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
     <a href="index.html" class="desk hover-line">Shop</a>
-    <a href="custom.html" class="desk hover-line">Custom</a>
-    <a href="story.html" class="desk hover-line">About</a>
+    <a href="custom.html" class="desk hover-line">Commission</a>
+    <a href="inspiration.html" class="desk hover-line">Inspiration</a>
+    <a href="story.html" class="desk hover-line">Story</a>
   </div>
   <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
@@ -101,18 +105,19 @@
 <main>
   <section class="product">
     <div class="gallery" data-under-nav>
-      <figure class="hero"><img src="img/zuma-ring/hero.jpg" alt="Zuma Ring" fetchpriority="high"></figure>
-      <figure><img src="img/zuma-ring/plain-1.jpg" alt="" loading="lazy"></figure>
-      <figure><img src="img/zuma-ring/plain-2.jpg" alt="" loading="lazy"></figure>
-      <figure><img src="img/zuma-ring/hand-1.jpg" alt="" loading="lazy"></figure>
-      <figure><img src="img/zuma-ring/hand-2.jpg" alt="" loading="lazy"></figure>
+      <figure class="hero"><img width="1368" height="858" src="img/zuma-ring/hero.jpg.webp" alt="Zuma Ring" fetchpriority="high"></figure>
+      <figure><img width="1800" height="1243" src="img/zuma-ring/plain-1.jpg.webp" alt="" loading="lazy"></figure>
+      <figure><img width="1800" height="1111" src="img/zuma-ring/plain-2.jpg.webp" alt="" loading="lazy"></figure>
+      <figure><img width="814" height="1084" src="img/zuma-ring/hand-1.jpg.webp" alt="" loading="lazy"></figure>
+      <figure><img width="1600" height="1067" src="img/zuma-ring/hand-2.jpg.webp" alt="" loading="lazy"></figure>
     </div>
 
     <div class="info">
+      <a class="back hover-line" href="index.html">← Back to Shop</a>
       <p class="eyebrow">Sand Spirit, Distilled</p>
       <h1>Zuma Ring</h1>
       <p class="price">$320</p>
-      <div class="desc-block"><p class="label">Field Notes</p><p class="desc">A band of dune-born magic, cast in sterling silver. Its form repeats the shoulder line of the Zuma totem. Unearthed glyphs show evidence of rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand after casting.</p></div>
+      <div class="desc-block"><p class="label">Field Notes</p><p class="desc">Sterling silver carrying the shoulder line of the Zuma totem around the finger. Unearthed glyphs record rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand.</p></div>
       <div class="size" data-size><button type="button" class="size-toggle" aria-haspopup="listbox" aria-expanded="false"><span class="size-label">Size</span><span class="size-value">Select size</span><i class="chev" aria-hidden="true"></i></button><div class="size-panel"><div class="size-inner"><ul class="size-list" role="listbox" aria-label="Ring size"><li role="option" aria-selected="false" tabindex="0" data-value="4">4</li><li role="option" aria-selected="false" tabindex="0" data-value="4.5">4.5</li><li role="option" aria-selected="false" tabindex="0" data-value="5">5</li><li role="option" aria-selected="false" tabindex="0" data-value="5.5">5.5</li><li role="option" aria-selected="false" tabindex="0" data-value="6">6</li><li role="option" aria-selected="false" tabindex="0" data-value="6.5">6.5</li><li role="option" aria-selected="false" tabindex="0" data-value="7">7</li><li role="option" aria-selected="false" tabindex="0" data-value="7.5">7.5</li><li role="option" aria-selected="false" tabindex="0" data-value="8">8</li><li role="option" aria-selected="false" tabindex="0" data-value="8.5">8.5</li><li role="option" aria-selected="false" tabindex="0" data-value="9">9</li><li role="option" aria-selected="false" tabindex="0" data-value="9.5">9.5</li><li role="option" aria-selected="false" tabindex="0" data-value="10">10</li><li role="option" aria-selected="false" tabindex="0" data-value="10.5">10.5</li><li role="option" aria-selected="false" tabindex="0" data-value="11">11</li></ul></div></div></div>
       <div class="buy" id="bag">
         <button class="cta">Add to Bag</button>
@@ -150,13 +155,13 @@
 
 <footer>
   <div class="brand">
-    <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
+    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
     <p class="fine">Artifacts of Love,<br>Made to Order.</p>
   </div>
   <div class="middle">
   <nav class="links">
-    <a class="hover-line" href="story.html">About</a>
-    <a class="hover-line" href="custom.html">Custom</a>
+    <a class="hover-line" href="story.html">Story</a>
+    <a class="hover-line" href="custom.html">Commission</a>
     <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
     <a class="hover-line" href="inspiration.html">Inspiration</a>
     <a class="hover-line" href="contact.html">Contact</a>
@@ -204,7 +209,12 @@
       var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
     }
 
+    var lumas = new WeakMap();
     function bgLuma(el) {                  // first painted background up the tree, else the white page
+      if (el && lumas.has(el)) return lumas.get(el);
+      var v = paintedLuma(el); if (el) lumas.set(el, v); return v;
+    }
+    function paintedLuma(el) {
       for (; el && el !== document.documentElement; el = el.parentElement) {
         var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
         if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
@@ -218,7 +228,7 @@
         var el = stack[i];
         if (el.closest('.head')) continue;
         if (el.tagName === 'VIDEO') return 0;
-        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them          // film: always read as dark, so the nav is white
+        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
@@ -245,9 +255,11 @@
       return 1;
     }
 
-    var queued = false, held = null, head = document.querySelector('.head');
-    function tone() {
+    var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
+    function tone(force) {
       queued = false;
+      if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
+      lastY = scrollY;
       // the whole nav is one unit: read under each part, then colour every part the same
       var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
       var grid = null;
@@ -274,10 +286,11 @@
       parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
     }
     function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
-    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', soon);
-    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', function () { held = null; soon(); }); });
-    addEventListener('load', function () { held = null; soon(); });
-    tone();
+    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
+    function fresh() { held = null; lastY = -99; soon(); }
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
+    addEventListener('load', fresh);
+    tone(true);
   })();
 
   // Emerge: every image and text block starts hidden and settles into place the
@@ -289,7 +302,9 @@
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
     // side-by-side groups cascade instead of arriving at once
     var GROUPS = ['.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
-    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // coming back (Back button or history) the page simply reappears as it was, with no entrance
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
@@ -308,14 +323,12 @@
     }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
 
     function arm(root) {
-      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
+      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
-          // the inspiration wall is already in place wherever it fills the first
-          // screen; only pieces further down slide in as you scroll
           void el.offsetWidth;
           el.style.transition = '';
           if (still) { el.classList.add('is-seen'); return; }
@@ -375,8 +388,6 @@
     }).observe(document.body, {childList: true, subtree: true});
   })();
 
-
-
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
@@ -421,9 +432,12 @@
           name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
           img: hero ? hero.getAttribute('src') : '', size: size
         });
-        toast.innerHTML = (hero ? '<img src="' + hero.getAttribute('src') + '" alt="">' : '') +
-          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + (size ? ' · Size ' + size : '') +
-          (price ? '<span class="price-note">' + price.textContent + '</span>' : '') + '</span>';
+        toast.textContent = '';
+        if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+        tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+        if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+        toast.appendChild(tx);
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
@@ -431,27 +445,25 @@
     });
   })();
 
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
     var menu = document.createElement('nav');
     menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.hidden = true;
     menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
-      '<a href="index.html">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
-      '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+      '<a href="index.html">Shop</a><a href="custom.html">Commission</a><a href="inspiration.html">Inspiration</a>' +
+      '<a href="story.html">Story</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
     document.body.appendChild(menu);
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
-    function set(on) { menu.hidden = !on; btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
+    function set(on) { menu.hidden = !on; [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; }); btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
     btn.addEventListener('click', function (e) { e.preventDefault(); set(true); });
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
-
-  // Arriving through the shop transition: skip the load-in so the drawer arrives already filled
-  addEventListener('pagereveal', function (e) {
-    if (!e.viewTransition) return;
-    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
-  });
 </script>
 <script>
   // Ring size: the bordered block opens a panel of sizes; picking one closes it.
@@ -474,6 +486,10 @@
 <script>
   // The bag bar appears once the real button has scrolled away, and steps
   // aside at the footer so it never covers the newsletter.
+  // Back to Shop returns to the same spot on the shop wall when that is where the visit came from
+  document.querySelector('.info .back').addEventListener('click', function (e) {
+    if (/\/(index\.html)?$/.test(document.referrer.split('?')[0]) && history.length > 1) { e.preventDefault(); history.back(); }
+  });
   (function () {
     var dock = document.getElementById('dock'), gone = false, foot = false; dock.inert = true;
     function sync() { dock.classList.toggle('on', gone && !foot); dock.inert = !(gone && !foot); }

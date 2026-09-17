@@ -29,7 +29,12 @@
       var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
     }
 
+    var lumas = new WeakMap();
     function bgLuma(el) {                  // first painted background up the tree, else the white page
+      if (el && lumas.has(el)) return lumas.get(el);
+      var v = paintedLuma(el); if (el) lumas.set(el, v); return v;
+    }
+    function paintedLuma(el) {
       for (; el && el !== document.documentElement; el = el.parentElement) {
         var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
         if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
@@ -43,7 +48,7 @@
         var el = stack[i];
         if (el.closest('.head')) continue;
         if (el.tagName === 'VIDEO') return 0;
-        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them          // film: always read as dark, so the nav is white
+        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
@@ -70,9 +75,11 @@
       return 1;
     }
 
-    var queued = false, held = null, head = document.querySelector('.head');
-    function tone() {
+    var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
+    function tone(force) {
       queued = false;
+      if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
+      lastY = scrollY;
       // the whole nav is one unit: read under each part, then colour every part the same
       var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
       var grid = null;
@@ -99,10 +106,11 @@
       parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
     }
     function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
-    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', soon);
-    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', function () { held = null; soon(); }); });
-    addEventListener('load', function () { held = null; soon(); });
-    tone();
+    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
+    function fresh() { held = null; lastY = -99; soon(); }
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
+    addEventListener('load', fresh);
+    tone(true);
   })();
 
   // Emerge: every image and text block starts hidden and settles into place the
@@ -114,7 +122,9 @@
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
     // side-by-side groups cascade instead of arriving at once
     var GROUPS = ['.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
-    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // coming back (Back button or history) the page simply reappears as it was, with no entrance
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
@@ -133,14 +143,12 @@
     }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
 
     function arm(root) {
-      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
+      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
-          // the inspiration wall is already in place wherever it fills the first
-          // screen; only pieces further down slide in as you scroll
           void el.offsetWidth;
           el.style.transition = '';
           if (still) { el.classList.add('is-seen'); return; }
@@ -200,8 +208,6 @@
     }).observe(document.body, {childList: true, subtree: true});
   })();
 
-
-
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
@@ -246,9 +252,12 @@
           name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
           img: hero ? hero.getAttribute('src') : '', size: size
         });
-        toast.innerHTML = (hero ? '<img src="' + hero.getAttribute('src') + '" alt="">' : '') +
-          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + (size ? ' · Size ' + size : '') +
-          (price ? '<span class="price-note">' + price.textContent + '</span>' : '') + '</span>';
+        toast.textContent = '';
+        if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+        tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+        if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+        toast.appendChild(tx);
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
@@ -256,25 +265,23 @@
     });
   })();
 
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
     var menu = document.createElement('nav');
     menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.hidden = true;
     menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
-      '<a href="index.html">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
-      '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+      '<a href="index.html">Shop</a><a href="custom.html">Commission</a><a href="inspiration.html">Inspiration</a>' +
+      '<a href="story.html">Story</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
     document.body.appendChild(menu);
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
-    function set(on) { menu.hidden = !on; btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
+    function set(on) { menu.hidden = !on; [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; }); btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
     btn.addEventListener('click', function (e) { e.preventDefault(); set(true); });
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
-
-  // Arriving through the shop transition: skip the load-in so the drawer arrives already filled
-  addEventListener('pagereveal', function (e) {
-    if (!e.viewTransition) return;
-    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
-  });
 </script>

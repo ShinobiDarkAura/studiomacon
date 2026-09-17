@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Our Story | Studio Maçon</title>
-<link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613960">
+<link rel="icon" href="img/favicon.png">
+<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=1789614570">
 <style>
   .head .on-dark{color:#000}
-  .head .mark.on-dark img{filter:none}          /* Story keeps the nav black throughout */
-  .opening{display:grid;gap:40px;padding:calc(var(--head) + 48px) calc(var(--pad) + 12px) 0}
+  .opening{display:grid;gap:40px;padding:calc(var(--head) + 48px) calc(var(--pad) + 24px) 0}
   .opening .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
   .opening .intro p.lede{margin:0;max-width:391px}
   .opening .intro p.lede + p.lede{margin-top:1em}
@@ -29,11 +29,11 @@
   .steps{display:grid;grid-template-columns:1fr;gap:56px;max-width:1100px;margin:0 auto;padding:0 var(--pad)}
   .prose p{max-width:527px;margin-left:auto;margin-right:auto}          /* paragraphs 15% narrower than the column */
   .steps figure{margin:0;text-align:center}
-  @font-face{font-family:"Henry";src:url(fonts/henry-italic.otf) format("opentype");font-style:italic;font-weight:400;font-display:swap}
+  @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
   .step-name{margin:24px 0 0;font:italic 400 17pt/1.2 "Henry",var(--serif)}
   .steps .art{padding:10% 0 0;display:grid;place-items:end center;height:420px}          /* same box for all three, so the labels line up */
   .steps img{margin:0 auto;width:323px;max-width:100%}
-  .history{display:grid;gap:40px;padding:236px calc(var(--pad) + 12px) 0}
+  .history{display:grid;gap:40px;padding:236px calc(var(--pad) + 24px) 0}
   .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
   .history .intro p.lede{margin:0;max-width:391px}
   .history .intro p.lede + p.lede{margin-top:1em}
@@ -55,8 +55,9 @@
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
     <a href="index.html" class="desk hover-line">Shop</a>
-    <a href="custom.html" class="desk hover-line">Custom</a>
-    <a href="story.html" class="desk hover-line">About</a>
+    <a href="custom.html" class="desk hover-line">Commission</a>
+    <a href="inspiration.html" class="desk hover-line">Inspiration</a>
+    <a href="story.html" class="desk hover-line">Story</a>
   </div>
   <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
@@ -70,7 +71,7 @@
       <p class="lede">Maçon was founded by two creative and life partners, Alex and Hannah, whose work is inspired by ancient artifacts and the personal objects they cared for as children.</p>
       <p class="lede">Every piece is meant to be held: carried in a pocket, turned over in the palm, kept close. Like the talismans that inspired them, each one slowly takes on the story of whoever keeps it.</p>
     </div>
-    <figure class="hand"><img src="img/pages/hand-milo-original.png" alt="Illustration of a hand holding a small bronze piece"></figure>
+    <figure class="hand"><img width="873" height="694" src="img/pages/hand-milo-original.png.webp" alt="Illustration of a hand holding a small bronze piece"></figure>
   </section>
 
   <section class="section">
@@ -83,15 +84,15 @@
   </section>
 
   <div class="steps">
-    <figure><div class="art"><img src="img/pages/draw.png" alt="Illustration of sketching"></div></figure>
-    <figure><div class="art"><img src="img/pages/cast.png" alt="Illustration of casting"></div></figure>
-    <figure><div class="art"><img src="img/pages/polish.png" alt="Illustration of polishing"></div></figure>
+    <figure><div class="art"><img width="275" height="301" src="img/pages/draw.png.webp" alt="Illustration of sketching"></div></figure>
+    <figure><div class="art"><img width="259" height="286" src="img/pages/cast.png.webp" alt="Illustration of casting"></div></figure>
+    <figure><div class="art"><img width="259" height="305" src="img/pages/polish.png.webp" alt="Illustration of polishing"></div></figure>
   </div>
 
   <section class="history">
     <div class="childhood">
-      <figure><img src="img/pages/hannah-flat.jpg" alt="Hannah as a child, drawing"></figure>
-      <figure><img src="img/pages/alex-flat.jpg" alt="Alex as a child, drawing"></figure>
+      <figure><img width="1200" height="800" src="img/pages/hannah-flat.jpg.webp" alt="Hannah as a child, drawing"></figure>
+      <figure><img width="1200" height="800" src="img/pages/alex-flat.jpg.webp" alt="Alex as a child, drawing"></figure>
     </div>
     <div class="intro">
       <p class="eyebrow">Our History</p>
@@ -104,13 +105,13 @@
 
 <footer>
   <div class="brand">
-    <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
+    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
     <p class="fine">Artifacts of Love,<br>Made to Order.</p>
   </div>
   <div class="middle">
   <nav class="links">
-    <a class="hover-line" href="story.html">About</a>
-    <a class="hover-line" href="custom.html">Custom</a>
+    <a class="hover-line" href="story.html">Story</a>
+    <a class="hover-line" href="custom.html">Commission</a>
     <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
     <a class="hover-line" href="inspiration.html">Inspiration</a>
     <a class="hover-line" href="contact.html">Contact</a>
@@ -155,7 +156,12 @@
       var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
     }
 
+    var lumas = new WeakMap();
     function bgLuma(el) {                  // first painted background up the tree, else the white page
+      if (el && lumas.has(el)) return lumas.get(el);
+      var v = paintedLuma(el); if (el) lumas.set(el, v); return v;
+    }
+    function paintedLuma(el) {
       for (; el && el !== document.documentElement; el = el.parentElement) {
         var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
         if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
@@ -169,7 +175,7 @@
         var el = stack[i];
         if (el.closest('.head')) continue;
         if (el.tagName === 'VIDEO') return 0;
-        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them          // film: always read as dark, so the nav is white
+        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
@@ -196,9 +202,11 @@
       return 1;
     }
 
-    var queued = false, held = null, head = document.querySelector('.head');
-    function tone() {
+    var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
+    function tone(force) {
       queued = false;
+      if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
+      lastY = scrollY;
       // the whole nav is one unit: read under each part, then colour every part the same
       var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
       var grid = null;
@@ -225,10 +233,11 @@
       parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
     }
     function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
-    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', soon);
-    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', function () { held = null; soon(); }); });
-    addEventListener('load', function () { held = null; soon(); });
-    tone();
+    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
+    function fresh() { held = null; lastY = -99; soon(); }
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
+    addEventListener('load', fresh);
+    tone(true);
   })();
 
   // Emerge: every image and text block starts hidden and settles into place the
@@ -240,7 +249,9 @@
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
     // side-by-side groups cascade instead of arriving at once
     var GROUPS = ['.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
-    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // coming back (Back button or history) the page simply reappears as it was, with no entrance
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
@@ -259,14 +270,12 @@
     }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
 
     function arm(root) {
-      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
+      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
-          // the inspiration wall is already in place wherever it fills the first
-          // screen; only pieces further down slide in as you scroll
           void el.offsetWidth;
           el.style.transition = '';
           if (still) { el.classList.add('is-seen'); return; }
@@ -326,8 +335,6 @@
     }).observe(document.body, {childList: true, subtree: true});
   })();
 
-
-
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
@@ -372,9 +379,12 @@
           name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
           img: hero ? hero.getAttribute('src') : '', size: size
         });
-        toast.innerHTML = (hero ? '<img src="' + hero.getAttribute('src') + '" alt="">' : '') +
-          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + (size ? ' · Size ' + size : '') +
-          (price ? '<span class="price-note">' + price.textContent + '</span>' : '') + '</span>';
+        toast.textContent = '';
+        if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+        tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+        if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+        toast.appendChild(tx);
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
@@ -382,27 +392,25 @@
     });
   })();
 
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
     var menu = document.createElement('nav');
     menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.hidden = true;
     menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
-      '<a href="index.html">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
-      '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+      '<a href="index.html">Shop</a><a href="custom.html">Commission</a><a href="inspiration.html">Inspiration</a>' +
+      '<a href="story.html">Story</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
     document.body.appendChild(menu);
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
-    function set(on) { menu.hidden = !on; btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
+    function set(on) { menu.hidden = !on; [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; }); btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
     btn.addEventListener('click', function (e) { e.preventDefault(); set(true); });
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
-
-  // Arriving through the shop transition: skip the load-in so the drawer arrives already filled
-  addEventListener('pagereveal', function (e) {
-    if (!e.viewTransition) return;
-    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
-  });
 </script>
 </body>
 </html>

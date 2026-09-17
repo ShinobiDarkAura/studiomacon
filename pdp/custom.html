@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Commission a Totem | Studio Maçon</title>
-<link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789613960">
+<title>Commission | Studio Maçon</title>
+<link rel="icon" href="img/favicon.png">
+<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=1789614570">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
-  .examples{columns:2;column-gap:10px;padding:calc(var(--head) + 24px) calc(var(--pad) + 12px) 0}
+  .examples{columns:2;column-gap:10px;padding:calc(var(--head) + 24px) calc(var(--pad) + 24px) 0}
   .examples figure{margin:0 0 10px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
   .examples img{display:block;width:100%;height:auto}
   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
@@ -29,7 +30,7 @@
   .examples .over .name{font:400 calc(49.5px - 8pt)/.95 var(--serif);text-transform:uppercase;letter-spacing:.01em}
   .examples figure:hover .over{opacity:1;transform:none}
   .examples figure.unlabelled .over{display:none}
-  @media (hover:none){ .examples .over{opacity:1;transform:none} }
+  @media (hover:none),(max-width:767px){ .examples .over{opacity:1;transform:none} }
 
   /* ── edit mode ───────────────────────────────────────── */
   body.editing .examples figure{cursor:pointer;transition:none!important;opacity:1!important;filter:none!important;transform:none!important}
@@ -61,10 +62,9 @@
   .ed .msg{margin:8px 0 0;font-size:12px}
   .ed-toggle{position:fixed;left:16px;bottom:16px;z-index:49;padding:7px 11px;background:#fff;border:1px solid rgba(0,0,0,.3);font-size:12px}
   body.editing .ed-toggle,body:not(.can-edit) .ed-toggle{display:none}
-  .order{padding:48px calc(var(--pad) + 12px) 0}
+  .order{padding:48px calc(var(--pad) + 24px) 0}
 
   .head .on-dark{color:#000}
-  .head .mark.on-dark img{filter:none}
   .examples .lead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .examples .lead{aspect-ratio:4/5;border-radius:0;background:#e9e1cf}
   .kept{font-size:46px;white-space:normal}
@@ -104,11 +104,11 @@
   .step .acc-body{font-size:15px}
 
   .q{margin:0 0 26px}
-  .q > .label{display:block;margin:0 0 12px;font-size:calc(17px - 4pt);color:#000}
+  .q > .label{display:block;margin:0 0 12px;color:#000}
   .q .req{color:#c8321e;font-size:calc(1em + 2pt);line-height:0}
   .hint{margin:-6px 0 12px;font-size:14px;color:rgba(0,0,0,.55)}
   .label-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin:0 0 12px}
-  .label-row .label{margin:0;font-size:calc(17px - 4pt);color:#000}
+  .label-row .label{margin:0;color:#000}
   .hint-side{font-size:13px;color:rgba(0,0,0,.5);text-align:right}
 
   .choices{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -166,7 +166,7 @@
 
   @media (min-width:768px){
     .commission{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;align-items:start;
-      padding-right:calc(var(--pad) + 12px)}
+      padding-right:calc(var(--pad) + 24px)}
     .examples{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;padding:0}
     .examples .lead{grid-column:1/-1;aspect-ratio:auto;height:100vh;border-radius:0}
     .examples figure{margin:0}
@@ -184,8 +184,9 @@
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
     <a href="index.html" class="desk hover-line">Shop</a>
-    <a href="custom.html" class="desk hover-line">Custom</a>
-    <a href="story.html" class="desk hover-line">About</a>
+    <a href="custom.html" class="desk hover-line">Commission</a>
+    <a href="inspiration.html" class="desk hover-line">Inspiration</a>
+    <a href="story.html" class="desk hover-line">Story</a>
   </div>
   <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
@@ -193,29 +194,29 @@
 
 <main class="commission">
   <section class="examples wall" aria-label="Past commissions" style="--frame:1/1">
-    <figure class="lead" data-lead><img src="img/commissions-cut/hero-band.jpg" alt="A gold band carved with a spiral, a custom commission" fetchpriority="high"></figure>
-    <figure class="cutout" data-name="02.png" style="--s:0.7;--x:0.0;--y:0.0"><img src="img/commissions-cut/02.png" width="546" height="217" alt="Split Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Split Band</span></span></figure>
-    <figure class="cutout" data-name="04.png" style="--s:0.6;--x:0.0;--y:0.0"><img src="img/commissions-cut/04.png" width="1025" height="593" alt="Faceted Gold Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Faceted Gold Band</span></span></figure>
-    <figure class="cutout" data-name="15.png" style="--s:0.58;--x:0.0;--y:0.0"><img src="img/commissions-cut/15.png" width="1023" height="633" alt="Birth Band II" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Birth Band II</span></span></figure>
-    <figure class="cutout" data-name="20.png" style="--s:0.74;--x:0.0;--y:0.0"><img src="img/commissions-cut/20.png" width="781" height="249" alt="Aaron&#x27;s Wedding Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Aaron&#x27;s Wedding Band</span></span></figure>
-    <figure class="cutout" data-name="added-1789609019-custom-totem-01.png" style="--s:0.85;--x:0.0;--y:0.0"><img src="img/commissions-cut/added-1789609019-custom-totem-01.png" width="728" height="825" alt="Border Collie" loading="eager" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie</span></span></figure>
-    <figure class="cutout" data-name="added-1789609020-custom-totem-02.png" style="--s:0.88;--x:0.0;--y:0.0"><img src="img/commissions-cut/added-1789609020-custom-totem-02.png" width="720" height="880" alt="Border Collie" loading="eager" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie</span></span></figure>
-    <figure class="cutout" data-name="added-1789609021-custom-totem-03.png" style="--s:0.73;--x:2.0;--y:-17.0"><img src="img/commissions-cut/added-1789609021-custom-totem-03.png" width="445" height="774" alt="Grey Wolf" loading="eager" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Grey Wolf</span></span></figure>
-    <figure class="cutout" data-name="added-1789609021-custom-totem-04.png" style="--s:0.89;--x:2.0;--y:-5.0"><img src="img/commissions-cut/added-1789609021-custom-totem-04.png" width="697" height="1039" alt="Red Fox, Seated" loading="eager" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Red Fox, Seated</span></span></figure>
-    <figure class="cutout" data-name="added-1789609023-custom-totem-07.png" style="--s:0.74;--x:-4.0;--y:-3.0"><img src="img/commissions-cut/added-1789609023-custom-totem-07.png" width="1080" height="757" alt="Prowling Fox" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Prowling Fox</span></span></figure>
-    <figure class="cutout" data-name="added-1789609024-custom-totem-08.png" style="--s:0.75;--x:1.0;--y:-4.0"><img src="img/commissions-cut/added-1789609024-custom-totem-08.png" width="1088" height="745" alt="Prowling Fox" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Prowling Fox</span></span></figure>
-    <figure class="cutout" data-name="17.png" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/17.png" width="512" height="162" alt="Cheetah" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Cheetah</span></span></figure>
-    <figure class="cutout" data-name="00.png" style="--s:0.76;--x:0.0;--y:1.0"><img src="img/commissions-cut/00.png" width="1008" height="1100" alt="Shiba Inu" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Shiba Inu</span></span></figure>
-    <figure class="cutout" data-name="18.png" style="--s:0.93;--x:0.0;--y:-5.0"><img src="img/commissions-cut/18.png" width="1100" height="669" alt="Orca" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Orca</span></span></figure>
-    <figure class="cutout" data-name="05.png" style="--s:0.94;--x:0.0;--y:-6.0"><img src="img/commissions-cut/05.png" width="738" height="1100" alt="Arctic Tern" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Arctic Tern</span></span></figure>
-    <figure class="cutout" data-name="01.png" style="--s:0.77;--x:0.0;--y:-2.0"><img src="img/commissions-cut/01.png" width="630" height="861" alt="Westie" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Westie</span></span></figure>
-    <figure class="cutout" data-name="06.png" style="--s:0.77;--x:8.0;--y:0.0"><img src="img/commissions-cut/06.png" width="1100" height="1042" alt="Resting Raven" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Resting Raven</span></span></figure>
-    <figure class="cutout" data-name="21.png" style="--s:1.89;--x:8.0;--y:9.0"><img src="img/commissions-cut/21.png" width="642" height="780" alt="Mountain Wolf" loading="lazy" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Mountain Wolf</span></span></figure>
-    <figure class="cutout" data-name="13.png" style="--s:0.84;--x:0.0;--y:0.0"><img src="img/commissions-cut/13.png" width="1100" height="491" alt="Seal on the Rocks" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Seal on the Rocks</span></span></figure>
-    <figure class="cutout" data-name="09.png" style="--s:0.62;--x:0.0;--y:0.0"><img src="img/commissions-cut/09.png" width="655" height="451" alt="Kingfisher Ring" loading="lazy" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Kingfisher Ring</span></span></figure>
-    <figure class="photo" data-name="chess-2.jpg" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/chess-2.jpg" width="1400" height="938" alt="Frog Chess Set" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Frog Chess Set</span></span></figure>
-    <figure class="photo" data-name="added-1789609022-custom-totem-05.jpg" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/added-1789609022-custom-totem-05.jpg" width="1400" height="931" alt="Woodland Chess Set" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Woodland Chess Set</span></span></figure>
-    <figure class="photo" data-name="chess-1.jpg" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/chess-1.jpg" width="1400" height="944" alt="Frog Chess Set" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Frog Chess Set</span></span></figure>
+    <figure class="lead" data-lead><img width="2200" height="2247" src="img/commissions-cut/hero-band.jpg.webp" alt="A gold band carved with a spiral, a custom commission" fetchpriority="high"></figure>
+    <figure class="cutout" data-name="02.png" style="--s:0.7;--x:0.0;--y:0.0"><img src="img/commissions-cut/02.png.webp" width="546" height="217" alt="Split Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Split Band</span></span></figure>
+    <figure class="cutout" data-name="04.png" style="--s:0.6;--x:0.0;--y:0.0"><img src="img/commissions-cut/04.png.webp" width="1025" height="593" alt="Faceted Gold Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Faceted Gold Band</span></span></figure>
+    <figure class="cutout" data-name="15.png" style="--s:0.58;--x:0.0;--y:0.0"><img src="img/commissions-cut/15.png.webp" width="1023" height="633" alt="Birth Band II" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Birth Band II</span></span></figure>
+    <figure class="cutout" data-name="20.png" style="--s:0.74;--x:0.0;--y:0.0"><img src="img/commissions-cut/20.png.webp" width="781" height="249" alt="Aaron&#x27;s Wedding Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Aaron&#x27;s Wedding Band</span></span></figure>
+    <figure class="cutout" data-name="added-1789609019-custom-totem-01.png" style="--s:0.85;--x:0.0;--y:0.0"><img src="img/commissions-cut/added-1789609019-custom-totem-01.png.webp" width="728" height="825" alt="Border Collie" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie</span></span></figure>
+    <figure class="cutout" data-name="added-1789609020-custom-totem-02.png" style="--s:0.88;--x:0.0;--y:0.0"><img src="img/commissions-cut/added-1789609020-custom-totem-02.png.webp" width="720" height="880" alt="Border Collie" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie</span></span></figure>
+    <figure class="cutout" data-name="added-1789609021-custom-totem-03.png" style="--s:0.73;--x:2.0;--y:-17.0"><img src="img/commissions-cut/added-1789609021-custom-totem-03.png.webp" width="445" height="774" alt="Grey Wolf" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Grey Wolf</span></span></figure>
+    <figure class="cutout" data-name="added-1789609021-custom-totem-04.png" style="--s:0.89;--x:2.0;--y:-5.0"><img src="img/commissions-cut/added-1789609021-custom-totem-04.png.webp" width="697" height="1039" alt="Red Fox, Seated" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Red Fox, Seated</span></span></figure>
+    <figure class="cutout" data-name="added-1789609023-custom-totem-07.png" style="--s:0.74;--x:-4.0;--y:-3.0"><img src="img/commissions-cut/added-1789609023-custom-totem-07.png.webp" width="1080" height="757" alt="Prowling Fox" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Prowling Fox</span></span></figure>
+    <figure class="cutout" data-name="added-1789609024-custom-totem-08.png" style="--s:0.75;--x:1.0;--y:-4.0"><img src="img/commissions-cut/added-1789609024-custom-totem-08.png.webp" width="1088" height="745" alt="Prowling Fox" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Prowling Fox</span></span></figure>
+    <figure class="cutout" data-name="17.png" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/17.png.webp" width="512" height="162" alt="Cheetah" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Cheetah</span></span></figure>
+    <figure class="cutout" data-name="00.png" style="--s:0.76;--x:0.0;--y:1.0"><img src="img/commissions-cut/00.png.webp" width="1008" height="1100" alt="Shiba Inu" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Shiba Inu</span></span></figure>
+    <figure class="cutout" data-name="18.png" style="--s:0.93;--x:0.0;--y:-5.0"><img src="img/commissions-cut/18.png.webp" width="1100" height="669" alt="Orca" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Orca</span></span></figure>
+    <figure class="cutout" data-name="05.png" style="--s:0.94;--x:0.0;--y:-6.0"><img src="img/commissions-cut/05.png.webp" width="738" height="1100" alt="Arctic Tern" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Arctic Tern</span></span></figure>
+    <figure class="cutout" data-name="01.png" style="--s:0.77;--x:0.0;--y:-2.0"><img src="img/commissions-cut/01.png.webp" width="630" height="861" alt="Westie" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Westie</span></span></figure>
+    <figure class="cutout" data-name="06.png" style="--s:0.77;--x:8.0;--y:0.0"><img src="img/commissions-cut/06.png.webp" width="1100" height="1042" alt="Resting Raven" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Resting Raven</span></span></figure>
+    <figure class="cutout" data-name="21.png" style="--s:1.89;--x:8.0;--y:9.0"><img src="img/commissions-cut/21.png.webp" width="642" height="780" alt="Mountain Wolf" loading="lazy" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Mountain Wolf</span></span></figure>
+    <figure class="cutout" data-name="13.png" style="--s:0.84;--x:0.0;--y:0.0"><img src="img/commissions-cut/13.png.webp" width="1100" height="491" alt="Seal on the Rocks" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Seal on the Rocks</span></span></figure>
+    <figure class="cutout" data-name="09.png" style="--s:0.62;--x:0.0;--y:0.0"><img src="img/commissions-cut/09.png.webp" width="655" height="451" alt="Kingfisher Ring" loading="lazy" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Kingfisher Ring</span></span></figure>
+    <figure class="photo" data-name="chess-2.jpg" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/chess-2.jpg.webp" width="1400" height="938" alt="Frog Chess Set" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Frog Chess Set</span></span></figure>
+    <figure class="photo" data-name="added-1789609022-custom-totem-05.jpg" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/added-1789609022-custom-totem-05.jpg.webp" width="1400" height="931" alt="Woodland Chess Set" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Woodland Chess Set</span></span></figure>
+    <figure class="photo" data-name="chess-1.jpg" style="--s:1.0;--x:0.0;--y:0.0"><img src="img/commissions-cut/chess-1.jpg.webp" width="1400" height="944" alt="Frog Chess Set" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Frog Chess Set</span></span></figure>
   </section>
 
   <section class="order" aria-label="Commission a piece">
@@ -340,7 +341,7 @@
               <button type="button" class="next" data-pay>Pay Deposit</button>
               <button type="button" class="apple-pay" data-pay aria-label="Pay deposit with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
             </div>
-            <p class="fine-print">Your deposit reserves a place in the studio and begins the sketch. <span class="todo">Refund terms to confirm</span>.</p>
+            <p class="fine-print">Your deposit reserves a place in the studio and begins the sketch.</p>
           </div>
           <div class="for-jewelry" hidden>
             <p class="fine-print" style="margin:0 0 18px">Every jewelry commission is priced after a short consultation. We will write back within a few days with a sketch direction and a quote; the 25% deposit is only taken once you approve it.</p>
@@ -354,13 +355,13 @@
 
 <footer>
   <div class="brand">
-    <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
+    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
     <p class="fine">Artifacts of Love,<br>Made to Order.</p>
   </div>
   <div class="middle">
   <nav class="links">
-    <a class="hover-line" href="story.html">About</a>
-    <a class="hover-line" href="custom.html">Custom</a>
+    <a class="hover-line" href="story.html">Story</a>
+    <a class="hover-line" href="custom.html">Commission</a>
     <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
     <a class="hover-line" href="inspiration.html">Inspiration</a>
     <a class="hover-line" href="contact.html">Contact</a>
@@ -439,7 +440,12 @@
       var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
     }
 
+    var lumas = new WeakMap();
     function bgLuma(el) {                  // first painted background up the tree, else the white page
+      if (el && lumas.has(el)) return lumas.get(el);
+      var v = paintedLuma(el); if (el) lumas.set(el, v); return v;
+    }
+    function paintedLuma(el) {
       for (; el && el !== document.documentElement; el = el.parentElement) {
         var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
         if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
@@ -453,7 +459,7 @@
         var el = stack[i];
         if (el.closest('.head')) continue;
         if (el.tagName === 'VIDEO') return 0;
-        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them          // film: always read as dark, so the nav is white
+        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
@@ -480,9 +486,11 @@
       return 1;
     }
 
-    var queued = false, held = null, head = document.querySelector('.head');
-    function tone() {
+    var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
+    function tone(force) {
       queued = false;
+      if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
+      lastY = scrollY;
       // the whole nav is one unit: read under each part, then colour every part the same
       var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
       var grid = null;
@@ -509,10 +517,11 @@
       parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
     }
     function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
-    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', soon);
-    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', function () { held = null; soon(); }); });
-    addEventListener('load', function () { held = null; soon(); });
-    tone();
+    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
+    function fresh() { held = null; lastY = -99; soon(); }
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
+    addEventListener('load', fresh);
+    tone(true);
   })();
 
   // Emerge: every image and text block starts hidden and settles into place the
@@ -524,7 +533,9 @@
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
     // side-by-side groups cascade instead of arriving at once
     var GROUPS = ['.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
-    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // coming back (Back button or history) the page simply reappears as it was, with no entrance
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
@@ -543,14 +554,12 @@
     }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
 
     function arm(root) {
-      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
+      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
-          // the inspiration wall is already in place wherever it fills the first
-          // screen; only pieces further down slide in as you scroll
           void el.offsetWidth;
           el.style.transition = '';
           if (still) { el.classList.add('is-seen'); return; }
@@ -610,8 +619,6 @@
     }).observe(document.body, {childList: true, subtree: true});
   })();
 
-
-
   // Bag: the pieces live in localStorage so the bag, checkout and every page agree
   window.MaconBag = (function () {
     var KEY = 'macon-bag-items';
@@ -656,9 +663,12 @@
           name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
           img: hero ? hero.getAttribute('src') : '', size: size
         });
-        toast.innerHTML = (hero ? '<img src="' + hero.getAttribute('src') + '" alt="">' : '') +
-          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + (size ? ' · Size ' + size : '') +
-          (price ? '<span class="price-note">' + price.textContent + '</span>' : '') + '</span>';
+        toast.textContent = '';
+        if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+        tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+        if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+        toast.appendChild(tx);
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
@@ -666,27 +676,25 @@
     });
   })();
 
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
     var menu = document.createElement('nav');
     menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.hidden = true;
     menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
-      '<a href="index.html">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
-      '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+      '<a href="index.html">Shop</a><a href="custom.html">Commission</a><a href="inspiration.html">Inspiration</a>' +
+      '<a href="story.html">Story</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
     document.body.appendChild(menu);
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
-    function set(on) { menu.hidden = !on; btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
+    function set(on) { menu.hidden = !on; [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; }); btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
     btn.addEventListener('click', function (e) { e.preventDefault(); set(true); });
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
-
-  // Arriving through the shop transition: skip the load-in so the drawer arrives already filled
-  addEventListener('pagereveal', function (e) {
-    if (!e.viewTransition) return;
-    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
-  });
 </script>
 <script>
   // Commission steps. The shared accordion script toggles any .acc-head, so this

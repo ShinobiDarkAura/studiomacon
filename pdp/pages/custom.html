@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Commission a Totem | Studio Maçon</title>
-<link rel="icon" href="../assets/favicon.png">
+<title>Commission | Studio Maçon</title>
+<link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
-  .examples{columns:2;column-gap:10px;padding:calc(var(--head) + 24px) calc(var(--pad) + 12px) 0}
+  .examples{columns:2;column-gap:10px;padding:calc(var(--head) + 24px) calc(var(--pad) + 24px) 0}
   .examples figure{margin:0 0 10px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
   .examples img{display:block;width:100%;height:auto}
   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
@@ -29,7 +29,7 @@
   .examples .over .name{font:400 calc(49.5px - 8pt)/.95 var(--serif);text-transform:uppercase;letter-spacing:.01em}
   .examples figure:hover .over{opacity:1;transform:none}
   .examples figure.unlabelled .over{display:none}
-  @media (hover:none){ .examples .over{opacity:1;transform:none} }
+  @media (hover:none),(max-width:767px){ .examples .over{opacity:1;transform:none} }
 
   /* ── edit mode ───────────────────────────────────────── */
   body.editing .examples figure{cursor:pointer;transition:none!important;opacity:1!important;filter:none!important;transform:none!important}
@@ -61,10 +61,9 @@
   .ed .msg{margin:8px 0 0;font-size:12px}
   .ed-toggle{position:fixed;left:16px;bottom:16px;z-index:49;padding:7px 11px;background:#fff;border:1px solid rgba(0,0,0,.3);font-size:12px}
   body.editing .ed-toggle,body:not(.can-edit) .ed-toggle{display:none}
-  .order{padding:48px calc(var(--pad) + 12px) 0}
+  .order{padding:48px calc(var(--pad) + 24px) 0}
 
   .head .on-dark{color:#000}
-  .head .mark.on-dark img{filter:none}
   .examples .lead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .examples .lead{aspect-ratio:4/5;border-radius:0;background:#e9e1cf}
   .kept{font-size:46px;white-space:normal}
@@ -104,11 +103,11 @@
   .step .acc-body{font-size:15px}
 
   .q{margin:0 0 26px}
-  .q > .label{display:block;margin:0 0 12px;font-size:calc(17px - 4pt);color:#000}
+  .q > .label{display:block;margin:0 0 12px;color:#000}
   .q .req{color:#c8321e;font-size:calc(1em + 2pt);line-height:0}
   .hint{margin:-6px 0 12px;font-size:14px;color:rgba(0,0,0,.55)}
   .label-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin:0 0 12px}
-  .label-row .label{margin:0;font-size:calc(17px - 4pt);color:#000}
+  .label-row .label{margin:0;color:#000}
   .hint-side{font-size:13px;color:rgba(0,0,0,.5);text-align:right}
 
   .choices{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -166,7 +165,7 @@
 
   @media (min-width:768px){
     .commission{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;align-items:start;
-      padding-right:calc(var(--pad) + 12px)}
+      padding-right:calc(var(--pad) + 24px)}
     .examples{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;padding:0}
     .examples .lead{grid-column:1/-1;aspect-ratio:auto;height:100vh;border-radius:0}
     .examples figure{margin:0}
@@ -309,7 +308,7 @@
               <button type="button" class="next" data-pay>Pay Deposit</button>
               <button type="button" class="apple-pay" data-pay aria-label="Pay deposit with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
             </div>
-            <p class="fine-print">Your deposit reserves a place in the studio and begins the sketch. <span class="todo">Refund terms to confirm</span>.</p>
+            <p class="fine-print">Your deposit reserves a place in the studio and begins the sketch.</p>
           </div>
           <div class="for-jewelry" hidden>
             <p class="fine-print" style="margin:0 0 18px">Every jewelry commission is priced after a short consultation. We will write back within a few days with a sketch direction and a quote; the 25% deposit is only taken once you approve it.</p>

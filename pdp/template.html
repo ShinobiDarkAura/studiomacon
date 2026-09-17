@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{{TITLE}} | Studio Maçon</title>
-<link rel="icon" href="../assets/favicon.png">
+<link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <style>
   /* ── product ───────────────────────────────────────── */
@@ -14,6 +14,8 @@
 
   .info{padding:28px var(--pad) 0;text-align:center}
   .price{font-size:19px;margin:0 0 18px}
+  .back{align-self:flex-start;display:inline-block;margin:0 0 28px;font-size:13px;color:rgba(0,0,0,.4)}
+  .back:hover{color:#000}
   /* ring size: the whole bordered block is the control; sizes open beneath it */
   .size{position:relative;margin:0 0 12px;border:1px solid var(--rule);text-align:left}
   .size-toggle{display:flex;align-items:center;gap:16px;width:100%;height:52px;padding:0 20px 0 16px;cursor:pointer}
@@ -45,7 +47,6 @@
   .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
   .buy{margin:0 0 42px}          /* buttons follow the description */
   .desc-block .label{margin:0 0 22px}
-  .desc-block .label{font-size:calc(17px - 3pt);letter-spacing:.14em}          /* matches the accordion titles, as on the early Custom page */
   .desc{margin:0;font-size:17px;line-height:1.55}
 
   /* ── closing: big stacked images, two centred chunks ─ */
@@ -65,11 +66,12 @@
 
   @media (min-width:768px){
     .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
-      margin:0 calc(var(--pad) + 12px) 0 0;align-items:start}
-    .gallery figure + figure{display:block;margin-top:12px}
+      margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
+    .gallery figure + figure{display:block;margin-top:12px;border-radius:6px;overflow:hidden}
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
-    .gallery figure img,.gallery .hero img,.gallery figure + figure img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
+    .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
+    .gallery figure + figure img{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
@@ -97,6 +99,7 @@
     </div>
 
     <div class="info">
+      <a class="back hover-line" href="index.html">← Back to Shop</a>
       <p class="eyebrow">{{EYEBROW}}</p>
       <h1>{{TITLE}}</h1>
       <p class="price">{{PRICE}}</p>
@@ -143,6 +146,10 @@
 <script>
   // The bag bar appears once the real button has scrolled away, and steps
   // aside at the footer so it never covers the newsletter.
+  // Back to Shop returns to the same spot on the shop wall when that is where the visit came from
+  document.querySelector('.info .back').addEventListener('click', function (e) {
+    if (/\/(index\.html)?$/.test(document.referrer.split('?')[0]) && history.length > 1) { e.preventDefault(); history.back(); }
+  });
   (function () {
     var dock = document.getElementById('dock'), gone = false, foot = false; dock.inert = true;
     function sync() { dock.classList.toggle('on', gone && !foot); dock.inert = !(gone && !foot); }

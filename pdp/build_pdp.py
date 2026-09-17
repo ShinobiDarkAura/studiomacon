@@ -8,12 +8,12 @@ export (the mythic lore line), and the port's notes (materials, dimensions).
 Photographs come from Pieces Master in ~/Downloads and are copied into
 pdp/img/<slug>/ so the preview never reaches outside the repo.
 """
-import html, json, os, re, shutil
+import html, json, os, re
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "pdp")
-MASTER = os.path.expanduser("~/Downloads/Maçon/Pieces Master")
+MASTER = os.path.expanduser(os.environ.get("MACON_PIECES", "~/Downloads/Maçon/Pieces Master"))
 
 EYEBROW = {
     "pip": "Tiny Keeper of Tenderness",
@@ -39,24 +39,24 @@ EYEBROW = {
 # The description under the price. Third person throughout, in the Kindred
 # Black manner: the object, its material and making, then its lore.
 DESC = {
-    "pip": "A small bearer of comfort, cast in solid bronze with an ombré patina. Its form recalls something half-remembered from an old family shelf. Proximity induces unexpected calm; scholars remain blissfully baffled. Its patina is built up slowly by hand and deepens wherever the thumb rests.",
-    "rebi": "A small form of solid bronze, finished with an ombré patina. Its outline changes with the light and reads differently from every side. Handling is known to heighten the reflexes; owners report catching things before they fall. Each shifting plane is refined by hand after casting.",
-    "ren": "A keeper of lost trails, cast in solid bronze. Its form recalls a painted toy from a Swedish shelf. Dawn light is known to linger on its bright crest; hikers report arriving home earlier than expected. The crest is polished bright by hand while the body is left to darken.",
-    "zuma": "A dune-born presence in solid bronze, small enough for a coat pocket. Its form was drawn alongside its namesake ring. Ancient runes suggest a sacred link between the two; kept apart, both are said to grow restless. Its sun-worn surface is filed and patinated by hand.",
-    "ori": "A faithful protector of woods and streams, cast in solid bronze. Its form is broad, round-shouldered and quiet. A subtle warmth radiates from it each winter solstice; keepers report fewer drafts. Its broad planes are smoothed and patinated slowly by hand.",
-    "yael": "A poised figure of solid bronze, standing at the edge of foresight. Its form recalls the narrow ledges of high mountains. Altar bells are known to resonate in its presence; neighbors report faint chimes at dusk. Its fine upper curves are refined patiently by hand after casting.",
-    "zuma-ring": "A band of dune-born magic, cast in sterling silver. Its form repeats the shoulder line of the Zuma totem. Unearthed glyphs show evidence of rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand after casting.",
-    "milo": "A traveler seeking home, cast in solid bronze with an ombré patina. Its form was the first made to embody the Maçon mark. Its surface adapts to whoever holds it; the bond deepens with every season. Each Milo is worked by hand until its surface turns quiet.",
-    "eclipse-ring": "Two asymmetric ovals, cast in sterling silver. Its form holds both shapes at the exact distance where they stop competing. The space between is said to hold questions only stars can answer; astronomers decline to comment. Each ring is balanced and polished by hand after casting.",
-    "sietch-aperture": "A ring recovered from the wake of a passing comet, cast in sterling silver. Its form recalls a hidden refuge deep in the desert. Its opening reveals landscapes that appear on no map; cartographers have stopped asking. The aperture is polished by hand from the inside out.",
-    "lunar-canyon-ring": "A sundered artifact from a far-off world, cast in sterling silver. Its form recalls a canyon of white folded stone. Social gatherings ebb and flow with the wearer's presence; hosts plan accordingly. Every fold is brought to a soft polish by hand.",
-    "eleph": "A heavy stillness held mid-exhale, finished with an ombré patina. Its form recalls something large at rest in tall grass. A low, distant call has been reported by independent observers, always just out of sight. Each Eleph is cast on request and finished entirely by hand.",
-    "wonderhorn-talisman": "A spiral resonator in sterling silver, worn on a thirty inch chain. Its form recalls the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment vibrates sympathetically. Its inner curl is filed and polished slowly by hand.",
-    "macon-cap": "A tasteful cap adorned with a mystic symbol. Its front carries the Maçon mark. It offers a little shade on bright days; wearers report being asked where they found it. Each cap is checked by hand before it ships.",
-    "ibi": "A timeless sentinel believed to guard ancestral secrets, cast in solid bronze. Its form keeps a long and patient watch. Attempts to transmit its likeness are met with lens fog; photographers blame the weather. Each Ibi is cast on request and patinated by hand.",
-    "ear-cuff": "An ear cuff of flawless lines, cast in sterling silver. Its form recalls the rim of a volcanic caldera. Light fractures into otherworldly spectra across its mirrored edge; no piercing is required. Its edge is polished and shaped by hand to hold the ear securely.",
-    "starshipkey-pendant": "An elegant instrument from beyond the sky, cast in sterling silver and worn on a thirty inch chain. Its form recalls a chrome starship. Prolonged exposure is known to cause wanderlust; researchers studying it take long sabbaticals abroad. Its hyper-reflective hull is polished meticulously by hand after casting.",
-    "meridian-egg-ring": "A ring of improbable density, cast in sterling silver. Its form recalls a smooth and weighted egg. Its weight exceeds every material expectation; metaphysical analysis detects an abyss gazing back. Each ring is hand polished and sized to order.",
+    "pip": "Solid bronze, small enough to vanish into a closed fist, with an ombré patina. Proximity induces unexpected calm; scholars remain blissfully baffled. The patina is built up slowly by hand and deepens wherever the thumb rests.",
+    "rebi": "Solid bronze with an ombré patina, and a different outline from every side of the room. Handling is known to sharpen the reflexes; owners report catching things before they fall. Each plane is refined by hand after casting.",
+    "ren": "Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. Dawn light lingers on it longer than it should; hikers report arriving home early. The crest is polished by hand while the body is left to darken.",
+    "zuma": "Pocket-sized solid bronze, drawn at the same table as its namesake ring. Ancient runes suggest the two belong together; kept apart, both grow restless. Its sun-worn surface is filed and patinated by hand.",
+    "ori": "Broad, round-shouldered solid bronze that sits heavy and quiet in the palm. Each winter solstice it gives off a faint warmth; keepers report fewer drafts. Its wide planes are smoothed and patinated slowly by hand.",
+    "yael": "Slender solid bronze, balanced on the narrowest of footings. Altar bells resonate in its presence; neighbors report faint chimes at dusk. Its fine upper curves are refined patiently by hand after casting.",
+    "zuma-ring": "Sterling silver carrying the shoulder line of the Zuma totem around the finger. Unearthed glyphs record rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand.",
+    "milo": "The first piece made to carry the Maçon mark, in solid bronze with an ombré patina. Its surface adapts to whoever holds it; the bond deepens every season. Each Milo is worked by hand until its surface turns quiet.",
+    "eclipse-ring": "Two uneven ovals in sterling silver, set at the exact distance where they stop competing. The gap between them is said to hold questions only stars can answer; astronomers decline to comment. Balanced and polished by hand.",
+    "sietch-aperture": "Sterling silver with a single opening, recovered from the wake of a passing comet. Through it appear landscapes found on no map; cartographers have stopped asking. The opening is polished by hand from the inside out.",
+    "lunar-canyon-ring": "Sterling silver folded like white stone after a long dry season. Social gatherings ebb and flow around the wearer; hosts plan accordingly. Every fold is brought to a soft polish by hand.",
+    "eleph": "Heavy and rounded, with an ombré patina, caught halfway through a long exhale. A low, distant call has been reported by independent observers, always just out of sight. Cast on request and finished entirely by hand.",
+    "wonderhorn-talisman": "A silver spiral on a thirty inch chain, after the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment hums along. Its inner curl is filed and polished by hand.",
+    "macon-cap": "A cotton cap with the Maçon mark stitched on the front. It offers a little shade on bright days; wearers report being asked where they found it. Each cap is checked by hand before it ships.",
+    "ibi": "Tall, still solid bronze with a long and patient posture. Attempts to photograph it end in lens fog; photographers blame the weather. Cast on request and patinated by hand.",
+    "ear-cuff": "A clean silver line that rests on the ear, no piercing required. Light breaks into odd colours across its mirrored edge. Shaped and polished by hand to hold securely.",
+    "starshipkey-pendant": "Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad. Its hull is polished meticulously by hand.",
+    "meridian-egg-ring": "Smooth sterling silver, far denser than it looks. Metaphysical analysis detects an abyss gazing back. Each ring is hand polished and sized to order.",
 }
 
 # The two centred blocks at the bottom of each page — at least 30 words each.
@@ -113,17 +113,12 @@ def read_port(slug):
     return desc, notes
 
 
-def lore_line(wix):
-    """The Wix copy is two mythic sentences and then a practical one; keep the myth."""
-    wix = html.unescape(wix)
-    cut = re.split(r"\s(?:Each (?:totem|piece) is made to order|\w+ is currently on preorder)", wix)[0]
-    return cut.strip()
-
-
 def photos(slug, k):
     base = os.path.join(MASTER, "apparel" if k == "apparel" else ("totems" if k == "totem" else "jewellery"))
     def pick(sub):
         d = os.path.join(base, sub)
+        if not os.path.isdir(d):
+            return []
         return sorted(os.path.join(d, f) for f in os.listdir(d)
                       if f.split("--")[0].split(".")[0] == slug) if os.path.isdir(d) else []
     return pick("plain"), pick("in-hand"), pick("drawn-charcoal")
@@ -194,11 +189,19 @@ def page(p, template):
     k = kind(slug, notes)
     plain, hand, drawn = photos(slug, k)
 
-    hero_src = os.path.join(OUT, "img", "wonderhorn-hero-src.jpg") if slug == "wonderhorn-talisman" else (plain[0] if plain else hand[0])
-    hero = export(hero_src, slug, "hero", 1600)
-    gallery = [export(f, slug, f"plain-{i}", 1800) for i, f in enumerate(plain[1 if slug != "wonderhorn-talisman" else 0:], 1)]
-    gallery += [export(f, slug, f"hand-{i}", 1600) for i, f in enumerate(hand, 1)]
-    drawing = export(drawn[0], slug, "drawing", 900) if drawn else None
+    if plain or hand:
+        hero_src = os.path.join(OUT, "img", "wonderhorn-hero-src.jpg") if slug == "wonderhorn-talisman" else (plain[0] if plain else hand[0])
+        hero = export(hero_src, slug, "hero", 1600)
+        gallery = [export(f, slug, f"plain-{i}", 1800) for i, f in enumerate(plain[1 if slug != "wonderhorn-talisman" else 0:], 1)]
+        gallery += [export(f, slug, f"hand-{i}", 1600) for i, f in enumerate(hand, 1)]
+        drawing = export(drawn[0], slug, "drawing", 900) if drawn else None
+    else:                                  # no Pieces Master on this machine: use the photographs already in img/
+        have = sorted(os.listdir(os.path.join(OUT, "img", slug)))
+        num = lambda f: int(re.search(r"(\d+)", f).group(1))
+        hero = f"img/{slug}/hero.jpg"
+        gallery = [f"img/{slug}/{f}" for f in sorted((f for f in have if re.match(r"plain-\d+\.jpg$", f)), key=num)]
+        gallery += [f"img/{slug}/{f}" for f in sorted((f for f in have if re.match(r"hand-\d+\.jpg$", f)), key=num)]
+        drawing = f"img/{slug}/drawing.jpg" if "drawing.jpg" in have else None
 
     # three large images close the page, separating the two text chunks
     # drawing first, then a hand shot and the first plain shot — the two ends of
@@ -211,6 +214,9 @@ def page(p, template):
 
     lore = LORE[slug]
     assert not re.search(r"\b(we|i|our|us)\b", DESC[slug], re.I), (slug, "first person in description")
+    small = {"of", "in", "for", "from", "a", "the", "and", "to", "than", "it", "into", "looks"}
+    echo = {w for w in re.findall(r"[a-z]+", EYEBROW[slug].lower()) if w not in small} & set(re.findall(r"[a-z]+", DESC[slug].lower()))
+    assert not echo, (slug, "description repeats the overline", echo)
     made = MADE_LINE.get(slug, MADE)
     for block in (lore, made):
         assert len(block.split()) >= 30, (slug, len(block.split()))
@@ -250,17 +256,51 @@ def one_block(doc):
 
 def shared(doc):
     """Fill the pieces every page has in common: header, footer, shared script."""
-    part = lambda n: open(os.path.join(OUT, "partials", n), encoding="utf-8").read().rstrip()
+    def part(n):
+        with open(os.path.join(OUT, "partials", n), encoding="utf-8") as f:
+            return f.read().rstrip()
+    doc = doc.replace('<link rel="stylesheet" href="site.css', '<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="site.css', 1)
     return (doc.replace("{{NAV}}", part("nav.html"))
                .replace("{{FOOTER}}", part("footer.html"))
                .replace("{{SITEJS}}", part("site.js"))
                .replace("{{CSSV}}", str(int(os.path.getmtime(os.path.join(OUT, "site.css"))))))
 
 
+_sizes = {}
+
+
+def light(doc):
+    """Point every picture at its lighter WebP copy (made by tools/optimize_media.py) and give it its
+    real proportions, so nothing shifts while it loads."""
+    def one(m):
+        tag, src = m.group(0), m.group(1)
+        path = os.path.join(OUT, src)
+        if not os.path.exists(path):
+            return tag
+        if " width=" not in tag:
+            if src not in _sizes:
+                with Image.open(path) as im:
+                    _sizes[src] = im.size
+            w, h = _sizes[src]
+            tag = tag.replace("<img ", f'<img width="{w}" height="{h}" ', 1)
+        if os.path.exists(path + ".webp"):
+            tag = tag.replace(f'src="{src}"', f'src="{src}.webp"')
+        return tag
+    return re.sub(r'<img [^>]*?src="(img/[^"]+?\.(?:jpg|png))"[^>]*>', one, doc)
+
+
+def save(name, doc):
+    doc = light(doc)
+    left = re.findall(r"\{\{[A-Z]+\}\}", doc)
+    assert not left, (name, "unfilled template tokens", left)
+    with open(os.path.join(OUT, name), "w", encoding="utf-8") as f:
+        f.write(doc)
+
+
 def main():
-    products = json.load(open(os.path.join(ROOT, "_source/products.json")))
+    with open(os.path.join(ROOT, "_source/products.json")) as f:
+        products = json.load(f)
     template = shared(open(os.path.join(OUT, "template.html"), encoding="utf-8").read())
-    links = []
     # info pages: story, custom, contact, shipping
     for f in sorted(x for x in os.listdir(os.path.join(OUT, "pages")) if x != "shop.html"):
         doc = shared(open(os.path.join(OUT, "pages", f), encoding="utf-8").read())
@@ -277,9 +317,9 @@ def main():
             for i, (n, w, h, cut) in enumerate(imgs):
                 t = tweaks.get(n, {})
                 figs.append(
-                    f'    <figure class="{"cutout" if cut else "photo"}" data-name="{n}" '
+                    f'    <figure class="{"cutout" if cut else "photo"}" data-name="{html.escape(n)}" '
                     f'style="--s:{t.get("s", 1)};--x:{t.get("x", 0)};--y:{t.get("y", 0)}">'
-                    f'<img src="img/commissions-cut/{n}" width="{w}" height="{h}" alt="{html.escape(t.get("name", ""))}" loading="{"eager" if i < 8 else "lazy"}" draggable="false">'
+                    f'<img src="img/commissions-cut/{html.escape(n)}" width="{w}" height="{h}" alt="{html.escape(t.get("name", ""))}" loading="{"eager" if i < 4 else "lazy"}" draggable="false">'
                     f'<span class="over"><span class="date">{html.escape(t.get("date", ""))}</span>'
                     f'<span class="name">{html.escape(t.get("name", ""))}</span></span></figure>')
             figs.insert(0, '    <figure class="lead" data-lead><img src="img/commissions-cut/hero-band.jpg" alt="A gold band carved with a spiral, a custom commission" fetchpriority="high"></figure>')
@@ -289,16 +329,14 @@ def main():
             imgs = json.load(open(os.path.join(OUT, "img", "inspiration", "index.json")))
             doc = (doc.replace("{{COUNT}}", str(len(imgs)))
                       .replace("{{GRID}}", "\n".join(
-                          f'    <figure><img src="img/inspiration/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 24 else "lazy"}"></figure>'
+                          f'    <figure><img src="img/inspiration/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 8 else "lazy"}"></figure>'
                           for i, (n, w, h) in enumerate(imgs))))
-        open(os.path.join(OUT, f), "w", encoding="utf-8").write(one_block(doc))
+        save(f, one_block(doc))
         print("  ", f)
     for p in products:
-        open(os.path.join(OUT, f"{p['slug']}.html"), "w", encoding="utf-8").write(one_block(page(p, template)))
-        links.append(f'<li><a href="{p["slug"]}.html">{html.escape(p["name"])}</a> <span>${p["price"]}</span></li>')
+        save(f"{p['slug']}.html", one_block(page(p, template)))
         print("  ", p["slug"])
     # Shop: every piece on one wall, linking to its page
-    from PIL import Image as _I
     tiles = []
     # totems together, then jewellery, then the cap at the very end
     group = lambda p: 2 if p["slug"] == "macon-cap" else (0 if kind(p["slug"], read_port(p["slug"])[1]) == "totem" else 1)
@@ -308,7 +346,7 @@ def main():
         # pendants show the photograph of the piece being worn; everything else, in the hand
         hover = {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(p["slug"], "hand-1.jpg")
         held = os.path.exists(os.path.join(OUT, "img", p["slug"], hover))
-        lazy = "eager" if i < 6 else "lazy"
+        lazy = "eager" if i < 3 else "lazy"
         tiles.append(
             f'    <figure><a class="piece" href="{p["slug"]}.html">'
             f'<img src="img/{p["slug"]}/{still}" alt="{html.escape(p["name"])}" loading="{lazy}">'
@@ -317,7 +355,7 @@ def main():
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
     shop = shop.replace("{{SHOPCOUNT}}", str(len(products))).replace("{{SHOPGRID}}", "\n".join(tiles))
-    open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(shop)
+    save("index.html", shop)
     print(f"{len(products)} pages")
 
 
