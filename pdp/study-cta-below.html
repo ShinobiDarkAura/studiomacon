@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rebi | Studio Maçon</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="site.css?v=1789612563">
+<style>
+  /* ── product ───────────────────────────────────────── */
+  .gallery figure{margin:0;background:var(--field)}
+  .gallery figure + figure{display:none}          /* mobile: hero only up top */
+  .gallery .hero img{width:100%;aspect-ratio:4/5;object-fit:cover}
+
+  .info{padding:28px var(--pad) 0;text-align:center}
+  .price{font-size:19px;margin:0 0 18px}
+  /* ring size: the whole bordered block is the control; sizes open beneath it */
+  .size{position:relative;margin:0 0 12px;border:1px solid var(--rule);text-align:left}
+  .size-toggle{display:flex;align-items:center;gap:16px;width:100%;height:52px;padding:0 20px 0 16px;cursor:pointer}
+  .size-label{font-size:15px;text-transform:uppercase;margin-right:auto}
+  .size-value{font-size:16px}
+  .size.picked .size-value{font-weight:500}
+  .chev{width:12px;height:8px;flex:none;transition:transform .35s var(--ease);
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.3'/%3E%3C/svg%3E") center/12px 8px no-repeat}
+  .size.open .chev{transform:rotate(180deg)}
+  .size-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+  .size.open .size-panel{grid-template-rows:1fr}
+  .size-inner{overflow:hidden}
+  .size-list{list-style:none;margin:0;padding:4px 16px 16px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+    border-top:1px solid var(--rule);padding-top:16px;opacity:0;transition:opacity .3s ease}
+  .size.open .size-list{opacity:1;transition-delay:.08s}
+  .size-list li{display:grid;place-items:center;height:40px;border:1px solid var(--rule);font-size:15px;cursor:pointer;
+    transition:border-color .2s ease,background .2s ease,color .2s ease}
+  .size-list li:hover,.size-list li:focus{border-color:#000;outline:none}
+  .size-list li[aria-selected="true"]{background:#000;color:#fff;border-color:#000}
+  .buy{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .apple-pay{display:flex;align-items:center;justify-content:center;width:100%;height:55px;background:#000;color:#fff;
+    gap:5px;letter-spacing:-.01em;font:500 23px/1 -apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
+  .apple-pay svg{width:19px;height:23px;margin-top:-3px;fill:#fff}
+  /* Safari draws Apple's own button */
+  @supports (-webkit-appearance:-apple-pay-button){
+    .apple-pay{-webkit-appearance:-apple-pay-button;-apple-pay-button-type:plain;-apple-pay-button-style:black}
+    .apple-pay > *{display:none}
+  }
+  .desc-block{text-align:left;margin:42px 0 0;padding:0 0 42px;border-bottom:1px solid var(--rule)}
+  .desc-block .label{margin:0 0 22px}
+  .desc-block .label{font-size:calc(17px - 3pt);letter-spacing:.14em}          /* matches the accordion titles, as on the early Custom page */
+  .desc{margin:0;font-size:17px;line-height:1.55}
+
+  /* ── closing: big stacked images, two centred chunks ─ */
+  .closing{padding:128px 0 0}
+  .big{--w:min(calc((100% - 2 * var(--pad)) * 1.1), 100%);width:var(--w);margin-left:calc((100% - var(--w)) / 2);
+    aspect-ratio:2.2917/1;background:#d9d9d9;border-radius:6px}          /* 3:1 made 10% wider, then 20% taller twice */
+  .chunk{margin:120px auto;padding:0 calc(var(--pad) + 16px);max-width:620px;
+    text-align:center;font-size:17px;line-height:1.55}
+
+  /* ── sticky bag bar (mobile) ───────────────────────── */
+  .dock{position:fixed;left:var(--pad);right:var(--pad);bottom:24px;z-index:15;
+    display:flex;align-items:center;justify-content:center;gap:26px;height:84px;
+    background:#fff;border:1.5px solid var(--ink);font-size:calc(18px - 1pt);letter-spacing:.08em;text-transform:uppercase;
+    transform:translateY(140%);transition:transform .35s var(--ease)}
+  .dock.on{transform:none}
+  .dock span:last-child{text-transform:none}
+
+  @media (min-width:768px){
+    .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
+      margin:0 calc(var(--pad) + 12px) 0 0;align-items:start}
+    .gallery figure + figure{display:block;margin-top:12px}
+    .gallery figure img{width:100%}
+    .gallery figure + figure img{aspect-ratio:4/5;object-fit:cover}
+
+    /* transparent, pinned, and scrolls on its own when every accordion is open */
+    .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
+      overscroll-behavior:contain;scrollbar-width:none;text-align:left;padding:24px 0 48px;
+      display:flex;flex-direction:column;justify-content:safe center}
+    .info > *{flex:none}
+    .info::-webkit-scrollbar{display:none}
+
+    .closing{max-width:1100px;margin:0 auto;padding:204px var(--pad) 0}
+    .big{--w:110%}
+    .chunk{margin:188px auto;max-width:620px;padding:0}
+    .dock{display:none}
+  }
+  .desc-block{padding-bottom:30px;border-bottom:0}
+  .buy{margin:0 0 42px}
+</style>
+</head>
+<body class="white-right">
+
+<header class="head">
+  <div class="left">
+    <a href="#" class="mob hover-line">Menu</a>
+    <a href="index.html" class="desk hover-line">Shop</a>
+    <a href="custom.html" class="desk hover-line">Custom</a>
+    <a href="story.html" class="desk hover-line">About</a>
+  </div>
+  <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
+  <div class="right"><a href="#">Bag (0)</a></div>
+</header>
+
+<main>
+  <section class="product">
+    <div class="gallery" data-under-nav>
+      <figure class="hero"><img src="img/rebi/hero.jpg" alt="Rebi" fetchpriority="high"></figure>
+      <figure><img src="img/rebi/plain-1.jpg" alt="" loading="lazy"></figure>
+      <figure><img src="img/rebi/hand-1.jpg" alt="" loading="lazy"></figure>
+      <figure><img src="img/rebi/hand-2.jpg" alt="" loading="lazy"></figure>
+    </div>
+
+    <div class="info">
+      <p class="eyebrow">A Silhouette in Flux</p>
+      <h1>Rebi</h1>
+      <p class="price">$220</p>
+      
+      <div class="desc-block"><p class="label">Description</p><p class="desc">A small form of solid bronze, finished with an ombré patina. Its outline changes with the light and reads differently from every side. Handling is known to heighten the reflexes; owners report catching things before they fall. Each shifting plane is refined by hand after casting.</p></div>
+      <div class="buy" id="bag">
+        <button class="cta">Add to Bag</button>
+        <button class="apple-pay" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+      </div>
+      <div class="acc">
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Care</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Bronze is meant to be handled. The patina darkens where your thumb sits and brightens where it rubs, so over time it records how you hold it. To keep the surface as it is, wipe it with a soft dry cloth. Avoid polish; it takes the patina with it.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Materials</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Solid bronze; Ombré patina</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Each piece is made to order. Please allow up to 10 business days for us to make yours before it heads out to you. Standard shipping takes 3–7 business days; international shipping generally takes 5–10. We accept pieces (excluding custom work) in their original condition for store credit toward your next purchase, within 14 days of delivery. If a piece doesn't fit, we'll gladly work with you to find the right size. <a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.</p></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="big" role="presentation"></div>
+    <p class="chunk">Rebi has never looked the same way twice in the same light. Some see one thing, some another, and a few insist it is something with no name at all. Each is right, and Rebi seems quietly pleased by the disagreement.</p>
+    <div class="big" role="presentation"></div>
+    <p class="chunk">Every piece is made to order in our studio. Each begins as a sketch, is carved by hand in wax, and is cast at a local foundry before we refine and polish it. Please allow up to two weeks for us to make yours.</p>
+    <div class="big" role="presentation"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="brand">
+    <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
+    <p class="fine">Artifacts of Love,<br>Made to Order.</p>
+  </div>
+  <div class="middle">
+  <nav class="links">
+    <a class="hover-line" href="story.html">About</a>
+    <a class="hover-line" href="custom.html">Custom</a>
+    <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
+    <a class="hover-line" href="inspiration.html">Inspiration</a>
+    <a class="hover-line" href="contact.html">Contact</a>
+  </nav>
+  </div>
+  <div class="news">
+    <p>Subscribe to hear about new pieces before anyone else.</p>
+    <form class="field" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thank you'">
+      <input type="email" placeholder="Email address" aria-label="Email address" required>
+      <button>Submit</button>
+    </form>
+  </div>
+</footer>
+
+<button class="dock" id="dock" aria-label="Add to Bag, $220"><span>Add to Bag</span><span>$220</span></button>
+
+<script>
+  // Accordions: the height eases through a grid-row transition, so nothing is
+  // measured in script and a panel of any length opens at the same pace.
+  document.querySelectorAll('.acc-head').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var item = b.parentElement, open = !item.classList.contains('open');
+      item.classList.toggle('open', open);
+      b.setAttribute('aria-expanded', open);
+    });
+  });
+
+  // Nav tone: each part of the nav (links, logotype, bag) looks at what is
+  // actually beneath it. Over an image it reads the pixels there; over anything
+  // else, the background colour. Only very light ground keeps the nav black.
+  (function () {
+    var LIGHT = 0.82;                      // "super light": white, pale grey, paper
+    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .logotype, .head .right'));
+    var maps = new WeakMap();
+
+    function lumaOf(r, g, b) { return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }
+
+    function map(img) {                    // a small luminance copy of each image, made once
+      if (maps.has(img)) return maps.get(img);
+      if (!img.complete || !img.naturalWidth) return null;
+      var w = 64, h = Math.max(1, Math.round(64 * img.naturalHeight / img.naturalWidth));
+      var c = document.createElement('canvas'); c.width = w; c.height = h;
+      var x = c.getContext('2d', {willReadFrequently: true});
+      try { x.drawImage(img, 0, 0, w, h); var d = x.getImageData(0, 0, w, h).data; } catch (e) { return null; }
+      var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
+    }
+
+    function bgLuma(el) {                  // first painted background up the tree, else the white page
+      for (; el && el !== document.documentElement; el = el.parentElement) {
+        var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
+        if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
+      }
+      return 1;
+    }
+
+    function lumaAt(px, py) {
+      var stack = document.elementsFromPoint(px, py);
+      for (var i = 0; i < stack.length; i++) {
+        var el = stack[i];
+        if (el.closest('.head')) continue;
+        if (el.tagName === 'VIDEO') return 0;
+        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them          // film: always read as dark, so the nav is white
+        if (el.tagName === 'IMG') {
+          var m = map(el); if (!m) return bgLuma(el);
+          var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
+          var sx = r.width / el.naturalWidth, sy = r.height / el.naturalHeight;
+          if (fit === 'cover') sx = sy = Math.max(sx, sy);
+          else if (fit === 'contain') sx = sy = Math.min(sx, sy);
+          var ox = (r.width - el.naturalWidth * sx) / 2, oy = (r.height - el.naturalHeight * sy) / 2;
+          var u = (px - r.left - ox) / (el.naturalWidth * sx), v = (py - r.top - oy) / (el.naturalHeight * sy);
+          if (u < 0 || u > 1 || v < 0 || v > 1) return bgLuma(el);
+          var tx = Math.min(m.w - 1, Math.floor(u * m.w)), ty = Math.min(m.h - 1, Math.floor(v * m.h));
+          var sum = 0, n = 0, alpha = 0;
+          for (var dy = -1; dy <= 1; dy++) for (var dx = -2; dx <= 2; dx++) {
+            var X = Math.max(0, Math.min(m.w - 1, tx + dx)), Y = Math.max(0, Math.min(m.h - 1, ty + dy)), k = (Y * m.w + X) * 4;
+            sum += lumaOf(m.d[k], m.d[k + 1], m.d[k + 2]) * m.d[k + 3] / 255; alpha += m.d[k + 3] / 255; n++;
+          }
+          // transparent pixels show whatever is behind the picture
+          var under = bgLuma(el.parentElement);
+          return (sum + under * (n - alpha)) / n;
+        }
+        // a gap between pictures in an image grid: hold the current colour until the grid is left
+        if (el.closest('.wall, .examples, .gallery')) return null;
+        return bgLuma(el);
+      }
+      return 1;
+    }
+
+    var queued = false, held = null, head = document.querySelector('.head');
+    function tone() {
+      queued = false;
+      // the whole nav is one unit: read under each part, then colour every part the same
+      var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
+      var grid = null;
+      document.elementsFromPoint(innerWidth / 2, mid).some(function (el) {
+        if (el.closest('.head')) return false;
+        grid = el.closest('.wall, .examples, .gallery'); return true;
+      });
+      if (grid && held === grid) return;          // over an image grid: keep the colour until the grid has passed
+      held = grid;
+      var dark = 0, counted = 0;
+      parts.forEach(function (p) {
+        var r = p.getBoundingClientRect(); if (!r.width) return;
+        var y = r.top + r.height / 2, l = 1, seen = false;
+        [0.15, 0.5, 0.85].forEach(function (f) {
+          var v = lumaAt(r.left + r.width * f, y);
+          if (v === null) return;
+          seen = true; l = Math.min(l, v);
+        });
+        if (!seen) return;
+        counted++; if (l < LIGHT) dark++;
+      });
+      if (!counted) return;
+      var onDark = dark * 2 > counted;              // most of the nav sits over something dark
+      parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
+    }
+    function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
+    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', soon);
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', function () { held = null; soon(); }); });
+    addEventListener('load', function () { held = null; soon(); });
+    tone();
+  })();
+
+  // Emerge: every image and text block starts hidden and settles into place the
+  // first time about 16% of it is on screen. It never fades back out (toggling
+  // flickered), and anything added later is picked up too.
+  (function () {
+    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+                 '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
+                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
+    // side-by-side groups cascade instead of arriving at once
+    var GROUPS = ['.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var io = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        io.unobserve(e.target);
+      });
+    }, {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});
+    // the footer sits against the page's bottom edge, where the main trigger line
+    // can never be crossed, so it reveals as soon as any of it is on screen
+    var edge = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        edge.unobserve(e.target);
+      });
+    }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
+
+    function arm(root) {
+      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
+        .forEach(function (el) {
+          if (el.classList.contains('dr-emerge')) return;
+          // hide instantly: the transition is for arriving, not for going away
+          el.style.transition = 'none';
+          el.classList.add('dr-emerge');
+          // the inspiration wall is already in place wherever it fills the first
+          // screen; only pieces further down slide in as you scroll
+          void el.offsetWidth;
+          el.style.transition = '';
+          if (still) { el.classList.add('is-seen'); return; }
+          // the inspiration wall's first screen plays in full on load, even the
+          // pieces only partly in view, so no part of the screen is left empty
+          if (el.closest('.wall, .wall-head') && el.getBoundingClientRect().top < innerHeight) {
+            requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-seen'); }); });
+            return;
+          }
+          // let the hidden state paint first, or blocks already on screen at load
+          // would jump straight to their resting place without animating
+          // (and wait for the stylesheet: until the hidden state has actually taken
+          // effect there is nothing to animate from)
+          var tries = 0;
+          (function ready() {
+            if (getComputedStyle(el).opacity !== '0' && tries++ < 120) return requestAnimationFrame(ready);
+            requestAnimationFrame(function () { (el.closest('footer') ? edge : io).observe(el); });
+          })();
+        });
+    }
+    // wall pieces cascade by their position in the row, so each row settles left to right
+    // pieces already on screen at load arrive top to bottom, the rest by column
+    document.querySelectorAll('.wall figure').forEach(function (f) {
+      var r = f.getBoundingClientRect();
+      var d = r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 + r.left / innerWidth * 120
+                                  : Math.round(r.left / innerWidth * 4) * 80;
+      f.style.setProperty('--stagger', Math.round(d) + 'ms');
+    });
+    document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
+    GROUPS.forEach(function (g) {
+      document.querySelectorAll(g).forEach(function (group) {
+        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });
+      });
+    });
+    arm(document);
+    // Blocks in the last few pixels of the page can't rise past the trigger
+    // line, so reveal whatever is on screen once the bottom is reached.
+    function atBottom() {
+      if (still || innerHeight + scrollY < document.documentElement.scrollHeight - 2) return;
+      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
+      });
+    }
+    addEventListener('scroll', atBottom, {passive: true});
+    // a reload lands back at the old scroll position without necessarily scrolling,
+    // so check once everything has loaded and been armed as well
+    addEventListener('load', function () { setTimeout(atBottom, 80); setTimeout(atBottom, 400); });
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) arm(n); }); });
+    }).observe(document.body, {childList: true, subtree: true});
+  })();
+
+
+
+  // Bag: a count that persists between pages, and a short toast under it when a piece is added
+  (function () {
+    var bag = document.querySelector('.head .right a'); if (!bag) return;
+    var KEY = 'macon-bag', n = 0;
+    try { n = +localStorage.getItem(KEY) || 0; } catch (e) {}
+    function paint() { bag.textContent = 'Bag (' + n + ')'; }
+    paint();
+    var toast = document.createElement('div');
+    toast.className = 'bag-toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
+    document.querySelector('.head .right').appendChild(toast);
+    var timer = null;
+    document.querySelectorAll('.cta, .dock').forEach(function (b) {
+      if (!/add to bag/i.test(b.textContent)) return;
+      b.addEventListener('click', function () {
+        n += 1; try { localStorage.setItem(KEY, n); } catch (e) {} paint();
+        var title = document.querySelector('h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price');
+        toast.innerHTML = (hero ? '<img src="' + hero.getAttribute('src') + '" alt="">' : '') +
+          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + (price ? '<span class="price-note">' + price.textContent + '</span>' : '') + '</span>';
+        bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
+        toast.classList.add('on'); clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
+      });
+    });
+  })();
+</script>
+<script>
+  // Ring size: the bordered block opens a panel of sizes; picking one closes it.
+  document.querySelectorAll('[data-size]').forEach(function (box) {
+    var toggle = box.querySelector('.size-toggle'), value = box.querySelector('.size-value');
+    var items = [].slice.call(box.querySelectorAll('li'));
+    function open(on) { box.classList.toggle('open', on); toggle.setAttribute('aria-expanded', on); }
+    toggle.addEventListener('click', function () { open(!box.classList.contains('open')); });
+    items.forEach(function (li) {
+      li.addEventListener('click', function () {
+        items.forEach(function (x) { x.setAttribute('aria-selected', x === li); });
+        value.textContent = li.dataset.value; box.classList.add('picked'); open(false);
+      });
+      li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); } });
+    });
+    document.addEventListener('click', function (e) { if (!box.contains(e.target)) open(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') open(false); });
+  });
+</script>
+<script>
+  // The bag bar appears once the real button has scrolled away, and steps
+  // aside at the footer so it never covers the newsletter.
+  (function () {
+    var dock = document.getElementById('dock'), gone = false, foot = false;
+    function sync() { dock.classList.toggle('on', gone && !foot); }
+    new IntersectionObserver(function (e) { gone = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; sync(); })
+      .observe(document.getElementById('bag'));
+    new IntersectionObserver(function (e) { foot = e[0].isIntersecting; sync(); }, {rootMargin: '0px 0px -40% 0px'})
+      .observe(document.querySelector('footer .news'));
+  })();
+</script>
+</body>
+</html>
