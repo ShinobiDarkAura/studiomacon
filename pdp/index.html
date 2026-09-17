@@ -72,7 +72,10 @@
   @media (max-width:767px){
     .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 8px}
     .wall .piece .over{padding:32px 10px 10px;gap:4px;font-size:12px}
-    .wall .piece .name{font-size:13px}
+    .wall .piece .name{font-size:calc(13px + 8pt)}
+    /* name bottom left, price bottom right */
+    .wall .piece .over{flex-direction:row;align-items:flex-end;justify-content:space-between}
+    .wall .piece .cost{order:1;flex:none;margin-left:8px}
   }
   @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} }
 
