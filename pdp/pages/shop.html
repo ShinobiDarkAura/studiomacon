@@ -28,6 +28,15 @@
   @keyframes cue-wait{from{opacity:0}to{opacity:1}}
   /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
   .head .logotype{transition:transform .7s var(--ease),color .3s ease}
+  /* intro: the lockup opens from its centre line out, drawing into focus as it settles */
+  .logo-intro .head .logotype{animation:logo-intro 2.2s cubic-bezier(.16,1,.3,1) .25s both}
+  @keyframes logo-intro{
+    0%{opacity:0;filter:blur(18px);clip-path:inset(-40% 50% -40% 50%);scale:1.12;letter-spacing:0}
+    35%{opacity:1}
+    70%{clip-path:inset(-40% -40% -40% -40%);filter:blur(1px)}
+    100%{opacity:1;filter:none;clip-path:inset(-40% -40% -40% -40%);scale:1}
+  }
+  @media (prefers-reduced-motion:reduce){ .logo-intro .head .logotype{animation:none} }
   body.logo-hero .head .logotype{transform:translateY(calc(50vh - 12px - var(--head) / 2 - 6px)) scale(3.125)}
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
@@ -81,6 +90,10 @@
 </style>
 </head>
 <body class="logo-hero">
+<script>
+  // the intro plays on arrival, not when coming Back to the shop
+  (function (n) { if (!n || n.type !== "back_forward") document.body.classList.add("logo-intro"); })(performance.getEntriesByType("navigation")[0]);
+</script>
 
 {{NAV}}
 
