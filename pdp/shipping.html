@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Shipping &amp; Returns | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789612856">
+<link rel="stylesheet" href="site.css?v=1789613409">
 <style>
   /* one screen: the olive branch on the left, the policy on the right */
   .ship{display:grid;gap:40px;min-height:100vh;min-height:100svh;padding:calc(var(--head) + 40px) calc(var(--pad) + 12px) 64px;align-items:center}
@@ -98,7 +98,7 @@
 <footer>
   <div class="brand">
     <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
-    <p class="fine">Artifacts of Love,<br>Made by Hand.</p>
+    <p class="fine">Artifacts of Love,<br>Made to Order.</p>
   </div>
   <div class="middle">
   <nav class="links">
@@ -321,29 +321,71 @@
 
 
 
-  // Bag: a count that persists between pages, and a short toast under it when a piece is added
+  // Bag: the pieces live in localStorage so the bag, checkout and every page agree
+  window.MaconBag = (function () {
+    var KEY = 'macon-bag-items';
+    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; } }
+    function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
+    function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
+    function add(item) {
+      var items = read(), same = items.filter(function (i) { return i.slug === item.slug && (i.size || '') === (item.size || ''); })[0];
+      if (same) same.qty = (same.qty || 1) + 1; else { item.qty = 1; items.push(item); }
+      write(items);
+    }
+    return {read: read, write: write, count: count, add: add};
+  })();
+
   (function () {
     var bag = document.querySelector('.head .right a'); if (!bag) return;
-    var KEY = 'macon-bag', n = 0;
-    try { n = +localStorage.getItem(KEY) || 0; } catch (e) {}
-    function paint() { bag.textContent = 'Bag (' + n + ')'; }
-    paint();
+    bag.setAttribute('href', 'bag.html');
+    function paint() { bag.textContent = 'Bag (' + MaconBag.count() + ')'; }
+    paint(); document.addEventListener('bag:change', paint);
+    addEventListener('storage', paint);
     var toast = document.createElement('div');
     toast.className = 'bag-toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
     document.querySelector('.head .right').appendChild(toast);
     var timer = null;
     document.querySelectorAll('.cta, .dock').forEach(function (b) {
       if (!/add to bag/i.test(b.textContent)) return;
-      b.addEventListener('click', function () {
-        n += 1; try { localStorage.setItem(KEY, n); } catch (e) {} paint();
-        var title = document.querySelector('h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price');
+      b.addEventListener('click', function (e) {
+        var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price');
+        var sizeBox = document.querySelector('[data-size]'), size = sizeBox && sizeBox.classList.contains('picked') ? sizeBox.querySelector('.size-value').textContent : '';
+        if (sizeBox && !size) {                       // rings need a size before they go in the bag
+          e.stopPropagation();                        // or the picker's click-outside handler shuts it again
+          sizeBox.classList.add('open', 'need'); sizeBox.querySelector('.size-toggle').setAttribute('aria-expanded', true);
+          sizeBox.scrollIntoView({block: 'center', behavior: 'smooth'});
+          setTimeout(function () { sizeBox.classList.remove('need'); }, 1600);
+          return;
+        }
+        MaconBag.add({
+          slug: location.pathname.split('/').pop().replace('.html', ''),
+          name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
+          img: hero ? hero.getAttribute('src') : '', size: size
+        });
         toast.innerHTML = (hero ? '<img src="' + hero.getAttribute('src') + '" alt="">' : '') +
-          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + (price ? '<span class="price-note">' + price.textContent + '</span>' : '') + '</span>';
+          '<span><b>Added to bag</b>' + (title ? title.textContent : '') + (size ? ' · Size ' + size : '') +
+          (price ? '<span class="price-note">' + price.textContent + '</span>' : '') + '</span>';
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
       });
     });
+  })();
+
+  // Mobile menu
+  (function () {
+    var btn = document.querySelector('.head .mob'); if (!btn) return;
+    var menu = document.createElement('nav');
+    menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.hidden = true;
+    menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
+      '<a href="index.html">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
+      '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+    document.body.appendChild(menu);
+    btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
+    function set(on) { menu.hidden = !on; btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
+    btn.addEventListener('click', function (e) { e.preventDefault(); set(true); });
+    menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
 </script>
 </body>

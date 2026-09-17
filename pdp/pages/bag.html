@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bag | Studio Maçon</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="site.css?v={{CSSV}}">
+<style>
+  .bag-page{max-width:1100px;margin:0 auto;padding:calc(var(--head) + 64px) calc(var(--pad) + 12px) 96px}
+  .bag-page h1{margin:0 0 40px}
+  .bag-grid{display:grid;gap:48px}
+  .lines{border-top:1px solid var(--rule)}
+  .line{display:grid;grid-template-columns:96px 1fr auto;gap:20px;align-items:center;padding:20px 0;border-bottom:1px solid var(--rule)}
+  .line img{width:96px;height:120px;object-fit:cover;border-radius:6px;background:var(--field)}
+  .line .nm{font:400 26px/1 var(--serif);text-transform:uppercase;margin:0 0 6px}
+  .line .meta{font-size:14px;color:rgba(0,0,0,.55)}
+  .qty{display:inline-flex;align-items:center;gap:14px;margin-top:14px;font-size:15px}
+  .qty button{width:28px;height:28px;border:1px solid var(--rule);border-radius:50%;line-height:1}
+  .qty button:hover{border-color:#000}
+  .qty .remove{width:auto;height:auto;border:0;border-radius:0;margin-left:18px;font-size:13px;color:rgba(0,0,0,.5);text-decoration:underline;text-underline-offset:3px}
+  .line .amt{font-size:16px;text-align:right}
+  .summary{align-self:start}
+  .summary dl{display:grid;grid-template-columns:1fr auto;gap:12px 0;margin:0 0 24px;font-size:15px}
+  .summary dd{margin:0;text-align:right;padding-left:18px}
+  .summary .total{padding-top:14px;border-top:1px solid #000;font-weight:500}
+  .summary .note{margin:14px 0 0;font-size:13px;color:rgba(0,0,0,.5);line-height:1.5}
+  .empty{padding:40px 0 0;text-align:left}
+  .empty p{margin:0 0 28px;font-size:17px}
+  .empty .cta{max-width:320px}
+  @media (min-width:900px){ .bag-grid{grid-template-columns:minmax(0,1fr) 340px;gap:64px} .summary{position:sticky;top:calc(var(--head) + 24px)} }
+</style>
+</head>
+<body>
+
+{{NAV}}
+
+<main class="bag-page">
+  <h1>Bag</h1>
+  <div class="bag-grid" id="bag-grid" hidden>
+    <section class="lines" id="lines" aria-label="Pieces in your bag"></section>
+    <aside class="summary" aria-label="Order summary">
+      <p class="label" style="margin:0 0 18px">Summary</p>
+      <dl>
+        <dt>Subtotal</dt><dd id="sub">$0</dd>
+        <dt>Shipping</dt><dd>Calculated at checkout</dd>
+        <dt class="total">Total</dt><dd class="total" id="total">$0</dd>
+      </dl>
+      <a class="cta" href="checkout.html">Checkout</a>
+      <p class="note">Every piece is made to order. Please allow up to 10 business days before it ships.</p>
+    </aside>
+  </div>
+  <div class="empty" id="empty" hidden>
+    <p>Your bag is empty.</p>
+    <a class="cta" href="index.html">Continue Shopping</a>
+  </div>
+</main>
+
+{{FOOTER}}
+{{SITEJS}}
+<script>
+  (function () {
+    var money = function (n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits: n % 1 ? 2 : 0}); };
+    function render() {
+      var items = MaconBag.read(), lines = document.getElementById('lines');
+      document.getElementById('bag-grid').hidden = !items.length;
+      document.getElementById('empty').hidden = !!items.length;
+      lines.innerHTML = '';
+      var sub = 0;
+      items.forEach(function (it, i) {
+        sub += it.price * it.qty;
+        var row = document.createElement('div'); row.className = 'line';
+        row.innerHTML = '<a href="' + it.slug + '.html"><img src="' + it.img + '" alt=""></a>' +
+          '<div><p class="nm"><a href="' + it.slug + '.html">' + it.name + '</a></p>' +
+          '<p class="meta" style="margin:0">' + money(it.price) + (it.size ? ' · Size ' + it.size : '') + '</p>' +
+          '<span class="qty"><button type="button" data-d="-1" aria-label="One fewer">−</button><span>' + it.qty + '</span>' +
+          '<button type="button" data-d="1" aria-label="One more">+</button><button type="button" class="remove">Remove</button></span></div>' +
+          '<p class="amt">' + money(it.price * it.qty) + '</p>';
+        row.querySelectorAll('[data-d]').forEach(function (b) {
+          b.addEventListener('click', function () {
+            var all = MaconBag.read(); all[i].qty += +b.dataset.d;
+            if (all[i].qty < 1) all.splice(i, 1);
+            MaconBag.write(all);
+          });
+        });
+        row.querySelector('.remove').addEventListener('click', function () { var all = MaconBag.read(); all.splice(i, 1); MaconBag.write(all); });
+        lines.appendChild(row);
+      });
+      document.getElementById('sub').textContent = money(sub);
+      document.getElementById('total').textContent = money(sub);
+    }
+    render(); document.addEventListener('bag:change', render);
+  })();
+</script>
+</body>
+</html>

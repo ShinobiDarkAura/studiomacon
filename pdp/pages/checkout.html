@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkout | Studio Maçon</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="site.css?v={{CSSV}}">
+<style>
+  .co{max-width:1100px;margin:0 auto;padding:calc(var(--head) + 64px) calc(var(--pad) + 12px) 96px}
+  .co h1{margin:0 0 40px}
+  .co-grid{display:grid;gap:48px}
+  .co form{display:grid;gap:28px}
+  .co .row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .co .field{padding:0 0 10px;border-bottom:.5px solid #000}
+  .co .field input,.co .field select{font-size:calc(17px - 2pt);width:100%;border:0;outline:0;background:none}
+  .co .field input::placeholder{color:rgba(0,0,0,.35)}
+  .co .label{margin:12px 0 -8px}
+  .mini{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule);font-size:14px}
+  .mini img{width:56px;height:70px;object-fit:cover;border-radius:4px}
+  .co dl{display:grid;grid-template-columns:1fr auto;gap:10px 0;margin:18px 0 0;font-size:15px}
+  .co dd{margin:0;text-align:right}
+  .co .total{padding-top:12px;border-top:1px solid #000;font-weight:500}
+  .co .note{margin:12px 0 0;font-size:13px;color:rgba(0,0,0,.5);line-height:1.5}
+  @media (min-width:900px){ .co-grid{grid-template-columns:minmax(0,1fr) 340px;gap:64px} .co aside{position:sticky;top:calc(var(--head) + 24px);align-self:start} }
+</style>
+</head>
+<body>
+
+{{NAV}}
+
+<main class="co">
+  <h1>Checkout</h1>
+  <div class="co-grid">
+    <form id="co-form" onsubmit="event.preventDefault();location.href='confirmation.html'">
+      <p class="label">Contact</p>
+      <label class="field"><input type="email" required placeholder="Email" aria-label="Email" autocomplete="email"></label>
+      <p class="label">Shipping</p>
+      <div class="row">
+        <label class="field"><input required placeholder="First Name" aria-label="First name" autocomplete="given-name"></label>
+        <label class="field"><input required placeholder="Last Name" aria-label="Last name" autocomplete="family-name"></label>
+      </div>
+      <label class="field"><input required placeholder="Address" aria-label="Address" autocomplete="address-line1"></label>
+      <div class="row">
+        <label class="field"><input required placeholder="City" aria-label="City" autocomplete="address-level2"></label>
+        <label class="field"><input required placeholder="Postal Code" aria-label="Postal code" autocomplete="postal-code"></label>
+      </div>
+      <label class="field"><input required placeholder="Country" aria-label="Country" autocomplete="country-name"></label>
+      <button class="cta" type="submit">Continue to Payment</button>
+      <p class="note">Payment is not connected in this preview. Continuing shows the order confirmation.</p>
+    </form>
+    <aside aria-label="Order summary">
+      <p class="label" style="margin:0 0 6px">Your Order</p>
+      <div id="mini"></div>
+      <dl><dt>Subtotal</dt><dd id="sub">$0</dd><dt>Shipping</dt><dd>Next step</dd><dt class="total">Total</dt><dd class="total" id="total">$0</dd></dl>
+      <p class="note">Every piece is made to order. Please allow up to 10 business days before it ships.</p>
+    </aside>
+  </div>
+</main>
+
+{{FOOTER}}
+{{SITEJS}}
+<script>
+  (function () {
+    var items = MaconBag.read();
+    if (!items.length) { location.replace('bag.html'); return; }
+    var money = function (n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits: n % 1 ? 2 : 0}); }, sub = 0, mini = document.getElementById('mini');
+    items.forEach(function (it) {
+      sub += it.price * it.qty;
+      mini.insertAdjacentHTML('beforeend', '<div class="mini"><img src="' + it.img + '" alt=""><span>' + it.name + (it.size ? ' · Size ' + it.size : '') + (it.qty > 1 ? ' × ' + it.qty : '') + '</span><span>' + money(it.price * it.qty) + '</span></div>');
+    });
+    document.getElementById('sub').textContent = money(sub);
+    document.getElementById('total').textContent = money(sub);
+  })();
+</script>
+</body>
+</html>

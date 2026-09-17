@@ -174,3 +174,12 @@ footer .field button{padding:0 0 0 18px}
   transition-delay:var(--stagger,0ms)}
 .dr-emerge.is-seen{opacity:1;filter:none;transform:none}
 @media (prefers-reduced-motion:reduce){ .dr-emerge{transition:none} }
+
+/* ── mobile menu ───────────────────────────────────── */
+.menu-sheet{position:fixed;inset:0;z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:0 calc(var(--pad) + 12px)}
+.menu-sheet a{font:400 40px/1.05 var(--serif);text-transform:uppercase;color:#000}
+.menu-sheet[hidden]{display:none}
+.menu-close{position:absolute;top:28px;left:calc(var(--pad) + 12px);font-size:15px}
+
+/* ── size picker nudge when Add to Bag is pressed without a size ── */
+[data-size].need{border-color:#c8321e;transition:border-color .2s}
