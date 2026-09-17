@@ -23,6 +23,12 @@
     80%{transform:translateY(13px);opacity:0;filter:blur(1.5px)}
     100%{transform:translateY(13px);opacity:0}
   }
+  /* the line under the big logotype on the film */
+  @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
+  .film .tagline{position:absolute;left:0;right:0;top:calc(50% + 100px);z-index:2;margin:0;text-align:center;color:#fff;
+    font:italic 400 15pt/1.2 "Henry",var(--serif);transition:opacity .5s ease}
+  @media (max-width:767px){ .film .tagline{top:calc(50% + 70px)} }
+  .film.scrolled .tagline{opacity:0}
   .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden}
   /* the cue waits 5s before fading in */
   .scroll-cue{animation:cue-wait .8s ease 5s both}
@@ -68,7 +74,7 @@
   /* every tile the same frame; the in-hand photograph fades in over it on hover */
   .piece img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity .5s ease}
   /* the in-hand photograph swaps in at once, moved so the piece sits where it does in the still */
-  .piece .held{opacity:0;transition:none;transform-origin:var(--ox,50%) var(--oy,50%);transform:translate(var(--tx,0%),var(--ty,0%)) scale(var(--s,1))}
+  .piece .held{opacity:0;transition:opacity .5s ease;transform-origin:var(--ox,50%) var(--oy,50%);transform:translate(var(--tx,0%),var(--ty,0%)) scale(var(--s,1))}
   .piece:hover .held,.piece:focus-visible .held{opacity:1}
   .piece:hover .held{transform:translate(var(--tx,0%),var(--ty,0%)) scale(var(--s,1))}
   .piece .over{position:absolute;inset:auto 0 0 0;display:flex;flex-direction:column;align-items:flex-start;gap:8px;
@@ -105,6 +111,7 @@
       <source src="video/film-process-480.mp4" type="video/mp4" media="(max-width:700px)">
       <source src="video/film-process.mp4" type="video/mp4">
     </video>
+    <p class="tagline">Artifacts of Love</p>
     <!-- scroll cue removed for now -->
   </section>
   <section class="section welcome">
