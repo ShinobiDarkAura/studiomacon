@@ -200,6 +200,11 @@ body.fit footer{min-height:0;padding-top:48px}
 .logo-artifacts .logotype{-webkit-mask-image:url(img/lockup-artifacts.svg);mask-image:url(img/lockup-artifacts.svg)}
 .logo-objects .logotype{-webkit-mask-image:url(img/lockup-objects.svg);mask-image:url(img/lockup-objects.svg)}
 
+/* oval emblem trial: ?logo=emblem */
+.logo-emblem .logotype{aspect-ratio:641/975;-webkit-mask-image:url(img/emblem-objets-dart.png);mask-image:url(img/emblem-objets-dart.png)}
+.logo-emblem .head .logotype{width:44px;top:10px}
+@media (min-width:768px){ .logo-emblem .head .logotype{width:62px} }
+
 /* keyboard focus */
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
 .field:focus-within{border-bottom-color:#000}
