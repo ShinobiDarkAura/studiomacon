@@ -67,41 +67,27 @@
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
   .wall figure.dr-emerge.is-seen{transform:none}
   @media (min-width:600px){ .wall{grid-template-columns:repeat(2,1fr)} }
-  /* phones: two across, 12px from the edges, 8px between */
-  @media (max-width:767px){
-    .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 8px}
-    /* labels sit under each picture, as in Also Worth Keeping */
-    .wall figure{overflow:visible;background:none;border-radius:0}
-    .wall .piece{aspect-ratio:auto;overflow:visible;color:#000}
-    .wall .piece img:not(.held){position:relative;display:block;aspect-ratio:4/5;height:auto;border-radius:6px;background:var(--field)}
-    .wall .piece .held{bottom:auto;aspect-ratio:4/5;height:auto;border-radius:6px}
-    .wall .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:6px}
-    .wall .piece .over{position:static;opacity:1;transform:none;background:none;padding:10px 0 14px;gap:2px}
-    .wall .piece .name{order:0;font:400 var(--tile-name)/1 var(--serif);text-transform:uppercase}
-    .wall .piece .cost{order:1;font-size:13px;color:rgba(0,0,0,.55)}
-  }
   @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} }
+  /* phones: two across, 8px from the edges, 8px between */
+  @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 8px} }
 
-  /* each piece: the photograph, with name and price rising in at the bottom on hover */
-  .piece{position:relative;display:block;color:#fff;aspect-ratio:4/5;overflow:hidden}
-  /* every tile the same frame; the in-hand photograph fades in over it on hover */
-  .piece img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity .5s ease}
-  /* the in-hand photograph swaps in at once, moved so the piece sits where it does in the still */
-  .piece .held{opacity:0;transition:opacity .5s ease;transform-origin:var(--ox,50%) var(--oy,50%);transform:translate(var(--tx,0%),var(--ty,0%)) scale(var(--s,1))}
+  /* each piece: the photograph in a rounded frame, name and price underneath (as in Also Worth Keeping) */
+  .wall figure{overflow:visible;background:none;border-radius:0}
+  .piece{position:relative;display:block;color:#000}
+  .piece img{display:block;width:100%;aspect-ratio:4/5;height:auto;object-fit:cover;border-radius:6px;background:var(--field);transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity .5s ease}
+  .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:6px}
+  /* the in-hand photograph fades in over the still on hover */
+  .piece .held{position:absolute;top:0;left:0;opacity:0}
   .piece:hover .held,.piece:focus-visible .held{opacity:1}
-  .piece:hover .held{transform:translate(var(--tx,0%),var(--ty,0%)) scale(var(--s,1))}
-  .piece .over{position:absolute;inset:auto 0 0 0;display:flex;flex-direction:column;align-items:flex-start;gap:8px;
-    padding:48px 18px 16px;font-size:15px;
-    background:linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,0));
-    opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .45s var(--ease)}
-  .piece .over{z-index:1}
-  .piece .cost{order:-1}
-  .piece .name{font:400 calc(49.5px - 8pt)/.95 var(--serif);text-transform:uppercase;letter-spacing:.01em}
-  .piece:hover .over,.piece:focus-visible .over{opacity:1;transform:none}
-  .piece:hover img{transform:scale(1.02)}
   @media (hover:none){ .piece .held{display:none} }
-  /* no hover on touch screens, so the details are always shown there */
-  @media (hover:none),(max-width:767px){ .piece .over{opacity:1;transform:none} }
+  .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}
+  .piece .name{font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
+  .piece .cost{font-size:14px;color:rgba(0,0,0,.55)}
+  @media (max-width:767px){
+    .piece .over{padding:10px 0 14px;gap:2px}
+    .piece .name{font-size:var(--tile-name)}
+    .piece .cost{font-size:13px}
+  }
 </style>
 </head>
 <body class="logo-hero">
