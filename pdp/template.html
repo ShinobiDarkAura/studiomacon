@@ -47,6 +47,12 @@
   .buy{margin:0 0 42px}          /* buttons follow the description */
   .desc-block .label{margin:0 0 22px}
   .desc{margin:0;font-size:17px;line-height:1.55}
+  /* phones: the text column reads left-aligned, buttons stack, closing placeholders are half a screen tall */
+  @media (max-width:767px){
+    .info,.product .info h1,.product .info .eyebrow{text-align:left}
+    .buy{grid-template-columns:1fr}
+    .big{aspect-ratio:auto;height:50vh;height:50svh}
+  }
 
   /* ── closing: big stacked images, two centred chunks ─ */
   .closing{padding:128px 0 0}

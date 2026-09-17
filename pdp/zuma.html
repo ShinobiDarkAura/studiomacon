@@ -6,7 +6,7 @@
 <title>Zuma | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789630868">
+<link rel="stylesheet" href="site.css?v=1789631207">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field)}
@@ -48,6 +48,12 @@
   .buy{margin:0 0 42px}          /* buttons follow the description */
   .desc-block .label{margin:0 0 22px}
   .desc{margin:0;font-size:17px;line-height:1.55}
+  /* phones: the text column reads left-aligned, buttons stack, closing placeholders are half a screen tall */
+  @media (max-width:767px){
+    .info,.product .info h1,.product .info .eyebrow{text-align:left}
+    .buy{grid-template-columns:1fr}
+    .big{aspect-ratio:auto;height:50vh;height:50svh}
+  }
 
   /* ── closing: big stacked images, two centred chunks ─ */
   .closing{padding:128px 0 0}
@@ -481,10 +487,12 @@
     menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
       '<a href="index.html#pieces">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
       '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+    [].forEach.call(menu.querySelectorAll('a'), function (a, i) { a.style.setProperty('--i', i); });
     document.body.appendChild(menu);
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
-    function set(on) { menu.hidden = !on; [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; }); btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on) menu.querySelector('a').focus(); }
-    btn.addEventListener('click', function (e) { e.preventDefault(); set(true); });
+    var keyboard = false;
+    function set(on) { menu.hidden = !on; [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; }); btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : ''; if (on && keyboard) menu.querySelector('a').focus(); }
+    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
   })();
