@@ -34,6 +34,9 @@ EYEBROW = {
     "ear-cuff": "Perfect Geometries",
     "starshipkey-pendant": "Device of Stellar Origin",
     "meridian-egg-ring": "Heavier Than It Looks",
+    "ooak-vessel": "Halves Hiding a Secret",
+    "ooak-pendant": "Mane Caught Mid-Stride",
+    "ooak-pouch": "Worn Nearest the Heart",
 }
 
 # The description under the price. Third person throughout, in the Kindred
@@ -57,6 +60,9 @@ DESC = {
     "ear-cuff": "A clean silver line that rests on the ear, no piercing required. Light breaks into odd colours across its mirrored edge. Shaped and polished by hand to hold securely.",
     "starshipkey-pendant": "Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad. Its hull is polished meticulously by hand.",
     "meridian-egg-ring": "Smooth sterling silver, far denser than it looks. Metaphysical analysis detects an abyss gazing back. Each ring is hand polished and sized to order.",
+    "ooak-vessel": "A small solid bronze vessel in fitted parts, the lid lifting away to reveal a hollow meant for a single small thing. Whatever is placed inside is said to keep better than expected; keepers report finding it exactly where they left it. Unique, carved and patinated by hand.",
+    "ooak-pendant": "A long silver head in profile, cut as if the wind had just passed through. Wearers report a pull toward open ground and early mornings. The only one of its kind, carved in wax and polished by hand.",
+    "ooak-pouch": "A small pouch of glass beads and soft leather, sized to carry a single totem against the chest. Those who wear it report steadier breathing on crowded days. The only one of its kind, beaded and stitched by hand."
 }
 
 # The two centred blocks at the bottom of each page — at least 30 words each.
@@ -80,6 +86,9 @@ LORE = {
     "ear-cuff": "The Caldera Arc follows the rim of a volcano, a long drop on one side the whole way round. It needs no piercing, only a gentle press, and soon disappears from notice entirely. In certain light, its edge scatters colours not found anywhere else.",
     "starshipkey-pendant": "The Starship Key opens nothing that can be found on earth, which has never stopped anyone from trying. Worn close, it seems to hum faintly whenever the night sky is especially clear. Researchers who study it are rarely seen at their desks for long.",
     "meridian-egg-ring": "Everyone who picks up the Meridian Egg says the same thing about its weight, and then declines to put it down. Its smooth surface gives nothing away. Those who stare into it for too long report the distinct feeling of being studied in return.",
+    "ooak-vessel": "Hollow Keeper was made to hold exactly one thing, and to keep quiet about what it is. Its lid settles back with a low, satisfying weight. Those who own it tend to check inside more often than they need to, just to be sure.",
+    "ooak-pendant": "Long Gallop was drawn in a single line and carved before the line could change its mind. It rests against the chest as though it has only stopped for breath. Wearers say it is hard to sit still for long while it is on.",
+    "ooak-pouch": "Heartward Pouch was made for travellers who would rather not leave their keepers at home. Each bead was chosen and set by hand, row after patient row. Whatever rides inside is said to feel the heartbeat, and to find it steadying."
 }
 
 MADE = ("Each piece is made to order. It begins as a sketch on paper, is carved by hand in wax, "
@@ -111,7 +120,23 @@ def kind(slug, notes):
     return "jewellery"
 
 
+# One-of-one pieces (Ephemeral). Pages are built so they're ready, but they stay off the shop.
+# Names, overlines and lore are first drafts, to be settled; photographs are grey stand-ins.
+OOAK = [
+    {"slug": "ooak-vessel", "name": "Hollow Keeper", "price": 780,
+     "notes": ["Solid bronze", "Two parts: a base and a fitted lid", "One of one"]},
+    {"slug": "ooak-pendant", "name": "Long Gallop", "price": 640,
+     "notes": ["Sterling silver", "Worn on a 30\" chain", "One of one"]},
+    {"slug": "ooak-pouch", "name": "Heartward Pouch", "price": 620,
+     "notes": ["Glass beads and vegetable-tanned leather", "Worn on a long cord, close to the chest", "One of one"]},
+]
+OOAK_SLUGS = {x["slug"] for x in OOAK}
+HIDE_FROM_SHOP |= OOAK_SLUGS          # one-of-ones stay off the shop until Ephemeral returns
+
+
 def read_port(slug):
+    if slug in OOAK_SLUGS:
+        return "", next(x["notes"] for x in OOAK if x["slug"] == slug)
     t = open(os.path.join(ROOT, "product", f"{slug}.html"), encoding="utf-8").read()
     desc = html.unescape(re.search(r'<div class="desc">(.*?)</div>', t, re.S).group(1)).strip()
     notes = [html.unescape(re.sub("<[^>]+>", "", x)).strip()
@@ -346,7 +371,7 @@ def related_block(p, products):
 
 def main():
     with open(os.path.join(ROOT, "_source/products.json")) as f:
-        products = json.load(f)
+        products = json.load(f) + OOAK
     template = shared(open(os.path.join(OUT, "template.html"), encoding="utf-8").read())
     # info pages: story, custom, contact, shipping
     for f in sorted(x for x in os.listdir(os.path.join(OUT, "pages")) if x != "shop.html"):

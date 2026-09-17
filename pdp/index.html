@@ -94,6 +94,7 @@
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head.next-set{padding-top:0}
   .set::after{content:"";display:block;height:calc(120px + 10vh)}
+  @media (max-width:767px){ .set::after{height:max(0px, calc(120px - 5vh))} }          /* phones: 15vh less between Totems and Jewelry */
   .set:last-of-type::after{display:none}
   .placeholder-fill{position:absolute;inset:0;background:#e6e6e4}
   .placeholder{position:relative;aspect-ratio:4/5;background:#d9d9d9;overflow:hidden}
@@ -190,7 +191,8 @@
     </div>
   </section>
 
-  <div class="set" id="pieces">
+  <!-- EPHEMERAL (one-of-one pieces) — parked until there are pieces to sell. To bring back, uncomment and move id="pieces" onto this set.
+  <div class="set" >
   <header class="wall-head">
     <h2 class="set-title">Ephemeral</h2><span class="count">3</span>
   </header>
@@ -202,8 +204,10 @@
   </section>
   </div>
 
-  <div class="set">
-  <header class="wall-head next-set">
+  -->
+
+  <div class="set" id="pieces">
+  <header class="wall-head">
     <h2 class="set-title">Totems</h2><span class="count">9</span>
   </header>
   <section class="wall shop-wall">
@@ -391,9 +395,9 @@
   (function () {
     var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
-                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
+                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *, .related > :not(.rel-grid), .rel-piece';
     // side-by-side groups cascade instead of arriving at once
-    var GROUPS = ['.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
+    var GROUPS = ['.related', '.rel-grid', '.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
     // coming back (Back button or history) the page simply reappears as it was, with no entrance
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');

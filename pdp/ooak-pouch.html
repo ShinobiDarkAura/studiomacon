@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Heartward Pouch | Studio Maçon</title>
+<link rel="icon" href="img/favicon.png">
+<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=1789633705">
+<style>
+  /* ── product ───────────────────────────────────────── */
+  .gallery figure{margin:0;background:var(--field)}
+  .gallery figure:not(.hero){display:none}          /* mobile: hero only up top */
+  .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
+  .gallery video{display:block;width:100%;height:100vh;height:100svh;object-fit:cover;background:var(--field)}
+
+  .info{padding:28px var(--pad) 0;text-align:center}
+  .price{font-size:19px;margin:0 0 18px}
+  .info h1{margin-bottom:12px}          /* h1 default is 22px; 10px tighter under the name */
+  /* ring size: the whole bordered block is the control; sizes open beneath it */
+  .size{position:relative;margin:0 0 12px;border:1px solid var(--rule);text-align:left}
+  .size-toggle{display:flex;align-items:center;gap:16px;width:100%;height:52px;padding:0 20px 0 16px;cursor:pointer}
+  .size-label{font-size:15px;text-transform:uppercase;margin-right:auto}
+  .size-value{font-size:16px}
+  .size.picked .size-value{font-weight:500}
+  .chev{width:12px;height:8px;flex:none;transition:transform .35s var(--ease);
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.3'/%3E%3C/svg%3E") center/12px 8px no-repeat}
+  .size.open .chev{transform:rotate(180deg)}
+  .size-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+  .size.open .size-panel{grid-template-rows:1fr}
+  .size-inner{overflow:hidden}
+  .size-list{list-style:none;margin:0;padding:4px 16px 16px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+    border-top:1px solid var(--rule);padding-top:16px;opacity:0;transition:opacity .3s ease}
+  .size.open .size-list{opacity:1;transition-delay:.08s}
+  .size-list li{display:grid;place-items:center;height:40px;border:1px solid var(--rule);font-size:15px;cursor:pointer;
+    transition:border-color .2s ease,background .2s ease,color .2s ease}
+  .size-list li:hover,.size-list li:focus{border-color:#000;outline:none}
+  .size-list li[aria-selected="true"]{background:#000;color:#fff;border-color:#000}
+  .buy{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .apple-pay{display:flex;align-items:center;justify-content:center;width:100%;height:47px;background:#000;color:#fff;
+    gap:3px;letter-spacing:-.01em;font:500 16.6px/1 -apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
+  .apple-pay svg{width:13.6px;height:16.6px;margin-top:-2px;fill:#fff}
+  /* product buttons: 8px shorter than the site's other black buttons, type and arrow 15% smaller */
+  .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85)}
+  .buy .cta::after{height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
+  .buy .cta:not([disabled]):hover::after{width:12px;margin-left:8px}
+  /* Safari draws Apple's own button */
+  @supports (-webkit-appearance:-apple-pay-button){
+    .apple-pay{-webkit-appearance:-apple-pay-button;-apple-pay-button-type:plain;-apple-pay-button-style:black}
+    .apple-pay > *{display:none}
+  }
+  .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
+  .buy{margin:0}          /* buttons sit right under the price */
+  .desc-block{margin:44px 0 12px}
+  .desc-block .label{margin:0 0 14px}
+  .desc{margin:0;font-size:15px;line-height:1.55}          /* same size as the overline */
+  @media (min-width:768px){ .desc{font-size:16px} }
+
+  /* ── closing: big stacked images, two centred chunks ─ */
+  .closing{padding:128px 0 0}
+  .big{--w:min(calc((100% - 2 * var(--pad)) * 1.1), 100%);width:var(--w);margin-left:calc((100% - var(--w)) / 2);
+    aspect-ratio:2.2917/1;background:#d9d9d9;border-radius:6px}          /* 3:1 made 10% wider, then 20% taller twice */
+  .chunk{margin:120px auto;padding:0 calc(var(--pad) + 16px);max-width:620px;
+    text-align:center;font-size:17px;line-height:1.55}
+
+  /* ── sticky bag bar (mobile) ───────────────────────── */
+  .dock{position:fixed;left:var(--pad);right:var(--pad);bottom:24px;z-index:15;
+    display:flex;align-items:center;justify-content:center;gap:26px;height:68px;
+    background:#fff;border:1.5px solid var(--ink);font-size:calc(18px - 3pt);letter-spacing:.08em;text-transform:uppercase;
+    transform:translateY(140%);transition:transform .35s var(--ease)}
+  .dock.on{transform:none}
+  .dock span:last-child{text-transform:none}
+
+  /* ── phones: one 24px side margin for the whole page, left-aligned text, stacked buttons ── */
+  @media (max-width:767px){
+    .info,.product .info h1,.product .info .eyebrow{text-align:left}
+    .gallery{padding:calc(var(--head) - 6px) 8px 0}          /* the main image starts 8px below the logotype, 8px from the sides */
+    .info{padding-left:8px;padding-right:8px}
+    .gallery .hero img,.gallery .hero video{height:auto;aspect-ratio:4/5;border-radius:6px}
+    .closing{padding:96px 8px 0}
+    .big{--w:100%;width:100%;margin-left:0;aspect-ratio:auto;height:50vh;height:50svh}
+    .chunk{padding:0}
+    /* thumbnails of every picture and film, under the main image */
+    .thumbs{display:flex;gap:8px;margin:10px 0 0}
+    .thumbs::-webkit-scrollbar{display:none}
+    .thumbs button{flex:1 1 0;min-width:0;aspect-ratio:4/5;padding:0;border-radius:4px;overflow:hidden}          /* however many there are, they share the full width */
+    .thumbs button.on{opacity:1}
+    .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#000}
+    .thumbs img{width:100%;height:100%;object-fit:cover}
+    /* load-in order: main image, then the thumbnails one by one, then the name, price and buttons */
+    .thumbs button{animation:thumb-in .7s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 70ms + 350ms)}
+    .info > .dr-emerge{transition-delay:calc(var(--stagger,0ms) + 800ms)}
+    .info > .dr-emerge.is-seen{transition-delay:calc(var(--stagger,0ms) + 800ms)}
+  }
+  @keyframes thumb-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){ .thumbs button{animation:none} }
+  @media (min-width:768px){ .thumbs{display:none} }
+  /* phones: other pieces, one full screen, 2 × 2 */
+  /* desktop: four across under the product, title centred above */
+  .related{padding:180px 12px 160px;text-align:center}          /* the row reaches the same 12px edge as the main photos */
+  .related h2{margin:0 0 20px;font:400 53px/1 var(--serif);text-transform:uppercase}
+  .related .rel-blurb{margin:0 auto 56px;max-width:480px;font-size:16px;line-height:1.55}
+  .rel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:left}
+  .rel-piece{display:block;color:#000}
+  .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--field)}
+  .rel-frame img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .rel-piece:hover .rel-frame img{transform:scale(1.02)}
+  .rel-name{display:block;margin:20px 0 4px;font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
+  .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
+  @media (max-width:767px){
+    .related{display:flex;flex-direction:column;justify-content:center;min-height:100vh;min-height:100svh;padding:72px 8px 48px;text-align:center}
+    .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
+    .related .rel-blurb{margin:0 auto 32px;max-width:300px;font-size:15px;line-height:1.55}
+    .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left}
+    .rel-piece{display:block;color:#000}
+    .rel-frame{display:block;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--field)}
+    .rel-frame img{width:100%;height:100%;object-fit:cover}
+    .rel-name{margin:10px 0 2px;font-size:var(--tile-name)}
+    .rel-cost{display:block;font-size:13px;color:rgba(0,0,0,.55)}
+    .related + .closing{padding-top:48px}
+  }
+
+  @media (min-width:768px){
+    .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
+      margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
+    .gallery figure:not(.hero){display:block;margin-top:0}
+    /* 12px inset on the left, and 12px under each picture */
+    .gallery{padding-left:12px}
+    .gallery figure{margin-bottom:12px}
+    .gallery figure img{width:100%}
+    /* every gallery photograph fills one full screen height */
+    .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
+    .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
+
+    /* transparent, pinned, and scrolls on its own when every accordion is open */
+    .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
+      overscroll-behavior:contain;scrollbar-width:none;text-align:left;padding:24px 0 48px;
+      display:flex;flex-direction:column;justify-content:safe center}
+    .info > *{flex:none}
+    .info::-webkit-scrollbar{display:none}
+
+    .closing{max-width:1100px;margin:0 auto;padding:204px var(--pad) 0}
+    .big{--w:110%}
+    .chunk{margin:188px auto;max-width:620px;padding:0}
+    .dock{display:none}
+  }
+</style>
+</head>
+<body class="white-right">
+
+<header class="head">
+  <div class="left">
+    <a href="#" class="mob hover-line">Menu</a>
+    <a href="index.html#pieces" class="desk hover-line">Shop</a>
+    <a href="custom.html" class="desk hover-line">Custom</a>
+    <a href="story.html" class="desk hover-line">About</a>
+  </div>
+  <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
+  <div class="right"><a href="#">Bag (0)</a></div>
+</header>
+
+<main>
+  <section class="product">
+    <div class="gallery" data-under-nav>
+      <figure class="hero"><img width="1600" height="2000" src="img/ooak-pouch/hero.jpg" alt="Heartward Pouch" fetchpriority="high"></figure>
+      <figure><img width="1600" height="2000" src="img/ooak-pouch/plain-1.jpg" alt="" loading="lazy"></figure>
+      <figure><img width="1600" height="2000" src="img/ooak-pouch/plain-2.jpg" alt="" loading="lazy"></figure>
+    </div>
+
+    <div class="info">
+      <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back</span></a>
+      <p class="eyebrow">Worn Nearest the Heart</p>
+      <h1>Heartward Pouch</h1>
+      <p class="price">$620</p>
+      
+      <div class="buy" id="bag">
+        <button class="cta">Add to Bag</button>
+        <button class="apple-pay" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+      </div>
+      <div class="desc-block"><p class="label">Field Notes</p><p class="desc">A small pouch of glass beads and soft leather, sized to carry a single totem against the chest. Those who wear it report steadier breathing on crowded days. The only one of its kind, beaded and stitched by hand.</p></div>
+      <div class="acc">
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Wear &amp; Care</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Sterling silver darkens with time and air. Wear it often and it stays bright; bring back the shine with a soft polishing cloth. Take it off to swim.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Materials</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Glass beads and vegetable-tanned leather</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Sizing</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><dl><dt>Dimensions</dt><dd><span class="todo">to confirm</span></dd></dl><p class="after-dl">If your piece needs resizing, takes a knock, or needs adjusting, write to <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and <span class="todo">we'll look after it</span>.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Each piece is made to order; please allow up to 10 business days before it ships. Standard shipping takes 3–7 business days, international 5–10. Pieces in original condition (excluding custom work) may be returned within 14 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size. <a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.</p></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2><p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p><div class="rel-grid"><a class="rel-piece" href="zuma-ring.html"><span class="rel-frame"><img width="1368" height="858" src="img/zuma-ring/hero.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Zuma Ring</span><span class="rel-cost">$320</span></a><a class="rel-piece" href="eclipse-ring.html"><span class="rel-frame"><img width="2400" height="1671" src="img/eclipse-ring/hero.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Eclipse Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="sietch-aperture.html"><span class="rel-frame"><img width="1600" height="1124" src="img/sietch-aperture/hero.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Sietch Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-frame"><img width="2400" height="1600" src="img/lunar-canyon-ring/hero.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a></div></section>
+
+  <!-- lore and making blocks, parked for now
+  <section class="closing">
+    <div class="big" role="presentation"></div>
+    <p class="chunk">Heartward Pouch was made for travellers who would rather not leave their keepers at home. Each bead was chosen and set by hand, row after patient row. Whatever rides inside is said to feel the heartbeat, and to find it steadying.</p>
+    <div class="big" role="presentation"></div>
+    <p class="chunk">Each piece is made to order. It begins as a sketch on paper, is carved by hand in wax, and passes through a local foundry before being refined and polished at the bench. Allow up to two weeks for yours to take shape.</p>
+    <div class="big" role="presentation"></div>
+  </section>
+  -->
+</main>
+
+<footer>
+  <div class="brand">
+    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
+    <p class="fine">Artifacts of Love,<br>Made to Order.</p>
+  </div>
+  <div class="middle">
+  <nav class="links">
+    <a class="hover-line" href="story.html">About</a>
+    <a class="hover-line" href="custom.html">Custom</a>
+    <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
+    <a class="hover-line" href="inspiration.html">Inspiration</a>
+    <a class="hover-line" href="contact.html">Contact</a>
+  </nav>
+  </div>
+  <div class="news">
+    <p>Subscribe to hear about new pieces before anyone else.</p>
+    <form class="field" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thank you'">
+      <input type="email" placeholder="Email address" aria-label="Email address" required>
+      <button>Submit</button>
+    </form>
+  </div>
+</footer>
+
+<button class="dock" id="dock" aria-label="Add to Bag, $620"><span>Add to Bag</span><span>$620</span></button>
+
+<script>
+  (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
+  // A refresh always starts at the top of the page; Back and Forward still return to where you were
+  (function () {
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    if (nav && nav.type === 'reload') {
+      history.scrollRestoration = 'manual';
+      scrollTo(0, 0);
+      addEventListener('load', function () { scrollTo(0, 0); });
+    }
+    addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
+  })();
+
+  // Accordions: the height eases through a grid-row transition, so nothing is
+  // measured in script and a panel of any length opens at the same pace.
+  document.querySelectorAll('.acc-head').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var item = b.parentElement, open = !item.classList.contains('open');
+      item.classList.toggle('open', open);
+      b.setAttribute('aria-expanded', open);
+    });
+  });
+
+  // Nav tone: each part of the nav (links, logotype, bag) looks at what is
+  // actually beneath it. Over an image it reads the pixels there; over anything
+  // else, the background colour. Only very light ground keeps the nav black.
+  (function () {
+    var LIGHT = 0.82;                      // "super light": white, pale grey, paper
+    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .logotype, .head .right'));
+    var maps = new WeakMap();
+
+    function lumaOf(r, g, b) { return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }
+
+    function map(img) {                    // a small luminance copy of each image, made once
+      if (maps.has(img)) return maps.get(img);
+      if (!img.complete || !img.naturalWidth) return null;
+      var w = 64, h = Math.max(1, Math.round(64 * img.naturalHeight / img.naturalWidth));
+      var c = document.createElement('canvas'); c.width = w; c.height = h;
+      var x = c.getContext('2d', {willReadFrequently: true});
+      try { x.drawImage(img, 0, 0, w, h); var d = x.getImageData(0, 0, w, h).data; } catch (e) { return null; }
+      var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
+    }
+
+    var lumas = new WeakMap();
+    function bgLuma(el) {                  // first painted background up the tree, else the white page
+      if (el && lumas.has(el)) return lumas.get(el);
+      var v = paintedLuma(el); if (el) lumas.set(el, v); return v;
+    }
+    function paintedLuma(el) {
+      for (; el && el !== document.documentElement; el = el.parentElement) {
+        var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
+        if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
+      }
+      return 1;
+    }
+
+    function lumaAt(px, py) {
+      var stack = document.elementsFromPoint(px, py);
+      for (var i = 0; i < stack.length; i++) {
+        var el = stack[i];
+        if (el.closest('.head')) continue;
+        if (el.tagName === 'VIDEO') return 0;
+        if (/^(IMG|VIDEO)$/.test(el.tagName) && el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them
+        if (el.tagName === 'IMG') {
+          var m = map(el); if (!m) return bgLuma(el);
+          var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
+          var sx = r.width / el.naturalWidth, sy = r.height / el.naturalHeight;
+          if (fit === 'cover') sx = sy = Math.max(sx, sy);
+          else if (fit === 'contain') sx = sy = Math.min(sx, sy);
+          var ox = (r.width - el.naturalWidth * sx) / 2, oy = (r.height - el.naturalHeight * sy) / 2;
+          var u = (px - r.left - ox) / (el.naturalWidth * sx), v = (py - r.top - oy) / (el.naturalHeight * sy);
+          if (u < 0 || u > 1 || v < 0 || v > 1) return bgLuma(el);
+          var tx = Math.min(m.w - 1, Math.floor(u * m.w)), ty = Math.min(m.h - 1, Math.floor(v * m.h));
+          var sum = 0, n = 0, alpha = 0;
+          for (var dy = -1; dy <= 1; dy++) for (var dx = -2; dx <= 2; dx++) {
+            var X = Math.max(0, Math.min(m.w - 1, tx + dx)), Y = Math.max(0, Math.min(m.h - 1, ty + dy)), k = (Y * m.w + X) * 4;
+            sum += lumaOf(m.d[k], m.d[k + 1], m.d[k + 2]) * m.d[k + 3] / 255; alpha += m.d[k + 3] / 255; n++;
+          }
+          // transparent pixels show whatever is behind the picture
+          var under = bgLuma(el.parentElement);
+          return (sum + under * (n - alpha)) / n;
+        }
+        // a gap between pictures in an image grid: hold the current colour until the grid is left
+        if (el.closest('.wall, .examples')) return null;
+        return bgLuma(el);
+      }
+      return 1;
+    }
+
+    var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
+    function tone(force) {
+      queued = false;
+      if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
+      lastY = scrollY;
+      // the whole nav is one unit: read under each part, then colour every part the same
+      var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
+      var grid = null;
+      document.elementsFromPoint(innerWidth / 2, mid).some(function (el) {
+        if (el.closest('.head')) return false;
+        grid = el.closest('.wall, .examples'); return true;
+      });
+      if (grid && held === grid) return;          // over an image grid: keep the colour until the grid has passed
+      held = grid;
+      var dark = 0, counted = 0;
+      parts.forEach(function (p) {
+        var r = p.getBoundingClientRect(); if (!r.width) return;
+        var y = r.top + r.height / 2, l = 1, seen = false;
+        [0.15, 0.5, 0.85].forEach(function (f) {
+          var v = lumaAt(r.left + r.width * f, y);
+          if (v === null) return;
+          seen = true; l = Math.min(l, v);
+        });
+        if (!seen) return;
+        counted++; if (l < LIGHT) dark++;
+      });
+      if (!counted) return;
+      var onDark = dark * 2 > counted;              // most of the nav sits over something dark
+      parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
+    }
+    function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
+    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
+    function fresh() { held = null; lastY = -99; soon(); }
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
+    addEventListener('load', fresh);
+    tone(true);
+  })();
+
+  // Emerge: every image and text block starts hidden and settles into place the
+  // first time about 16% of it is on screen. It never fades back out (toggling
+  // flickered), and anything added later is picked up too.
+  (function () {
+    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+                 '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
+                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *, .related > :not(.rel-grid), .rel-piece';
+    // side-by-side groups cascade instead of arriving at once
+    var GROUPS = ['.related', '.rel-grid', '.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
+    // coming back (Back button or history) the page simply reappears as it was, with no entrance
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
+    var io = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        io.unobserve(e.target);
+      });
+    }, {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});
+    // the footer sits against the page's bottom edge, where the main trigger line
+    // can never be crossed, so it reveals as soon as any of it is on screen
+    var edge = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        edge.unobserve(e.target);
+      });
+    }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
+
+    function arm(root) {
+      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
+        .forEach(function (el) {
+          if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
+          // hide instantly: the transition is for arriving, not for going away
+          el.style.transition = 'none';
+          el.classList.add('dr-emerge');
+          void el.offsetWidth;
+          el.style.transition = '';
+          if (still) { el.classList.add('is-seen'); return; }
+          // the inspiration wall's first screen plays in full on load, even the
+          // pieces only partly in view, so no part of the screen is left empty
+          if (el.closest('.wall, .wall-head') && el.getBoundingClientRect().top < innerHeight) {
+            requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-seen'); }); });
+            return;
+          }
+          // let the hidden state paint first, or blocks already on screen at load
+          // would jump straight to their resting place without animating
+          // (and wait for the stylesheet: until the hidden state has actually taken
+          // effect there is nothing to animate from)
+          var tries = 0;
+          (function ready() {
+            if (getComputedStyle(el).opacity !== '0' && tries++ < 120) return requestAnimationFrame(ready);
+            requestAnimationFrame(function () { (el.closest('footer') ? edge : io).observe(el); });
+          })();
+        });
+    }
+    // wall pieces cascade by their position in the row, so each row settles left to right
+    // pieces already on screen at load arrive top to bottom, the rest by column
+    document.querySelectorAll('.wall figure').forEach(function (f) {
+      var r = f.getBoundingClientRect();
+      var d = r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 + r.left / innerWidth * 120
+                                  : Math.round(r.left / innerWidth * 4) * 80;
+      f.style.setProperty('--stagger', Math.round(d) + 'ms');
+    });
+    document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
+    GROUPS.forEach(function (g) {
+      document.querySelectorAll(g).forEach(function (group) {
+        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });
+      });
+    });
+    arm(document);
+    // Anything on the first screen at load plays its entrance even if it sits in the bottom
+    // strip the scroll trigger ignores (it would otherwise wait for a scroll that never comes).
+    if (!still) setTimeout(function () {
+      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
+        if (el.getBoundingClientRect().top - 70 < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
+      });
+    }, 400);
+    // Blocks in the last few pixels of the page can't rise past the trigger
+    // line, so reveal whatever is on screen once the bottom is reached.
+    function atBottom() {
+      if (still || innerHeight + scrollY < document.documentElement.scrollHeight - 2) return;
+      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
+      });
+    }
+    addEventListener('scroll', atBottom, {passive: true});
+    // a reload lands back at the old scroll position without necessarily scrolling,
+    // so check once everything has loaded and been armed as well
+    addEventListener('load', function () { setTimeout(atBottom, 80); setTimeout(atBottom, 400); });
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) arm(n); }); });
+    }).observe(document.body, {childList: true, subtree: true});
+  })();
+
+  // Bag: the pieces live in localStorage so the bag, checkout and every page agree
+  window.MaconBag = (function () {
+    var KEY = 'macon-bag-items';
+    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+    function clean(it) { return {slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
+      size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
+    function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
+    function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
+    function add(item) {
+      var items = read(), same = items.filter(function (i) { return i.slug === item.slug && (i.size || '') === (item.size || ''); })[0];
+      if (same) same.qty = (same.qty || 1) + 1; else { item.qty = 1; items.push(item); }
+      write(items);
+    }
+    return {read: read, write: write, count: count, add: add};
+  })();
+
+  (function () {
+    var bag = document.querySelector('.head .right a'); if (!bag) return;
+    bag.setAttribute('href', 'bag.html');
+    function paint() { bag.textContent = 'Bag (' + MaconBag.count() + ')'; }
+    paint(); document.addEventListener('bag:change', paint);
+    addEventListener('storage', paint);
+    var toast = document.createElement('div');
+    toast.className = 'bag-toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
+    document.querySelector('.head .right').appendChild(toast);
+    var timer = null;
+    document.querySelectorAll('.cta, .dock').forEach(function (b) {
+      if (!/add to bag/i.test(b.textContent)) return;
+      b.addEventListener('click', function (e) {
+        var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price');
+        var sizeBox = document.querySelector('[data-size]'), size = sizeBox && sizeBox.classList.contains('picked') ? sizeBox.querySelector('.size-value').textContent : '';
+        if (sizeBox && !size) {                       // rings need a size before they go in the bag
+          e.stopPropagation();                        // or the picker's click-outside handler shuts it again
+          sizeBox.classList.add('open', 'need'); sizeBox.querySelector('.size-toggle').setAttribute('aria-expanded', true);
+          sizeBox.scrollIntoView({block: 'center', behavior: 'smooth'});
+          setTimeout(function () { sizeBox.classList.remove('need'); }, 1600);
+          return;
+        }
+        MaconBag.add({
+          slug: location.pathname.split('/').pop().replace('.html', ''),
+          name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
+          img: hero ? hero.getAttribute('src') : '', size: size
+        });
+        toast.textContent = '';
+        if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+        tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+        if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+        toast.appendChild(tx);
+        bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
+        toast.classList.add('on'); clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
+      });
+    });
+  })();
+
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+  });
+
+  // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
+  (function () {
+    var link = document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;
+    var home = link.parentElement, next = link.nextSibling, wide = matchMedia('(min-width:768px)');
+    function place() {
+      if (wide.matches) {
+        if (link.parentElement !== head) head.appendChild(link);
+        var x = 0; for (var el = home; el; el = el.offsetParent) x += el.offsetLeft;
+        link.style.left = x + 'px';
+      } else if (link.parentElement !== home) { home.insertBefore(link, next); link.style.left = ''; }
+    }
+    place(); addEventListener('resize', place); addEventListener('load', place);
+  })();
+
+  // Mobile menu
+  (function () {
+    var btn = document.querySelector('.head .mob'); if (!btn) return;
+    var menu = document.createElement('nav');
+    menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.inert = true;
+    menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
+      '<a href="index.html#pieces">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
+      '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+    [].forEach.call(menu.querySelectorAll('a'), function (a, i) { a.style.setProperty('--i', i); });
+    document.body.appendChild(menu);
+    btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
+    var keyboard = false;
+    function set(on) {
+      if (on) {          // Close sits exactly where Menu was
+        var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
+        c.style.left = r.left + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
+      }
+      menu.classList.toggle('open', on); menu.inert = !on; open = on;
+      document.documentElement.classList.toggle('menu-open', on);
+      [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; });
+      btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : '';
+      if (on && keyboard) menu.querySelector('a').focus();
+    }
+    var open = false;
+    // tapping the pushed-over page closes the menu
+    document.addEventListener('click', function (e) { if (open && !menu.contains(e.target) && e.target !== btn) set(false); });
+    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
+    menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
+  })();
+</script>
+<script>
+  // Phones: a strip of thumbnails under the main image; tapping one shows that picture or film in its place
+  (function () {
+    var gallery = document.querySelector('.gallery'), hero = gallery.querySelector('.hero');
+    var figs = [].slice.call(gallery.querySelectorAll('figure'));
+    if (figs.length > 5) figs = figs.slice(0, -2);          // long galleries: the last two pictures stay off the strip
+    if (figs.length < 2) return;
+    var original = hero.innerHTML, strip = document.createElement('div');
+    strip.className = 'thumbs'; strip.setAttribute('aria-label', 'More pictures');
+    figs.forEach(function (f, i) {
+      var media = f.querySelector('img, video'); if (!media) return;
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Picture ' + (i + 1));
+      var t = document.createElement('img'); t.alt = ''; t.loading = 'lazy';
+      t.src = media.tagName === 'VIDEO' ? media.getAttribute('poster') : media.getAttribute('src');
+      b.appendChild(t); b.style.setProperty('--i', i); if (i === 0) b.classList.add('on');
+      b.addEventListener('click', function () {
+        hero.innerHTML = i === 0 ? original : f.innerHTML;
+        var v = hero.querySelector('video'); if (v) { v.muted = true; v.play().catch(function () {}); }
+        [].forEach.call(strip.children, function (x) { x.classList.toggle('on', x === b); });
+      });
+      strip.appendChild(b);
+    });
+    hero.after(strip);
+  })();
+</script>
+<script>
+  // Desktop: Back to Shop belongs to the product's right column, so it fades away once that column has scrolled past
+  (function () {
+    var back = document.querySelector('.back'), product = document.querySelector('.product');
+    if (!back || !product || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (e) { back.classList.toggle('gone', !e[0].isIntersecting); }, {rootMargin: '-120px 0px 0px 0px'}).observe(product);
+  })();
+  // Ring size: the bordered block opens a panel of sizes; picking one closes it.
+  document.querySelectorAll('[data-size]').forEach(function (box) {
+    var toggle = box.querySelector('.size-toggle'), value = box.querySelector('.size-value');
+    var items = [].slice.call(box.querySelectorAll('li'));
+    function open(on) { box.classList.toggle('open', on); toggle.setAttribute('aria-expanded', on); if (on && document.activeElement === toggle) (box.querySelector('[aria-selected="true"]') || items[0]).focus(); }
+    toggle.addEventListener('click', function () { open(!box.classList.contains('open')); });
+    items.forEach(function (li) {
+      li.addEventListener('click', function () {
+        items.forEach(function (x) { x.setAttribute('aria-selected', x === li); });
+        value.textContent = li.dataset.value; box.classList.add('picked'); open(false);
+      });
+      li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); } });
+    });
+    document.addEventListener('click', function (e) { if (!box.contains(e.target)) open(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') open(false); });
+  });
+</script>
+<script>
+  // The bag bar appears once the real button has scrolled away, and steps
+  // aside at the footer so it never covers the newsletter.
+  (function () {
+    var dock = document.getElementById('dock'), gone = false, foot = false; dock.inert = true;
+    function sync() { dock.classList.toggle('on', gone && !foot); dock.inert = !(gone && !foot); }
+    new IntersectionObserver(function (e) { gone = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; sync(); })
+      .observe(document.getElementById('bag'));
+    new IntersectionObserver(function (e) { foot = e[0].isIntersecting; sync(); }, {rootMargin: '0px 0px -40% 0px'})
+      .observe(document.querySelector('footer .news'));
+  })();
+</script>
+</body>
+</html>

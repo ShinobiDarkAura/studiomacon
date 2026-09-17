@@ -93,6 +93,7 @@
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head.next-set{padding-top:0}
   .set::after{content:"";display:block;height:calc(120px + 10vh)}
+  @media (max-width:767px){ .set::after{height:max(0px, calc(120px - 5vh))} }          /* phones: 15vh less between Totems and Jewelry */
   .set:last-of-type::after{display:none}
   .placeholder-fill{position:absolute;inset:0;background:#e6e6e4}
   .placeholder{position:relative;aspect-ratio:4/5;background:#d9d9d9;overflow:hidden}
@@ -180,7 +181,8 @@
     </div>
   </section>
 
-  <div class="set" id="pieces">
+  <!-- EPHEMERAL (one-of-one pieces) — parked until there are pieces to sell. To bring back, uncomment and move id="pieces" onto this set.
+  <div class="set" >
   <header class="wall-head">
     <h2 class="set-title">Ephemeral</h2><span class="count">3</span>
   </header>
@@ -192,8 +194,10 @@
   </section>
   </div>
 
-  <div class="set">
-  <header class="wall-head next-set">
+  -->
+
+  <div class="set" id="pieces">
+  <header class="wall-head">
     <h2 class="set-title">Totems</h2><span class="count">{{TOTEMCOUNT}}</span>
   </header>
   <section class="wall shop-wall">
