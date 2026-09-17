@@ -195,6 +195,11 @@ body.fit footer{min-height:0;padding-top:48px}
 /* desktop: it moves up into the nav row, lined up with the left edge of its column and level with Bag */
 .head .back{position:absolute;top:50%;margin:0;transform:translateY(-50%)}
 
+/* lockup trials: add ?logo=artifacts or ?logo=objects to any page address */
+.logo-artifacts .logotype,.logo-objects .logotype{aspect-ratio:294/112}
+.logo-artifacts .logotype{-webkit-mask-image:url(img/lockup-artifacts.svg);mask-image:url(img/lockup-artifacts.svg)}
+.logo-objects .logotype{-webkit-mask-image:url(img/lockup-objects.svg);mask-image:url(img/lockup-objects.svg)}
+
 /* keyboard focus */
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
 .field:focus-within{border-bottom-color:#000}
