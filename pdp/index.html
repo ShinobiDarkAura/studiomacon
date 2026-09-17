@@ -7,13 +7,15 @@
 <link rel="icon" href="../assets/favicon.png">
 <link rel="stylesheet" href="site.css?v=1789604708">
 <style>
-  .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px + 5vw) 24px}
+  .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px) 24px}
+  .wall-head.next-set{padding-top:120px}
+  .placeholder{aspect-ratio:4/5;background:#d9d9d9}
   .wall-head h1{margin:0;font-size:57.5px}
   .wall-head .count{font-size:13px;color:rgba(0,0,0,.45)}
   @media (min-width:768px){ .wall-head h1{font-size:66.25px} }
   @media (min-width:1200px){ .wall-head h1{font-size:75px} }
 
-  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 12px + 5vw)}
+  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 12px)}
   .wall figure{margin:0;border-radius:6px;overflow:hidden;background:var(--field)}
   .wall figure.dr-emerge{filter:none;transform:translateY(90px);
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
@@ -57,7 +59,16 @@
 
 <main>
   <header class="wall-head">
-    <h1>Shop</h1><span class="count">18</span>
+    <h1>Ephemeral</h1><span class="count">3</span>
+  </header>
+  <section class="wall shop-wall">
+    <figure><div class="placeholder"></div></figure>
+    <figure><div class="placeholder"></div></figure>
+    <figure><div class="placeholder"></div></figure>
+  </section>
+
+  <header class="wall-head next-set">
+    <h1>Perennial</h1><span class="count">18</span>
   </header>
   <section class="wall shop-wall">
     <figure><a class="piece" href="pip.html"><img src="img/pip/hero.jpg" alt="Pip" loading="eager"><img class="held" src="img/pip/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
@@ -66,18 +77,18 @@
     <figure><a class="piece" href="zuma.html"><img src="img/zuma/hero.jpg" alt="Zuma" loading="eager"><img class="held" src="img/zuma/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Zuma</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="ori.html"><img src="img/ori/hero.jpg" alt="Ori" loading="eager"><img class="held" src="img/ori/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Ori</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="yael.html"><img src="img/yael/hero.jpg" alt="Yaël" loading="eager"><img class="held" src="img/yael/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Yaël</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="zuma-ring.html"><img src="img/zuma-ring/hero.jpg" alt="Zuma Ring" loading="lazy"><img class="held" src="img/zuma-ring/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Zuma Ring</span><span class="cost">$320</span></span></a></figure>
     <figure><a class="piece" href="milo.html"><img src="img/milo/hero.jpg" alt="Milo" loading="lazy"><img class="held" src="img/milo/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Milo</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="eleph.html"><img src="img/eleph/hero.jpg" alt="Eleph" loading="lazy"><img class="held" src="img/eleph/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Eleph</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ibi.html"><img src="img/ibi/hero.jpg" alt="Ibi" loading="lazy"><img class="held" src="img/ibi/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Ibi</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="zuma-ring.html"><img src="img/zuma-ring/hero.jpg" alt="Zuma Ring" loading="lazy"><img class="held" src="img/zuma-ring/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Zuma Ring</span><span class="cost">$320</span></span></a></figure>
     <figure><a class="piece" href="eclipse-ring.html"><img src="img/eclipse-ring/hero.jpg" alt="Eclipse Ring" loading="lazy"><img class="held" src="img/eclipse-ring/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Eclipse Ring</span><span class="cost">$340</span></span></a></figure>
     <figure><a class="piece" href="sietch-aperture.html"><img src="img/sietch-aperture/hero.jpg" alt="Sietch Ring" loading="lazy"><img class="held" src="img/sietch-aperture/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Sietch Ring</span><span class="cost">$340</span></span></a></figure>
     <figure><a class="piece" href="lunar-canyon-ring.html"><img src="img/lunar-canyon-ring/hero.jpg" alt="Lunar Canyon" loading="lazy"><img class="held" src="img/lunar-canyon-ring/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Lunar Canyon</span><span class="cost">$370</span></span></a></figure>
-    <figure><a class="piece" href="eleph.html"><img src="img/eleph/hero.jpg" alt="Eleph" loading="lazy"><img class="held" src="img/eleph/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Eleph</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="wonderhorn-talisman.html"><img src="img/wonderhorn-talisman/plain-3.jpg" alt="Ida&#x27;s Wonder Horn" loading="lazy"><img class="held" src="img/wonderhorn-talisman/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Ida&#x27;s Wonder Horn</span><span class="cost">$390</span></span></a></figure>
-    <figure><a class="piece" href="macon-cap.html"><img src="img/macon-cap/hero.jpg" alt="Maçon Cap" loading="lazy"><span class="over"><span class="name">Maçon Cap</span><span class="cost">$50</span></span></a></figure>
-    <figure><a class="piece" href="ibi.html"><img src="img/ibi/hero.jpg" alt="Ibi" loading="lazy"><img class="held" src="img/ibi/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Ibi</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="ear-cuff.html"><img src="img/ear-cuff/hero.jpg" alt="Caldera Arc" loading="lazy"><img class="held" src="img/ear-cuff/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260</span></span></a></figure>
     <figure><a class="piece" href="starshipkey-pendant.html"><img src="img/starshipkey-pendant/hero.jpg" alt="Starship Key" loading="lazy"><img class="held" src="img/starshipkey-pendant/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Starship Key</span><span class="cost">$460</span></span></a></figure>
     <figure><a class="piece" href="meridian-egg-ring.html"><img src="img/meridian-egg-ring/hero.jpg" alt="Meridian Egg" loading="lazy"><img class="held" src="img/meridian-egg-ring/hand-1.jpg" alt="" loading="lazy"><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390</span></span></a></figure>
+    <figure><a class="piece" href="macon-cap.html"><img src="img/macon-cap/hero.jpg" alt="Maçon Cap" loading="lazy"><span class="over"><span class="name">Maçon Cap</span><span class="cost">$50</span></span></a></figure>
   </section>
 </main>
 
