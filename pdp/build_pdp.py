@@ -39,23 +39,23 @@ EYEBROW = {
 # The description under the price. Third person throughout, in the Kindred
 # Black manner: the object, its material and making, then its lore.
 DESC = {
-    "pip": "A tiny keeper of tenderness, cast in solid bronze with an ombré patina. Its form recalls an old cast iron piggy bank. Proximity induces unexpected comfort; scholars remain blissfully baffled. Its patina is built up slowly by hand and deepens wherever the thumb rests.",
+    "pip": "A small bearer of comfort, cast in solid bronze with an ombré patina. Its form recalls an old cast iron piggy bank. Proximity induces unexpected calm; scholars remain blissfully baffled. Its patina is built up slowly by hand and deepens wherever the thumb rests.",
     "rebi": "A small totem of solid bronze, finished with an ombré patina. Its form is a hare from some angles and something else entirely from others. Handling is known to heighten the reflexes; owners report catching things before they fall. Each shifting plane is refined by hand after casting.",
-    "ren": "A steward of forgotten paths, cast in solid bronze. Its form recalls a painted Swedish horse. Dawn light is known to linger on its golden mane; hikers report arriving home earlier than expected. The mane is polished bright by hand while the body is left to darken.",
-    "zuma": "A desert spirit in solid bronze, small enough for a coat pocket. Its form was drawn alongside its namesake ring. Ancient runes suggest a sacred link between the two; kept apart, both are said to grow restless. Its sand-worn surface is filed and patinated by hand.",
-    "ori": "A faithful guardian of forests and rivers, cast in solid bronze. Its form recalls a bear, with no claws and barely a snout. A subtle warmth radiates from it each winter solstice; keepers report fewer drafts. Its broad planes are smoothed and patinated slowly by hand.",
-    "yael": "An ibex of solid bronze, poised as if in prophecy. Its form recalls the narrow ledges of high mountains. Altar bells are known to resonate in its presence; neighbors report faint chimes at dusk. Its slender horns are refined patiently by hand after casting.",
-    "zuma-ring": "A band of distilled sand spirit, cast in sterling silver. Its form repeats the shoulder line of the Zuma totem. Unearthed glyphs show evidence of rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand after casting.",
-    "milo": "An ancient wanderer seeking home, cast in solid bronze with an ombré patina. Its form was the first made to embody the Maçon mark. Its surface adapts to whoever holds it; the bond deepens with every season. Each Milo is worked by hand until its surface turns quiet.",
-    "eclipse-ring": "Two asymmetric ellipses, cast in sterling silver. Its form holds both shapes at the exact distance where they stop competing. The space between is said to hold questions only stars can answer; astronomers decline to comment. Each ring is balanced and polished by hand after casting.",
-    "sietch-aperture": "A ring recovered from the wake of a passing comet, cast in sterling silver. Its form recalls a shelter cut deep into desert rock. Its aperture reveals landscapes that appear on no map; cartographers have stopped asking. The opening is polished by hand from the inside out.",
-    "lunar-canyon-ring": "A sundered artifact forged from the core of a distant moon, cast in sterling silver. Its form recalls a canyon of white folded rock. Social gatherings ebb and flow with the wearer's presence; hosts plan accordingly. Every fold is brought to a soft polish by hand.",
-    "eleph": "Breath suspended in solid bronze, finished with an ombré patina. Its form recalls a small elephant at rest. Distant trumpeting has been reported by independent observers, always just out of sight. Each Eleph is cast on request and finished entirely by hand.",
-    "wonderhorn-talisman": "A spiral resonator in sterling silver, worn on a thirty inch chain. Its form recalls the horn Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment vibrates sympathetically. Its inner curl is filed and polished slowly by hand.",
-    "macon-cap": "A tasteful cap adorned with a mystic symbol. Its front carries the Maçon mark. It offers a modicum of solar protection; wearers report being asked where they found it. Each cap is checked by hand before it ships.",
-    "ibi": "An eternal watcher believed to guard ancestral secrets, cast in solid bronze. Its form keeps a long and patient watch. Attempts to transmit its likeness are met with lens fog; photographers blame the weather. Each Ibi is cast on request and patinated by hand.",
-    "ear-cuff": "An ear cuff of perfect geometries, cast in sterling silver. Its form recalls the rim of a volcanic caldera. Light fractures into otherworldly spectra across its mirrored edge; no piercing is required. Its edge is polished and shaped by hand to hold the ear securely.",
-    "starshipkey-pendant": "An elegant device of stellar origin, cast in sterling silver and worn on a thirty inch chain. Its form recalls a chrome starship. Prolonged exposure is known to cause wanderlust; researchers studying it take long sabbaticals abroad. Its hyper-reflective hull is polished meticulously by hand after casting.",
+    "ren": "A keeper of lost trails, cast in solid bronze. Its form recalls a painted Swedish horse. Dawn light is known to linger on its golden mane; hikers report arriving home earlier than expected. The mane is polished bright by hand while the body is left to darken.",
+    "zuma": "A dune-born presence in solid bronze, small enough for a coat pocket. Its form was drawn alongside its namesake ring. Ancient runes suggest a sacred link between the two; kept apart, both are said to grow restless. Its sun-worn surface is filed and patinated by hand.",
+    "ori": "A faithful protector of woods and streams, cast in solid bronze. Its form recalls a bear, with no claws and barely a snout. A subtle warmth radiates from it each winter solstice; keepers report fewer drafts. Its broad planes are smoothed and patinated slowly by hand.",
+    "yael": "An ibex of solid bronze, poised on the edge of foresight. Its form recalls the narrow ledges of high mountains. Altar bells are known to resonate in its presence; neighbors report faint chimes at dusk. Its slender horns are refined patiently by hand after casting.",
+    "zuma-ring": "A band of dune-born magic, cast in sterling silver. Its form repeats the shoulder line of the Zuma totem. Unearthed glyphs show evidence of rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand after casting.",
+    "milo": "A traveler seeking home, cast in solid bronze with an ombré patina. Its form was the first made to embody the Maçon mark. Its surface adapts to whoever holds it; the bond deepens with every season. Each Milo is worked by hand until its surface turns quiet.",
+    "eclipse-ring": "Two asymmetric ovals, cast in sterling silver. Its form holds both shapes at the exact distance where they stop competing. The space between is said to hold questions only stars can answer; astronomers decline to comment. Each ring is balanced and polished by hand after casting.",
+    "sietch-aperture": "A ring recovered from the wake of a passing comet, cast in sterling silver. Its form recalls a hidden refuge deep in the desert. Its opening reveals landscapes that appear on no map; cartographers have stopped asking. The aperture is polished by hand from the inside out.",
+    "lunar-canyon-ring": "A sundered artifact from a far-off world, cast in sterling silver. Its form recalls a canyon of white folded stone. Social gatherings ebb and flow with the wearer's presence; hosts plan accordingly. Every fold is brought to a soft polish by hand.",
+    "eleph": "An elephant held mid-exhale, finished with an ombré patina. Its form recalls a calf resting in tall grass. Distant trumpeting has been reported by independent observers, always just out of sight. Each Eleph is cast on request and finished entirely by hand.",
+    "wonderhorn-talisman": "A spiral resonator in sterling silver, worn on a thirty inch chain. Its form recalls the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment vibrates sympathetically. Its inner curl is filed and polished slowly by hand.",
+    "macon-cap": "A tasteful cap adorned with a mystic symbol. Its front carries the Maçon mark. It offers a little shade on bright days; wearers report being asked where they found it. Each cap is checked by hand before it ships.",
+    "ibi": "A timeless sentinel believed to guard ancestral secrets, cast in solid bronze. Its form keeps a long and patient watch. Attempts to transmit its likeness are met with lens fog; photographers blame the weather. Each Ibi is cast on request and patinated by hand.",
+    "ear-cuff": "An ear cuff of flawless lines, cast in sterling silver. Its form recalls the rim of a volcanic caldera. Light fractures into otherworldly spectra across its mirrored edge; no piercing is required. Its edge is polished and shaped by hand to hold the ear securely.",
+    "starshipkey-pendant": "An elegant instrument from beyond the sky, cast in sterling silver and worn on a thirty inch chain. Its form recalls a chrome starship. Prolonged exposure is known to cause wanderlust; researchers studying it take long sabbaticals abroad. Its hyper-reflective hull is polished meticulously by hand after casting.",
     "meridian-egg-ring": "A ring of improbable density, cast in sterling silver. Its form recalls a smooth and weighted egg. Its weight exceeds every material expectation; metaphysical analysis detects an abyss gazing back. Each ring is hand polished and sized to order.",
 }
 
@@ -261,7 +261,7 @@ def main():
     template = shared(open(os.path.join(OUT, "template.html"), encoding="utf-8").read())
     links = []
     # info pages: story, custom, contact, shipping
-    for f in sorted(os.listdir(os.path.join(OUT, "pages"))):
+    for f in sorted(x for x in os.listdir(os.path.join(OUT, "pages")) if x != "shop.html"):
         doc = shared(open(os.path.join(OUT, "pages", f), encoding="utf-8").read())
         if "{{EXAMPLES}}" in doc:
             CUT = ' class="cutout"'
@@ -281,10 +281,20 @@ def main():
         open(os.path.join(OUT, f"{p['slug']}.html"), "w", encoding="utf-8").write(one_block(page(p, template)))
         links.append(f'<li><a href="{p["slug"]}.html">{html.escape(p["name"])}</a> <span>${p["price"]}</span></li>')
         print("  ", p["slug"])
-    open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(
-        '<!doctype html><meta charset="utf-8"><title>Product pages · preview</title>'
-        '<style>body{font:17px/1.8 "Helvetica Neue",Arial,sans-serif;margin:60px}a{color:#111}span{color:#888}</style>'
-        "<h1>Product pages</h1><ul>" + "".join(links) + "</ul>")
+    # Shop: every piece on one wall, linking to its page
+    from PIL import Image as _I
+    tiles = []
+    for i, p in enumerate(products):
+        hero = os.path.join(OUT, "img", p["slug"], "hero.jpg")
+        w, h = _I.open(hero).size
+        tiles.append(
+            f'    <figure><a class="piece" href="{p["slug"]}.html">'
+            f'<img src="img/{p["slug"]}/hero.jpg" width="{w}" height="{h}" alt="{html.escape(p["name"])}" loading="{"eager" if i < 6 else "lazy"}">'
+            f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
+            f'</a></figure>')
+    shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
+    shop = shop.replace("{{SHOPCOUNT}}", str(len(products))).replace("{{SHOPGRID}}", "\n".join(tiles))
+    open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(shop)
     print(f"{len(products)} pages")
 
 

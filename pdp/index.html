@@ -1,1 +1,274 @@
-<!doctype html><meta charset="utf-8"><title>Product pages · preview</title><style>body{font:17px/1.8 "Helvetica Neue",Arial,sans-serif;margin:60px}a{color:#111}span{color:#888}</style><h1>Product pages</h1><ul><li><a href="pip.html">Pip</a> <span>$220</span></li><li><a href="rebi.html">Rebi</a> <span>$220</span></li><li><a href="ren.html">Ren</a> <span>$220</span></li><li><a href="zuma.html">Zuma</a> <span>$220</span></li><li><a href="ori.html">Ori</a> <span>$220</span></li><li><a href="yael.html">Yaël</a> <span>$220</span></li><li><a href="zuma-ring.html">Zuma Ring</a> <span>$320</span></li><li><a href="milo.html">Milo</a> <span>$220</span></li><li><a href="eclipse-ring.html">Eclipse Ring</a> <span>$340</span></li><li><a href="sietch-aperture.html">Sietch Ring</a> <span>$340</span></li><li><a href="lunar-canyon-ring.html">Lunar Canyon</a> <span>$370</span></li><li><a href="eleph.html">Eleph</a> <span>$220</span></li><li><a href="wonderhorn-talisman.html">Ida&#x27;s Wonder Horn</a> <span>$390</span></li><li><a href="macon-cap.html">Maçon Cap</a> <span>$50</span></li><li><a href="ibi.html">Ibi</a> <span>$220</span></li><li><a href="ear-cuff.html">Caldera Arc</a> <span>$260</span></li><li><a href="starshipkey-pendant.html">Starship Key</a> <span>$460</span></li><li><a href="meridian-egg-ring.html">Meridian Egg</a> <span>$390</span></li></ul>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shop | Studio Maçon</title>
+<link rel="icon" href="../assets/favicon.png">
+<link rel="stylesheet" href="site.css?v=1789604708">
+<style>
+  .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 12px) 24px}
+  .wall-head h1{margin:0;font-size:57.5px}
+  .wall-head .count{font-size:13px;color:rgba(0,0,0,.45)}
+  @media (min-width:768px){ .wall-head h1{font-size:66.25px} }
+  @media (min-width:1200px){ .wall-head h1{font-size:75px} }
+
+  .wall{columns:1;column-gap:12px;padding:0 calc(var(--pad) + 12px)}
+  .wall figure{margin:0 0 12px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
+  .wall figure.dr-emerge{filter:none;transform:translateY(90px);
+    transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
+  .wall figure.dr-emerge.is-seen{transform:none}
+  @media (min-width:600px){ .wall{columns:2} }
+  @media (min-width:900px){ .wall{columns:3} }
+
+  /* each piece: the photograph, with name and price rising in at the bottom on hover */
+  .piece{position:relative;display:block;color:#fff}
+  .piece img{width:100%;height:auto;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .piece .over{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+    padding:48px 18px 16px;font-size:15px;
+    background:linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,0));
+    opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .45s var(--ease)}
+  .piece .name{font:400 22px/1 var(--serif);text-transform:uppercase;letter-spacing:.01em}
+  .piece:hover .over,.piece:focus-visible .over{opacity:1;transform:none}
+  .piece:hover img{transform:scale(1.02)}
+  /* no hover on touch screens, so the details are always shown there */
+  @media (hover:none){ .piece .over{opacity:1;transform:none} }
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="left">
+    <a href="#" class="mob hover-line">Menu</a>
+    <a href="index.html" class="desk hover-line">Shop</a>
+    <a href="custom.html" class="desk hover-line">Commission</a>
+    <a href="inspiration.html" class="desk hover-line">Inspiration</a>
+    <a href="story.html" class="desk hover-line">Story</a>
+  </div>
+  <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
+  <div class="right"><a href="#">Bag (0)</a></div>
+</header>
+
+<main>
+  <header class="wall-head">
+    <h1>Shop</h1><span class="count">18</span>
+  </header>
+  <section class="wall shop-wall">
+    <figure><a class="piece" href="pip.html"><img src="img/pip/hero.jpg" width="1370" height="934" alt="Pip" loading="eager"><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="rebi.html"><img src="img/rebi/hero.jpg" width="1600" height="1066" alt="Rebi" loading="eager"><span class="over"><span class="name">Rebi</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ren.html"><img src="img/ren/hero.jpg" width="1600" height="1216" alt="Ren" loading="eager"><span class="over"><span class="name">Ren</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="zuma.html"><img src="img/zuma/hero.jpg" width="1353" height="849" alt="Zuma" loading="eager"><span class="over"><span class="name">Zuma</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ori.html"><img src="img/ori/hero.jpg" width="1355" height="933" alt="Ori" loading="eager"><span class="over"><span class="name">Ori</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="yael.html"><img src="img/yael/hero.jpg" width="1000" height="760" alt="Yaël" loading="eager"><span class="over"><span class="name">Yaël</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="zuma-ring.html"><img src="img/zuma-ring/hero.jpg" width="1368" height="858" alt="Zuma Ring" loading="lazy"><span class="over"><span class="name">Zuma Ring</span><span class="cost">$320</span></span></a></figure>
+    <figure><a class="piece" href="milo.html"><img src="img/milo/hero.jpg" width="1600" height="1233" alt="Milo" loading="lazy"><span class="over"><span class="name">Milo</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="eclipse-ring.html"><img src="img/eclipse-ring/hero.jpg" width="1389" height="967" alt="Eclipse Ring" loading="lazy"><span class="over"><span class="name">Eclipse Ring</span><span class="cost">$340</span></span></a></figure>
+    <figure><a class="piece" href="sietch-aperture.html"><img src="img/sietch-aperture/hero.jpg" width="1600" height="1124" alt="Sietch Ring" loading="lazy"><span class="over"><span class="name">Sietch Ring</span><span class="cost">$340</span></span></a></figure>
+    <figure><a class="piece" href="lunar-canyon-ring.html"><img src="img/lunar-canyon-ring/hero.jpg" width="1600" height="1067" alt="Lunar Canyon" loading="lazy"><span class="over"><span class="name">Lunar Canyon</span><span class="cost">$370</span></span></a></figure>
+    <figure><a class="piece" href="eleph.html"><img src="img/eleph/hero.jpg" width="1486" height="989" alt="Eleph" loading="lazy"><span class="over"><span class="name">Eleph</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="wonderhorn-talisman.html"><img src="img/wonderhorn-talisman/hero.jpg" width="1600" height="2000" alt="Ida&#x27;s Wonder Horn" loading="lazy"><span class="over"><span class="name">Ida&#x27;s Wonder Horn</span><span class="cost">$390</span></span></a></figure>
+    <figure><a class="piece" href="macon-cap.html"><img src="img/macon-cap/hero.jpg" width="1600" height="1095" alt="Maçon Cap" loading="lazy"><span class="over"><span class="name">Maçon Cap</span><span class="cost">$50</span></span></a></figure>
+    <figure><a class="piece" href="ibi.html"><img src="img/ibi/hero.jpg" width="1600" height="1131" alt="Ibi" loading="lazy"><span class="over"><span class="name">Ibi</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ear-cuff.html"><img src="img/ear-cuff/hero.jpg" width="1600" height="1068" alt="Caldera Arc" loading="lazy"><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260</span></span></a></figure>
+    <figure><a class="piece" href="starshipkey-pendant.html"><img src="img/starshipkey-pendant/hero.jpg" width="1400" height="1013" alt="Starship Key" loading="lazy"><span class="over"><span class="name">Starship Key</span><span class="cost">$460</span></span></a></figure>
+    <figure><a class="piece" href="meridian-egg-ring.html"><img src="img/meridian-egg-ring/hero.jpg" width="1000" height="696" alt="Meridian Egg" loading="lazy"><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390</span></span></a></figure>
+  </section>
+</main>
+
+<footer>
+  <div class="brand">
+    <img class="mark" src="img/mark-loop.gif" alt="Studio Maçon">
+    <p class="fine">Artifacts of Love,<br>Made to Order.</p>
+  </div>
+  <div class="middle">
+  <nav class="links">
+    <a class="hover-line" href="story.html">Story</a>
+    <a class="hover-line" href="custom.html">Commissions</a>
+    <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
+    <a class="hover-line" href="inspiration.html">Inspiration</a>
+    <a class="hover-line" href="contact.html">Contact</a>
+  </nav>
+  </div>
+  <div class="news">
+    <p>Subscribe to hear about new pieces before anyone else.</p>
+    <form class="field" onsubmit="event.preventDefault();this.querySelector('button').textContent='Thank you'">
+      <input type="email" placeholder="Email address" aria-label="Email address" required>
+      <button>Submit</button>
+    </form>
+  </div>
+</footer>
+<script>
+  // Accordions: the height eases through a grid-row transition, so nothing is
+  // measured in script and a panel of any length opens at the same pace.
+  document.querySelectorAll('.acc-head').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var item = b.parentElement, open = !item.classList.contains('open');
+      item.classList.toggle('open', open);
+      b.setAttribute('aria-expanded', open);
+    });
+  });
+
+  // Nav tone: each part of the nav (links, logotype, bag) looks at what is
+  // actually beneath it. Over an image it reads the pixels there; over anything
+  // else, the background colour. Only very light ground keeps the nav black.
+  (function () {
+    var LIGHT = 0.82;                      // "super light": white, pale grey, paper
+    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .logotype, .head .right'));
+    var maps = new WeakMap();
+
+    function lumaOf(r, g, b) { return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }
+
+    function map(img) {                    // a small luminance copy of each image, made once
+      if (maps.has(img)) return maps.get(img);
+      if (!img.complete || !img.naturalWidth) return null;
+      var w = 64, h = Math.max(1, Math.round(64 * img.naturalHeight / img.naturalWidth));
+      var c = document.createElement('canvas'); c.width = w; c.height = h;
+      var x = c.getContext('2d', {willReadFrequently: true});
+      try { x.drawImage(img, 0, 0, w, h); var d = x.getImageData(0, 0, w, h).data; } catch (e) { return null; }
+      var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
+    }
+
+    function bgLuma(el) {                  // first painted background up the tree, else the white page
+      for (; el && el !== document.documentElement; el = el.parentElement) {
+        var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
+        if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
+      }
+      return 1;
+    }
+
+    function lumaAt(px, py) {
+      var stack = document.elementsFromPoint(px, py);
+      for (var i = 0; i < stack.length; i++) {
+        var el = stack[i];
+        if (el.closest('.head')) continue;
+        if (el.tagName === 'IMG') {
+          var m = map(el); if (!m) return bgLuma(el);
+          var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
+          var sx = r.width / el.naturalWidth, sy = r.height / el.naturalHeight;
+          if (fit === 'cover') sx = sy = Math.max(sx, sy);
+          else if (fit === 'contain') sx = sy = Math.min(sx, sy);
+          var ox = (r.width - el.naturalWidth * sx) / 2, oy = (r.height - el.naturalHeight * sy) / 2;
+          var u = (px - r.left - ox) / (el.naturalWidth * sx), v = (py - r.top - oy) / (el.naturalHeight * sy);
+          if (u < 0 || u > 1 || v < 0 || v > 1) return bgLuma(el);
+          var tx = Math.min(m.w - 1, Math.floor(u * m.w)), ty = Math.min(m.h - 1, Math.floor(v * m.h));
+          var sum = 0, n = 0, alpha = 0;
+          for (var dy = -1; dy <= 1; dy++) for (var dx = -2; dx <= 2; dx++) {
+            var X = Math.max(0, Math.min(m.w - 1, tx + dx)), Y = Math.max(0, Math.min(m.h - 1, ty + dy)), k = (Y * m.w + X) * 4;
+            sum += lumaOf(m.d[k], m.d[k + 1], m.d[k + 2]) * m.d[k + 3] / 255; alpha += m.d[k + 3] / 255; n++;
+          }
+          // transparent pixels show whatever is behind the picture
+          var under = bgLuma(el.parentElement);
+          return (sum + under * (n - alpha)) / n;
+        }
+        return bgLuma(el);
+      }
+      return 1;
+    }
+
+    var queued = false;
+    function tone() {
+      queued = false;
+      parts.forEach(function (p) {
+        var r = p.getBoundingClientRect(); if (!r.width) return;
+        // sample a few points across the part and go by the darkest reading
+        var y = r.top + r.height / 2, l = 1;
+        [0.15, 0.5, 0.85].forEach(function (f) { l = Math.min(l, lumaAt(r.left + r.width * f, y)); });
+        p.classList.toggle('on-dark', l < LIGHT);
+      });
+    }
+    function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
+    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', soon);
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', soon); });
+    tone();
+  })();
+
+  // Emerge: every image and text block starts hidden and settles into place the
+  // first time about 16% of it is on screen. It never fades back out (toggling
+  // flickered), and anything added later is picked up too.
+  (function () {
+    var BLOCKS = '.opening .hand, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+                 '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
+                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *';
+    // side-by-side groups cascade instead of arriving at once
+    var GROUPS = ['.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var io = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        io.unobserve(e.target);
+      });
+    }, {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});
+    // the footer sits against the page's bottom edge, where the main trigger line
+    // can never be crossed, so it reveals as soon as any of it is on screen
+    var edge = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        edge.unobserve(e.target);
+      });
+    }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
+
+    function arm(root) {
+      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll ? root.querySelectorAll(BLOCKS) : []))
+        .forEach(function (el) {
+          if (el.classList.contains('dr-emerge')) return;
+          // hide instantly: the transition is for arriving, not for going away
+          el.style.transition = 'none';
+          el.classList.add('dr-emerge');
+          // the inspiration wall is already in place wherever it fills the first
+          // screen; only pieces further down slide in as you scroll
+          void el.offsetWidth;
+          el.style.transition = '';
+          if (still) { el.classList.add('is-seen'); return; }
+          // the inspiration wall's first screen plays in full on load, even the
+          // pieces only partly in view, so no part of the screen is left empty
+          if (el.closest('.wall, .wall-head') && el.getBoundingClientRect().top < innerHeight) {
+            requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-seen'); }); });
+            return;
+          }
+          // let the hidden state paint first, or blocks already on screen at load
+          // would jump straight to their resting place without animating
+          // (and wait for the stylesheet: until the hidden state has actually taken
+          // effect there is nothing to animate from)
+          var tries = 0;
+          (function ready() {
+            if (getComputedStyle(el).opacity !== '0' && tries++ < 120) return requestAnimationFrame(ready);
+            requestAnimationFrame(function () { (el.closest('footer') ? edge : io).observe(el); });
+          })();
+        });
+    }
+    // wall pieces cascade by their position in the row, so each row settles left to right
+    // pieces already on screen at load arrive top to bottom, the rest by column
+    document.querySelectorAll('.wall figure').forEach(function (f) {
+      var r = f.getBoundingClientRect();
+      var d = r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 + r.left / innerWidth * 120
+                                  : Math.round(r.left / innerWidth * 4) * 80;
+      f.style.setProperty('--stagger', Math.round(d) + 'ms');
+    });
+    document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
+    GROUPS.forEach(function (g) {
+      document.querySelectorAll(g).forEach(function (group) {
+        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });
+      });
+    });
+    arm(document);
+    // Blocks in the last few pixels of the page can't rise past the trigger
+    // line, so reveal whatever is on screen once the bottom is reached.
+    function atBottom() {
+      if (still || innerHeight + scrollY < document.documentElement.scrollHeight - 2) return;
+      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
+      });
+    }
+    addEventListener('scroll', atBottom, {passive: true});
+    // a reload lands back at the old scroll position without necessarily scrolling,
+    // so check once everything has loaded and been armed as well
+    addEventListener('load', function () { setTimeout(atBottom, 80); setTimeout(atBottom, 400); });
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) arm(n); }); });
+    }).observe(document.body, {childList: true, subtree: true});
+  })();
+</script>
+</body>
+</html>
