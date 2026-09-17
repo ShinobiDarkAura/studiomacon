@@ -347,6 +347,13 @@
       });
     });
     arm(document);
+    // Anything on the first screen at load plays its entrance even if it sits in the bottom
+    // strip the scroll trigger ignores (it would otherwise wait for a scroll that never comes).
+    if (!still) setTimeout(function () {
+      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
+        if (el.getBoundingClientRect().top - 70 < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
+      });
+    }, 400);
     // Blocks in the last few pixels of the page can't rise past the trigger
     // line, so reveal whatever is on screen once the bottom is reached.
     function atBottom() {
