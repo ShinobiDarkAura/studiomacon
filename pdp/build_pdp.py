@@ -90,6 +90,9 @@ MADE_LINE = {
     "macon-cap": "The cap is made in small runs, with the mark stitched on the front and a brim cut for long days between the studio and the sun. When a colour disappears, it may be some time before it returns.",
 }
 
+# pictures kept on disk (the shop hover may use them) but left off a product page's gallery
+HIDE_FROM_GALLERY = {"img/rebi/hand-1.jpg"}
+
 TODO = '<span class="todo">{}</span>'
 
 
@@ -237,6 +240,7 @@ def page(p, template, related=""):
                        + '</ul></div></div></div>')
 
     # a short film of the piece sits third, after the hero and first still; a lifestyle composite closes the gallery
+    gallery = [g for g in gallery if g not in HIDE_FROM_GALLERY]
     figs = [f'<figure><img src="{g}" alt="" loading="lazy"></figure>' for g in gallery]
     if os.path.exists(os.path.join(OUT, "video", "pieces", f"{slug}.mp4")):
         figs.insert(1, f'<figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/{slug}.jpg" aria-label="{html.escape(name)} in motion"><source src="video/pieces/{slug}.mp4" type="video/mp4"></video></figure>')
