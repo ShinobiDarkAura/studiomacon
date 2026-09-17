@@ -14,7 +14,7 @@
   // else, the background colour. Only very light ground keeps the nav black.
   (function () {
     var LIGHT = 0.82;                      // "super light": white, pale grey, paper
-    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .logotype, .head .right'));
+    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .mark, .head .right'));
     var maps = new WeakMap();
 
     function lumaOf(r, g, b) { return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }

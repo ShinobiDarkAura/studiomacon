@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Shipping &amp; Returns | Studio Maçon</title>
 <link rel="icon" href="../assets/favicon.png">
-<link rel="stylesheet" href="site.css?v=1789610829">
+<link rel="stylesheet" href="site.css?v=1789610945">
 <style>
   /* one screen: the olive branch on the left, the policy on the right */
   .ship{display:grid;gap:40px;min-height:100vh;min-height:100svh;padding:calc(var(--head) + 40px) calc(var(--pad) + 12px) 64px;align-items:center}
@@ -35,10 +35,9 @@
     <a href="#" class="mob hover-line">Menu</a>
     <a href="index.html" class="desk hover-line">Shop</a>
     <a href="custom.html" class="desk hover-line">Custom</a>
-    <a href="inspiration.html" class="desk hover-line">Inspiration</a>
     <a href="story.html" class="desk hover-line">About</a>
   </div>
-  <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
+  <a class="mark" href="index.html" aria-label="Studio Maçon"><img src="img/mark-loop.gif" alt="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
 </header>
 
@@ -134,7 +133,7 @@
   // else, the background colour. Only very light ground keeps the nav black.
   (function () {
     var LIGHT = 0.82;                      // "super light": white, pale grey, paper
-    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .logotype, .head .right'));
+    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .mark, .head .right'));
     var maps = new WeakMap();
 
     function lumaOf(r, g, b) { return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }

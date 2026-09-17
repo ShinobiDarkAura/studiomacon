@@ -34,6 +34,9 @@ button{background:none;border:0;padding:0;cursor:pointer}
 .head > *{pointer-events:auto}
 /* each part of the nav reads what is under it: black on white or very light, white on anything darker */
 .head .left,.head .logotype,.head .right{color:#000;transition:color .3s ease}
+.head .mark{display:block}
+.head .mark img{display:block;height:44px;width:auto;transition:filter .3s ease}
+.head .mark.on-dark img{filter:invert(1)}
 .head .on-dark{color:#fff}
 .head .left{justify-self:start;display:flex;gap:28px}
 .head .right{justify-self:end;white-space:nowrap}
