@@ -197,6 +197,8 @@ body.fit footer{min-height:0;padding-top:48px}
 
 /* lockup trials: add ?logo=artifacts or ?logo=objects to any page address (both have their own proportions) */
 .logo-artifacts .logotype,.logo-objects .logotype{aspect-ratio:294/112}
+.logo-artifacts .head .logotype,.logo-objects .head .logotype{width:90px;top:6px}
+@media (min-width:768px){ .logo-artifacts .head .logotype,.logo-objects .head .logotype{width:150px} }
 .logo-artifacts .logotype{-webkit-mask-image:url(img/lockup-artifacts.svg);mask-image:url(img/lockup-artifacts.svg)}
 .logo-objects .logotype{-webkit-mask-image:url(img/lockup-objects.svg);mask-image:url(img/lockup-objects.svg)}
 
