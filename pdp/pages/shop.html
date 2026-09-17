@@ -81,13 +81,13 @@
   .welcome .prose h1{margin-bottom:44px}
   .welcome + .set .wall-head{padding-top:0}
   /* the Bureau of Provenance stamp: angled over the top of the last tile, its bottom 18% overlapping the picture */
-  .ephemeral{position:relative}
-  .ephemeral .stamp{position:absolute;z-index:3;width:clamp(120px,13vw,200px);right:calc(var(--pad) + 24px + 4%);top:0;
+  .stamped{position:relative}
+  .stamped .stamp{position:absolute;z-index:3;width:clamp(120px,13vw,200px);right:calc(var(--pad) + 24px + 4%);top:0;
     transform:translateY(-82%) rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;
     transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
   /* pressed down once the third tile has settled */
-  .ephemeral .stamp.on{opacity:1;transform:translateY(-82%) rotate(-14deg)}
-  @media (max-width:599px){ .ephemeral .stamp{display:none} }
+  .stamped .stamp.on{opacity:1;transform:translateY(-82%) rotate(-14deg)}
+  @media (max-width:599px){ .stamped .stamp{display:none} }
   /* Back to Shop lands here, with the Ephemeral title just under the nav */
   #pieces{scroll-margin-top:calc(var(--head) + 36px)}
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
@@ -187,7 +187,6 @@
     <h2 class="set-title">Ephemeral</h2><span class="count">3</span>
   </header>
   <section class="wall shop-wall ephemeral">
-    <img class="stamp" src="img/provenance-stamp.png" alt="Maçon Bureau of Provenance stamp" data-no-emerge>
     <figure><a class="piece" aria-disabled="true" tabindex="-1" onclick="return false"><span class="placeholder-fill"></span><span class="over"><span class="name">Bearer of Small Things</span><span class="cost">$240</span></span></a></figure>
     <figure><a class="piece" aria-disabled="true" tabindex="-1" onclick="return false"><span class="placeholder-fill"></span><span class="over"><span class="name">Horn Ring</span><span class="cost">$380</span></span></a></figure>
     <figure><a class="piece" aria-disabled="true" tabindex="-1" onclick="return false"><span class="placeholder-fill"></span><span class="over"><span class="name">Egg of Quiet</span><span class="cost">$290</span></span></a></figure>
@@ -200,7 +199,8 @@
   <header class="wall-head">
     <h2 class="set-title">Totems</h2><span class="count">{{TOTEMCOUNT}}</span>
   </header>
-  <section class="wall shop-wall">
+  <section class="wall shop-wall stamped">
+    <img class="stamp" src="img/provenance-stamp.png" alt="Maçon Bureau of Provenance stamp" data-no-emerge>
 {{TOTEMGRID}}
   </section>
   </div>
@@ -218,9 +218,9 @@
 {{FOOTER}}
 {{SITEJS}}
 <script>
-  // The stamp lands after the third Ephemeral tile has finished arriving
+  // The stamp lands after the third tile in the Totems row has finished arriving
   (function () {
-    var stamp = document.querySelector('.ephemeral .stamp'), tile = document.querySelectorAll('.ephemeral figure')[2];
+    var stamp = document.querySelector('.stamped .stamp'), tile = document.querySelectorAll('.stamped figure')[2];
     if (!stamp || !tile) return;
     function land() {
       var wait = (parseFloat(getComputedStyle(tile).getPropertyValue('--stagger')) || 0) + 900;

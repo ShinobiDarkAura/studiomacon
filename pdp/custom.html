@@ -889,11 +889,31 @@
           var old = tile.querySelector('img'); if (old) old.remove();
           var img = document.createElement('img'); img.src = URL.createObjectURL(f); img.alt = '';
           tile.appendChild(img); tile.classList.add('filled'); ready(step);
+          shrink(f).then(function (photo) { tile._photo = photo; }, function () { tile._photo = null; });
         });
       });
       var next = step.querySelector('[data-next]');
       if (next) next.addEventListener('click', function () { if (!next.disabled) advance(step); });
     });
+    // Reference photos are resized in the browser before they travel, so a commission
+    // with four phone pictures stays small enough to arrive as email attachments.
+    function shrink(file) {
+      return new Promise(function (resolve, reject) {
+        var img = new Image(), url = URL.createObjectURL(file);
+        img.onload = function () {
+          URL.revokeObjectURL(url);
+          var k = Math.min(1, 1400 / Math.max(img.width, img.height));
+          var c = document.createElement('canvas');
+          c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          var data = c.toDataURL('image/jpeg', 0.82);
+          resolve({filename: (file.name || 'photo').replace(/\.\w+$/, '') + '.jpg', content: data.slice(data.indexOf(',') + 1)});
+        };
+        img.onerror = function () { URL.revokeObjectURL(url); reject(); };
+        img.src = url;
+      });
+    }
+
     var payButtons = [].slice.call(document.querySelectorAll('[data-pay]'));
     var email = document.getElementById('c-email');
     function payReady() { var ok = /.+@.+\..+/.test(email.value); payButtons.forEach(function (b) { b.disabled = !ok; }); }
@@ -904,10 +924,10 @@
         var body = b.closest('.acc-body'), order = document.querySelector('.order'), details = {kind: kind};
         order.querySelectorAll('input[id], textarea[id]').forEach(function (i) { if (i.type !== 'file' && i.value) details[(i.placeholder || i.id).replace(/^e\.g\.\s*/, '').slice(0, 40)] = i.value; });
         order.querySelectorAll('[aria-pressed="true"]').forEach(function (c, n) { details['choice ' + (n + 1)] = c.textContent.trim(); });
-        var photos = order.querySelectorAll('.tile.filled').length; if (photos) details.photos = photos + ' attached on the form (please ask them to email the photos)';
+        var photos = [].slice.call(order.querySelectorAll('.tile.filled')).map(function (t) { return t._photo; }).filter(Boolean);
         b.disabled = true;
         MaconEnquiry({form: 'commission', email: email.value, name: (document.getElementById('c-name') || {}).value || '',
-                      subject: kind === 'jewelry' ? 'Jewelry commission' : 'Totem commission', message: (document.getElementById('c-notes') || {}).value || '', details: details})
+                      subject: kind === 'jewelry' ? 'Jewelry commission' : 'Totem commission', message: (document.getElementById('c-notes') || {}).value || '', details: details, photos: photos})
           .catch(function () {})          // the thank-you still shows; a failed send is caught by the studio's copy of the checkout or a follow-up email
           .then(function () {
             if (kind !== 'jewelry' && (window.MACON_SHOP || {}).totemCommission) {
