@@ -13,6 +13,8 @@
   /* each section title rides along under the nav until the next section's title pushes it off */
   .set{position:relative}
   .wall-head{position:sticky;z-index:6;background:#fff;top:calc(var(--head) - 25vh)}
+  .wall-head::after{content:"";position:absolute;left:0;right:0;top:100%;height:48px;pointer-events:none;
+    background:linear-gradient(to bottom,#fff,rgba(255,255,255,0))}          /* soft fade instead of a hard edge */
   .wall-head.next-set{top:var(--head)}
   .placeholder{position:relative;aspect-ratio:4/5;background:#d9d9d9;overflow:hidden}
   .placeholder img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
