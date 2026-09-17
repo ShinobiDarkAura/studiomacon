@@ -15,7 +15,7 @@
   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
-  .examples figure.cutout{background:#f3efe8;display:grid;place-items:center}
+  .examples figure.cutout{background:#eeeeec;display:grid;place-items:center}
   /* --s scales a piece inside its frame, --x/--y nudge it (in % of the frame); set by hand in edit mode */
   .examples figure.cutout img{width:70%;height:58%;object-fit:contain;
     transform:translate(calc(var(--x,0) * 1%),calc(var(--y,0) * 1%)) scale(var(--s,1))}
