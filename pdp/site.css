@@ -189,7 +189,7 @@ body.fit main{flex:1;display:flex;flex-direction:column;justify-content:center;w
 body.fit footer{min-height:0;padding-top:48px}
 
 /* light grey way back to the shop, at the top of a right-hand column */
-.back{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin:0 0 28px;font-size:13px;color:rgba(0,0,0,.4);transition:color .2s ease}
+.back{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin:0 0 28px;font-size:calc(16px - 1pt);color:rgba(0,0,0,.4);transition:color .2s ease}
 .back:hover{color:#000}
 .back-icon{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 /* desktop: it moves up into the nav row, lined up with the left edge of its column and level with Bag */
