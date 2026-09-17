@@ -145,7 +145,7 @@
     <h2 class="set-title">Totems</h2><span class="count">9</span>
   </header>
   <section class="wall shop-wall">
-    <figure><a class="piece" href="pip.html"><img width="2400" height="1636" src="img/pip/hero.jpg.webp" alt="Pip" loading="eager"><img width="764" height="1018" class="held" src="img/pip/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="pip.html"><img width="1370" height="934" src="img/pip/hero.jpg.webp" alt="Pip" loading="eager"><img width="764" height="1018" class="held" src="img/pip/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="rebi.html"><img width="1600" height="1066" src="img/rebi/hero.jpg.webp" alt="Rebi" loading="eager"><img width="613" height="816" class="held" src="img/rebi/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Rebi</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="ren.html"><img width="1600" height="1216" src="img/ren/hero.jpg.webp" alt="Ren" loading="eager"><img width="814" height="1084" class="held" src="img/ren/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Ren</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="zuma.html"><img width="1353" height="849" src="img/zuma/hero.jpg.webp" alt="Zuma" loading="lazy"><img width="2400" height="3196" class="held" src="img/zuma/hand-1.jpg.webp" alt="" loading="lazy"><span class="over"><span class="name">Zuma</span><span class="cost">$220</span></span></a></figure>
@@ -259,7 +259,7 @@
         var el = stack[i];
         if (el.closest('.head')) continue;
         if (el.tagName === 'VIDEO') return 0;
-        if (el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them
+        if (/^(IMG|VIDEO)$/.test(el.tagName) && el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
