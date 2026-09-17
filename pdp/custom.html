@@ -686,7 +686,7 @@
         .then(function (r) { return r.json(); })
         .then(function (res) {
           if (res && res.success === false) throw new Error((res.errors || [])[0] || 'refused');
-          btn.textContent = 'Thank you'; input.value = '';
+          btn.textContent = "You're on the list"; input.value = '';
         })
         .catch(function () { btn.textContent = 'Try again'; });
     });
