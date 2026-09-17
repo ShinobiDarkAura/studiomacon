@@ -91,7 +91,7 @@ MADE_LINE = {
 }
 
 # pictures kept on disk (the shop hover may use them) but left off a product page's gallery
-HIDE_FROM_GALLERY = {"img/rebi/hand-1.jpg"}
+HIDE_FROM_GALLERY = {"img/rebi/hand-1.jpg", "img/ori/hand-1.jpg"}
 
 TODO = '<span class="todo">{}</span>'
 
