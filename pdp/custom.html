@@ -72,7 +72,9 @@
 
   .next{display:flex;align-items:center;justify-content:center;width:100%;height:55px;margin-top:6px;
     background:#000;color:#fff;font-size:calc(18px - 2pt);text-transform:uppercase;letter-spacing:.08em;transition:opacity .2s}
-  .next[disabled]{opacity:.25;cursor:not-allowed}
+  .next[disabled]{opacity:.1;cursor:not-allowed}
+  .step.open .acc-head{padding-bottom:39px}
+  .q.details-q{margin-bottom:38px}
 
   .summary{display:grid;grid-template-columns:1fr auto;gap:10px 18px;margin:0 0 22px;font-size:15px}
   .summary{row-gap:10px;column-gap:0}
@@ -176,7 +178,7 @@
             <label class="label" for="c-name">Their Name <span class="req">*</span></label>
             <span class="line"><input id="c-name" data-required placeholder="Their name"></span>
           </div>
-          <div class="q">
+          <div class="q details-q">
             <div class="label-row"><label class="label" for="c-breed">Details <span class="req">*</span></label><span class="hint-side">Helps us capture their exact features.</span></div>
             <span class="line"><input id="c-breed" data-required placeholder="e.g. Whippet, brindle coat, one ear that flops, always sits leaning left"></span>
           </div>
