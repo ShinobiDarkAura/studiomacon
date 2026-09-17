@@ -109,7 +109,7 @@
     </div>
 
     <div class="info">
-      <a class="back" href="index.html" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back to Shop</span></a>
+      <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back to Shop</span></a>
       <p class="eyebrow">Device of Stellar Origin</p>
       <h1>Starship Key</h1>
       <p class="price">$460</p>
@@ -508,10 +508,6 @@
 <script>
   // The bag bar appears once the real button has scrolled away, and steps
   // aside at the footer so it never covers the newsletter.
-  // Back to Shop returns to the same spot on the shop wall when that is where the visit came from
-  document.querySelector('.back').addEventListener('click', function (e) {
-    if (/\/(index\.html)?$/.test(document.referrer.split('?')[0]) && history.length > 1) { e.preventDefault(); history.back(); }
-  });
   (function () {
     var dock = document.getElementById('dock'), gone = false, foot = false; dock.inert = true;
     function sync() { dock.classList.toggle('on', gone && !foot); dock.inert = !(gone && !foot); }
