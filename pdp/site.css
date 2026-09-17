@@ -204,6 +204,13 @@ body.fit footer{min-height:0;padding-top:48px}
 .logo-artifacts .logotype{-webkit-mask-image:url(img/lockup-artifacts.svg);mask-image:url(img/lockup-artifacts.svg)}
 .logo-objects .logotype{-webkit-mask-image:url(img/lockup-objects.svg);mask-image:url(img/lockup-objects.svg)}
 
+/* black buttons: an arrow slides out to the right of the words on hover */
+a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margin-left:0;opacity:0;background:currentColor;flex:none;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") left center/14px 14px no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") left center/14px 14px no-repeat;
+  transition:width .35s var(--ease),margin-left .35s var(--ease),opacity .25s ease}
+.cta:not([disabled]):hover::after,.next:not([disabled]):hover::after{width:14px;margin-left:10px;opacity:1}
+
 /* keyboard focus */
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
 .field:focus-within{border-bottom-color:#000}
