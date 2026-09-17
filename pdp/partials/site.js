@@ -1,5 +1,4 @@
 <script>
-  if (/[?&]logo=objects\b/.test(location.search)) document.documentElement.classList.add('logo-objects');
   // A refresh always starts at the top of the page; Back and Forward still return to where you were
   (function () {
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];

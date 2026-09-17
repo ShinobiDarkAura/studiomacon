@@ -6,7 +6,7 @@
 <title>Shop | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789615437">
+<link rel="stylesheet" href="site.css?v=1789615470">
 <style>
   /* the film fills the first screen; the nav sits over it in white */
   .film{position:relative;height:100vh;height:100svh;overflow:hidden;background:#111}
@@ -37,7 +37,10 @@
   /* the Bureau of Provenance stamp: angled over the top of the last tile, its bottom 18% overlapping the picture */
   .ephemeral{position:relative}
   .ephemeral .stamp{position:absolute;z-index:3;width:clamp(120px,13vw,200px);right:calc(var(--pad) + 24px + 4%);top:0;
-    transform:translateY(-82%) rotate(-14deg);pointer-events:none}
+    transform:translateY(-82%) rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;
+    transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
+  /* pressed down once the third tile has settled */
+  .ephemeral .stamp.on{opacity:1;transform:translateY(-82%) rotate(-14deg)}
   @media (max-width:599px){ .ephemeral .stamp{display:none} }
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head.next-set{padding-top:0}
@@ -170,7 +173,6 @@
   </div>
 </footer>
 <script>
-  if (/[?&]logo=objects\b/.test(location.search)) document.documentElement.classList.add('logo-objects');
   // A refresh always starts at the top of the page; Back and Forward still return to where you were
   (function () {
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
@@ -483,6 +485,18 @@
   })();
 </script>
 <script>
+  // The stamp lands after the third Ephemeral tile has finished arriving
+  (function () {
+    var stamp = document.querySelector('.ephemeral .stamp'), tile = document.querySelectorAll('.ephemeral figure')[2];
+    if (!stamp || !tile) return;
+    function land() {
+      var wait = (parseFloat(getComputedStyle(tile).getPropertyValue('--stagger')) || 0) + 900;
+      setTimeout(function () { stamp.classList.add('on'); }, wait);
+    }
+    if (tile.classList.contains('is-seen') || !tile.classList.contains('dr-emerge')) return land();
+    new MutationObserver(function (m, o) { if (tile.classList.contains('is-seen')) { o.disconnect(); land(); } })
+      .observe(tile, {attributes: true, attributeFilter: ['class']});
+  })();
   function cue() { var on = scrollY > 40; document.querySelector('.film').classList.toggle('scrolled', on); document.body.classList.toggle('logo-hero', !on); }
   addEventListener('scroll', cue, {passive: true}); cue();
 </script>

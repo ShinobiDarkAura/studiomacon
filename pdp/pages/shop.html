@@ -36,7 +36,10 @@
   /* the Bureau of Provenance stamp: angled over the top of the last tile, its bottom 18% overlapping the picture */
   .ephemeral{position:relative}
   .ephemeral .stamp{position:absolute;z-index:3;width:clamp(120px,13vw,200px);right:calc(var(--pad) + 24px + 4%);top:0;
-    transform:translateY(-82%) rotate(-14deg);pointer-events:none}
+    transform:translateY(-82%) rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;
+    transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
+  /* pressed down once the third tile has settled */
+  .ephemeral .stamp.on{opacity:1;transform:translateY(-82%) rotate(-14deg)}
   @media (max-width:599px){ .ephemeral .stamp{display:none} }
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head.next-set{padding-top:0}
@@ -122,6 +125,18 @@
 {{FOOTER}}
 {{SITEJS}}
 <script>
+  // The stamp lands after the third Ephemeral tile has finished arriving
+  (function () {
+    var stamp = document.querySelector('.ephemeral .stamp'), tile = document.querySelectorAll('.ephemeral figure')[2];
+    if (!stamp || !tile) return;
+    function land() {
+      var wait = (parseFloat(getComputedStyle(tile).getPropertyValue('--stagger')) || 0) + 900;
+      setTimeout(function () { stamp.classList.add('on'); }, wait);
+    }
+    if (tile.classList.contains('is-seen') || !tile.classList.contains('dr-emerge')) return land();
+    new MutationObserver(function (m, o) { if (tile.classList.contains('is-seen')) { o.disconnect(); land(); } })
+      .observe(tile, {attributes: true, attributeFilter: ['class']});
+  })();
   function cue() { var on = scrollY > 40; document.querySelector('.film').classList.toggle('scrolled', on); document.body.classList.toggle('logo-hero', !on); }
   addEventListener('scroll', cue, {passive: true}); cue();
 </script>
