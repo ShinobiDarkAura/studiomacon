@@ -51,9 +51,9 @@ body.white-right .head .right.on-dark{color:#000}
 @keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
 .head .right a{display:inline-block}
 .head .desk{display:none}
-.logotype{display:block;aspect-ratio:640/975;background:currentColor;
-  -webkit-mask:url(img/emblem-hands.png) center/contain no-repeat;mask:url(img/emblem-hands.png) center/contain no-repeat}
-.head .logotype{width:43px;position:relative;top:10px}
+.logotype{display:block;aspect-ratio:351/459;background:currentColor;
+  -webkit-mask:url(img/moonsun.png) center/contain no-repeat;mask:url(img/moonsun.png) center/contain no-repeat}
+.head .logotype{width:52px;position:relative;top:6px}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
@@ -116,7 +116,7 @@ footer .field button{padding:0 0 0 18px}
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:60px}
+  .head .logotype{width:72px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
