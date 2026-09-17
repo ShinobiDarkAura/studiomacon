@@ -36,6 +36,8 @@
   body.hero-quiet .scroll-cue{opacity:1}
   body.hero-quiet.logo-hero .head .logotype{opacity:0;transition:opacity 1.2s ease,transform .7s var(--ease),color .3s ease}
   body.hero-quiet .film .tagline{opacity:0}
+  /* once it has faded away, it simply reappears in the nav: no shrinking flight back up */
+  body.hero-quiet:not(.logo-hero) .head .logotype{transition:opacity .6s ease,color .3s ease}
   /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
   .head .logotype{transition:transform .7s var(--ease),color .3s ease}
   body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(2.8125)}
