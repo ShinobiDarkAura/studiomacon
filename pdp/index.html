@@ -19,7 +19,7 @@
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
   /* the film fills the first screen; the nav sits over it in white */
-  .film{position:relative;height:100vh;height:100dvh;overflow:hidden;background:#111}          /* follows the phone's toolbar, so it always fills the screen */
+  .film{position:relative;height:100vh;height:100svh;overflow:hidden;background:#111}          /* the screen's height with the toolbar showing, and it never changes: sized to the toolbar instead, it resized whenever the drawer locked scrolling and nudged the grid below */
   /* phones: no rubber-band pull at the top, which showed a strip of white above the film */
   @media (max-width:767px){ html{overscroll-behavior-y:none;background:#111} body{background:#fff} }
   .film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}

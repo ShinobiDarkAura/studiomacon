@@ -19,8 +19,7 @@
     "img/ear-cuff/hero.jpg",
     "img/ear-cuff/hand-1.jpg",
     "img/ear-cuff/hires-2.jpg",
-    "img/ear-cuff/hires-3.jpg",
-    "img/ear-cuff/composite.jpg"
+    "img/ear-cuff/hires-3.jpg"
    ],
    "hero": "img/ear-cuff/hand-2.jpg"
   },
@@ -69,13 +68,11 @@
    },
    "gallery": [
     "img/eleph/hires-1.jpg",
-    "img/eleph/plain-1.jpg",
-    "img/eleph/plain-2.jpg",
-    "img/eleph/hero.jpg",
-    "img/eleph/hand-1.jpg",
-    "img/eleph/hires-2.jpg"
+    "img/eleph/hand-2.jpg",
+    "img/eleph/plain-2.jpg"
    ],
-   "hero": "img/eleph/hand-2.jpg"
+   "hero": "img/eleph/hero.jpg",
+   "hidden": []
   },
   "ibi": {
    "frames": {
@@ -91,14 +88,11 @@
     "z": 1.18
    },
    "gallery": [
-    "img/ibi/hand-2.jpg",
-    "img/ibi/hires-1.jpg",
-    "img/ibi/hero.jpg",
-    "img/ibi/hand-1.jpg",
-    "img/ibi/plain-1.jpg",
-    "img/ibi/hires-3.jpg"
+    "img/ibi/hires-2.jpg",
+    "img/ibi/hand-2.jpg"
    ],
-   "hero": "img/ibi/hires-2.jpg"
+   "hero": "img/ibi/hero.jpg",
+   "hidden": []
   },
   "lunar-canyon-ring": {
    "frames": {
@@ -189,11 +183,10 @@
    },
    "gallery": [
     "img/milo/hires-2.jpg",
-    "img/milo/hero.jpg",
-    "img/milo/hand-1.jpg",
-    "img/milo/hires-1.jpg"
+    "img/milo/hand-2.jpg"
    ],
-   "hero": "img/milo/hand-2.jpg"
+   "hero": "img/milo/hero.jpg",
+   "hidden": []
   },
   "ori": {
    "frames": {
@@ -213,14 +206,12 @@
     "y": 49.9,
     "z": 1.54
    },
-   "hero": "img/ori/hand-2.jpg",
+   "hero": "img/ori/plain-1.jpg",
    "gallery": [
-    "img/ori/hero.jpg",
-    "img/ori/plain-1.jpg",
-    "img/ori/plain-2.jpg",
     "img/ori/plain-3.jpg",
-    "img/ori/hand-1.jpg"
-   ]
+    "img/ori/hand-2.jpg"
+   ],
+   "hidden": []
   },
   "pip": {
    "frames": {
@@ -236,9 +227,8 @@
     }
    },
    "gallery": [
-    "img/pip/hero.jpg",
-    "img/pip/plain-1.jpg",
     "img/pip/plain-2.jpg",
+    "img/pip/hand-2.jpg",
     "img/pip/plain-3.jpg"
    ],
    "hidden": [
@@ -254,7 +244,7 @@
     "y": 49.9,
     "z": 1.54
    },
-   "hero": "img/pip/hand-2.jpg"
+   "hero": "img/pip/hero.jpg"
   },
   "rebi": {
    "frames": {
@@ -270,19 +260,16 @@
     "z": 1
    },
    "gallery": [
-    "img/rebi/hand-2.jpg",
     "img/rebi/hires-1.jpg",
-    "img/rebi/hand-1.jpg",
-    "img/rebi/plain-1.jpg",
-    "img/rebi/hires-2.jpg",
-    "img/rebi/composite.jpg"
+    "img/rebi/hand-2.jpg"
    ],
    "tile_before_hires": {
     "x": 51.5,
     "y": 54.2,
     "z": 1.47
    },
-   "hero": "img/rebi/hero.jpg"
+   "hero": "img/rebi/hero.jpg",
+   "hidden": []
   },
   "ren": {
    "frames": {
@@ -308,19 +295,17 @@
     "z": 1
    },
    "gallery": [
-    "img/ren/hand-2.jpg",
     "img/ren/plain-1.jpg",
-    "img/ren/plain-2.jpg",
-    "img/ren/hand-1.jpg",
-    "img/ren/hires-1.jpg",
-    "img/ren/composite.jpg"
+    "img/ren/hand-2.jpg",
+    "img/ren/plain-2.jpg"
    ],
    "tile_before_hires": {
     "x": 50,
     "y": 50,
     "z": 1.42
    },
-   "hero": "img/ren/hero.jpg"
+   "hero": "img/ren/hero.jpg",
+   "hidden": []
   },
   "sietch-aperture": {
    "frames": {
@@ -429,12 +414,11 @@
     "z": 1.65
    },
    "gallery": [
-    "img/yael/hires-1.jpg",
     "img/yael/plain-1.jpg",
-    "img/yael/hero.jpg",
-    "img/yael/hand-1.jpg"
+    "img/yael/hand-2.jpg"
    ],
-   "hero": "img/yael/hand-2.jpg"
+   "hero": "img/yael/hires-1.jpg",
+   "hidden": []
   },
   "zuma": {
    "frames": {
@@ -461,12 +445,11 @@
    },
    "hero": "img/zuma/hero.jpg",
    "gallery": [
-    "img/zuma/hand-2.jpg",
     "img/zuma/plain-1.jpg",
-    "img/zuma/hand-1.jpg",
-    "img/zuma/plain-2.jpg",
-    "img/zuma/composite.jpg"
-   ]
+    "img/zuma/hand-2.jpg",
+    "img/zuma/plain-2.jpg"
+   ],
+   "hidden": []
   },
   "zuma-ring": {
    "frames": {
@@ -496,8 +479,7 @@
     "img/zuma-ring/plain-1.jpg",
     "img/zuma-ring/plain-2.jpg",
     "img/zuma-ring/hero.jpg",
-    "img/zuma-ring/hand-1.jpg",
-    "img/zuma-ring/composite.jpg"
+    "img/zuma-ring/hand-1.jpg"
    ],
    "hero": "img/zuma-ring/hand-2.jpg"
   }
@@ -528,5 +510,8 @@
   "meridian-egg-ring",
   "wonderhorn-talisman",
   "starshipkey-pendant"
- ]
+ ],
+ "rules": {
+  "totem_stack": "head-on or 3/4 view, another angle, one in hand, one in situ, one composite, one video (where each exists)"
+ }
 }
