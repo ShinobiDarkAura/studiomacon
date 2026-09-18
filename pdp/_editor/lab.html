@@ -67,6 +67,9 @@
   .sk .bar .greek{height:7px;width:34px;margin:0}
   .sk .hero{height:150px;background:#111;border-radius:4px;margin-bottom:16px}
   .sk .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .sk .setname{display:flex;align-items:baseline;gap:6px;margin:18px 0 8px}
+  .sk .setname b{font:600 13px/1 ui-sans-serif;letter-spacing:.04em;text-transform:uppercase}
+  .sk .setname span{font-size:11px;color:var(--soft)}
   .sk .tiles i{display:block;aspect-ratio:3/4;background:#ddd9d4;border-radius:3px}
   .sk .split{display:grid;grid-template-columns:70fr 30fr;gap:10px}
   .sk .split .p i{display:block;aspect-ratio:4/5;background:#ddd9d4;border-radius:3px;margin-bottom:6px}
@@ -139,8 +142,7 @@
         <p class="cap">Home</p>
         <div class="bar"><span class="greek"></span><span class="greek"></span><span class="grow"></span><span class="greek" style="width:56px"></span></div>
         <div class="hero"></div>
-        <div class="greek t s"></div>
-        <div class="tiles" id="skTiles"></div>
+        <div id="skSets"></div>
       </div>
       <div class="frame">
         <p class="cap">Product page</p>
@@ -351,12 +353,28 @@ function addTile(f) {
 let picking = null;                                   // {slug, apply(src)}
 
 window.skelReady = true;
+let SETS = [];                                        // the home page's own sets, read off the built page
+
+async function readSets() {
+  try {
+    const doc = new DOMParser().parseFromString(await (await fetch('/pdp/index.html')).text(), 'text/html');
+    SETS = [].slice.call(doc.querySelectorAll('.set')).map(set => ({
+      name: (set.querySelector('.set-title') || {}).textContent || '',
+      slugs: [].slice.call(set.querySelectorAll('.wall figure a.piece'))
+               .map(a => a.getAttribute('href').replace('.html', '')),
+    })).filter(s => s.slugs.length);
+  } catch (e) { SETS = [{name: 'Pieces', slugs: DATA.products.map(p => p.slug)}]; }
+}
+
 function skeleton() {
-  $('#skTiles').innerHTML = DATA.products.slice(0, 9).map(p => {
-    const e = EDITS.products[p.slug] || {};
-    return `<i data-slug="${p.slug}" style="background-image:url('/pdp/${e.hero || p.defaults.hero}')"></i>`;
-  }).join('');
-  $('#skTiles').querySelectorAll('i').forEach(t => t.onclick = () => {
+  $('#skSets').innerHTML = SETS.map(set => `<div class="setname"><b>${set.name}</b><span>${set.slugs.length}</span></div>
+    <div class="tiles">` + set.slugs.map(sl => {
+      const p = DATA.products.find(x => x.slug === sl);
+      if (!p) return '<i></i>';
+      const e = EDITS.products[sl] || {};
+      return `<i data-slug="${sl}" style="background-image:url('/pdp/${e.hero || p.defaults.hero}')"></i>`;
+    }).join('') + `</div>`).join('');
+  $('#skSets').querySelectorAll('i[data-slug]').forEach(t => t.onclick = () => {
     const s2 = t.dataset.slug;
     openPick(s2, src => { (EDITS.products[s2] = EDITS.products[s2] || {}).hero = src; skeleton(); draw(); touched(); });
   });
@@ -430,6 +448,7 @@ $('#pickFile').onchange = async () => {
   $('#piece').innerHTML = DATA.products.map(p => `<option value="${p.slug}">${p.defaults.name}</option>`).join('');
   $('#piece').onchange = () => { slug = $('#piece').value; draw(); skeleton(); chips(); play(); };
   slug = DATA.products[0].slug;
+  await readSets();
   draw(); skeleton(); chips(); play(); msg('');
 })();
 </script>
