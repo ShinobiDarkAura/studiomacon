@@ -62,19 +62,11 @@
   .sk .bar .greek{height:7px;width:34px;margin:0}
   .sk .hero{height:150px;background:#111;border-radius:4px;margin-bottom:16px}
   .sk .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-  .sk .tiles i.drag{opacity:.3}
-  .sk .tiles i.over{outline:2px solid #111;outline-offset:2px}
   .sk .setname{display:flex;align-items:baseline;gap:6px;margin:18px 0 8px}
   .sk .setname b{font:600 13px/1 ui-sans-serif;letter-spacing:.04em;text-transform:uppercase}
   .sk .setname span{font-size:11px;color:var(--soft)}
-  .sk .tiles i{display:block;aspect-ratio:3/4;background:#ddd9d4;border-radius:3px}
   .sk .split{display:grid;grid-template-columns:70fr 30fr;gap:10px;align-items:start}
   .sk .split > div:last-child{position:sticky;top:72px}          /* the words stay with you, like the real page */
-  .sk .split .p i{display:block;aspect-ratio:4/5;background:#ddd9d4;border-radius:3px;margin-bottom:6px}
-  .sk .tiles i,.sk .split .p i{position:relative;background:#ddd9d4 center/cover no-repeat;cursor:pointer}
-  .sk .tiles i::after,.sk .split .p i::after{content:"Change";position:absolute;inset:auto 0 0 0;padding:3px 0;
-    font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:#fff;background:rgba(0,0,0,.55);opacity:0}
-  .sk .tiles i:hover::after,.sk .split .p i:hover::after{opacity:1}
   .sk .hero{background-size:cover;background-position:center}
   .pick{position:fixed;inset:0;z-index:10;background:rgba(20,18,16,.55);display:none;place-items:center}
   .pick.on{display:grid}
@@ -87,13 +79,37 @@
   .sk .chips button.on{background:#111;color:#fff;border-color:#111}
   /* swapping a piece replays the page's own entrance, so the rhythm can be judged */
   @keyframes rise{from{opacity:0;transform:translateY(22px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
-  .sk .playing i,.sk .playing .greek{animation:rise .62s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms)}
-  .x{position:absolute;top:6px;right:6px;z-index:2;width:24px;height:24px;padding:0;border:0;border-radius:50%;
-     background:rgba(0,0,0,.62);color:#fff;font-size:15px;line-height:24px;text-align:center;cursor:pointer;
-     opacity:0;transition:opacity .15s ease}
+  .sk .playing .fb,.sk .playing .greek{animation:rise .62s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms)}
+  /* every picture in the skeleton is framed exactly as the site frames it: cover, then pan and zoom */
+  .fb{position:relative;overflow:hidden;border-radius:4px;background:#ddd9d4;touch-action:none}
+  .fb.tile,.fb.lead{aspect-ratio:4/5}
+  .fb img{display:block;width:100%;height:100%;object-fit:cover;cursor:grab;user-select:none;-webkit-user-drag:none}
+  .fb:not(.tile):not(.lead) img{height:auto}
+  .fb.panning img{cursor:grabbing}
+  .sk .split .p .fb{margin-bottom:6px}
+  .fb .chg,.fb .zm,.fb .x,.fb .grip{position:absolute;z-index:3;opacity:0;transition:opacity .15s ease}
+  .fb:hover .chg,.fb:hover .zm,.fb:hover .x,.fb:hover .grip{opacity:1}
+  .fb .chg{left:6px;top:6px;padding:2px 8px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+     background:rgba(0,0,0,.6);color:#fff;border:0;border-radius:4px}
+  .fb .zm{left:8px;right:8px;bottom:8px;width:auto;margin:0;accent-color:#fff}
+  .fb .grip{right:6px;top:6px;width:26px;height:26px;display:grid;place-items:center;border-radius:5px;
+     background:rgba(0,0,0,.6);color:#fff;font-size:14px;cursor:move}
+  .fb.drag{opacity:.3}
+  .fb.over{outline:2px solid #111;outline-offset:2px}
+  /* the remove button: 1.5x, with the cross optically centred */
+  .x{position:absolute;top:6px;right:6px;z-index:3;width:36px;height:36px;padding:0;border:0;border-radius:50%;
+     background:rgba(0,0,0,.62);color:#fff;display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .15s ease}
+  .x svg{width:14px;height:14px;display:block}
   .x:hover{background:#a11}
-  .sk .split .p i:hover .x,.mock .pics figure:hover .x{opacity:1}
+  .mock .pics figure:hover .x{opacity:1}
   .mock .pics figure{position:relative}
+  /* alignment guides */
+  .guided{position:relative}
+  .guides{position:absolute;inset:0;pointer-events:none;z-index:4}
+  .gv{position:absolute;top:0;bottom:0;width:1px;background:rgba(225,0,0,.55)}
+  .gh{position:absolute;left:0;right:0;height:1px;background:rgba(225,0,0,.55);pointer-events:auto;cursor:row-resize}
+  .gh::before{content:"";position:absolute;left:0;right:0;top:-5px;height:11px}
+  .sk .tools{display:flex;gap:14px;align-items:center;margin:0 0 14px;font-size:13px;color:var(--soft)}
   .sk .cap{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:0 0 10px}
 </style>
 </head>
@@ -107,7 +123,6 @@
   <span class="grow"></span>
   <span class="msg" id="msg">Loading…</span>
   <a href="/pdp/_editor/index.html"><button>Words editor</button></a>
-  <button class="primary" id="save" disabled>Save &amp; rebuild</button>
 </header>
 
 <main>
@@ -129,6 +144,10 @@
 
   <!-- ————— tab three: the shape of the site, no words ————— -->
   <section class="pane on" id="pane-skel">
+    <div class="sk-tools-row">
+      <p class="tools"><label><input type="checkbox" id="guides"> Guides</label>
+        <span>red lines through each column's centre and across each row — drag the horizontal ones to line up the pieces</span></p>
+    </div>
     <div class="sk">
       <div class="frame">
         <p class="cap">Home</p>
@@ -212,7 +231,7 @@ function draw() {
 
   $('#mock').innerHTML = `<div class="pics">` + shown().map(src => {
     const f = frameOf(src);
-    return `<figure><button class="x" data-src="${src}" title="Remove from the page" aria-label="Remove from the page">×</button><img src="/pdp/${src}" style="transform:scale(${f.z});transform-origin:${f.x}% ${f.y}%"></figure>`;
+    return `<figure><button class="x" data-src="${src}" title="Remove from the page" aria-label="Remove from the page"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button><img src="/pdp/${src}" style="transform:scale(${f.z});transform-origin:${f.x}% ${f.y}%"></figure>`;
   }).join('') + `</div>
     <div class="copy">
       <div class="greek s"></div><div class="greek t"></div>
@@ -223,7 +242,7 @@ function draw() {
 
   $('#shots').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a, order, +b.dataset.i, b.dataset.src));
   dragging(order);
-  if (DATA && window.skelReady) { skeleton(); chips(); }
+  if (DATA && window.skelReady && SETS.length) { skeleton(); chips(); }
   $('#shots').querySelectorAll('input[type=range]').forEach(r => r.oninput = () => {
     const src = order[+r.dataset.i], e2 = edit();
     e2.frames = e2.frames || {};
@@ -315,7 +334,20 @@ function act(a, order, i, src2) {
   draw(); touched();
 }
 
-function touched() { $('#save').disabled = false; msg('Not saved yet'); }
+// every change saves itself: a moment after the last touch, one at a time
+let saveTimer = null, saving = false, again = false;
+function touched() { msg('Saving…'); clearTimeout(saveTimer); saveTimer = setTimeout(saveNow, 900); }
+async function saveNow() {
+  if (saving) { again = true; return; }
+  saving = true;
+  try {
+    const r = await fetch('/api/content', {method: 'POST', body: JSON.stringify(EDITS)});
+    const j = await r.json();
+    msg(j.error || 'Saved', !!j.error);
+  } catch (e) { msg('Could not save — is the preview server running?', true); }
+  saving = false;
+  if (again) { again = false; saveNow(); }
+}
 
 /* ————— picture from the studio's own drive ————— */
 $('#addPhoto').onclick = () => $('#file').click();
@@ -330,21 +362,13 @@ $('#file').onchange = async () => {
   e.gallery = (e.gallery || piece().defaults.gallery).concat([j.added]);
   piece().photos.push(j.added);
   $('#file').value = '';
-  draw(); msg('Added — not saved yet'); $('#save').disabled = false;
+  draw(); touched();
 };
 
 $('#reset').onclick = () => {
   const e = EDITS.products[slug] || {};
   delete e.hero; delete e.gallery; delete e.hidden; delete e.frames;
   draw(); touched();
-};
-
-$('#save').onclick = async () => {
-  $('#save').disabled = true; msg('Saving and rebuilding…');
-  const r = await fetch('/api/content', {method: 'POST', body: JSON.stringify(EDITS)});
-  const j = await r.json();
-  msg(j.error || 'Saved and rebuilt', !!j.error);
-  if (j.error) $('#save').disabled = false;
 };
 
 /* ————— the skeleton, with the real pictures in place ————— */
@@ -364,57 +388,171 @@ async function readSets() {
   } catch (e) { SETS = [{name: 'Pieces', slugs: DATA.products.map(p => p.slug)}]; }
 }
 
+const X_SVG = '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+const tileFrame = sl => Object.assign({x: 50, y: 50, z: 1.12}, (EDITS.products[sl] || {}).tile);
+const picFrame = (sl, src) => Object.assign({x: 50, y: 50, z: 1}, ((EDITS.products[sl] || {}).frames || {})[src]);
+const look = f => `object-position:${f.x}% ${f.y}%;transform-origin:${f.x}% ${f.y}%;transform:scale(${f.z})`;
+
+function box(kind, sl, src, f, extra) {
+  return `<div class="fb ${kind}" data-kind="${kind === 'lead' ? 'pic' : kind}" data-slug="${sl}" data-src="${src}" ${extra || ''}>
+    <img src="/pdp/${src}" style="${look(f)}" draggable="false" alt="">
+    <button class="chg">Change</button>
+    ${kind === 'tile' ? '<span class="grip" draggable="true" title="Drag to reorder">⠿</span>'
+                      : `<button class="x" data-src="${src}" title="Remove from the page" aria-label="Remove from the page">${X_SVG}</button>`}
+    <input class="zm" type="range" min="1" max="2.5" step="0.01" value="${f.z}" title="Zoom">
+  </div>`;
+}
+
 function skeleton() {
   $('#skSets').innerHTML = SETS.map((set, si) => `<div class="setname"><b>${set.name}</b><span>${set.slugs.length}</span></div>
-    <div class="tiles">` + set.slugs.map(sl => {
+    <div class="tiles guided">` + set.slugs.map(sl => {
       const p = DATA.products.find(x => x.slug === sl);
-      if (!p) return '<i></i>';
+      if (!p) return '<div class="fb tile"></div>';
       const e = EDITS.products[sl] || {};
-      return `<i data-slug="${sl}" data-set="${si}" draggable="true" style="background-image:url('/pdp/${e.hero || p.defaults.hero}')"></i>`;
+      return box('tile', sl, e.hero || p.defaults.hero, tileFrame(sl), `data-set="${si}"`);
     }).join('') + `</div>`).join('');
-  $('#skSets').querySelectorAll('i[data-slug]').forEach(t => t.onclick = () => {
-    const s2 = t.dataset.slug;
-    openPick(s2, src => { (EDITS.products[s2] = EDITS.products[s2] || {}).hero = src; skeleton(); draw(); touched(); });
-  });
-
-  gridDrag();
 
   const list = shown();
-  $('#skPics').innerHTML = list.map((src, i) =>
-    `<i data-i="${i}" style="background-image:url('/pdp/${src}')"><button class="x" data-src="${src}" title="Remove from the page" aria-label="Remove from the page">×</button></i>`).join('');
-  $('#skPics').querySelectorAll('i').forEach(t => t.onclick = () => {
-    const i = +t.dataset.i;
-    openPick(slug, src => {
+  $('#skPics').classList.add('guided');
+  $('#skPics').innerHTML = list.map((src, i) => box(i === 0 ? 'lead' : 'pic', slug, src, picFrame(slug, src), `data-i="${i}"`)).join('');
+
+  $('#pane-skel').querySelectorAll('.fb img').forEach(im => { if (!im.complete) im.onload = guides; });
+  guides();
+}
+
+// ── one set of handlers for every framed picture ──
+const pane = $('#pane-skel');
+function fbFrame(fb) { return fb.dataset.kind === 'tile' ? tileFrame(fb.dataset.slug) : picFrame(fb.dataset.slug, fb.dataset.src); }
+function keep(fb, f) {
+  const e = EDITS.products[fb.dataset.slug] = EDITS.products[fb.dataset.slug] || {};
+  if (fb.dataset.kind === 'tile') e.tile = f;
+  else { e.frames = e.frames || {}; e.frames[fb.dataset.src] = f; }
+  if (fb.dataset.slug === slug) draw();
+}
+
+// zoom
+pane.addEventListener('input', ev => {
+  if (!ev.target.classList.contains('zm')) return;
+  const fb = ev.target.closest('.fb'), f = fbFrame(fb);
+  f.z = +ev.target.value;
+  fb.querySelector('img').style.cssText = look(f);
+  fb._f = f;
+});
+pane.addEventListener('change', ev => {
+  if (!ev.target.classList.contains('zm')) return;
+  const fb = ev.target.closest('.fb');
+  if (fb._f) { keep(fb, fb._f); touched(); }
+});
+
+// pan: drag the picture inside its frame
+pane.addEventListener('pointerdown', ev => {
+  const im = ev.target.closest('.fb img');
+  if (!im || ev.button !== 0) return;
+  const fb = im.closest('.fb'), f = fbFrame(fb), r = fb.getBoundingClientRect();
+  const sx = ev.clientX, sy = ev.clientY, x0 = f.x, y0 = f.y;
+  const k = 100 / Math.max(0.35, f.z - 1 + 0.35);          // steadier when barely zoomed
+  fb.classList.add('panning'); im.setPointerCapture(ev.pointerId);
+  const move = e => {
+    f.x = Math.max(0, Math.min(100, x0 - (e.clientX - sx) / r.width * k));
+    f.y = Math.max(0, Math.min(100, y0 - (e.clientY - sy) / r.height * k));
+    f.x = Math.round(f.x * 10) / 10; f.y = Math.round(f.y * 10) / 10;
+    im.style.cssText = look(f);
+  };
+  const up = () => {
+    im.removeEventListener('pointermove', move); im.removeEventListener('pointerup', up);
+    fb.classList.remove('panning');
+    if (f.x !== x0 || f.y !== y0) { keep(fb, f); touched(); }
+  };
+  im.addEventListener('pointermove', move); im.addEventListener('pointerup', up);
+});
+
+// swap for another picture
+pane.addEventListener('click', ev => {
+  const b = ev.target.closest('.chg'); if (!b) return;
+  const fb = b.closest('.fb'), sl = fb.dataset.slug;
+  if (fb.dataset.kind === 'tile') {
+    openPick(sl, src => { (EDITS.products[sl] = EDITS.products[sl] || {}).hero = src; skeleton(); draw(); touched(); });
+  } else {
+    const was = fb.dataset.src;
+    openPick(sl, src => {
       const e = edit(), p = piece();
-      const order = [e.hero || p.defaults.hero].concat(e.gallery || p.defaults.gallery)
-                    .filter((x, k, a) => a.indexOf(x) === k);
-      const at = order.indexOf(list[i]);
+      const order = [e.hero || p.defaults.hero].concat(e.gallery || p.defaults.gallery).filter((x, k, a) => a.indexOf(x) === k);
+      const at = order.indexOf(was);
       if (at >= 0) order[at] = src;
       e.hero = order[0]; e.gallery = order.slice(1);
       skeleton(); draw(); touched();
     });
-  });
-}
+  }
+});
 
-// the home grid: drag a piece to a new place in its own set
+// reorder the home grid by its handle, within its own set
 let gHeld = null;
-function gridDrag() {
-  $('#skSets').querySelectorAll('i[draggable]').forEach(t => {
-    t.ondragstart = e => { gHeld = t; t.classList.add('drag'); e.dataTransfer.effectAllowed = 'move'; };
-    t.ondragend = () => { gHeld = null; $('#skSets').querySelectorAll('i').forEach(x => x.classList.remove('drag', 'over')); };
-    t.ondragover = e => { if (gHeld && gHeld.dataset.set === t.dataset.set) { e.preventDefault(); t.classList.add('over'); } };
-    t.ondragleave = () => t.classList.remove('over');
-    t.ondrop = e => {
-      e.preventDefault();
-      if (!gHeld || gHeld === t || gHeld.dataset.set !== t.dataset.set) return;   // a totem stays a totem
-      const set = SETS[+t.dataset.set].slugs;
-      set.splice(set.indexOf(t.dataset.slug), 0, set.splice(set.indexOf(gHeld.dataset.slug), 1)[0]);
-      EDITS.order = SETS.reduce((all, st) => all.concat(st.slugs), []);
-      gHeld = null;
-      skeleton(); touched();
-    };
+pane.addEventListener('dragstart', ev => {
+  const g = ev.target.closest && ev.target.closest('.grip'); if (!g) return;
+  gHeld = g.closest('.fb'); gHeld.classList.add('drag');
+  ev.dataTransfer.effectAllowed = 'move'; ev.dataTransfer.setDragImage(gHeld, 20, 20);
+});
+pane.addEventListener('dragend', () => { gHeld = null; pane.querySelectorAll('.fb').forEach(x => x.classList.remove('drag', 'over')); });
+pane.addEventListener('dragover', ev => {
+  const t = ev.target.closest && ev.target.closest('.fb.tile');
+  if (t && gHeld && t.dataset.set === gHeld.dataset.set) { ev.preventDefault(); t.classList.add('over'); }
+});
+pane.addEventListener('dragleave', ev => { const t = ev.target.closest && ev.target.closest('.fb'); if (t) t.classList.remove('over'); });
+pane.addEventListener('drop', ev => {
+  const t = ev.target.closest && ev.target.closest('.fb.tile');
+  if (!t || !gHeld || t === gHeld || t.dataset.set !== gHeld.dataset.set) return;   // a totem stays a totem
+  ev.preventDefault();
+  const set = SETS[+t.dataset.set].slugs;
+  set.splice(set.indexOf(t.dataset.slug), 0, set.splice(set.indexOf(gHeld.dataset.slug), 1)[0]);
+  EDITS.order = SETS.reduce((all, st) => all.concat(st.slugs), []);
+  gHeld = null;
+  skeleton(); touched();
+});
+
+// ── alignment guides ──
+const hLines = {};                                         // where each dragged horizontal sits, by row
+function guides() {
+  pane.querySelectorAll('.guides').forEach(g => g.remove());
+  if (!$('#guides').checked) return;
+  pane.querySelectorAll('.guided').forEach((wrap, w) => {
+    const boxes = [].slice.call(wrap.querySelectorAll(':scope > .fb'));
+    if (!boxes.length) return;
+    const W = wrap.getBoundingClientRect(), g = document.createElement('div');
+    g.className = 'guides';
+    const cols = [...new Set(boxes.map(b => Math.round(b.getBoundingClientRect().left)))];
+    cols.forEach(left => {
+      const b = boxes.find(x => Math.round(x.getBoundingClientRect().left) === left).getBoundingClientRect();
+      g.insertAdjacentHTML('beforeend', `<i class="gv" style="left:${b.left - W.left + b.width / 2}px"></i>`);
+    });
+    const rows = [...new Set(boxes.map(b => Math.round(b.getBoundingClientRect().top)))];
+    rows.forEach((top, r) => {
+      const b = boxes.find(x => Math.round(x.getBoundingClientRect().top) === top).getBoundingClientRect();
+      [0.38, 0.72].forEach((at, n) => {
+        const key = w + ':' + r + ':' + n;
+        const y = hLines[key] != null ? hLines[key] * b.height : at * b.height;
+        g.insertAdjacentHTML('beforeend',
+          `<i class="gh" data-key="${key}" data-top="${b.top - W.top}" data-h="${b.height}" style="top:${b.top - W.top + y}px"></i>`);
+      });
+    });
+    wrap.appendChild(g);
   });
 }
+$('#guides').onchange = () => { try { localStorage.setItem('lab-guides', $('#guides').checked ? '1' : ''); } catch (e) {} guides(); };
+try { $('#guides').checked = !!localStorage.getItem('lab-guides'); } catch (e) {}
+addEventListener('resize', guides);
+pane.addEventListener('pointerdown', ev => {
+  const h = ev.target.closest('.gh'); if (!h) return;
+  ev.stopPropagation(); ev.preventDefault();
+  const sy = ev.clientY, y0 = parseFloat(h.style.top), top = +h.dataset.top, ht = +h.dataset.h;
+  h.setPointerCapture(ev.pointerId);
+  const move = e => {
+    const y = Math.max(top, Math.min(top + ht, y0 + e.clientY - sy));
+    h.style.top = y + 'px';
+    hLines[h.dataset.key] = (y - top) / ht;
+  };
+  const up = () => { h.removeEventListener('pointermove', move); h.removeEventListener('pointerup', up); };
+  h.addEventListener('pointermove', move); h.addEventListener('pointerup', up);
+}, true);
 
 // the row of pieces above the product page: swapping replays the entrance
 function chips() {
@@ -431,7 +569,7 @@ function play() {
   const frame = $('#skPics').closest('.frame');
   frame.classList.remove('playing');
   void frame.offsetWidth;                                   // restart the run
-  [].slice.call(frame.querySelectorAll('i, .greek')).forEach((el, i) => el.style.setProperty('--d', i * 70 + 'ms'));
+  [].slice.call(frame.querySelectorAll('.fb, .greek')).forEach((el, i) => el.style.setProperty('--d', i * 70 + 'ms'));
   frame.classList.add('playing');
 }
 
@@ -455,7 +593,7 @@ $('#pickFile').onchange = async () => {
   $('#pickFile').value = '';
   if (j.error) return msg(j.error, true);
   DATA.products.find(x => x.slug === to).photos.push(j.added);
-  apply(j.added); closePick(); msg('Added — not saved yet'); $('#save').disabled = false;
+  apply(j.added); closePick(); touched();
 };
 
 /* ————— load ————— */

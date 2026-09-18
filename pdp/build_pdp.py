@@ -346,6 +346,7 @@ def page(p, template, related=""):
         style = ""
         if f:
             style = (f' style="object-position:{f.get("x", 50):g}% {f.get("y", 50):g}%'
+                     f';transform-origin:{f.get("x", 50):g}% {f.get("y", 50):g}%'
                      f';transform:scale({f.get("z", 1):g})"')
         return f'<figure><img src="{src}"{style} alt=""{extra}></figure>'
 
@@ -353,6 +354,7 @@ def page(p, template, related=""):
     hf = (_content.product(slug, "frames", {}) or {}).get(hero)
     hero_style = ("" if not hf else
                   f' style="object-position:{hf.get("x", 50):g}% {hf.get("y", 50):g}%'
+                  f';transform-origin:{hf.get("x", 50):g}% {hf.get("y", 50):g}%'
                   f';transform:scale({hf.get("z", 1):g})"')
     if os.path.exists(os.path.join(OUT, "video", "pieces", f"{slug}.mp4")):
         figs.insert(1, f'<figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/{slug}.jpg" aria-label="{html.escape(name)} in motion"><source src="video/pieces/{slug}.mp4" type="video/mp4"></video></figure>')
@@ -551,6 +553,14 @@ def align_style(slug):
     return (f' style="--ox:{a["ox"]}%;--oy:{a["oy"]}%;--tx:{a["tx"]}%;--ty:{a["ty"]}%;--s:{a["s"]}"' if a else "")
 
 
+def tile_style(slug):
+    """How the studio has framed a piece's tile on the home grid (set in the lab)."""
+    t = _content.product(slug, "tile", None)
+    if not isinstance(t, dict):
+        return ""
+    return f' style="--x:{t.get("x", 50):g}%;--y:{t.get("y", 50):g}%;--z:{t.get("z", 1.12):g}"'
+
+
 def rel_tile(x):
     name = "plain-3.jpg" if x["slug"] == "wonderhorn-talisman" else "hero.jpg"
     return tile_src(f'img/{x["slug"]}/{name}')
@@ -640,7 +650,7 @@ def main():
         lazy = "eager" if i < 3 else "lazy"
         tiles.append(
             f'    <figure><a class="piece" href="{p["slug"]}.html">'
-            f'<img src="{still_src}" alt="{html.escape(p["name"])}" loading="{lazy}">'
+            f'<img src="{still_src}" alt="{html.escape(p["name"])}" loading="{lazy}"{tile_style(p["slug"])}>'
             + (f'<img class="held" src="{hover_src}" alt="" loading="lazy"{align_style(p["slug"])}>' if held else "")
             + f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
