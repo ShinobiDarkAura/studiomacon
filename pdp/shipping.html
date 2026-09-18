@@ -17,10 +17,12 @@
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="site.css?v=1789708107">
 <style>
-  /* one screen: the olive branch on the left, the policy on the right */
+  /* one screen: the keepsake box on the left, the policy on the right */
   .ship{display:grid;gap:40px;min-height:100vh;min-height:100svh;padding:calc(var(--head) + 40px) calc(var(--pad) + 24px) 64px;align-items:center}
   .ship .branch{margin:0}
-  .ship .branch img{width:100%;max-width:560px;margin:0 auto}
+  /* the illustration is painted on black, so it sits on its own black field */
+  .ship .branch{background:#0d0c0b;border-radius:8px;overflow:hidden}
+  .ship .branch img{display:block;width:100%;max-width:640px;margin:0 auto}
   .ship .text{max-width:520px;width:100%;justify-self:center}
   .ship .intro{padding:0;text-align:left}
   .ship .intro p.lede{margin:0}
@@ -82,7 +84,7 @@
 
 <main>
   <section class="ship">
-    <figure class="branch"><img width="1400" height="1400" src="img/pages/olive-branch.png.webp" alt="Illustration of an olive branch"></figure>
+    <figure class="branch"><img width="1314" height="800" src="img/pages/keepsake-box.jpg.webp" alt="Illustration of a piece packed in its box with tissue"></figure>
     <div class="text">
   <section class="intro">
     <p class="eyebrow" data-edit="page:shipping.html:20a158b6">Made to Order</p>

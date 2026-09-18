@@ -4,7 +4,7 @@
 Only what a visitor loads, plus the JPEGs Shopify fetches for product images.
 The editor, the photographs as shot, the builder and the page sources stay home.
 """
-import csv, os, shutil, sys
+import csv, glob, os, re, shutil, sys
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(os.path.dirname(HERE), "dist")
@@ -12,6 +12,20 @@ OUT = os.path.join(os.path.dirname(HERE), "dist")
 KEEP_FILES = (".html", ".css", ".xml", ".txt", ".ico", ".webmanifest")
 KEEP_DIRS = ("img", "video", "fonts")
 SKIP_DIRS = {"_editor", "_originals", "_picker", "tools", "partials", "pages", "shopify", "_source"}
+
+
+def used_media():
+    """Only the video and posters the built pages actually ask for.
+
+    film.mp4 is the 42MB source the process cut was made from; it has no place
+    on a web server.
+    """
+    out = set()
+    for f in glob.glob(os.path.join(HERE, "*.html")):
+        doc = open(f, encoding="utf-8").read()
+        for m in re.findall(r'(?:src|poster)="(video/[^"]+)"', doc):
+            out.add(os.path.normpath(m))
+    return out
 
 
 def wanted_jpgs():
@@ -28,6 +42,7 @@ def main():
     if os.path.exists(OUT):
         shutil.rmtree(OUT)
     keep_jpg = wanted_jpgs()
+    used = used_media()
     n = 0
     for root, dirs, files in os.walk(HERE):
         rel_root = os.path.relpath(root, HERE)
@@ -41,6 +56,8 @@ def main():
             take = False
             if os.sep not in rel and f.endswith(KEEP_FILES) and f != "template.html":
                 take = True
+            elif top == "video":
+                take = rel in used
             elif top in KEEP_DIRS:
                 take = f.endswith((".webp", ".mp4", ".woff2", ".jpg" if rel in keep_jpg else ".webp"))
                 if f.endswith(".jpg"):
