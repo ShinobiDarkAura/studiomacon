@@ -173,11 +173,13 @@ def export(src, slug, name, width):
     keep = os.path.join(keep_dir, name + ".jpg")
     live = os.path.join(live_dir, name + ".jpg")
 
+    # a studio edit placed by hand (tools/place_hires.py) is marked and never re-exported over
+    pinned = os.path.exists(keep + ".studio")
     stale = False
-    if os.path.exists(keep):
+    if os.path.exists(keep) and not pinned:
         with Image.open(keep) as cur:
             stale = cur.width < width and Image.open(src).width > cur.width
-    if not os.path.exists(keep) or stale or os.path.getmtime(src) > os.path.getmtime(keep):
+    if not pinned and (not os.path.exists(keep) or stale or os.path.getmtime(src) > os.path.getmtime(keep)):
         im = Image.open(src).convert("RGB")
         if im.width > width:
             im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)

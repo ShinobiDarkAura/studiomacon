@@ -10,3 +10,4 @@ pdp/_originals/
 .env
 dist/
 .wrangler/
+pdp/_before_hires/
