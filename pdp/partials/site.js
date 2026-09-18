@@ -441,13 +441,7 @@
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
-    var menu = document.createElement('nav');
-    menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.inert = true;
-    menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
-      '<a href="index.html#pieces">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
-      '<a href="shipping.html" class="two-line">Shipping<br>&amp; Returns</a><a href="contact.html">Contact</a><a href="story.html">About</a><a href="bag.html">Bag</a>';
-    [].forEach.call(menu.querySelectorAll('a'), function (a, i) { a.style.setProperty('--i', i); });
-    document.body.appendChild(menu);
+    var menu = document.querySelector('.menu-sheet'); if (!menu) return;          // written into the page (partials/nav.html), so it is whole from the first paint
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
     var keyboard = false;
     function set(on) {
@@ -489,10 +483,9 @@
       var closed = false;
       var close = function () {
         if (closed) return; closed = true;
-        requestAnimationFrame(function () {
-          menu.classList.remove('instant');
-          requestAnimationFrame(function () { set(false); });
-        });
+        // in one frame: were it closed a frame after "instant" came off, the still-open drawer
+        // would restart its words' rise-in for that frame and they would blink out
+        requestAnimationFrame(function () { menu.classList.remove('instant'); set(false); });
       };
       if (document.readyState === 'complete') setTimeout(close, 150);
       else addEventListener('load', function () { setTimeout(close, 150); });

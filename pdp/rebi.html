@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Rebi", "description": "Solid bronze with an ombré patina, and a different outline from every side of the room. Handling is known to sharpen the reflexes; owners report catching things before they fall. Each plane is refined by hand after casting.", "image": ["https://studiomacon.co/img/rebi/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "rebi", "offers": [{"@type": "Offer", "price": "220.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/rebi.html"}]}</script>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789762073">
+<link rel="stylesheet" href="site.css?v=1789763477">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -191,6 +191,7 @@
 </head>
 <body class="white-right" data-slug="rebi">
 
+<nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping<br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><a href="bag.html" style="--i:6">Bag</a></nav>
 <header class="head">
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
@@ -721,13 +722,7 @@
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
-    var menu = document.createElement('nav');
-    menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.inert = true;
-    menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
-      '<a href="index.html#pieces">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
-      '<a href="shipping.html" class="two-line">Shipping<br>&amp; Returns</a><a href="contact.html">Contact</a><a href="story.html">About</a><a href="bag.html">Bag</a>';
-    [].forEach.call(menu.querySelectorAll('a'), function (a, i) { a.style.setProperty('--i', i); });
-    document.body.appendChild(menu);
+    var menu = document.querySelector('.menu-sheet'); if (!menu) return;          // written into the page (partials/nav.html), so it is whole from the first paint
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
     var keyboard = false;
     function set(on) {
@@ -769,10 +764,9 @@
       var closed = false;
       var close = function () {
         if (closed) return; closed = true;
-        requestAnimationFrame(function () {
-          menu.classList.remove('instant');
-          requestAnimationFrame(function () { set(false); });
-        });
+        // in one frame: were it closed a frame after "instant" came off, the still-open drawer
+        // would restart its words' rise-in for that frame and they would blink out
+        requestAnimationFrame(function () { menu.classList.remove('instant'); set(false); });
       };
       if (document.readyState === 'complete') setTimeout(close, 150);
       else addEventListener('load', function () { setTimeout(close, 150); });

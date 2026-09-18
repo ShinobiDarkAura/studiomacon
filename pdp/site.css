@@ -199,7 +199,8 @@ body{overflow-x:clip}
 /* arriving from the drawer: the new page loads behind it, already pushed aside, then the drawer closes */
 @media (max-width:767px){
   html.menu-arriving body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(var(--drawer));transition:none}
-  html.menu-arriving::before{content:"";position:fixed;top:0;left:0;width:var(--drawer);height:100vh;height:100svh;background:#fff;z-index:59}
+  html.menu-arriving .menu-sheet{transform:none;visibility:visible;transition:none}
+  html.menu-arriving .menu-sheet a{animation:none}
   html.menu-arriving,html.menu-arriving body{overflow:hidden}
 }
 .menu-sheet.instant,.menu-sheet.instant a{transition:none !important;animation:none !important}
