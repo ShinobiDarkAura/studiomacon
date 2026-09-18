@@ -78,6 +78,75 @@
       }
     });
     photos(on);
+    stamp(on);
+  }
+
+  // ── the Bureau stamp: dragged into place on the page itself ───────────
+  var STAMP_DEFAULT = {w: 13, right: 11.4, drop: 98.3, tilt: -14};
+
+  function stampNow() {
+    var s = {};
+    Object.keys(STAMP_DEFAULT).forEach(function (k) {
+      s[k] = (edits.stamp && typeof edits.stamp[k] === 'number') ? edits.stamp[k] : STAMP_DEFAULT[k];
+    });
+    return s;
+  }
+
+  function stampPaint(el, s) {
+    el.style.width = 'clamp(120px,' + s.w + 'vw,240px)';
+    el.style.right = s.right + 'vw';
+    el.style.transform = 'translateY(' + s.drop + '%) rotate(' + s.tilt + 'deg)';
+    var tip = document.querySelector('.ed-stamp-tip');
+    if (tip) tip.textContent = Math.round(s.w) + 'vw · ' + s.right.toFixed(1) + ' from right · ' + Math.round(s.tilt) + '°';
+  }
+
+  function stamp(show) {
+    var el = document.querySelector('.stamp');
+    if (!el) return;
+    var tools = document.querySelector('.ed-stamp');
+    if (!show) { if (tools) tools.remove(); el.classList.remove('ed-stamp-on'); el.style.cursor = ''; return; }
+    el.classList.add('ed-stamp-on', 'on');
+    el.style.cursor = 'grab';
+
+    if (!tools) {
+      tools = document.createElement('div');
+      tools.className = 'ed-stamp';
+      tools.innerHTML = '<b>Stamp</b><button data-s="-1">smaller</button><button data-s="1">larger</button>' +
+                        '<button data-t="-2">tilt ↺</button><button data-t="2">tilt ↻</button>' +
+                        '<button data-r="1">reset</button><span class="ed-stamp-tip"></span>';
+      el.parentNode.appendChild(tools);
+      tools.addEventListener('click', function (e) {
+        var d = e.target.dataset || {}; var s = stampNow();
+        if (d.s) s.w = Math.min(30, Math.max(4, s.w + Number(d.s)));
+        else if (d.t) s.tilt = Math.max(-45, Math.min(45, s.tilt + Number(d.t)));
+        else if (d.r) s = Object.assign({}, STAMP_DEFAULT);
+        else return;
+        edits.stamp = s; stampPaint(el, s); setDirty(true);
+      });
+    }
+
+    if (!el.dataset.edStampBound) {
+      el.dataset.edStampBound = '1';
+      el.addEventListener('pointerdown', function (e) {
+        if (!on) return;
+        e.preventDefault();
+        var s = stampNow(), x0 = e.clientX, y0 = e.clientY, r0 = s.right, d0 = s.drop;
+        el.setPointerCapture(e.pointerId); el.style.cursor = 'grabbing';
+        function move(ev) {
+          var s2 = stampNow();
+          var round = function (n) { return Math.round(n * 10) / 10; };
+          s2.right = round(Math.max(0, Math.min(45, r0 - (ev.clientX - x0) / innerWidth * 100)));
+          s2.drop  = round(Math.max(0, Math.min(160, d0 + (ev.clientY - y0) / el.offsetHeight * 100)));
+          edits.stamp = s2; stampPaint(el, s2); setDirty(true);
+        }
+        function up(ev) {
+          el.releasePointerCapture(ev.pointerId); el.style.cursor = 'grab';
+          el.removeEventListener('pointermove', move); el.removeEventListener('pointerup', up);
+        }
+        el.addEventListener('pointermove', move); el.addEventListener('pointerup', up);
+      });
+    }
+    stampPaint(el, stampNow());
   }
 
   // ── photographs ───────────────────────────────────────────────────────
@@ -171,7 +240,15 @@
       '.ed-photo b{color:#fff;font:500 11px ui-sans-serif,sans-serif;padding:0 4px}',
       '.ed-photo button{font:11px ui-sans-serif,sans-serif;border:1px solid #555;background:#222;color:#fff;',
       ' border-radius:5px;padding:3px 7px;cursor:pointer}',
-      '.ed-photo button:hover{border-color:#aaa}'
+      '.ed-photo button:hover{border-color:#aaa}',
+      '.ed-stamp-on{pointer-events:auto!important;opacity:1!important;outline:1px dashed rgba(0,0,0,.35);outline-offset:6px}',
+      '.ed-stamp{position:absolute;right:10px;bottom:8px;display:flex;gap:5px;align-items:center;z-index:6;',
+      ' background:rgba(17,17,17,.88);border-radius:7px;padding:5px 7px}',
+      '.ed-stamp b{color:#fff;font:500 11px ui-sans-serif,sans-serif;padding:0 4px}',
+      '.ed-stamp span{color:#bbb;font:11px ui-sans-serif,sans-serif;padding:0 4px}',
+      '.ed-stamp button{font:11px ui-sans-serif,sans-serif;border:1px solid #555;background:#222;color:#fff;',
+      ' border-radius:5px;padding:3px 7px;cursor:pointer}',
+      '.ed-stamp button:hover{border-color:#aaa}'
     ].join('');
     document.head.appendChild(css);
 
