@@ -649,8 +649,9 @@ def main():
         hover_src = tile_src(f'img/{p["slug"]}/{hover}')
         lazy = "eager" if i < 3 else "lazy"
         tiles.append(
-            f'    <figure><a class="piece" href="{p["slug"]}.html">'
-            f'<img src="{still_src}" alt="{html.escape(p["name"])}" loading="{lazy}"{tile_style(p["slug"])}>'
+            # the framing sits on the link, so the in-hand picture shown on hover zooms with the still
+            f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
+            f'<img src="{still_src}" alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held" src="{hover_src}" alt="" loading="lazy"{align_style(p["slug"])}>' if held else "")
             + f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')

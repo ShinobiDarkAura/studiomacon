@@ -82,9 +82,11 @@
   .sk .playing .fb,.sk .playing .greek{animation:rise .62s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms)}
   /* every picture in the skeleton is framed exactly as the site frames it: cover, then pan and zoom */
   .fb{position:relative;overflow:hidden;border-radius:4px;background:#ddd9d4;touch-action:none}
-  .fb.tile,.fb.lead{aspect-ratio:4/5}
+  .fb.tile{aspect-ratio:4/5}
+  /* on the real product page every picture fills one screen height at 70% of its width,
+     so its frame takes the shape of this screen: the crop here is the crop there */
+  .fb.lead,.fb.pic{aspect-ratio:var(--screen-frame,1)}
   .fb img{display:block;width:100%;height:100%;object-fit:cover;cursor:grab;user-select:none;-webkit-user-drag:none}
-  .fb:not(.tile):not(.lead) img{height:auto}
   .fb.panning img{cursor:grabbing}
   .sk .split .p .fb{margin-bottom:6px}
   .fb .chg,.fb .zm,.fb .x,.fb .grip{position:absolute;z-index:3;opacity:0;transition:opacity .15s ease}
@@ -539,7 +541,13 @@ function guides() {
 }
 $('#guides').onchange = () => { try { localStorage.setItem('lab-guides', $('#guides').checked ? '1' : ''); } catch (e) {} guides(); };
 try { $('#guides').checked = !!localStorage.getItem('lab-guides'); } catch (e) {}
-addEventListener('resize', guides);
+function screenFrame() {
+  // the product page's picture column: 70% of the width less its margins, by the full height
+  const w = innerWidth * 0.7 - 60, h = innerHeight;
+  document.documentElement.style.setProperty('--screen-frame', (w / h).toFixed(3));
+}
+screenFrame();
+addEventListener('resize', () => { screenFrame(); guides(); });
 pane.addEventListener('pointerdown', ev => {
   const h = ev.target.closest('.gh'); if (!h) return;
   ev.stopPropagation(); ev.preventDefault();
