@@ -433,20 +433,28 @@ WIPE_HEAD = """<style>
 })();
 // the soft fade between pages: arriving, the page starts under a white veil that lifts
 (function () {
-  try { if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade'); } catch (e) { return; }
+  var fromDrawer = false;
+  try {
+    if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade');
+    fromDrawer = sessionStorage.getItem('macon-menu') === '1';
+  } catch (e) { return; }
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var st = document.createElement('style');
-  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1;transition:opacity 450ms cubic-bezier(.4,0,.2,1)}.veil.lift{opacity:0}';
+  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1}';
   document.head.appendChild(st);
   var v = document.createElement('div'); v.className = 'veil';
+  if (fromDrawer) v.style.zIndex = '59';               // beneath the drawer, over the page
   var put = function () { (document.body || document.documentElement).appendChild(v); }; put();
+  var gone = function () { v.remove(); };
+  // animated directly rather than by a style change: a style change this close to the page's first frame
+  // is sometimes skipped by the browser, and the veil vanished instead of lifting
   var lift = function () {
     if (!v.isConnected) put();
-    void v.offsetWidth;                                // settle its full-white starting point...
-    requestAnimationFrame(function () { requestAnimationFrame(function () { v.classList.add('lift'); }); });   // ...draw it once, then lift
+    if (!v.animate) { gone(); return; }
+    var a = v.animate([{opacity: 1}, {opacity: 0}], {duration: 450, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards'});
+    a.onfinish = gone;
   };
-  var gone = function () { v.remove(); };
-  v.addEventListener('transitionend', gone); setTimeout(gone, 2600);          // never left over the page
+  setTimeout(gone, 2600);                            // never left over the page
   // lift once the pictures on the first screen are ready to show, so the page fades in whole rather than
   // the veil lifting off a blank page and the photographs popping in after (never waits more than 0.7s)
   var ready = function () {

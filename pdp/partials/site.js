@@ -495,6 +495,17 @@
     menu.addEventListener('click', function (e) {
       var a = e.target.closest('a'); if (!a) return;
       var to = new URL(a.href, location.href);
+      if (to.pathname !== location.pathname && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        // another page: the page behind the drawer dims to white, then the next one loads beneath the drawer
+        e.preventDefault();
+        try { sessionStorage.setItem('macon-menu', '1'); sessionStorage.setItem('macon-fade', '1'); } catch (err) {}
+        var dim = document.createElement('div');
+        dim.style.cssText = 'position:fixed;inset:0;z-index:59;background:#fff;pointer-events:none;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.6,1)';
+        document.body.appendChild(dim);
+        requestAnimationFrame(function () { requestAnimationFrame(function () { dim.style.opacity = '1'; }); });
+        setTimeout(function () { location.href = a.href; }, 310);
+        return;
+      }
       if (to.pathname === location.pathname) {          // same page (Shop from the home page): close first, then move
         e.preventDefault();
         set(false);

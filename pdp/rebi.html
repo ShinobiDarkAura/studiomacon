@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Rebi", "description": "Solid bronze with an ombré patina, and a different outline from every side of the room. Handling is known to sharpen the reflexes; owners report catching things before they fall. Each plane is refined by hand after casting.", "image": ["https://studiomacon.co/img/rebi/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "rebi", "offers": [{"@type": "Offer", "price": "220.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/rebi.html"}]}</script>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789771234">
+<link rel="stylesheet" href="site.css?v=1789772008">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -189,20 +189,28 @@
 })();
 // the soft fade between pages: arriving, the page starts under a white veil that lifts
 (function () {
-  try { if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade'); } catch (e) { return; }
+  var fromDrawer = false;
+  try {
+    if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade');
+    fromDrawer = sessionStorage.getItem('macon-menu') === '1';
+  } catch (e) { return; }
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var st = document.createElement('style');
-  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1;transition:opacity 450ms cubic-bezier(.4,0,.2,1)}.veil.lift{opacity:0}';
+  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1}';
   document.head.appendChild(st);
   var v = document.createElement('div'); v.className = 'veil';
+  if (fromDrawer) v.style.zIndex = '59';               // beneath the drawer, over the page
   var put = function () { (document.body || document.documentElement).appendChild(v); }; put();
+  var gone = function () { v.remove(); };
+  // animated directly rather than by a style change: a style change this close to the page's first frame
+  // is sometimes skipped by the browser, and the veil vanished instead of lifting
   var lift = function () {
     if (!v.isConnected) put();
-    void v.offsetWidth;                                // settle its full-white starting point...
-    requestAnimationFrame(function () { requestAnimationFrame(function () { v.classList.add('lift'); }); });   // ...draw it once, then lift
+    if (!v.animate) { gone(); return; }
+    var a = v.animate([{opacity: 1}, {opacity: 0}], {duration: 450, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards'});
+    a.onfinish = gone;
   };
-  var gone = function () { v.remove(); };
-  v.addEventListener('transitionend', gone); setTimeout(gone, 2600);          // never left over the page
+  setTimeout(gone, 2600);                            // never left over the page
   // lift once the pictures on the first screen are ready to show, so the page fades in whole rather than
   // the veil lifting off a blank page and the photographs popping in after (never waits more than 0.7s)
   var ready = function () {
@@ -845,6 +853,17 @@
     menu.addEventListener('click', function (e) {
       var a = e.target.closest('a'); if (!a) return;
       var to = new URL(a.href, location.href);
+      if (to.pathname !== location.pathname && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        // another page: the page behind the drawer dims to white, then the next one loads beneath the drawer
+        e.preventDefault();
+        try { sessionStorage.setItem('macon-menu', '1'); sessionStorage.setItem('macon-fade', '1'); } catch (err) {}
+        var dim = document.createElement('div');
+        dim.style.cssText = 'position:fixed;inset:0;z-index:59;background:#fff;pointer-events:none;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.6,1)';
+        document.body.appendChild(dim);
+        requestAnimationFrame(function () { requestAnimationFrame(function () { dim.style.opacity = '1'; }); });
+        setTimeout(function () { location.href = a.href; }, 310);
+        return;
+      }
       if (to.pathname === location.pathname) {          // same page (Shop from the home page): close first, then move
         e.preventDefault();
         set(false);
