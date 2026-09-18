@@ -12,7 +12,7 @@
   .ship{display:grid;gap:40px;min-height:100vh;min-height:100svh;padding:calc(var(--head) + 40px) calc(var(--pad) + 24px) 64px;align-items:center}
   /* the illustration is painted on black, so the whole left field is black and the
      box floats in the middle of it, whole, never cropped */
-  .ship .branch{margin:0;background:#0d0c0b;display:grid;place-items:center;padding:6vh 4vw}
+  .ship .branch{margin:0;background:#000;display:grid;place-items:center;padding:6vh 4vw}
   .ship .branch img{display:block;width:59.7%;height:100%;max-height:41vh;object-fit:contain;margin:0;
     transform:translateY(5%)}
   .ship .text{max-width:520px;width:100%;justify-self:center}
@@ -23,7 +23,7 @@
   @media (min-width:768px){
     /* the black field is painted on the section too, so nothing white shows
        behind the illustration while it slides in */
-    .ship{background:linear-gradient(to right,#0d0c0b 0 70vw,#fff 70vw);
+    .ship{background:linear-gradient(to right,#000 0 70vw,#fff 70vw);
       grid-template-columns:70vw minmax(0,1fr);gap:0 48px;
       padding:0 calc(var(--pad) + 24px) 0 0;align-items:stretch}
     .ship .branch{min-height:100vh;min-height:100svh}

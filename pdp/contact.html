@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="site.css?v=1789711914">
 <style>
   /* the poster floats whole in the middle of a black field, never cropped */
-  .split .pics figure{margin:0;background:#0d0c0b;display:grid;place-items:center;
+  .split .pics figure{margin:0;background:#000;display:grid;place-items:center;
     aspect-ratio:4/5;padding:6vh 4vw}
   .split .pics img{display:block;width:100%;height:100%;object-fit:contain}
   .split .copy{color-scheme:light}
@@ -38,7 +38,7 @@
   @media (min-width:768px){
     /* the black field is a true 70% of the screen */
     .split{grid-template-columns:70vw minmax(0,1fr)}
-    .split{background:linear-gradient(to right,#0d0c0b 0 70vw,#fff 70vw)}
+    .split{background:linear-gradient(to right,#000 0 70vw,#fff 70vw)}
     .split .pics figure{aspect-ratio:auto;height:100vh;height:100svh}
     .split .pics img{max-height:73.7vh}
     /* email and Instagram sit at the foot of the column, 16px off the bottom edge */
