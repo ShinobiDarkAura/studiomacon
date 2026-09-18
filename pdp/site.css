@@ -275,6 +275,8 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   /* nothing may stick out past the screen's edge: if it does, a phone widens the whole page to fit it,
      and the centred logotype and Bag slide off to the right (it happened for a few frames as the drawer closed) */
   html,body{overflow-x:clip}
+  .head{padding-left:var(--gutter) !important;padding-right:var(--gutter) !important}          /* Menu and Bag at the edge gutter */
+  .menu-close{left:var(--gutter)}          /* Close starts exactly where Menu sits */
   .welcome .prose,.wall-head,.shop-wall,.inspiration-wall,.gallery,.info,.related,.opening,.prose,.steps,.history,
   .split .copy,.bag-page{padding-left:var(--gutter) !important;padding-right:var(--gutter) !important}
 }

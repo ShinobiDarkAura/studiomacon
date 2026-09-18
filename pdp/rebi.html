@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Rebi", "description": "Solid bronze with an ombré patina, and a different outline from every side of the room. Handling is known to sharpen the reflexes; owners report catching things before they fall. Each plane is refined by hand after casting.", "image": ["https://studiomacon.co/img/rebi/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "rebi", "offers": [{"@type": "Offer", "price": "220.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/rebi.html"}]}</script>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789766011">
+<link rel="stylesheet" href="site.css?v=1789770751">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -196,10 +196,30 @@
   document.head.appendChild(st);
   var v = document.createElement('div'); v.className = 'veil';
   var put = function () { (document.body || document.documentElement).appendChild(v); }; put();
-  var lift = function () { if (!v.isConnected) put(); requestAnimationFrame(function () { v.classList.add('lift'); }); };
+  var lift = function () {
+    if (!v.isConnected) put();
+    void v.offsetWidth;                                // settle its full-white starting point...
+    requestAnimationFrame(function () { requestAnimationFrame(function () { v.classList.add('lift'); }); });   // ...draw it once, then lift
+  };
   var gone = function () { v.remove(); };
-  v.addEventListener('transitionend', gone); setTimeout(gone, 1500);          // never left over the page
-  if (document.readyState !== 'loading') lift(); else document.addEventListener('DOMContentLoaded', lift);
+  v.addEventListener('transitionend', gone); setTimeout(gone, 2200);          // never left over the page
+  // lift once the pictures on the first screen are ready to show, so the page fades in whole rather than
+  // the veil lifting off a blank page and the photographs popping in after (never waits more than 0.7s)
+  var ready = function () {
+    var imgs = [].filter.call(document.images, function (i) { var r = i.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight && r.width > 40; });
+    var done = false, go = function () { if (!done) { done = true; lift(); } };
+    // the browser keeps the old page on screen until the new one first draws real content; start lifting
+    // only after that, or the fade runs where no one can see it
+    var drawn = new Promise(function (res) {
+      try {
+        if (performance.getEntriesByName('first-contentful-paint').length) return res();
+        new PerformanceObserver(function (l) { if (l.getEntriesByName('first-contentful-paint').length) res(); }).observe({type: 'paint', buffered: true});
+      } catch (e) { res(); }
+    });
+    Promise.all([drawn].concat(imgs.map(function (i) { return (i.decode ? i.decode() : Promise.resolve()).catch(function () {}); }))).then(go);
+    setTimeout(go, 900);
+  };
+  if (document.readyState !== 'loading') ready(); else document.addEventListener('DOMContentLoaded', ready);
 })();
 // arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
 // or its first frame shows the dark film for an instant before the jump
