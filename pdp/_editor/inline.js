@@ -312,7 +312,15 @@
     var css = document.createElement('style');
     css.textContent = [
       '.ed-bar{position:fixed;left:0;right:0;bottom:0;z-index:99999;display:flex;align-items:center;gap:12px;',
-      ' padding:9px 16px;background:#111;color:#fff;font:13px/1.4 ui-sans-serif,-apple-system,sans-serif}',
+      ' padding:9px 16px;background:#111;color:#fff;font:13px/1.4 ui-sans-serif,-apple-system,sans-serif;',
+      ' transform:translateY(105%);transition:transform .3s cubic-bezier(.3,.8,.3,1)}',
+      '.ed-bar.show{transform:none}',
+      '.ed-peek{position:fixed;left:0;right:0;bottom:0;height:26px;z-index:99998}',
+      '.ed-tab{position:fixed;right:16px;bottom:0;z-index:99998;background:#111;color:#fff;border:0;',
+      ' border-radius:7px 7px 0 0;padding:4px 12px;font:12px ui-sans-serif,sans-serif;cursor:pointer;opacity:.5;',
+      ' transition:opacity .25s ease}',
+      '.ed-tab:hover{opacity:1}',
+      'body.ed-barred .ed-tab{display:none}',
       '.ed-bar button{font:inherit;border:1px solid #444;background:#1b1b1b;color:#fff;border-radius:6px;padding:5px 11px;cursor:pointer}',
       '.ed-bar button:hover{border-color:#888}',
       '.ed-bar .ed-save{background:#fff;color:#111;border-color:#fff}',
@@ -356,8 +364,30 @@
       '<span class="ed-count">No changes</span><span class="grow"></span>' +
       '<span class="ed-msg"></span>' +
       '<button class="ed-revert">Undo everything</button>' +
-      '<button class="ed-save" disabled>Save &amp; rebuild</button>';
+      '<button class="ed-save" disabled>Save &amp; rebuild</button>' +
+      '<button class="ed-close" title="Hide this bar">&#10005;</button>';
     document.body.appendChild(bar);
+
+    // it stays out of the way: reach for the bottom of the screen and it comes up
+    var peek = document.createElement('div'); peek.className = 'ed-peek';
+    var tab = document.createElement('button'); tab.className = 'ed-tab'; tab.textContent = 'Edit';
+    document.body.appendChild(peek); document.body.appendChild(tab);
+    var hideTimer, pinned = false;
+    function showBar(keep) {
+      clearTimeout(hideTimer);
+      bar.classList.add('show'); document.body.classList.add('ed-barred');
+      if (keep) pinned = true;
+    }
+    function hideBar(force) {
+      if ((pinned || dirty || on) && !force) return;
+      bar.classList.remove('show'); document.body.classList.remove('ed-barred');
+    }
+    function laterHide() { clearTimeout(hideTimer); hideTimer = setTimeout(hideBar, 1200); }
+    peek.addEventListener('pointerenter', function () { showBar(false); });
+    bar.addEventListener('pointerenter', function () { clearTimeout(hideTimer); });
+    bar.addEventListener('pointerleave', laterHide);
+    tab.addEventListener('click', function () { showBar(true); });
+    window.MaconEditorBar = {show: showBar, hide: hideBar};
     msg = bar.querySelector('.ed-msg');
     count = bar.querySelector('.ed-count');
     bar.querySelector('.ed-save').onclick = function () { save(true); };
@@ -368,7 +398,9 @@
       this.textContent = on ? 'Done editing' : 'Edit this page';
       arm();
       try { sessionStorage.setItem('macon-edit', on ? '1' : '0'); } catch (e) {}
+      if (on) showBar(true); else { pinned = false; hideBar(true); }
     };
+    bar.querySelector('.ed-close').onclick = function () { pinned = false; hideBar(true); };
     addEventListener('beforeunload', function (e) { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
   }
 
@@ -376,7 +408,7 @@
     build();
     var want = /[?&]edit/.test(location.search);
     try { want = want || sessionStorage.getItem('macon-edit') === '1'; } catch (e) {}
-    if (want) bar.querySelector('.ed-toggle').click();
+    if (want) { bar.querySelector('.ed-toggle').click(); }
     setDirty(changeCount() > 0 && false);
   });
 })();
