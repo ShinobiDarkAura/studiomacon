@@ -104,13 +104,14 @@
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
   .welcome .prose h1{margin-bottom:44px}
+  .welcome{overflow-x:clip}          /* the stamp may bleed off the right edge on phones */
   .welcome + .set .wall-head{padding-top:0}
   /* the Bureau of Provenance stamp: pressed onto the bottom edge of the film, angled, its top tenth over the picture */
   .film-wrap{position:relative}
   /* pinned to the headline, not the window: every measure is in the headline's own type size (em),
      so at any screen width it lands on the comma of "Things," at the same size and angle */
   .welcome .prose h1.stamped{position:relative;display:inline-block}
-  .stamped .stamp{position:absolute;z-index:3;width:2.72em;left:min(calc(100% + .64em - 1.36em), calc(50vw + 50% - 8px - 2.72em - .29em));top:calc(var(--cap-top,.2em) - .84em - 1.36em);
+  .stamped .stamp{position:absolute;z-index:3;width:3.02em;left:min(calc(100% + .64em - 1.51em), calc(50vw + 50% - 3.02em + .75em));top:calc(var(--cap-top,.2em) - .84em - 1.51em);
     transform:rotate(var(--stamp-tilt,-14deg)) scale(1.35);opacity:0;pointer-events:none;
     transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
   /* pressed down onto the words */
@@ -251,7 +252,7 @@
   <section class="section welcome">
     <div class="prose">
       <p class="eyebrow" data-edit="page:index.html:26c677bd">Studio Maçon</p>
-      <h1 class="stamped" data-edit="page:index.html:0c809910">Small Things,<br>Kept Close<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" data-no-emerge></h1>
+      <h1 class="stamped" data-edit="page:index.html:0c809910">Small Things,<br>Kept Close<img width="720" height="720" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" data-no-emerge></h1>
       <p data-edit="page:index.html:5a97ed3b">Maçon makes artifacts and jewelry to be carried, worn and handed down. Every piece is drawn on paper, carved by hand in wax and cast in bronze, silver or gold, then finished by hand in our studio.</p>
     </div>
   </section>
@@ -909,7 +910,12 @@
   (function () {
     var build = document.querySelector('.logo-build'), tag = document.querySelector('.film .tagline');
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-    var skip = matchMedia('(prefers-reduced-motion: reduce)').matches || (nav && nav.type === 'back_forward') || scrollY > 40;
+    // a refresh always goes back to the top (site.js), so the old scroll position it briefly
+    // restores on the way is not a reason to skip, or to cut the logotype short
+    var reload = !!(nav && nav.type === 'reload');
+    var skip = matchMedia('(prefers-reduced-motion: reduce)').matches || (nav && nav.type === 'back_forward') || (!reload && scrollY > 40);
+    var settled = !reload;
+    if (reload) addEventListener('load', function () { requestAnimationFrame(function () { requestAnimationFrame(function () { settled = true; }); }); });
     var text = tag.textContent; tag.textContent = '';
     var chars = text.split('').map(function (c) { var s = document.createElement('span'); s.className = 'ch'; s.textContent = c; tag.appendChild(s); return s; });
     tag.setAttribute('aria-label', text);
@@ -920,7 +926,7 @@
       if (build && build.parentNode) build.remove();
       chars.forEach(function (c) { c.classList.add('on'); });
     }
-    function early() { if (scrollY > 40) { finish(); removeEventListener('scroll', early); } }
+    function early() { if (settled && scrollY > 40) { finish(); removeEventListener('scroll', early); } }
     if (skip) { finish(); window.MaconHeroQuiet(); return; }
     document.body.classList.add('logo-anim');
     addEventListener('scroll', early, {passive: true});
