@@ -401,9 +401,9 @@ def shop_config():
 # reveal that starts after that stall is what reads as a stutter.
 WIPE_HEAD = """<style>
 .wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;
-  transform:translate3d(0,-100%,0);background:linear-gradient(180deg,#0d0c0b 0%,#131211 55%,#0b0a09 100%)}
-.wipe.cover{transform:translate3d(0,0,0);transition:transform 400ms cubic-bezier(.55,0,.85,.35)}
-.wipe.gone{transform:translate3d(0,100%,0);transition:transform 550ms cubic-bezier(.16,.7,.3,1)}
+  transform:translate3d(0,-100%,0);background:linear-gradient(180deg,#0a0a0a 0%,#111 60%,#161616 100%)}
+.wipe.cover{transform:translate3d(0,0,0);transition:transform 420ms cubic-bezier(.5,0,.25,1)}
+.wipe.gone{transform:translate3d(0,100%,0);transition:transform 500ms cubic-bezier(.5,0,.25,1)}
 </style>
 <script>
 (function () {
@@ -418,7 +418,7 @@ WIPE_HEAD = """<style>
     if (!el.isConnected) put();
     el.style.transform = '';
     el.classList.add('gone');
-    setTimeout(function () { el.remove(); }, 700);
+    setTimeout(function () { el.remove(); }, 560);
   }); });
 })();
 </script>

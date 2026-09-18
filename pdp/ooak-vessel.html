@@ -160,9 +160,9 @@
 </style>
 <style>
 .wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;
-  transform:translate3d(0,-100%,0);background:linear-gradient(180deg,#0d0c0b 0%,#131211 55%,#0b0a09 100%)}
-.wipe.cover{transform:translate3d(0,0,0);transition:transform 400ms cubic-bezier(.55,0,.85,.35)}
-.wipe.gone{transform:translate3d(0,100%,0);transition:transform 550ms cubic-bezier(.16,.7,.3,1)}
+  transform:translate3d(0,-100%,0);background:linear-gradient(180deg,#0a0a0a 0%,#111 60%,#161616 100%)}
+.wipe.cover{transform:translate3d(0,0,0);transition:transform 420ms cubic-bezier(.5,0,.25,1)}
+.wipe.gone{transform:translate3d(0,100%,0);transition:transform 500ms cubic-bezier(.5,0,.25,1)}
 </style>
 <script>
 (function () {
@@ -177,7 +177,7 @@
     if (!el.isConnected) put();
     el.style.transform = '';
     el.classList.add('gone');
-    setTimeout(function () { el.remove(); }, 700);
+    setTimeout(function () { el.remove(); }, 560);
   }); });
 })();
 </script>
@@ -706,7 +706,7 @@
   // retreats the way it came, it reads as something passing over the page
   // rather than a shutter opening and closing.
   (function () {
-    var COVER = 400, KEY = 'macon-wipe';          // the reveal half runs from the head
+    var COVER = 420, KEY = 'macon-wipe';          // matches the 420ms cover in the head          // the reveal half runs from the head
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     function panel() {

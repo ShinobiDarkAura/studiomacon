@@ -434,7 +434,7 @@
   // retreats the way it came, it reads as something passing over the page
   // rather than a shutter opening and closing.
   (function () {
-    var COVER = 400, KEY = 'macon-wipe';          // the reveal half runs from the head
+    var COVER = 420, KEY = 'macon-wipe';          // matches the 420ms cover in the head          // the reveal half runs from the head
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     function panel() {
