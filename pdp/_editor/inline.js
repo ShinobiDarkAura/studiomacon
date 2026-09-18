@@ -81,74 +81,6 @@
     stamp(on);
   }
 
-  // ── the Bureau stamp: dragged into place on the page itself ───────────
-  var STAMP_DEFAULT = {w: 13, right: 11.4, drop: 98.3, tilt: -14};
-
-  function stampNow() {
-    var s = {};
-    Object.keys(STAMP_DEFAULT).forEach(function (k) {
-      s[k] = (edits.stamp && typeof edits.stamp[k] === 'number') ? edits.stamp[k] : STAMP_DEFAULT[k];
-    });
-    return s;
-  }
-
-  function stampPaint(el, s) {
-    el.style.width = 'clamp(120px,' + s.w + 'vw,240px)';
-    el.style.right = s.right + 'vw';
-    el.style.transform = 'translateY(' + s.drop + '%) rotate(' + s.tilt + 'deg)';
-    var tip = document.querySelector('.ed-stamp-tip');
-    if (tip) tip.textContent = Math.round(s.w) + 'vw · ' + s.right.toFixed(1) + ' from right · ' + Math.round(s.tilt) + '°';
-  }
-
-  function stamp(show) {
-    var el = document.querySelector('.stamp');
-    if (!el) return;
-    var tools = document.querySelector('.ed-stamp');
-    if (!show) { if (tools) tools.remove(); el.classList.remove('ed-stamp-on'); el.style.cursor = ''; return; }
-    el.classList.add('ed-stamp-on', 'on');
-    el.style.cursor = 'grab';
-
-    if (!tools) {
-      tools = document.createElement('div');
-      tools.className = 'ed-stamp';
-      tools.innerHTML = '<b>Stamp</b><button data-s="-1">smaller</button><button data-s="1">larger</button>' +
-                        '<button data-t="-2">tilt ↺</button><button data-t="2">tilt ↻</button>' +
-                        '<button data-r="1">reset</button><span class="ed-stamp-tip"></span>';
-      el.parentNode.appendChild(tools);
-      tools.addEventListener('click', function (e) {
-        var d = e.target.dataset || {}; var s = stampNow();
-        if (d.s) s.w = Math.min(30, Math.max(4, s.w + Number(d.s)));
-        else if (d.t) s.tilt = Math.max(-45, Math.min(45, s.tilt + Number(d.t)));
-        else if (d.r) s = Object.assign({}, STAMP_DEFAULT);
-        else return;
-        edits.stamp = s; stampPaint(el, s); setDirty(true);
-      });
-    }
-
-    if (!el.dataset.edStampBound) {
-      el.dataset.edStampBound = '1';
-      el.addEventListener('pointerdown', function (e) {
-        if (!on) return;
-        e.preventDefault();
-        var s = stampNow(), x0 = e.clientX, y0 = e.clientY, r0 = s.right, d0 = s.drop;
-        el.setPointerCapture(e.pointerId); el.style.cursor = 'grabbing';
-        function move(ev) {
-          var s2 = stampNow();
-          var round = function (n) { return Math.round(n * 10) / 10; };
-          s2.right = round(Math.max(0, Math.min(45, r0 - (ev.clientX - x0) / innerWidth * 100)));
-          s2.drop  = round(Math.max(0, Math.min(160, d0 + (ev.clientY - y0) / el.offsetHeight * 100)));
-          edits.stamp = s2; stampPaint(el, s2); setDirty(true);
-        }
-        function up(ev) {
-          el.releasePointerCapture(ev.pointerId); el.style.cursor = 'grab';
-          el.removeEventListener('pointermove', move); el.removeEventListener('pointerup', up);
-        }
-        el.addEventListener('pointermove', move); el.addEventListener('pointerup', up);
-      });
-    }
-    stampPaint(el, stampNow());
-  }
-
   // ── photographs ───────────────────────────────────────────────────────
   function photos(show) {
     document.querySelectorAll('.gallery figure').forEach(function (fig, i) {
@@ -162,8 +94,8 @@
       box.className = 'ed-photo';
       box.innerHTML = (i === 0 ? '<b>Main photograph</b>' : '<button data-a="hero">Make main</button>') +
                       '<button data-a="hide">Hide</button>' +
-                      (i > 1 ? '<button data-a="up">←</button>' : '') +
-                      '<button data-a="down">→</button>';
+                      (i > 1 ? '<button data-a="up">&#8592;</button>' : '') +
+                      '<button data-a="down">&#8594;</button>';
       box.addEventListener('click', function (e) {
         var a = e.target.dataset && e.target.dataset.a; if (!a) return;
         e.preventDefault(); e.stopPropagation();
@@ -193,6 +125,120 @@
     p.gallery = rest;
     setDirty(true);
     save(true);          // photographs need a rebuild to be seen, so save straight away
+  }
+
+  // ── the Bureau stamp: dragged and resized on the page itself ─────────
+  var STAMP_DEFAULT = {w: 13, right: 11.4, drop: 98.3, tilt: -14};
+
+  function stampNow() {
+    var s = {};
+    Object.keys(STAMP_DEFAULT).forEach(function (k) {
+      s[k] = (edits.stamp && typeof edits.stamp[k] === 'number') ? edits.stamp[k] : STAMP_DEFAULT[k];
+    });
+    return s;
+  }
+
+  var round1 = function (n) { return Math.round(n * 10) / 10; };
+
+  function stampPaint(el, s) {
+    el.style.width = 'clamp(60px,' + s.w + 'vw,40vw)';
+    el.style.right = s.right + 'vw';
+    el.style.transform = 'translateY(' + s.drop + '%) rotate(' + s.tilt + 'deg)';
+    var tip = document.querySelector('.ed-stamp-tip');
+    if (tip) tip.textContent = round1(s.w) + 'vw wide · ' + round1(s.right) + ' from right · ' + Math.round(s.tilt) + '°';
+    stampBox(el, s);
+  }
+
+  // the outline with a handle at each corner, laid exactly over the stamp
+  function stampBox(el, s) {
+    var box = document.querySelector('.ed-stamp-box');
+    if (!box) return;
+    box.style.width = el.offsetWidth + 'px';
+    box.style.height = el.offsetHeight + 'px';
+    box.style.right = s.right + 'vw';
+    box.style.transform = 'translateY(' + s.drop + '%) rotate(' + s.tilt + 'deg)';
+  }
+
+  function stamp(show) {
+    var el = document.querySelector('.stamp');
+    if (!el) return;
+    var tools = document.querySelector('.ed-stamp'), box = document.querySelector('.ed-stamp-box');
+    if (!show) {
+      if (tools) tools.remove();
+      if (box) box.remove();
+      el.classList.remove('ed-stamp-on'); el.style.cursor = '';
+      return;
+    }
+    el.classList.add('ed-stamp-on', 'on');
+    el.style.cursor = 'grab';
+
+    if (!box) {
+      box = document.createElement('div');
+      box.className = 'ed-stamp-box';
+      ['nw', 'ne', 'sw', 'se'].forEach(function (c) {
+        var h = document.createElement('i'); h.className = 'h ' + c; h.dataset.corner = c; box.appendChild(h);
+      });
+      el.parentNode.appendChild(box);
+      box.addEventListener('pointerdown', function (e) {
+        if (!e.target.dataset.corner) return;
+        e.preventDefault(); e.stopPropagation();
+        var s0 = stampNow();
+        var r = el.getBoundingClientRect();
+        var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        var d0 = Math.hypot(e.clientX - cx, e.clientY - cy) || 1;
+        var w0 = s0.w;
+        box.setPointerCapture(e.pointerId);
+        function move(ev) {
+          var d = Math.hypot(ev.clientX - cx, ev.clientY - cy);
+          var s = stampNow();
+          s.w = round1(Math.max(3, Math.min(40, w0 * (d / d0))));
+          edits.stamp = s; stampPaint(el, s); setDirty(true);
+        }
+        function up(ev) {
+          box.releasePointerCapture(ev.pointerId);
+          box.removeEventListener('pointermove', move); box.removeEventListener('pointerup', up);
+        }
+        box.addEventListener('pointermove', move); box.addEventListener('pointerup', up);
+      });
+    }
+
+    if (!tools) {
+      tools = document.createElement('div');
+      tools.className = 'ed-stamp';
+      tools.innerHTML = '<b>Stamp</b><button data-t="-2">tilt &#8634;</button><button data-t="2">tilt &#8635;</button>' +
+                        '<button data-r="1">reset</button><span class="ed-stamp-tip"></span>';
+      el.parentNode.appendChild(tools);
+      tools.addEventListener('click', function (e) {
+        var d = e.target.dataset || {}; var s = stampNow();
+        if (d.t) s.tilt = Math.max(-45, Math.min(45, s.tilt + Number(d.t)));
+        else if (d.r) s = Object.assign({}, STAMP_DEFAULT);
+        else return;
+        edits.stamp = s; stampPaint(el, s); setDirty(true);
+      });
+    }
+
+    if (!el.dataset.edStampBound) {
+      el.dataset.edStampBound = '1';
+      el.addEventListener('pointerdown', function (e) {
+        if (!on) return;
+        e.preventDefault();
+        var s0 = stampNow(), x0 = e.clientX, y0 = e.clientY, r0 = s0.right, d0 = s0.drop;
+        el.setPointerCapture(e.pointerId); el.style.cursor = 'grabbing';
+        function move(ev) {
+          var s = stampNow();
+          // it may travel anywhere down the page, over the writing below the film
+          s.right = round1(Math.max(-5, Math.min(92, r0 - (ev.clientX - x0) / innerWidth * 100)));
+          s.drop  = round1(Math.max(-60, Math.min(900, d0 + (ev.clientY - y0) / el.offsetHeight * 100)));
+          edits.stamp = s; stampPaint(el, s); setDirty(true);
+        }
+        function up(ev) {
+          el.releasePointerCapture(ev.pointerId); el.style.cursor = 'grab';
+          el.removeEventListener('pointermove', move); el.removeEventListener('pointerup', up);
+        }
+        el.addEventListener('pointermove', move); el.addEventListener('pointerup', up);
+      });
+    }
+    stampPaint(el, stampNow());
   }
 
   // ── saving ────────────────────────────────────────────────────────────
@@ -248,7 +294,13 @@
       '.ed-stamp span{color:#bbb;font:11px ui-sans-serif,sans-serif;padding:0 4px}',
       '.ed-stamp button{font:11px ui-sans-serif,sans-serif;border:1px solid #555;background:#222;color:#fff;',
       ' border-radius:5px;padding:3px 7px;cursor:pointer}',
-      '.ed-stamp button:hover{border-color:#aaa}'
+      '.ed-stamp button:hover{border-color:#aaa}',
+      '.ed-stamp-box{position:absolute;right:0;bottom:0;z-index:7;pointer-events:none;',
+      ' outline:1px dashed rgba(17,17,17,.55);outline-offset:0}',
+      '.ed-stamp-box .h{position:absolute;width:11px;height:11px;background:#fff;border:1px solid #111;',
+      ' border-radius:2px;pointer-events:auto;cursor:nwse-resize}',
+      '.ed-stamp-box .nw{left:-6px;top:-6px}.ed-stamp-box .ne{right:-6px;top:-6px;cursor:nesw-resize}',
+      '.ed-stamp-box .sw{left:-6px;bottom:-6px;cursor:nesw-resize}.ed-stamp-box .se{right:-6px;bottom:-6px}'
     ].join('');
     document.head.appendChild(css);
 

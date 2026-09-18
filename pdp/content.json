@@ -1,5 +1,10 @@
 {
  "products": {},
  "pages": {},
- "stamp": {}
+ "stamp": {
+  "w": 16,
+  "right": 19.7,
+  "drop": 87.3,
+  "tilt": -18
+ }
 }

@@ -541,7 +541,7 @@ def main():
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
     st = {"w": 13, "right": 11.4, "drop": 98.3, "tilt": -14}
     st.update({k: v for k, v in (_content.CONTENT.get("stamp") or {}).items() if isinstance(v, (int, float))})
-    shop = shop.replace("{{STAMP}}", f':root{{--stamp-w:clamp(120px,{st["w"]}vw,240px);--stamp-right:{st["right"]}vw;'
+    shop = shop.replace("{{STAMP}}", f':root{{--stamp-w:clamp(60px,{st["w"]}vw,40vw);--stamp-right:{st["right"]}vw;'
                                      f'--stamp-drop:{st["drop"]}%;--stamp-tilt:{st["tilt"]}deg}}')
     shop = (shop.replace("{{TOTEMCOUNT}}", str(len(totems))).replace("{{JEWELRYCOUNT}}", str(len(products) - len(totems)))
                 .replace("{{TOTEMGRID}}", "\n".join(tiles[:len(totems)])).replace("{{JEWELRYGRID}}", "\n".join(tiles[len(totems):])))
