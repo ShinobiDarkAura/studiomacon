@@ -36,3 +36,8 @@
 - Test data to clear before launch: 4 test enquiries in the `inquiries` table (Wiring/Second/Third/Fourth Test).
 - Newsletter footer: Shopify signup (per Alex) — to wire once the store password is removed
 - Hosting (Cloudflare Pages), domain records at switch day, Search Console + Google & YouTube app
+- Product photographs in Shopify: the 17 products have none, so the checkout, receipts and
+  Klaviyo emails show a grey placeholder. shopify/product-images.csv maps all 68 pictures to
+  their studiomacon.co addresses; import it (Products -> Import, "Overwrite existing products")
+  the moment the site is live. Shopify fetches each URL itself, so it only works once the
+  domain serves the site. No admin token needed.
