@@ -516,7 +516,7 @@ def rel_tile(x):
 
 
 def related_block(p, products):
-    """Phones: four other pieces from the same family (totems with totems, jewelry with jewelry), as a 2 × 2 grid."""
+    """Three other pieces from the same family (totems with totems, jewelry with jewelry)."""
     def family(x):
         return "cap" if x["slug"] == "macon-cap" else ("totem" if kind(x["slug"], read_port(x["slug"])[1]) == "totem" else "jewelry")
     mine = family(p)
@@ -525,7 +525,7 @@ def related_block(p, products):
     rest = [x for x in products if x["slug"] != p["slug"] and family(x) != mine]
     slugs = [x["slug"] for x in products]
     start = (slugs.index(p["slug"]) if p["slug"] in slugs else 0) % max(1, len(same))
-    pick = (same[start:] + same[:start] + rest)[:4]           # rotate so neighbours differ from page to page
+    pick = (same[start:] + same[:start] + rest)[:3]           # three across; rotated so neighbours differ from page to page
     tiles = "".join(
         f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-frame"><img src="{rel_tile(x)}" alt="" loading="lazy"></span>'
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>'

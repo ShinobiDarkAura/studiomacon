@@ -410,7 +410,6 @@
       ' border-radius:5px;padding:3px 7px;cursor:pointer}',
       '.ed-photo button:hover{border-color:#aaa}',
       '.ed-photo .ed-frame-tip{color:#bbb;font:11px ui-sans-serif,sans-serif;min-width:34px;text-align:center}',
-      'body.ed-on .gallery figure{overflow:hidden}',
       'body.ed-on .gallery figure img{cursor:grab}',
       'body.ed-on .gallery figure.ed-framing img{cursor:grabbing}',
       'body.ed-on .gallery figure.ed-framing{outline:2px solid #111;outline-offset:-2px}',

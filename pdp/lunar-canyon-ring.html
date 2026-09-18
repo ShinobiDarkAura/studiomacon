@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="site.css?v=1789677693">
 <style>
   /* ── product ───────────────────────────────────────── */
-  .gallery figure{margin:0;background:var(--field)}
+  .gallery figure{margin:0;background:var(--field);overflow:hidden}
   .gallery figure:not(.hero){display:none}          /* mobile: hero only up top */
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
   .gallery video{display:block;width:100%;height:100vh;height:100svh;object-fit:cover;background:var(--field)}
@@ -107,10 +107,11 @@
   @media (min-width:768px){ .thumbs{display:none} }
   /* phones: other pieces, one full screen, 2 × 2 */
   /* desktop: four across under the product, title centred above */
-  .related{padding:180px 12px 160px;text-align:center}          /* the row reaches the same 12px edge as the main photos */
+  /* three across, held to the same margins as the shop grid on the home page */
+  .related{padding:180px calc(var(--pad) + 24px + 7.5vw) 160px;text-align:center}
   .related h2{margin:0 0 20px;font:400 53px/1 var(--serif);text-transform:uppercase}
   .related .rel-blurb{margin:0 auto 56px;max-width:480px;font-size:16px;line-height:1.55}
-  .rel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:left}
+  .rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:left}
   .rel-piece{display:block;color:#000}
   .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--field)}
   .rel-frame img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
@@ -210,7 +211,7 @@
     </div>
   </section>
 
-  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2><p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p><div class="rel-grid"><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-3--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-frame"><img src="img/ear-cuff/hero--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a><a class="rel-piece" href="starshipkey-pendant.html"><span class="rel-frame"><img src="img/starshipkey-pendant/hero--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Starship Key</span><span class="rel-cost">$460</span></a><a class="rel-piece" href="meridian-egg-ring.html"><span class="rel-frame"><img src="img/meridian-egg-ring/hero--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Meridian Egg</span><span class="rel-cost">$390</span></a></div></section>
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2><p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p><div class="rel-grid"><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-3--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-frame"><img src="img/ear-cuff/hero--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a><a class="rel-piece" href="starshipkey-pendant.html"><span class="rel-frame"><img src="img/starshipkey-pendant/hero--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Starship Key</span><span class="rel-cost">$460</span></a></div></section>
 
   <!-- lore and making blocks, parked for now
   <section class="closing">
