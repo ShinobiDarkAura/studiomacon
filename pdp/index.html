@@ -110,12 +110,11 @@
   /* pinned to the headline, not the window: every measure is in the headline's own type size (em),
      so at any screen width it lands on the comma of "Things," at the same size and angle */
   .welcome .prose h1.stamped{position:relative;display:inline-block}
-  .stamped .stamp{position:absolute;z-index:3;width:3.02em;left:calc(100% + .64em - 1.51em);top:calc(var(--cap-top,.2em) - .84em - 1.51em);
+  .stamped .stamp{position:absolute;z-index:3;width:2.72em;left:min(calc(100% + .64em - 1.36em), calc(50vw + 50% - 8px - 2.72em - .29em));top:calc(var(--cap-top,.2em) - .84em - 1.36em);
     transform:rotate(var(--stamp-tilt,-14deg)) scale(1.35);opacity:0;pointer-events:none;
     transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
   /* pressed down onto the words */
   .stamped .stamp.on{opacity:1;transform:rotate(var(--stamp-tilt,-14deg))}
-  @media (max-width:599px){ .stamped .stamp{display:none} }
   /* Back to Shop lands here, with the Ephemeral title just under the nav */
   #pieces{scroll-margin-top:calc(var(--head) + 36px)}
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px + 7.5vw) 24px}   /* aligned with the grid below it */
