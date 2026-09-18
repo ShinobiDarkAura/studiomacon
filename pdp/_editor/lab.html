@@ -101,8 +101,8 @@
 <header>
   <h1>Maçon Lab</h1>
   <div class="tabs">
-    <button data-tab="page" class="on">Product page</button>
-    <button data-tab="skel">Skeleton</button>
+    <button data-tab="skel" class="on">Skeleton</button>
+    <button data-tab="page">Product page</button>
   </div>
   <span class="grow"></span>
   <span class="msg" id="msg">Loading…</span>
@@ -112,7 +112,7 @@
 
 <main>
   <!-- ————— tab one: try picture counts, order, framing ————— -->
-  <section class="pane on" id="pane-page">
+  <section class="pane" id="pane-page">
     <p class="lb">
       <select id="piece"></select>
       <button id="addPhoto">Add a picture…</button>
@@ -128,7 +128,7 @@
   </section>
 
   <!-- ————— tab three: the shape of the site, no words ————— -->
-  <section class="pane" id="pane-skel">
+  <section class="pane on" id="pane-skel">
     <div class="sk">
       <div class="frame">
         <p class="cap">Home</p>
