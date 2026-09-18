@@ -193,7 +193,25 @@
     .commission .examples .lead{grid-column:1/-1;order:-2;margin:0 calc(-1 * var(--gutter));aspect-ratio:auto;height:60vh;height:60svh}
     .commission > .order{grid-column:1/-1;order:-1;padding:32px 0 48px !important}
     .order > .eyebrow,.order h1,.order .body,.order .price{text-align:center;margin-left:auto;margin-right:auto}
+    .commission > .order{padding-bottom:0 !important}
+
+    /* Past Work: the shop grid's heading, 48px under the last step */
+    .past-head{grid-column:1/-1;display:flex;justify-content:center;align-items:baseline;gap:10px;margin:40px 0 16px;padding:0 !important}          /* 40 + the grid gap of 8 = 48 */
+    .past-head h2{margin:0;font-size:57.5px}
+    .past-head .count{font-size:13px;color:rgba(0,0,0,.45)}
+
+    /* each piece as on the shop grid: a rounded 4:5 frame, its name and year set underneath */
+    .commission .examples figure:not(.lead){aspect-ratio:auto;overflow:visible;background:none;border-radius:0;margin:0;display:block;place-items:normal}
+    .commission .examples figure:not(.lead)::before{content:"";display:block;width:100%;height:0;padding-top:125%;border-radius:6px;background:var(--field)}          /* a 4:5 frame */
+    .commission .examples figure.cutout::before{background:#eeeeec}
+    .commission .examples figure:not(.lead) img{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:4/5;border-radius:6px}
+    .commission .examples figure.cutout img{object-fit:contain;padding:21% 15%;box-sizing:border-box}
+    .commission .examples figure:not(.lead) .over{position:static;opacity:1;transform:none;background:none;color:#000;
+      display:flex;flex-direction:column;gap:2px;padding:10px 0 14px;font-size:13px;pointer-events:auto}
+    .commission .examples figure:not(.lead) .over .name{order:-1;font:400 var(--tile-name)/1 var(--serif);text-transform:uppercase;letter-spacing:0}
+    .commission .examples figure:not(.lead) .over .date{color:rgba(0,0,0,.55)}
   }
+  @media (min-width:768px){ .past-head{display:none} }
 </style>
 <style>
 .wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;
@@ -243,6 +261,7 @@
 
 <main class="commission">
   <section class="examples wall" aria-label="Past commissions" style="--frame:1/1">
+  <header class="wall-head past-head"><h2 class="set-title" data-edit="page:custom.html:2cea1e0a">Past Work</h2><span class="count">22</span></header>
     <figure class="lead" data-lead><img width="2400" height="2400" src="img/commissions-cut/hero-band.jpg.webp" alt="A gold band carved with a spiral, a custom commission" fetchpriority="high"></figure>
     <figure class="cutout" data-name="02.png" style="--s:0.7;--x:0.0;--y:0.0"><img src="img/commissions-cut/02.png.webp" width="546" height="217" alt="Split Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Split Band</span></span></figure>
     <figure class="cutout" data-name="04.png" style="--s:0.6;--x:0.0;--y:0.0"><img src="img/commissions-cut/04.png.webp" width="1025" height="593" alt="Faceted Gold Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Faceted Gold Band</span></span></figure>
