@@ -209,6 +209,18 @@
         [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });
       });
     });
+    // Also Worth Keeping reads as one block, so the heading, the line under it and
+    // the three pieces arrive in a single run rather than two separate flurries.
+    document.querySelectorAll('.related').forEach(function (rel) {
+      var n = 0;
+      [].slice.call(rel.children).forEach(function (el) {
+        if (el.classList.contains('rel-grid')) {
+          [].slice.call(el.children).forEach(function (tile) { tile.style.setProperty('--stagger', (n++) * 90 + 'ms'); });
+        } else {
+          el.style.setProperty('--stagger', (n++) * 90 + 'ms');
+        }
+      });
+    });
     arm(document);
     // Anything on the first screen at load plays its entrance even if it sits in the bottom
     // strip the scroll trigger ignores (it would otherwise wait for a scroll that never comes).

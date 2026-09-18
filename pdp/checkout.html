@@ -16,7 +16,7 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789677693">
+<link rel="stylesheet" href="site.css?v=1789708107">
 <style>
   .co{max-width:1100px;margin:0 auto;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
   .co h1{margin:0 0 40px}
@@ -311,6 +311,18 @@
     GROUPS.forEach(function (g) {
       document.querySelectorAll(g).forEach(function (group) {
         [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });
+      });
+    });
+    // Also Worth Keeping reads as one block, so the heading, the line under it and
+    // the three pieces arrive in a single run rather than two separate flurries.
+    document.querySelectorAll('.related').forEach(function (rel) {
+      var n = 0;
+      [].slice.call(rel.children).forEach(function (el) {
+        if (el.classList.contains('rel-grid')) {
+          [].slice.call(el.children).forEach(function (tile) { tile.style.setProperty('--stagger', (n++) * 90 + 'ms'); });
+        } else {
+          el.style.setProperty('--stagger', (n++) * 90 + 'ms');
+        }
       });
     });
     arm(document);
