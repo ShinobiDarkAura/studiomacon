@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon — Lab</title>
+<style>
+  :root{--rule:#e2e0dc;--ink:#111;--soft:#767068;--bg:#faf9f7;--warn:#9a5b21;--field:#f1efec}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 ui-sans-serif,-apple-system,"Helvetica Neue",sans-serif}
+  header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:16px;
+         padding:12px 22px;background:#fff;border-bottom:1px solid var(--rule)}
+  header h1{margin:0;font-size:15px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+  .tabs{display:flex;gap:6px}
+  .tabs button.on{background:#111;color:#fff;border-color:#111}
+  .grow{flex:1}
+  button,select{font:inherit;border:1px solid var(--rule);background:#fff;border-radius:7px;padding:6px 12px;cursor:pointer}
+  button:hover{border-color:#999}
+  button.primary{background:#111;color:#fff;border-color:#111}
+  button.primary:disabled{opacity:.35;cursor:default}
+  main{padding:22px 26px 80px}
+  .pane{display:none}
+  .pane.on{display:block}
+  .msg{font-size:13px;color:var(--soft)}
+  .msg.bad{color:#a11}
+  .lb{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:0 0 8px}
+
+  /* --- product page lab --- */
+  .lab{display:grid;grid-template-columns:330px minmax(0,1fr);gap:26px;align-items:start}
+  .shots{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:14px}
+  .shot{display:grid;grid-template-columns:54px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--rule)}
+  .shot:first-of-type{border-top:0}
+  .shot .th{width:54px;height:68px;object-fit:cover;border-radius:5px;background:var(--field)}
+  .shot.off .th{opacity:.25}
+  .shot .nm{font-size:12px;color:var(--soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .shot .btns{display:flex;gap:4px;margin:5px 0 4px;flex-wrap:wrap}
+  .shot .btns button{padding:1px 7px;font-size:11px;border-radius:5px}
+  .shot .btns button.on{background:#111;color:#fff;border-color:#111}
+  .shot .sl{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--soft)}
+  .shot input[type=range]{flex:1;margin:0}
+  .stage{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:18px;overflow:hidden}
+  /* a small true-to-life copy of the product page: pictures at 70, words at 30 */
+  .mock{display:grid;grid-template-columns:70fr 30fr;gap:0 26px;align-items:start}
+  .mock .pics figure{margin:0 0 8px;overflow:hidden;background:var(--field);border-radius:4px}
+  .mock .pics img{display:block;width:100%}
+  .mock .copy{position:sticky;top:0}
+  .greek{background:#ddd9d4;border-radius:3px;height:9px;margin:0 0 7px}
+  .greek.t{height:26px;background:#c9c4be;margin-bottom:14px}
+  .greek.s{width:40%}
+  .greek.b{height:30px;background:#111;margin-top:18px;border-radius:4px}
+
+  /* --- shop grid lab --- */
+  .drop{border:1.5px dashed var(--rule);border-radius:10px;padding:34px;text-align:center;color:var(--soft);background:#fff}
+  .drop.over{border-color:#111;color:#111}
+  .wall{display:grid;gap:12px;margin-top:20px}
+  .wall figure{margin:0;border-radius:6px;overflow:hidden;background:var(--field);position:relative}
+  .wall img,.wall video{display:block;width:100%;aspect-ratio:3/4;object-fit:cover}
+  .wall .rm{position:absolute;top:6px;right:6px;padding:1px 7px;font-size:11px;border-radius:5px;opacity:.85}
+  .wall .lbl{display:flex;justify-content:space-between;font-size:12px;padding:7px 2px 0;color:var(--soft)}
+
+  /* --- skeleton --- */
+  .sk{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:20px;
+      display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .sk .frame{border:1px solid var(--rule);border-radius:6px;overflow:hidden;padding:10px;background:var(--bg)}
+  .sk .bar{display:flex;gap:8px;align-items:center;margin-bottom:14px}
+  .sk .bar .greek{height:7px;width:34px;margin:0}
+  .sk .hero{height:150px;background:#111;border-radius:4px;margin-bottom:16px}
+  .sk .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .sk .tiles i{display:block;aspect-ratio:3/4;background:#ddd9d4;border-radius:3px}
+  .sk .split{display:grid;grid-template-columns:70fr 30fr;gap:10px}
+  .sk .split .p i{display:block;aspect-ratio:4/5;background:#ddd9d4;border-radius:3px;margin-bottom:6px}
+  .sk .cap{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:0 0 10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Maçon Lab</h1>
+  <div class="tabs">
+    <button data-tab="page" class="on">Product page</button>
+    <button data-tab="grid">Shop grid</button>
+    <button data-tab="skel">Skeleton</button>
+  </div>
+  <span class="grow"></span>
+  <span class="msg" id="msg">Loading…</span>
+  <a href="/pdp/_editor/index.html"><button>Words editor</button></a>
+  <button class="primary" id="save" disabled>Save &amp; rebuild</button>
+</header>
+
+<main>
+  <!-- ————— tab one: try picture counts, order, framing ————— -->
+  <section class="pane on" id="pane-page">
+    <p class="lb">
+      <select id="piece"></select>
+      <button id="addPhoto">Add a picture…</button>
+      <input type="file" id="file" accept="image/*" hidden>
+      <button id="reset">Back to the built-in set</button>
+    </p>
+    <div class="lab">
+      <div class="shots" id="shots"></div>
+      <div class="stage">
+        <div class="mock" id="mock"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ————— tab two: short loops in the grid ————— -->
+  <section class="pane" id="pane-grid">
+    <p class="lb">A sandbox: drop pictures or short mp4s in and watch the grid. Nothing here is saved.</p>
+    <p class="lb">Columns
+      <select id="cols"><option>2</option><option selected>3</option><option>4</option></select>
+      <label style="margin-left:14px"><input type="checkbox" id="hoverPlay"> only play on hover</label>
+    </p>
+    <div class="drop" id="drop">Drop pictures or .mp4 files here</div>
+    <div class="wall" id="wall"></div>
+  </section>
+
+  <!-- ————— tab three: the shape of the site, no words ————— -->
+  <section class="pane" id="pane-skel">
+    <div class="sk">
+      <div class="frame">
+        <p class="cap">Home</p>
+        <div class="bar"><span class="greek"></span><span class="greek"></span><span class="grow"></span><span class="greek" style="width:56px"></span></div>
+        <div class="hero"></div>
+        <div class="greek t s"></div>
+        <div class="tiles"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="frame">
+        <p class="cap">Product page</p>
+        <div class="bar"><span class="greek"></span><span class="greek"></span><span class="grow"></span><span class="greek" style="width:56px"></span></div>
+        <div class="split">
+          <div class="p"><i></i><i></i><i></i></div>
+          <div>
+            <div class="greek s"></div><div class="greek t"></div>
+            <div class="greek"></div><div class="greek"></div><div class="greek s"></div>
+            <div class="greek b"></div>
+            <div class="greek" style="margin-top:20px"></div><div class="greek"></div><div class="greek s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = (s, r) => (r || document).querySelector(s);
+const msg = (t, bad) => { const m = $('#msg'); m.textContent = t; m.className = 'msg' + (bad ? ' bad' : ''); };
+let DATA = null, EDITS = {products: {}, pages: {}, shared: {}, stamp: {}}, slug = null;
+
+/* tabs */
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === 'pane-' + b.dataset.tab));
+});
+
+/* ————— the piece being tried out ————— */
+const piece = () => DATA.products.find(p => p.slug === slug);
+const edit = () => (EDITS.products[slug] = EDITS.products[slug] || {});
+
+function shown() {
+  const p = piece(), e = EDITS.products[slug] || {};
+  const hero = e.hero || p.defaults.hero;
+  const gal = e.gallery || p.defaults.gallery;
+  const hide = e.hidden || [];
+  return [hero].concat(gal).filter((x, i, a) => a.indexOf(x) === i && hide.indexOf(x) < 0);
+}
+const frameOf = src => ((EDITS.products[slug] || {}).frames || {})[src] || {x: 50, y: 50, z: 1};
+
+function draw() {
+  const p = piece(), e = EDITS.products[slug] || {};
+  const hero = e.hero || p.defaults.hero, hide = e.hidden || [];
+  const order = [hero].concat(e.gallery || p.defaults.gallery)
+                      .filter((x, i, a) => a.indexOf(x) === i);
+
+  $('#shots').innerHTML = order.map((src, i) => {
+    const f = frameOf(src), off = hide.indexOf(src) >= 0;
+    return `<div class="shot${off ? ' off' : ''}">
+      <img class="th" src="/pdp/${src}" alt="">
+      <div>
+        <div class="nm">${src.split('/').pop()}</div>
+        <div class="btns">
+          <button data-a="hero" data-i="${i}" class="${src === hero ? 'on' : ''}">First</button>
+          <button data-a="up" data-i="${i}">↑</button>
+          <button data-a="down" data-i="${i}">↓</button>
+          <button data-a="hide" data-i="${i}" class="${off ? 'on' : ''}">${off ? 'Hidden' : 'Hide'}</button>
+        </div>
+        <div class="sl">Zoom<input type="range" data-k="z" data-i="${i}" min="1" max="2.5" step="0.05" value="${f.z}"><b>${(+f.z).toFixed(2)}×</b></div>
+        <div class="sl">↔<input type="range" data-k="x" data-i="${i}" min="0" max="100" value="${f.x}">
+                       ↕<input type="range" data-k="y" data-i="${i}" min="0" max="100" value="${f.y}"></div>
+      </div></div>`;
+  }).join('');
+
+  $('#mock').innerHTML = `<div class="pics">` + shown().map(src => {
+    const f = frameOf(src);
+    return `<figure><img src="/pdp/${src}" style="transform:scale(${f.z});transform-origin:${f.x}% ${f.y}%"></figure>`;
+  }).join('') + `</div>
+    <div class="copy">
+      <div class="greek s"></div><div class="greek t"></div>
+      <div class="greek"></div><div class="greek"></div><div class="greek s"></div>
+      <div class="greek b"></div>
+      <div class="greek" style="margin-top:22px"></div><div class="greek"></div><div class="greek s"></div>
+    </div>`;
+
+  $('#shots').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a, order, +b.dataset.i));
+  $('#shots').querySelectorAll('input[type=range]').forEach(r => r.oninput = () => {
+    const src = order[+r.dataset.i], e2 = edit();
+    e2.frames = e2.frames || {};
+    e2.frames[src] = Object.assign({x: 50, y: 50, z: 1}, e2.frames[src], {[r.dataset.k]: +r.value});
+    draw(); touched();
+  });
+}
+
+function act(a, order, i) {
+  const e = edit(), p = piece(), src = order[i];
+  if (a === 'hide') {
+    e.hidden = e.hidden || [];
+    const at = e.hidden.indexOf(src);
+    at < 0 ? e.hidden.push(src) : e.hidden.splice(at, 1);
+  } else if (a === 'hero') {
+    e.hero = src;
+    e.gallery = order.filter(x => x !== src);
+  } else {
+    const j = a === 'up' ? i - 1 : i + 1;
+    if (j < 0 || j >= order.length) return;
+    const next = order.slice();
+    next.splice(j, 0, next.splice(i, 1)[0]);
+    e.hero = next[0];
+    e.gallery = next.slice(1);
+  }
+  draw(); touched();
+}
+
+function touched() { $('#save').disabled = false; msg('Not saved yet'); }
+
+/* ————— picture from the studio's own drive ————— */
+$('#addPhoto').onclick = () => $('#file').click();
+$('#file').onchange = async () => {
+  const f = $('#file').files[0]; if (!f) return;
+  msg('Adding ' + f.name + '…');
+  const r = await fetch('/api/photo?slug=' + slug + '&name=' + encodeURIComponent(f.name),
+                        {method: 'POST', body: f});
+  const j = await r.json();
+  if (j.error) return msg(j.error, true);
+  const e = edit();
+  e.gallery = (e.gallery || piece().defaults.gallery).concat([j.added]);
+  piece().photos.push(j.added);
+  $('#file').value = '';
+  draw(); msg('Added — not saved yet'); $('#save').disabled = false;
+};
+
+$('#reset').onclick = () => {
+  const e = EDITS.products[slug] || {};
+  delete e.hero; delete e.gallery; delete e.hidden; delete e.frames;
+  draw(); touched();
+};
+
+$('#save').onclick = async () => {
+  $('#save').disabled = true; msg('Saving and rebuilding…');
+  const r = await fetch('/api/content', {method: 'POST', body: JSON.stringify(EDITS)});
+  const j = await r.json();
+  msg(j.error || 'Saved and rebuilt', !!j.error);
+  if (j.error) $('#save').disabled = false;
+};
+
+/* ————— shop grid sandbox ————— */
+const wall = $('#wall'), drop = $('#drop');
+const setCols = () => wall.style.gridTemplateColumns = 'repeat(' + $('#cols').value + ',1fr)';
+$('#cols').onchange = setCols; setCols();
+$('#hoverPlay').onchange = () => wall.querySelectorAll('video').forEach(v => {
+  if ($('#hoverPlay').checked) { v.pause(); v.currentTime = 0; } else v.play();
+});
+['dragover', 'dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => {
+  e.preventDefault();
+  drop.classList.toggle('over', ev === 'dragover');
+  if (ev !== 'drop') return;
+  [...e.dataTransfer.files].forEach(addTile);
+}));
+drop.onclick = () => { const i = document.createElement('input'); i.type = 'file';
+  i.accept = 'image/*,video/mp4'; i.multiple = true;
+  i.onchange = () => [...i.files].forEach(addTile); i.click(); };
+
+function addTile(f) {
+  const url = URL.createObjectURL(f), fig = document.createElement('figure');
+  const media = f.type.startsWith('video')
+    ? `<video src="${url}" muted loop playsinline ${$('#hoverPlay').checked ? '' : 'autoplay'}></video>`
+    : `<img src="${url}">`;
+  fig.innerHTML = media + `<button class="rm">Remove</button>`;
+  fig.querySelector('.rm').onclick = () => { URL.revokeObjectURL(url); fig.remove(); };
+  const v = fig.querySelector('video');
+  if (v) {
+    fig.onmouseenter = () => { if ($('#hoverPlay').checked) v.play(); };
+    fig.onmouseleave = () => { if ($('#hoverPlay').checked) { v.pause(); v.currentTime = 0; } };
+  }
+  wall.appendChild(fig);
+}
+
+/* ————— load ————— */
+(async () => {
+  const r = await fetch('/api/editor');
+  DATA = await r.json();
+  if (DATA.error) return msg(DATA.error, true);
+  EDITS.stamp = DATA.stamp || {}; EDITS.pages = DATA.pages || {};
+  DATA.products.forEach(p => { if (Object.keys(p.edits || {}).length) EDITS.products[p.slug] = JSON.parse(JSON.stringify(p.edits)); });
+  $('#piece').innerHTML = DATA.products.map(p => `<option value="${p.slug}">${p.defaults.name}</option>`).join('');
+  $('#piece').onchange = () => { slug = $('#piece').value; draw(); };
+  slug = DATA.products[0].slug;
+  draw(); msg('');
+})();
+</script>
+</body>
+</html>

@@ -139,29 +139,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return self.reply({"error": str(e)}, 500)
         if not path.startswith("/pdp/") and path != "/pdp" or ".." in path or path.startswith(HIDDEN):
             return self.send_error(404)
-        if path.endswith(".html") and not path.startswith("/pdp/_editor/"):
-            return self.serve_page(path)
         return super().do_GET()
-
-    def serve_page(self, path):
-        """A page, with the editor added on the way out."""
-        local = os.path.join(ROOT, path.lstrip("/"))
-        if os.path.isdir(local):
-            local = os.path.join(local, "index.html")
-        try:
-            with open(local, "rb") as f:
-                doc = f.read()
-        except OSError:
-            return self.send_error(404)
-        tag = b'<script src="/pdp/_editor/inline.js" defer></script>'
-        if b"</body>" in doc and tag not in doc:
-            doc = doc.replace(b"</body>", tag + b"\n</body>", 1)
-        self.send_response(200)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
-        self.send_header("Content-Length", str(len(doc)))
-        self.end_headers()
-        if self.command != "HEAD":
-            self.wfile.write(doc)
 
     do_HEAD = do_GET
 
