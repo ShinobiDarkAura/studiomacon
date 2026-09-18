@@ -162,7 +162,11 @@ def export(src, slug, name, width):
     d = os.path.join(OUT, "img", slug)
     os.makedirs(d, exist_ok=True)
     dst = os.path.join(d, name + ".jpg")
-    if not os.path.exists(dst) or os.path.getmtime(src) > os.path.getmtime(dst):
+    stale = False
+    if os.path.exists(dst):                     # a wider target than last time means exporting again
+        with Image.open(dst) as cur:
+            stale = cur.width < width and Image.open(src).width > cur.width
+    if not os.path.exists(dst) or stale or os.path.getmtime(src) > os.path.getmtime(dst):
         im = Image.open(src).convert("RGB")
         if im.width > width:
             im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
@@ -243,10 +247,10 @@ def page(p, template, related=""):
 
     if plain or hand:
         hero_src = os.path.join(OUT, "img", "wonderhorn-hero-src.jpg") if slug == "wonderhorn-talisman" else (plain[0] if plain else hand[0])
-        hero = export(hero_src, slug, "hero", 1600)
-        gallery = [export(f, slug, f"plain-{i}", 1800) for i, f in enumerate(plain[1 if slug != "wonderhorn-talisman" else 0:], 1)]
-        gallery += [export(f, slug, f"hand-{i}", 1600) for i, f in enumerate(hand, 1)]
-        drawing = export(drawn[0], slug, "drawing", 900) if drawn else None
+        hero = export(hero_src, slug, "hero", 2400)
+        gallery = [export(f, slug, f"plain-{i}", 2600) for i, f in enumerate(plain[1 if slug != "wonderhorn-talisman" else 0:], 1)]
+        gallery += [export(f, slug, f"hand-{i}", 2400) for i, f in enumerate(hand, 1)]
+        drawing = export(drawn[0], slug, "drawing", 1400) if drawn else None
     else:                                  # no Pieces Master on this machine: use the photographs already in img/
         have = sorted(os.listdir(os.path.join(OUT, "img", slug)))
         num = lambda f: int(re.search(r"(\d+)", f).group(1))
@@ -367,6 +371,12 @@ def shared(doc):
 _sizes = {}
 
 
+def tile_src(src):
+    """The light copy of a picture, when one has been made for the grids."""
+    light_copy = src.rsplit(".", 1)[0] + "--tile.jpg.webp"
+    return light_copy if os.path.exists(os.path.join(OUT, light_copy)) else src
+
+
 def light(doc):
     """Point every picture at its lighter WebP copy (made by tools/optimize_media.py) and give it its
     real proportions, so nothing shifts while it loads."""
@@ -465,6 +475,11 @@ def align_style(slug):
     return (f' style="--ox:{a["ox"]}%;--oy:{a["oy"]}%;--tx:{a["tx"]}%;--ty:{a["ty"]}%;--s:{a["s"]}"' if a else "")
 
 
+def rel_tile(x):
+    name = "plain-3.jpg" if x["slug"] == "wonderhorn-talisman" else "hero.jpg"
+    return tile_src(f'img/{x["slug"]}/{name}')
+
+
 def related_block(p, products):
     """Phones: four other pieces from the same family (totems with totems, jewelry with jewelry), as a 2 × 2 grid."""
     def family(x):
@@ -477,7 +492,7 @@ def related_block(p, products):
     start = (slugs.index(p["slug"]) if p["slug"] in slugs else 0) % max(1, len(same))
     pick = (same[start:] + same[:start] + rest)[:4]           # rotate so neighbours differ from page to page
     tiles = "".join(
-        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-frame"><img src="img/{x["slug"]}/{"plain-3.jpg" if x["slug"] == "wonderhorn-talisman" else "hero.jpg"}" alt="" loading="lazy"></span>'
+        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-frame"><img src="{rel_tile(x)}" alt="" loading="lazy"></span>'
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>'
         for x in pick)
     return ('<section class="related" aria-label="Other pieces">'
@@ -542,11 +557,13 @@ def main():
         # pendants show the photograph of the piece being worn; everything else, in the hand
         hover = {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(p["slug"], "hand-1.jpg")
         held = os.path.exists(os.path.join(OUT, "img", p["slug"], hover))
+        still_src = tile_src(f'img/{p["slug"]}/{still}')          # the grid shows them small
+        hover_src = tile_src(f'img/{p["slug"]}/{hover}')
         lazy = "eager" if i < 3 else "lazy"
         tiles.append(
             f'    <figure><a class="piece" href="{p["slug"]}.html">'
-            f'<img src="img/{p["slug"]}/{still}" alt="{html.escape(p["name"])}" loading="{lazy}">'
-            + (f'<img class="held" src="img/{p["slug"]}/{hover}" alt="" loading="lazy"{align_style(p["slug"])}>' if held else "")
+            f'<img src="{still_src}" alt="{html.escape(p["name"])}" loading="{lazy}">'
+            + (f'<img class="held" src="{hover_src}" alt="" loading="lazy"{align_style(p["slug"])}>' if held else "")
             + f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
