@@ -103,11 +103,6 @@
   },
   "pip": {
    "frames": {
-    "img/pip/hero.jpg": {
-     "x": 50,
-     "y": 50,
-     "z": 1
-    },
     "img/pip/plain-2.jpg": {
      "x": 50,
      "y": 50,
@@ -118,7 +113,16 @@
      "y": 50,
      "z": 1
     }
-   }
+   },
+   "gallery": [
+    "img/pip/plain-1.jpg",
+    "img/pip/plain-2.jpg",
+    "img/pip/plain-3.jpg",
+    "img/pip/hand-2.jpg"
+   ],
+   "hidden": [
+    "img/pip/composite.jpg"
+   ]
   },
   "rebi": {
    "frames": {

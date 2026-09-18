@@ -231,7 +231,11 @@
     var hero = p.hero || all[0];
     var rest = (p.gallery || all.slice(1)).slice();
     if (a === 'hero') { rest = rest.filter(function (f) { return f !== src; }); rest.unshift(hero); p.hero = src; }
-    if (a === 'hide') rest = rest.filter(function (f) { return f !== src; });
+    if (a === 'hide') {
+      rest = rest.filter(function (f) { return f !== src; });
+      var hid = p.hidden || (p.hidden = []);          // also covers pictures the builder adds itself
+      if (hid.indexOf(src) < 0) hid.push(src);
+    }
     if (a === 'up' || a === 'down') {
       var j = rest.indexOf(src), to = j + (a === 'up' ? -1 : 1);
       if (j > -1 && to >= 0 && to < rest.length) { rest.splice(j, 1); rest.splice(to, 0, src); }

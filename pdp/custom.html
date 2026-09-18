@@ -545,6 +545,20 @@
     function fresh() { held = null; lastY = -99; soon(); }
     document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
     addEventListener('load', fresh);
+    addEventListener('pageshow', fresh);
+    // The first reading can land before the page has settled — the picture under the
+    // nav may not be laid out or decoded yet — and then nothing would look again.
+    // A few more reads over the first half second cost nothing and settle it.
+    [0, 120, 400, 900].forEach(function (ms) { setTimeout(fresh, ms); });
+    // A product page opens on a photograph, so the nav starts white rather than
+    // flicking from black once the picture has decoded.
+    if (document.querySelector('.product .gallery img, .product .gallery video')) {
+      parts.forEach(function (p) { p.classList.add('on-dark'); });
+    }
+    document.querySelectorAll('.product .gallery img').forEach(function (i) {
+      if (i.decode) i.decode().then(fresh).catch(function () {});
+    });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fresh);
     tone(true);
   })();
 

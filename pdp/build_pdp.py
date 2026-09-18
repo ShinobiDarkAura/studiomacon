@@ -358,6 +358,10 @@ def page(p, template, related=""):
         figs.insert(1, f'<figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/{slug}.jpg" aria-label="{html.escape(name)} in motion"><source src="video/pieces/{slug}.mp4" type="video/mp4"></video></figure>')
     if os.path.exists(os.path.join(OUT, "img", slug, "composite.jpg")):
         figs.append(framed(f"img/{slug}/composite.jpg", ' loading="lazy"'))
+    # pictures the studio has hidden leave the page but stay in the folder
+    hidden = _content.product(slug, "hidden", []) or []
+    if hidden:
+        figs = [f for f in figs if not any(h in f for h in hidden)]
 
     return (template
             .replace("{{TITLE}}", html.escape(name))
