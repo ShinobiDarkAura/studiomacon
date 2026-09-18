@@ -9,3 +9,4 @@ pdp/_originals/
 .env.local
 .env
 dist/
+.wrangler/

@@ -1,4 +1,6 @@
 # Old Wix addresses -> new pages (Cloudflare Pages / Netlify format). 301 = permanent, so search rankings carry over.
+# the address with no page name is the home page (served as is, not redirected)
+/                     /index.html         200
 /shop                 /#pieces            301
 /story                /story.html         301
 /custom               /custom.html        301

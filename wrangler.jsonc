@@ -1,0 +1,10 @@
+// Cloudflare: the built site in dist/ served as static files (see pdp/tools/deploy_build.py)
+{
+  "name": "studiomacon",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "none",            // links point at pip.html: serve it as is, no redirect hop
+    "not_found_handling": "404-page"    // the studio's own 404.html
+  }
+}

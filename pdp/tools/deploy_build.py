@@ -38,11 +38,24 @@ def wanted_jpgs():
     return out
 
 
+def referenced():
+    """Every picture any page or stylesheet names, however it names it: <img>, CSS url(), or script.
+    The logotype letters, for one, are drawn from CSS and never appear as an <img>."""
+    out = set()
+    for f in os.listdir(HERE):
+        if f.endswith((".html", ".css")) and f != "template.html":
+            with open(os.path.join(HERE, f), encoding="utf-8") as fh:
+                # the whole name, double extensions included (hero.jpg.webp is not hero.jpg)
+                out.update(re.findall(r'(img/[^"\'()\s,]+\.(?:png|jpe?g|webp|svg|gif))(?![\w.])', fh.read()))
+    return {os.path.normpath(x) for x in out}
+
+
 def main():
     if os.path.exists(OUT):
         shutil.rmtree(OUT)
     keep_jpg = wanted_jpgs()
     used = used_media()
+    named = referenced()
     n = 0
     for root, dirs, files in os.walk(HERE):
         rel_root = os.path.relpath(root, HERE)
@@ -65,6 +78,8 @@ def main():
                 elif f.endswith((".png",)):
                     take = not os.path.exists(os.path.join(root, f + ".webp"))
             elif f in ("_redirects", "_headers"):
+                take = True
+            if rel in named:                               # named somewhere: always ship it
                 take = True
             if not take:
                 continue
