@@ -2,9 +2,12 @@
 {
   "name": "studiomacon",
   "compatibility_date": "2026-09-01",
+  "main": "worker/index.js",               // only handles video byte ranges; see the file
   "assets": {
     "directory": "./dist",
-    "html_handling": "none",            // links point at pip.html: serve it as is, no redirect hop
-    "not_found_handling": "404-page"    // the studio's own 404.html
+    "binding": "ASSETS",
+    "html_handling": "none",               // links point at pip.html: serve it as is, no redirect hop
+    "not_found_handling": "404-page",      // the studio's own 404.html
+    "run_worker_first": ["/video/*"]       // everything else goes straight to the files
   }
 }
