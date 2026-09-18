@@ -187,6 +187,9 @@
     setTimeout(off, 1400);          // only a backstop, never the usual path
   }); });
 })();
+// arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
+// or its first frame shows the dark film for an instant before the jump
+(function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') document.documentElement.classList.add('menu-arriving'); } catch (e) {} })();
 </script>
@@ -740,13 +743,22 @@
         var shift = document.querySelector('.head').getBoundingClientRect().left;          // how far the page is pushed aside right now
         c.style.left = (r.left - shift) + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
       }
+      // phones can quietly jump the page to the top while scrolling is locked; keep where you were,
+      // and let the home logotype settle back at once rather than easing in over most of a second
+      if (on) savedY = scrollY;
       menu.classList.toggle('open', on); menu.inert = !on; open = on;
       document.documentElement.classList.toggle('menu-open', on);
       [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; });
       btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : '';
+      if (!on) {
+        if (savedY !== null && Math.abs(scrollY - savedY) > 1) scrollTo(0, savedY);
+        document.body.classList.add('logo-still');
+        dispatchEvent(new Event('scroll'));
+        setTimeout(function () { document.body.classList.remove('logo-still'); }, 700);
+      }
       if (on && keyboard) menu.querySelector('a').focus();
     }
-    var open = false;
+    var open = false, savedY = 0;
     // tapping the pushed-over page closes the menu
     document.addEventListener('click', function (e) { if (open && !menu.contains(e.target) && e.target !== btn) set(false); });
     btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
@@ -761,7 +773,17 @@
     menu.addEventListener('click', function (e) {
       var a = e.target.closest('a'); if (!a) return;
       var to = new URL(a.href, location.href);
-      if (to.pathname === location.pathname) { set(false); return; }          // same page (Shop from the home page): just close
+      if (to.pathname === location.pathname) {          // same page (Shop from the home page): close first, then move
+        e.preventDefault();
+        set(false);
+        var target = to.hash && document.querySelector(to.hash);
+        // moving while the page is still pushed aside makes the home film draw over the grid for a moment
+        if (target) setTimeout(function () {
+          target.scrollIntoView({behavior: 'smooth', block: 'start'});
+          history.replaceState(null, '', to.hash);
+        }, 620);
+        return;
+      }
       try { sessionStorage.setItem('macon-menu', '1'); } catch (err) {}
     });
     // ...where it arrives already open, and slides closed once the page is ready
@@ -770,6 +792,7 @@
       try { sessionStorage.removeItem('macon-menu'); } catch (err) {}
       menu.classList.add('instant');
       set(true);
+      savedY = null;          // a page arriving goes where its link points (Shop lands on the grid), never back to where it started
       root.classList.remove('menu-arriving');
       var closed = false;
       var close = function () {

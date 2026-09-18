@@ -25,11 +25,13 @@
   .summary{align-self:start}
   .summary dl{display:grid;grid-template-columns:1fr auto;gap:12px 0;margin:0 0 24px;font-size:15px}
   .summary dd{margin:0;text-align:right;padding-left:18px}
-  .summary .total{padding-top:14px;border-top:1px solid #000;font-weight:500}
+  .summary .total{padding-top:14px;border-top:1px solid var(--rule);font-weight:500}          /* the same pale rule as under the title */
   .summary .note{margin:14px 0 0;font-size:13px;color:rgba(0,0,0,.5);line-height:1.5}
   .empty{padding:40px 0 0;text-align:left}
   .empty p{margin:0 0 28px;font-size:17px}
-  .empty .cta{max-width:320px}
+  .empty .cta{max-width:none;width:100%}          /* the same size as Checkout */
+  /* nothing to check out: Checkout steps back to an outline */
+  body.bag-empty #checkout{background:none;color:#000;border:1px solid #000}
   @media (min-width:900px){ .bag-grid{grid-template-columns:minmax(0,1fr) 340px;gap:64px} .summary{position:sticky;top:calc(var(--head) + 24px)} }
 </style>
 </head>
@@ -67,6 +69,7 @@
       var items = MaconBag.read(), lines = document.getElementById('lines');
       document.getElementById('bag-grid').hidden = !items.length;
       document.getElementById('empty').hidden = !!items.length;
+      document.body.classList.toggle('bag-empty', !items.length);
       lines.innerHTML = '';
       var sub = 0;
       items.forEach(function (it, i) {

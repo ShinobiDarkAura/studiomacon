@@ -98,6 +98,7 @@
   .welcome + .set .wall-head{padding-top:0}
   /* the Bureau of Provenance stamp: pressed onto the bottom edge of the film, angled, its top tenth over the picture */
   .film-wrap{position:relative}
+  html.to-pieces .film-wrap{visibility:hidden}
   /* pinned to the headline, not the window: every measure is in the headline's own type size (em),
      so at any screen width it lands on the comma of "Things," at the same size and angle */
   .welcome .prose h1.stamped{position:relative;display:inline-block}
@@ -245,6 +246,15 @@
 {{FOOTER}}
 {{SITEJS}}
 <script>
+  // arrived for the grid: once the page has moved down to it, the film may show again
+  (function () {
+    var root = document.documentElement; if (!root.classList.contains('to-pieces')) return;
+    var show = function () { root.classList.remove('to-pieces'); };
+    var watch = function () { if (scrollY > 0) { removeEventListener('scroll', watch); requestAnimationFrame(show); } };
+    addEventListener('scroll', watch, {passive: true}); watch();
+    addEventListener('load', function () { setTimeout(show, 50); });          // never left hidden
+  })();
+
   // The stamp presses down once the headline it sits on is in view
   (function () {
     var stamp = document.querySelector('.stamped .stamp'); if (!stamp) return;
@@ -284,6 +294,7 @@
     function scrub() {
       ticking = false;
       if (!document.body.classList.contains('logo-scrub')) return;
+      if (document.documentElement.classList.contains('menu-open')) return;          // frozen while the drawer is open
       var dy = parseFloat(getComputedStyle(document.body).getPropertyValue('--logo-dy')) || 0;
       var p = Math.max(0, Math.min(1, scrollY / span()));          // 0 at the top, 1 once it has arrived
       var k = 1 + (BIG - 1) * (1 - p);
@@ -335,6 +346,7 @@
     window.MaconHeroQuiet();
   })();
   function cue() {
+    if (document.documentElement.classList.contains('menu-open')) return;          // frozen while the drawer is open
     var on = scrollY > 40;
     document.querySelector('.film').classList.toggle('scrolled', on);
     var flying = scrollY < (window.MaconScrubSpan ? window.MaconScrubSpan() : 400);
