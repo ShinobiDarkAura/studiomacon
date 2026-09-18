@@ -33,6 +33,10 @@
   .shot:first-of-type{border-top:0}
   .shot .th{width:54px;height:68px;object-fit:cover;border-radius:5px;background:var(--field)}
   .shot.off .th{opacity:.25}
+  .shot{cursor:grab}
+  .shot.drag{opacity:.35}
+  .shot.over{box-shadow:0 -2px 0 #111 inset,0 2px 0 #111 inset}
+  .shot .grip{color:var(--soft);letter-spacing:2px;font-size:13px;user-select:none}
   .shot .nm{font-size:12px;color:var(--soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .shot .btns{display:flex;gap:4px;margin:5px 0 4px;flex-wrap:wrap}
   .shot .btns button{padding:1px 7px;font-size:11px;border-radius:5px}
@@ -201,10 +205,10 @@ function draw() {
 
   $('#shots').innerHTML = order.map((src, i) => {
     const f = frameOf(src), off = hide.indexOf(src) >= 0;
-    return `<div class="shot${off ? ' off' : ''}">
+    return `<div class="shot${off ? ' off' : ''}" draggable="true" data-i="${i}">
       <img class="th" src="/pdp/${src}" alt="">
       <div>
-        <div class="nm">${src.split('/').pop()}</div>
+        <div class="nm"><span class="grip">⠿</span> ${src.split('/').pop()}</div>
         <div class="btns">
           <button data-a="hero" data-i="${i}" class="${src === hero ? 'on' : ''}">First</button>
           <button data-a="up" data-i="${i}">↑</button>
@@ -230,6 +234,7 @@ function draw() {
     </div>`;
 
   $('#shots').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a, order, +b.dataset.i, b.dataset.src));
+  dragging(order);
   if (DATA && window.skelReady) { skeleton(); chips(); }
   $('#shots').querySelectorAll('input[type=range]').forEach(r => r.oninput = () => {
     const src = order[+r.dataset.i], e2 = edit();
@@ -250,6 +255,29 @@ function spares() {
        <div><div class="nm">${src.split('/').pop()}</div>
          <div class="btns"><button data-a="back" data-src="${src}">Put back</button></div>
        </div></div>`).join('');
+}
+
+// pick a picture up and drop it where it belongs
+let held = null;
+function dragging(order) {
+  $('#shots').querySelectorAll('.shot[draggable]').forEach(row => {
+    row.ondragstart = e => { held = +row.dataset.i; row.classList.add('drag'); e.dataTransfer.effectAllowed = 'move'; };
+    row.ondragend = () => { held = null; $('#shots').querySelectorAll('.shot').forEach(r => r.classList.remove('drag', 'over')); };
+    row.ondragover = e => { e.preventDefault(); row.classList.add('over'); };
+    row.ondragleave = () => row.classList.remove('over');
+    row.ondrop = e => {
+      e.preventDefault();
+      const to = +row.dataset.i;
+      if (held === null || held === to) return;
+      const next = order.slice();
+      next.splice(to, 0, next.splice(held, 1)[0]);
+      const e2 = edit();
+      e2.hero = next[0];
+      e2.gallery = next.slice(1);
+      held = null;
+      draw(); skeleton(); touched();
+    };
+  });
 }
 
 function act(a, order, i, src2) {
