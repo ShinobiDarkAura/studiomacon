@@ -31,6 +31,11 @@ come from each piece's own material rows.
 To use a photograph from your drive, hover one on a product page and press
 **Replace…**. It is resized and saved beside the others.
 
+**Framing a picture.** With editing on, drag any photograph on a product page to move
+it inside its frame, and scroll over it — or use **−** and **+** — to zoom in. The
+percentage shows how far in you are, and **reset** puts it back. The photograph on
+disk is never altered; only how it sits in the frame is remembered.
+
 Escape puts a block back the way it was before you started typing.
 
 Anything you haven't changed keeps its original wording. A changed field is outlined

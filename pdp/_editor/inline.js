@@ -96,14 +96,17 @@
       fig.classList.add('ed-fig');
       if (tag) return;
       var img = fig.querySelector('img, video'); if (!img) return;
-      var src = (img.getAttribute('src') || '').replace(/^\//, '').replace(/\.webp$/, '.jpg');
+      var src = (img.getAttribute('src') || '').replace(/^\//, '').replace(/\.webp$/, '');
       var box = document.createElement('div');
       box.className = 'ed-photo';
       box.innerHTML = (i === 0 ? '<b>Main photograph</b>' : '<button data-a="hero">Make main</button>') +
+                      '<button data-a="out">&#8722;</button><span class="ed-frame-tip">100%</span><button data-a="in">+</button>' +
+                      '<button data-a="fit">reset</button>' +
                       '<button data-a="replace">Replace…</button>' +
                       '<button data-a="hide">Hide</button>' +
                       (i > 1 ? '<button data-a="up">&#8592;</button>' : '') +
                       '<button data-a="down">&#8594;</button>';
+      if (img.tagName === 'IMG') { armFraming(fig, img, src); paintFrame(img, frameOf(src)); }
       box.addEventListener('click', function (e) {
         var a = e.target.dataset && e.target.dataset.a; if (!a) return;
         e.preventDefault(); e.stopPropagation();
@@ -115,7 +118,7 @@
 
   function gallerySrcs() {
     return [].slice.call(document.querySelectorAll('.gallery figure img, .gallery figure video'))
-      .map(function (n) { return (n.getAttribute('src') || '').replace(/^\//, '').replace(/\.webp$/, '.jpg'); });
+      .map(function (n) { return (n.getAttribute('src') || '').replace(/^\//, '').replace(/\.webp$/, ''); });
   }
 
   // choosing a picture from the studio's own drive, in place of one on the page
@@ -153,8 +156,78 @@
     inp.click();
   }
 
+  // ── framing a picture inside its frame, by hand ──────────────────────
+  function frameOf(src) {
+    var p = edits.products[slug()] || {};
+    return Object.assign({x: 50, y: 50, z: 1}, (p.frames || {})[src] || {});
+  }
+
+  function setFrame(src, f) {
+    var s = slug(); if (!s) return;
+    var p = edits.products[s] || (edits.products[s] = {});
+    var frames = p.frames || (p.frames = {});
+    if (Math.abs(f.x - 50) < 0.6 && Math.abs(f.y - 50) < 0.6 && Math.abs(f.z - 1) < 0.01) delete frames[src];
+    else frames[src] = {x: Math.round(f.x * 10) / 10, y: Math.round(f.y * 10) / 10, z: Math.round(f.z * 100) / 100};
+    if (!Object.keys(frames).length) delete p.frames;
+    if (!Object.keys(p).length) delete edits.products[s];
+    setDirty(true);
+  }
+
+  function paintFrame(img, f) {
+    img.style.objectPosition = f.x + '% ' + f.y + '%';
+    img.style.transform = 'scale(' + f.z + ')';
+    var tip = img.parentNode.querySelector('.ed-frame-tip');
+    if (tip) tip.textContent = Math.round(f.z * 100) + '%';
+  }
+
+  function armFraming(fig, img, src) {
+    if (fig.dataset.edFrame) return;
+    fig.dataset.edFrame = '1';
+    var moving = false, sx, sy, start;
+
+    img.addEventListener('pointerdown', function (e) {
+      if (!on) return;
+      e.preventDefault();
+      moving = true; sx = e.clientX; sy = e.clientY; start = frameOf(src);
+      img.setPointerCapture(e.pointerId); fig.classList.add('ed-framing');
+    });
+    img.addEventListener('pointermove', function (e) {
+      if (!moving) return;
+      var r = img.getBoundingClientRect();
+      // how far the picture can travel inside the frame depends on how much of it is hidden
+      var f = Object.assign({}, start);
+      f.x = Math.max(0, Math.min(100, start.x - (e.clientX - sx) / r.width * 100));
+      f.y = Math.max(0, Math.min(100, start.y - (e.clientY - sy) / r.height * 100));
+      paintFrame(img, f); setFrame(src, f);
+    });
+    function end(e) {
+      if (!moving) return;
+      moving = false; fig.classList.remove('ed-framing');
+      try { img.releasePointerCapture(e.pointerId); } catch (err) {}
+    }
+    img.addEventListener('pointerup', end);
+    img.addEventListener('pointercancel', end);
+    img.addEventListener('wheel', function (e) {
+      if (!on) return;
+      e.preventDefault();
+      var f = frameOf(src);
+      f.z = Math.max(1, Math.min(4, f.z * (e.deltaY < 0 ? 1.06 : 1 / 1.06)));
+      paintFrame(img, f); setFrame(src, f);
+    }, {passive: false});
+  }
+
   function photoAction(a, src) {
     if (a === 'replace') return choosePhoto(src);
+    if (a === 'in' || a === 'out' || a === 'fit') {
+      var img = [].slice.call(document.querySelectorAll('.gallery figure img'))
+        .filter(function (n) { return (n.getAttribute('src') || '').replace(/^\//, '').replace(/\.webp$/, '') === src; })[0];
+      if (!img) return;
+      var f = frameOf(src);
+      if (a === 'fit') f = {x: 50, y: 50, z: 1};
+      else f.z = Math.max(1, Math.min(4, f.z * (a === 'in' ? 1.12 : 1 / 1.12)));
+      paintFrame(img, f); setFrame(src, f);
+      return;
+    }
     var s = slug(); if (!s) return;
     var p = edits.products[s] || (edits.products[s] = {});
     var all = gallerySrcs();
@@ -341,6 +414,11 @@
       '.ed-photo button{font:11px ui-sans-serif,sans-serif;border:1px solid #555;background:#222;color:#fff;',
       ' border-radius:5px;padding:3px 7px;cursor:pointer}',
       '.ed-photo button:hover{border-color:#aaa}',
+      '.ed-photo .ed-frame-tip{color:#bbb;font:11px ui-sans-serif,sans-serif;min-width:34px;text-align:center}',
+      'body.ed-on .gallery figure{overflow:hidden}',
+      'body.ed-on .gallery figure img{cursor:grab}',
+      'body.ed-on .gallery figure.ed-framing img{cursor:grabbing}',
+      'body.ed-on .gallery figure.ed-framing{outline:2px solid #111;outline-offset:-2px}',
       '.ed-stamp-on{pointer-events:auto!important;opacity:1!important;outline:1px dashed rgba(0,0,0,.35);outline-offset:6px}',
       '.ed-stamp{position:absolute;right:10px;bottom:8px;display:flex;gap:5px;align-items:center;z-index:6;',
       ' background:rgba(17,17,17,.88);border-radius:7px;padding:5px 7px}',

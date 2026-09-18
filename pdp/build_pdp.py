@@ -189,18 +189,9 @@ def export(src, slug, name, width):
 
 
 def frame_one(keep, live):
-    """Frame a kept photograph for the site, or pass it through if it cannot be framed."""
+    """The photograph goes to the site as it was shot. How it sits inside its frame is
+    the studio's to set, by hand, in the editor."""
     import shutil
-    try:
-        sys.path.insert(0, os.path.join(OUT, "tools"))
-        from reframe import reframe
-        base = os.path.basename(live)
-        # only an even sweep may have its backdrop grown; a hand or a drawing may not
-        plain = base.startswith("hero") or base.startswith("plain")
-        if reframe(keep, live, may_grow=plain):
-            return
-    except Exception as e:
-        print(f"   framing skipped for {os.path.basename(live)}: {e}")
     shutil.copy2(keep, live)
 
 
@@ -349,11 +340,24 @@ def page(p, template, related=""):
 
     # a short film of the piece sits third, after the hero and first still; a lifestyle composite closes the gallery
     gallery = [g for g in gallery if g not in HIDE_FROM_GALLERY]
-    figs = [f'<figure><img src="{g}" alt="" loading="lazy"></figure>' for g in gallery]
+    def framed(src, extra=""):
+        """A picture with however the studio has set it inside its frame."""
+        f = (_content.product(slug, "frames", {}) or {}).get(src)
+        style = ""
+        if f:
+            style = (f' style="object-position:{f.get("x", 50):g}% {f.get("y", 50):g}%'
+                     f';transform:scale({f.get("z", 1):g})"')
+        return f'<figure><img src="{src}"{style} alt=""{extra}></figure>'
+
+    figs = [framed(g, ' loading="lazy"') for g in gallery]
+    hf = (_content.product(slug, "frames", {}) or {}).get(hero)
+    hero_style = ("" if not hf else
+                  f' style="object-position:{hf.get("x", 50):g}% {hf.get("y", 50):g}%'
+                  f';transform:scale({hf.get("z", 1):g})"')
     if os.path.exists(os.path.join(OUT, "video", "pieces", f"{slug}.mp4")):
         figs.insert(1, f'<figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/{slug}.jpg" aria-label="{html.escape(name)} in motion"><source src="video/pieces/{slug}.mp4" type="video/mp4"></video></figure>')
     if os.path.exists(os.path.join(OUT, "img", slug, "composite.jpg")):
-        figs.append(f'<figure><img src="img/{slug}/composite.jpg" alt="" loading="lazy"></figure>')
+        figs.append(framed(f"img/{slug}/composite.jpg", ' loading="lazy"'))
 
     return (template
             .replace("{{TITLE}}", html.escape(name))
@@ -363,6 +367,7 @@ def page(p, template, related=""):
             .replace("{{DESC}}", html.escape(blurb))
             .replace("{{SIZE}}", size_select)
             .replace("{{VARIANT}}", buy_variant)
+            .replace("{{HEROSTYLE}}", hero_style)
             .replace("{{HERO}}", hero)
             .replace("{{GALLERY}}", "\n      ".join(figs))
             .replace("{{ACCORDIONS}}", accordions(slug, k, notes))
