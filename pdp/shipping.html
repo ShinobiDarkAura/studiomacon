@@ -16,7 +16,7 @@
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789763477">
+<link rel="stylesheet" href="site.css?v=1789763613">
 <style>
   /* one screen: the keepsake box on the left, the policy on the right */
   .ship{display:grid;gap:40px;min-height:100vh;min-height:100svh;padding:calc(var(--head) + 40px) calc(var(--pad) + 24px) 64px;align-items:center}
@@ -49,6 +49,14 @@
   .ship .intro > :nth-child(2){--stagger:650ms !important}
   .ship .intro > :nth-child(3){--stagger:850ms !important}
   .ship .policies{--stagger:1050ms !important}
+  @media (max-width:767px){
+    .ship{padding:0 !important;gap:0}
+    .ship .branch{height:60vh;height:60svh;padding:calc(var(--head) + 8px) 12vw 8vh}
+    .ship .branch{display:flex;align-items:center;justify-content:center}
+    .ship .branch img{width:auto;height:auto;max-width:100%;max-height:100%}          /* the whole box, inside the panel */
+    .ship .text{padding:40px var(--gutter) 64px;max-width:none}
+    .ship .intro{text-align:center}
+  }
 </style>
 <style>
 .wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;

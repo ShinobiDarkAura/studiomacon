@@ -45,6 +45,11 @@
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     .opening{grid-template-columns:1fr 1fr;align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
   }
+  @media (max-width:767px){
+    .opening .hand img{width:auto;max-width:100%;height:auto;max-height:60vh;max-height:60svh;margin:0 auto;top:0;display:block}
+    .opening,.prose,.history,.opening .intro,.history .intro{text-align:center}
+    .opening .intro p.lede,.history .intro p.lede{margin-left:auto;margin-right:auto}
+  }
 </style>
 </head>
 <body>

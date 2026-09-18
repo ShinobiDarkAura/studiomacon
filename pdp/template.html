@@ -72,7 +72,9 @@
 
   /* ── phones: one 24px side margin for the whole page, left-aligned text, stacked buttons ── */
   @media (max-width:767px){
-    .info,.product .info h1,.product .info .eyebrow{text-align:left}
+    .info,.product .info h1,.product .info .eyebrow{text-align:center}
+    .info .desc-block{text-align:center}
+    .info .acc,.info form{text-align:left}
     .gallery{padding:calc(var(--head) - 6px) 8px 0}          /* the main image starts 8px below the logotype, 8px from the sides */
     .info{padding-left:8px;padding-right:8px}
     .gallery .hero img,.gallery .hero video{height:auto;aspect-ratio:4/5;border-radius:6px}

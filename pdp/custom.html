@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789763477">
+<link rel="stylesheet" href="site.css?v=1789763613">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -186,6 +186,13 @@
       scrollbar-width:none;padding:24px 0 48px;display:flex;flex-direction:column;justify-content:safe center}
     .order > *{flex:none}
     .order::-webkit-scrollbar{display:none}
+  }
+  @media (max-width:767px){
+    .commission{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 var(--gutter)}
+    .commission > .examples{display:contents}
+    .commission .examples .lead{grid-column:1/-1;order:-2;margin:0 calc(-1 * var(--gutter));aspect-ratio:auto;height:60vh;height:60svh}
+    .commission > .order{grid-column:1/-1;order:-1;padding:32px 0 48px !important}
+    .order > .eyebrow,.order h1,.order .body,.order .price{text-align:center;margin-left:auto;margin-right:auto}
   }
 </style>
 <style>

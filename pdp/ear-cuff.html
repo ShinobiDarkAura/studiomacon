@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Caldera Arc", "description": "A clean silver line that rests on the ear, no piercing required. Light breaks into odd colours across its mirrored edge. Shaped and polished by hand to hold securely.", "image": ["https://studiomacon.co/img/ear-cuff/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ear-cuff", "offers": [{"@type": "Offer", "price": "260.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ear-cuff.html"}, {"@type": "Offer", "price": "490.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ear-cuff.html"}]}</script>
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789763477">
+<link rel="stylesheet" href="site.css?v=1789763613">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -83,7 +83,9 @@
 
   /* ── phones: one 24px side margin for the whole page, left-aligned text, stacked buttons ── */
   @media (max-width:767px){
-    .info,.product .info h1,.product .info .eyebrow{text-align:left}
+    .info,.product .info h1,.product .info .eyebrow{text-align:center}
+    .info .desc-block{text-align:center}
+    .info .acc,.info form{text-align:left}
     .gallery{padding:calc(var(--head) - 6px) 8px 0}          /* the main image starts 8px below the logotype, 8px from the sides */
     .info{padding-left:8px;padding-right:8px}
     .gallery .hero img,.gallery .hero video{height:auto;aspect-ratio:4/5;border-radius:6px}
