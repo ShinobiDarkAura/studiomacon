@@ -165,7 +165,7 @@ def nav(up=""):
 def footer(up=""):
     return f'''  <footer>
     <div class="links"><a href="{up}story.html">Story</a><a href="{up}custom.html">Custom</a><a href="{up}shipping.html">Shipping &amp; Returns</a></div>
-    <div class="fine">HANDMADE IN CALIFORNIA</div>
+    <div class="fine">HANDMADE IN L.A.</div>
   </footer>'''
 
 def page(title, body, up="", desc=""):
@@ -307,36 +307,49 @@ def main():
         notes_html = ""
         if notes:
             rows = "".join(f'<div class="row">{html.escape(n)}</div>' for n in notes)
-            notes_html = f'''    <section class="notes-block">
-      <button class="notes-head" data-notes-toggle aria-expanded="false">
+            notes_html = f'''    <section class="notes-block open">
+      <button class="notes-head" data-notes-toggle aria-expanded="true">
         <span class="lbl">NOTES</span><span class="sign" aria-hidden="true"></span>
       </button>
       <div class="notes-body"><div class="notes-inner">{rows}</div></div>
     </section>'''
         price = p.get("price")
-        price_fmt = f"${float(price):,.2f}" if price else ""
+        price_fmt = f"${float(price):,.0f}" if price else ""
         subj = f"Hi!%20I%27d%20like%20to%20order%20{p['slug'].replace('-', '%20')}."
         if buyable(p):
             actions = (f'        <a class="btn-bag" href="mailto:hello@studiomacon.co?subject={subj}">Add to Bag</a>\n'
                        f'        <a class="btn-buy" href="mailto:hello@studiomacon.co?subject={subj}">Buy Now</a>')
         else:
             actions = '        <div class="btn-bag is-disabled" aria-disabled="true">Claimed</div>'
-        one_of_one = ('<div class="overline">One of One</div>'
-                      if p.get("collection") == "ephemeral" else "")
+        singular = p.get("collection") == "ephemeral"
+        one_of_one = '<div class="overline">One of One</div>' if singular else ""
+        # Editions carry the studio's mark pressed onto the photograph; singular
+        # pieces get the numbered Bureau seal instead, so the two never coexist.
+        seal = "" if singular else (
+            f'<img class="ed-seal" src="../{derive("assets/register/stamp-5-edition-mark-green.png", 400)}" alt="">')
+        ed_caption = "" if singular else '<span class="ed-caption">Edition &middot; cast to order</span>'
         body = f'''  <article class="pdp" data-slug="{p['slug']}">
-    <div class="pdp-hero"><img id="mainImg" src="../{imgs[0]['hero']}" alt="{html.escape(p['name'])}" fetchpriority="high"></div>
-    <div class="thumbs">{thumbs}</div>
+    <div class="pdp-figure">
+      <div class="pdp-hero">
+        <img id="mainImg" src="../{imgs[0]['hero']}" alt="{html.escape(p['name'])}" fetchpriority="high">
+      </div>
+      {seal}
+    </div>
+    <div class="thumb-row">
+      <div class="thumbs">{thumbs}</div>
+      {ed_caption}
+    </div>
     <div class="pdp-info">
       <div class="pdp-left">
         {one_of_one}<h1>{html.escape(p['name'])}</h1>
         <div class="desc">{html.escape(p.get('description') or '')}</div>
+{notes_html}
       </div>
       <div class="pdp-right">
         <div class="price">{price_fmt}</div>
 {actions}
       </div>
     </div>
-{notes_html}
   </article>'''
         open(f"product/{p['slug']}.html", "w", encoding="utf-8").write(
             page(f"{p['name']} | Studio Maçon", body, "../", p.get("description") or ""))
