@@ -530,7 +530,7 @@
   })();
 
   // ── Soft fade between pages ───────────────────────────────────────────
-  // Leaving, the page dims to white in 160ms; the next one lifts out of white (see the head script).
+  // Leaving, the page dims to white in 300ms; the next one lifts out of white in 450ms (see the head script).
   // Kept brief and low-contrast so it smooths the cut rather than being seen. Not for the phone drawer,
   // which swaps pages behind itself, and not for Back/Forward.
   (function () {
@@ -547,11 +547,11 @@
       if (to.origin !== location.origin || (to.pathname === location.pathname && to.search === location.search)) return;
       e.preventDefault();
       veil = veil || document.createElement('div');
-      veil.style.cssText = 'position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:0;transition:opacity 160ms cubic-bezier(.4,0,1,1)';
+      veil.style.cssText = 'position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.6,1)';
       document.body.appendChild(veil);
       requestAnimationFrame(function () { requestAnimationFrame(function () { veil.style.opacity = '1'; }); });
       try { sessionStorage.setItem('macon-fade', '1'); } catch (err) {}
-      setTimeout(function () { location.href = a.href; }, 170);
+      setTimeout(function () { location.href = a.href; }, 310);
     }, true);
     // coming back through history: never leave the veil up
     addEventListener('pageshow', function (e) { if (e.persisted && veil) veil.remove(); try { sessionStorage.removeItem('macon-fade'); } catch (err) {} });

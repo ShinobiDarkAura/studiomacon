@@ -436,7 +436,7 @@ WIPE_HEAD = """<style>
   try { if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade'); } catch (e) { return; }
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var st = document.createElement('style');
-  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1;transition:opacity 260ms cubic-bezier(.4,0,.2,1)}.veil.lift{opacity:0}';
+  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1;transition:opacity 450ms cubic-bezier(.4,0,.2,1)}.veil.lift{opacity:0}';
   document.head.appendChild(st);
   var v = document.createElement('div'); v.className = 'veil';
   var put = function () { (document.body || document.documentElement).appendChild(v); }; put();
@@ -446,7 +446,7 @@ WIPE_HEAD = """<style>
     requestAnimationFrame(function () { requestAnimationFrame(function () { v.classList.add('lift'); }); });   // ...draw it once, then lift
   };
   var gone = function () { v.remove(); };
-  v.addEventListener('transitionend', gone); setTimeout(gone, 2200);          // never left over the page
+  v.addEventListener('transitionend', gone); setTimeout(gone, 2600);          // never left over the page
   // lift once the pictures on the first screen are ready to show, so the page fades in whole rather than
   // the veil lifting off a blank page and the photographs popping in after (never waits more than 0.7s)
   var ready = function () {
