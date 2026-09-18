@@ -395,11 +395,42 @@ def shop_config():
                                                           "klaviyo": c.get("klaviyo", ""), "klaviyoList": c.get("klaviyoList", "")}) + ';</script>\n')
 
 
+# The arriving half of the page wipe goes in the head, ahead of everything else.
+# The panel has to be on screen and already moving before the page's own scripts
+# run: they stall the main thread for a frame or two while they set up, and a
+# reveal that starts after that stall is what reads as a stutter.
+WIPE_HEAD = """<style>
+.wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;
+  transform:translate3d(0,-100%,0);background:linear-gradient(180deg,#0d0c0b 0%,#131211 55%,#0b0a09 100%)}
+.wipe.cover{transform:translate3d(0,0,0);transition:transform 400ms cubic-bezier(.55,0,.85,.35)}
+.wipe.gone{transform:translate3d(0,100%,0);transition:transform 550ms cubic-bezier(.16,.7,.3,1)}
+</style>
+<script>
+(function () {
+  try { if (sessionStorage.getItem('macon-wipe') !== '1') return; sessionStorage.removeItem('macon-wipe'); } catch (e) { return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var el = document.createElement('div');
+  el.className = 'wipe';
+  el.style.transform = 'translate3d(0,0,0)';
+  var put = function () { (document.body || document.documentElement).appendChild(el); };
+  put();
+  requestAnimationFrame(function () { requestAnimationFrame(function () {
+    if (!el.isConnected) put();
+    el.style.transform = '';
+    el.classList.add('gone');
+    setTimeout(function () { el.remove(); }, 700);
+  }); });
+})();
+</script>
+"""
+
+
 def shared(doc):
     """Fill the pieces every page has in common: header, footer, shared script."""
     def part(n):
         with open(os.path.join(OUT, "partials", n), encoding="utf-8") as f:
             return f.read().rstrip()
+    doc = doc.replace("</head>", WIPE_HEAD + "</head>", 1)
     doc = doc.replace('<link rel="stylesheet" href="site.css', '<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="site.css', 1)
     return (doc.replace("{{NAV}}", part("nav.html"))
                .replace("{{FOOTER}}", part("footer.html"))

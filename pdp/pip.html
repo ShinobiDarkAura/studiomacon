@@ -157,6 +157,29 @@
     .dock{display:none}
   }
 </style>
+<style>
+.wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;
+  transform:translate3d(0,-100%,0);background:linear-gradient(180deg,#0d0c0b 0%,#131211 55%,#0b0a09 100%)}
+.wipe.cover{transform:translate3d(0,0,0);transition:transform 400ms cubic-bezier(.55,0,.85,.35)}
+.wipe.gone{transform:translate3d(0,100%,0);transition:transform 550ms cubic-bezier(.16,.7,.3,1)}
+</style>
+<script>
+(function () {
+  try { if (sessionStorage.getItem('macon-wipe') !== '1') return; sessionStorage.removeItem('macon-wipe'); } catch (e) { return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var el = document.createElement('div');
+  el.className = 'wipe';
+  el.style.transform = 'translate3d(0,0,0)';
+  var put = function () { (document.body || document.documentElement).appendChild(el); };
+  put();
+  requestAnimationFrame(function () { requestAnimationFrame(function () {
+    if (!el.isConnected) put();
+    el.style.transform = '';
+    el.classList.add('gone');
+    setTimeout(function () { el.remove(); }, 700);
+  }); });
+})();
+</script>
 </head>
 <body class="white-right" data-slug="pip">
 
@@ -684,37 +707,13 @@
   // retreats the way it came, it reads as something passing over the page
   // rather than a shutter opening and closing.
   (function () {
-    var COVER = 400, REVEAL = 550, KEY = 'macon-wipe';
+    var COVER = 400, KEY = 'macon-wipe';          // the reveal half runs from the head
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var css = document.createElement('style');
-    css.textContent =
-      '.wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;transform:translate3d(0,-100%,0);' +
-      'background:linear-gradient(180deg,#0d0c0b 0%,#131211 55%,#0b0a09 100%)}' +
-      '.wipe.cover{transform:translate3d(0,0,0);transition:transform ' + COVER + 'ms cubic-bezier(.55,0,.85,.35)}' +
-      '.wipe.gone{transform:translate3d(0,100%,0);transition:transform ' + REVEAL + 'ms cubic-bezier(.16,.7,.3,1)}';
-    document.head.appendChild(css);
 
     function panel() {
       var el = document.querySelector('.wipe');
       if (!el) { el = document.createElement('div'); el.className = 'wipe'; document.body.appendChild(el); }
       return el;
-    }
-
-    // Arriving under the panel: hold it over the page for a frame, then let it
-    // carry on downward, so the two halves read as one gesture.
-    var arriving = false;
-    try { arriving = sessionStorage.getItem(KEY) === '1'; sessionStorage.removeItem(KEY); } catch (e) {}
-    if (arriving) {
-      var p = panel();
-      p.style.transform = 'translate3d(0,0,0)';          // holds the cover for the first frame
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          p.style.transform = '';                         // hand back to the class, or it cannot move
-          p.classList.add('gone');
-          setTimeout(function () { p.remove(); }, REVEAL + 120);
-        });
-      });
     }
 
     function leaves(a) {
