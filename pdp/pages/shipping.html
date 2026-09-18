@@ -21,13 +21,16 @@
   .policies{margin:48px 0 0}
   .policies .acc{border-top:1px solid var(--rule)}
   @media (min-width:768px){
-    .ship{grid-template-columns:70vw minmax(0,1fr);gap:0 48px;
+    /* the black field is painted on the section too, so nothing white shows
+       behind the illustration while it slides in */
+    .ship{background:linear-gradient(to right,#0d0c0b 0 70vw,#fff 70vw);
+      grid-template-columns:70vw minmax(0,1fr);gap:0 48px;
       padding:0 calc(var(--pad) + 24px) 0 0;align-items:stretch}
     .ship .branch{min-height:100vh;min-height:100svh}
     .ship .text{align-self:center;padding:calc(var(--head) + 40px) 0 64px}
   }
   /* on load: the branch slides in from the left, then the text rises in turn */
-  .ship .branch.dr-emerge{transform:translateX(-160px);filter:blur(10px);transition-duration:1.3s;--stagger:0ms !important}
+  .ship .branch.dr-emerge{transform:translateY(90px);filter:blur(10px);transition-duration:1.3s;--stagger:0ms !important}
   .ship .branch.dr-emerge.is-seen{transform:none;filter:none}
   .ship .intro > :nth-child(1){--stagger:450ms !important}
   .ship .intro > :nth-child(2){--stagger:650ms !important}
