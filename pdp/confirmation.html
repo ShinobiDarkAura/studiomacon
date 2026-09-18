@@ -16,7 +16,7 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789761682">
+<link rel="stylesheet" href="site.css?v=1789762073">
 <style>
   .done-page{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
   .done-page p.lede{margin:0 0 32px;font-size:17px;line-height:1.55}
@@ -544,7 +544,7 @@
     menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.inert = true;
     menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
       '<a href="index.html#pieces">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
-      '<a href="story.html">About</a><a href="shipping.html" class="two-line">Shipping &amp;<br>Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+      '<a href="shipping.html" class="two-line">Shipping<br>&amp; Returns</a><a href="contact.html">Contact</a><a href="story.html">About</a><a href="bag.html">Bag</a>';
     [].forEach.call(menu.querySelectorAll('a'), function (a, i) { a.style.setProperty('--i', i); });
     document.body.appendChild(menu);
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
@@ -566,6 +566,10 @@
     btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
+    // widened past the phone layout with the drawer open: the desktop nav takes over, so close it
+    var wide = matchMedia('(min-width:768px)');
+    var toWide = function (e) { if (e.matches && open) set(false); };
+    if (wide.addEventListener) wide.addEventListener('change', toWide); else wide.addListener(toWide);
 
     // Choosing a page: the drawer stays put and the new page loads behind it
     menu.addEventListener('click', function (e) {

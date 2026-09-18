@@ -178,15 +178,17 @@ footer .field button{padding:0 0 0 18px}
 @media (prefers-reduced-motion:reduce){ .dr-emerge{transition:none} }
 
 /* ── mobile menu ───────────────────────────────────── */
-.menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100svh;width:84vw;z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:24.8px;
+/* the drawer is most of a small phone, but never wider than 360px; the page is pushed by the same amount */
+:root{--drawer:min(84vw,360px)}
+.menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100svh;width:var(--drawer);z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:24.8px;
   padding:0 calc(var(--pad) + 24px);transform:translateX(-100%);visibility:hidden;
   transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s linear .6s}
 .menu-sheet.open{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s}
 .menu-sheet a{font:400 34px/1.05 var(--serif);text-transform:uppercase;color:#000}
-.menu-sheet a.two-line{line-height:.92}          /* Shipping & / Returns: the two lines held close */
+.menu-sheet a.two-line{line-height:.98}          /* Shipping / & Returns: the two lines held close */
 /* the page slides right as the menu comes in from the left edge */
 body > :not(.menu-sheet):not(script):not(.dock){transition:transform .6s cubic-bezier(.65,0,.25,1)}
-html.menu-open body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(84vw)}
+html.menu-open body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(var(--drawer))}
 html.menu-open .dock{visibility:hidden}
 html.menu-open,html.menu-open body{overflow:hidden;overflow-x:clip}          /* the pushed page must not widen the screen */
 body{overflow-x:clip}
@@ -196,8 +198,8 @@ body{overflow-x:clip}
 @media (prefers-reduced-motion:reduce){ .menu-sheet,.menu-sheet.open,body > *{transition:none} .menu-sheet.open a{animation:none} }
 /* arriving from the drawer: the new page loads behind it, already pushed aside, then the drawer closes */
 @media (max-width:767px){
-  html.menu-arriving body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(84vw);transition:none}
-  html.menu-arriving::before{content:"";position:fixed;top:0;left:0;width:84vw;height:100vh;height:100svh;background:#fff;z-index:59}
+  html.menu-arriving body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(var(--drawer));transition:none}
+  html.menu-arriving::before{content:"";position:fixed;top:0;left:0;width:var(--drawer);height:100vh;height:100svh;background:#fff;z-index:59}
   html.menu-arriving,html.menu-arriving body{overflow:hidden}
 }
 .menu-sheet.instant,.menu-sheet.instant a{transition:none !important;animation:none !important}
