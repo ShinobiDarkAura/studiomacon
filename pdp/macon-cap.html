@@ -177,7 +177,13 @@
     if (!el.isConnected) put();
     el.style.transform = '';
     el.classList.add('gone');
-    setTimeout(function () { el.remove(); }, 560);
+    // Wait for the slide to actually finish. On a timer the tail gets clipped
+    // whenever the animation starts a frame or two late, and the panel appears
+    // to vanish instead of leaving.
+    var done = false;
+    var off = function () { if (done) return; done = true; el.remove(); };
+    el.addEventListener('transitionend', function (e) { if (e.propertyName === 'transform') off(); });
+    setTimeout(off, 1400);          // only a backstop, never the usual path
   }); });
 })();
 </script>
