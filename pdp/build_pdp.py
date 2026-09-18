@@ -271,14 +271,14 @@ def page(p, template, related=""):
         hero = export(hero_src, slug, "hero", 3600)
         gallery = [export(f, slug, f"plain-{i}", 3600) for i, f in enumerate(plain[1 if slug != "wonderhorn-talisman" else 0:], 1)]
         gallery += [export(f, slug, f"hand-{i}", 2400) for i, f in enumerate(hand, 1)]
-        drawing = export(drawn[0], slug, "drawing", 1400) if drawn else None
+        drawing = None                     # the charcoal sketches are never used on the site
     else:                                  # no Pieces Master on this machine: use the photographs already in img/
         have = sorted(os.listdir(os.path.join(OUT, "img", slug)))
         num = lambda f: int(re.search(r"(\d+)", f).group(1))
         hero = f"img/{slug}/hero.jpg"
         gallery = [f"img/{slug}/{f}" for f in sorted((f for f in have if re.match(r"plain-\d+\.jpg$", f)), key=num)]
         gallery += [f"img/{slug}/{f}" for f in sorted((f for f in have if re.match(r"hand-\d+\.jpg$", f)), key=num)]
-        drawing = f"img/{slug}/drawing.jpg" if "drawing.jpg" in have else None
+        drawing = None
 
     # three large images close the page, separating the two text chunks
     # drawing first, then a hand shot and the first plain shot — the two ends of
