@@ -12,6 +12,7 @@ import html, json, os, re
 from PIL import Image
 
 import hashlib
+import sys
 import content as _content          # the studio's own edits, made in pdp/_editor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -159,19 +160,48 @@ def photos(slug, k):
 
 
 def export(src, slug, name, width):
-    d = os.path.join(OUT, "img", slug)
-    os.makedirs(d, exist_ok=True)
-    dst = os.path.join(d, name + ".jpg")
+    """Bring a photograph over from the Pieces Master, then frame it.
+
+    The photograph as shot is kept in _originals; what the site shows is the framed
+    copy in img/. Keeping the two apart means a rebuild can never overwrite the
+    framing, which is what happened when both lived in the same place.
+    """
+    keep_dir = os.path.join(OUT, "_originals", slug)
+    live_dir = os.path.join(OUT, "img", slug)
+    os.makedirs(keep_dir, exist_ok=True)
+    os.makedirs(live_dir, exist_ok=True)
+    keep = os.path.join(keep_dir, name + ".jpg")
+    live = os.path.join(live_dir, name + ".jpg")
+
     stale = False
-    if os.path.exists(dst):                     # a wider target than last time means exporting again
-        with Image.open(dst) as cur:
+    if os.path.exists(keep):
+        with Image.open(keep) as cur:
             stale = cur.width < width and Image.open(src).width > cur.width
-    if not os.path.exists(dst) or stale or os.path.getmtime(src) > os.path.getmtime(dst):
+    if not os.path.exists(keep) or stale or os.path.getmtime(src) > os.path.getmtime(keep):
         im = Image.open(src).convert("RGB")
         if im.width > width:
             im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
-        im.save(dst, quality=88)
+        im.save(keep, quality=88)
+
+    if not os.path.exists(live) or os.path.getmtime(keep) > os.path.getmtime(live):
+        frame_one(keep, live)
     return f"img/{slug}/{name}.jpg"
+
+
+def frame_one(keep, live):
+    """Frame a kept photograph for the site, or pass it through if it cannot be framed."""
+    import shutil
+    try:
+        sys.path.insert(0, os.path.join(OUT, "tools"))
+        from reframe import reframe
+        base = os.path.basename(live)
+        # only an even sweep may have its backdrop grown; a hand or a drawing may not
+        plain = base.startswith("hero") or base.startswith("plain")
+        if reframe(keep, live, may_grow=plain):
+            return
+    except Exception as e:
+        print(f"   framing skipped for {os.path.basename(live)}: {e}")
+    shutil.copy2(keep, live)
 
 
 def accordions(slug, k, notes):

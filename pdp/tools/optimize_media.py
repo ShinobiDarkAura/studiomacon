@@ -11,11 +11,17 @@ TILE = 900          # the shop grid and the related row show pictures small; the
 
 
 def make_tile(src):
-    """A light copy for the grids, so the shop page does not carry full-size photographs."""
+    """A light copy for the grids.
+
+    The grids keep the photograph as it was shot — the framing Alex approved — so the
+    tile is cut from the kept original rather than from the reframed product picture.
+    """
+    keep = ROOT.parent / "_originals" / src.parent.name / src.name
+    source = keep if keep.exists() else src
     out = src.with_name(src.stem + "--tile.jpg.webp")
-    if out.exists() and out.stat().st_mtime >= src.stat().st_mtime:
+    if out.exists() and out.stat().st_mtime >= source.stat().st_mtime:
         return
-    im = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
+    im = ImageOps.exif_transpose(Image.open(source)).convert("RGB")
     if max(im.size) > TILE:
         im.thumbnail((TILE, TILE), Image.LANCZOS)
     im.save(out, "WEBP", quality=80, method=6)

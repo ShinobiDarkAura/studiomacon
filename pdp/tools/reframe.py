@@ -16,7 +16,7 @@ from PIL import Image, ImageFilter
 # totem are given the same amount of air, which reading height alone does not do.
 SHARE = 0.46          # measured from Ren, the frame Alex approved
 RATIO = (4, 5)        # portrait frames on the product pages
-MAX_W = 2400
+CANVAS = (2000, 2500) # every framed photograph comes out the same size
 
 
 def find_piece(im, small=360):
@@ -71,39 +71,59 @@ def grow(im, x, y, W, H):
     return out
 
 
-def reframe(src, dst=None, share=SHARE):
+def reframe(src, dst=None, share=SHARE, may_grow=True):
+    """Lay the photograph onto a common canvas so every piece lands identically.
+
+    The whole photograph is scaled until the piece measures the agreed share of the
+    frame, then shifted so the piece's centre is the frame's centre. Its own backdrop
+    travels with it, so the light, the shadow and the weave stay the ones that were
+    photographed; only the area beyond the photograph's edge is grown from it.
+    """
     im = Image.open(src).convert("RGB")
-    w, h = im.size
     found = find_piece(im)
     if not found:
         return None
     x0, y0, x1, y1 = found
     ow, oh = x1 - x0, y1 - y0
-    if ow > w * 0.85 or oh > h * 0.85:         # framed too close: there is no backdrop to draw on
+    if ow < 12 or oh < 12:
         return None
-    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
 
-    diag = (ow ** 2 + oh ** 2) ** 0.5
-    frame_diag = diag / share
-    unit = (RATIO[0] ** 2 + RATIO[1] ** 2) ** 0.5
-    W = round(frame_diag * RATIO[0] / unit)
-    H = round(frame_diag * RATIO[1] / unit)
-    # A piece that sits small in its photograph is cropped in to, so it carries the same
-    # weight as the others. The untouched original is kept either way.
+    W, H = CANVAS
+    want = share * (W ** 2 + H ** 2) ** 0.5
+    have = (ow ** 2 + oh ** 2) ** 0.5
+    k = want / have                                   # one scale for the whole photograph
 
-    px, py = round(W / 2 - cx), round(H / 2 - cy)      # the piece lands dead centre
-    cw, ch = max(W, w + max(px, 0)), max(H, h + max(py, 0))
-    out = grow(im, max(px, 0), max(py, 0), cw, ch)
-    ox, oy = max(-px, 0), max(-py, 0)
-    out = out.crop((ox, oy, ox + W, oy + H))
+    sw, sh = max(2, round(im.width * k)), max(2, round(im.height * k))
+    scaled = im.resize((sw, sh), Image.LANCZOS)
+    cx, cy = ((x0 + x1) / 2) * k, ((y0 + y1) / 2) * k
 
-    share = diag / ((W ** 2 + H ** 2) ** 0.5)          # what the piece actually ended up filling
-    if out.width < 1800 and out.width * 1.6 >= 1800:   # a close crop of a large original can carry a little enlargement
-        out = out.resize((1800, round(out.height * 1800 / out.width)), Image.LANCZOS)
-    if out.width > MAX_W:
-        out = out.resize((MAX_W, round(out.height * MAX_W / out.width)), Image.LANCZOS)
+    px, py = round(W / 2 - cx), round(H / 2 - cy)     # the piece's centre becomes the frame's
+
+    def place(px, py):
+        cw, ch = max(W, sw + max(px, 0)), max(H, sh + max(py, 0))
+        whole = grow(scaled, max(px, 0), max(py, 0), cw, ch)
+        ox, oy = max(-px, 0), max(-py, 0)
+        return whole.crop((ox, oy, ox + W, oy + H))
+
+    if not may_grow and (px > 0 or py > 0 or px + sw < W or py + sh < H):
+        return None          # a hand, a tool or a busy surface: crop it or leave it, never extend it
+
+    out = place(px, py)
+    # The piece reads a little differently once it is in its new frame, so the placing
+    # is checked against the finished picture and corrected until it sits true.
+    for _ in range(3):
+        b = find_piece(out)
+        if not b:
+            break
+        ex = W / 2 - (b[0] + b[2]) / 2
+        ey = H / 2 - (b[1] + b[3]) / 2
+        if abs(ex) <= W * 0.006 and abs(ey) <= H * 0.006:
+            break
+        px, py = px + round(ex), py + round(ey)
+        out = place(px, py)
+
     out.save(dst or src, quality=92)
-    return out.size + (share,)
+    return W, H, share, round(k, 2)
 
 
 if __name__ == "__main__":
