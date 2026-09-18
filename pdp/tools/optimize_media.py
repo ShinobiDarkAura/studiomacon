@@ -13,11 +13,10 @@ TILE = 900          # the shop grid and the related row show pictures small; the
 def make_tile(src):
     """A light copy for the grids.
 
-    The grids keep the photograph as it was shot — the framing Alex approved — so the
-    tile is cut from the kept original rather than from the reframed product picture.
+    The grids show the same picture as the product page, expanded framing and all, so
+    the tile is cut from the picture the site actually serves.
     """
-    keep = ROOT.parent / "_originals" / src.parent.name / src.name
-    source = keep if keep.exists() else src
+    source = src
     out = src.with_name(src.stem + "--tile.jpg.webp")
     if out.exists() and out.stat().st_mtime >= source.stat().st_mtime:
         return
