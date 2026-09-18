@@ -9,9 +9,9 @@
     }
    },
    "tile": {
-    "x": 50.1,
-    "y": 51,
-    "z": 1.7
+    "x": 50,
+    "y": 50,
+    "z": 1
    },
    "gallery": [
     "img/ear-cuff/hires-1.jpg",
@@ -21,7 +21,14 @@
     "img/ear-cuff/hires-2.jpg",
     "img/ear-cuff/hires-3.jpg"
    ],
-   "hero": "img/ear-cuff/hand-2.jpg"
+   "hero": "img/ear-cuff/hand-2.jpg",
+   "tile_image": "img/ear-cuff/hires-1.jpg",
+   "tile_hover": "img/ear-cuff/hand-3.jpg",
+   "tile_before_hires": {
+    "x": 50.1,
+    "y": 51,
+    "z": 1.7
+   }
   },
   "eclipse-ring": {
    "frames": {
@@ -32,16 +39,23 @@
     }
    },
    "tile": {
-    "x": 52.9,
-    "y": 47.8,
-    "z": 1.99
+    "x": 50,
+    "y": 50,
+    "z": 1
    },
    "gallery": [
     "img/eclipse-ring/hires-1.jpg",
     "img/eclipse-ring/hero.jpg",
     "img/eclipse-ring/hand-1.jpg"
    ],
-   "hero": "img/eclipse-ring/hand-2.jpg"
+   "hero": "img/eclipse-ring/hand-2.jpg",
+   "tile_image": "img/eclipse-ring/hires-1.jpg",
+   "tile_hover": "img/eclipse-ring/hand-1.jpg",
+   "tile_before_hires": {
+    "x": 52.9,
+    "y": 47.8,
+    "z": 1.99
+   }
   },
   "eleph": {
    "frames": {
@@ -64,7 +78,7 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1.48
+    "z": 1
    },
    "gallery": [
     "img/eleph/hires-1.jpg",
@@ -72,7 +86,14 @@
     "img/eleph/plain-2.jpg"
    ],
    "hero": "img/eleph/hero.jpg",
-   "hidden": []
+   "hidden": [],
+   "tile_image": "img/eleph/hires-1.jpg",
+   "tile_hover": "img/eleph/hires-2.jpg",
+   "tile_before_hires": {
+    "x": 50,
+    "y": 50,
+    "z": 1.48
+   }
   },
   "ibi": {
    "frames": {
@@ -83,16 +104,23 @@
     }
    },
    "tile": {
-    "x": 48.6,
-    "y": 62.1,
-    "z": 1.18
+    "x": 50,
+    "y": 50,
+    "z": 1
    },
    "gallery": [
     "img/ibi/hires-2.jpg",
     "img/ibi/hand-2.jpg"
    ],
    "hero": "img/ibi/hero.jpg",
-   "hidden": []
+   "hidden": [],
+   "tile_image": "img/ibi/hires-2.jpg",
+   "tile_hover": "img/ibi/hires-3.jpg",
+   "tile_before_hires": {
+    "x": 48.6,
+    "y": 62.1,
+    "z": 1.18
+   }
   },
   "lunar-canyon-ring": {
    "frames": {
@@ -122,7 +150,8 @@
     "img/lunar-canyon-ring/hand-2.jpg",
     "img/lunar-canyon-ring/plain-1.jpg",
     "img/lunar-canyon-ring/hand-1.jpg"
-   ]
+   ],
+   "tile_hover": "img/lunar-canyon-ring/hand-1.jpg"
   },
   "macon-cap": {
    "frames": {
@@ -157,8 +186,8 @@
    },
    "tile": {
     "x": 50,
-    "y": 46.3,
-    "z": 1.37
+    "y": 50,
+    "z": 1
    },
    "gallery": [
     "img/meridian-egg-ring/hand-2.jpg",
@@ -166,7 +195,14 @@
     "img/meridian-egg-ring/hero.jpg",
     "img/meridian-egg-ring/hand-1.jpg"
    ],
-   "hero": "img/meridian-egg-ring/hires-1.jpg"
+   "hero": "img/meridian-egg-ring/hires-1.jpg",
+   "tile_image": "img/meridian-egg-ring/hires-1.jpg",
+   "tile_hover": "img/meridian-egg-ring/hand-2.jpg",
+   "tile_before_hires": {
+    "x": 50,
+    "y": 46.3,
+    "z": 1.37
+   }
   },
   "milo": {
    "frames": {
@@ -177,16 +213,23 @@
     }
    },
    "tile": {
-    "x": 50.1,
-    "y": 50.1,
-    "z": 1.2
+    "x": 50,
+    "y": 50,
+    "z": 1
    },
    "gallery": [
     "img/milo/hires-2.jpg",
     "img/milo/hand-2.jpg"
    ],
    "hero": "img/milo/hero.jpg",
-   "hidden": []
+   "hidden": [],
+   "tile_image": "img/milo/hires-2.jpg",
+   "tile_hover": "img/milo/hires-1.jpg",
+   "tile_before_hires": {
+    "x": 50.1,
+    "y": 50.1,
+    "z": 1.2
+   }
   },
   "ori": {
    "frames": {
@@ -211,7 +254,8 @@
     "img/ori/plain-3.jpg",
     "img/ori/hand-2.jpg"
    ],
-   "hidden": []
+   "hidden": [],
+   "tile_hover": "img/ori/hand-1.jpg"
   },
   "pip": {
    "frames": {
@@ -244,7 +288,8 @@
     "y": 49.9,
     "z": 1.54
    },
-   "hero": "img/pip/hero.jpg"
+   "hero": "img/pip/hero.jpg",
+   "tile_hover": "img/pip/hand-2.jpg"
   },
   "rebi": {
    "frames": {
@@ -269,7 +314,8 @@
     "z": 1.47
    },
    "hero": "img/rebi/hero.jpg",
-   "hidden": []
+   "hidden": [],
+   "tile_hover": "img/rebi/hires-2.jpg"
   },
   "ren": {
    "frames": {
@@ -305,7 +351,8 @@
     "z": 1.42
    },
    "hero": "img/ren/hero.jpg",
-   "hidden": []
+   "hidden": [],
+   "tile_hover": "img/ren/hires-1.jpg"
   },
   "sietch-aperture": {
    "frames": {
@@ -409,16 +456,23 @@
     }
    },
    "tile": {
-    "x": 49.9,
-    "y": 49.8,
-    "z": 1.65
+    "x": 50,
+    "y": 50,
+    "z": 1
    },
    "gallery": [
     "img/yael/plain-1.jpg",
     "img/yael/hand-2.jpg"
    ],
    "hero": "img/yael/hires-1.jpg",
-   "hidden": []
+   "hidden": [],
+   "tile_image": "img/yael/hires-1.jpg",
+   "tile_hover": "img/yael/hand-2.jpg",
+   "tile_before_hires": {
+    "x": 49.9,
+    "y": 49.8,
+    "z": 1.65
+   }
   },
   "zuma": {
    "frames": {
@@ -449,7 +503,8 @@
     "img/zuma/hand-2.jpg",
     "img/zuma/plain-2.jpg"
    ],
-   "hidden": []
+   "hidden": [],
+   "tile_hover": "img/zuma/hand-1.jpg"
   },
   "zuma-ring": {
    "frames": {
@@ -470,9 +525,9 @@
     }
    },
    "tile": {
-    "x": 46.1,
-    "y": 46.6,
-    "z": 1.36
+    "x": 50,
+    "y": 50,
+    "z": 1
    },
    "gallery": [
     "img/zuma-ring/hires-1.jpg",
@@ -481,7 +536,14 @@
     "img/zuma-ring/hero.jpg",
     "img/zuma-ring/hand-1.jpg"
    ],
-   "hero": "img/zuma-ring/hand-2.jpg"
+   "hero": "img/zuma-ring/hand-2.jpg",
+   "tile_image": "img/zuma-ring/hires-1.jpg",
+   "tile_hover": "img/zuma-ring/hand-1.jpg",
+   "tile_before_hires": {
+    "x": 46.1,
+    "y": 46.6,
+    "z": 1.36
+   }
   }
  },
  "pages": {},

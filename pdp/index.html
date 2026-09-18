@@ -109,6 +109,9 @@
   /* the Bureau of Provenance stamp: pressed onto the bottom edge of the film, angled, its top tenth over the picture */
   .film-wrap{position:relative}
   html.to-pieces .film-wrap{visibility:hidden}
+  /* the tagline is pinned to the screen, so arriving at the grid it must stay off until the page has settled,
+     or it shows over the pictures for a moment while it fades */
+  html.to-pieces .film .tagline{opacity:0 !important;transition:none}
   /* pinned to the headline, not the window: every measure is in the headline's own type size (em),
      so at any screen width it lands on the comma of "Things," at the same size and angle */
   .welcome .prose h1.stamped{position:relative;display:inline-block}
@@ -223,6 +226,20 @@
     setTimeout(off, 1400);          // only a backstop, never the usual path
   }); });
 })();
+// the soft fade between pages: arriving, the page starts under a white veil that lifts
+(function () {
+  try { if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade'); } catch (e) { return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var st = document.createElement('style');
+  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1;transition:opacity 260ms cubic-bezier(.4,0,.2,1)}.veil.lift{opacity:0}';
+  document.head.appendChild(st);
+  var v = document.createElement('div'); v.className = 'veil';
+  var put = function () { (document.body || document.documentElement).appendChild(v); }; put();
+  var lift = function () { if (!v.isConnected) put(); requestAnimationFrame(function () { v.classList.add('lift'); }); };
+  var gone = function () { v.remove(); };
+  v.addEventListener('transitionend', gone); setTimeout(gone, 1500);          // never left over the page
+  if (document.readyState !== 'loading') lift(); else document.addEventListener('DOMContentLoaded', lift);
+})();
 // arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
 // or its first frame shows the dark film for an instant before the jump
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
@@ -313,15 +330,15 @@
     <h2 class="set-title" data-edit="page:index.html:67c268a1">Totems</h2><span class="count">9</span>
   </header>
   <section class="wall shop-wall">
-    <figure><a class="piece" href="pip.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/pip/hero--tile.jpg.webp" alt="Pip" loading="eager"><img class="held" src="img/pip/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="rebi.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/rebi/hero--tile.jpg.webp" alt="Rebi" loading="eager"><img class="held" src="img/rebi/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Rebi</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="ren.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/ren/hero--tile.jpg.webp" alt="Ren" loading="eager"><img class="held" src="img/ren/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ren</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="pip.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/pip/hero--tile.jpg.webp" alt="Pip" loading="eager"><img class="held" src="img/pip/hand-2--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="rebi.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/rebi/hero--tile.jpg.webp" alt="Rebi" loading="eager"><img class="held" src="img/rebi/hires-2--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Rebi</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ren.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/ren/hero--tile.jpg.webp" alt="Ren" loading="eager"><img class="held" src="img/ren/hires-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ren</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="zuma.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/zuma/hero--tile.jpg.webp" alt="Zuma" loading="lazy"><img class="held" src="img/zuma/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Zuma</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="ori.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/ori/hero--tile.jpg.webp" alt="Ori" loading="lazy"><img class="held" src="img/ori/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ori</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="yael.html" style="--x:49.9%;--y:49.8%;--z:1.65"><span class="pic"><img src="img/yael/hero--tile.jpg.webp" alt="Yaël" loading="lazy"><img class="held" src="img/yael/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Yaël</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="milo.html" style="--x:50.1%;--y:50.1%;--z:1.2"><span class="pic"><img src="img/milo/hero--tile.jpg.webp" alt="Milo" loading="lazy"><img class="held" src="img/milo/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Milo</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="ibi.html" style="--x:48.6%;--y:62.1%;--z:1.18"><span class="pic"><img src="img/ibi/hero--tile.jpg.webp" alt="Ibi" loading="lazy"><img class="held" src="img/ibi/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ibi</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="eleph.html" style="--x:50%;--y:50%;--z:1.48"><span class="pic"><img src="img/eleph/hero--tile.jpg.webp" alt="Eleph" loading="lazy"><img class="held" src="img/eleph/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Eleph</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="yael.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/yael/hires-1--tile.jpg.webp" alt="Yaël" loading="lazy"><img class="held" src="img/yael/hand-2--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Yaël</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="milo.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/milo/hires-2--tile.jpg.webp" alt="Milo" loading="lazy"><img class="held" src="img/milo/hires-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Milo</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ibi.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/ibi/hires-2--tile.jpg.webp" alt="Ibi" loading="lazy"><img class="held" src="img/ibi/hires-3--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ibi</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="eleph.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/eleph/hires-1--tile.jpg.webp" alt="Eleph" loading="lazy"><img class="held" src="img/eleph/hires-2--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Eleph</span><span class="cost">$220</span></span></a></figure>
   </section>
   </div>
 
@@ -330,12 +347,12 @@
     <h2 class="set-title" data-edit="page:index.html:1fd8cfa3">Jewelry</h2><span class="count">8</span>
   </header>
   <section class="wall shop-wall">
-    <figure><a class="piece" href="zuma-ring.html" style="--x:46.1%;--y:46.6%;--z:1.36"><span class="pic"><img src="img/zuma-ring/hero--tile.jpg.webp" alt="Zuma Ring" loading="lazy"><img class="held" src="img/zuma-ring/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Zuma Ring</span><span class="cost">$320</span></span></a></figure>
-    <figure><a class="piece" href="eclipse-ring.html" style="--x:52.9%;--y:47.8%;--z:1.99"><span class="pic"><img src="img/eclipse-ring/hero--tile.jpg.webp" alt="Eclipse Ring" loading="lazy"><img class="held" src="img/eclipse-ring/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Eclipse Ring</span><span class="cost">$340</span></span></a></figure>
+    <figure><a class="piece" href="zuma-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/zuma-ring/hires-1--tile.jpg.webp" alt="Zuma Ring" loading="lazy"><img class="held" src="img/zuma-ring/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Zuma Ring</span><span class="cost">$320</span></span></a></figure>
+    <figure><a class="piece" href="eclipse-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/eclipse-ring/hires-1--tile.jpg.webp" alt="Eclipse Ring" loading="lazy"><img class="held" src="img/eclipse-ring/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Eclipse Ring</span><span class="cost">$340</span></span></a></figure>
     <figure><a class="piece" href="sietch-aperture.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/sietch-aperture/hero--tile.jpg.webp" alt="Sietch Ring" loading="lazy"><img class="held" src="img/sietch-aperture/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Sietch Ring</span><span class="cost">$340</span></span></a></figure>
     <figure><a class="piece" href="lunar-canyon-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/lunar-canyon-ring/hero--tile.jpg.webp" alt="Lunar Canyon" loading="lazy"><img class="held" src="img/lunar-canyon-ring/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Lunar Canyon</span><span class="cost">$370</span></span></a></figure>
-    <figure><a class="piece" href="ear-cuff.html" style="--x:50.1%;--y:51%;--z:1.7"><span class="pic"><img src="img/ear-cuff/hero--tile.jpg.webp" alt="Caldera Arc" loading="lazy"><img class="held" src="img/ear-cuff/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260</span></span></a></figure>
-    <figure><a class="piece" href="meridian-egg-ring.html" style="--x:50%;--y:46.3%;--z:1.37"><span class="pic"><img src="img/meridian-egg-ring/hero--tile.jpg.webp" alt="Meridian Egg" loading="lazy"><img class="held" src="img/meridian-egg-ring/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390</span></span></a></figure>
+    <figure><a class="piece" href="ear-cuff.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/ear-cuff/hires-1--tile.jpg.webp" alt="Caldera Arc" loading="lazy"><img class="held" src="img/ear-cuff/hand-3--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260</span></span></a></figure>
+    <figure><a class="piece" href="meridian-egg-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/meridian-egg-ring/hires-1--tile.jpg.webp" alt="Meridian Egg" loading="lazy"><img class="held" src="img/meridian-egg-ring/hand-2--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390</span></span></a></figure>
     <figure><a class="piece" href="wonderhorn-talisman.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/wonderhorn-talisman/plain-3--tile.jpg.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"><img class="held" src="img/wonderhorn-talisman/plain-2--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ida&#x27;s Wonder Horn</span><span class="cost">$390</span></span></a></figure>
     <figure><a class="piece" href="starshipkey-pendant.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/starshipkey-pendant/hero--tile.jpg.webp" alt="Starship Key" loading="lazy"><img class="held" src="img/starshipkey-pendant/plain-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Starship Key</span><span class="cost">$460</span></span></a></figure>
   </section>
@@ -896,6 +913,34 @@
     }
   })();
 
+  // ── Soft fade between pages ───────────────────────────────────────────
+  // Leaving, the page dims to white in 160ms; the next one lifts out of white (see the head script).
+  // Kept brief and low-contrast so it smooths the cut rather than being seen. Not for the phone drawer,
+  // which swaps pages behind itself, and not for Back/Forward.
+  (function () {
+    var FADE_ON = true;                            // flip to false to go back to plain cuts
+    if (!FADE_ON || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var veil = null;
+    addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
+      var href = a.getAttribute('href') || '';
+      if (!href || href[0] === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return;
+      var to = new URL(a.href, location.href);
+      if (to.origin !== location.origin || (to.pathname === location.pathname && to.search === location.search)) return;
+      e.preventDefault();
+      veil = veil || document.createElement('div');
+      veil.style.cssText = 'position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:0;transition:opacity 160ms cubic-bezier(.4,0,1,1)';
+      document.body.appendChild(veil);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { veil.style.opacity = '1'; }); });
+      try { sessionStorage.setItem('macon-fade', '1'); } catch (err) {}
+      setTimeout(function () { location.href = a.href; }, 170);
+    }, true);
+    // coming back through history: never leave the veil up
+    addEventListener('pageshow', function (e) { if (e.persisted && veil) veil.remove(); try { sessionStorage.removeItem('macon-fade'); } catch (err) {} });
+  })();
+
   // ── Page wipe ─────────────────────────────────────────────────────────
   // One opaque panel crosses the screen in a single direction: it drops from
   // above to cover the page, the page is swapped while it is hidden, and the
@@ -955,7 +1000,11 @@
   // arrived for the grid: once the page has moved down to it, the film may show again
   (function () {
     var root = document.documentElement; if (!root.classList.contains('to-pieces')) return;
-    var show = function () { root.classList.remove('to-pieces'); };
+    var show = function () {
+      var film = document.querySelector('.film');
+      if (film) film.classList.toggle('scrolled', scrollY > 40);          // settle the tagline before the film shows again
+      requestAnimationFrame(function () { root.classList.remove('to-pieces'); });
+    };
     var watch = function () { if (scrollY > 0) { removeEventListener('scroll', watch); requestAnimationFrame(show); } };
     addEventListener('scroll', watch, {passive: true}); watch();
     addEventListener('load', function () { setTimeout(show, 50); });          // never left hidden

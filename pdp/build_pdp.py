@@ -431,6 +431,20 @@ WIPE_HEAD = """<style>
     setTimeout(off, 1400);          // only a backstop, never the usual path
   }); });
 })();
+// the soft fade between pages: arriving, the page starts under a white veil that lifts
+(function () {
+  try { if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade'); } catch (e) { return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var st = document.createElement('style');
+  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1;transition:opacity 260ms cubic-bezier(.4,0,.2,1)}.veil.lift{opacity:0}';
+  document.head.appendChild(st);
+  var v = document.createElement('div'); v.className = 'veil';
+  var put = function () { (document.body || document.documentElement).appendChild(v); }; put();
+  var lift = function () { if (!v.isConnected) put(); requestAnimationFrame(function () { v.classList.add('lift'); }); };
+  var gone = function () { v.remove(); };
+  v.addEventListener('transitionend', gone); setTimeout(gone, 1500);          // never left over the page
+  if (document.readyState !== 'loading') lift(); else document.addEventListener('DOMContentLoaded', lift);
+})();
 // arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
 // or its first frame shows the dark film for an instant before the jump
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
@@ -654,9 +668,13 @@ def feeds(products):
     print(f"   feeds: {len(rows)} items (meta-catalog.csv, google-products.xml)")
 
 
+def grid_still(slug):
+    """The picture a piece shows in the grids: the studio's choice (content "tile_image"), else its still."""
+    return _content.product(slug, "tile_image", None) or f'img/{slug}/{"plain-3.jpg" if slug == "wonderhorn-talisman" else "hero.jpg"}'
+
+
 def rel_tile(x):
-    name = "plain-3.jpg" if x["slug"] == "wonderhorn-talisman" else "hero.jpg"
-    return tile_src(f'img/{x["slug"]}/{name}')
+    return tile_src(grid_still(x["slug"]))
 
 
 def related_block(p, products):
@@ -740,12 +758,12 @@ def main():
     totems = [p for p in products if group(p) == 0]
     for i, p in enumerate(products):
         # the Wonder Horn's hero is a pale cut-out; its linen photograph sits with the others
-        still = "plain-3.jpg" if p["slug"] == "wonderhorn-talisman" else "hero.jpg"
         # pendants show the photograph of the piece being worn; everything else, in the hand
-        hover = {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(p["slug"], "hand-1.jpg")
-        held = os.path.exists(os.path.join(OUT, "img", p["slug"], hover))
-        still_src = tile_src(f'img/{p["slug"]}/{still}')          # the grid shows them small
-        hover_src = tile_src(f'img/{p["slug"]}/{hover}')
+        hover = _content.product(p["slug"], "tile_hover", None) or \
+            f'img/{p["slug"]}/' + {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(p["slug"], "hand-1.jpg")
+        held = os.path.exists(os.path.join(OUT, hover))
+        still_src = tile_src(grid_still(p["slug"]))          # the grid shows them small
+        hover_src = tile_src(hover)
         lazy = "eager" if i < 3 else "lazy"
         tiles.append(
             # the framing sits on the link, so the in-hand picture shown on hover zooms with the still

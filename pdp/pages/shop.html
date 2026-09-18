@@ -99,6 +99,9 @@
   /* the Bureau of Provenance stamp: pressed onto the bottom edge of the film, angled, its top tenth over the picture */
   .film-wrap{position:relative}
   html.to-pieces .film-wrap{visibility:hidden}
+  /* the tagline is pinned to the screen, so arriving at the grid it must stay off until the page has settled,
+     or it shows over the pictures for a moment while it fades */
+  html.to-pieces .film .tagline{opacity:0 !important;transition:none}
   /* pinned to the headline, not the window: every measure is in the headline's own type size (em),
      so at any screen width it lands on the comma of "Things," at the same size and angle */
   .welcome .prose h1.stamped{position:relative;display:inline-block}
@@ -249,7 +252,11 @@
   // arrived for the grid: once the page has moved down to it, the film may show again
   (function () {
     var root = document.documentElement; if (!root.classList.contains('to-pieces')) return;
-    var show = function () { root.classList.remove('to-pieces'); };
+    var show = function () {
+      var film = document.querySelector('.film');
+      if (film) film.classList.toggle('scrolled', scrollY > 40);          // settle the tagline before the film shows again
+      requestAnimationFrame(function () { root.classList.remove('to-pieces'); });
+    };
     var watch = function () { if (scrollY > 0) { removeEventListener('scroll', watch); requestAnimationFrame(show); } };
     addEventListener('scroll', watch, {passive: true}); watch();
     addEventListener('load', function () { setTimeout(show, 50); });          // never left hidden

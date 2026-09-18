@@ -7,6 +7,7 @@ from PIL import Image, ImageOps
 ROOT = Path(__file__).resolve().parent.parent / "img"
 SMALL = {"commissions-cut", "commissions", "inspiration"}
 
+PIECES = {d.name for d in ROOT.iterdir() if d.is_dir() and (ROOT.parent / "_originals" / d.name).is_dir()}          # folders of piece photographs
 TILE = 900          # the shop grid and the related row show pictures small; they get their own copy
 
 
@@ -35,7 +36,7 @@ def main():
         top = rel.parts[0] if len(rel.parts) > 1 else "(root)"
         if src.stem.endswith("--tile"):
             continue
-        if src.stem in ("hero", "plain-3", "plain-1", "plain-2", "hand-1") and len(rel.parts) > 1:
+        if len(rel.parts) > 1 and rel.parts[0] in PIECES:          # any photograph of a piece may be chosen for the grids
             make_tile(src)
         out = src.with_name(src.name + ".webp")
         if not out.exists() or out.stat().st_mtime < src.stat().st_mtime:

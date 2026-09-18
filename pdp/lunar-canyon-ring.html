@@ -187,6 +187,20 @@
     setTimeout(off, 1400);          // only a backstop, never the usual path
   }); });
 })();
+// the soft fade between pages: arriving, the page starts under a white veil that lifts
+(function () {
+  try { if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade'); } catch (e) { return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var st = document.createElement('style');
+  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1;transition:opacity 260ms cubic-bezier(.4,0,.2,1)}.veil.lift{opacity:0}';
+  document.head.appendChild(st);
+  var v = document.createElement('div'); v.className = 'veil';
+  var put = function () { (document.body || document.documentElement).appendChild(v); }; put();
+  var lift = function () { if (!v.isConnected) put(); requestAnimationFrame(function () { v.classList.add('lift'); }); };
+  var gone = function () { v.remove(); };
+  v.addEventListener('transitionend', gone); setTimeout(gone, 1500);          // never left over the page
+  if (document.readyState !== 'loading') lift(); else document.addEventListener('DOMContentLoaded', lift);
+})();
 // arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
 // or its first frame shows the dark film for an instant before the jump
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
@@ -279,7 +293,7 @@
     </div>
   </section>
 
-  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2><p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p><div class="rel-grid"><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-3--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-frame"><img src="img/ear-cuff/hero--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a><a class="rel-piece" href="starshipkey-pendant.html"><span class="rel-frame"><img src="img/starshipkey-pendant/hero--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Starship Key</span><span class="rel-cost">$460</span></a></div></section>
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2><p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p><div class="rel-grid"><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-3--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-frame"><img src="img/ear-cuff/hires-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a><a class="rel-piece" href="starshipkey-pendant.html"><span class="rel-frame"><img src="img/starshipkey-pendant/hero--tile.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Starship Key</span><span class="rel-cost">$460</span></a></div></section>
 
   <!-- lore and making blocks, parked for now
   <section class="closing">
@@ -847,6 +861,34 @@
       else addEventListener('load', function () { setTimeout(close, 150); });
       setTimeout(close, 1600);          // never held open waiting on a slow picture
     }
+  })();
+
+  // ── Soft fade between pages ───────────────────────────────────────────
+  // Leaving, the page dims to white in 160ms; the next one lifts out of white (see the head script).
+  // Kept brief and low-contrast so it smooths the cut rather than being seen. Not for the phone drawer,
+  // which swaps pages behind itself, and not for Back/Forward.
+  (function () {
+    var FADE_ON = true;                            // flip to false to go back to plain cuts
+    if (!FADE_ON || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var veil = null;
+    addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
+      var href = a.getAttribute('href') || '';
+      if (!href || href[0] === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return;
+      var to = new URL(a.href, location.href);
+      if (to.origin !== location.origin || (to.pathname === location.pathname && to.search === location.search)) return;
+      e.preventDefault();
+      veil = veil || document.createElement('div');
+      veil.style.cssText = 'position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:0;transition:opacity 160ms cubic-bezier(.4,0,1,1)';
+      document.body.appendChild(veil);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { veil.style.opacity = '1'; }); });
+      try { sessionStorage.setItem('macon-fade', '1'); } catch (err) {}
+      setTimeout(function () { location.href = a.href; }, 170);
+    }, true);
+    // coming back through history: never leave the veil up
+    addEventListener('pageshow', function (e) { if (e.persisted && veil) veil.remove(); try { sessionStorage.removeItem('macon-fade'); } catch (err) {} });
   })();
 
   // ── Page wipe ─────────────────────────────────────────────────────────
