@@ -452,6 +452,18 @@
     var PICS = '.gallery figure, .split .pics figure, .wall figure, .rel-piece, .steps figure, .childhood figure';
     var fresh = true;
     addEventListener('load', function () { setTimeout(function () { fresh = false; }, 0); });
+    // arriving part-way down the page (the Shop link lands on #pieces, or the browser
+    // restores where you were): the window stays open until the first scroll, so blocks
+    // armed a few frames late are caught too
+    var landing = false;
+    addEventListener('load', function () { landing = !!(location.hash || scrollY); });
+    addEventListener('scroll', function () { landing = false; }, {passive: true, once: true});
+    setTimeout(function () { landing = false; }, 2000);
+    function onScreen(el) {
+      var r = el.getBoundingClientRect();
+      return r.top < innerHeight && r.bottom > 0;
+    }
+
     function alreadyThere(el) {
       if (!fresh || !el.matches || !el.matches(PICS)) return false;
       var r = el.getBoundingClientRect();
@@ -486,6 +498,24 @@
           })();
         });
     }
+    // arriving part-way down the page (the Shop link lands on #pieces, or the browser
+    // restores where you were): whatever is already on screen is simply there, and the
+    // entrance picks up again only once you scroll on
+    if (!still) addEventListener('load', function () {
+      if (!location.hash && !scrollY) return;
+      (function sweep() {
+        if (!landing) return;
+        document.querySelectorAll('.dr-emerge').forEach(function (el) {
+          if (!onScreen(el) || getComputedStyle(el).opacity === '1') return;
+          el.style.setProperty('--stagger', '0ms');       // no cascade on a landing, either
+          el.style.transition = 'none';
+          el.classList.add('is-seen');
+          requestAnimationFrame(function () { el.style.transition = ''; });
+        });
+        requestAnimationFrame(sweep);
+      })();
+    });
+
     // wall pieces cascade by their position in the row, so each row settles left to right
     // pieces already on screen at load arrive top to bottom, the rest by column
     document.querySelectorAll('.wall figure').forEach(function (f) {
