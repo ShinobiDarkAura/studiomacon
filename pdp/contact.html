@@ -58,10 +58,10 @@
     </div>
 
     <div class="copy">
-      <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back</span></a>
+      <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/ data-edit="page:contact.html:ed5306b6"><path d="M19 12H5"/></svg><span>Back</span></a>
       <p class="eyebrow">Say Hello</p>
-      <h1>Contact</h1>
-      <p class="body">Questions about a piece, an order, or a commission.<br>We read everything, and we'll write back.</p>
+      <h1 data-edit="page:contact.html:b37456c4">Contact</h1>
+      <p class="body" data-edit="page:contact.html:e563b00c">Questions about a piece, an order, or a commission.<br>We read everything, and we'll write back.</p>
 
 
       <form class="form" id="contact-form">
@@ -74,7 +74,7 @@
         <label class="field"><textarea name="message" placeholder="Message" aria-label="Message" required></textarea></label>
         <button class="cta">Send</button>
       </form>
-      <p class="ways" data-no-emerge><a data-no-emerge class="hover-line" href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a><span class="dot" data-no-emerge aria-hidden="true">•</span><a data-no-emerge class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">@studiomacon</a></p>
+      <p class="ways" data-no-emerge data-edit="page:contact.html:2f0374fe"><a data-no-emerge class="hover-line" href="mailto:hello@studiomacon.co?subject=Hi%20there!">hello@studiomacon.co</a><span class="dot" data-no-emerge aria-hidden="true">•</span><a data-no-emerge class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">@studiomacon</a></p>
     </div>
   </section>
 </main>
@@ -82,7 +82,7 @@
 <footer>
   <div class="brand">
     <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
-    <p class="fine">Artifacts of Love,<br>Made to Order.</p>
+    <p class="fine" data-edit="page:contact.html:7cf6df1b">Artifacts of Love,<br>Made to Order.</p>
   </div>
   <div class="middle">
   <nav class="links">
@@ -94,7 +94,7 @@
   </nav>
   </div>
   <div class="news">
-    <p>Subscribe to hear about new pieces before anyone else.</p>
+    <p data-edit="page:contact.html:79b10d2b">Subscribe to hear about new pieces before anyone else.</p>
     <form class="field" data-newsletter>
       <input type="email" placeholder="Email address" aria-label="Email address" required>
       <button>Submit</button>
@@ -511,7 +511,7 @@
     var f = this, btn = f.querySelector('.cta'), v = function (n) { return (f.elements[n] || {}).value || ''; };
     btn.disabled = true; btn.textContent = 'Sending…';
     MaconEnquiry({form: 'contact', name: (v('first') + ' ' + v('last')).trim(), email: v('email'), message: v('message'), company: v('company')})
-      .then(function () { f.outerHTML = '<p class="sent">Sent, thank you. A confirmation is on its way to your inbox.</p>'; })
+      .then(function () { f.outerHTML = '<p class="sent" data-edit="page:contact.html:bfa2695f">Sent, thank you. A confirmation is on its way to your inbox.</p>'; })
       .catch(function () {
         btn.disabled = false; btn.textContent = 'Send';
         alert('Sorry, that didn\u2019t send. Please write to hello@studiomacon.co and we\u2019ll reply from there.');

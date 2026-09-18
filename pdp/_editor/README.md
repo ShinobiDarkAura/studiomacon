@@ -6,17 +6,24 @@ It runs on your own Mac only — it is never part of the live shop.
 ## Opening it
 
 Double-click **Maçon Editor.command** in the studiomacon folder. A terminal window
-opens (leave it open) and the editor appears in your browser.
+opens (leave it open) and the shop appears in your browser.
 
-If you'd rather type it: `python3 pdp/serve.py` then open
-http://localhost:3470/pdp/_editor/index.html
+Every page has a black bar along the bottom. Press **Edit this page** and the words
+you can change are outlined: click one and type. Press **Save & rebuild** when done.
+
+There is also a list view, if you would rather work through the pieces one after
+another: http://localhost:3470/pdp/_editor/index.html
 
 ## What you can change
 
-- **Each piece**: its name, price, overline, description, field note, the paragraph
-  about how it's made, and the material rows.
-- **Photographs**: which one is the main picture (★), which appear at all, and their order.
-- **The Bureau stamp** on the shop page: size, position and tilt, with a live preview.
+On the page itself: every heading and paragraph on the shop, About, Custom, Contact
+and Shipping pages, and each piece's name, price, overline and description. Hover a
+photograph on a product page for **Make main**, **Hide** and the arrows that reorder it.
+
+In the list view as well: the material rows, the field note, the paragraph about how a
+piece is made, and where the Bureau stamp sits on the shop page.
+
+Escape puts a block back the way it was before you started typing.
 
 Anything you haven't changed keeps its original wording. A changed field is outlined
 in amber and has an **undo** link; **Undo all my changes** puts everything back.

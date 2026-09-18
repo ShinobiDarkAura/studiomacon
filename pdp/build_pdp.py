@@ -11,6 +11,7 @@ pdp/img/<slug>/ so the preview never reaches outside the repo.
 import html, json, os, re
 from PIL import Image
 
+import hashlib
 import content as _content          # the studio's own edits, made in pdp/_editor
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -283,7 +284,8 @@ def page(p, template, related=""):
     check("made", made, voice, (lambda t: len(t.split()) >= 30, "shorter than 30 words"))
 
     ph = '<div class="big" role="presentation"></div>'
-    close = f'{ph}\n    <p class="chunk">{html.escape(lore)}</p>\n    {ph}\n    <p class="chunk">{html.escape(made)}</p>\n    {ph}'
+    close = (f'{ph}\n    <p class="chunk" data-edit="lore">{html.escape(lore)}</p>\n    {ph}'
+             f'\n    <p class="chunk" data-edit="made">{html.escape(made)}</p>\n    {ph}')
 
     # sizes and styles come from Shopify (shopify/variants.json, made by tools/shopify_sync.py)
     shop = SHOPIFY.get(slug, {})
@@ -310,6 +312,7 @@ def page(p, template, related=""):
 
     return (template
             .replace("{{TITLE}}", html.escape(name))
+            .replace("{{SLUG}}", slug)
             .replace("{{EYEBROW}}", html.escape(eyebrow))
             .replace("{{PRICE}}", f"${price}")
             .replace("{{DESC}}", html.escape(blurb))
@@ -415,6 +418,23 @@ def seo(name, doc, product=None):
     return doc.replace("</title>", "</title>\n" + "\n".join(tags), 1)
 
 
+def editable(doc, page):
+    """Mark every heading and paragraph on an information page so it can be edited in
+    place, and put the studio's own wording in where they have written some.
+
+    Each block is keyed by the page and a short hash of my original words, so the key
+    survives blocks moving around. If I later rewrite a default, the old edit simply
+    detaches and my new words show: safer than silently keeping stale copy.
+    """
+    def one(m):
+        tag, attrs, inner = m.group(1), m.group(2), m.group(3)
+        if "data-edit" in attrs or "data-no-edit" in attrs or "{{" in inner:
+            return m.group(0)
+        key = f"{page}:{hashlib.sha1(inner.strip().encode()).hexdigest()[:8]}"
+        return f'<{tag}{attrs} data-edit="page:{key}">{_content.page(key, inner)}</{tag}>'
+    return re.sub(r"<(h1|h2|h3|p)([^>]*)>(.*?)</\1>", one, doc, flags=re.S)
+
+
 def save(name, doc, product=None):
     doc = seo(name, doc, product)
     doc = light(doc)
@@ -494,7 +514,7 @@ def main():
                       .replace("{{GRID}}", "\n".join(
                           f'    <figure><img src="img/inspiration/{n}" width="{w}" height="{h}" alt="" loading="{"eager" if i < 8 else "lazy"}"></figure>'
                           for i, (n, w, h) in enumerate(imgs))))
-        save(f, one_block(doc))
+        save(f, editable(one_block(doc), f))
         print("  ", f)
     for p in products:
         save(f"{p['slug']}.html", one_block(page(p, template, related_block(p, products))), product=p)
@@ -525,7 +545,7 @@ def main():
                                      f'--stamp-drop:{st["drop"]}%;--stamp-tilt:{st["tilt"]}deg}}')
     shop = (shop.replace("{{TOTEMCOUNT}}", str(len(totems))).replace("{{JEWELRYCOUNT}}", str(len(products) - len(totems)))
                 .replace("{{TOTEMGRID}}", "\n".join(tiles[:len(totems)])).replace("{{JEWELRYGRID}}", "\n".join(tiles[len(totems):])))
-    save("index.html", shop)
+    save("index.html", editable(shop, "index.html"))
     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                 + "".join(f"  <url><loc>{u}</loc></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")

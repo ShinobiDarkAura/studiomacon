@@ -58,22 +58,22 @@
 </header>
 
 <main class="bag-page">
-  <h1>Bag</h1>
+  <h1 data-edit="page:bag.html:ef6155a5">Bag</h1>
   <div class="bag-grid" id="bag-grid" hidden>
     <section class="lines" id="lines" aria-label="Pieces in your bag"></section>
     <aside class="summary" aria-label="Order summary">
-      <p class="label" style="margin:0 0 18px">Summary</p>
+      <p class="label" style="margin:0 0 18px" data-edit="page:bag.html:12b71c3e">Summary</p>
       <dl>
         <dt>Subtotal</dt><dd id="sub">$0</dd>
         <dt>Shipping</dt><dd>Calculated at checkout</dd>
         <dt class="total">Total</dt><dd class="total" id="total">$0</dd>
       </dl>
       <button class="cta" type="button" id="checkout">Checkout</button>
-      <p class="note">Every piece is made to order. Please allow up to 10 business days before it ships.</p>
+      <p class="note" data-edit="page:bag.html:503a28bd">Every piece is made to order. Please allow up to 10 business days before it ships.</p>
     </aside>
   </div>
   <div class="empty" id="empty" hidden>
-    <p>Your bag is empty.</p>
+    <p data-edit="page:bag.html:e000f14a">Your bag is empty.</p>
     <a class="cta" href="index.html">Continue Shopping</a>
   </div>
 </main>
@@ -81,7 +81,7 @@
 <footer>
   <div class="brand">
     <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
-    <p class="fine">Artifacts of Love,<br>Made to Order.</p>
+    <p class="fine" data-edit="page:bag.html:7cf6df1b">Artifacts of Love,<br>Made to Order.</p>
   </div>
   <div class="middle">
   <nav class="links">
@@ -93,7 +93,7 @@
   </nav>
   </div>
   <div class="news">
-    <p>Subscribe to hear about new pieces before anyone else.</p>
+    <p data-edit="page:bag.html:79b10d2b">Subscribe to hear about new pieces before anyone else.</p>
     <form class="field" data-newsletter>
       <input type="email" placeholder="Email address" aria-label="Email address" required>
       <button>Submit</button>
@@ -517,11 +517,11 @@
         sub += it.price * it.qty;
         var row = document.createElement('div'); row.className = 'line';
         row.innerHTML = '<a href="' + it.slug + '.html"><img src="' + it.img + '" alt=""></a>' +
-          '<div><p class="nm"><a href="' + it.slug + '.html">' + it.name + '</a></p>' +
-          '<p class="meta" style="margin:0">' + money(it.price) + (it.size ? ' · Size ' + it.size : '') + '</p>' +
+          '<div><p class="nm" data-edit="page:bag.html:24ce9244"><a href="' + it.slug + '.html">' + it.name + '</a></p>' +
+          '<p class="meta" style="margin:0" data-edit="page:bag.html:4e400f55">' + money(it.price) + (it.size ? ' · Size ' + it.size : '') + '</p>' +
           '<span class="qty"><button type="button" data-d="-1" aria-label="One fewer">−</button><span>' + it.qty + '</span>' +
           '<button type="button" data-d="1" aria-label="One more">+</button><button type="button" class="remove">Remove</button></span></div>' +
-          '<p class="amt">' + money(it.price * it.qty) + '</p>';
+          '<p class="amt" data-edit="page:bag.html:9bb54a3a">' + money(it.price * it.qty) + '</p>';
         row.querySelectorAll('[data-d]').forEach(function (b) {
           b.addEventListener('click', function () {
             var all = MaconBag.read(); all[i].qty += +b.dataset.d;
