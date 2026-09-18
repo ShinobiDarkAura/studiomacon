@@ -85,7 +85,8 @@
   .fb.tile{aspect-ratio:4/5}
   /* on the real product page every picture fills one screen height at 70% of its width,
      so its frame takes the shape of this screen: the crop here is the crop there */
-  .fb.lead,.fb.pic{aspect-ratio:var(--screen-frame,1)}
+  .fb.lead{aspect-ratio:var(--screen-frame,1)}
+  .fb.pic{aspect-ratio:var(--screen-frame-tall,.8)}          /* the pictures under the first run 20% taller */
   .fb img{display:block;width:100%;height:100%;object-fit:cover;cursor:grab;user-select:none;-webkit-user-drag:none}
   .fb.panning img{cursor:grabbing}
   .sk .split .p .fb{margin-bottom:6px}
@@ -545,6 +546,7 @@ function screenFrame() {
   // the product page's picture column: 70% of the width less its margins, by the full height
   const w = innerWidth * 0.7 - 60, h = innerHeight;
   document.documentElement.style.setProperty('--screen-frame', (w / h).toFixed(3));
+  document.documentElement.style.setProperty('--screen-frame-tall', (w / (h * 1.2)).toFixed(3));
 }
 screenFrame();
 addEventListener('resize', () => { screenFrame(); guides(); });
