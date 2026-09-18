@@ -168,10 +168,22 @@
       });
     }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
 
+    // photographs on the first screen are simply there when the page arrives: only
+    // words rise in. The two staged illustrations (the box, the hand) keep their entrance.
+    var PICS = '.gallery figure, .split .pics figure, .wall figure, .rel-piece, .steps figure, .childhood figure';
+    var fresh = true;
+    addEventListener('load', function () { setTimeout(function () { fresh = false; }, 0); });
+    function alreadyThere(el) {
+      if (!fresh || !el.matches || !el.matches(PICS)) return false;
+      var r = el.getBoundingClientRect();
+      return r.top < innerHeight && r.bottom > 0;
+    }
+
     function arm(root) {
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
+          if (alreadyThere(el)) return;                 // a picture waiting on the first screen
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
