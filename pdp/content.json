@@ -5,7 +5,7 @@
     "img/ear-cuff/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -14,7 +14,7 @@
     "img/eclipse-ring/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -23,17 +23,17 @@
     "img/eleph/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/eleph/plain-1.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/eleph/plain-2.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -42,7 +42,7 @@
     "img/ibi/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -51,12 +51,12 @@
     "img/lunar-canyon-ring/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/lunar-canyon-ring/plain-1.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -65,12 +65,12 @@
     "img/macon-cap/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/macon-cap/plain-1.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -79,7 +79,7 @@
     "img/meridian-egg-ring/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -88,7 +88,7 @@
     "img/milo/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -97,7 +97,7 @@
     "img/ori/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -106,17 +106,17 @@
     "img/pip/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/pip/plain-2.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/pip/plain-3.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -134,17 +134,17 @@
     "img/ren/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/ren/plain-1.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/ren/plain-2.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -153,12 +153,12 @@
     "img/sietch-aperture/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/sietch-aperture/plain-1.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -167,12 +167,12 @@
     "img/starshipkey-pendant/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/starshipkey-pendant/plain-1.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -181,17 +181,17 @@
     "img/wonderhorn-talisman/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/wonderhorn-talisman/plain-1.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/wonderhorn-talisman/plain-3.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -200,7 +200,7 @@
     "img/yael/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -209,17 +209,17 @@
     "img/zuma-ring/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/zuma-ring/plain-1.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/zuma-ring/plain-2.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   },
@@ -228,12 +228,12 @@
     "img/zuma/hero.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     },
     "img/zuma/plain-2.jpg": {
      "x": 50,
      "y": 50,
-     "z": 1.25
+     "z": 1
     }
    }
   }
