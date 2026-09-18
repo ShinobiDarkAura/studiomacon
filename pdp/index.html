@@ -107,12 +107,14 @@
   .welcome + .set .wall-head{padding-top:0}
   /* the Bureau of Provenance stamp: pressed onto the bottom edge of the film, angled, its top tenth over the picture */
   .film-wrap{position:relative}
-  /* size, place and angle are the studio's to set, in the editor */
-  .stamped .stamp{position:absolute;z-index:3;width:var(--stamp-w);right:var(--stamp-right);bottom:0;
-    transform:translateY(var(--stamp-drop)) rotate(var(--stamp-tilt)) scale(1.35);opacity:0;pointer-events:none;
+  /* pinned to the headline, not the window: every measure is in the headline's own type size (em),
+     so at any screen width it lands on the comma of "Things," at the same size and angle */
+  .welcome .prose h1.stamped{position:relative;display:inline-block}
+  .stamped .stamp{position:absolute;z-index:3;width:3.02em;left:calc(100% + .64em - 1.51em);top:calc(var(--cap-top,.2em) - .84em - 1.51em);
+    transform:rotate(var(--stamp-tilt,-14deg)) scale(1.35);opacity:0;pointer-events:none;
     transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
-  /* pressed down onto the edge of the film, its top tenth overlapping the picture */
-  .stamped .stamp.on{opacity:1;transform:translateY(var(--stamp-drop)) rotate(var(--stamp-tilt))}
+  /* pressed down onto the words */
+  .stamped .stamp.on{opacity:1;transform:rotate(var(--stamp-tilt,-14deg))}
   @media (max-width:599px){ .stamped .stamp{display:none} }
   /* Back to Shop lands here, with the Ephemeral title just under the nav */
   #pieces{scroll-margin-top:calc(var(--head) + 36px)}
@@ -246,12 +248,11 @@
     <p class="tagline" data-edit="page:index.html:6c4aaa35">Artifacts of Love</p>
     <span class="scroll-cue" aria-hidden="true"><i></i></span>
   </section>
-  <img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="Maçon Bureau of Provenance stamp" data-no-emerge>
   </div>
   <section class="section welcome">
     <div class="prose">
       <p class="eyebrow" data-edit="page:index.html:26c677bd">Studio Maçon</p>
-      <h1 data-edit="page:index.html:e4c50db4">Small Things,<br>Kept Close</h1>
+      <h1 class="stamped" data-edit="page:index.html:0c809910">Small Things,<br>Kept Close<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" data-no-emerge></h1>
       <p data-edit="page:index.html:5a97ed3b">Maçon makes artifacts and jewelry to be carried, worn and handed down. Every piece is drawn on paper, carved by hand in wax and cast in bronze, silver or gold, then finished by hand in our studio.</p>
     </div>
   </section>
@@ -854,11 +855,17 @@
   })();
 </script>
 <script>
-  // The stamp presses down once the logotype has finished arriving
+  // The stamp presses down once the headline it sits on is in view
   (function () {
     var stamp = document.querySelector('.stamped .stamp'); if (!stamp) return;
-    var wait = scrollY > 40 || matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 2900;
-    setTimeout(function () { stamp.classList.add('on'); }, wait);
+    var press = function () { stamp.classList.add('on'); };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return press();
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      io.disconnect();
+      setTimeout(press, 500);                    // once the headline itself has settled
+    }, {threshold: 0.9});
+    io.observe(stamp.closest('h1'));
   })();
 
   // The logotype rests in the middle of the film for eight seconds, then fades and hands
