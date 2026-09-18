@@ -13,6 +13,9 @@
     aspect-ratio:4/5;padding:6vh 4vw}
   .split .pics img{display:block;width:100%;height:100%;object-fit:contain}
   .split .copy{color-scheme:light}
+  .split .pics img{transform:translateY(90px);opacity:0;filter:blur(10px);
+    transition:transform 1.1s cubic-bezier(.16,1,.3,1),opacity 1.1s cubic-bezier(.16,1,.3,1),filter 1.1s cubic-bezier(.16,1,.3,1)}
+  .split .pics img.up{transform:none;opacity:1;filter:none}
   .split .copy p.body{margin:0 0 48px;font-size:17px;line-height:1.55}
   .ways{display:flex;justify-content:center;align-items:baseline;gap:12px;margin:48px 0 0;font-size:calc(17px - 2pt)}
   .ways .dot{opacity:.5}
@@ -43,7 +46,7 @@
 <main>
   <section class="split">
     <div class="pics">
-      <figure><img src="img/pages/reliques.jpg" alt="Maçon poster: a hand holding a small bronze horse" fetchpriority="high"></figure>
+      <figure data-no-emerge><img src="img/pages/reliques.jpg" alt="Maçon poster: a hand holding a small bronze horse" fetchpriority="high"></figure>
     </div>
 
     <div class="copy">
@@ -81,6 +84,13 @@
         btn.disabled = false; btn.textContent = 'Send';
         alert('Sorry, that didn\u2019t send. Please write to hello@studiomacon.co and we\u2019ll reply from there.');
       });
+  });
+</script>
+<script>
+  addEventListener('DOMContentLoaded', function () {
+    var img = document.querySelector('.split .pics img');
+    var go = function () { requestAnimationFrame(function () { requestAnimationFrame(function () { img.classList.add('up'); }); }); };
+    if (img.decode) img.decode().then(go, go); else if (img.complete) go(); else img.addEventListener('load', go);
   });
 </script>
 </body>

@@ -31,8 +31,10 @@
     .ship .text{align-self:center;padding:calc(var(--head) + 40px) 0 64px}
   }
   /* on load: the branch slides in from the left, then the text rises in turn */
-  .ship .branch.dr-emerge{transform:translateY(90px);filter:blur(10px);transition-duration:1.3s;--stagger:0ms !important}
-  .ship .branch.dr-emerge.is-seen{transform:none;filter:none}
+  /* the black field is painted at once; only the box rises into it */
+  .ship .branch img{transform:translateY(90px);opacity:0;filter:blur(10px);
+    transition:transform 1.1s cubic-bezier(.16,1,.3,1),opacity 1.1s cubic-bezier(.16,1,.3,1),filter 1.1s cubic-bezier(.16,1,.3,1)}
+  .ship .branch img.up{transform:none;opacity:1;filter:none}
   .ship .intro > :nth-child(1){--stagger:450ms !important}
   .ship .intro > :nth-child(2){--stagger:650ms !important}
   .ship .intro > :nth-child(3){--stagger:850ms !important}
@@ -45,7 +47,7 @@
 
 <main>
   <section class="ship">
-    <figure class="branch"><img src="img/pages/keepsake-box.png" alt="Illustration of a piece packed in its box with tissue"></figure>
+    <figure class="branch" data-no-emerge><img src="img/pages/keepsake-box.png" alt="Illustration of a piece packed in its box with tissue"></figure>
     <div class="text">
   <section class="intro">
     <p class="eyebrow">Made to Order</p>
@@ -100,5 +102,13 @@
 
 {{FOOTER}}
 {{SITEJS}}
+<script>
+  // the illustration rises once the page is up; the field behind it never moves
+  addEventListener('DOMContentLoaded', function () {
+    var img = document.querySelector('.ship .branch img');
+    var go = function () { requestAnimationFrame(function () { requestAnimationFrame(function () { img.classList.add('up'); }); }); };
+    if (img.decode) img.decode().then(go, go); else if (img.complete) go(); else img.addEventListener('load', go);
+  });
+</script>
 </body>
 </html>

@@ -610,6 +610,7 @@
   // retreats the way it came, it reads as something passing over the page
   // rather than a shutter opening and closing.
   (function () {
+    var ON = false;                               // the wipe is parked: flip to true to bring it back
     var COVER = 420, KEY = 'macon-wipe';          // matches the 420ms cover in the head          // the reveal half runs from the head
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -641,7 +642,7 @@
       var a = e.target.closest && e.target.closest('a[href]');
       if (!leaves(a)) return;
       if (document.body.classList.contains('ed-on')) return;          // never while editing
-      if (!home(a)) return;                                           // only the walk back from a piece to the shop
+      if (!ON || !home(a)) return;                                           // only the walk back from a piece to the shop
       e.preventDefault();
       var el = panel();
       requestAnimationFrame(function () { el.classList.add('cover'); });
