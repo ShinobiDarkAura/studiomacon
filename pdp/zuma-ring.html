@@ -682,6 +682,75 @@
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
   })();
+
+  // ── Page wipe ─────────────────────────────────────────────────────────
+  // One opaque panel crosses the screen in a single direction: it drops from
+  // above to cover the page, the page is swapped while it is hidden, and the
+  // panel carries on off the bottom to uncover the new one. Because it never
+  // retreats the way it came, it reads as something passing over the page
+  // rather than a shutter opening and closing.
+  (function () {
+    var COVER = 400, REVEAL = 550, KEY = 'macon-wipe';
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var css = document.createElement('style');
+    css.textContent =
+      '.wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;transform:translate3d(0,-100%,0);' +
+      'background:linear-gradient(180deg,#0d0c0b 0%,#131211 55%,#0b0a09 100%)}' +
+      '.wipe.cover{transform:translate3d(0,0,0);transition:transform ' + COVER + 'ms cubic-bezier(.55,0,.85,.35)}' +
+      '.wipe.gone{transform:translate3d(0,100%,0);transition:transform ' + REVEAL + 'ms cubic-bezier(.16,.7,.3,1)}';
+    document.head.appendChild(css);
+
+    function panel() {
+      var el = document.querySelector('.wipe');
+      if (!el) { el = document.createElement('div'); el.className = 'wipe'; document.body.appendChild(el); }
+      return el;
+    }
+
+    // Arriving under the panel: hold it over the page for a frame, then let it
+    // carry on downward, so the two halves read as one gesture.
+    var arriving = false;
+    try { arriving = sessionStorage.getItem(KEY) === '1'; sessionStorage.removeItem(KEY); } catch (e) {}
+    if (arriving) {
+      var p = panel();
+      p.style.transform = 'translate3d(0,0,0)';          // holds the cover for the first frame
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          p.style.transform = '';                         // hand back to the class, or it cannot move
+          p.classList.add('gone');
+          setTimeout(function () { p.remove(); }, REVEAL + 120);
+        });
+      });
+    }
+
+    function leaves(a) {
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return false;
+      var href = a.getAttribute('href') || '';
+      if (!href || href[0] === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return false;
+      var url = new URL(a.href, location.href);
+      if (url.origin !== location.origin) return false;
+      return url.pathname !== location.pathname || url.search !== location.search;
+    }
+
+    addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!leaves(a)) return;
+      if (document.body.classList.contains('ed-on')) return;          // never while editing
+      e.preventDefault();
+      var el = panel();
+      requestAnimationFrame(function () { el.classList.add('cover'); });
+      try { sessionStorage.setItem(KEY, '1'); } catch (err) {}
+      setTimeout(function () { location.href = a.href; }, COVER);     // swapped while it cannot be seen
+    }, true);
+
+    // coming back through history: never leave the panel sitting over the page
+    addEventListener('pageshow', function (e) {
+      if (!e.persisted) return;
+      var el = document.querySelector('.wipe'); if (el) el.remove();
+      try { sessionStorage.removeItem(KEY); } catch (err) {}
+    });
+  })();
 </script>
 <script>
   // Phones: a strip of thumbnails under the main image; tapping one shows that picture or film in its place
