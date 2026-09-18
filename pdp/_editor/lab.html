@@ -54,15 +54,6 @@
   .greek.s{width:40%}
   .greek.b{height:30px;background:#111;margin-top:18px;border-radius:4px}
 
-  /* --- shop grid lab --- */
-  .drop{border:1.5px dashed var(--rule);border-radius:10px;padding:34px;text-align:center;color:var(--soft);background:#fff}
-  .drop.over{border-color:#111;color:#111}
-  .wall{display:grid;gap:12px;margin-top:20px}
-  .wall figure{margin:0;border-radius:6px;overflow:hidden;background:var(--field);position:relative}
-  .wall img,.wall video{display:block;width:100%;aspect-ratio:3/4;object-fit:cover}
-  .wall .rm{position:absolute;top:6px;right:6px;padding:1px 7px;font-size:11px;border-radius:5px;opacity:.85}
-  .wall .lbl{display:flex;justify-content:space-between;font-size:12px;padding:7px 2px 0;color:var(--soft)}
-
   /* --- skeleton --- */
   .sk{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:20px;
       display:grid;grid-template-columns:1fr 1fr;gap:24px}
@@ -102,7 +93,6 @@
   <h1>Maçon Lab</h1>
   <div class="tabs">
     <button data-tab="page" class="on">Product page</button>
-    <button data-tab="grid">Shop grid</button>
     <button data-tab="skel">Skeleton</button>
   </div>
   <span class="grow"></span>
@@ -126,17 +116,6 @@
         <div class="mock" id="mock"></div>
       </div>
     </div>
-  </section>
-
-  <!-- ————— tab two: short loops in the grid ————— -->
-  <section class="pane" id="pane-grid">
-    <p class="lb">A sandbox: drop pictures or short mp4s in and watch the grid. Nothing here is saved.</p>
-    <p class="lb">Columns
-      <select id="cols"><option>2</option><option selected>3</option><option>4</option></select>
-      <label style="margin-left:14px"><input type="checkbox" id="hoverPlay"> only play on hover</label>
-    </p>
-    <div class="drop" id="drop">Drop pictures or .mp4 files here</div>
-    <div class="wall" id="wall"></div>
   </section>
 
   <!-- ————— tab three: the shape of the site, no words ————— -->
@@ -344,38 +323,6 @@ $('#save').onclick = async () => {
   msg(j.error || 'Saved and rebuilt', !!j.error);
   if (j.error) $('#save').disabled = false;
 };
-
-/* ————— shop grid sandbox ————— */
-const wall = $('#wall'), drop = $('#drop');
-const setCols = () => wall.style.gridTemplateColumns = 'repeat(' + $('#cols').value + ',1fr)';
-$('#cols').onchange = setCols; setCols();
-$('#hoverPlay').onchange = () => wall.querySelectorAll('video').forEach(v => {
-  if ($('#hoverPlay').checked) { v.pause(); v.currentTime = 0; } else v.play();
-});
-['dragover', 'dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => {
-  e.preventDefault();
-  drop.classList.toggle('over', ev === 'dragover');
-  if (ev !== 'drop') return;
-  [...e.dataTransfer.files].forEach(addTile);
-}));
-drop.onclick = () => { const i = document.createElement('input'); i.type = 'file';
-  i.accept = 'image/*,video/mp4'; i.multiple = true;
-  i.onchange = () => [...i.files].forEach(addTile); i.click(); };
-
-function addTile(f) {
-  const url = URL.createObjectURL(f), fig = document.createElement('figure');
-  const media = f.type.startsWith('video')
-    ? `<video src="${url}" muted loop playsinline ${$('#hoverPlay').checked ? '' : 'autoplay'}></video>`
-    : `<img src="${url}">`;
-  fig.innerHTML = media + `<button class="rm">Remove</button>`;
-  fig.querySelector('.rm').onclick = () => { URL.revokeObjectURL(url); fig.remove(); };
-  const v = fig.querySelector('video');
-  if (v) {
-    fig.onmouseenter = () => { if ($('#hoverPlay').checked) v.play(); };
-    fig.onmouseleave = () => { if ($('#hoverPlay').checked) { v.pause(); v.currentTime = 0; } };
-  }
-  wall.appendChild(fig);
-}
 
 /* ————— the skeleton, with the real pictures in place ————— */
 let picking = null;                                   // {slug, apply(src)}
