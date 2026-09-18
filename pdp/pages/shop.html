@@ -131,14 +131,20 @@
   @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 8px} }
   @media (hover:none){ .piece .held{display:none} }
 
+  /* every tile's pictures sit in one clipped 4:5 frame, in every layout, so a zoomed picture
+     can never spill onto its neighbours; framing is set in the lab (by default a little closer
+     than the product page) */
+  .piece .pic{position:relative;display:block;overflow:hidden;aspect-ratio:4/5;background:var(--field)}
+  .piece .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    object-position:var(--x,50%) var(--y,50%);transform-origin:var(--x,50%) var(--y,50%);transform:scale(var(--z,1.12));transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity .5s ease}
+
   /* phones (always), and desktop when <body> has class="labels-under": name and price under a rounded frame, as in Also Worth Keeping */
   @media (max-width:767px){
      .wall figure{overflow:visible;background:none;border-radius:0}
      .piece{position:relative;display:block;color:#000}
-     .piece img{display:block;width:100%;aspect-ratio:4/5;height:auto;object-fit:cover;border-radius:6px;background:var(--field);
-       object-position:var(--x,50%) var(--y,50%);transform-origin:var(--x,50%) var(--y,50%);transform:scale(var(--z,1.12));transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity .5s ease}
+     .piece .pic{border-radius:6px}
      .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:6px}
-     .piece .held{position:absolute;top:0;left:0;opacity:0}
+     .piece .held{opacity:0}
      .piece:hover .held, .piece:focus-visible .held{opacity:1}
      .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}
      .piece .name{font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
@@ -150,10 +156,9 @@
   @media (min-width:768px){
     body.labels-under .wall figure{overflow:visible;background:none;border-radius:0}
     body.labels-under .piece{position:relative;display:block;color:#000}
-    body.labels-under .piece img{display:block;width:100%;aspect-ratio:4/5;height:auto;object-fit:cover;border-radius:6px;background:var(--field);
-      object-position:var(--x,50%) var(--y,50%);transform-origin:var(--x,50%) var(--y,50%);transform:scale(var(--z,1.12));transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity .5s ease}
+    body.labels-under .piece .pic{border-radius:6px}
     body.labels-under .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:6px}
-    body.labels-under .piece .held{position:absolute;top:0;left:0;opacity:0}
+    body.labels-under .piece .held{opacity:0}
     body.labels-under .piece:hover .held,body.labels-under .piece:focus-visible .held{opacity:1}
     body.labels-under .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}
     body.labels-under .piece .name{font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
@@ -163,9 +168,7 @@
   /* desktop default: three across, name and price rising in over the picture on hover */
   @media (min-width:768px){
     body:not(.labels-under) .piece{position:relative;display:block;color:#fff;aspect-ratio:4/5;overflow:hidden}
-    body:not(.labels-under) .piece img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-      object-position:var(--x,50%) var(--y,50%);transform-origin:var(--x,50%) var(--y,50%);transform:scale(var(--z,1.12));          /* framing set in the lab; by default the grid sits a little closer than the product page */
-      transition:transform 1.2s cubic-bezier(.2,.7,.2,1),opacity .5s ease}
+
     body:not(.labels-under) .piece .placeholder-fill{position:absolute;inset:0}
     body:not(.labels-under) .piece .held{opacity:0;transition:opacity .5s ease}
     body:not(.labels-under) .piece:hover .held,body:not(.labels-under) .piece:focus-visible .held{opacity:1}
@@ -175,7 +178,7 @@
     body:not(.labels-under) .piece .cost{order:-1}
     body:not(.labels-under) .piece .name{font:400 calc(49.5px - 8pt)/.95 var(--serif);text-transform:uppercase;letter-spacing:.01em}
     body:not(.labels-under) .piece:hover .over,body:not(.labels-under) .piece:focus-visible .over{opacity:1;transform:none}
-    body:not(.labels-under) .piece:hover img{transform:scale(calc(var(--z,1.12) * 1.02))}
+    body:not(.labels-under) .piece:hover .pic img{transform:scale(calc(var(--z,1.12) * 1.02))}
   }
   @media (min-width:768px) and (hover:none){ body:not(.labels-under) .piece .over{opacity:1;transform:none} }
 </style>

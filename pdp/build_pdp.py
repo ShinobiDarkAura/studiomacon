@@ -651,9 +651,9 @@ def main():
         tiles.append(
             # the framing sits on the link, so the in-hand picture shown on hover zooms with the still
             f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
-            f'<img src="{still_src}" alt="{html.escape(p["name"])}" loading="{lazy}">'
+            f'<span class="pic"><img src="{still_src}" alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held" src="{hover_src}" alt="" loading="lazy"{align_style(p["slug"])}>' if held else "")
-            + f'<span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
+            + f'</span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
     st = {"w": 13, "right": 11.4, "drop": 98.3, "tilt": -14}
