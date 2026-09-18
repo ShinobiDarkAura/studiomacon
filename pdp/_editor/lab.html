@@ -70,6 +70,23 @@
   .sk .tiles i{display:block;aspect-ratio:3/4;background:#ddd9d4;border-radius:3px}
   .sk .split{display:grid;grid-template-columns:70fr 30fr;gap:10px}
   .sk .split .p i{display:block;aspect-ratio:4/5;background:#ddd9d4;border-radius:3px;margin-bottom:6px}
+  .sk .tiles i,.sk .split .p i{position:relative;background:#ddd9d4 center/cover no-repeat;cursor:pointer}
+  .sk .tiles i::after,.sk .split .p i::after{content:"Change";position:absolute;inset:auto 0 0 0;padding:3px 0;
+    font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-align:center;color:#fff;background:rgba(0,0,0,.55);opacity:0}
+  .sk .tiles i:hover::after,.sk .split .p i:hover::after{opacity:1}
+  .sk .hero{background-size:cover;background-position:center}
+  .pick{position:fixed;inset:0;z-index:10;background:rgba(20,18,16,.55);display:none;place-items:center}
+  .pick.on{display:grid}
+  .pick .box{background:#fff;border-radius:10px;padding:18px;max-width:640px;max-height:80vh;overflow:auto}
+  .pick .row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+  .pick .row img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent}
+  .pick .row img:hover{border-color:#111}
+  .sk .chips{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 12px}
+  .sk .chips button{padding:2px 9px;font-size:11px;border-radius:20px}
+  .sk .chips button.on{background:#111;color:#fff;border-color:#111}
+  /* swapping a piece replays the page's own entrance, so the rhythm can be judged */
+  @keyframes rise{from{opacity:0;transform:translateY(22px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+  .sk .playing i,.sk .playing .greek{animation:rise .62s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms)}
   .sk .cap{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:0 0 10px}
 </style>
 </head>
@@ -123,13 +140,14 @@
         <div class="bar"><span class="greek"></span><span class="greek"></span><span class="grow"></span><span class="greek" style="width:56px"></span></div>
         <div class="hero"></div>
         <div class="greek t s"></div>
-        <div class="tiles"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="tiles" id="skTiles"></div>
       </div>
       <div class="frame">
         <p class="cap">Product page</p>
+        <div class="chips" id="skChips"></div>
         <div class="bar"><span class="greek"></span><span class="greek"></span><span class="grow"></span><span class="greek" style="width:56px"></span></div>
         <div class="split">
-          <div class="p"><i></i><i></i><i></i></div>
+          <div class="p" id="skPics"></div>
           <div>
             <div class="greek s"></div><div class="greek t"></div>
             <div class="greek"></div><div class="greek"></div><div class="greek s"></div>
@@ -141,6 +159,13 @@
     </div>
   </section>
 </main>
+
+<div class="pick" id="pick"><div class="box">
+  <p class="lb" id="pickTitle">Choose a picture</p>
+  <button id="pickUpload">Add one from my drive…</button>
+  <input type="file" id="pickFile" accept="image/*" hidden>
+  <div class="row" id="pickRow"></div>
+</div></div>
 
 <script>
 const $ = (s, r) => (r || document).querySelector(s);
@@ -183,12 +208,13 @@ function draw() {
           <button data-a="up" data-i="${i}">↑</button>
           <button data-a="down" data-i="${i}">↓</button>
           <button data-a="hide" data-i="${i}" class="${off ? 'on' : ''}">${off ? 'Hidden' : 'Hide'}</button>
+          <button data-a="drop" data-i="${i}">Remove</button>
         </div>
         <div class="sl">Zoom<input type="range" data-k="z" data-i="${i}" min="1" max="2.5" step="0.05" value="${f.z}"><b>${(+f.z).toFixed(2)}×</b></div>
         <div class="sl">↔<input type="range" data-k="x" data-i="${i}" min="0" max="100" value="${f.x}">
                        ↕<input type="range" data-k="y" data-i="${i}" min="0" max="100" value="${f.y}"></div>
       </div></div>`;
-  }).join('');
+  }).join('') + spares();
 
   $('#mock').innerHTML = `<div class="pics">` + shown().map(src => {
     const f = frameOf(src);
@@ -201,7 +227,8 @@ function draw() {
       <div class="greek" style="margin-top:22px"></div><div class="greek"></div><div class="greek s"></div>
     </div>`;
 
-  $('#shots').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a, order, +b.dataset.i));
+  $('#shots').querySelectorAll('button').forEach(b => b.onclick = () => act(b.dataset.a, order, +b.dataset.i, b.dataset.src));
+  if (DATA && window.skelReady) { skeleton(); chips(); }
   $('#shots').querySelectorAll('input[type=range]').forEach(r => r.oninput = () => {
     const src = order[+r.dataset.i], e2 = edit();
     e2.frames = e2.frames || {};
@@ -210,8 +237,34 @@ function draw() {
   });
 }
 
-function act(a, order, i) {
-  const e = edit(), p = piece(), src = order[i];
+// pictures the piece owns that are not on the page: still in the library, one click from returning
+function spares() {
+  const p = piece(), e = EDITS.products[slug] || {};
+  const on = [e.hero || p.defaults.hero].concat(e.gallery || p.defaults.gallery);
+  const off = p.photos.filter(x => on.indexOf(x) < 0);
+  if (!off.length) return '';
+  return `<p class="lb" style="margin:14px 0 4px">Not on the page</p>` + off.map(src =>
+    `<div class="shot off"><img class="th" src="/pdp/${src}" alt="">
+       <div><div class="nm">${src.split('/').pop()}</div>
+         <div class="btns"><button data-a="back" data-src="${src}">Put back</button></div>
+       </div></div>`).join('');
+}
+
+function act(a, order, i, src2) {
+  const e = edit(), p = piece(), src = src2 || order[i];
+  if (a === 'back') {
+    e.gallery = (e.gallery || p.defaults.gallery).concat([src]);
+    e.hero = e.hero || p.defaults.hero;
+    draw(); touched(); return;
+  }
+  if (a === 'drop') {                                   // off the page, left in the library
+    const rest = order.filter(x => x !== src);
+    if (!rest.length) { msg('A piece needs at least one picture', true); return; }
+    e.hero = rest[0];
+    e.gallery = rest.slice(1);
+    if (e.hidden) e.hidden = e.hidden.filter(x => x !== src);
+    draw(); touched(); return;
+  }
   if (a === 'hide') {
     e.hidden = e.hidden || [];
     const at = e.hidden.indexOf(src);
@@ -294,6 +347,79 @@ function addTile(f) {
   wall.appendChild(fig);
 }
 
+/* ————— the skeleton, with the real pictures in place ————— */
+let picking = null;                                   // {slug, apply(src)}
+
+window.skelReady = true;
+function skeleton() {
+  $('#skTiles').innerHTML = DATA.products.slice(0, 9).map(p => {
+    const e = EDITS.products[p.slug] || {};
+    return `<i data-slug="${p.slug}" style="background-image:url('/pdp/${e.hero || p.defaults.hero}')"></i>`;
+  }).join('');
+  $('#skTiles').querySelectorAll('i').forEach(t => t.onclick = () => {
+    const s2 = t.dataset.slug;
+    openPick(s2, src => { (EDITS.products[s2] = EDITS.products[s2] || {}).hero = src; skeleton(); draw(); touched(); });
+  });
+
+  const list = shown();
+  $('#skPics').innerHTML = list.map((src, i) =>
+    `<i data-i="${i}" style="background-image:url('/pdp/${src}')"></i>`).join('');
+  $('#skPics').querySelectorAll('i').forEach(t => t.onclick = () => {
+    const i = +t.dataset.i;
+    openPick(slug, src => {
+      const e = edit(), p = piece();
+      const order = [e.hero || p.defaults.hero].concat(e.gallery || p.defaults.gallery)
+                    .filter((x, k, a) => a.indexOf(x) === k);
+      const at = order.indexOf(list[i]);
+      if (at >= 0) order[at] = src;
+      e.hero = order[0]; e.gallery = order.slice(1);
+      skeleton(); draw(); touched();
+    });
+  });
+}
+
+// the row of pieces above the product page: swapping replays the entrance
+function chips() {
+  $('#skChips').innerHTML = DATA.products.map(p =>
+    `<button data-slug="${p.slug}" class="${p.slug === slug ? 'on' : ''}">${p.defaults.name}</button>`).join('');
+  $('#skChips').querySelectorAll('button').forEach(b => b.onclick = () => {
+    slug = b.dataset.slug;
+    $('#piece').value = slug;
+    draw(); skeleton(); play();
+  });
+}
+
+function play() {
+  const frame = $('#skPics').closest('.frame');
+  frame.classList.remove('playing');
+  void frame.offsetWidth;                                   // restart the run
+  [].slice.call(frame.querySelectorAll('i, .greek')).forEach((el, i) => el.style.setProperty('--d', i * 70 + 'ms'));
+  frame.classList.add('playing');
+}
+
+function openPick(forSlug, apply) {
+  const p = DATA.products.find(x => x.slug === forSlug);
+  picking = {slug: forSlug, apply};
+  $('#pickTitle').textContent = 'Pictures of ' + p.defaults.name;
+  $('#pickRow').innerHTML = p.photos.map(src => `<img src="/pdp/${src}" data-src="${src}" alt="">`).join('');
+  $('#pickRow').querySelectorAll('img').forEach(im => im.onclick = () => { apply(im.dataset.src); closePick(); });
+  $('#pick').classList.add('on');
+}
+function closePick() { $('#pick').classList.remove('on'); picking = null; }
+$('#pick').onclick = e => { if (e.target.id === 'pick') closePick(); };
+$('#pickUpload').onclick = () => $('#pickFile').click();
+$('#pickFile').onchange = async () => {
+  const f = $('#pickFile').files[0]; if (!f || !picking) return;
+  const to = picking.slug, apply = picking.apply;
+  msg('Adding ' + f.name + '…');
+  const r = await fetch('/api/photo?slug=' + to + '&name=' + encodeURIComponent(f.name), {method: 'POST', body: f});
+  const j = await r.json();
+  $('#pickFile').value = '';
+  if (j.error) return msg(j.error, true);
+  DATA.products.find(x => x.slug === to).photos.push(j.added);
+  apply(j.added); closePick(); msg('Added — not saved yet'); $('#save').disabled = false;
+};
+
 /* ————— load ————— */
 (async () => {
   const r = await fetch('/api/editor');
@@ -302,9 +428,9 @@ function addTile(f) {
   EDITS.stamp = DATA.stamp || {}; EDITS.pages = DATA.pages || {};
   DATA.products.forEach(p => { if (Object.keys(p.edits || {}).length) EDITS.products[p.slug] = JSON.parse(JSON.stringify(p.edits)); });
   $('#piece').innerHTML = DATA.products.map(p => `<option value="${p.slug}">${p.defaults.name}</option>`).join('');
-  $('#piece').onchange = () => { slug = $('#piece').value; draw(); };
+  $('#piece').onchange = () => { slug = $('#piece').value; draw(); skeleton(); chips(); play(); };
   slug = DATA.products[0].slug;
-  draw(); msg('');
+  draw(); skeleton(); chips(); play(); msg('');
 })();
 </script>
 </body>
