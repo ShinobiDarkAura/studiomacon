@@ -346,10 +346,26 @@ async function saveNow() {
   try {
     const r = await fetch('/api/content', {method: 'POST', body: JSON.stringify(EDITS)});
     const j = await r.json();
-    msg(j.error || 'Saved', !!j.error);
+    msg(j.error || 'Saved — publishing to the preview…', !!j.error);
+    if (!j.error) watchPublish();
   } catch (e) { msg('Could not save — is the preview server running?', true); }
   saving = false;
   if (again) { again = false; saveNow(); }
+}
+
+// the preview redeploys by itself after each save; say so once it is live
+let watching = null;
+function watchPublish() {
+  clearInterval(watching);
+  watching = setInterval(async () => {
+    if (saving || saveTimer && msg && document.querySelector('#msg').textContent === 'Saving…') return;
+    try {
+      const p = await (await fetch('/api/publish')).json();
+      if (p.state === 'running') { msg('Saved — publishing to the preview…'); return; }
+      clearInterval(watching);
+      msg(p.error ? 'Saved here, but publishing failed — tell Claude' : 'Live on the preview · ' + p.last, !!p.error);
+    } catch (e) { clearInterval(watching); }
+  }, 3000);
 }
 
 /* ————— picture from the studio's own drive ————— */

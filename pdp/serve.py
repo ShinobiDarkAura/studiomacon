@@ -84,6 +84,36 @@ def add_photo(data, slug, filename):
     return f"img/{slug}/{name}"
 
 
+# ── publishing: every saved change goes out to the preview on its own ──
+# A deploy takes ~20 seconds. Saves that land while one is running are folded into a
+# single follow-up deploy, so a burst of edits never queues a burst of deploys.
+PUBLISH = {"state": "idle", "pending": False, "last": None, "error": None}
+_publish_lock = threading.Lock()
+
+
+def publish_soon():
+    with _publish_lock:
+        if PUBLISH["state"] == "running":
+            PUBLISH["pending"] = True
+            return
+        PUBLISH["state"] = "running"
+    threading.Thread(target=_publish_loop, daemon=True).start()
+
+
+def _publish_loop():
+    while True:
+        cmd = f'{sys.executable} pdp/tools/deploy_build.py && npx wrangler deploy'
+        out = subprocess.run(cmd, shell=True, cwd=ROOT, capture_output=True, text=True)
+        with _publish_lock:
+            PUBLISH["last"] = time.strftime("%H:%M:%S")
+            PUBLISH["error"] = None if out.returncode == 0 else (out.stderr or out.stdout)[-400:]
+            if PUBLISH["pending"]:
+                PUBLISH["pending"] = False
+                continue
+            PUBLISH["state"] = "idle"
+            return
+
+
 def rebuild():
     out = subprocess.run([sys.executable, os.path.join(ROOT, "pdp", "build_pdp.py")], cwd=ROOT, capture_output=True, text=True)
     if out.returncode != 0:
@@ -133,6 +163,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         path = urllib.parse.unquote(self.path.split("?")[0])
+        if path == "/api/publish":
+            with _publish_lock:
+                return self.reply(dict(PUBLISH))
         if path == "/api/editor":
             try:
                 return self.reply(editor_data())
@@ -178,6 +211,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                         raise BadRequest("unknown piece")
                     name = add_photo(data, slug, args.get("name", ["photo"])[0])
                     rebuild()
+                    publish_soon()
                     return self.reply({"added": name})
                 if path == "/api/content":        # the studio's own copy and photograph choices
                     body = json.loads(data)
@@ -199,6 +233,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                         rebuild()
                     except Exception as e:        # the words are safely saved; only the rebuild failed
                         return self.reply({"saved": True, "error": "Saved, but the site could not be rebuilt: " + str(e)}, 500)
+                    publish_soon()
                     return self.reply({"saved": True})
                 if path == "/api/picks":          # the photo picker's choices
                     write_json(os.path.join(ROOT, "pdp", "_picker", "picks.json"), json.loads(data), indent=1)
