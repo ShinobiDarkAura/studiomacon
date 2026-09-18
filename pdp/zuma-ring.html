@@ -737,7 +737,8 @@
     function set(on) {
       if (on) {          // Close sits exactly where Menu was
         var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
-        c.style.left = r.left + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
+        var shift = document.querySelector('.head').getBoundingClientRect().left;          // how far the page is pushed aside right now
+        c.style.left = (r.left - shift) + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
       }
       menu.classList.toggle('open', on); menu.inert = !on; open = on;
       document.documentElement.classList.toggle('menu-open', on);

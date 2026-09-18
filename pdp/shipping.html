@@ -51,7 +51,7 @@
   .ship .policies{--stagger:1050ms !important}
   @media (max-width:767px){
     .ship{padding:0 !important;gap:0}
-    .ship .branch{height:60vh;height:60svh;padding:calc(var(--head) + 8px) 12vw 8vh}
+    .ship .branch{height:40vh;height:40svh;padding:calc(var(--head) + 8px) 12vw 5vh;overflow:hidden}
     .ship .branch{display:flex;align-items:center;justify-content:center}
     .ship .branch img{width:auto;height:auto;max-width:100%;max-height:100%}          /* the whole box, inside the panel */
     .ship .text{padding:40px var(--gutter) 64px;max-width:none}
@@ -630,7 +630,8 @@
     function set(on) {
       if (on) {          // Close sits exactly where Menu was
         var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
-        c.style.left = r.left + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
+        var shift = document.querySelector('.head').getBoundingClientRect().left;          // how far the page is pushed aside right now
+        c.style.left = (r.left - shift) + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
       }
       menu.classList.toggle('open', on); menu.inert = !on; open = on;
       document.documentElement.classList.toggle('menu-open', on);
