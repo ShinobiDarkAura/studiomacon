@@ -52,8 +52,10 @@
   body.hero-quiet .logo-build{opacity:0}
   /* once it has faded away, it simply reappears in the nav: no shrinking flight back up */
   body.hero-quiet:not(.logo-hero) .head .logotype{transition:opacity .6s ease,color .3s ease}
-  /* on load the logotype sits 2.5x larger in the middle of the film, and settles into the nav once you scroll */
+  /* On the shop page the logotype starts 2.8x larger in the middle of the film and is
+     drawn up into the nav by the scroll itself, a step at a time, rather than by a timer. */
   .head .logotype{transition:transform .7s var(--ease),color .3s ease}
+  body.logo-scrub .head .logotype{transition:color .3s ease}
   /* arriving back from a piece, it is simply already the right size: no flight */
   body.logo-still .head .logotype{transition:none}
   body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(2.8125)}
@@ -715,6 +717,25 @@
       document.body.style.setProperty('--logo-dy', (innerHeight / 2 - mid) + 'px');
     }
     place(); addEventListener('resize', place);
+
+    // How far the logotype has travelled is a reading of the scroll position: at the top
+    // of the film it is full size in the middle, and by the time the film is a third gone
+    // it has arrived in the nav. Anything in between is held exactly where you left it.
+    var BIG = 2.8125, dist, ticking;
+    function span() { return Math.max(240, Math.min(innerHeight * 0.45, 560)); }
+    function scrub() {
+      ticking = false;
+      if (!document.body.classList.contains('logo-scrub')) return;
+      var dy = parseFloat(getComputedStyle(document.body).getPropertyValue('--logo-dy')) || 0;
+      var p = Math.max(0, Math.min(1, scrollY / span()));          // 0 at the top, 1 once it has arrived
+      var k = 1 + (BIG - 1) * (1 - p);
+      logo.style.transform = 'translateY(' + (dy * (1 - p)) + 'px) scale(' + k + ')';
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(scrub); } }
+    addEventListener('scroll', onScroll, {passive: true});
+    addEventListener('resize', onScroll);
+    window.MaconScrub = scrub;
+    window.MaconScrubSpan = span;
   })();
 
   // Load-in: letters one at a time, then the cedilla lifts the C, then the tagline types itself
@@ -753,7 +774,12 @@
   function cue() {
     var on = scrollY > 40;
     document.querySelector('.film').classList.toggle('scrolled', on);
+    var flying = scrollY < (window.MaconScrubSpan ? window.MaconScrubSpan() : 400);
+    document.body.classList.toggle('logo-scrub', flying);
     document.body.classList.toggle('logo-hero', !on);
+    var logo = document.querySelector('.head .logotype');
+    if (flying) { if (window.MaconScrub) window.MaconScrub(); }
+    else if (logo) logo.style.transform = '';          // past the film: the nav keeps it at its own size
     if (on) { clearTimeout(quiet); document.body.classList.remove('hero-quiet'); }
     else if (!quiet || !document.body.classList.contains('hero-quiet')) window.MaconHeroQuiet();
   }
