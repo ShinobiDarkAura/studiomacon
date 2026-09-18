@@ -83,9 +83,6 @@
     });
     photos(on);
     stamp(on);
-    document.querySelectorAll('.acc-item').forEach(function (it) {
-      it.classList.toggle('ed-open', on);          // panels stand open while editing
-    });
   }
 
   // ── photographs ───────────────────────────────────────────────────────
@@ -405,8 +402,6 @@
       'body.ed-on [data-edit]:focus{outline:2px solid #111;background:#fffdf6}',
       'body.ed-on .ed-changed{outline-color:#9a5b21;background:rgba(255,241,220,.6)}',
       'body.ed-on{padding-bottom:46px}',
-      'body.ed-on .acc-item.ed-open .acc-panel{grid-template-rows:1fr!important;height:auto!important;',
-      ' max-height:none!important;visibility:visible!important;opacity:1!important}',
       '.ed-fig{position:relative}',
       '.ed-photo{position:absolute;left:10px;bottom:10px;display:flex;gap:5px;align-items:center;',
       ' background:rgba(17,17,17,.88);border-radius:7px;padding:5px 7px;z-index:5}',

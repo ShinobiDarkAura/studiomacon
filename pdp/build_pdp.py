@@ -224,13 +224,13 @@ def accordions(slug, k, notes):
         note = ('If your piece needs resizing, takes a knock, or needs adjusting, write to '
                 '<a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and '
                 + TODO.format("we'll look after it") + ".")
-        sizing += f'<p class="after-dl" data-edit="acc:sizing:{k}">{_content.shared("sizing:" + k, note)}</p>'
+        sizing += f'<p class="after-dl">{_content.shared("sizing:" + k, note)}</p>'
 
     # Care belongs to the kind of piece: a change on one totem is a change on every totem.
     def one_para(m, n=[0]):
         n[0] += 1
         key = f"care:{k}:{n[0]}"
-        return f'<p data-edit="acc:{key}">{_content.shared(key, m.group(1))}</p>'
+        return f'<p>{_content.shared(key, m.group(1))}</p>'
     care_html = re.sub(r"<p>(.*?)</p>", one_para, care, flags=re.S)
     items = [
         ("Care" if k in ("totem", "apparel") else "Wear &amp; Care", care_html),
@@ -244,8 +244,8 @@ def accordions(slug, k, notes):
               "If a piece doesn't fit, we'll gladly help you find the right size. "
               '<a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.')
     items.append(("Shipping &amp; Returns",
-                  f'<p data-edit="acc:shipping:1">{_content.shared("shipping:1", ship_a)}</p>'
-                  f'<p data-edit="acc:shipping:2">{_content.shared("shipping:2", ship_b)}</p>'))
+                  f'<p>{_content.shared("shipping:1", ship_a)}</p>'
+                  f'<p>{_content.shared("shipping:2", ship_b)}</p>'))
     return "\n".join(
         f'''        <div class="acc-item">
           <button class="acc-head" aria-expanded="false">{t}</button>
