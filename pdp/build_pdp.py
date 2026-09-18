@@ -429,6 +429,8 @@ WIPE_HEAD = """<style>
     setTimeout(off, 1400);          // only a backstop, never the usual path
   }); });
 })();
+// reached from the mobile drawer: open already pushed aside, with the drawer over the page
+(function () { try { if (sessionStorage.getItem('macon-menu') === '1') document.documentElement.classList.add('menu-arriving'); } catch (e) {} })();
 </script>
 """
 

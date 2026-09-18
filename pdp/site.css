@@ -178,11 +178,12 @@ footer .field button{padding:0 0 0 18px}
 @media (prefers-reduced-motion:reduce){ .dr-emerge{transition:none} }
 
 /* ── mobile menu ───────────────────────────────────── */
-.menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100svh;width:84vw;z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:23px;
+.menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100svh;width:84vw;z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:24.8px;
   padding:0 calc(var(--pad) + 24px);transform:translateX(-100%);visibility:hidden;
   transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s linear .6s}
 .menu-sheet.open{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s}
 .menu-sheet a{font:400 34px/1.05 var(--serif);text-transform:uppercase;color:#000}
+.menu-sheet a.two-line{line-height:.92}          /* Shipping & / Returns: the two lines held close */
 /* the page slides right as the menu comes in from the left edge */
 body > :not(.menu-sheet):not(script):not(.dock){transition:transform .6s cubic-bezier(.65,0,.25,1)}
 html.menu-open body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(84vw)}
@@ -193,6 +194,13 @@ body{overflow-x:clip}
 .menu-sheet.open a{animation:menu-in .55s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 60ms + 220ms)}
 @keyframes menu-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){ .menu-sheet,.menu-sheet.open,body > *{transition:none} .menu-sheet.open a{animation:none} }
+/* arriving from the drawer: the new page loads behind it, already pushed aside, then the drawer closes */
+@media (max-width:767px){
+  html.menu-arriving body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(84vw);transition:none}
+  html.menu-arriving::before{content:"";position:fixed;top:0;left:0;width:84vw;height:100vh;height:100svh;background:#fff;z-index:59}
+  html.menu-arriving,html.menu-arriving body{overflow:hidden}
+}
+.menu-sheet.instant,.menu-sheet.instant a{transition:none !important;animation:none !important}
 .menu-close{position:absolute;top:28px;left:calc(var(--pad) + 24px);font-size:calc(16px - 1pt);line-height:inherit}
 
 /* ── size picker nudge when Add to Bag is pressed without a size ── */

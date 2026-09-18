@@ -16,7 +16,7 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789711914">
+<link rel="stylesheet" href="site.css?v=1789761682">
 <style>
   .co{max-width:1100px;margin:0 auto;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
   .co h1{margin:0 0 40px}
@@ -64,6 +64,8 @@
     setTimeout(off, 1400);          // only a backstop, never the usual path
   }); });
 })();
+// reached from the mobile drawer: open already pushed aside, with the drawer over the page
+(function () { try { if (sessionStorage.getItem('macon-menu') === '1') document.documentElement.classList.add('menu-arriving'); } catch (e) {} })();
 </script>
 </head>
 <body class="fit">
@@ -578,7 +580,7 @@
     menu.className = 'menu-sheet'; menu.setAttribute('aria-label', 'Menu'); menu.inert = true;
     menu.innerHTML = '<button class="menu-close" type="button" aria-label="Close menu">Close</button>' +
       '<a href="index.html#pieces">Shop</a><a href="custom.html">Custom</a><a href="inspiration.html">Inspiration</a>' +
-      '<a href="story.html">About</a><a href="shipping.html">Shipping &amp; Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
+      '<a href="story.html">About</a><a href="shipping.html" class="two-line">Shipping &amp;<br>Returns</a><a href="contact.html">Contact</a><a href="bag.html">Bag</a>';
     [].forEach.call(menu.querySelectorAll('a'), function (a, i) { a.style.setProperty('--i', i); });
     document.body.appendChild(menu);
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
@@ -600,6 +602,33 @@
     btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
+
+    // Choosing a page: the drawer stays put and the new page loads behind it
+    menu.addEventListener('click', function (e) {
+      var a = e.target.closest('a'); if (!a) return;
+      var to = new URL(a.href, location.href);
+      if (to.pathname === location.pathname) { set(false); return; }          // same page (Shop from the home page): just close
+      try { sessionStorage.setItem('macon-menu', '1'); } catch (err) {}
+    });
+    // ...where it arrives already open, and slides closed once the page is ready
+    var root = document.documentElement;
+    if (root.classList.contains('menu-arriving')) {
+      try { sessionStorage.removeItem('macon-menu'); } catch (err) {}
+      menu.classList.add('instant');
+      set(true);
+      root.classList.remove('menu-arriving');
+      var closed = false;
+      var close = function () {
+        if (closed) return; closed = true;
+        requestAnimationFrame(function () {
+          menu.classList.remove('instant');
+          requestAnimationFrame(function () { set(false); });
+        });
+      };
+      if (document.readyState === 'complete') setTimeout(close, 150);
+      else addEventListener('load', function () { setTimeout(close, 150); });
+      setTimeout(close, 1600);          // never held open waiting on a slow picture
+    }
   })();
 
   // ── Page wipe ─────────────────────────────────────────────────────────
