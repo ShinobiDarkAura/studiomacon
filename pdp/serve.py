@@ -52,7 +52,8 @@ def editor_data():
             "edits": edits["products"].get(slug, {}),
             "photos": photos,
         })
-    return {"products": out, "stamp": edits.get("stamp") or {}, "pages": edits.get("pages") or {}}
+    return {"products": out, "stamp": edits.get("stamp") or {}, "pages": edits.get("pages") or {},
+            "order": edits.get("order") or []}
 
 
 def keep_backup(path, keep=20):
@@ -184,8 +185,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                         raise BadRequest("expected an object")
                     target = os.path.join(ROOT, "pdp", "content.json")
                     keep_backup(target)           # yesterday's wording is never more than one file away
+                    try:
+                        with open(target, encoding="utf-8") as f:
+                            before = json.load(f)
+                    except (OSError, ValueError):
+                        before = {}
+                    order = body["order"] if isinstance(body.get("order"), list) else before.get("order") or []
                     write_json(target, {"products": body.get("products") or {}, "pages": body.get("pages") or {},
-                                        "shared": body.get("shared") or {}, "stamp": body.get("stamp") or {}},
+                                        "shared": body.get("shared") or {}, "stamp": body.get("stamp") or {},
+                                        "order": [str(x) for x in order]},
                                indent=1, ensure_ascii=False)
                     try:
                         rebuild()

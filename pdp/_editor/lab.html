@@ -43,12 +43,12 @@
   .shot .btns button.on{background:#111;color:#fff;border-color:#111}
   .shot .sl{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--soft)}
   .shot input[type=range]{flex:1;margin:0}
-  .stage{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:18px;overflow:hidden}
+  .stage{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:18px;overflow:clip}
   /* a small true-to-life copy of the product page: pictures at 70, words at 30 */
   .mock{display:grid;grid-template-columns:70fr 30fr;gap:0 26px;align-items:start}
   .mock .pics figure{margin:0 0 8px;overflow:hidden;background:var(--field);border-radius:4px}
   .mock .pics img{display:block;width:100%}
-  .mock .copy{position:sticky;top:0}
+  .mock .copy{position:sticky;top:72px}
   .greek{background:#ddd9d4;border-radius:3px;height:9px;margin:0 0 7px}
   .greek.t{height:26px;background:#c9c4be;margin-bottom:14px}
   .greek.s{width:40%}
@@ -57,16 +57,19 @@
   /* --- skeleton --- */
   .sk{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:20px;
       display:grid;grid-template-columns:1fr 1fr;gap:24px}
-  .sk .frame{border:1px solid var(--rule);border-radius:6px;overflow:hidden;padding:10px;background:var(--bg)}
+  .sk .frame{border:1px solid var(--rule);border-radius:6px;overflow:clip;padding:10px;background:var(--bg)}
   .sk .bar{display:flex;gap:8px;align-items:center;margin-bottom:14px}
   .sk .bar .greek{height:7px;width:34px;margin:0}
   .sk .hero{height:150px;background:#111;border-radius:4px;margin-bottom:16px}
   .sk .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .sk .tiles i.drag{opacity:.3}
+  .sk .tiles i.over{outline:2px solid #111;outline-offset:2px}
   .sk .setname{display:flex;align-items:baseline;gap:6px;margin:18px 0 8px}
   .sk .setname b{font:600 13px/1 ui-sans-serif;letter-spacing:.04em;text-transform:uppercase}
   .sk .setname span{font-size:11px;color:var(--soft)}
   .sk .tiles i{display:block;aspect-ratio:3/4;background:#ddd9d4;border-radius:3px}
-  .sk .split{display:grid;grid-template-columns:70fr 30fr;gap:10px}
+  .sk .split{display:grid;grid-template-columns:70fr 30fr;gap:10px;align-items:start}
+  .sk .split > div:last-child{position:sticky;top:72px}          /* the words stay with you, like the real page */
   .sk .split .p i{display:block;aspect-ratio:4/5;background:#ddd9d4;border-radius:3px;margin-bottom:6px}
   .sk .tiles i,.sk .split .p i{position:relative;background:#ddd9d4 center/cover no-repeat;cursor:pointer}
   .sk .tiles i::after,.sk .split .p i::after{content:"Change";position:absolute;inset:auto 0 0 0;padding:3px 0;
@@ -85,6 +88,12 @@
   /* swapping a piece replays the page's own entrance, so the rhythm can be judged */
   @keyframes rise{from{opacity:0;transform:translateY(22px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
   .sk .playing i,.sk .playing .greek{animation:rise .62s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0ms)}
+  .x{position:absolute;top:6px;right:6px;z-index:2;width:24px;height:24px;padding:0;border:0;border-radius:50%;
+     background:rgba(0,0,0,.62);color:#fff;font-size:15px;line-height:24px;text-align:center;cursor:pointer;
+     opacity:0;transition:opacity .15s ease}
+  .x:hover{background:#a11}
+  .sk .split .p i:hover .x,.mock .pics figure:hover .x{opacity:1}
+  .mock .pics figure{position:relative}
   .sk .cap{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:0 0 10px}
 </style>
 </head>
@@ -203,7 +212,7 @@ function draw() {
 
   $('#mock').innerHTML = `<div class="pics">` + shown().map(src => {
     const f = frameOf(src);
-    return `<figure><img src="/pdp/${src}" style="transform:scale(${f.z});transform-origin:${f.x}% ${f.y}%"></figure>`;
+    return `<figure><button class="x" data-src="${src}" title="Remove from the page" aria-label="Remove from the page">×</button><img src="/pdp/${src}" style="transform:scale(${f.z});transform-origin:${f.x}% ${f.y}%"></figure>`;
   }).join('') + `</div>
     <div class="copy">
       <div class="greek s"></div><div class="greek t"></div>
@@ -258,6 +267,20 @@ function dragging(order) {
     };
   });
 }
+
+function removeFromPage(src) {
+  const e = edit(), p = piece();
+  const order = [e.hero || p.defaults.hero].concat(e.gallery || p.defaults.gallery)
+                .filter((x, k, a) => a.indexOf(x) === k);
+  act('drop', order, order.indexOf(src), src);
+}
+document.addEventListener('click', ev => {
+  const x = ev.target.closest && ev.target.closest('.x');
+  if (!x) return;
+  ev.stopPropagation();                                   // not the "Change" picker underneath
+  removeFromPage(x.dataset.src);
+  if (window.skelReady) skeleton();
+}, true);
 
 function act(a, order, i, src2) {
   const e = edit(), p = piece(), src = src2 || order[i];
@@ -342,21 +365,23 @@ async function readSets() {
 }
 
 function skeleton() {
-  $('#skSets').innerHTML = SETS.map(set => `<div class="setname"><b>${set.name}</b><span>${set.slugs.length}</span></div>
+  $('#skSets').innerHTML = SETS.map((set, si) => `<div class="setname"><b>${set.name}</b><span>${set.slugs.length}</span></div>
     <div class="tiles">` + set.slugs.map(sl => {
       const p = DATA.products.find(x => x.slug === sl);
       if (!p) return '<i></i>';
       const e = EDITS.products[sl] || {};
-      return `<i data-slug="${sl}" style="background-image:url('/pdp/${e.hero || p.defaults.hero}')"></i>`;
+      return `<i data-slug="${sl}" data-set="${si}" draggable="true" style="background-image:url('/pdp/${e.hero || p.defaults.hero}')"></i>`;
     }).join('') + `</div>`).join('');
   $('#skSets').querySelectorAll('i[data-slug]').forEach(t => t.onclick = () => {
     const s2 = t.dataset.slug;
     openPick(s2, src => { (EDITS.products[s2] = EDITS.products[s2] || {}).hero = src; skeleton(); draw(); touched(); });
   });
 
+  gridDrag();
+
   const list = shown();
   $('#skPics').innerHTML = list.map((src, i) =>
-    `<i data-i="${i}" style="background-image:url('/pdp/${src}')"></i>`).join('');
+    `<i data-i="${i}" style="background-image:url('/pdp/${src}')"><button class="x" data-src="${src}" title="Remove from the page" aria-label="Remove from the page">×</button></i>`).join('');
   $('#skPics').querySelectorAll('i').forEach(t => t.onclick = () => {
     const i = +t.dataset.i;
     openPick(slug, src => {
@@ -368,6 +393,26 @@ function skeleton() {
       e.hero = order[0]; e.gallery = order.slice(1);
       skeleton(); draw(); touched();
     });
+  });
+}
+
+// the home grid: drag a piece to a new place in its own set
+let gHeld = null;
+function gridDrag() {
+  $('#skSets').querySelectorAll('i[draggable]').forEach(t => {
+    t.ondragstart = e => { gHeld = t; t.classList.add('drag'); e.dataTransfer.effectAllowed = 'move'; };
+    t.ondragend = () => { gHeld = null; $('#skSets').querySelectorAll('i').forEach(x => x.classList.remove('drag', 'over')); };
+    t.ondragover = e => { if (gHeld && gHeld.dataset.set === t.dataset.set) { e.preventDefault(); t.classList.add('over'); } };
+    t.ondragleave = () => t.classList.remove('over');
+    t.ondrop = e => {
+      e.preventDefault();
+      if (!gHeld || gHeld === t || gHeld.dataset.set !== t.dataset.set) return;   // a totem stays a totem
+      const set = SETS[+t.dataset.set].slugs;
+      set.splice(set.indexOf(t.dataset.slug), 0, set.splice(set.indexOf(gHeld.dataset.slug), 1)[0]);
+      EDITS.order = SETS.reduce((all, st) => all.concat(st.slugs), []);
+      gHeld = null;
+      skeleton(); touched();
+    };
   });
 }
 
@@ -419,6 +464,7 @@ $('#pickFile').onchange = async () => {
   DATA = await r.json();
   if (DATA.error) return msg(DATA.error, true);
   EDITS.stamp = DATA.stamp || {}; EDITS.pages = DATA.pages || {};
+  if (DATA.order && DATA.order.length) EDITS.order = DATA.order.slice();
   DATA.products.forEach(p => { if (Object.keys(p.edits || {}).length) EDITS.products[p.slug] = JSON.parse(JSON.stringify(p.edits)); });
   $('#piece').innerHTML = DATA.products.map(p => `<option value="${p.slug}">${p.defaults.name}</option>`).join('');
   $('#piece').onchange = () => { slug = $('#piece').value; draw(); skeleton(); chips(); play(); };
