@@ -247,8 +247,8 @@ def page(p, template, related=""):
 
     if plain or hand:
         hero_src = os.path.join(OUT, "img", "wonderhorn-hero-src.jpg") if slug == "wonderhorn-talisman" else (plain[0] if plain else hand[0])
-        hero = export(hero_src, slug, "hero", 2400)
-        gallery = [export(f, slug, f"plain-{i}", 2600) for i, f in enumerate(plain[1 if slug != "wonderhorn-talisman" else 0:], 1)]
+        hero = export(hero_src, slug, "hero", 3600)
+        gallery = [export(f, slug, f"plain-{i}", 3600) for i, f in enumerate(plain[1 if slug != "wonderhorn-talisman" else 0:], 1)]
         gallery += [export(f, slug, f"hand-{i}", 2400) for i, f in enumerate(hand, 1)]
         drawing = export(drawn[0], slug, "drawing", 1400) if drawn else None
     else:                                  # no Pieces Master on this machine: use the photographs already in img/
