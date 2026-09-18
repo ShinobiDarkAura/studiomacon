@@ -51,7 +51,7 @@
   .ship .policies{--stagger:1050ms !important}
   @media (max-width:767px){
     .ship{padding:0 !important;gap:0}
-    .ship .branch{height:40vh;height:40svh;padding:calc(var(--head) + 8px) 12vw 5vh;overflow:hidden}
+    .ship .branch{height:60vh;height:60svh;padding:calc(var(--head) + 8px) 12vw 8vh;overflow:hidden}
     .ship .branch{display:flex;align-items:center;justify-content:center}
     .ship .branch img{width:auto;height:auto;max-width:100%;max-height:100%}          /* the whole box, inside the panel */
     .ship .text{padding:40px var(--gutter) 64px;max-width:none}
@@ -377,11 +377,23 @@
       return r.top < innerHeight && r.bottom > 0;
     }
 
+    // arriving by a link to a spot on the page (Shop lands on #pieces): whatever sits in the screenful
+    // it lands on is never hidden to begin with. Deciding this only after every picture had loaded
+    // left the grid invisible on white for a moment (the flash), then nudged it into place.
+    var anchor = null;
+    try { anchor = location.hash && location.hash.length > 1 ? document.querySelector(location.hash) : null; } catch (err) {}
+    function inLanding(el) {
+      if (!anchor) return false;
+      var top = anchor.getBoundingClientRect().top + scrollY, r = el.getBoundingClientRect(), y = r.top + scrollY;
+      return y < top + innerHeight && y + r.height > top - 40;
+    }
+
     function arm(root) {
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           if (alreadyThere(el)) return;                 // a picture waiting on the first screen
+          if (inLanding(el)) return;                    // on screen where the link lands
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');

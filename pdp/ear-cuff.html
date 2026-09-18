@@ -211,15 +211,15 @@
 <main>
   <section class="product">
     <div class="gallery" data-under-nav>
-      <figure class="hero"><img width="1856" height="2304" src="img/ear-cuff/hero.jpg.webp" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Caldera Arc" fetchpriority="high"></figure>
-      <figure><img width="880" height="1168" src="img/ear-cuff/composite.jpg.webp" alt="" loading="lazy"></figure>
-      <figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/ear-cuff.jpg" aria-label="Caldera Arc in motion"><source src="video/pieces/ear-cuff.mp4" type="video/mp4"></video></figure>
-      <figure><img width="814" height="1084" src="img/ear-cuff/hand-1.jpg.webp" alt="" loading="lazy"></figure>
-      <figure><img width="1046" height="645" src="img/ear-cuff/hand-2.jpg.webp" alt="" loading="lazy"></figure>
-      <figure><img width="1776" height="1184" src="img/ear-cuff/hand-3.jpg.webp" alt="" loading="lazy"></figure>
+      <figure class="hero"><img width="1046" height="645" src="img/ear-cuff/hand-2.jpg.webp" alt="Caldera Arc" fetchpriority="high"></figure>
       <figure><img width="3600" height="2403" src="img/ear-cuff/hires-1.jpg.webp" alt="" loading="lazy"></figure>
+      <figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/ear-cuff.jpg" aria-label="Caldera Arc in motion"><source src="video/pieces/ear-cuff.mp4" type="video/mp4"></video></figure>
+      <figure><img width="1776" height="1184" src="img/ear-cuff/hand-3.jpg.webp" alt="" loading="lazy"></figure>
+      <figure><img width="1856" height="2304" src="img/ear-cuff/hero.jpg.webp" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="" loading="lazy"></figure>
+      <figure><img width="814" height="1084" src="img/ear-cuff/hand-1.jpg.webp" alt="" loading="lazy"></figure>
       <figure><img width="1184" height="789" src="img/ear-cuff/hires-2.jpg.webp" alt="" loading="lazy"></figure>
       <figure><img width="1184" height="1721" src="img/ear-cuff/hires-3.jpg.webp" alt="" loading="lazy"></figure>
+      <figure><img width="880" height="1168" src="img/ear-cuff/composite.jpg.webp" alt="" loading="lazy"></figure>
       <figure><img width="880" height="1168" src="img/ear-cuff/composite.jpg.webp" alt="" loading="lazy"></figure>
     </div>
 
@@ -487,11 +487,23 @@
       return r.top < innerHeight && r.bottom > 0;
     }
 
+    // arriving by a link to a spot on the page (Shop lands on #pieces): whatever sits in the screenful
+    // it lands on is never hidden to begin with. Deciding this only after every picture had loaded
+    // left the grid invisible on white for a moment (the flash), then nudged it into place.
+    var anchor = null;
+    try { anchor = location.hash && location.hash.length > 1 ? document.querySelector(location.hash) : null; } catch (err) {}
+    function inLanding(el) {
+      if (!anchor) return false;
+      var top = anchor.getBoundingClientRect().top + scrollY, r = el.getBoundingClientRect(), y = r.top + scrollY;
+      return y < top + innerHeight && y + r.height > top - 40;
+    }
+
     function arm(root) {
       (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           if (alreadyThere(el)) return;                 // a picture waiting on the first screen
+          if (inLanding(el)) return;                    // on screen where the link lands
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');

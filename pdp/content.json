@@ -14,14 +14,15 @@
     "z": 1.7
    },
    "gallery": [
-    "img/ear-cuff/composite.jpg",
-    "img/ear-cuff/hand-1.jpg",
-    "img/ear-cuff/hand-2.jpg",
-    "img/ear-cuff/hand-3.jpg",
     "img/ear-cuff/hires-1.jpg",
+    "img/ear-cuff/hand-3.jpg",
+    "img/ear-cuff/hero.jpg",
+    "img/ear-cuff/hand-1.jpg",
     "img/ear-cuff/hires-2.jpg",
-    "img/ear-cuff/hires-3.jpg"
-   ]
+    "img/ear-cuff/hires-3.jpg",
+    "img/ear-cuff/composite.jpg"
+   ],
+   "hero": "img/ear-cuff/hand-2.jpg"
   },
   "eclipse-ring": {
    "frames": {
@@ -37,10 +38,11 @@
     "z": 1.99
    },
    "gallery": [
-    "img/eclipse-ring/hand-1.jpg",
-    "img/eclipse-ring/hand-2.jpg",
-    "img/eclipse-ring/hires-1.jpg"
-   ]
+    "img/eclipse-ring/hires-1.jpg",
+    "img/eclipse-ring/hero.jpg",
+    "img/eclipse-ring/hand-1.jpg"
+   ],
+   "hero": "img/eclipse-ring/hand-2.jpg"
   },
   "eleph": {
    "frames": {
@@ -66,13 +68,14 @@
     "z": 1.48
    },
    "gallery": [
-    "img/eleph/hand-1.jpg",
-    "img/eleph/hand-2.jpg",
+    "img/eleph/hires-1.jpg",
     "img/eleph/plain-1.jpg",
     "img/eleph/plain-2.jpg",
-    "img/eleph/hires-1.jpg",
+    "img/eleph/hero.jpg",
+    "img/eleph/hand-1.jpg",
     "img/eleph/hires-2.jpg"
-   ]
+   ],
+   "hero": "img/eleph/hand-2.jpg"
   },
   "ibi": {
    "frames": {
@@ -88,13 +91,14 @@
     "z": 1.18
    },
    "gallery": [
-    "img/ibi/hand-1.jpg",
     "img/ibi/hand-2.jpg",
-    "img/ibi/plain-1.jpg",
     "img/ibi/hires-1.jpg",
-    "img/ibi/hires-2.jpg",
+    "img/ibi/hero.jpg",
+    "img/ibi/hand-1.jpg",
+    "img/ibi/plain-1.jpg",
     "img/ibi/hires-3.jpg"
-   ]
+   ],
+   "hero": "img/ibi/hires-2.jpg"
   },
   "lunar-canyon-ring": {
    "frames": {
@@ -110,10 +114,21 @@
     }
    },
    "tile": {
+    "x": 50,
+    "y": 50,
+    "z": 1
+   },
+   "tile_before_hires": {
     "x": 49.2,
     "y": 48.1,
-    "z": 1.0
-   }
+    "z": 1.67
+   },
+   "hero": "img/lunar-canyon-ring/hero.jpg",
+   "gallery": [
+    "img/lunar-canyon-ring/hand-2.jpg",
+    "img/lunar-canyon-ring/plain-1.jpg",
+    "img/lunar-canyon-ring/hand-1.jpg"
+   ]
   },
   "macon-cap": {
    "frames": {
@@ -127,7 +142,16 @@
      "y": 50,
      "z": 1
     }
-   }
+   },
+   "tile": {
+    "x": 50,
+    "y": 50,
+    "z": 1
+   },
+   "hero": "img/macon-cap/hero.jpg",
+   "gallery": [
+    "img/macon-cap/plain-1.jpg"
+   ]
   },
   "meridian-egg-ring": {
    "frames": {
@@ -143,11 +167,12 @@
     "z": 1.37
    },
    "gallery": [
-    "img/meridian-egg-ring/hand-1.jpg",
     "img/meridian-egg-ring/hand-2.jpg",
     "img/meridian-egg-ring/plain-1.jpg",
-    "img/meridian-egg-ring/hires-1.jpg"
-   ]
+    "img/meridian-egg-ring/hero.jpg",
+    "img/meridian-egg-ring/hand-1.jpg"
+   ],
+   "hero": "img/meridian-egg-ring/hires-1.jpg"
   },
   "milo": {
    "frames": {
@@ -163,11 +188,12 @@
     "z": 1.2
    },
    "gallery": [
+    "img/milo/hires-2.jpg",
+    "img/milo/hero.jpg",
     "img/milo/hand-1.jpg",
-    "img/milo/hand-2.jpg",
-    "img/milo/hires-1.jpg",
-    "img/milo/hires-2.jpg"
-   ]
+    "img/milo/hires-1.jpg"
+   ],
+   "hero": "img/milo/hand-2.jpg"
   },
   "ori": {
    "frames": {
@@ -179,9 +205,22 @@
    },
    "tile": {
     "x": 50,
+    "y": 50,
+    "z": 1
+   },
+   "tile_before_hires": {
+    "x": 50,
     "y": 49.9,
-    "z": 1.0
-   }
+    "z": 1.54
+   },
+   "hero": "img/ori/hand-2.jpg",
+   "gallery": [
+    "img/ori/hero.jpg",
+    "img/ori/plain-1.jpg",
+    "img/ori/plain-2.jpg",
+    "img/ori/plain-3.jpg",
+    "img/ori/hand-1.jpg"
+   ]
   },
   "pip": {
    "frames": {
@@ -197,19 +236,25 @@
     }
    },
    "gallery": [
+    "img/pip/hero.jpg",
     "img/pip/plain-1.jpg",
     "img/pip/plain-2.jpg",
-    "img/pip/plain-3.jpg",
-    "img/pip/hand-2.jpg"
+    "img/pip/plain-3.jpg"
    ],
    "hidden": [
     "img/pip/composite.jpg"
    ],
    "tile": {
+    "x": 50,
+    "y": 50,
+    "z": 1
+   },
+   "tile_before_hires": {
     "x": 49.9,
     "y": 49.9,
-    "z": 1.0
-   }
+    "z": 1.54
+   },
+   "hero": "img/pip/hand-2.jpg"
   },
   "rebi": {
    "frames": {
@@ -220,18 +265,24 @@
     }
    },
    "tile": {
-    "x": 51.5,
-    "y": 54.2,
-    "z": 1.0
+    "x": 50,
+    "y": 50,
+    "z": 1
    },
    "gallery": [
-    "img/rebi/composite.jpg",
-    "img/rebi/hand-1.jpg",
     "img/rebi/hand-2.jpg",
-    "img/rebi/plain-1.jpg",
     "img/rebi/hires-1.jpg",
-    "img/rebi/hires-2.jpg"
-   ]
+    "img/rebi/hand-1.jpg",
+    "img/rebi/plain-1.jpg",
+    "img/rebi/hires-2.jpg",
+    "img/rebi/composite.jpg"
+   ],
+   "tile_before_hires": {
+    "x": 51.5,
+    "y": 54.2,
+    "z": 1.47
+   },
+   "hero": "img/rebi/hero.jpg"
   },
   "ren": {
    "frames": {
@@ -254,16 +305,22 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1.0
+    "z": 1
    },
    "gallery": [
-    "img/ren/composite.jpg",
-    "img/ren/hand-1.jpg",
     "img/ren/hand-2.jpg",
     "img/ren/plain-1.jpg",
     "img/ren/plain-2.jpg",
-    "img/ren/hires-1.jpg"
-   ]
+    "img/ren/hand-1.jpg",
+    "img/ren/hires-1.jpg",
+    "img/ren/composite.jpg"
+   ],
+   "tile_before_hires": {
+    "x": 50,
+    "y": 50,
+    "z": 1.42
+   },
+   "hero": "img/ren/hero.jpg"
   },
   "sietch-aperture": {
    "frames": {
@@ -279,10 +336,20 @@
     }
    },
    "tile": {
+    "x": 50,
+    "y": 50,
+    "z": 1
+   },
+   "tile_before_hires": {
     "x": 51.4,
     "y": 44.1,
-    "z": 1.0
-   }
+    "z": 1.56
+   },
+   "hero": "img/sietch-aperture/hero.jpg",
+   "gallery": [
+    "img/sietch-aperture/plain-1.jpg",
+    "img/sietch-aperture/hand-1.jpg"
+   ]
   },
   "starshipkey-pendant": {
    "frames": {
@@ -298,10 +365,20 @@
     }
    },
    "tile": {
+    "x": 50,
+    "y": 50,
+    "z": 1
+   },
+   "tile_before_hires": {
     "x": 47.5,
     "y": 58.4,
-    "z": 1.0
-   }
+    "z": 1.49
+   },
+   "hero": "img/starshipkey-pendant/hero.jpg",
+   "gallery": [
+    "img/starshipkey-pendant/plain-1.jpg",
+    "img/starshipkey-pendant/hand-1.jpg"
+   ]
   },
   "wonderhorn-talisman": {
    "frames": {
@@ -323,10 +400,20 @@
    },
    "hero": "img/wonderhorn-talisman/plain-1.jpg",
    "tile": {
+    "x": 50,
+    "y": 50,
+    "z": 1
+   },
+   "tile_before_hires": {
     "x": 48.2,
     "y": 51.1,
-    "z": 1.0
-   }
+    "z": 2.03
+   },
+   "gallery": [
+    "img/wonderhorn-talisman/plain-2.jpg",
+    "img/wonderhorn-talisman/plain-3.jpg",
+    "img/wonderhorn-talisman/hand-1.jpg"
+   ]
   },
   "yael": {
    "frames": {
@@ -342,11 +429,12 @@
     "z": 1.65
    },
    "gallery": [
-    "img/yael/hand-1.jpg",
-    "img/yael/hand-2.jpg",
+    "img/yael/hires-1.jpg",
     "img/yael/plain-1.jpg",
-    "img/yael/hires-1.jpg"
-   ]
+    "img/yael/hero.jpg",
+    "img/yael/hand-1.jpg"
+   ],
+   "hero": "img/yael/hand-2.jpg"
   },
   "zuma": {
    "frames": {
@@ -363,9 +451,22 @@
    },
    "tile": {
     "x": 50,
+    "y": 50,
+    "z": 1
+   },
+   "tile_before_hires": {
+    "x": 50,
     "y": 50.1,
-    "z": 1.0
-   }
+    "z": 1.86
+   },
+   "hero": "img/zuma/hero.jpg",
+   "gallery": [
+    "img/zuma/hand-2.jpg",
+    "img/zuma/plain-1.jpg",
+    "img/zuma/hand-1.jpg",
+    "img/zuma/plain-2.jpg",
+    "img/zuma/composite.jpg"
+   ]
   },
   "zuma-ring": {
    "frames": {
@@ -391,13 +492,14 @@
     "z": 1.36
    },
    "gallery": [
-    "img/zuma-ring/composite.jpg",
-    "img/zuma-ring/hand-1.jpg",
-    "img/zuma-ring/hand-2.jpg",
+    "img/zuma-ring/hires-1.jpg",
     "img/zuma-ring/plain-1.jpg",
     "img/zuma-ring/plain-2.jpg",
-    "img/zuma-ring/hires-1.jpg"
-   ]
+    "img/zuma-ring/hero.jpg",
+    "img/zuma-ring/hand-1.jpg",
+    "img/zuma-ring/composite.jpg"
+   ],
+   "hero": "img/zuma-ring/hand-2.jpg"
   }
  },
  "pages": {},
