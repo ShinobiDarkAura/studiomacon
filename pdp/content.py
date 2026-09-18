@@ -18,6 +18,7 @@ def load():
         return {"products": {}, "pages": {}}
     c.setdefault("products", {})
     c.setdefault("pages", {})
+    c.setdefault("shared", {})          # wording used by every piece of a kind
     return c
 
 
@@ -34,6 +35,13 @@ CONTENT = load()
 def product(slug, field, default):
     """One edited field for a piece, or the builder's own value."""
     v = CONTENT["products"].get(slug, {}).get(field)
+    return default if v in (None, "") else v
+
+
+def shared(key, default):
+    """Copy that several pages have in common: care notes for a kind of piece, the
+    shipping paragraphs. Editing it on one page changes it everywhere it appears."""
+    v = CONTENT["shared"].get(key)
     return default if v in (None, "") else v
 
 

@@ -23,6 +23,14 @@ photograph on a product page for **Make main**, **Hide** and the arrows that reo
 In the list view as well: the material rows, the field note, the paragraph about how a
 piece is made, and where the Bureau stamp sits on the shop page.
 
+The accordions on a product page stand open while you are editing. The care notes
+and the shipping paragraphs are **shared**: changing them on one totem changes every
+totem, and the shipping wording is the same across the whole shop. The dimensions
+come from each piece's own material rows.
+
+To use a photograph from your drive, hover one on a product page and press
+**Replace…**. It is resized and saved beside the others.
+
 Escape puts a block back the way it was before you started typing.
 
 Anything you haven't changed keeps its original wording. A changed field is outlined

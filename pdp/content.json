@@ -1,10 +1,11 @@
 {
  "products": {},
  "pages": {},
+ "shared": {},
  "stamp": {
-  "w": 16,
-  "right": 19.7,
-  "drop": 87.3,
+  "w": 8.2,
+  "right": 36.2,
+  "drop": 289.4,
   "tilt": -18
  }
 }

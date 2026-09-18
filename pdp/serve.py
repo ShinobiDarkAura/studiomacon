@@ -69,6 +69,20 @@ def keep_backup(path, keep=20):
         os.remove(os.path.join(folder, f))
 
 
+def add_photo(data, slug, filename):
+    """Save a photograph the studio picked from their own drive next to the piece's
+    others, at the same size and quality as the rest, and hand back its address."""
+    from PIL import Image, ImageOps
+    Image.MAX_IMAGE_PIXELS = 80_000_000
+    im = ImageOps.exif_transpose(Image.open(io.BytesIO(data))).convert("RGB")
+    if im.width > 1800:
+        im = im.resize((1800, round(im.height * 1800 / im.width)), Image.LANCZOS)
+    stem = re.sub(r"[^a-z0-9]+", "-", os.path.splitext(filename)[0].lower()).strip("-")[:32] or "photo"
+    name = f"added-{int(time.time())}-{stem}.jpg"
+    im.save(os.path.join(ROOT, "pdp", "img", slug, name), quality=88, optimize=True)
+    return f"img/{slug}/{name}"
+
+
 def rebuild():
     out = subprocess.run([sys.executable, os.path.join(ROOT, "pdp", "build_pdp.py")], cwd=ROOT, capture_output=True, text=True)
     if out.returncode != 0:
@@ -173,11 +187,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def do_POST(self):
         path, _, qs = self.path.partition("?")
-        if path not in ("/api/commission-image", "/api/commission-layout", "/api/picks", "/api/content"):
+        if path not in ("/api/commission-image", "/api/commission-layout", "/api/picks", "/api/content", "/api/photo"):
             return self.send_error(404)
         try:
             data = self.body()
             with LOCK:
+                if path == "/api/photo":          # a photograph chosen from the studio's own drive
+                    args = urllib.parse.parse_qs(qs)
+                    slug = re.sub(r"[^a-z0-9-]", "", (args.get("slug", [""])[0]).lower())
+                    if not slug or not os.path.isdir(os.path.join(ROOT, "pdp", "img", slug)):
+                        raise BadRequest("unknown piece")
+                    name = add_photo(data, slug, args.get("name", ["photo"])[0])
+                    rebuild()
+                    return self.reply({"added": name})
                 if path == "/api/content":        # the studio's own copy and photograph choices
                     body = json.loads(data)
                     if not isinstance(body, dict):
@@ -185,7 +207,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     target = os.path.join(ROOT, "pdp", "content.json")
                     keep_backup(target)           # yesterday's wording is never more than one file away
                     write_json(target, {"products": body.get("products") or {}, "pages": body.get("pages") or {},
-                                        "stamp": body.get("stamp") or {}}, indent=1, ensure_ascii=False)
+                                        "shared": body.get("shared") or {}, "stamp": body.get("stamp") or {}},
+                               indent=1, ensure_ascii=False)
                     try:
                         rebuild()
                     except Exception as e:        # the words are safely saved; only the rebuild failed

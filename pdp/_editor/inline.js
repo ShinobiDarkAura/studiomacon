@@ -12,7 +12,7 @@
     return fetch('/pdp/content.json?' + Date.now()).then(function (r) { return r.ok ? r.json() : {}; })
       .catch(function () { return {}; })
       .then(function (c) {
-        edits = {products: c.products || {}, pages: c.pages || {}, stamp: c.stamp || {}};
+        edits = {products: c.products || {}, pages: c.pages || {}, shared: c.shared || {}, stamp: c.stamp || {}};
       });
   }
 
@@ -27,7 +27,7 @@
   }
 
   function changeCount() {
-    var n = Object.keys(edits.pages).length + Object.keys(edits.stamp).length;
+    var n = Object.keys(edits.pages).length + Object.keys(edits.shared || {}).length + Object.keys(edits.stamp).length;
     Object.keys(edits.products).forEach(function (k) { n += Object.keys(edits.products[k]).length; });
     return n;
   }
@@ -38,6 +38,9 @@
     if (key.indexOf('page:') === 0) {
       var k = key.slice(5);
       if (value === dflt) delete edits.pages[k]; else edits.pages[k] = value;
+    } else if (key.indexOf('acc:') === 0) {          // wording shared by every piece of this kind
+      var a = key.slice(4);
+      if (value === dflt) delete edits.shared[a]; else edits.shared[a] = value;
     } else {
       var s = slug(); if (!s) return;
       var p = edits.products[s] || (edits.products[s] = {});
@@ -53,6 +56,7 @@
   function changedHere(el) {
     var key = el.dataset.edit;
     if (key.indexOf('page:') === 0) return key.slice(5) in edits.pages;
+    if (key.indexOf('acc:') === 0) return key.slice(4) in edits.shared;
     return ((edits.products[slug()] || {})[key] !== undefined);
   }
 
@@ -79,6 +83,9 @@
     });
     photos(on);
     stamp(on);
+    document.querySelectorAll('.acc-item').forEach(function (it) {
+      it.classList.toggle('ed-open', on);          // panels stand open while editing
+    });
   }
 
   // ── photographs ───────────────────────────────────────────────────────
@@ -93,6 +100,7 @@
       var box = document.createElement('div');
       box.className = 'ed-photo';
       box.innerHTML = (i === 0 ? '<b>Main photograph</b>' : '<button data-a="hero">Make main</button>') +
+                      '<button data-a="replace">Replace…</button>' +
                       '<button data-a="hide">Hide</button>' +
                       (i > 1 ? '<button data-a="up">&#8592;</button>' : '') +
                       '<button data-a="down">&#8594;</button>';
@@ -110,7 +118,43 @@
       .map(function (n) { return (n.getAttribute('src') || '').replace(/^\//, '').replace(/\.webp$/, '.jpg'); });
   }
 
+  // choosing a picture from the studio's own drive, in place of one on the page
+  function choosePhoto(replacing) {
+    var s = slug(); if (!s) return;
+    var inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = 'image/*'; inp.style.display = 'none';
+    document.body.appendChild(inp);
+    inp.onchange = function () {
+      var f = inp.files && inp.files[0];
+      inp.remove();
+      if (!f) return;
+      if (f.size > 24 * 1024 * 1024) { msg.textContent = 'That photograph is over 24MB'; msg.className = 'ed-msg bad'; return; }
+      msg.textContent = 'Adding ' + f.name + '…'; msg.className = 'ed-msg';
+      fetch('/api/photo?slug=' + encodeURIComponent(s) + '&name=' + encodeURIComponent(f.name),
+            {method: 'POST', body: f})
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j.error) throw new Error(j.error);
+          var p = edits.products[s] || (edits.products[s] = {});
+          var all = gallerySrcs();
+          var hero = p.hero || all[0];
+          var rest = (p.gallery || all.slice(1)).slice();
+          if (replacing === hero) { p.hero = j.added; }
+          else {
+            var at = rest.indexOf(replacing);
+            if (at > -1) rest.splice(at, 1, j.added); else rest.push(j.added);
+          }
+          p.gallery = rest;
+          setDirty(true);
+          save(true);
+        })
+        .catch(function (e) { msg.textContent = 'Could not add it: ' + e.message; msg.className = 'ed-msg bad'; });
+    };
+    inp.click();
+  }
+
   function photoAction(a, src) {
+    if (a === 'replace') return choosePhoto(src);
     var s = slug(); if (!s) return;
     var p = edits.products[s] || (edits.products[s] = {});
     var all = gallerySrcs();
@@ -258,7 +302,7 @@
 
   function revertAll() {
     if (!confirm('Put every word and photograph back the way it was?')) return;
-    edits = {products: {}, pages: {}, stamp: {}};
+    edits = {products: {}, pages: {}, shared: {}, stamp: {}};
     setDirty(true);
     save(true);
   }
@@ -280,6 +324,8 @@
       'body.ed-on [data-edit]:focus{outline:2px solid #111;background:#fffdf6}',
       'body.ed-on .ed-changed{outline-color:#9a5b21;background:rgba(255,241,220,.6)}',
       'body.ed-on{padding-bottom:46px}',
+      'body.ed-on .acc-item.ed-open .acc-panel{grid-template-rows:1fr!important;height:auto!important;',
+      ' max-height:none!important;visibility:visible!important;opacity:1!important}',
       '.ed-fig{position:relative}',
       '.ed-photo{position:absolute;left:10px;bottom:10px;display:flex;gap:5px;align-items:center;',
       ' background:rgba(17,17,17,.88);border-radius:7px;padding:5px 7px;z-index:5}',
