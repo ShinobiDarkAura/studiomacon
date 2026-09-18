@@ -22,6 +22,8 @@
   /* desktop: email and Instagram sit together at the foot of the first screen, centred under the form column */
   .form{display:grid;gap:30px}
   .form .row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .form .row > *{min-width:0}
+  .form .field input{width:100%;box-sizing:border-box}          /* the two name fields share the row, never wider than it */
   .form .field{padding:0 0 10px;border-bottom:.5px solid #000}
   .form .field input,.form .field textarea{font-size:calc(17px - 2pt);opacity:.8}
   .form .field input::placeholder,.form .field textarea::placeholder{color:rgba(0,0,0,.35)}
