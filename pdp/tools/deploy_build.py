@@ -9,7 +9,7 @@ import csv, glob, os, re, shutil, sys
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(os.path.dirname(HERE), "dist")
 
-KEEP_FILES = (".html", ".css", ".xml", ".txt", ".ico", ".webmanifest")
+KEEP_FILES = (".html", ".css", ".xml", ".txt", ".ico", ".webmanifest", ".csv")
 KEEP_DIRS = ("img", "video", "fonts")
 SKIP_DIRS = {"_editor", "_originals", "_picker", "tools", "partials", "pages", "shopify", "_source"}
 
@@ -43,7 +43,7 @@ def referenced():
     The logotype letters, for one, are drawn from CSS and never appear as an <img>."""
     out = set()
     for f in os.listdir(HERE):
-        if f.endswith((".html", ".css")) and f != "template.html":
+        if f.endswith((".html", ".css", ".csv", ".xml")) and f != "template.html":          # the product feeds name photos too
             with open(os.path.join(HERE, f), encoding="utf-8") as fh:
                 # the whole name, double extensions included (hero.jpg.webp is not hero.jpg)
                 out.update(re.findall(r'(img/[^"\'()\s,]+\.(?:png|jpe?g|webp|svg|gif))(?![\w.])', fh.read()))

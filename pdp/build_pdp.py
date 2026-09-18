@@ -440,12 +440,54 @@ WIPE_HEAD = """<style>
 """
 
 
+# ── Ads and analytics: the same Meta Pixel and Google tags the Wix site used ──────────────────
+# They run only on studiomacon.co itself, so the preview and local copies never reach the studio's
+# ad data. Products are named the way Shopify's own Meta app names them (shopify_US_<product>_<variant>),
+# so a purchase at Shopify's checkout is credited to the ad and catalog item that led to it.
+META_PIXEL, GA4, GOOGLE_ADS = "501136812574699", "G-B5GNGQ1WME", "AW-16466703173"
+META_DOMAIN_TAG = "ae0yp3uhbruy2um27iahgcmha7bnph"          # Meta domain verification, carried over from Wix
+with open(os.path.join(OUT, "shopify", "ids.json")) as _f:
+    SHOP_IDS = json.load(_f)
+VARIANT_TO_ITEM = {v["variant"]: f'shopify_US_{v["product"]}_{v["variant"]}' for vs in SHOP_IDS.values() for v in vs}
+TRACKING = ("""<meta name="facebook-domain-verification" content="%s">
+<script>
+(function () {
+  window.maconTrack = function () {};
+  if (!/(^|\\.)studiomacon\\.co$/.test(location.hostname)) return;          // the real site only
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
+  s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '%s'); fbq('track', 'PageView');
+  var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=%s'; document.head.appendChild(g);
+  window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
+  gtag('js', new Date()); gtag('config', '%s'); gtag('config', '%s');
+  var ITEMS = %s;                                     // Shopify variant id -> catalog id
+  var idOf = function (v) { v = String(v || '').split('/').pop(); return ITEMS[v] || v; };
+  window.maconTrack = function (kind, x) {
+    try {
+      var list = [].concat(x || []), ids = list.map(function (i) { return idOf(i.variant); });
+      var value = list.reduce(function (n, i) { return n + (i.price || 0) * (i.qty || 1); }, 0);
+      var g4 = list.map(function (i) { return {item_id: idOf(i.variant), item_name: i.name || i.slug, price: i.price, quantity: i.qty || 1}; });
+      if (kind === 'view') { fbq('track', 'ViewContent', {content_ids: ids, content_type: 'product', content_name: list[0].name, value: value, currency: 'USD'});
+                             gtag('event', 'view_item', {currency: 'USD', value: value, items: g4}); }
+      if (kind === 'add') { fbq('track', 'AddToCart', {content_ids: ids, content_type: 'product', value: value, currency: 'USD'});
+                            gtag('event', 'add_to_cart', {currency: 'USD', value: value, items: g4}); }
+      if (kind === 'checkout') { fbq('track', 'InitiateCheckout', {content_ids: ids, content_type: 'product', num_items: list.length, value: value, currency: 'USD'});
+                                 gtag('event', 'begin_checkout', {currency: 'USD', value: value, items: g4}); }
+      if (kind === 'lead') { fbq('track', 'Contact'); gtag('event', 'generate_lead', {form: x}); }
+    } catch (e) {}
+  };
+})();
+</script>
+""" % (META_DOMAIN_TAG, META_PIXEL, GA4, GA4, GOOGLE_ADS, json.dumps(VARIANT_TO_ITEM, separators=(",", ":"))))
+
+
 def shared(doc):
     """Fill the pieces every page has in common: header, footer, shared script."""
     def part(n):
         with open(os.path.join(OUT, "partials", n), encoding="utf-8") as f:
             return f.read().rstrip()
-    doc = doc.replace("</head>", WIPE_HEAD + "</head>", 1)
+    doc = doc.replace("</head>", WIPE_HEAD + TRACKING + "</head>", 1)
     doc = doc.replace('<link rel="stylesheet" href="site.css', '<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="stylesheet" href="site.css', 1)
     return (doc.replace("{{NAV}}", part("nav.html"))
                .replace("{{FOOTER}}", part("footer.html"))
@@ -568,6 +610,50 @@ def tile_style(slug):
     return f' style="--x:{t.get("x", 50):g}%;--y:{t.get("y", 50):g}%;--z:{t.get("z", 1.12):g}"'
 
 
+def feeds(products):
+    """Product feeds for Meta's catalog (meta-catalog.csv) and Google Merchant Center (google-products.xml).
+    Each lists every size of every piece on the shop, with its real page, its photographs, price and stock,
+    named as Shopify's own apps name them so ads, catalog and checkout all agree. Meta and Google are set to
+    re-read them daily (see the handover plan)."""
+    import csv, io, xml.sax.saxutils as sx
+    rows = []
+    for p in products:
+        slug = p["slug"]
+        if slug in HIDE_FROM_SHOP or slug not in SHOP_IDS:
+            continue
+        lead = "plain-3.jpg" if slug == "wonderhorn-talisman" else "hero.jpg"
+        shots = [f"img/{slug}/{lead}"] + [g for g in ([_content.product(slug, "hero", "")] + list(_content.product(slug, "gallery", []) or []))
+                                           if g and g.endswith(".jpg") and os.path.exists(os.path.join(OUT, g))]
+        shots = list(dict.fromkeys(shots))[:10]
+        desc = re.sub(r"<[^>]+>", "", _content.product(slug, "description", DESC[slug])).strip()
+        family = "Totems" if kind(slug, read_port(slug)[1]) == "totem" else "Jewelry"
+        for v in SHOP_IDS[slug]:
+            sized = v["value"] not in ("Default Title", "")
+            rows.append({
+                "id": f'shopify_US_{v["product"]}_{v["variant"]}', "item_group_id": f'shopify_US_{v["product"]}',
+                "title": p["name"] + (f' ({v["value"]})' if sized else ""), "description": desc,
+                "availability": "in stock" if v["available"] else "out of stock", "condition": "new",
+                "price": f'{v["price"]:.2f} USD', "link": f"{SITE}/{slug}.html", "image_link": f"{SITE}/{shots[0]}",
+                "additional_image_link": ",".join(f"{SITE}/{x}" for x in shots[1:]), "brand": "Studio Maçon",
+                "product_type": family, "size": v["value"] if sized else "",
+            })
+    cols = list(rows[0])
+    buf = io.StringIO(); w = csv.DictWriter(buf, cols); w.writeheader(); w.writerows(rows)
+    with open(os.path.join(OUT, "meta-catalog.csv"), "w", encoding="utf-8", newline="") as f:
+        f.write(buf.getvalue())
+    e = sx.escape
+    items = "".join(
+        "<item>" + "".join(f"<g:{k}>{e(str(r[k]))}</g:{k}>" for k in ("id", "item_group_id", "title", "description", "availability",
+                                                                      "condition", "price", "link", "image_link", "brand", "product_type") if r[k])
+        + "".join(f"<g:additional_image_link>{e(u)}</g:additional_image_link>" for u in r["additional_image_link"].split(",") if u)
+        + (f"<g:size>{e(r['size'])}</g:size>" if r["size"] else "") + "<g:identifier_exists>no</g:identifier_exists></item>\n"
+        for r in rows)
+    with open(os.path.join(OUT, "google-products.xml"), "w", encoding="utf-8") as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0"><channel>'
+                f"<title>Studio Maçon</title><link>{SITE}</link><description>Studio Maçon pieces</description>\n{items}</channel></rss>\n")
+    print(f"   feeds: {len(rows)} items (meta-catalog.csv, google-products.xml)")
+
+
 def rel_tile(x):
     name = "plain-3.jpg" if x["slug"] == "wonderhorn-talisman" else "hero.jpg"
     return tile_src(f'img/{x["slug"]}/{name}')
@@ -637,7 +723,12 @@ def main():
         save(f, editable(one_block(doc), f))
         print("  ", f)
     for p in products:
-        save(f"{p['slug']}.html", one_block(page(p, template, related_block(p, products))), product=p)
+        doc = one_block(page(p, template, related_block(p, products)))
+        first = (SHOP_IDS.get(p["slug"]) or [None])[0]
+        if first:                                     # tell Meta and Google a piece was looked at
+            view = json.dumps({"variant": first["variant"], "name": p["name"], "slug": p["slug"], "price": first["price"]})
+            doc = doc.replace("</body>", f"<script>maconTrack('view', {view});</script>\n</body>", 1)
+        save(f"{p['slug']}.html", doc, product=p)
         print("  ", p["slug"])
     # Shop: every piece on one wall, linking to its page
     tiles = []
@@ -671,6 +762,7 @@ def main():
     shop = (shop.replace("{{TOTEMCOUNT}}", str(len(totems))).replace("{{JEWELRYCOUNT}}", str(len(products) - len(totems)))
                 .replace("{{TOTEMGRID}}", "\n".join(tiles[:len(totems)])).replace("{{JEWELRYGRID}}", "\n".join(tiles[len(totems):])))
     save("index.html", editable(shop, "index.html"))
+    feeds(products)
     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                 + "".join(f"  <url><loc>{u}</loc></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")

@@ -305,6 +305,7 @@
     var cfg = window.MACON_SHOP || {};
     var lines = items.filter(function (i) { return i.variant; }).map(function (i) { return {merchandiseId: i.variant, quantity: i.qty || 1}; });
     if (!lines.length) return Promise.reject(new Error('Nothing to check out'));
+    if (window.maconTrack) maconTrack('checkout', items);
     if (button) { button.setAttribute('aria-busy', 'true'); button.dataset.label = button.textContent; button.textContent = 'One moment…'; }
     return fetch('https://' + cfg.shop + '/api/' + cfg.api + '/graphql.json', {
       method: 'POST',
@@ -328,7 +329,8 @@
     var url = (window.MACON_SHOP || {}).enquiry;
     if (!url) return Promise.reject(new Error('no enquiry address'));
     return fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)})
-      .then(function (r) { if (!r.ok) throw new Error('enquiry failed (' + r.status + ')'); return r.json(); });
+      .then(function (r) { if (!r.ok) throw new Error('enquiry failed (' + r.status + ')'); return r.json(); })
+      .then(function (j) { if (window.maconTrack) maconTrack('lead', payload.form); return j; });
   };
 
   // Newsletter (footer): subscribes straight to the Klaviyo list the studio sends from
@@ -366,6 +368,7 @@
       var same = items.filter(function (i) { return i.slug === item.slug && (i.size || '') === (item.size || ''); })[0];
       if (same) same.qty = (same.qty || 1) + 1; else { item.qty = 1; items.push(item); }
       write(items);
+      if (window.maconTrack) maconTrack('add', {variant: item.variant, name: item.name, slug: item.slug, price: item.price, qty: 1});
     }
     return {read: read, write: write, count: count, add: add};
   })();
