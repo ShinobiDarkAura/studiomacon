@@ -20,9 +20,12 @@
   @media (min-width:768px){ .opening + .section{margin-top:0} .opening{padding-bottom:calc(var(--head) * .58) !important} }
   .opening .hand{margin:0}
   /* the films on this page are framed like the ones in the emails: 16px corners and a soft drop shadow */
-  .opening .hand video,.process-film video{display:block;width:100%;border-radius:16px;background:#111;
-    box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)}
-  .opening .hand video{aspect-ratio:24/23;object-fit:cover;width:100%}
+  .opening .hand video,.process-film video{display:block;background:#111;object-fit:cover;margin:0 auto}
+  .opening .hand video{--w:100%;--ar:24/23;--r:16px;--sh:1;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
+  .process-film video{--w:100%;--ar:16/9;--r:16px;--sh:1;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
+  /* the email drop shadow, scaled by --sh (0 = none, 1 = as in the emails, 2 = twice as deep) */
+  .opening .hand video,.process-film video{box-shadow:0 calc(18px * var(--sh)) calc(28px * var(--sh)) calc(-12px * var(--sh)) rgba(0,0,0,calc(.45 * min(var(--sh), 1.4))),
+    0 calc(4px * var(--sh)) calc(10px * var(--sh)) calc(-4px * var(--sh)) rgba(0,0,0,calc(.25 * min(var(--sh), 1.4)))}
   /* opening sequence: the hand slides in from the right, then each text block rises in turn */
   .opening .hand.dr-emerge{transform:translateX(160px);filter:blur(10px);transition-duration:1.3s;--stagger:750ms !important}          /* the hand arrives after the words */
   .opening .intro > .dr-emerge{transform:translateY(48px)}
@@ -39,7 +42,6 @@
   :root{--about-col:min(calc(1020px + clamp(40px, 6vw, 96px)), calc(100vw - 2 * (var(--pad) + 24px)))}
   @media (max-width:767px){ :root{--about-col:calc(100vw - 2 * var(--gutter, 16px))} }
   .steps .process-film{max-width:var(--about-col);margin:0 auto}
-  .process-film video{aspect-ratio:16/9;object-fit:cover}
   .steps{margin-top:-52px}          /* a little less room above the film */
   .prose p{max-width:527px;margin-left:auto;margin-right:auto}          /* paragraphs 15% narrower than the column */
   .steps figure{margin:0;text-align:center}
@@ -64,7 +66,7 @@
   @media (min-width:768px){
     .steps{padding:0}
     /* photographs left, words right, in the same centre column as the opening (mirrored) */
-    .history{grid-template-columns:minmax(0,600px) minmax(0,420px);justify-content:center;column-gap:clamp(40px,6vw,96px);align-items:center}
+    .history{grid-template-columns:minmax(0,600px) minmax(0,420px);justify-content:center;column-gap:clamp(64px,9vw,140px);align-items:center}          /* a little more air between the photographs and the words */
     .history .intro{justify-self:start}
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
@@ -91,7 +93,6 @@
       <p class="eyebrow">About Maçon</p>
       <h1>We Discover<br>by Holding</h1>
       <p class="lede">In French, <i>maçon</i> means “mason”: one who works with their hands to build things. Every piece here is shaped that way, and meant to be held that way.</p>
-      <p class="lede">Carried, turned over, kept close, it changes with the hand that keeps it. The patina deepens where a thumb rests and brightens where it rubs, until the piece carries the marks of a life alongside its own.</p>
     </div>
     <figure class="hand"><video autoplay muted loop playsinline preload="metadata" poster="video/poster-hold.jpg" aria-label="Maçon pieces held in the hand, one after another">
       <source src="video/hold-720.mp4" type="video/mp4" media="(max-width:767px)">
@@ -125,12 +126,58 @@
       <h1>Drawn<br>Together</h1>
       <p class="lede">Alex and Hannah met in a figure drawing class at RISD in 2008: two freshmen at neighbouring easels, learning to look at the same thing and see it differently. They became close friends, and then, as people do, drifted apart across distance and years.</p>
       <p class="lede">When they found their way back, they married in 2023. Through all of it they made things for each other, small objects shaped by hand and given without occasion, because making was the truest way either of them knew to say it.</p>
-      <p class="lede">That is where Maçon comes from. Artifacts of love: pieces drawn from the ancient objects that have always moved them, and pieces that are themselves what remains of a love, its evidence, meant to be held.</p>
+      <p class="lede">That is where Maçon comes from. Artifacts of love: pieces drawn from the ancient objects that have always moved them, and pieces that are themselves the evidence of a love that is still being made, meant to be held.</p>
     </div>
   </section>
 </main>
 
 {{FOOTER}}
 {{SITEJS}}
+<script>
+  // Tuning panel for the two films (open the page with ?tune). Nothing here is saved to the site:
+  // try sizes, then "Copy settings" and paste them to Claude.
+  (function () {
+    if (!/[?&]tune\b/.test(location.search)) return;
+    var FILMS = [['Top film', '.opening .hand video', {w: 100, ar: '24/23', r: 16, sh: 1}],
+                 ['Process film', '.process-film video', {w: 100, ar: '16/9', r: 16, sh: 1}]];
+    var SHAPES = ['1/1', '24/23', '6/5', '5/4', '4/3', '3/2', '16/9', '2.2/1', '4/5', '3/4'];
+    var saved = {}; try { saved = JSON.parse(localStorage.getItem('macon-tune') || '{}'); } catch (e) {}
+    var css = document.createElement('style');
+    css.textContent = '.tune{position:fixed;right:16px;bottom:16px;z-index:9999;width:280px;max-height:80vh;overflow:auto;background:#fff;border:1px solid #ddd;border-radius:12px;box-shadow:0 12px 40px -12px rgba(0,0,0,.35);padding:14px 16px;font:12px/1.4 -apple-system,system-ui,sans-serif;color:#000}' +
+      '.tune h4{margin:12px 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.tune h4:first-child{margin-top:0}' +
+      '.tune label{display:grid;grid-template-columns:62px 1fr 40px;gap:8px;align-items:center;margin:6px 0}.tune input[type=range]{width:100%}' +
+      '.tune output{text-align:right;font-variant-numeric:tabular-nums}.tune select{width:100%}.tune .row{display:flex;gap:8px;margin-top:12px}' +
+      '.tune button{flex:1;padding:7px;border:1px solid #000;border-radius:6px;background:#fff;cursor:pointer;font:inherit}.tune button.dark{background:#000;color:#fff}.tune .size{color:#777;margin:2px 0 0}';
+    document.head.appendChild(css);
+    var box = document.createElement('div'); box.className = 'tune'; document.body.appendChild(box);
+    var state = {};
+    FILMS.forEach(function (f, i) {
+      var v = document.querySelector(f[1]); if (!v) return;
+      var st = state[i] = Object.assign({}, f[2], saved[i] || {});
+      var g = document.createElement('div');
+      g.innerHTML = '<h4>' + f[0] + '</h4>' +
+        '<label>Width<input type="range" min="40" max="100" step="1" data-k="w"><output></output></label>' +
+        '<label>Shape<select data-k="ar">' + SHAPES.map(function (x) { return '<option>' + x + '</option>'; }).join('') + '</select><span></span></label>' +
+        '<label>Corners<input type="range" min="0" max="40" step="1" data-k="r"><output></output></label>' +
+        '<label>Shadow<input type="range" min="0" max="3" step="0.05" data-k="sh"><output></output></label><p class="size"></p>';
+      box.appendChild(g);
+      function apply() {
+        v.style.setProperty('--w', st.w + '%'); v.style.setProperty('--ar', st.ar); v.style.setProperty('--r', st.r + 'px'); v.style.setProperty('--sh', st.sh);
+        g.querySelectorAll('[data-k]').forEach(function (el) { el.value = st[el.dataset.k]; var o = el.nextElementSibling; if (o && o.tagName === 'OUTPUT') o.textContent = st[el.dataset.k] + (el.dataset.k === 'w' ? '%' : el.dataset.k === 'r' ? 'px' : '×'); });
+        requestAnimationFrame(function () { var r = v.getBoundingClientRect(); g.querySelector('.size').textContent = Math.round(r.width) + ' × ' + Math.round(r.height) + ' px on this screen'; });
+        saved[i] = st; try { localStorage.setItem('macon-tune', JSON.stringify(saved)); } catch (e) {}
+      }
+      g.addEventListener('input', function (e) { var k = e.target.dataset.k; if (!k) return; st[k] = k === 'ar' ? e.target.value : +e.target.value; apply(); });
+      apply();
+    });
+    var row = document.createElement('div'); row.className = 'row';
+    row.innerHTML = '<button type="button" class="dark">Copy settings</button><button type="button">Reset</button>'; box.appendChild(row);
+    row.children[0].onclick = function () {
+      var t = FILMS.map(function (f, i) { var s = state[i]; return s ? f[0] + ': width ' + s.w + '%, shape ' + s.ar + ', corners ' + s.r + 'px, shadow ' + s.sh + '×' : ''; }).join('\n');
+      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { row.children[0].textContent = 'Copied'; setTimeout(function () { row.children[0].textContent = 'Copy settings'; }, 1500); }, function () { prompt('Copy these settings:', t); });
+    };
+    row.children[1].onclick = function () { try { localStorage.removeItem('macon-tune'); } catch (e) {} location.reload(); };
+  })();
+</script>
 </body>
 </html>
