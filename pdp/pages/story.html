@@ -15,9 +15,9 @@
   .opening .intro h1{margin-bottom:38px}
   .prose h1,.prose h2{margin-bottom:44px}
   .opening{overflow-x:clip}
-  /* 20% less room above Our Practice */
-  .opening + .section{margin-top:77px}
-  @media (min-width:768px){ .opening + .section{margin-top:95px} }
+  /* less room above Our Practice (trimmed twice, 20% each time) */
+  .opening + .section{margin-top:48px}
+  @media (min-width:768px){ .opening + .section{margin-top:23px} }
   .opening .hand{margin:0}
   /* the films on this page are framed like the ones in the emails: 16px corners and a soft drop shadow */
   .opening .hand video,.process-film video{display:block;width:100%;border-radius:16px;background:#111;
@@ -39,7 +39,7 @@
   .step-name{margin:24px 0 0;font:italic 400 17pt/1.2 var(--serif)}
   .steps .art{padding:10% 0 0;display:grid;place-items:end center;height:420px}          /* same box for all three, so the labels line up */
   .steps img{margin:0 auto;width:323px;max-width:100%}
-  .history{display:grid;gap:40px;padding:236px calc(var(--pad) + 24px) 0}
+  .history{display:grid;gap:40px;padding:297px calc(var(--pad) + 24px) 0}          /* 35% more room under the process film */
   .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
   .history .intro p.lede{margin:0;max-width:391px}
   .history .intro p.lede + p.lede{margin-top:1em}
@@ -60,7 +60,7 @@
     .opening,.prose,.history,.opening .intro,.history .intro{text-align:center}
     .opening .intro p.lede,.history .intro p.lede{margin-left:auto;margin-right:auto}
     /* phones: the process film follows the text, then the childhood photographs */
-    .steps{padding:8px var(--pad) 56px}
+    .steps{padding:8px var(--pad) 76px}          /* 35% more room under the process film */
     .history{padding-top:0 !important}
   }
 </style>
