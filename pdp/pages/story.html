@@ -40,7 +40,7 @@
   .childhood figure{margin:0}
   .childhood img{width:100%;aspect-ratio:3/2;object-fit:cover}
   @media (min-width:768px){
-    .steps{grid-template-columns:repeat(3,323px);column-gap:60px;justify-content:center;max-width:none;padding:0 var(--pad);margin-top:-52px}
+    .steps{grid-template-columns:repeat(3,minmax(0,323px));column-gap:clamp(20px,4vw,60px);justify-content:center;max-width:none;padding:0 var(--pad);margin-top:-52px}          /* narrower screens: the three shrink together instead of spilling off the sides */
     .history{grid-template-columns:1fr 1fr;align-items:center}
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     .opening{grid-template-columns:1fr 1fr;align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}

@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789810744">
+<link rel="stylesheet" href="site.css?v=1789811819">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -109,7 +109,9 @@
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
   .welcome .prose h1{margin-bottom:44px}
-  .welcome{overflow-x:clip}          /* the stamp may bleed off the right edge on phones */
+  .welcome{overflow-x:clip}
+  /* phones held sideways: the screen is too short to centre the welcome under the header, so it starts below it */
+  @media (orientation:landscape) and (max-height:500px){ .welcome{height:auto;min-height:90svh;padding:calc(var(--head) + 24px) 0 48px} }          /* the stamp may bleed off the right edge on phones */
   .welcome + .set .wall-head{padding-top:0}
   /* the Bureau of Provenance stamp: pressed onto the bottom edge of the film, angled, its top tenth over the picture */
   .film-wrap{position:relative}

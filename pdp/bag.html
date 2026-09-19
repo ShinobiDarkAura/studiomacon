@@ -16,7 +16,7 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789810744">
+<link rel="stylesheet" href="site.css?v=1789811819">
 <style>
   .bag-page{max-width:1100px;margin:0 auto;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
   .bag-page h1{margin:0 0 40px}
@@ -31,6 +31,7 @@
   .qty button{width:28px;height:28px;border:1px solid var(--rule);border-radius:50%;
     display:inline-flex;align-items:center;justify-content:center;line-height:0;padding:0}
   .qty button:hover{border-color:#000}
+  @media (pointer:coarse){ .qty button{position:relative} .qty button::after{content:"";position:absolute;inset:-9px} }          /* bigger tap area, same look */
   .qty .remove{width:auto;height:auto;border:0;display:inline;line-height:1;border-radius:0;margin-left:18px;font-size:13px;color:rgba(0,0,0,.5);text-decoration:underline;text-underline-offset:3px}
   .line .amt{font-size:16px;text-align:right}
   .summary{align-self:start}

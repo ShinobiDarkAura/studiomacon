@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Starship Key", "description": "Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad. Its hull is polished meticulously by hand.", "image": ["https://studiomacon.co/img/starshipkey-pendant/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "starshipkey-pendant", "offers": [{"@type": "Offer", "price": "460.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/starshipkey-pendant.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789810744">
+<link rel="stylesheet" href="site.css?v=1789811819">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -296,6 +296,33 @@
       <figure><img width="1500" height="1957" src="img/starshipkey-pendant/plain-1.jpg.webp" srcset="img/starshipkey-pendant/plain-1--m.jpg.webp 1200w, img/starshipkey-pendant/plain-1.jpg.webp 1500w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="" loading="lazy"></figure>
       <figure><img width="1400" height="787" src="img/starshipkey-pendant/hand-1.jpg.webp" srcset="img/starshipkey-pendant/hand-1--m.jpg.webp 1200w, img/starshipkey-pendant/hand-1.jpg.webp 1400w" sizes="(max-width: 767px) 100vw, 60vw" alt="" loading="lazy"></figure>
     </div>
+    <script>
+  // built right here, before the page is first drawn, so adding it never shifts the page
+  // Phones: a strip of thumbnails under the main image; tapping one shows that picture or film in its place
+  (function () {
+    var gallery = document.querySelector('.gallery'), hero = gallery.querySelector('.hero');
+    var figs = [].slice.call(gallery.querySelectorAll('figure'));
+    if (figs.length > 5) figs = figs.slice(0, -2);          // long galleries: the last two pictures stay off the strip
+    if (figs.length < 2) return;
+    var original = hero.innerHTML, strip = document.createElement('div');
+    strip.className = 'thumbs'; strip.setAttribute('aria-label', 'More pictures');
+    figs.forEach(function (f, i) {
+      var media = f.querySelector('img, video'); if (!media) return;
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Picture ' + (i + 1));
+      var t = document.createElement('img'); t.alt = ''; t.loading = 'lazy';
+      t.src = media.tagName === 'VIDEO' ? media.getAttribute('poster') : media.getAttribute('src').replace(/\.(jpe?g|png)\.webp$/, '--tile.$1.webp');          // the light grid copy
+      t.onerror = function () { t.onerror = null; t.src = media.getAttribute('src'); };
+      b.appendChild(t); b.style.setProperty('--i', i); if (i === 0) b.classList.add('on');
+      b.addEventListener('click', function () {
+        hero.innerHTML = i === 0 ? original : f.innerHTML;
+        var v = hero.querySelector('video'); if (v) { v.muted = true; v.play().catch(function () {}); }
+        [].forEach.call(strip.children, function (x) { x.classList.toggle('on', x === b); });
+      });
+      strip.appendChild(b);
+    });
+    hero.after(strip);
+  })();
+    </script>
 
     <div class="info">
       <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back</span></a>
@@ -1015,29 +1042,6 @@
   })();
 </script>
 <script>
-  // Phones: a strip of thumbnails under the main image; tapping one shows that picture or film in its place
-  (function () {
-    var gallery = document.querySelector('.gallery'), hero = gallery.querySelector('.hero');
-    var figs = [].slice.call(gallery.querySelectorAll('figure'));
-    if (figs.length > 5) figs = figs.slice(0, -2);          // long galleries: the last two pictures stay off the strip
-    if (figs.length < 2) return;
-    var original = hero.innerHTML, strip = document.createElement('div');
-    strip.className = 'thumbs'; strip.setAttribute('aria-label', 'More pictures');
-    figs.forEach(function (f, i) {
-      var media = f.querySelector('img, video'); if (!media) return;
-      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Picture ' + (i + 1));
-      var t = document.createElement('img'); t.alt = ''; t.loading = 'lazy';
-      t.src = media.tagName === 'VIDEO' ? media.getAttribute('poster') : media.getAttribute('src');
-      b.appendChild(t); b.style.setProperty('--i', i); if (i === 0) b.classList.add('on');
-      b.addEventListener('click', function () {
-        hero.innerHTML = i === 0 ? original : f.innerHTML;
-        var v = hero.querySelector('video'); if (v) { v.muted = true; v.play().catch(function () {}); }
-        [].forEach.call(strip.children, function (x) { x.classList.toggle('on', x === b); });
-      });
-      strip.appendChild(b);
-    });
-    hero.after(strip);
-  })();
 </script>
 <script>
   // Desktop: Back to Shop belongs to the product's right column, so it fades away once that column has scrolled past
@@ -1051,7 +1055,10 @@
     var toggle = box.querySelector('.size-toggle'), value = box.querySelector('.size-value');
     var items = [].slice.call(box.querySelectorAll('li'));
     function open(on) { box.classList.toggle('open', on); toggle.setAttribute('aria-expanded', on); if (on && document.activeElement === toggle) (box.querySelector('[aria-selected="true"]') || items[0]).focus(); }
-    toggle.addEventListener('click', function () { open(!box.classList.contains('open')); });
+    toggle.addEventListener('click', function () {
+      open(!box.classList.contains('open'));
+      if (box.classList.contains('open')) box.scrollIntoView({block: 'nearest', behavior: 'smooth'});          // the sizes may open below the fold
+    });
     items.forEach(function (li) {
       li.addEventListener('click', function () {
         items.forEach(function (x) { x.setAttribute('aria-selected', x === li); });

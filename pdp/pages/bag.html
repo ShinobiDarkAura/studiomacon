@@ -20,6 +20,7 @@
   .qty button{width:28px;height:28px;border:1px solid var(--rule);border-radius:50%;
     display:inline-flex;align-items:center;justify-content:center;line-height:0;padding:0}
   .qty button:hover{border-color:#000}
+  @media (pointer:coarse){ .qty button{position:relative} .qty button::after{content:"";position:absolute;inset:-9px} }          /* bigger tap area, same look */
   .qty .remove{width:auto;height:auto;border:0;display:inline;line-height:1;border-radius:0;margin-left:18px;font-size:13px;color:rgba(0,0,0,.5);text-decoration:underline;text-underline-offset:3px}
   .line .amt{font-size:16px;text-align:right}
   .summary{align-self:start}
