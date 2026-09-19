@@ -336,8 +336,8 @@ SITE_ASSETS = IMG.rsplit("/img", 1)[0]
 def _grid(card):
     """One piece: the full card. Two: side by side. Three or more: rows of three, the last row left-aligned."""
     cell = (f'<td width="{{{{ w }}}}%" valign="top" style="padding:0 6px"><a href="{{{{ abandoned_checkout.url }}}}" style="text-decoration:none;color:#000000">'
-            f'<img src="{{{{ held }}}}" width="160" alt="{{{{ label }}}}" style="width:100%;height:auto;border-radius:16px">'
-            f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:12px 0 4px">{{{{ label }}}}</div>'
+            f'<img src="{{{{ held }}}}" width="160" alt="{{{{ label }}}}" style="width:100%;height:auto;border-radius:16px;{SH}">'
+            f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:16px 0 4px">{{{{ label }}}}</div>'
             f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">{{% if cost != \'\' %}}${{{{ cost }}}}{{% endif %}}</div></a></td>')
     return ('{% assign n = abandoned_checkout.line_items.size %}'
             '{% if n == 1 %}' + card + '{% else %}'
