@@ -78,8 +78,18 @@ for _slug, _vs in _IDS.items():
 PIECES = three(("Pip", "pip"), ("Rebi", "rebi"), ("Ori", "ori"))
 
 # ── building blocks ─────────────────────────────────────────────────────────────────
+def _versioned(html):
+    """Each image address carries a short fingerprint of the file, so a changed picture is fetched fresh
+    by Shopify, mail apps and the CDN instead of an old cached copy."""
+    import hashlib, re
+    def tag(m):
+        path = os.path.join(PDP, "img", "email", m.group(1))
+        if not os.path.exists(path): return m.group(0)
+        return m.group(0) + "?v=" + hashlib.md5(open(path, "rb").read()).hexdigest()[:8]
+    return re.sub(re.escape(IMG) + r"/([\w.-]+\.(?:jpg|gif|png))(?![?\w])", tag, html)
+
 def page(preheader, body):
-    return f"""<!doctype html>
+    return _versioned(f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
@@ -100,7 +110,7 @@ def page(preheader, body):
     &nbsp;·&nbsp; <a href="{{% unsubscribe_url %}}" style="color:#8a8a8a">Unsubscribe</a><br>
     {{{{ organization.name }}}} · {{{{ organization.full_address }}}}
   </td></tr>
-</table></td></tr></table></body></html>"""
+</table></td></tr></table></body></html>""")
 
 def eyebrow(t):
     return f'<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 {SANS};color:#000000">{t}</td></tr>'
