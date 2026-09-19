@@ -81,6 +81,8 @@ def main():
                 take = True
             if rel in named:                               # named somewhere: always ship it
                 take = True
+            if rel.startswith(os.path.join("img", "email") + os.sep):   # pictures the welcome emails load
+                take = True
             if not take:
                 continue
             dst = os.path.join(OUT, rel)
