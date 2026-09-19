@@ -268,10 +268,11 @@ EMAILS.update({
  "checkout-2": dict(
     subject="Questions answered",
     preview="Solid metal, made to order, and what happens if it is not right.",
-    body=eyebrow("Studio Maçon") + title("Questions<br>answered") + GRID
+    body=eyebrow("Studio Maçon") + title("Questions<br>answered")
        + notes([("Solid metal", "Every piece is cast solid in bronze, silver or gold. Nothing is plated, and it has real weight in the hand."),
-                ("Made to order", "It is made by hand once it is chosen, and it leaves the studio in California within about ten business days."),
-                ("If it's not right", "Rings are made to size and remade if the fit is off. Any piece can be returned for store credit in 14 days."),
+                ("Made to order", "It is made by hand once it is chosen, and it leaves the studio in California within about ten business days.")])
+       + GRID
+       + notes([("If it's not right", "Rings are made to size and remade if the fit is off. Any piece can be returned for store credit in 14 days."),
                 ("Still curious?", "A reply to this email reaches the studio directly, not a help desk. Every note is read and answered in turn.")])
        + button("Return to checkout", CHECKOUT)),
  # Browse abandonment (trigger: Viewed Product; skip if they checked out or were emailed in the last day). After 1 day.
