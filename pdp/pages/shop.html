@@ -414,5 +414,65 @@
   })();
   addEventListener('pageshow', function (e) { if (e.persisted) still(); });
 </script>
+<script>
+  // Colour editor for the grid (open the home page with ?tint). Click a piece to select it, drag the
+  // sliders, then "Copy settings" and paste the values back to Claude. Nothing here changes the site.
+  (function () {
+    if (!/[?&]tint\b/.test(location.search)) return;
+    function baked(src) {                                     // the balance already baked into the file name
+      var m = /--c([mp])([\d.]+)([mp])([\d.]+)\./.exec(src || '');
+      return m ? {warm: (m[1] === 'm' ? -1 : 1) * parseFloat(m[2]), tint: (m[3] === 'm' ? -1 : 1) * parseFloat(m[4])} : {warm: 0, tint: 0};
+    }
+    var gains = function (w, t) { return [1 + w * .01 - t * .005, 1 + t * .01, 1 - w * .01 - t * .005]; };
+    var defs = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    defs.setAttribute('width', 0); defs.setAttribute('height', 0); defs.style.position = 'absolute'; document.body.appendChild(defs);
+    function paint(tile) {                                    // show the chosen balance on top of the baked one
+      var id = 'tn-' + tile.slug, fl = defs.querySelector('#' + id);
+      if (!fl) { fl = document.createElementNS('http://www.w3.org/2000/svg', 'filter'); fl.id = id;
+        fl.setAttribute('color-interpolation-filters', 'sRGB'); fl.innerHTML = '<feColorMatrix type="matrix"/>'; defs.appendChild(fl); }
+      var want = gains(tile.warm, tile.tint), has = gains(tile.b.warm, tile.b.tint);
+      fl.firstChild.setAttribute('values', (want[0] / has[0]) + ' 0 0 0 0  0 ' + (want[1] / has[1]) + ' 0 0 0  0 0 ' + (want[2] / has[2]) + ' 0 0  0 0 0 1 0');
+      tile.imgs.forEach(function (im) { im.style.filter = 'url(#' + id + ')'; });
+    }
+    var tiles = [], cur = null;
+    document.querySelectorAll('.piece[href]').forEach(function (a) {
+      var imgs = [].slice.call(a.querySelectorAll('img')); if (!imgs.length) return;
+      var b = baked(imgs[0].getAttribute('src'));
+      tiles.push({el: a, slug: a.getAttribute('href').replace('.html', ''), imgs: imgs, b: b, warm: b.warm, tint: b.tint});
+    });
+    var css = document.createElement('style');
+    css.textContent = '.tint{position:fixed;right:16px;bottom:16px;z-index:9999;width:260px;background:#fff;border:1px solid #ddd;border-radius:12px;box-shadow:0 12px 40px -12px rgba(0,0,0,.35);padding:14px 16px;font:12px/1.4 -apple-system,system-ui,sans-serif;color:#000}' +
+      '.tint h4{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.tint label{display:grid;grid-template-columns:74px 1fr 34px;gap:8px;align-items:center;margin:6px 0}' +
+      '.tint output{text-align:right;font-variant-numeric:tabular-nums}.tint .row{display:flex;gap:8px;margin-top:12px}.tint .hint{color:#777;margin:8px 0 0}' +
+      '.tint button{flex:1;padding:7px;border:1px solid #000;border-radius:6px;background:#fff;cursor:pointer;font:inherit}.tint button.dark{background:#000;color:#fff}' +
+      '.piece.tint-on{outline:2px solid #000;outline-offset:3px}';
+    document.head.appendChild(css);
+    var box = document.createElement('div'); box.className = 'tint';
+    box.innerHTML = '<h4>Grid colour</h4><p class="hint" id="tint-who">Click a piece to start.</p>' +
+      '<label>Cool ↔ Warm<input type="range" data-k="warm" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
+      '<label>Mag. ↔ Green<input type="range" data-k="tint" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
+      '<div class="row"><button type="button" class="dark">Copy settings</button><button type="button">Reset piece</button></div>';
+    document.body.appendChild(box);
+    var who = box.querySelector('#tint-who'), rs = [].slice.call(box.querySelectorAll('input'));
+    function show() {
+      rs.forEach(function (r) { r.disabled = !cur; if (cur) { r.value = cur[r.dataset.k]; r.nextElementSibling.textContent = cur[r.dataset.k]; } });
+      who.textContent = cur ? cur.slug + ' — baked in: warm ' + cur.b.warm + ', tint ' + cur.b.tint : 'Click a piece to start.';
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('.piece[href]'); if (!a) return;
+      e.preventDefault(); e.stopPropagation();
+      tiles.forEach(function (t) { t.el.classList.toggle('tint-on', t.el === a); if (t.el === a) cur = t; });
+      show();
+    }, true);
+    box.addEventListener('input', function (e) { if (!cur || !e.target.dataset.k) return; cur[e.target.dataset.k] = +e.target.value; e.target.nextElementSibling.textContent = e.target.value; paint(cur); });
+    box.querySelectorAll('button')[1].onclick = function () { if (!cur) return; cur.warm = cur.b.warm; cur.tint = cur.b.tint; paint(cur); show(); };
+    box.querySelectorAll('button')[0].onclick = function () {
+      var t = tiles.filter(function (x) { return x.warm !== x.b.warm || x.tint !== x.b.tint; })
+        .map(function (x) { return x.slug + ': warm ' + x.warm + ', tint ' + x.tint; }).join('\n') || 'no changes';
+      var b = box.querySelectorAll('button')[0];
+      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy settings'; }, 1500); }, function () { prompt('Copy these settings:', t); });
+    };
+  })();
+</script>
 </body>
 </html>
