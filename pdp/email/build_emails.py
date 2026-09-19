@@ -213,7 +213,7 @@ EMAILS = {
     preview="MACON10 is good for two more days.",
     body=eyebrow("Studio Maçon") + h1("Meant to<br>be held") + image(HAND, "Ren, held in the palm of a hand")
        + text("Every piece is cast and finished by hand, so no two are alike. "
-              "They continue to evolve as you live with them.")
+              "They continue to evolve as you live with them.", "0 130px 34px")          # 10% narrower column
        + code("10% off, two days left") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
        + friends() + trio(three(("Milo", "milo"), ("Eleph", "eleph"), ("Ibi", "ibi")))),
 }
