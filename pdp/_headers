@@ -1,0 +1,3 @@
+# fonts may be read by email apps and other sites
+/fonts/*
+  Access-Control-Allow-Origin: *

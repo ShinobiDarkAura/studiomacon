@@ -305,13 +305,18 @@ for name, e in EMAILS.items():
 _TITLES = _json.load(open(os.path.join(PDP, "shopify", "titles.json")))
 def _line_case():
     whens = "".join(
-        f'{{% when "{t}" %}}{{% assign held = "{IMG}/held-{h}.jpg" %}}{{% assign cost = "{_PRICE.get(h, 0):.0f}" %}}'
+        f'{{% when "{t}" %}}{{% assign held = "{IMG}/held-{h}.jpg" %}}{{% assign cost = "{_PRICE.get(h, 0):.0f}" %}}{{% assign label = "{t}" %}}'
         for h, t in _TITLES.items() if h in _PRICE)
-    return ('{% assign held = line.image_url %}{% assign cost = "" %}'
+    return ('{% assign held = line.image_url %}{% assign cost = "" %}{% assign label = line.product_title %}'
             '{% case line.product_title %}' + whens + '{% endcase %}')
+
+SITE_ASSETS = IMG.rsplit("/img", 1)[0]
 
 def to_shopify(html, name):
     import re
+    html = html.replace('<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">', "")
+    html = html.replace("<style>", "<style>\n  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;"
+                        f"src:url({SITE_ASSETS}/fonts/instrument-serif.woff2) format('woff2')}}", 1)
     html = html.replace("{% unsubscribe_url %}", "{{ unsubscribe_url }}")
     html = html.replace("{{ organization.name }} · {{ organization.full_address }}",
                         "{{ shop.name }} · {{ shop.address.city }}")
@@ -319,7 +324,7 @@ def to_shopify(html, name):
     if name.startswith("checkout"):
         html = html.replace("{% for item in event.extra.line_items %}",
                             "{% for line in abandoned_checkout.line_items %}" + _line_case())
-        html = (html.replace("{{ item.product.title }}", "{{ line.product_title }}")
+        html = (html.replace("{{ item.product.title }}", "{{ label }}")
                     .replace(IMG + "/held-{{ item.product.id }}.jpg", "{{ held }}")
                     .replace("${{ item.line_price|floatformat:0 }}", "{% if cost != '' %}${{ cost }}{% endif %}")
                     .replace("{{ event.extra.checkout_url }}", "{{ abandoned_checkout.url }}"))
