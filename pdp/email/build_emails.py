@@ -197,8 +197,8 @@ EMAILS = {
     subject="Welcome to Maçon",
     preview="10% off a first piece, and a little about how they are made.",
     body=eyebrow("Studio Maçon") + h1("Small things,<br>made to last") + image(HERO1, "Pip, held in the palm of a hand")
-       + text("Maçon makes artifacts and jewelry to be carried, worn and handed down. Each piece is drawn on paper, "
-              "carved by hand in wax and cast in bronze, silver or gold, then finished by hand in the studio.")
+       + text("We're so glad you're here. Welcome to Maçon: a small studio of hand-carved, cast-metal things, "
+              "made slowly and meant to stay with you. Here's a little something for your first piece.")
        + code("10% off your first purchase") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
        + friends() + trio(PIECES)),
  "welcome-2": dict(
