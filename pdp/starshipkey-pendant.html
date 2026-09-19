@@ -971,18 +971,6 @@
     place(); addEventListener('resize', place); addEventListener('load', place);
   })();
 
-  // A piece looked at: Meta's ViewContent, GA4's view_item and Klaviyo's Viewed Product (for the browse email)
-  (function () {
-    var buy = document.getElementById('bag'); if (!buy || !window.maconTrack) return;
-    var title = document.querySelector('.info h1'), price = document.querySelector('.info .price'),
-        hero = document.querySelector('.gallery .hero img'), sizeBox = document.querySelector('[data-size]');
-    maconTrack('view', {variant: (sizeBox && sizeBox.dataset.variant) || buy.dataset.variant || '',
-      slug: location.pathname.split('/').pop().replace('.html', ''),
-      name: title ? title.textContent.trim() : '',
-      price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
-      image: hero ? new URL(hero.getAttribute('src'), location.href).href : '', qty: 1});
-  })();
-
   // Buy Now (product pages): this piece alone, straight to Shopify checkout, where Apple Pay and cards are offered
   document.querySelectorAll('.buy .buy-now').forEach(function (b) {
     b.addEventListener('click', function (e) {
