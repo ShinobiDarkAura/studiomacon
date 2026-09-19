@@ -23,6 +23,20 @@
     addEventListener('scroll', check, {passive: true}); check();
   })();
 
+  // The eye in the nav blinks now and then: every 5-10s at random, mostly a blink, sometimes a look around.
+  // (On the home page the same element is the big logotype until it has faded; the CSS keeps it still then.)
+  (function () {
+    var eye = document.querySelector('.head .logotype');
+    if (!eye || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    eye.addEventListener('animationend', function () { eye.classList.remove('eye-blink', 'eye-look'); });
+    (function next() {
+      setTimeout(function () {
+        if (!document.hidden) { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add(Math.random() < 0.25 ? 'eye-look' : 'eye-blink'); }
+        next();
+      }, 5000 + Math.random() * 5000);
+    })();
+  })();
+
   // Accordions: the height eases through a grid-row transition, so nothing is
   // measured in script and a panel of any length opens at the same pace.
   document.querySelectorAll('.acc-head').forEach(function (b) {

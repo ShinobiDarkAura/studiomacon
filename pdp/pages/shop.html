@@ -44,6 +44,11 @@
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
      and stays there: it never flies back down, even at the top of the page */
   body.logo-docked .head .logotype{transform:none !important;opacity:1 !important;transition:opacity .8s ease,color .3s ease !important}
+  /* home: until the big word has gone, the nav's logo element is the MAÇON logotype (in the hero); once it has
+     faded, it becomes the blinking eye like every other page, fading in where it lives */
+  body:not(.logo-docked) .head .logotype{height:auto;width:92px;top:-4px;aspect-ratio:888/331;animation:none !important;
+    -webkit-mask:url(img/logotype.png) center/contain no-repeat;mask:url(img/logotype.png) center/contain no-repeat}
+  @media (min-width:768px){ body:not(.logo-docked) .head .logotype{width:125px;top:-2px} }
   body.logo-docked .film .tagline,body.logo-docked .logo-build{opacity:0 !important;visibility:hidden}          /* its tagline goes with it */
   /* once it has faded away, it simply reappears in the nav: no shrinking flight back up */
   body.hero-quiet:not(.logo-hero) .head .logotype{transition:opacity .6s ease,color .3s ease}
@@ -318,7 +323,8 @@
       var dy = parseFloat(getComputedStyle(document.body).getPropertyValue('--logo-dy')) || 0;
       var p = Math.max(0, Math.min(1, scrollY / span()));          // 0 at the top, 1 once it has arrived
       var k = 1 + (BIG - 1) * (1 - p);
-      logo.style.transform = 'translateY(' + (dy * (1 - p)) + 'px) scale(' + k + ')';
+      logo.style.transform = 'translateY(' + dy + 'px) scale(' + BIG + ')';          // it stays where it is...
+      logo.style.opacity = String(Math.max(0, 1 - p * 2.2));                            // ...and fades as the film scrolls away
     }
     function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(scrub); } }
     addEventListener('scroll', onScroll, {passive: true});
@@ -376,7 +382,7 @@
     document.body.classList.toggle('logo-hero', !on);
     var logo = document.querySelector('.head .logotype');
     if (flying) { if (window.MaconScrub) window.MaconScrub(); }
-    else if (logo) logo.style.transform = '';          // past the film: the nav keeps it at its own size
+    else if (logo) { logo.style.transform = ''; logo.style.opacity = ''; }          // past the film: the eye takes its place in the nav
     if (on) { clearTimeout(quiet); document.body.classList.remove('hero-quiet'); }
     else if (!quiet || !document.body.classList.contains('hero-quiet')) window.MaconHeroQuiet();
   }

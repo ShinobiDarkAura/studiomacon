@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789843282">
+<link rel="stylesheet" href="site.css?v=1789843497">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -54,6 +54,11 @@
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
      and stays there: it never flies back down, even at the top of the page */
   body.logo-docked .head .logotype{transform:none !important;opacity:1 !important;transition:opacity .8s ease,color .3s ease !important}
+  /* home: until the big word has gone, the nav's logo element is the MAÇON logotype (in the hero); once it has
+     faded, it becomes the blinking eye like every other page, fading in where it lives */
+  body:not(.logo-docked) .head .logotype{height:auto;width:92px;top:-4px;aspect-ratio:888/331;animation:none !important;
+    -webkit-mask:url(img/logotype.png) center/contain no-repeat;mask:url(img/logotype.png) center/contain no-repeat}
+  @media (min-width:768px){ body:not(.logo-docked) .head .logotype{width:125px;top:-2px} }
   body.logo-docked .film .tagline,body.logo-docked .logo-build{opacity:0 !important;visibility:hidden}          /* its tagline goes with it */
   /* once it has faded away, it simply reappears in the nav: no shrinking flight back up */
   body.hero-quiet:not(.logo-hero) .head .logotype{transition:opacity .6s ease,color .3s ease}
@@ -452,6 +457,20 @@
       if (now !== on) { on = now; root.classList.toggle('past-top', on); }
     }
     addEventListener('scroll', check, {passive: true}); check();
+  })();
+
+  // The eye in the nav blinks now and then: every 5-10s at random, mostly a blink, sometimes a look around.
+  // (On the home page the same element is the big logotype until it has faded; the CSS keeps it still then.)
+  (function () {
+    var eye = document.querySelector('.head .logotype');
+    if (!eye || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    eye.addEventListener('animationend', function () { eye.classList.remove('eye-blink', 'eye-look'); });
+    (function next() {
+      setTimeout(function () {
+        if (!document.hidden) { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add(Math.random() < 0.25 ? 'eye-look' : 'eye-blink'); }
+        next();
+      }, 5000 + Math.random() * 5000);
+    })();
   })();
 
   // Accordions: the height eases through a grid-row transition, so nothing is
@@ -1222,7 +1241,8 @@
       var dy = parseFloat(getComputedStyle(document.body).getPropertyValue('--logo-dy')) || 0;
       var p = Math.max(0, Math.min(1, scrollY / span()));          // 0 at the top, 1 once it has arrived
       var k = 1 + (BIG - 1) * (1 - p);
-      logo.style.transform = 'translateY(' + (dy * (1 - p)) + 'px) scale(' + k + ')';
+      logo.style.transform = 'translateY(' + dy + 'px) scale(' + BIG + ')';          // it stays where it is...
+      logo.style.opacity = String(Math.max(0, 1 - p * 2.2));                            // ...and fades as the film scrolls away
     }
     function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(scrub); } }
     addEventListener('scroll', onScroll, {passive: true});
@@ -1280,7 +1300,7 @@
     document.body.classList.toggle('logo-hero', !on);
     var logo = document.querySelector('.head .logotype');
     if (flying) { if (window.MaconScrub) window.MaconScrub(); }
-    else if (logo) logo.style.transform = '';          // past the film: the nav keeps it at its own size
+    else if (logo) { logo.style.transform = ''; logo.style.opacity = ''; }          // past the film: the eye takes its place in the nav
     if (on) { clearTimeout(quiet); document.body.classList.remove('hero-quiet'); }
     else if (!quiet || !document.body.classList.contains('hero-quiet')) window.MaconHeroQuiet();
   }

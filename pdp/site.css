@@ -104,7 +104,7 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .field input::placeholder,.field textarea::placeholder{color:#777}
 
 /* ── footer: brand left, links centre, newsletter right ─ */
-footer{display:grid;gap:56px;align-content:end;min-height:95vh;min-height:95svh;padding:96px calc(var(--pad) + 24px) 52px;--f-size:calc(17px - 2pt)}
+footer{display:grid;gap:56px;align-content:end;min-height:105vh;min-height:105svh;padding:96px calc(var(--pad) + 24px) 52px;--f-size:calc(17px - 2pt)}
 footer .brand{order:3}
 footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
 footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
@@ -126,7 +126,7 @@ footer .field button{padding:0 0 0 18px}
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
-  footer{grid-template-columns:1fr auto 1fr;align-items:end;gap:40px;min-height:30vh;padding:96px calc(var(--pad) + 24px) 52px}
+  footer{grid-template-columns:1fr auto 1fr;align-items:end;gap:40px;min-height:40vh;padding:96px calc(var(--pad) + 24px) 52px}
   footer .middle{margin-bottom:16px}
   footer .brand,footer .middle,footer .news{order:0}
   footer .middle{justify-self:center;align-items:center}
@@ -255,7 +255,7 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   .head .logotype{width:92px;top:-4px}
   .head{top:-2px}          /* 8px higher, centred in the white band above the main image */
   .back{display:none}          /* no Back to Shop on phones */
-  footer{min-height:85vh;min-height:85svh;text-align:center}
+  footer{min-height:95vh;min-height:95svh;text-align:center}
   footer .middle{align-items:center}
   footer .links{justify-content:center}
   footer .mark{margin-left:auto;margin-right:auto}
@@ -342,3 +342,15 @@ footer .news .legal a{text-underline-offset:4px}
 .bag-drawer .bd-empty .cta{max-width:none;width:100%}
 html.bag-open{overflow:hidden}
 @media (prefers-reduced-motion:reduce){ .bag-drawer,.bag-drawer.open,.bag-veil,.bag-veil.open{transition:none} }
+
+/* ── the nav mark: the blinking eye, drawn in the nav's own colour (a mask over currentColor, so it turns
+   white over dark ground like the words beside it). It rests open, and every 5–10s, at random, blinks, or
+   now and then looks around (site.js). Frames live side by side in img/eye-strip.png ── */
+.head .logotype{width:auto;height:40px;aspect-ratio:135/120;-webkit-mask:url(img/eye-strip.png) no-repeat;mask:url(img/eye-strip.png) no-repeat;
+  -webkit-mask-size:3400% 100%;mask-size:3400% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;top:0}
+@media (max-width:767px){ .head .logotype{height:34px;top:0} }
+.head .logotype.eye-blink{animation:eye-blink 350ms step-end}
+.head .logotype.eye-look{animation:eye-look 4130ms step-end}
+@keyframes eye-blink{0.00%{-webkit-mask-position:66.6667% 0;mask-position:66.6667% 0}20.00%{-webkit-mask-position:63.6364% 0;mask-position:63.6364% 0}51.43%{-webkit-mask-position:66.6667% 0;mask-position:66.6667% 0}74.29%{-webkit-mask-position:69.6970% 0;mask-position:69.6970% 0}100%{-webkit-mask-position:100.0000% 0;mask-position:100.0000% 0}}
+@keyframes eye-look{0.00%{-webkit-mask-position:0.0000% 0;mask-position:0.0000% 0}2.91%{-webkit-mask-position:3.0303% 0;mask-position:3.0303% 0}5.81%{-webkit-mask-position:6.0606% 0;mask-position:6.0606% 0}8.47%{-webkit-mask-position:9.0909% 0;mask-position:9.0909% 0}11.38%{-webkit-mask-position:12.1212% 0;mask-position:12.1212% 0}14.29%{-webkit-mask-position:15.1515% 0;mask-position:15.1515% 0}17.19%{-webkit-mask-position:18.1818% 0;mask-position:18.1818% 0}20.10%{-webkit-mask-position:21.2121% 0;mask-position:21.2121% 0}22.76%{-webkit-mask-position:24.2424% 0;mask-position:24.2424% 0}25.67%{-webkit-mask-position:27.2727% 0;mask-position:27.2727% 0}28.57%{-webkit-mask-position:30.3030% 0;mask-position:30.3030% 0}31.48%{-webkit-mask-position:33.3333% 0;mask-position:33.3333% 0}34.38%{-webkit-mask-position:36.3636% 0;mask-position:36.3636% 0}37.05%{-webkit-mask-position:39.3939% 0;mask-position:39.3939% 0}39.95%{-webkit-mask-position:42.4242% 0;mask-position:42.4242% 0}42.86%{-webkit-mask-position:45.4545% 0;mask-position:45.4545% 0}45.76%{-webkit-mask-position:48.4848% 0;mask-position:48.4848% 0}51.33%{-webkit-mask-position:51.5152% 0;mask-position:51.5152% 0}54.24%{-webkit-mask-position:54.5455% 0;mask-position:54.5455% 0}57.14%{-webkit-mask-position:57.5758% 0;mask-position:57.5758% 0}60.05%{-webkit-mask-position:60.6061% 0;mask-position:60.6061% 0}62.71%{-webkit-mask-position:63.6364% 0;mask-position:63.6364% 0}65.62%{-webkit-mask-position:66.6667% 0;mask-position:66.6667% 0}68.52%{-webkit-mask-position:69.6970% 0;mask-position:69.6970% 0}71.43%{-webkit-mask-position:72.7273% 0;mask-position:72.7273% 0}74.33%{-webkit-mask-position:75.7576% 0;mask-position:75.7576% 0}77.00%{-webkit-mask-position:78.7879% 0;mask-position:78.7879% 0}79.90%{-webkit-mask-position:81.8182% 0;mask-position:81.8182% 0}82.81%{-webkit-mask-position:84.8485% 0;mask-position:84.8485% 0}85.71%{-webkit-mask-position:87.8788% 0;mask-position:87.8788% 0}88.62%{-webkit-mask-position:90.9091% 0;mask-position:90.9091% 0}91.28%{-webkit-mask-position:93.9394% 0;mask-position:93.9394% 0}94.19%{-webkit-mask-position:96.9697% 0;mask-position:96.9697% 0}97.09%{-webkit-mask-position:100.0000% 0;mask-position:100.0000% 0}100%{-webkit-mask-position:100.0000% 0;mask-position:100.0000% 0}}
+@media (prefers-reduced-motion:reduce){ .head .logotype.eye-blink,.head .logotype.eye-look{animation:none} }
