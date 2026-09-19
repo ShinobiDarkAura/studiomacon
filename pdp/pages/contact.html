@@ -39,6 +39,8 @@
     /* email and Instagram sit at the foot of the column, 16px off the bottom edge */
     .split .copy .ways{position:absolute;left:0;right:0;bottom:17px;margin:0}
   }
+  /* tablets: the black field takes half, so the text column keeps room for its title and fields */
+  @media (min-width:768px) and (max-width:1099px){ body .split{grid-template-columns:50vw minmax(0,1fr);gap:0 32px;background:linear-gradient(to right,#000 0 50vw,#fff 50vw)} }
   @media (max-width:767px){
     .split .pics figure{aspect-ratio:auto;height:60vh;height:60svh;padding:calc(var(--head) + 8px) 12vw 5vh;
       display:flex;align-items:center;justify-content:center;overflow:hidden}          /* the poster rises inside the panel */
