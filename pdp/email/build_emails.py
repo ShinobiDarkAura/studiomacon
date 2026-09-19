@@ -12,7 +12,9 @@ import os, re
 from PIL import Image, ImageOps
 
 PDP = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-IMG = "https://studiomacon.studiomacon.workers.dev/img/email"   # becomes studiomacon.co/img/email after the switch
+# Where the email images are served from. Until the domain switch, the preview; after it, the real domain:
+#     MACON_LIVE=1 python3 pdp/email/build_emails.py
+IMG = ("https://studiomacon.co" if os.environ.get("MACON_LIVE") else "https://studiomacon.studiomacon.workers.dev") + "/img/email"
 SITE = "https://studiomacon.co"                                  # links: work on Wix today and the new site after
 CODE = "MACON10"
 
