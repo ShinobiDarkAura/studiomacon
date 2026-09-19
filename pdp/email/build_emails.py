@@ -51,6 +51,8 @@ def eye(w=150):
 EYE = eye()
 HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 3 / 2)
 HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 3 / 2)
+RENHAND = f"{IMG}/ren-hand.gif"          # from _originals/ren-hand.mov
+PATINA = f"{IMG}/ren-patina.gif"          # from _originals/ren-patina.mov, the brushing sped up 4.4x
 TURN = f"{IMG}/ring-turn.gif"          # made from a short video (_originals/ring-turn.mov); mail apps that do not animate show the first frame
 INSITU = jpg("_originals/insitu-zuma.jpg", "insitu-zuma.jpg", 1200, 3 / 2, (0.5, 0.66))          # Zuma at home, on a stack of books
 FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 1, (0.5, 0.3) if n == "cast" else (0.5, 0.5)) for n in ("drawn", "cast", "finished")]
@@ -199,15 +201,15 @@ EMAILS = {
  "welcome-1": dict(
     subject="Welcome to Maçon",
     preview="10% off a first piece, and a little about how they are made.",
-    body=eyebrow("Studio Maçon") + h1("Welcome<br>to Maçon") + image(HERO1, "Pip, held in the palm of a hand")
-       + text("We're so glad you're here. We\'re a small studio of hand-carved, cast-metal things, "
-              "made slowly and meant to stay with you. Here's a little something for your first piece.")
+    body=eyebrow("Studio Maçon") + h1("Welcome<br>to Maçon") + image(RENHAND, "Ren, turned in the hand in the sun")
+       + text("We're so glad you're here! Maçon is a small studio making even smaller things that bring us GREAT joy. "
+              "Here's a little something to thank you:")
        + code("10% off your first purchase") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
        + friends() + trio(PIECES)),
  "welcome-2": dict(
     subject="How a Maçon piece is made",
     preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
-    body=eyebrow("Studio Maçon") + h1("Carved by hand,<br>cast in metal", 35)
+    body=eyebrow("Studio Maçon") + h1("Carved by hand,<br>cast in metal") + image(PATINA, "Ren being brushed with patina, turning from silver to dark bronze")
        + text("We wanted to show you a little of how our pieces come to be. It's slow, hands-on work, "
               "and every step leaves its mark, so no two ever turn out quite the same.", "0 111px 50px")
        + film_steps() + code("10% off your first purchase") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
