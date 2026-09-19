@@ -486,8 +486,8 @@
       if (!drawer) { build(); void drawer.offsetWidth; }          // laid out closed first, so the very first open slides in too
       if (on) { last = document.activeElement; paint(); }
       drawer.inert = !on;
-      if (!on) { drawer.classList.add('closing'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('closing'); }, 720); }
-      else { clearTimeout(drawer._shut); drawer.classList.remove('closing'); }
+      if (!on) { drawer.classList.add('closing'); veil.classList.add('closing'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('closing'); veil.classList.remove('closing'); }, 720); }
+      else { clearTimeout(drawer._shut); drawer.classList.remove('closing'); veil.classList.remove('closing'); }
       requestAnimationFrame(function () { drawer.classList.toggle('open', on); veil.classList.toggle('open', on); });
       document.documentElement.classList.toggle('bag-open', on);
       if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});

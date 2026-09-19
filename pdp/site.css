@@ -321,8 +321,9 @@ footer .news .legal a{text-underline-offset:4px}
 .qty .remove{width:auto;height:auto;border:0;display:inline;line-height:1;border-radius:0;margin-left:18px;padding:0;font-size:13px;color:rgba(0,0,0,.5);text-decoration:underline;text-underline-offset:3px}
 
 /* ── desktop bag drawer: slides in from the right over a soft veil ── */
-.bag-veil{position:fixed;inset:0;z-index:58;background:rgba(0,0,0,.18);opacity:0;visibility:hidden;transition:opacity .6s ease,visibility 0s linear .6s}
-.bag-veil.open{opacity:1;visibility:visible;transition:opacity .6s ease,visibility 0s}
+.bag-veil{position:fixed;inset:0;z-index:58;background:rgba(0,0,0,.18);opacity:0;visibility:hidden;transition:opacity .7s cubic-bezier(.32,.72,0,1),visibility 0s linear .7s}
+.bag-veil.open{opacity:1;visibility:visible;transition:opacity .7s cubic-bezier(.32,.72,0,1),visibility 0s}
+.bag-veil.closing{visibility:visible}          /* it fades out with the drawer instead of blinking off */
 .bag-drawer{position:fixed;top:0;right:0;z-index:59;height:100vh;height:100svh;width:min(460px,92vw);background:#fff;
   display:flex;flex-direction:column;padding:0 calc(var(--pad) + 24px);box-shadow:-24px 0 60px -30px rgba(0,0,0,.35);
   transform:translateX(100%);visibility:hidden;transition:transform .7s cubic-bezier(.32,.72,0,1),visibility 0s linear .7s}

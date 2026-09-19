@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789855985">
+<link rel="stylesheet" href="site.css?v=1789856187">
 <style>
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head h1{margin:0;font-size:57.5px}
@@ -906,8 +906,8 @@
       if (!drawer) { build(); void drawer.offsetWidth; }          // laid out closed first, so the very first open slides in too
       if (on) { last = document.activeElement; paint(); }
       drawer.inert = !on;
-      if (!on) { drawer.classList.add('closing'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('closing'); }, 720); }
-      else { clearTimeout(drawer._shut); drawer.classList.remove('closing'); }
+      if (!on) { drawer.classList.add('closing'); veil.classList.add('closing'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('closing'); veil.classList.remove('closing'); }, 720); }
+      else { clearTimeout(drawer._shut); drawer.classList.remove('closing'); veil.classList.remove('closing'); }
       requestAnimationFrame(function () { drawer.classList.toggle('open', on); veil.classList.toggle('open', on); });
       document.documentElement.classList.toggle('bag-open', on);
       if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});
