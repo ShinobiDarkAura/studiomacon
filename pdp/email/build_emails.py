@@ -62,8 +62,17 @@ for _slug in os.listdir(os.path.join(PDP, "img")):
     if os.path.exists(os.path.join(PDP, _still)):
         jpg(_still, f"tile-{_slug}.jpg", 520, 4 / 5); jpg(_still, f"wide-{_slug}.jpg", 960, 3 / 2)
 
+_PRICE = {k: v["variants"][0]["price"] for k, v in _json.load(open(os.path.join(PDP, "shopify", "variants.json"))).items()}
 def three(*pairs):
     return [(n, slug, f"{IMG}/tile-{slug}.jpg") for n, slug in pairs]
+_IDS = _json.load(open(os.path.join(PDP, "shopify", "ids.json")))
+TOTEM_IDS, JEWEL_IDS = [], []
+for _slug, _vs in _IDS.items():
+    _held = (_C.get(_slug) or {}).get("tile_hover") or f"img/{_slug}/" + {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(_slug, "hand-1.jpg")
+    if not os.path.exists(os.path.join(PDP, _held)): continue
+    jpg(_held, f"held-{_slug}.jpg", 960, 3 / 2); jpg(_held, f"held-{_vs[0]['product']}.jpg", 960, 3 / 2)
+    (TOTEM_IDS if _slug in ("pip","rebi","ren","zuma","ori","yael","milo","eleph","ibi") else JEWEL_IDS).append(_vs[0]["product"])
+
 PIECES = three(("Pip", "pip"), ("Rebi", "rebi"), ("Ori", "ori"))
 
 # ── building blocks ─────────────────────────────────────────────────────────────────
@@ -98,6 +107,13 @@ def h1(t):
     return (f'<tr><td class="pad h1" align="center" style="padding:0 48px 46px;font:400 46px/1 {SERIF};'
             f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>')
 
+def title(t):
+    """Bag and browse emails: a larger title with 8px more above it and a short rule 24px beneath."""
+    return (f'<tr><td class="pad h1" align="center" style="padding:8px 48px 24px;font:400 54px/1 {SERIF};'
+            f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>'
+            f'<tr><td align="center" style="padding:0 0 40px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
+            f'<td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0">&nbsp;</td></tr></table></td></tr>')
+
 def text(t, pad="0 111px 31px"):
     return f'<tr><td class="pad" align="center" style="padding:{pad};font:400 16px/1.6 {SANS};color:#000000">{t}</td></tr>'
 
@@ -124,7 +140,7 @@ def trio(items):
         f'<td class="col" width="33%" valign="top" style="padding:0 6px"><a href="{SITE}/product-page/{slug}" style="text-decoration:none;color:#000000">'
         f'<img src="{src}" width="160" alt="{name}" style="width:100%;height:auto;border-radius:6px">'
         f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:12px 0 4px">{name}</div>'
-        f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">$220</div></a></td>' for name, slug, src in items)
+        f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">${_PRICE.get(slug, 220):.0f}</div></a></td>' for name, slug, src in items)
     return (f'<tr><td class="pad" style="padding:0 42px 40px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             f'<tr>{cells}</tr></table></td></tr>')
 
@@ -171,16 +187,17 @@ EMAILS = {
 # ── flows that show the shopper's own pieces (Klaviyo fills these in) ──────────────
 def items(loop, title, image, price, link):
     """One row per piece, filled in by Klaviyo. For the preview, one sample row stands in."""
-    row = (f'<tr><td align="center" style="padding:0 0 31px"><a href="{link}"><img src="{image}" width="480" alt="" '
-           f'style="width:100%;max-width:480px;height:auto;border-radius:6px;margin:0 auto"></a>'
+    row = (f'<tr><td align="center" style="padding:0 0 31px"><a href="{link}"><img src="{image}" width="408" alt="" '
+           f'style="width:100%;max-width:408px;height:auto;border-radius:16px;margin:0 auto;'
+           f'box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"></a>'
            f'<div style="font:400 30px/1 {SERIF};text-transform:uppercase;color:#000000;padding-top:18px">{title}</div>'
            f'<div style="font:400 14px/1 {SANS};color:#6b6b6b;padding-top:9px">${price}</div></td></tr>')
     return (f'<tr><td class="pad" style="padding:0 60px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             + (f'{{% for item in {loop} %}}{row}{{% endfor %}}' if loop else row) + '</table></td></tr>')
 
-CART = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center",
+CART = items("event.extra.line_items", "{{ item.product.title }}", IMG + "/held-{{ item.product.id }}.jpg",
              "{{ item.line_price|floatformat:0 }}", "{{ event.extra.checkout_url }}")
-VIEWED = items(None, "{{ event.ProductName }}", "{{ event.ImageURL }}", "{{ event.Price|floatformat:0 }}", "{{ event.URL }}")
+VIEWED = items(None, "{{ event.ProductName }}", "{{ event.ImageURL|replace:'/wide-','/held-' }}", "{{ event.Price|floatformat:0 }}", "{{ event.URL }}")
 ORDER = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center",
               "{{ item.line_price|floatformat:0 }}", SITE)
 CHECKOUT = "{{ event.extra.checkout_url }}"
@@ -188,7 +205,7 @@ CHECKOUT = "{{ event.extra.checkout_url }}"
 def notes(rows):
     cells = "".join(f'<tr><td align="center" style="padding:0 0 22px"><div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
                     f'<div style="font:400 15px/1.6 {SANS};color:#333333">{d}</div></td></tr>' for t, d in rows)
-    return (f'<tr><td class="pad" style="padding:4px 194px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    return (f'<tr><td class="pad" style="padding:4px 178px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             f'{cells}</table></td></tr>')
 
 EMAILS.update({
@@ -196,25 +213,35 @@ EMAILS.update({
  "checkout-1": dict(
     subject="We saved it for you",
     preview="The piece is waiting where you left it.",
-    body=eyebrow("Your bag") + h1("We saved it<br>for you") + CART
+    body=eyebrow("Your bag") + title("We saved it<br>for you") + CART
        + text("Every Maçon piece is made to order once it is chosen, so nothing is lost by taking a moment. "
-              "The checkout is saved exactly as it was.", "0 194px 31px") + button("Return to checkout", CHECKOUT)),
+              "The checkout is saved exactly as it was.", "0 178px 31px") + button("Return to checkout", CHECKOUT)),
  "checkout-2": dict(
     subject="A question about your piece?",
     preview="Sizing, patina, timing: the studio answers every note.",
-    body=eyebrow("Your bag") + h1("Questions,<br>answered") + CART
+    body=eyebrow("Before you decide") + title("Questions,<br>answered") + CART
        + notes([("Sizing", "Rings can be made in any size. If the fit is not right, the studio will make it right."),
                 ("Timing", "Each piece is made to order and leaves the studio within about ten business days."),
                 ("Questions", 'A reply to this email reaches the studio directly, at <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>.')])
        + button("Return to checkout", CHECKOUT)),
  # Browse abandonment (trigger: Viewed Product; skip if they checked out or were emailed in the last day). After 1 day.
  "browse-1": dict(
-    subject="{{ event.ProductName }} is thinking about you, too",
+    subject="{% if event.ProductID|slice:'11:25' in '" + ",".join(TOTEM_IDS) + "' %}{{ event.ProductName }} is thinking about you, too{% else %}{{ event.ProductName }}, still catching the light{% endif %}",
     preview="A second look at the piece you were studying.",
-    body=eyebrow("A second look") + h1("They're thinking<br>about you, too") + VIEWED
-       + text("Every piece is drawn, carved in wax and cast by hand, then finished in the studio in California. "
-              "No two leave quite alike.", "0 194px 31px") + button("Take another look", "{{ event.URL }}")
-       + text("Others in the collection", "8px 48px 18px") + trio(three(("Pip", "pip"), ("Ori", "ori"), ("Eclipse Ring", "eclipse-ring")))),
+    body=eyebrow("A second look")
+       + "{% if event.ProductID|slice:'11:25' in '" + ",".join(TOTEM_IDS) + "' %}"
+       + title("They're thinking<br>about you, too") + VIEWED
+       + text("Every totem is drawn, carved in wax and cast in bronze by hand, then finished in the studio in California. "
+              "No two leave quite alike.", "0 178px 31px") + button("Take another look", "{{ event.URL }}")
+       + text("Other totems", "8px 48px 18px") + trio(three(("Pip", "pip"), ("Ori", "ori"), ("Milo", "milo")))
+       + "{% else %}"
+       + title("Still catching<br>the light") + VIEWED
+       + text("Every piece is drawn, carved in wax and cast in silver or gold by hand, then finished in the studio in California. "
+              "No two leave quite alike.", "0 178px 31px") + button("Take another look", "{{ event.URL }}")
+       + text("Other jewelry", "8px 48px 18px")
+       + "{% if 'Eclipse' in event.ProductName %}" + trio(three(("Zuma Ring", "zuma-ring"), ("Lunar Canyon", "lunar-canyon-ring"), ("Caldera Arc", "ear-cuff")))
+       + "{% else %}" + trio(three(("Eclipse Ring", "eclipse-ring"), ("Meridian Egg", "meridian-egg-ring"), ("Sietch Ring", "sietch-aperture"))) + "{% endif %}"
+       + "{% endif %}"),
  # Post-purchase (trigger: Placed Order). 1: straight away. 2: after 21 days.
  "thanks-1": dict(
     subject="Your piece is being made",
