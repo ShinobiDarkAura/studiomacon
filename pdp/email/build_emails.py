@@ -51,6 +51,7 @@ def eye(w=150):
 EYE = eye()
 HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 3 / 2)
 HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 3 / 2)
+TURN = f"{IMG}/ring-turn.gif"          # made from a short video (_originals/ring-turn.mov); mail apps that do not animate show the first frame
 INSITU = jpg("_originals/insitu-zuma.jpg", "insitu-zuma.jpg", 1200, 3 / 2, (0.5, 0.66))          # Zuma at home, on a stack of books
 FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 1, (0.5, 0.3) if n == "cast" else (0.5, 0.5)) for n in ("drawn", "cast", "finished")]
 POUR = jpg("_originals/still-cast.jpg", "pour-hero.jpg", 1200, 4 / 5)
@@ -214,7 +215,7 @@ EMAILS = {
  "welcome-3": dict(
     subject="Your welcome code closes soon",
     preview="MACON10 is good for two more days.",
-    body=eyebrow("Studio Maçon") + h1("Meant to<br>be held") + image(HAND, "Ren, held in the palm of a hand")
+    body=eyebrow("Studio Maçon") + h1("Meant to<br>be held") + image(TURN, "A piece turned slowly in the hand")
        + text("They're small, but you really feel the weight of one in your hand. "
               "And the longer you keep it close, the more it becomes yours.", "0 131px 34px")          # narrower column
        + code("10% off, two days left") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
