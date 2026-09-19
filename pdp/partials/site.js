@@ -483,12 +483,15 @@
       drawer.querySelector('.bd-foot').hidden = empty;
     }
     function set(on) {
-      if (!drawer) build();
+      if (!drawer) { build(); void drawer.offsetWidth; }          // laid out closed first, so the very first open slides in too
       if (on) { last = document.activeElement; paint(); }
-      drawer.inert = !on; drawer.classList.toggle('open', on); veil.classList.toggle('open', on);
+      drawer.inert = !on;
+      requestAnimationFrame(function () { drawer.classList.toggle('open', on); veil.classList.toggle('open', on); });
       document.documentElement.classList.toggle('bag-open', on);
       if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});
     }
+    // built while the page is idle, so it is ready to slide the moment Bag is clicked
+    if (wide.matches && !/bag\.html$/.test(location.pathname)) (window.requestIdleCallback || setTimeout)(function () { if (!drawer) build(); });
     link.addEventListener('click', function (e) {
       if (!wide.matches || /bag\.html$/.test(location.pathname)) return;          // phones, and the Bag page itself, keep the page
       e.preventDefault(); set(true);

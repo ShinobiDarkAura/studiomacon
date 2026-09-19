@@ -16,7 +16,7 @@
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789843497">
+<link rel="stylesheet" href="site.css?v=1789844223">
 <style>
   /* the poster floats whole in the middle of a black field, never cropped */
   .split .pics figure{margin:0;background:#000;display:grid;place-items:center;
@@ -726,12 +726,15 @@
       drawer.querySelector('.bd-foot').hidden = empty;
     }
     function set(on) {
-      if (!drawer) build();
+      if (!drawer) { build(); void drawer.offsetWidth; }          // laid out closed first, so the very first open slides in too
       if (on) { last = document.activeElement; paint(); }
-      drawer.inert = !on; drawer.classList.toggle('open', on); veil.classList.toggle('open', on);
+      drawer.inert = !on;
+      requestAnimationFrame(function () { drawer.classList.toggle('open', on); veil.classList.toggle('open', on); });
       document.documentElement.classList.toggle('bag-open', on);
       if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});
     }
+    // built while the page is idle, so it is ready to slide the moment Bag is clicked
+    if (wide.matches && !/bag\.html$/.test(location.pathname)) (window.requestIdleCallback || setTimeout)(function () { if (!drawer) build(); });
     link.addEventListener('click', function (e) {
       if (!wide.matches || /bag\.html$/.test(location.pathname)) return;          // phones, and the Bag page itself, keep the page
       e.preventDefault(); set(true);
