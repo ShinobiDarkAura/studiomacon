@@ -201,7 +201,7 @@ EMAILS = {
  "welcome-1": dict(
     subject="Welcome to Maçon",
     preview="10% off a first piece, and a little about how they are made.",
-    body=eyebrow("Studio Maçon") + h1("Welcome<br>to the studio") + image(RENHAND, "Ren, turned in the hand in the sun")
+    body=eyebrow("Studio Maçon") + h1("Welcome<br>to the studio") + image(HERO1, "Pip, held in the palm of a hand")
        + text("We're so glad you're here! Maçon is a small studio making even smaller things that bring us GREAT joy. "
               "Here's a little something to thank you:")
        + code("10% off your first purchase") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
