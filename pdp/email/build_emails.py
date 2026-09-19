@@ -51,7 +51,7 @@ def eye(w=150):
 EYE = eye()
 HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 3 / 2)
 HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 3 / 2)
-FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 1, (0.5, 0.3) if n == "cast" else (0.5, 0.5)) for n in ("drawn", "cast", "finished")]
+FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 4 / 5, (0.5, 0.3) if n == "cast" else (0.5, 0.5)) for n in ("drawn", "cast", "finished")]
 POUR = jpg("_originals/still-cast.jpg", "pour-hero.jpg", 1200, 4 / 5)
 STEPS = [png(f"img/pages/{n}.png", f"step-{n}.png", 260) for n in ("draw", "cast", "polish")]
 # an email-sized picture of every piece, the one the shop grid shows (also used by the site's Klaviyo events)
@@ -62,7 +62,7 @@ for _slug in os.listdir(os.path.join(PDP, "img")):
     if not os.path.isdir(os.path.join(PDP, "_originals", _slug)): continue
     _still = (_C.get(_slug) or {}).get("tile_image") or f"img/{_slug}/{'plain-3.jpg' if _slug == 'wonderhorn-talisman' else 'hero.jpg'}"
     if os.path.exists(os.path.join(PDP, _still)):
-        jpg(_still, f"tile-{_slug}.jpg", 520, 4 / 5); jpg(_still, f"wide-{_slug}.jpg", 960, 3 / 2)
+        jpg(_still, f"tile-{_slug}.jpg", 520, 1); jpg(_still, f"wide-{_slug}.jpg", 960, 3 / 2)
 
 _PRICE = {k: v["variants"][0]["price"] for k, v in _json.load(open(os.path.join(PDP, "shopify", "variants.json"))).items()}
 def three(*pairs):
@@ -193,7 +193,7 @@ EMAILS = {
  "welcome-2": dict(
     subject="How a Maçon piece is made",
     preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
-    body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal")
+    body=eyebrow("Studio Maçon") + h1("Carved by hand,<br>cast in metal")
        + text("No two pieces leave the studio quite alike. The patina is built up by hand, and it keeps changing: "
               "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
        + film_steps() + code("10% off your first purchase") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
@@ -201,7 +201,7 @@ EMAILS = {
  "welcome-3": dict(
     subject="Your welcome code closes soon",
     preview="MACON10 is good for two more days.",
-    body=eyebrow("A last note") + h1("Meant to<br>be held") + image(HAND, "Ren, held in the palm of a hand")
+    body=eyebrow("Studio Maçon") + h1("Meant to<br>be held") + image(HAND, "Ren, held in the palm of a hand")
        + text("Every piece is made to order, so it is made for whoever asks for it. "
               "The welcome code is good for two more days.")
        + code("10% off, two days left") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
@@ -248,7 +248,7 @@ EMAILS.update({
  "checkout-2": dict(
     subject="Questions answered",
     preview="Solid metal, made to order, and what happens if it is not right.",
-    body=eyebrow("Before you decide") + title("Questions<br>answered") + CART
+    body=eyebrow("Studio Maçon") + title("Questions<br>answered") + CART
        + notes([("Solid metal", "Every piece is cast solid in bronze, silver or gold. Nothing is plated, and it has real weight in the hand."),
                 ("Made to order", "It is made by hand once it is chosen, and it leaves the studio in California within about ten business days."),
                 ("If it's not right", "Rings are made to size and remade if the fit is off. Any piece can be returned for store credit in 14 days."),
@@ -258,7 +258,7 @@ EMAILS.update({
  "browse-1": dict(
     subject="{% if event.ProductID|slice:'11:25' in '" + ",".join(TOTEM_IDS) + "' %}{{ event.ProductName }} is thinking about you, too{% else %}{{ event.ProductName }}, still catching the light{% endif %}",
     preview="A second look at the piece you were studying.",
-    body=eyebrow("A second look")
+    body=eyebrow("Studio Maçon")
        + "{% if event.ProductID|slice:'11:25' in '" + ",".join(TOTEM_IDS) + "' %}"
        + title("They're thinking<br>about you, too") + VIEWED
        + text("Every totem is drawn, carved in wax and cast in bronze by hand, then finished in the studio in California. "
@@ -276,14 +276,14 @@ EMAILS.update({
  "thanks-1": dict(
     subject="Your piece is being made",
     preview="What happens between now and its arrival.",
-    body=eyebrow("Thank you") + h1("Your piece<br>is being made") + ORDER
+    body=eyebrow("Studio Maçon") + h1("Your piece<br>is being made") + ORDER
        + notes([("Made to order", "The piece is being made for you now, in the studio in California."),
                 ("On its way", "It leaves the studio within about ten business days. A tracking link follows when it ships."),
                 ("Questions", 'A reply to this email reaches the studio directly, at <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>.')])),
  "thanks-2": dict(
     subject="How to care for your piece",
     preview="Bronze and silver, and how they change with handling.",
-    body=eyebrow("Care notes") + h1("Meant to<br>be handled") + image(HAND, "A small bronze totem held in the palm")
+    body=eyebrow("Studio Maçon") + h1("Meant to<br>be handled") + image(HAND, "A small bronze totem held in the palm")
        + notes([("Bronze", "The patina darkens where the thumb rests and brightens where it rubs. "
                            "To keep it as it is, wipe with a soft dry cloth. Avoid polish; it takes the patina with it."),
                 ("Silver", "Silver darkens slowly in the air. A polishing cloth brings it back; wearing it often does the same."),
