@@ -98,7 +98,8 @@ def page(preheader, body):
 <style>
   body{{margin:0;padding:0;background:#ffffff}} a{{color:#000000}} img{{border:0;display:block}}
   @media (max-width:620px){{ .wrap{{width:100%!important}} .pad{{padding-left:24px!important;padding-right:24px!important}}
-    .h1{{font-size:40px!important}} .col{{display:block!important;width:100%!important;padding:0 0 24px!important}} }}
+    .h1{{font-size:40px!important}} .col{{display:block!important;width:100%!important;padding:0 0 24px!important}}
+    .duo{{display:inline-block!important;width:50%!important;box-sizing:border-box}} .gone{{display:none!important}} }}
 </style></head>
 <body style="margin:0;padding:0;background:#ffffff">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">{preheader}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
@@ -159,10 +160,10 @@ def code(note):
 
 def trio(items):
     cells = "".join(
-        f'<td class="col" width="33%" valign="top" style="padding:0 6px"><a href="{SITE}/product-page/{slug}" style="text-decoration:none;color:#000000">'
+        f'<td class="{"duo" if i < 2 else "duo gone"}" width="33%" valign="top" style="padding:0 6px"><a href="{SITE}/product-page/{slug}" style="text-decoration:none;color:#000000">'
         f'<img src="{src}" width="160" alt="{name}" style="width:100%;height:auto;border-radius:16px">'
         f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:12px 0 4px">{name}</div>'
-        f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">${_PRICE.get(slug, 220):.0f}</div></a></td>' for name, slug, src in items)
+        f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">${_PRICE.get(slug, 220):.0f}</div></a></td>' for i, (name, slug, src) in enumerate(items))
     return (f'<tr><td class="pad" style="padding:0 24px 44px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             f'<tr>{cells}</tr></table></td></tr>')
 
