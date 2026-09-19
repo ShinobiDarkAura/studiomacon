@@ -105,8 +105,8 @@ def page(preheader, body):
 def eyebrow(t):
     return f'<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 {SANS};color:#000000">{t}</td></tr>'
 
-def h1(t):
-    return (f'<tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 {SERIF};'
+def h1(t, below=51):
+    return (f'<tr><td class="pad h1" align="center" style="padding:0 24px {below}px;font:400 46px/1 {SERIF};'
             f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>')
 
 def title(t):
@@ -193,9 +193,9 @@ EMAILS = {
  "welcome-2": dict(
     subject="How a Maçon piece is made",
     preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
-    body=eyebrow("Studio Maçon") + h1("Carved by hand,<br>cast in metal")
+    body=eyebrow("Studio Maçon") + h1("Carved by hand,<br>cast in metal", 35)
        + text("No two pieces leave the studio quite alike. The patina is built up by hand, and it keeps changing: "
-              "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
+              "it darkens where the thumb rests and brightens where it rubs, recording how it is held.", "0 111px 50px")
        + film_steps() + code("10% off your first purchase") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
        + friends() + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
  "welcome-3": dict(
