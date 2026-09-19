@@ -228,7 +228,7 @@ EMAILS = {
 # ── flows that show the shopper's own pieces (Klaviyo fills these in) ──────────────
 def items(loop, title, image, price, link):
     """One row per piece, filled in by Klaviyo. For the preview, one sample row stands in."""
-    row = (f'<tr><td align="center" style="padding:0"><a href="{link}" style="text-decoration:none">'
+    row = (f'<tr><td align="center" style="padding:0 0 40px"><a href="{link}" style="text-decoration:none">'
            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;'
            f'box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr>'
            f'<td height="272" valign="bottom" background="{image}" bgcolor="#8a7a6a" '
@@ -245,8 +245,8 @@ def items(loop, title, image, price, link):
             f'<td height="49" background="{image}" bgcolor="#8a7a6a" style="height:49px;font-size:0;line-height:0;'
             f'border-radius:0 0 16px 16px;background-image:url({image});background-size:cover;background-position:center bottom">&nbsp;</td>'
             f'</tr></table></a></td></tr>')
-    rows = (f'{{% for item in {loop} %}}{{% if forloop.first %}}{row}{{% else %}}{peek}{{% endif %}}{{% endfor %}}' if loop else row)
-    return (f'<tr><td class="pad" style="padding:0 24px 53px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    rows = (f'{{% for item in {loop} %}}{row}{{% endfor %}}' if loop else row)          # each piece its own full card
+    return (f'<tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             + rows + '</table></td></tr>')
 
 CART = items("event.extra.line_items", "{{ item.product.title }}", IMG + "/held-{{ item.product.id }}.jpg",
