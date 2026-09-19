@@ -671,7 +671,7 @@
           return;
         }
         MaconBag.add({
-          image: location.origin + '/img/email/tile-' + location.pathname.split('/').pop().replace('.html', '') + '.jpg',
+          image: location.origin + '/img/email/wide-' + location.pathname.split('/').pop().replace('.html', '') + '.jpg',
           slug: location.pathname.split('/').pop().replace('.html', ''),
           name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
           img: hero ? hero.getAttribute('src') : '', size: size,

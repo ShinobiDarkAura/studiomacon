@@ -59,7 +59,8 @@ for _slug in os.listdir(os.path.join(PDP, "img")):
     _dir = os.path.join(PDP, "img", _slug)
     if not os.path.isdir(os.path.join(PDP, "_originals", _slug)): continue
     _still = (_C.get(_slug) or {}).get("tile_image") or f"img/{_slug}/{'plain-3.jpg' if _slug == 'wonderhorn-talisman' else 'hero.jpg'}"
-    if os.path.exists(os.path.join(PDP, _still)): jpg(_still, f"tile-{_slug}.jpg", 520, 4 / 5)
+    if os.path.exists(os.path.join(PDP, _still)):
+        jpg(_still, f"tile-{_slug}.jpg", 520, 4 / 5); jpg(_still, f"wide-{_slug}.jpg", 960, 3 / 2)
 
 def three(*pairs):
     return [(n, slug, f"{IMG}/tile-{slug}.jpg") for n, slug in pairs]
@@ -80,7 +81,7 @@ def page(preheader, body):
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">{preheader}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center">
 <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px">
-  <tr><td align="center" style="padding:44px 0 36px"><a href="{SITE}"><img src="{EYE}" width="64" alt="Studio Maçon" style="width:64px;height:auto"></a></td></tr>
+  <tr><td align="center" style="padding:48px 0 40px"><a href="{SITE}"><img src="{EYE}" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>
 {body}
   <tr><td class="pad" align="center" style="padding:56px 48px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 {SANS};color:#8a8a8a">
     Every piece is made to order in the studio in California.<br>
@@ -91,21 +92,21 @@ def page(preheader, body):
 </table></td></tr></table></body></html>"""
 
 def eyebrow(t):
-    return f'<tr><td class="pad" align="center" style="padding:0 48px 14px;font:400 14px/1.4 {SANS};color:#000000">{t}</td></tr>'
+    return f'<tr><td class="pad" align="center" style="padding:0 48px 15px;font:400 14px/1.4 {SANS};color:#000000">{t}</td></tr>'
 
 def h1(t):
-    return (f'<tr><td class="pad h1" align="center" style="padding:0 48px 42px;font:400 46px/1 {SERIF};'
+    return (f'<tr><td class="pad h1" align="center" style="padding:0 48px 46px;font:400 46px/1 {SERIF};'
             f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>')
 
-def text(t, pad="0 111px 28px"):
+def text(t, pad="0 111px 31px"):
     return f'<tr><td class="pad" align="center" style="padding:{pad};font:400 16px/1.6 {SANS};color:#000000">{t}</td></tr>'
 
 def image(src, alt, link=SITE + "/shop?discount=" + CODE):
-    return (f'<tr><td class="pad" style="padding:0 48px 52px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
+    return (f'<tr><td class="pad" style="padding:0 48px 57px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
             f'style="width:100%;max-width:504px;height:auto;border-radius:6px"></a></td></tr>')
 
 def button(label, href):
-    return (f'<tr><td align="center" style="padding:4px 48px 44px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
+    return (f'<tr><td align="center" style="padding:4px 48px 48px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
             f'<td bgcolor="#000000" style="background:#000000"><a href="{href}" style="display:inline-block;padding:17px 44px;'
             f'font:500 12px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">{label}</a>'
             f'</td></tr></table></td></tr>')
@@ -170,49 +171,49 @@ EMAILS = {
 # ── flows that show the shopper's own pieces (Klaviyo fills these in) ──────────────
 def items(loop, title, image, price, link):
     """One row per piece, filled in by Klaviyo. For the preview, one sample row stands in."""
-    row = (f'<tr><td style="padding:0 0 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'
-           f'<td width="120" valign="top"><a href="{link}"><img src="{image}" width="120" alt="" style="width:120px;height:auto;border-radius:6px"></a></td>'
-           f'<td valign="middle" style="padding-left:20px"><div style="font:400 26px/1 {SERIF};text-transform:uppercase;color:#000000">{title}</div>'
-           f'<div style="font:400 14px/1 {SANS};color:#6b6b6b;padding-top:8px">${price}</div></td></tr></table></td></tr>')
-    return (f'<tr><td class="pad" style="padding:0 72px 20px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    row = (f'<tr><td align="center" style="padding:0 0 31px"><a href="{link}"><img src="{image}" width="480" alt="" '
+           f'style="width:100%;max-width:480px;height:auto;border-radius:6px;margin:0 auto"></a>'
+           f'<div style="font:400 30px/1 {SERIF};text-transform:uppercase;color:#000000;padding-top:18px">{title}</div>'
+           f'<div style="font:400 14px/1 {SANS};color:#6b6b6b;padding-top:9px">${price}</div></td></tr>')
+    return (f'<tr><td class="pad" style="padding:0 60px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             + (f'{{% for item in {loop} %}}{row}{{% endfor %}}' if loop else row) + '</table></td></tr>')
 
-CART = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.product.images.0.src|missing_product_image }}",
+CART = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center",
              "{{ item.line_price|floatformat:0 }}", "{{ event.extra.checkout_url }}")
 VIEWED = items(None, "{{ event.ProductName }}", "{{ event.ImageURL }}", "{{ event.Price|floatformat:0 }}", "{{ event.URL }}")
-ORDER = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.product.images.0.src|missing_product_image }}",
+ORDER = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center",
               "{{ item.line_price|floatformat:0 }}", SITE)
 CHECKOUT = "{{ event.extra.checkout_url }}"
 
 def notes(rows):
-    cells = "".join(f'<tr><td style="padding:0 0 18px"><div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding-bottom:6px">{t}</div>'
+    cells = "".join(f'<tr><td align="center" style="padding:0 0 22px"><div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
                     f'<div style="font:400 15px/1.6 {SANS};color:#333333">{d}</div></td></tr>' for t, d in rows)
-    return (f'<tr><td class="pad" style="padding:4px 72px 24px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    return (f'<tr><td class="pad" style="padding:4px 194px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             f'{cells}</table></td></tr>')
 
 EMAILS.update({
  # Abandoned checkout (trigger: Checkout Started; exit if Placed Order). 1: after 4 hours. 2: after 2 days.
  "checkout-1": dict(
-    subject="Left on the bench",
+    subject="We saved it for you",
     preview="The piece is waiting where you left it.",
-    body=eyebrow("Your bag") + h1("Left on<br>the bench") + CART
+    body=eyebrow("Your bag") + h1("We saved it<br>for you") + CART
        + text("Every Maçon piece is made to order once it is chosen, so nothing is lost by taking a moment. "
-              "The checkout is saved exactly as it was.") + button("Return to checkout", CHECKOUT)),
+              "The checkout is saved exactly as it was.", "0 194px 31px") + button("Return to checkout", CHECKOUT)),
  "checkout-2": dict(
     subject="A question about your piece?",
     preview="Sizing, patina, timing: the studio answers every note.",
-    body=eyebrow("Your bag") + h1("Still<br>deciding?") + CART
+    body=eyebrow("Your bag") + h1("Questions,<br>answered") + CART
        + notes([("Sizing", "Rings can be made in any size. If the fit is not right, the studio will make it right."),
                 ("Timing", "Each piece is made to order and leaves the studio within about ten business days."),
                 ("Questions", 'A reply to this email reaches the studio directly, at <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>.')])
        + button("Return to checkout", CHECKOUT)),
  # Browse abandonment (trigger: Viewed Product; skip if they checked out or were emailed in the last day). After 1 day.
  "browse-1": dict(
-    subject="{{ event.ProductName }}, still on your mind?",
+    subject="{{ event.ProductName }} is thinking about you, too",
     preview="A second look at the piece you were studying.",
-    body=eyebrow("A second look") + h1("Still<br>on your mind") + VIEWED
+    body=eyebrow("A second look") + h1("They're thinking<br>about you, too") + VIEWED
        + text("Every piece is drawn, carved in wax and cast by hand, then finished in the studio in California. "
-              "No two leave quite alike.") + button("Take another look", "{{ event.URL }}")
+              "No two leave quite alike.", "0 194px 31px") + button("Take another look", "{{ event.URL }}")
        + text("Others in the collection", "8px 48px 18px") + trio(three(("Pip", "pip"), ("Ori", "ori"), ("Eclipse Ring", "eclipse-ring")))),
  # Post-purchase (trigger: Placed Order). 1: straight away. 2: after 21 days.
  "thanks-1": dict(

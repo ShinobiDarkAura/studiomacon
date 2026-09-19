@@ -783,7 +783,7 @@ def main():
         first = (SHOP_IDS.get(p["slug"]) or [None])[0]
         if first:                                     # tell Meta and Google a piece was looked at
             view = json.dumps({"variant": first["variant"], "name": p["name"], "slug": p["slug"], "price": first["price"],
-                               "image": f"{SITE}/img/email/tile-{p['slug']}.jpg"})
+                               "image": f"{SITE}/img/email/wide-{p['slug']}.jpg"})
             doc = doc.replace("</body>", f"<script>maconTrack('view', {view});</script>\n</body>", 1)
         save(f"{p['slug']}.html", doc, product=p)
         print("  ", p["slug"])

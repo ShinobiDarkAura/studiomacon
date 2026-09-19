@@ -774,7 +774,7 @@
           return;
         }
         MaconBag.add({
-          image: location.origin + '/img/email/tile-' + location.pathname.split('/').pop().replace('.html', '') + '.jpg',
+          image: location.origin + '/img/email/wide-' + location.pathname.split('/').pop().replace('.html', '') + '.jpg',
           slug: location.pathname.split('/').pop().replace('.html', ''),
           name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
           img: hero ? hero.getAttribute('src') : '', size: size,
@@ -1065,6 +1065,6 @@
       .observe(document.querySelector('footer .news'));
   })();
 </script>
-<script>maconTrack('view', {"variant": "53985365885293", "name": "Starship Key", "slug": "starshipkey-pendant", "price": 460.0, "image": "https://studiomacon.co/img/email/tile-starshipkey-pendant.jpg"});</script>
+<script>maconTrack('view', {"variant": "53985365885293", "name": "Starship Key", "slug": "starshipkey-pendant", "price": 460.0, "image": "https://studiomacon.co/img/email/wide-starshipkey-pendant.jpg"});</script>
 </body>
 </html>
