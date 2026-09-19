@@ -8,7 +8,7 @@ HTML, or "Create template → Import HTML"), and email-sized JPEGs into img/emai
 site serves. Tables and inline styles only: that is what every mail client reads.
 Klaviyo fills in {% unsubscribe_url %} and {{ organization.* }}.
 """
-import os
+import os, re
 from PIL import Image, ImageOps
 
 PDP = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -341,5 +341,9 @@ os.makedirs(os.path.join(PDP, "email", "shopify"), exist_ok=True)
 for name, e in EMAILS.items():
     if name.startswith("browse"): continue
     with open(os.path.join(PDP, "email", "shopify", name + ".html"), "w", encoding="utf-8") as f:
-        f.write(to_shopify(page(e["preview"], e["body"]), name))
+        # accented letters as HTML codes (ç → &#231;), so a paste that loses UTF-8 cannot break them;
+        # names inside Liquid tags stay as they are, since they must match Shopify's product titles
+        out = re.sub(r"(\{%.*?%\})|([^\x00-\x7f])", lambda m: m.group(1) or f"&#{ord(m.group(2))};",
+                     to_shopify(page(e["preview"], e["body"]), name), flags=re.S)
+        f.write(out)
     print(f"shopify/{name}.html")
