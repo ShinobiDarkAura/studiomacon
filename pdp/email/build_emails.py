@@ -91,10 +91,10 @@ def page(preheader, body):
 <body style="margin:0;padding:0;background:#ffffff">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">{preheader}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center">
-<table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px">
+<table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
   <tr><td align="center" style="padding:53px 0 44px"><a href="{SITE}"><img src="{EYE}" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>
 {body}
-  <tr><td class="pad" align="center" style="padding:56px 48px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 {SANS};color:#8a8a8a">
+  <tr><td class="pad" align="center" style="padding:56px 24px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 {SANS};color:#8a8a8a">
     Every piece is made to order in the studio in California.<br>
     <a href="{SITE}/story" style="color:#8a8a8a">About</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/studiomacon/" style="color:#8a8a8a">Instagram</a>
     &nbsp;·&nbsp; <a href="{{% unsubscribe_url %}}" style="color:#8a8a8a">Unsubscribe</a><br>
@@ -103,38 +103,41 @@ def page(preheader, body):
 </table></td></tr></table></body></html>"""
 
 def eyebrow(t):
-    return f'<tr><td class="pad" align="center" style="padding:0 48px 17px;font:400 14px/1.4 {SANS};color:#000000">{t}</td></tr>'
+    return f'<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 {SANS};color:#000000">{t}</td></tr>'
 
 def h1(t):
-    return (f'<tr><td class="pad h1" align="center" style="padding:0 48px 51px;font:400 46px/1 {SERIF};'
+    return (f'<tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 {SERIF};'
             f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>')
 
 def title(t):
     """Bag and browse emails: a larger title with 8px more above it and a short rule 24px beneath."""
-    return (f'<tr><td class="pad h1" align="center" style="padding:8px 48px 24px;font:400 54px/1 {SERIF};'
+    return (f'<tr><td class="pad h1" align="center" style="padding:8px 24px 24px;font:400 54px/1 {SERIF};'
             f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>'
             f'<tr><td align="center" style="padding:0 0 40px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
             f'<td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0">&nbsp;</td></tr></table></td></tr>')
 
 def friends():
-    return ('<tr><td class="pad" align="center" style="padding:8px 48px 22px;font:400 16px/1.35 ' + SANS + ';color:#000000">'
+    return ('<tr><td class="pad" align="center" style="padding:8px 24px 22px;font:400 16px/1.35 ' + SANS + ';color:#000000">'
             "We'd like to introduce you<br>to a few friends</td></tr>")
 
 def text(t, pad="0 111px 34px"):
-    return f'<tr><td class="pad" align="center" style="padding:{pad};font:400 16px/1.6 {SANS};color:#000000">{t}</td></tr>'
+    # the side margin becomes a max width, so a phone never has to shrink the email to fit it
+    top, side, bottom = pad.split(); w = 600 - 2 * int(side[:-2])
+    return (f'<tr><td class="pad" align="center" style="padding:{top} 24px {bottom};font:400 16px/1.6 {SANS};color:#000000">'
+            f'<div style="max-width:{w}px;margin:0 auto">{t}</div></td></tr>')
 
 def image(src, alt, link=SITE + "/shop?discount=" + CODE):
-    return (f'<tr><td class="pad" style="padding:0 48px 63px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
+    return (f'<tr><td class="pad" style="padding:0 24px 63px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
             f'style="width:100%;max-width:504px;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"></a></td></tr>')
 
 def button(label, href):
-    return (f'<tr><td align="center" style="padding:4px 48px 53px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
+    return (f'<tr><td align="center" style="padding:4px 24px 53px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
             f'<td bgcolor="#000000" style="background:#000000"><a href="{href}" style="display:inline-block;padding:17px 44px;'
             f'font:500 12px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">{label}</a>'
             f'</td></tr></table></td></tr>')
 
 def code(note):
-    return (f'<tr><td class="pad" align="center" style="padding:18px 48px 33px"><table role="presentation" cellpadding="0" cellspacing="0" '
+    return (f'<tr><td class="pad" align="center" style="padding:18px 24px 33px"><table role="presentation" cellpadding="0" cellspacing="0" '
             f'style="border:1px solid rgba(0,0,0,.12)"><tr><td align="center" style="padding:24px 34px">'
             f'<div style="font:400 11px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;padding-bottom:10px">{note}</div>'
             f'<div style="font:400 30px/1 {SERIF};letter-spacing:.06em;color:#000000"><span style="padding:2px 8px 0;'
@@ -147,7 +150,7 @@ def trio(items):
         f'<img src="{src}" width="160" alt="{name}" style="width:100%;height:auto;border-radius:16px">'
         f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:12px 0 4px">{name}</div>'
         f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">${_PRICE.get(slug, 220):.0f}</div></a></td>' for name, slug, src in items)
-    return (f'<tr><td class="pad" style="padding:0 42px 44px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    return (f'<tr><td class="pad" style="padding:0 24px 44px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             f'<tr>{cells}</tr></table></td></tr>')
 
 def film_steps():
@@ -159,7 +162,7 @@ def film_steps():
         f'<img src="{src}" width="160" alt="" style="width:100%;height:auto;border-radius:16px;{SH}">'
         f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:24px 0 9px">{t}</div>'
         f'<div style="font:400 14px/1.55 {SANS};color:#333333">{d}</div></td>' for src, (t, d) in zip(FILM, rows))
-    return (f'<tr><td class="pad" style="padding:8px 42px 48px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    return (f'<tr><td class="pad" style="padding:8px 24px 48px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             f'<tr>{cells}</tr></table></td></tr>')
 
 SH = "box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"
@@ -208,16 +211,16 @@ EMAILS = {
 def items(loop, title, image, price, link):
     """One row per piece, filled in by Klaviyo. For the preview, one sample row stands in."""
     row = (f'<tr><td align="center" style="padding:0 0 40px"><a href="{link}" style="text-decoration:none">'
-           f'<table role="presentation" width="408" cellpadding="0" cellspacing="0" style="width:408px;max-width:100%;border-radius:16px;'
+           f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;'
            f'box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr>'
-           f'<td width="408" height="272" valign="bottom" background="{image}" bgcolor="#8a7a6a" '
+           f'<td height="272" valign="bottom" background="{image}" bgcolor="#8a7a6a" '
            f'style="height:272px;border-radius:16px;background-image:url({image});background-size:cover;background-position:center">'
            f'<div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;'
            f'background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))">'
            f'<div style="font:400 35px/1 {SERIF};text-transform:uppercase;color:#ffffff">{title}</div>'
            f'<div style="font:400 16px/1 {SANS};color:#ffffff;padding-top:7px">${price}</div></div>'
            f'</td></tr></table></a></td></tr>')
-    return (f'<tr><td class="pad" style="padding:0 60px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    return (f'<tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             + (f'{{% for item in {loop} %}}{row}{{% endfor %}}' if loop else row) + '</table></td></tr>')
 
 CART = items("event.extra.line_items", "{{ item.product.title }}", IMG + "/held-{{ item.product.id }}.jpg",
@@ -230,7 +233,7 @@ CHECKOUT = "{{ event.extra.checkout_url }}"
 def notes(rows):
     cells = "".join(f'<tr><td align="center" style="padding:0 0 22px"><div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
                     f'<div style="font:400 15px/1.6 {SANS};color:#333333">{d}</div></td></tr>' for t, d in rows)
-    return (f'<tr><td class="pad" style="padding:4px 178px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    return (f'<tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto">'
             f'{cells}</table></td></tr>')
 
 EMAILS.update({

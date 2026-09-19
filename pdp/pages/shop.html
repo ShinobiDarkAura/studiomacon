@@ -387,6 +387,14 @@
   }
   still();
   addEventListener('scroll', cue, {passive: true});
+  // a refresh briefly restores the old scroll position before going back to the top; that
+  // passing moment must not dock the logotype, so it starts over in the middle
+  (function () {
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    if (!nav || nav.type !== 'reload') return;
+    function reset() { if (scrollY <= 40) { document.body.classList.remove('logo-docked', 'hero-quiet'); still(); } }
+    reset(); addEventListener('load', function () { requestAnimationFrame(reset); });
+  })();
   addEventListener('pageshow', function (e) { if (e.persisted) still(); });
 </script>
 </body>
