@@ -352,7 +352,7 @@
    },
    "hero": "img/ren/hero.jpg",
    "hidden": [],
-   "tile_hover": "img/ren/hires-1.jpg"
+   "tile_hover": "img/ren/hires-1-mirrored.jpg"
   },
   "sietch-aperture": {
    "frames": {
@@ -467,7 +467,7 @@
    "hero": "img/yael/hires-1.jpg",
    "hidden": [],
    "tile_image": "img/yael/hires-1.jpg",
-   "tile_hover": "img/yael/hand-2.jpg",
+   "tile_hover": "img/yael/hand-2-mirrored.jpg",
    "tile_before_hires": {
     "x": 49.9,
     "y": 49.8,
