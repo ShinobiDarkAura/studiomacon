@@ -243,7 +243,7 @@ ORDER = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.pro
 CHECKOUT = "{{ event.extra.checkout_url }}"
 
 def notes(rows):
-    cells = "".join(f'<tr><td align="center" style="padding:0 0 22px"><div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
+    cells = "".join(f'<tr><td align="center" style="padding:0 0 34px"><div style="font:400 27px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
                     f'<div style="font:400 15px/1.6 {SANS};color:#333333">{d}</div></td></tr>' for t, d in rows)
     return (f'<tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto">'
             f'{cells}</table></td></tr>')
