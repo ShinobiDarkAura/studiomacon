@@ -315,7 +315,7 @@
    },
    "hero": "img/rebi/hero.jpg",
    "hidden": [],
-   "tile_hover": "img/rebi/hires-2.jpg"
+   "tile_hover": "img/rebi/hires-2-mirrored.jpg"
   },
   "ren": {
    "frames": {
