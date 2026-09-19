@@ -27,7 +27,7 @@
     transition:transform 1.1s cubic-bezier(.16,1,.3,1),opacity 1.1s cubic-bezier(.16,1,.3,1),filter 1.1s cubic-bezier(.16,1,.3,1)}
   .split .pics img.up{transform:none;opacity:1;filter:none}
   .split .copy p.body{margin:0 0 48px;font-size:17px;line-height:1.55}
-  .ways{display:flex;justify-content:center;align-items:baseline;gap:12px;margin:48px 0 0;font-size:calc(17px - 2pt)}
+  .ways{display:flex;justify-content:center;align-items:baseline;gap:6px 12px;flex-wrap:wrap;margin:48px 0 0;font-size:calc(17px - 2pt)}
   .ways .dot{opacity:.5}
   /* desktop: email and Instagram sit together at the foot of the first screen, centred under the form column */
   .form{display:grid;gap:30px}
@@ -49,8 +49,8 @@
     /* email and Instagram sit at the foot of the column, 16px off the bottom edge */
     .split .copy .ways{position:absolute;left:0;right:0;bottom:17px;margin:0}
   }
-  /* tablets: the black field takes half, so the text column keeps room for its title and fields */
-  @media (min-width:768px) and (max-width:1099px){ body .split{grid-template-columns:50vw minmax(0,1fr);gap:0 32px;background:linear-gradient(to right,#000 0 50vw,#fff 50vw)} }
+  /* tablets: the black field narrows (to 62%, still clear of the logotype), so the text column keeps room for its title and fields */
+  @media (min-width:768px) and (max-width:1099px){ body .split{grid-template-columns:62vw minmax(0,1fr);gap:0 32px;background:linear-gradient(to right,#000 0 62vw,#fff 62vw)} }
   @media (max-width:767px){
     .split .pics figure{aspect-ratio:auto;height:60vh;height:60svh;padding:calc(var(--head) + 8px) 12vw 5vh;
       display:flex;align-items:center;justify-content:center;overflow:hidden}          /* the poster rises inside the panel */

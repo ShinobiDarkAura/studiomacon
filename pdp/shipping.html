@@ -40,8 +40,8 @@
     .ship .branch{min-height:100vh;min-height:100svh}
     .ship .text{align-self:center;padding:calc(var(--head) + 40px) 0 64px}
   }
-  /* tablets: the black field takes half, so the text column keeps room for its title and fields */
-  @media (min-width:768px) and (max-width:1099px){ body .ship{grid-template-columns:50vw minmax(0,1fr);gap:0 32px;background:linear-gradient(to right,#000 0 50vw,#fff 50vw)} }
+  /* tablets: the black field narrows (to 62%, still clear of the logotype), so the text column keeps room for its title and fields */
+  @media (min-width:768px) and (max-width:1099px){ body .ship{grid-template-columns:62vw minmax(0,1fr);gap:0 32px;background:linear-gradient(to right,#000 0 62vw,#fff 62vw)} }
   /* on load: the branch slides in from the left, then the text rises in turn */
   /* the black field is painted at once; only the box rises into it */
   .ship .branch img{transform:translateY(90px);opacity:0;filter:blur(10px);
