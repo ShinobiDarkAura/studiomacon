@@ -150,6 +150,7 @@
   /* phones: two across, 8px from the edges, 8px between */
   @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 8px} }
   @media (hover:none){ .piece .held{display:none} }
+  .piece .pic img.held{transform:scale(calc(var(--z,1.12) * var(--hz,1)))}
 
   /* every tile's pictures sit in one clipped 4:5 frame, in every layout, so a zoomed picture
      can never spill onto its neighbours; framing is set in the lab (by default a little closer
@@ -199,6 +200,7 @@
     body:not(.labels-under) .piece .name{font:400 calc(49.5px - 8pt)/.95 var(--serif);text-transform:uppercase;letter-spacing:.01em}
     body:not(.labels-under) .piece:hover .over,body:not(.labels-under) .piece:focus-visible .over{opacity:1;transform:none}
     body:not(.labels-under) .piece:hover .pic img{transform:scale(calc(var(--z,1.12) * 1.02))}
+    body:not(.labels-under) .piece:hover .pic img.held{transform:scale(calc(var(--z,1.12) * var(--hz,1) * 1.02))}
   }
   @media (min-width:768px) and (hover:none){ body:not(.labels-under) .piece .over{opacity:1;transform:none} }
 </style>
@@ -375,7 +377,7 @@
     <figure><a class="piece" href="rebi.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/rebi/hero--tile.jpg.webp" alt="Rebi" loading="eager"><img class="held" src="img/rebi/hires-2-mirrored--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Rebi</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="ren.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/ren/hero--tile.jpg.webp" alt="Ren" loading="eager"><img class="held" src="img/ren/hires-1-mirrored--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ren</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="zuma.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/zuma/hero--tile.jpg.webp" alt="Zuma" loading="lazy"><img class="held" src="img/zuma/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Zuma</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="ori.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/ori/hero--tile.jpg.webp" alt="Ori" loading="lazy"><img class="held" src="img/ori/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ori</span><span class="cost">$220</span></span></a></figure>
+    <figure><a class="piece" href="ori.html" style="--x:50%;--y:50%;--z:1;--hz:1.15"><span class="pic"><img src="img/ori/hero--tile.jpg.webp" alt="Ori" loading="lazy"><img class="held" src="img/ori/hand-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ori</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="yael.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/yael/hires-1--tile.jpg.webp" alt="Yaël" loading="lazy"><img class="held" src="img/yael/hand-2-mirrored--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Yaël</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="milo.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/milo/hires-2--tile.jpg.webp" alt="Milo" loading="lazy"><img class="held" src="img/milo/hires-1--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Milo</span><span class="cost">$220</span></span></a></figure>
     <figure><a class="piece" href="ibi.html" style="--x:50%;--y:50%;--z:1"><span class="pic"><img src="img/ibi/hires-2--tile.jpg.webp" alt="Ibi" loading="lazy"><img class="held" src="img/ibi/hires-3--tile.jpg.webp" alt="" loading="lazy"></span><span class="over"><span class="name">Ibi</span><span class="cost">$220</span></span></a></figure>

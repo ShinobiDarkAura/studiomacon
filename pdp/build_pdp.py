@@ -659,7 +659,9 @@ def tile_style(slug):
     t = _content.product(slug, "tile", None)
     if not isinstance(t, dict):
         return ""
-    return f' style="--x:{t.get("x", 50):g}%;--y:{t.get("y", 50):g}%;--z:{t.get("z", 1.12):g}"'
+    hz = _content.product(slug, "hover_z", None)          # extra zoom on the in-hand picture alone
+    return (f' style="--x:{t.get("x", 50):g}%;--y:{t.get("y", 50):g}%;--z:{t.get("z", 1.12):g}'
+            + (f';--hz:{hz:g}' if hz else "") + '"')
 
 
 def feeds(products):

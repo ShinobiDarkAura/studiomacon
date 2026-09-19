@@ -255,7 +255,8 @@
     "img/ori/hand-2.jpg"
    ],
    "hidden": [],
-   "tile_hover": "img/ori/hand-1.jpg"
+   "tile_hover": "img/ori/hand-1.jpg",
+   "hover_z": 1.15
   },
   "pip": {
    "frames": {
