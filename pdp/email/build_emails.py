@@ -401,12 +401,14 @@ def _caps(html):
                   lambda m: up(type("M", (), {"group": lambda self, i: [None, m.group(1), m.group(3), m.group(4)][i]})()), html, flags=re.S)
 
 def to_shopify_cart():
-    """The full-width cards, one per piece, in Shopify's terms."""
-    card = (items(None, "@LABEL@", "@HELD@", "@PRICE@", "{{ abandoned_checkout.url }}")
-            .replace("$@PRICE@", "@PRICE@"))
-    head, rest = card.split('<table role="presentation" width="100%" cellpadding="0" cellspacing="0">', 1)
-    row, tail = rest.rsplit("</table></td></tr>", 1)
-    return (head + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    """The full-width cards, one per piece, in Shopify's terms. The photo is a plain image with the name and
+    price below it: Shopify's code checker rejects background images in inline styles."""
+    row = (f'<tr><td align="center" style="padding:0 0 40px"><a href="{{{{ abandoned_checkout.url }}}}" style="text-decoration:none;color:#000000">'
+           f'<img src="@HELD@" width="408" alt="@LABEL@" style="width:100%;max-width:408px;height:auto;border-radius:16px;margin:0 auto;{SH}">'
+           f'<div style="max-width:408px;margin:0 auto;text-align:left">'
+           f'<div style="font:400 35px/1 {SERIF};text-transform:uppercase;color:#000000;padding:20px 0 6px">@LABEL@</div>'
+           f'<div style="font:400 16px/1 {SANS};color:#6b6b6b">@PRICE@</div></div></a></td></tr>')
+    return ('<tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             + "{% for line in abandoned_checkout.line_items %}" + _per_piece(row) + "{% endfor %}</table></td></tr>")
 
 def to_shopify(html, name):
