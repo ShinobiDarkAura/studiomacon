@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Ida's Wonder Horn", "description": "A silver spiral on a thirty inch chain, after the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment hums along. Its inner curl is filed and polished by hand.", "image": ["https://studiomacon.co/img/wonderhorn-talisman/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "wonderhorn-talisman", "offers": [{"@type": "Offer", "price": "390.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/wonderhorn-talisman.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789840448">
+<link rel="stylesheet" href="site.css?v=1789840824">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -410,10 +410,15 @@
     addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
   })();
 
-  // Once the page has moved, a soft blur sits behind the header (site.css, .head::before)
+  // Once the page has moved, a white fade sits behind the header and the nav turns black (site.css, .head::before)
   (function () {
     var root = document.documentElement, on = false;
-    function check() { var now = scrollY > 24; if (now !== on) { on = now; root.classList.toggle('past-top', on); } }
+    // on the home page it waits until the film has scrolled away: over the film the nav stays white, with no fade
+    var film = document.querySelector('.film');
+    function check() {
+      var edge = film ? film.getBoundingClientRect().bottom - 90 : 0, now = film ? edge <= 0 : scrollY > 24;
+      if (now !== on) { on = now; root.classList.toggle('past-top', on); }
+    }
     addEventListener('scroll', check, {passive: true}); check();
   })();
 
