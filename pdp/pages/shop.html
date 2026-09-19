@@ -439,6 +439,7 @@
       var imgs = [].slice.call(a.querySelectorAll('img')); if (!imgs.length) return;
       var b = baked(imgs[0].getAttribute('src'));
       tiles.push({el: a, slug: a.getAttribute('href').replace('.html', ''), imgs: imgs, b: b, warm: b.warm, tint: b.tint});
+      a.removeAttribute('href');                                // while editing, a piece selects instead of opening
     });
     var css = document.createElement('style');
     css.textContent = '.tint{position:fixed;right:16px;bottom:16px;z-index:9999;width:260px;background:#fff;border:1px solid #ddd;border-radius:12px;box-shadow:0 12px 40px -12px rgba(0,0,0,.35);padding:14px 16px;font:12px/1.4 -apple-system,system-ui,sans-serif;color:#000}' +
@@ -459,7 +460,7 @@
       who.textContent = cur ? cur.slug + ' — baked in: warm ' + cur.b.warm + ', tint ' + cur.b.tint : 'Click a piece to start.';
     }
     document.addEventListener('click', function (e) {
-      var a = e.target.closest && e.target.closest('.piece[href]'); if (!a) return;
+      var a = e.target.closest && e.target.closest('.piece'); if (!a || !tiles.some(function (t) { return t.el === a; })) return;
       e.preventDefault(); e.stopPropagation();
       tiles.forEach(function (t) { t.el.classList.toggle('tint-on', t.el === a); if (t.el === a) cur = t; });
       show();
