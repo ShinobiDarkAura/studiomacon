@@ -25,11 +25,14 @@
   .opening .intro h1{margin-bottom:38px}
   .prose h1,.prose h2{margin-bottom:44px}
   .opening{overflow-x:clip}
+  /* 20% less room above Our Practice */
+  .opening + .section{margin-top:77px}
+  @media (min-width:768px){ .opening + .section{margin-top:95px} }
   .opening .hand{margin:0}
   /* the films on this page are framed like the ones in the emails: 16px corners and a soft drop shadow */
   .opening .hand video,.process-film video{display:block;width:100%;border-radius:16px;background:#111;
     box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)}
-  .opening .hand video{aspect-ratio:1/1;object-fit:cover;width:100%;max-width:460px;margin:0 auto}          /* square, and held in from the edge like the text column opposite */
+  .opening .hand video{aspect-ratio:3/2;object-fit:cover;width:100%}
   /* opening sequence: the hand slides in from the right, then each text block rises in turn */
   .opening .hand.dr-emerge{transform:translateX(160px);filter:blur(10px);transition-duration:1.3s;--stagger:750ms !important}          /* the hand arrives after the words */
   .opening .intro > .dr-emerge{transform:translateY(48px)}
@@ -58,10 +61,12 @@
     .steps{padding:0 calc(var(--pad) + 24px)}
     .history{grid-template-columns:1fr 1fr;align-items:center}
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
-    .opening{grid-template-columns:1fr 1fr;align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
+    /* text and film sit together as one group in the middle, rather than each centred in its own half */
+    .opening{grid-template-columns:minmax(0,420px) minmax(0,600px);justify-content:center;column-gap:clamp(40px,6vw,96px);align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
+    .opening .intro{justify-self:start}
   }
   @media (max-width:767px){
-    .opening .hand video{max-width:min(100%,380px)}
+
     .opening,.prose,.history,.opening .intro,.history .intro{text-align:center}
     .opening .intro p.lede,.history .intro p.lede{margin-left:auto;margin-right:auto}
     /* phones: the process film follows the text, then the childhood photographs */
@@ -207,9 +212,9 @@
       <p class="lede" data-edit="page:story.html:0c9e3046">Maçon was founded by two creative and life partners, Alex and Hannah, whose work is inspired by ancient artifacts and the personal objects they cared for as children.</p>
       <p class="lede" data-edit="page:story.html:b572e979">Every piece is meant to be held: carried in a pocket, turned over in the palm, kept close. Like the ancient artifacts that inspired them, each one slowly takes on the story of whoever keeps it.</p>
     </div>
-    <figure class="hand"><video autoplay muted loop playsinline preload="metadata" poster="video/poster-ring-turn-sq.jpg" aria-label="A silver ring turned slowly between two fingers">
-      <source src="video/ring-turn-sq-720.mp4" type="video/mp4" media="(max-width:767px)">
-      <source src="video/ring-turn-sq-1080.mp4" type="video/mp4">
+    <figure class="hand"><video autoplay muted loop playsinline preload="metadata" poster="video/poster-ring-palm.jpg" aria-label="A silver ring resting in an open palm, in the sun">
+      <source src="video/ring-palm-720.mp4" type="video/mp4" media="(max-width:767px)">
+      <source src="video/ring-palm-1200.mp4" type="video/mp4">
     </video></figure>
   </section>
 
