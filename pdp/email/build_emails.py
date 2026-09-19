@@ -361,41 +361,53 @@ def _line_case():
     return ('{% assign held = line.image_url %}{% assign cost = "" %}{% assign label = line.product_title %}'
             + chain + '{% endif %}')
 
+def _per_piece(tpl):
+    """Write tpl out once per known piece, chosen by product name, with Shopify's own photo and name as the
+    fallback. Uses only for/if/elsif/else and plain values, no assign/case/filters: Shopify's email code
+    checker rejects the rest. tpl holds @HELD@, @LABEL@ and @PRICE@."""
+    fill = lambda h, l, p: tpl.replace("@HELD@", h).replace("@LABEL@", l).replace("@PRICE@", p)
+    items = [(h, t) for h, t in _TITLES.items() if h in _PRICE]
+    out = "".join(f'{{% {"if" if i == 0 else "elsif"} line.product_title == "{t}" %}}'
+                  + fill(f"{IMG}/held-{h}.jpg", t.upper(), f"${_PRICE[h]:.0f}") for i, (h, t) in enumerate(items))
+    return out + "{% else %}" + fill("{{ line.image_url }}", "{{ line.product_title }}", "") + "{% endif %}"
+
 SITE_ASSETS = IMG.rsplit("/img", 1)[0]
 
 def _grid(card):
     """One piece: the full card. Two: side by side. Three or more: rows of three, the last row left-aligned."""
-    cell = (f'<td width="{{{{ w }}}}%" valign="top" style="padding:0 6px"><a href="{{{{ abandoned_checkout.url }}}}" style="text-decoration:none;color:#000000">'
-            f'<img src="{{{{ held }}}}" width="160" alt="{{{{ label }}}}" style="width:100%;height:auto;border-radius:16px;{SH}">'
-            f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:16px 0 4px">{{{{ label }}}}</div>'
-            f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">{{% if cost != \'\' %}}${{{{ cost }}}}{{% endif %}}</div></a></td>')
-    return ('{% assign n = abandoned_checkout.line_items.size %}'
-            '{% if n == 1 %}' + card + '{% else %}'
-            '{% if n == 2 %}{% assign per = 2 %}{% assign w = 50 %}{% else %}{% assign per = 3 %}{% assign w = 33 %}{% endif %}{% assign lastcol = per | minus: 1 %}'
-            '<tr><td class="pad" style="padding:0 18px 53px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
-            '{% for line in abandoned_checkout.line_items %}' + _line_case() +
-            '{% assign c = forloop.index0 | modulo: per %}{% if c == 0 %}<tr>{% endif %}' + cell +
-            '{% if forloop.last %}{% assign pad = lastcol | minus: c %}'
-            '{% if pad > 0 %}<td width="{{ w }}%" style="padding:0 6px">&nbsp;</td>{% endif %}{% if pad > 1 %}<td width="{{ w }}%" style="padding:0 6px">&nbsp;</td>{% endif %}</tr>'
-            '{% elsif c == lastcol %}</tr><tr><td colspan="3" style="height:28px;font-size:0;line-height:0">&nbsp;</td></tr>{% endif %}'
-            '{% endfor %}</table></td></tr>{% endif %}')
+    def cell(w):
+        return (f'<td width="{w}%" valign="top" style="padding:0 6px"><a href="{{{{ abandoned_checkout.url }}}}" style="text-decoration:none;color:#000000">'
+                f'<img src="@HELD@" width="160" alt="@LABEL@" style="width:100%;height:auto;border-radius:16px;{SH}">'
+                f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:16px 0 4px">@LABEL@</div>'
+                f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">@PRICE@</div></a></td>')
+    blank = '<td width="33%" style="padding:0 6px">&nbsp;</td>'
+    gap = '</tr><tr><td colspan="3" style="height:28px;font-size:0;line-height:0">&nbsp;</td></tr><tr>'
+    n = "abandoned_checkout.line_items.size"
+    wrap = lambda inner: ('<tr><td class="pad" style="padding:0 18px 53px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+                          + inner + '</table></td></tr>')
+    return (f'{{% if {n} == 1 %}}' + card
+            + f'{{% elsif {n} == 2 %}}' + wrap('<tr>{% for line in abandoned_checkout.line_items %}' + _per_piece(cell(50)) + '{% endfor %}</tr>')
+            + '{% else %}' + wrap('<tr>{% for line in abandoned_checkout.line_items %}' + _per_piece(cell(33))
+                                  + '{% if forloop.index == 3 %}' + gap + '{% endif %}{% endfor %}'
+                                  + f'{{% if {n} == 4 %}}{blank}{blank}{{% endif %}}{{% if {n} == 5 %}}{blank}{{% endif %}}</tr>')
+            + '{% endif %}')
 
 def _caps(html):
     """Anything styled uppercase is also written in capitals, so it stays in caps in any mail app."""
     def up(m):
-        inner = re.sub(r"(\{\{\s*[\w.]+)(\s*\}\})", r"\1 | upcase\2", m.group(2))          # Shopify's own values
-        inner = re.sub(r"(<[^>]*>|\{[{%].*?[}%]\}|&\w+;)|([^<{&]+)", lambda t: t.group(1) or t.group(2).upper(), inner)
+        inner = re.sub(r"(<[^>]*>|\{[{%].*?[}%]\}|&\w+;|@\w+@)|([^<{&@]+)", lambda t: t.group(1) or t.group(2).upper(), m.group(2))
         return m.group(1) + inner + m.group(3)
     return re.sub(r'(<(td|div|a)[^>]*text-transform:uppercase[^>]*>)(.*?)(</\2>)',
                   lambda m: up(type("M", (), {"group": lambda self, i: [None, m.group(1), m.group(3), m.group(4)][i]})()), html, flags=re.S)
 
 def to_shopify_cart():
-    """The single full-width card, in Shopify's terms."""
-    return (CART.replace("{% for item in event.extra.line_items %}", "{% for line in abandoned_checkout.line_items %}" + _line_case())
-                .replace("{{ item.product.title }}", "{{ label }}")
-                .replace(IMG + "/held-{{ item.product.id }}.jpg", "{{ held }}")
-                .replace("${{ item.line_price|floatformat:0 }}", "{% if cost != '' %}${{ cost }}{% endif %}")
-                .replace("{{ event.extra.checkout_url }}", "{{ abandoned_checkout.url }}"))
+    """The full-width cards, one per piece, in Shopify's terms."""
+    card = (items(None, "@LABEL@", "@HELD@", "@PRICE@", "{{ abandoned_checkout.url }}")
+            .replace("$@PRICE@", "@PRICE@"))
+    head, rest = card.split('<table role="presentation" width="100%" cellpadding="0" cellspacing="0">', 1)
+    row, tail = rest.rsplit("</table></td></tr>", 1)
+    return (head + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+            + "{% for line in abandoned_checkout.line_items %}" + _per_piece(row) + "{% endfor %}</table></td></tr>")
 
 def to_shopify(html, name):
     import re
@@ -407,12 +419,7 @@ def to_shopify(html, name):
                         "{{ shop.name }} · {{ shop.address.city }}")
     html = html.replace("</body>", "{{ open_tracking_block }}\n</body>")
     if name.startswith("checkout"):
-        html = html.replace("{% for item in event.extra.line_items %}",
-                            "{% for line in abandoned_checkout.line_items %}" + _line_case())
-        html = (html.replace("{{ item.product.title }}", "{{ label }}")
-                    .replace(IMG + "/held-{{ item.product.id }}.jpg", "{{ held }}")
-                    .replace("${{ item.line_price|floatformat:0 }}", "{% if cost != '' %}${{ cost }}{% endif %}")
-                    .replace("{{ event.extra.checkout_url }}", "{{ abandoned_checkout.url }}"))
+        html = html.replace(CART, to_shopify_cart()).replace("{{ event.extra.checkout_url }}", "{{ abandoned_checkout.url }}")
     if "<!--GRID-->" in html:
         card = to_shopify_cart()
         html = html.replace("<!--GRID-->", _grid(card))
