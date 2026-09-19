@@ -49,8 +49,8 @@ def eye(w=150):
     frames[0].save(os.path.join(PDP, "img/email/eye.gif"), save_all=True, append_images=frames[1:], duration=times, loop=0, optimize=True)
     return f"{IMG}/eye.gif"
 EYE = eye()
-HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 4 / 5)
-HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 4 / 5)
+HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 3 / 2)
+HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 3 / 2)
 FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 3 / 2) for n in ("drawn", "cast", "finished")]
 POUR = jpg("_originals/still-cast.jpg", "pour-hero.jpg", 1200, 4 / 5)
 STEPS = [png(f"img/pages/{n}.png", f"step-{n}.png", 260) for n in ("draw", "cast", "polish")]
@@ -140,7 +140,7 @@ def code(note):
 def trio(items):
     cells = "".join(
         f'<td class="col" width="33%" valign="top" style="padding:0 6px"><a href="{SITE}/product-page/{slug}" style="text-decoration:none;color:#000000">'
-        f'<img src="{src}" width="160" alt="{name}" style="width:100%;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)">'
+        f'<img src="{src}" width="160" alt="{name}" style="width:100%;height:auto;border-radius:16px">'
         f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:12px 0 4px">{name}</div>'
         f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">${_PRICE.get(slug, 220):.0f}</div></a></td>' for name, slug, src in items)
     return (f'<tr><td class="pad" style="padding:0 42px 44px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
@@ -181,31 +181,15 @@ EMAILS = {
        + text("Maçon makes artifacts and jewelry to be carried, worn and handed down. Each piece is drawn on paper, "
               "carved by hand in wax and cast in bronze, silver or gold, then finished by hand in the studio.")
        + code("10% off a first piece") + button("See the pieces", SITE + "/shop?discount=" + CODE)
-       + text("A few to start with", "8px 48px 18px") + trio(PIECES)),
+       + text("We\'d like to introduce you<br>to a few friends of ours", "8px 48px 22px") + trio(PIECES)),
  "welcome-2": dict(
     subject="How a Maçon piece is made",
     preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
     body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal")
        + text("No two pieces leave the studio quite alike. The patina is built up by hand, and it keeps changing: "
               "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
-       + steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
-       + text("A few to start with", "8px 48px 18px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
- "welcome-2-film": dict(
-    subject="How a Maçon piece is made",
-    preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
-    body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal")
-       + text("No two pieces leave the studio quite alike. The patina is built up by hand, and it keeps changing: "
-              "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
        + film_steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
-       + text("A few to start with", "8px 48px 20px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
- "welcome-2-pour": dict(
-    subject="How a Maçon piece is made",
-    preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
-    body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal") + image(POUR, "Plaster being poured for a casting mould")
-       + text("No two pieces leave the studio quite alike. Each is drawn on paper, carved in wax and cast in metal, "
-              "and the patina keeps changing: it darkens where the thumb rests and brightens where it rubs.")
-       + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
-       + text("A few to start with", "8px 48px 20px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
+       + text("We\'d like to introduce you<br>to a few friends of ours", "8px 48px 22px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
  "welcome-3": dict(
     subject="Your welcome code closes soon",
     preview="MACON10 is good for two more days.",
@@ -213,7 +197,7 @@ EMAILS = {
        + text("Every piece is made to order, so it is made for whoever asks for it. "
               "The welcome code is good for two more days.")
        + code("10% off, two days left") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
-       + text("A few to start with", "8px 48px 18px") + trio(three(("Milo", "milo"), ("Eleph", "eleph"), ("Ibi", "ibi")))),
+       + text("We\'d like to introduce you<br>to a few friends of ours", "8px 48px 22px") + trio(three(("Milo", "milo"), ("Eleph", "eleph"), ("Ibi", "ibi")))),
 }
 
 # ── flows that show the shopper's own pieces (Klaviyo fills these in) ──────────────
