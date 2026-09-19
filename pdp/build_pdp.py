@@ -557,6 +557,30 @@ def tile_src(src):
     return light_copy if os.path.exists(os.path.join(OUT, light_copy)) else src
 
 
+def tint_gains(warm, tint):
+    """Colour balance for a grid picture, set per piece in the lab (content "tile": warm, tint, each about -20..20).
+    warm > 0 is warmer (more red, less blue); tint > 0 is greener, < 0 more magenta."""
+    return (1 + warm * 0.01 - tint * 0.005, 1 + tint * 0.01, 1 - warm * 0.01 - tint * 0.005)
+
+
+def tinted(slug, src):
+    """The grid picture with the piece's colour balance baked in (a separate copy; the original is untouched)."""
+    t = _content.product(slug, "tile", None) or {}
+    warm, tint = round(float(t.get("warm", 0)), 1), round(float(t.get("tint", 0)), 1)
+    if not (warm or tint) or not src.endswith(".webp"):
+        return src
+    fmt = lambda v: ("p" if v >= 0 else "m") + f"{abs(v):g}"
+    out = src[:-len(".jpg.webp")] + f"--c{fmt(warm)}{fmt(tint)}.jpg.webp"          # e.g. hero--tile--cm1.5p0.5.jpg.webp
+    path = os.path.join(OUT, out)
+    if not os.path.exists(path):
+        from PIL import Image
+        import numpy as np
+        im = Image.open(os.path.join(OUT, src)).convert("RGB")
+        a = np.asarray(im, float) * np.array(tint_gains(warm, tint))
+        Image.fromarray(np.uint8(np.clip(a, 0, 255))).save(path, "WEBP", quality=82, method=6)
+    return out
+
+
 def light(doc):
     """Point every picture at its lighter WebP copy (made by tools/optimize_media.py) and give it its
     real proportions, so nothing shifts while it loads."""
@@ -746,7 +770,7 @@ def grid_still(slug):
 
 
 def rel_tile(x):
-    return tile_src(grid_still(x["slug"]))
+    return tinted(x["slug"], tile_src(grid_still(x["slug"])))
 
 
 def related_block(p, products):
@@ -840,7 +864,7 @@ def main():
         hover = _content.product(p["slug"], "tile_hover", None) or \
             f'img/{p["slug"]}/' + {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(p["slug"], "hand-1.jpg")
         held = os.path.exists(os.path.join(OUT, hover))
-        still_src = tile_src(grid_still(p["slug"]))          # the grid shows them small
+        still_src = tinted(p["slug"], tile_src(grid_still(p["slug"])))          # the grid shows them small, colour-matched
         hover_src = tile_src(hover)
         lazy = "eager" if i < 3 else "lazy"
         tiles.append(

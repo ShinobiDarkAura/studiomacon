@@ -11,7 +11,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": -1.0,
+    "tint": -1.5
    },
    "gallery": [
     "img/ear-cuff/hand-3.jpg",
@@ -37,7 +39,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": 3.0,
+    "tint": 0.5
    },
    "gallery": [
     "img/eclipse-ring/hires-1.jpg",
@@ -74,7 +78,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": 1.0,
+    "tint": -0.5
    },
    "gallery": [
     "img/eleph/hires-1.jpg",
@@ -103,7 +109,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": -2.5,
+    "tint": 1.0
    },
    "gallery": [
     "img/ibi/hires-2.jpg",
@@ -136,7 +144,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": 0.5,
+    "tint": -1.0
    },
    "tile_before_hires": {
     "x": 49.2,
@@ -185,7 +195,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": 1.0,
+    "tint": 0.0
    },
    "gallery": [
     "img/meridian-egg-ring/hand-2.jpg",
@@ -213,7 +225,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": 0.0,
+    "tint": 0.5
    },
    "gallery": [
     "img/milo/hires-2.jpg",
@@ -240,7 +254,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": -1.0,
+    "tint": 0.5
    },
    "tile_before_hires": {
     "x": 50,
@@ -303,7 +319,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": -1.5,
+    "tint": 0.5
    },
    "gallery": [
     "img/rebi/hires-1.jpg",
@@ -339,7 +357,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": -2.0,
+    "tint": 0.0
    },
    "gallery": [
     "img/ren/plain-1.jpg",
@@ -371,7 +391,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": 1.0,
+    "tint": -1.0
    },
    "tile_before_hires": {
     "x": 51.4,
@@ -400,7 +422,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": 0.5,
+    "tint": 1.0
    },
    "tile_before_hires": {
     "x": 47.5,
@@ -435,7 +459,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": 1.5,
+    "tint": -1.0
    },
    "tile_before_hires": {
     "x": 48.2,
@@ -459,7 +485,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": -2.0,
+    "tint": 0.5
    },
    "gallery": [
     "img/yael/plain-1.jpg",
@@ -491,7 +519,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": -0.5,
+    "tint": 1.0
    },
    "tile_before_hires": {
     "x": 50,
@@ -528,7 +558,9 @@
    "tile": {
     "x": 50,
     "y": 50,
-    "z": 1
+    "z": 1,
+    "warm": 2.5,
+    "tint": -1.0
    },
    "gallery": [
     "img/zuma-ring/hires-1.jpg",
