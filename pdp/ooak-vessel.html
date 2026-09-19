@@ -115,6 +115,8 @@
   .related h2{margin:0 0 20px;font:400 53px/1 var(--serif);text-transform:uppercase}
   .related .rel-blurb{margin:0 auto 56px;max-width:480px;font-size:16px;line-height:1.55}
   .rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:left}
+  .rel-grid{width:60%;margin:0 auto}          /* 40% smaller than the full width: a closer, quieter row */
+  .rel-name{font-size:calc(var(--tile-name) + 5pt) !important}          /* names scaled down with the pictures */
   .rel-piece{display:block;color:#000}
   .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--field)}
   .rel-frame img{width:100%;height:100%;object-fit:cover}
@@ -127,6 +129,8 @@
     .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
     .related .rel-blurb{margin:0 auto 32px;max-width:300px;font-size:15px;line-height:1.55}
     .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left}
+    .rel-grid{width:75%}          /* phones: a little smaller, not so small the names crowd */
+    .rel-name{font-size:calc(var(--tile-name) - 3px) !important}
     .rel-piece{display:block;color:#000}
     .rel-frame{display:block;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--field)}
     .rel-frame img{width:100%;height:100%;object-fit:cover}
