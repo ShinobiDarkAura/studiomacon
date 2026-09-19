@@ -351,6 +351,15 @@ def _grid(card):
             '{% elsif c == lastcol %}</tr><tr><td colspan="3" style="height:28px;font-size:0;line-height:0">&nbsp;</td></tr>{% endif %}'
             '{% endfor %}</table></td></tr>{% endif %}')
 
+def _caps(html):
+    """Anything styled uppercase is also written in capitals, so it stays in caps in any mail app."""
+    def up(m):
+        inner = re.sub(r"(\{\{\s*[\w.]+)(\s*\}\})", r"\1 | upcase\2", m.group(2))          # Shopify's own values
+        inner = re.sub(r"(<[^>]*>|\{[{%].*?[}%]\}|&\w+;)|([^<{&]+)", lambda t: t.group(1) or t.group(2).upper(), inner)
+        return m.group(1) + inner + m.group(3)
+    return re.sub(r'(<(td|div|a)[^>]*text-transform:uppercase[^>]*>)(.*?)(</\2>)',
+                  lambda m: up(type("M", (), {"group": lambda self, i: [None, m.group(1), m.group(3), m.group(4)][i]})()), html, flags=re.S)
+
 def to_shopify_cart():
     """The single full-width card, in Shopify's terms."""
     return (CART.replace("{% for item in event.extra.line_items %}", "{% for line in abandoned_checkout.line_items %}" + _line_case())
@@ -390,9 +399,10 @@ os.makedirs(os.path.join(PDP, "email", "shopify"), exist_ok=True)
 for name, e in EMAILS.items():
     if name.startswith("browse"): continue
     with open(os.path.join(PDP, "email", "shopify", name + ".html"), "w", encoding="utf-8") as f:
+        out = _caps(to_shopify(page(e["preview"], e["body"]), name))
         # accented letters as HTML codes (ç → &#231;), so a paste that loses UTF-8 cannot break them;
         # names inside Liquid tags stay as they are, since they must match Shopify's product titles
         out = re.sub(r"(\{%.*?%\})|([^\x00-\x7f])", lambda m: m.group(1) or f"&#{ord(m.group(2))};",
-                     to_shopify(page(e["preview"], e["body"]), name), flags=re.S)
+                     out, flags=re.S)
         f.write(out)
     print(f"shopify/{name}.html")
