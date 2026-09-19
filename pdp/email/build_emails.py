@@ -351,11 +351,15 @@ for name, e in EMAILS.items():
 # its price, so the title picks our held/worn photograph and the price from the catalogue.
 _TITLES = _json.load(open(os.path.join(PDP, "shopify", "titles.json")))
 def _line_case():
-    whens = "".join(
-        f'{{% when "{t}" %}}{{% assign held = "{IMG}/held-{h}.jpg" %}}{{% assign cost = "{_PRICE.get(h, 0):.0f}" %}}{{% assign label = "{t}" %}}'
-        for h, t in _TITLES.items() if h in _PRICE)
+    """Pick each piece's in-hand photo and price by its name. Written as a plain if/elsif chain:
+    Shopify's email code checker rejects case/when."""
+    items = [(h, t) for h, t in _TITLES.items() if h in _PRICE]
+    chain = "".join(
+        f'{{% {"if" if i == 0 else "elsif"} line.product_title == "{t}" %}}{{% assign held = "{IMG}/held-{h}.jpg" %}}'
+        f'{{% assign cost = "{_PRICE.get(h, 0):.0f}" %}}{{% assign label = "{t}" %}}'
+        for i, (h, t) in enumerate(items))
     return ('{% assign held = line.image_url %}{% assign cost = "" %}{% assign label = line.product_title %}'
-            '{% case line.product_title %}' + whens + '{% endcase %}')
+            + chain + '{% endif %}')
 
 SITE_ASSETS = IMG.rsplit("/img", 1)[0]
 
@@ -372,7 +376,7 @@ def _grid(card):
             '{% for line in abandoned_checkout.line_items %}' + _line_case() +
             '{% assign c = forloop.index0 | modulo: per %}{% if c == 0 %}<tr>{% endif %}' + cell +
             '{% if forloop.last %}{% assign pad = lastcol | minus: c %}'
-            '{% for i in (1..pad) %}<td width="{{ w }}%" style="padding:0 6px">&nbsp;</td>{% endfor %}</tr>'
+            '{% if pad > 0 %}<td width="{{ w }}%" style="padding:0 6px">&nbsp;</td>{% endif %}{% if pad > 1 %}<td width="{{ w }}%" style="padding:0 6px">&nbsp;</td>{% endif %}</tr>'
             '{% elsif c == lastcol %}</tr><tr><td colspan="3" style="height:28px;font-size:0;line-height:0">&nbsp;</td></tr>{% endif %}'
             '{% endfor %}</table></td></tr>{% endif %}')
 
