@@ -249,6 +249,7 @@ VIEWED = items(None, "{{ event.ProductName }}", "{{ event.ImageURL|replace:'/wid
 ORDER = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center",
               "{{ item.line_price|floatformat:0 }}", SITE)
 CHECKOUT = "{{ event.extra.checkout_url }}"
+GRID = "<!--GRID-->"          # checkout 2 only: the bag laid out as a grid (Shopify version, see _grid)
 
 def notes(rows):
     cells = "".join(f'<tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
@@ -267,7 +268,7 @@ EMAILS.update({
  "checkout-2": dict(
     subject="Questions answered",
     preview="Solid metal, made to order, and what happens if it is not right.",
-    body=eyebrow("Studio Maçon") + title("Questions<br>answered") + CART
+    body=eyebrow("Studio Maçon") + title("Questions<br>answered") + GRID
        + notes([("Solid metal", "Every piece is cast solid in bronze, silver or gold. Nothing is plated, and it has real weight in the hand."),
                 ("Made to order", "It is made by hand once it is chosen, and it leaves the studio in California within about ten business days."),
                 ("If it's not right", "Rings are made to size and remade if the fit is off. Any piece can be returned for store credit in 14 days."),
@@ -332,6 +333,31 @@ def _line_case():
 
 SITE_ASSETS = IMG.rsplit("/img", 1)[0]
 
+def _grid(card):
+    """One piece: the full card. Two: side by side. Three or more: rows of three, the last row left-aligned."""
+    cell = (f'<td width="{{{{ w }}}}%" valign="top" style="padding:0 6px"><a href="{{{{ abandoned_checkout.url }}}}" style="text-decoration:none;color:#000000">'
+            f'<img src="{{{{ held }}}}" width="160" alt="{{{{ label }}}}" style="width:100%;height:auto;border-radius:16px">'
+            f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:12px 0 4px">{{{{ label }}}}</div>'
+            f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">{{% if cost != \'\' %}}${{{{ cost }}}}{{% endif %}}</div></a></td>')
+    return ('{% assign n = abandoned_checkout.line_items.size %}'
+            '{% if n == 1 %}' + card + '{% else %}'
+            '{% if n == 2 %}{% assign per = 2 %}{% assign w = 50 %}{% else %}{% assign per = 3 %}{% assign w = 33 %}{% endif %}{% assign lastcol = per | minus: 1 %}'
+            '<tr><td class="pad" style="padding:0 18px 53px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+            '{% for line in abandoned_checkout.line_items %}' + _line_case() +
+            '{% assign c = forloop.index0 | modulo: per %}{% if c == 0 %}<tr>{% endif %}' + cell +
+            '{% if forloop.last %}{% assign pad = lastcol | minus: c %}'
+            '{% for i in (1..pad) %}<td width="{{ w }}%" style="padding:0 6px">&nbsp;</td>{% endfor %}</tr>'
+            '{% elsif c == lastcol %}</tr><tr><td colspan="3" style="height:28px;font-size:0;line-height:0">&nbsp;</td></tr>{% endif %}'
+            '{% endfor %}</table></td></tr>{% endif %}')
+
+def to_shopify_cart():
+    """The single full-width card, in Shopify's terms."""
+    return (CART.replace("{% for item in event.extra.line_items %}", "{% for line in abandoned_checkout.line_items %}" + _line_case())
+                .replace("{{ item.product.title }}", "{{ label }}")
+                .replace(IMG + "/held-{{ item.product.id }}.jpg", "{{ held }}")
+                .replace("${{ item.line_price|floatformat:0 }}", "{% if cost != '' %}${{ cost }}{% endif %}")
+                .replace("{{ event.extra.checkout_url }}", "{{ abandoned_checkout.url }}"))
+
 def to_shopify(html, name):
     import re
     html = html.replace('<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">', "")
@@ -348,6 +374,9 @@ def to_shopify(html, name):
                     .replace(IMG + "/held-{{ item.product.id }}.jpg", "{{ held }}")
                     .replace("${{ item.line_price|floatformat:0 }}", "{% if cost != '' %}${{ cost }}{% endif %}")
                     .replace("{{ event.extra.checkout_url }}", "{{ abandoned_checkout.url }}"))
+    if "<!--GRID-->" in html:
+        card = to_shopify_cart()
+        html = html.replace("<!--GRID-->", _grid(card))
     if name == "thanks-1":                                   # Shopify's order emails list the pieces already; this one shows the studio
         html = re.sub(r'{% for item in event\.extra\.line_items %}.*?{% endfor %}',
                       f'<tr><td align="center"><img src="{HERO1}" width="408" alt="A small bronze totem held in the palm" '
