@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Page Transitions</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .demo-frame{position:relative;height:220px;overflow:hidden;background:var(--field);display:flex;align-items:center;justify-content:center}
+  .demo-frame.dark{background:#111}
+  .replay-btn{border:1px solid var(--rule);padding:8px 16px;font-size:13px;background:#fff;margin:0 0 12px}
+
+  /* .dr-emerge, copied exactly */
+  .box-emerge{width:140px;height:90px;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;
+    opacity:0;filter:blur(16px);transform:translateY(66px) scale(.985);
+    transition:opacity 1.1s cubic-bezier(.16,1,.3,1),filter 1.1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1)}
+  .box-emerge.is-seen{opacity:1;filter:none;transform:none}
+
+  /* wall variant */
+  .box-wall{width:140px;height:90px;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;
+    opacity:0;transform:translateY(90px);transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1)}
+  .box-wall.is-seen{transform:none;opacity:1}
+
+  /* soft page fade veil demo */
+  .veil-demo{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+  .veil-demo.leave{transition:opacity 300ms cubic-bezier(.4,0,.6,1);opacity:1}
+  .veil-demo.arrive{transition:opacity 450ms cubic-bezier(.4,0,.2,1);opacity:0}
+  .fade-label{position:relative;z-index:1;color:#000;font-size:13px}
+
+  /* wipe */
+  .wipe-demo{position:absolute;inset:0;background:#000;transform:translateY(-100%)}
+  .wipe-demo.cover{transform:translateY(0);transition:transform 420ms cubic-bezier(.5,0,.25,1)}
+  .wipe-demo.gone{transform:translateY(100%);transition:transform 500ms cubic-bezier(.5,0,.25,1)}
+
+  /* product info drawer-in */
+  .box-drawer{width:160px;height:90px;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .box-drawer.play{animation:drawer-in-demo .55s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes drawer-in-demo{from{transform:translateX(40%);opacity:0}to{transform:none;opacity:1}}
+
+  /* thumb-in */
+  .thumbs{display:flex;gap:8px}
+  .thumb{width:40px;height:50px;background:#000}
+  .thumb.play{animation:thumb-in-demo .7s var(--ease-emerge) both}
+  .thumb:nth-child(1).play{animation-delay:0ms}
+  .thumb:nth-child(2).play{animation-delay:70ms}
+  .thumb:nth-child(3).play{animation-delay:140ms}
+  .thumb:nth-child(4).play{animation-delay:210ms}
+  @keyframes thumb-in-demo{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* menu-in */
+  .menu-lines{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+  .menu-line{font:400 20px/1.05 var(--serif);text-transform:uppercase}
+  .menu-line.play{animation:menu-in-demo .55s cubic-bezier(.16,1,.3,1) both}
+  .menu-line:nth-child(1).play{animation-delay:220ms}
+  .menu-line:nth-child(2).play{animation-delay:280ms}
+  .menu-line:nth-child(3).play{animation-delay:340ms}
+  @keyframes menu-in-demo{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+  /* tile hover zoom */
+  .tile-zoom{width:160px;height:160px;overflow:hidden;background:var(--field)}
+  .tile-zoom img{width:100%;height:100%;object-fit:cover;transform:scale(var(--z,1.12));transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .tile-zoom:hover img,.tile-zoom.is-hover img{transform:scale(calc(var(--z,1.12) * 1.02))}
+
+  @media (prefers-reduced-motion:reduce){ .box-emerge,.box-wall,.veil-demo,.wipe-demo,.box-drawer,.thumb,.menu-line,.tile-zoom img{transition:none;animation:none} }
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Page Transitions</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Motion</p>
+  <h1 class="ds-h1">Page Transitions</h1>
+  <p class="ds-lede">Every scroll-in, page-leave and hover motion on the site, gathered in one place with its exact timing. The site's rule of thumb: things drift up and settle into focus rather than snap, and every effect turns off completely under reduced motion.</p>
+
+  <h2 class="ds-h2">Live catalogue</h2>
+
+  <h3 class="ds-h3">.dr-emerge — the standard scroll-in</h3>
+  <button class="replay-btn" type="button" data-replay="#e1">Replay</button>
+  <div class="ds-demo tight"><div class="demo-frame"><div class="box-emerge" id="e1">block</div></div></div>
+  <p class="ds-caption">Opacity 0 → 1, blur 16px → none, translateY(66px) scale(.985) → none. 1.1s, <code>cubic-bezier(.16,1,.3,1)</code>. Used on nearly every scrolled-in block on the site (18 uses) — accordions, prose, gallery figures, footer items.</p>
+
+  <h3 class="ds-h3">Wall variant — shop grid tiles</h3>
+  <button class="replay-btn" type="button" data-replay="#e2">Replay</button>
+  <div class="ds-demo tight"><div class="demo-frame"><div class="box-wall" id="e2">tile</div></div></div>
+  <p class="ds-caption">No blur; translateY(90px) → none; opacity .7s ease, transform .9s <code>cubic-bezier(.2,1.25,.35,1)</code> — the slight overshoot reads as a tile dropping into place rather than emerging from focus.</p>
+
+  <h3 class="ds-h3">Soft page fade (default page-to-page)</h3>
+  <button class="replay-btn" type="button" data-replay-fade="#f1">Replay</button>
+  <div class="ds-demo tight"><div class="demo-frame" id="f1"><span class="fade-label">page content</span><div class="veil-demo"></div></div></div>
+  <p class="ds-caption">Leaving: a white veil rises to full opacity over 300ms, <code>cubic-bezier(.4,0,.6,1)</code>, then the browser navigates. Arriving: the new page starts under that same veil, which lifts over 450ms, <code>cubic-bezier(.4,0,.2,1)</code>, once its first pictures are ready (never later than 900ms). This is the default for every ordinary link; it is skipped for the phone drawer, which handles its own dim, and for Back/Forward.</p>
+
+  <h3 class="ds-h3">Page wipe (parked)</h3>
+  <button class="replay-btn" type="button" data-replay-wipe="#w1">Replay</button>
+  <div class="ds-demo tight"><div class="demo-frame" id="w1" style="background:#fff"><span class="fade-label">page content</span><div class="wipe-demo"></div></div></div>
+  <p class="ds-caption">A single opaque black panel drops from above to cover the page in 420ms (<code>cubic-bezier(.5,0,.25,1)</code>), the page is swapped while hidden, then the panel continues off the bottom to uncover the new page over 500ms with the same easing. It never reverses the way it came. Currently parked (<code>ON = false</code> in build_pdp.py/site.js) — reserved for the walk back from a single piece to the shop.</p>
+
+  <h3 class="ds-h3">Product info drawer-in</h3>
+  <button class="replay-btn" type="button" data-replay-class="play" data-target="#d1">Replay</button>
+  <div class="ds-demo tight"><div class="demo-frame"><div class="box-drawer" id="d1">info column</div></div></div>
+  <p class="ds-caption">translateX(40%) opacity 0 → none/1, .55s <code>cubic-bezier(.2,.8,.2,1)</code>. Plays once on arrival at a product page, ≥768px only, when motion is not reduced.</p>
+
+  <h3 class="ds-h3">Thumb-in</h3>
+  <button class="replay-btn" type="button" data-replay-class="play" data-target=".thumb">Replay</button>
+  <div class="ds-demo tight"><div class="demo-frame"><div class="thumbs"><div class="thumb"></div><div class="thumb"></div><div class="thumb"></div><div class="thumb"></div></div></div></div>
+  <p class="ds-caption">Product thumbnail strip: opacity 0 + translateY(10px) → none, .7s <code>--ease-emerge</code>, staggered 70ms apart starting 350ms in.</p>
+
+  <h3 class="ds-h3">Menu-in</h3>
+  <button class="replay-btn" type="button" data-replay-class="play" data-target=".menu-line">Replay</button>
+  <div class="ds-demo tight"><div class="demo-frame"><div class="menu-lines"><span class="menu-line">Shop</span><span class="menu-line">Custom</span><span class="menu-line">About</span></div></div></div>
+  <p class="ds-caption">Drawer links: opacity 0 + translateY(18px) → none, .55s <code>cubic-bezier(.16,1,.3,1)</code>, 60ms apart, starting 220ms in. See <a href="menu-drawer.html">Menu Drawer</a>.</p>
+
+  <h3 class="ds-h3">Tile hover zoom</h3>
+  <div class="ds-demo tight"><div class="demo-frame"><div class="tile-zoom"><img src="../../pdp/img/pip/hand-1.jpg" alt=""></div></div></div>
+  <p class="ds-caption">Hover state, forced: <span class="tile-zoom is-hover" style="display:inline-block;width:60px;height:60px;vertical-align:middle"><img src="../../pdp/img/pip/hand-1.jpg" alt="" style="width:100%;height:100%;object-fit:cover"></span> — resting scale <code>var(--z,1.12)</code> (set per photo in the lab), hovered scale <code>var(--z) * 1.02</code>, over 1.2s <code>cubic-bezier(.2,.7,.2,1)</code>. Used on every shop tile and related-piece frame.</p>
+
+  <h2 class="ds-h2">Easing and duration tokens</h2>
+  <table class="ds-spec">
+    <tr><th>Token</th><th>Value</th><th>Used for</th></tr>
+    <tr><td><code>--ease</code></td><td>cubic-bezier(.22,.7,.2,1)</td><td>Site default — accordions, size panel, arrows, toast, dock, chevron</td></tr>
+    <tr><td><code>--ease-emerge</code></td><td>cubic-bezier(.16,1,.3,1)</td><td>.dr-emerge scroll-in, menu items, thumbnails, Contact/Shipping pictures (21 uses)</td></tr>
+    <tr><td><code>--ease-drawer</code></td><td>cubic-bezier(.65,0,.25,1)</td><td>Menu sheet slide, page push, logotype letters</td></tr>
+    <tr><td><code>--ease-settle</code></td><td>cubic-bezier(.2,1.25,.35,1)</td><td>Grid tiles dropping into place (slight overshoot)</td></tr>
+    <tr><td><code>--ease-zoom</code></td><td>cubic-bezier(.2,.7,.2,1)</td><td>Tile image zoom, related frame lift</td></tr>
+    <tr><td><code>--ease-stamp</code></td><td>cubic-bezier(.3,1.4,.5,1)</td><td>Provenance stamp press</td></tr>
+    <tr><td><code>--ease-cedilla</code></td><td>cubic-bezier(.34,1.25,.5,1)</td><td>The Ç cedilla lift</td></tr>
+    <tr><td><code>--ease-fall</code></td><td>cubic-bezier(.45,.02,.78,.26)</td><td>Logotype letters falling</td></tr>
+    <tr><td><code>--ease-cue</code></td><td>cubic-bezier(.45,0,.25,1)</td><td>Scroll cue dot</td></tr>
+    <tr><td><code>--ease-info</code></td><td>cubic-bezier(.2,.8,.2,1)</td><td>Product info column push-in on arrival</td></tr>
+    <tr><td><code>--ease-wipe</code></td><td>cubic-bezier(.5,0,.25,1)</td><td>Page wipe (parked)</td></tr>
+    <tr><td><code>--ease-fade-out</code></td><td>cubic-bezier(.4,0,.6,1)</td><td>Leaving a page, veil to white</td></tr>
+    <tr><td><code>--ease-fade-in</code></td><td>cubic-bezier(.4,0,.2,1)</td><td>Arriving, veil lifts</td></tr>
+    <tr><td><code>--d-hover</code></td><td>.2s</td><td>Border colour on hover (size cells, choices, qty, upload tiles)</td></tr>
+    <tr><td><code>--d-color</code></td><td>.25s</td><td>Accordion text colour; arrow opacity</td></tr>
+    <tr><td><code>--d-nav</code></td><td>.3s</td><td>Nav colour switch; accordion rule; size list fade</td></tr>
+    <tr><td><code>--d-fade</code></td><td>.35s</td><td>Opacity: toast, tile label, accordion body, dock, arrow width, chevron</td></tr>
+    <tr><td><code>--d-move</code></td><td>.45s</td><td>Transform: toast, tile label, hover underline, plus icon rotate, size panel</td></tr>
+    <tr><td><code>--d-open</code></td><td>.5s</td><td>Accordion grid-rows, accordion body transform, bump</td></tr>
+    <tr><td><code>--d-drawer</code></td><td>.6s</td><td>Menu sheet + page push</td></tr>
+    <tr><td><code>--d-fly</code></td><td>.7s</td><td>Logotype flight, tile drop opacity, thumbnails</td></tr>
+    <tr><td><code>--d-settle</code></td><td>.9s</td><td>Tiles dropping into place</td></tr>
+    <tr><td><code>--d-emerge</code></td><td>1.1s</td><td>.dr-emerge scroll-in (18 uses)</td></tr>
+    <tr><td><code>--d-zoom</code></td><td>1.2s</td><td>Tile image zoom on hover; hero quiet fades</td></tr>
+    <tr><td><code>--d-fade-out</code></td><td>300ms</td><td>Page leave</td></tr>
+    <tr><td><code>--d-fade-in</code></td><td>450ms</td><td>Page arrive</td></tr>
+    <tr><td><code>--d-wipe</code></td><td>420ms</td><td>Wipe cover (reveal runs 500ms)</td></tr>
+    <tr><td><code>--d-toast</code></td><td>2600ms</td><td>Toast stays on screen</td></tr>
+  </table>
+
+  <h2 class="ds-h2">Reduced motion</h2>
+  <p class="ds-note"><code>@media (prefers-reduced-motion: reduce)</code> turns every one of these off: <code>.dr-emerge</code> loses its transition entirely (blocks simply appear seen), the menu sheet and page push lose their transitions and the rise-in animation is dropped, the scroll cue's dot animation stops, and the page wipe and fade veils return early without running. Nothing on the site animates when this is set.</p>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/site.css</code> — <code>.dr-emerge</code>, <code>.wall figure.dr-emerge</code>, <code>drawer-in</code> keyframes, <code>menu-in</code> keyframes, reduced-motion rules<br>
+    <code>pdp/partials/site.js</code> — soft fade (~lines 565–590), page wipe (~lines 592–645)<br>
+    <code>pdp/build_pdp.py</code> — <code>WIPE_HEAD</code> injected CSS/script (~lines 402–470)<br>
+    <code>pdp/pages/shop.html</code> — <code>.scroll-cue</code>, tile zoom, thumb-in usage<br>
+    <code>design/tokens.css</code> — MOTION section
+  </p>
+</main>
+<script>
+  document.querySelectorAll('[data-replay]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var el = document.querySelector(btn.getAttribute('data-replay'));
+      el.classList.remove('is-seen'); void el.offsetWidth; el.classList.add('is-seen');
+    });
+  });
+  document.querySelectorAll('[data-replay-fade]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var frame = document.querySelector(btn.getAttribute('data-replay-fade'));
+      var v = frame.querySelector('.veil-demo');
+      v.className = 'veil-demo'; void v.offsetWidth;
+      v.classList.add('leave');
+      setTimeout(function () { v.className = 'veil-demo arrive'; void v.offsetWidth; v.style.opacity = '0'; }, 320);
+    });
+  });
+  document.querySelectorAll('[data-replay-wipe]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var frame = document.querySelector(btn.getAttribute('data-replay-wipe'));
+      var w = frame.querySelector('.wipe-demo');
+      w.className = 'wipe-demo'; void w.offsetWidth;
+      w.classList.add('cover');
+      setTimeout(function () { w.classList.add('gone'); }, 420);
+      setTimeout(function () { w.className = 'wipe-demo'; }, 920);
+    });
+  });
+  document.querySelectorAll('[data-replay-class]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var cls = btn.getAttribute('data-replay-class');
+      document.querySelectorAll(btn.getAttribute('data-target')).forEach(function (el) {
+        el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls);
+      });
+    });
+  });
+</script>
+</body>
+</html>

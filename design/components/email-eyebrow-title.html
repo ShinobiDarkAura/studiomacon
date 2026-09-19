@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Email Eyebrow &amp; Title</title>
+<link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="_shell.css">
+<style>
+  .frame{width:100%;max-width:600px;margin:0 auto;background:#fff}
+  .frame td{font-family:var(--sans)}
+  @media (max-width:620px){ .h1{font-size:40px!important} }
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">&larr; Design canon</a><span>Email component</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Email</p>
+  <h1 class="ds-h1">Eyebrow &amp; Title</h1>
+  <p class="ds-lede">Every email opens the same way: the eye mark, then a small black eyebrow, then a serif headline. Bag and browse emails swap the headline for a larger "title" with a short rule under it — a size that sits between the site's own h1 sizes.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note">Eye mark (54px, padding 53px 0 44px) &rarr; eyebrow (14px/1.4 sans, black, 17px below) &rarr; either <b>h1()</b> (46px serif, 51px below by default) or <b>title()</b> (54px serif, 8px above, 24px below, then a 48&times;1 black rule with 40px below). h1 and title never appear together.</p>
+
+  <h2 class="ds-h2">Live — h1 (welcome / thanks)</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:53px 0 44px"><img src="../../pdp/img/email/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></td></tr>
+    <tr><td align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr>
+    <tr><td class="h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">Welcome<br>to the studio</td></tr>
+  </table>
+  <p class="ds-caption">welcome-1: eyebrow() + h1("Welcome&lt;br&gt;to the studio")</p>
+
+  <h2 class="ds-h2">Live — title (bag / browse)</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:53px 0 44px"><img src="../../pdp/img/email/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></td></tr>
+    <tr><td align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr>
+    <tr><td class="h1" align="center" style="padding:8px 24px 24px;font:400 54px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">We saved it<br>for you</td></tr>
+    <tr><td align="center" style="padding:0 0 40px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>
+      <td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0">&nbsp;</td></tr></table></td></tr>
+  </table>
+  <p class="ds-caption">checkout-1: eyebrow() + title("We saved it&lt;br&gt;for you")</p>
+
+  <h2 class="ds-h2">Markup</h2>
+  <pre class="ds-code">&lt;!-- eye mark --&gt;
+&lt;tr&gt;&lt;td align="center" style="padding:53px 0 44px"&gt;&lt;a href="{SITE}"&gt;&lt;img src="{EYE}" width="54" alt="Studio Maçon" style="width:54px;height:auto"&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+
+&lt;!-- eyebrow() --&gt;
+&lt;tr&gt;&lt;td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 {SANS};color:#000000"&gt;Studio Maçon&lt;/td&gt;&lt;/tr&gt;
+
+&lt;!-- h1(t, below=51) --&gt;
+&lt;tr&gt;&lt;td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 {SERIF};
+text-transform:uppercase;letter-spacing:-.005em;color:#000000"&gt;Welcome&lt;br&gt;to the studio&lt;/td&gt;&lt;/tr&gt;
+
+&lt;!-- title(t) --&gt;
+&lt;tr&gt;&lt;td class="pad h1" align="center" style="padding:8px 24px 24px;font:400 54px/1 {SERIF};
+text-transform:uppercase;letter-spacing:-.005em;color:#000000"&gt;We saved it&lt;br&gt;for you&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td align="center" style="padding:0 0 40px"&gt;&lt;table role="presentation" cellpadding="0" cellspacing="0"&gt;&lt;tr&gt;
+&lt;td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0"&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;
+
+/* phone rule, max-width:620px */
+.h1{font-size:40px!important}</pre>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Eye mark</td><td>54px wide, padding 53px 0 44px</td><td>—</td></tr>
+    <tr><td>Eyebrow</td><td>14px/1.4 sans, black, 17px below</td><td><code>--t-14</code></td></tr>
+    <tr><td>h1</td><td>46px/1 serif, uppercase, ls -.005em, 51px below (default)</td><td><code>--t-h1</code>, <code>--ls-body</code>, <code>--lh-title</code></td></tr>
+    <tr><td>h1 on phone</td><td>40px</td><td>outlier — no token; the site's h1 phone size is also 46px</td></tr>
+    <tr><td>title</td><td>54px/1 serif, uppercase, ls -.005em, 8px above / 24px below</td><td><code>--t-title-email</code></td></tr>
+    <tr><td>Rule under title</td><td>48&times;1px black, 40px below</td><td><code>--rule-email-title</code></td></tr>
+  </table>
+  <p class="ds-note">The site's own h1 runs 46 / 53 / 60 across breakpoints (<code>--t-h1</code>, <code>--t-h1-md</code>, <code>--t-h1-lg</code>). Email h1 stays a fixed 46px on desktop and drops straight to 40px on phones — it never touches 53 or 60. The title-with-rule variant, at 54px, sits between the site's mid (53) and large (60) h1 sizes but is its own thing: only email bag/browse copy uses it.</p>
+
+  <h2 class="ds-h2">Phones (max-width:620px)</h2>
+  <p class="ds-note">.h1 becomes 40px!important. .pad gets 24px side padding (same as desktop — email padding does not change on phones). Everything else in this component is unaffected.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Use h1() for welcome/thanks/order emails, title() for bag/browse emails — never mix them in one email.</li>
+      <li>Keep the eye mark first, every time, at 54px.</li>
+      <li>Let the two-line headline break with a literal &lt;br&gt;, not word-wrap.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't reuse the site's 53px or 60px h1 sizes in email — email h1 is fixed at 46, full stop.</li>
+      <li>Don't add the black rule under a plain h1 — it belongs to title() only.</li>
+      <li>Don't invent a phone size other than the documented 40px.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src"><code>build_emails.py</code>: <code>eye()</code>, <code>eyebrow()</code>, <code>h1(t, below=51)</code>, <code>title(t)</code>. Rendered: <code>email/shopify/welcome-1.html</code> (h1), <code>email/shopify/checkout-1.html</code> (title).</p>
+</main>
+</body></html>

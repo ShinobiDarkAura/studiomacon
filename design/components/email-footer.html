@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Email Footer &amp; Body Text</title>
+<link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="_shell.css">
+<style>
+  .frame{width:100%;max-width:600px;margin:0 auto;background:#fff}
+  .voice{border:1px solid var(--rule);padding:24px;margin:0 0 40px}
+  .voice b{display:block;font-size:var(--t-13);letter-spacing:var(--ls-label);text-transform:uppercase;font-weight:400;margin:0 0 12px}
+  .voice ul{margin:0;padding-left:18px;font-size:15px;line-height:1.55}
+  .voice li{margin:0 0 8px}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">&larr; Design canon</a><span>Email component</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Email</p>
+  <h1 class="ds-h1">Footer &amp; Body Text</h1>
+  <p class="ds-lede">The footer closes every email the same way: a thin rule, a line about the studio, the About / Instagram / Unsubscribe links, and the organisation's own name and address. Above it, the body text() block sets the column width copy sits in — three widths depending on the email.</p>
+
+  <h2 class="ds-h2">Live — footer</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:56px 24px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8a8a8a">
+      Every piece is made to order in the studio in California.<br>
+      <a href="#" style="color:#8a8a8a">About</a> &nbsp;&middot;&nbsp; <a href="#" style="color:#8a8a8a">Instagram</a>
+      &nbsp;&middot;&nbsp; <a href="#" style="color:#8a8a8a">Unsubscribe</a><br>
+      Studio Maçon &middot; San Francisco, CA
+    </td></tr>
+  </table>
+  <p class="ds-caption">page(): the footer row, present at the bottom of every single email</p>
+
+  <h2 class="ds-h2">Live — body text() at its three widths</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:0 24px 34px;font:400 16px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">
+      <div style="max-width:378px;margin:0 auto">We're so glad you're here! Maçon is a small studio making even smaller things that bring us GREAT joy.</div>
+    </td></tr>
+    <tr><td align="center" style="padding:0 24px 50px;font:400 16px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">
+      <div style="max-width:338px;margin:0 auto">We wanted to show you a little of how our pieces come to be. It's slow, hands-on work.</div>
+    </td></tr>
+    <tr><td align="center" style="padding:0 24px 31px;font:400 16px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">
+      <div style="max-width:294px;margin:0 auto">Every Maçon piece is made to order once it is chosen, so nothing is lost by taking a moment.</div>
+    </td></tr>
+  </table>
+  <p class="ds-caption">top to bottom: text(t, "0 111px 34px") &rarr; 378px (welcome-1), text(t, "0 111px 50px") &rarr; 338px (welcome-2), text(t, "0 153px 31px") &rarr; 294px (checkout-1)</p>
+
+  <h2 class="ds-h2">Markup</h2>
+  <pre class="ds-code">&lt;!-- page() footer --&gt;
+&lt;tr&gt;&lt;td class="pad" align="center" style="padding:56px 24px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 {SANS};color:#8a8a8a"&gt;
+  Every piece is made to order in the studio in California.&lt;br&gt;
+  &lt;a href="{SITE}/story" style="color:#8a8a8a"&gt;About&lt;/a&gt; &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="https://www.instagram.com/studiomacon/" style="color:#8a8a8a"&gt;Instagram&lt;/a&gt;
+  &amp;nbsp;&amp;middot;&amp;nbsp; &lt;a href="{% unsubscribe_url %}" style="color:#8a8a8a"&gt;Unsubscribe&lt;/a&gt;&lt;br&gt;
+  {{ organization.name }} &middot; {{ organization.full_address }}
+&lt;/td&gt;&lt;/tr&gt;
+
+&lt;!-- text(t, pad="0 111px 34px") --&gt;
+&lt;tr&gt;&lt;td class="pad" align="center" style="padding:{top} 24px {bottom};font:400 16px/1.6 {SANS};color:#000000"&gt;
+&lt;div style="max-width:{600 - 2*side}px;margin:0 auto"&gt;{t}&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+
+# side 111 → 378px column (default)
+# side 131 → 338px column
+# side 153 → 294px column (narrowest, checkout emails)</pre>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Rule</td><td>1px solid #e3e3e3</td><td><code>--rule-email</code>, <code>--rule</code></td></tr>
+    <tr><td>Padding</td><td>56px 24px 48px</td><td>—</td></tr>
+    <tr><td>Type</td><td>12px/1.7 sans, #8a8a8a</td><td><code>--t-12</code>, <code>--lh-email-fine</code>, <code>--email-grey-fine</code></td></tr>
+    <tr><td>Links</td><td>About &middot; Instagram &middot; Unsubscribe, same grey as the body text (no distinct link colour)</td><td><code>--email-grey-fine</code></td></tr>
+    <tr><td>Body text() default</td><td>16px/1.6 sans, black, column 378px (side 111)</td><td><code>--t-16</code>, <code>--lh-email</code></td></tr>
+    <tr><td>Body text() narrow</td><td>column 338px (side 131) — welcome-2</td><td>—</td></tr>
+    <tr><td>Body text() narrowest</td><td>column 294px (side 153) — checkout-1, browse-1</td><td>—</td></tr>
+  </table>
+
+  <h2 class="ds-h2">Voice</h2>
+  <div class="voice">
+    <b>Email voice vs. site voice</b>
+    <ul>
+      <li>Customer emails speak as "we": "We're so glad you're here", "We saved it for you", "We start on your order as soon as it comes in."</li>
+      <li>The site itself never uses we/I — it stays in third person, the same as the rest of the copy voice on studiomacon.co.</li>
+      <li>Never write "talisman" or "heirloom" — in either voice.</li>
+      <li>Pieces are "pieces" or "artifacts" ("Browse artifacts"), never "products".</li>
+    </ul>
+  </div>
+
+  <h2 class="ds-h2">Phones</h2>
+  <p class="ds-note">.pad keeps the footer and text() blocks at 24px side padding on phones (the same as desktop). The 378/338/294px max-widths are already narrower than a typical phone viewport, so they do not need a separate phone rule.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep the footer identical across every email — rule, line, links, organisation.</li>
+      <li>Pick the text() column width (378 / 338 / 294) to match how much is being said — narrower for shorter, more pointed copy.</li>
+      <li>Write customer emails in "we", matching "We saved it for you" and "We're so glad you're here."</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't give the footer links their own colour — they stay the same grey as the surrounding fine print.</li>
+      <li>Don't invent a fourth text() width; only 378, 338 and 294 are in use.</li>
+      <li>Don't slip into "we" on the site itself, or into third person inside a customer email — the two stay separate.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src"><code>build_emails.py</code>: <code>page(preheader, body)</code> (footer), <code>text(t, pad)</code>. Rendered: <code>email/shopify/welcome-1.html</code>, <code>email/shopify/checkout-1.html</code>, <code>email/shopify/thanks-2.html</code>.</p>
+</main>
+</body></html>

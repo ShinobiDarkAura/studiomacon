@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Buttons &amp; Links</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  a{color:inherit;text-decoration:none}
+  button{background:none;border:0;padding:0;cursor:pointer;font:inherit;color:inherit}
+
+  /* ── primary .cta, exactly as site.css ── */
+  .cta{display:flex;align-items:center;justify-content:center;width:100%;height:55px;
+    background:#000;color:#fff;font-size:15.333px;text-transform:uppercase;letter-spacing:.08em}
+  a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margin-left:0;opacity:0;background:currentColor;flex:none;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") left center/14px 14px no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") left center/14px 14px no-repeat;
+    transition:width .35s var(--ease),margin-left .35s var(--ease),opacity .25s ease}
+  .cta:not([disabled]):hover::after,.next:not([disabled]):hover::after{width:14px;margin-left:10px;opacity:1}
+  .is-hover::after{width:14px !important;margin-left:10px !important;opacity:1 !important}
+
+  /* ── product Add to Bag ── */
+  .buy{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:420px}
+  .buy .cta{height:47px;font-size:13.033px}
+  .buy .cta::after{height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
+  .buy .cta:not([disabled]):hover::after{width:12px;margin-left:8px}
+  .buy .is-hover::after{width:12px !important;margin-left:8px !important;opacity:1 !important}
+
+  /* ── Apple Pay ── */
+  .apple-pay{display:flex;align-items:center;justify-content:center;width:100%;height:47px;background:#000;color:#fff;
+    gap:3px;letter-spacing:-.01em;font:500 16.6px/1 -apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
+  .apple-pay svg{width:13.6px;height:16.6px;margin-top:-2px;fill:#fff}
+  .apple-pay.lg{height:55px;font-size:23px;gap:5px}
+  .apple-pay.lg svg{width:19px;height:23px}
+  .apple-pay[disabled]{opacity:.25;cursor:not-allowed}
+
+  /* ── Custom .next ── */
+  .next{display:flex;align-items:center;justify-content:center;width:100%;height:55px;
+    background:#000;color:#fff;font-size:15.333px;text-transform:uppercase;letter-spacing:.08em;transition:opacity .2s}
+  .next[disabled]{opacity:.1;cursor:not-allowed}
+
+  /* ── outline (empty bag Checkout) ── */
+  .outline{background:none;color:#000;border:1px solid #000}
+
+  /* ── phone dock ── */
+  .dock{display:flex;align-items:center;justify-content:center;gap:26px;width:100%;max-width:340px;height:68px;
+    background:#fff;border:1.5px solid #000;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+  .dock span:last-child{text-transform:none}
+
+  /* ── choice buttons ── */
+  .choices{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:420px}
+  .choices button{height:48px;border:1px solid var(--rule);font-size:15px;transition:border-color .2s,background .2s,color .2s}
+  .choices button:hover,.choices button.is-hover{border-color:#000}
+  .choices button[aria-pressed="true"]{background:#000;color:#fff;border-color:#000}
+
+  /* ── qty stepper ── */
+  .qty{display:inline-flex;align-items:center;gap:14px;font-size:15px}
+  .qty button{width:28px;height:28px;border:1px solid var(--rule);border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;line-height:0;padding:0}
+  .qty button:hover,.qty button.is-hover{border-color:#000}
+
+  /* ── text links ── */
+  .hover-line{text-decoration:underline;text-decoration-color:rgba(0,0,0,0);text-underline-offset:6px;
+    text-decoration-thickness:1px;transition:text-decoration-color .45s ease}
+  .hover-line:hover,.hover-line.is-hover{text-decoration-color:currentColor}
+  .back{display:inline-flex;align-items:center;gap:8px;font-size:14.667px;color:var(--ink-40);transition:color .2s ease}
+  .back:hover,.back.is-hover{color:#000}
+  .back-icon{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ease)}
+  .back:hover .back-icon,.back.is-hover .back-icon{transform:translateX(-4px)}
+  .remove{font-size:13px;color:var(--ink-50);text-decoration:underline;text-underline-offset:3px}
+  .acc-link{text-decoration:underline;text-underline-offset:3px;font-size:17px}
+  .footer-submit{padding:0 0 0 18px;font-size:14.333px}
+
+  /* ── email button ── */
+  .email-btn{display:inline-block;background:#000;color:#fff;padding:17px 44px;font:500 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase}
+
+  .row-demo{display:flex;flex-wrap:wrap;gap:24px;align-items:center}
+  .state-block{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+  .state-block span.tag{font-size:11px;color:var(--ink-50);letter-spacing:.06em;text-transform:uppercase}
+  .maxw{max-width:420px}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Buttons &amp; Links</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Buttons &amp; Links</p>
+  <h1 class="ds-h1">Buttons &amp; Links</h1>
+  <p class="ds-lede">Every button and link treatment on the site: the full-width black button that carries an arrow out on hover, its shorter product-page cousin, Apple Pay, the phone bag dock, choice buttons, and the underlined text links used for navigation and secondary actions.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note">Every button on the site is square-cornered and fills the width of its column — there is no site button sized to its label. The primary black button (<code>.cta</code>/<code>.next</code>) always carries the same sliding arrow, built from one inline SVG mask reused at three sizes (14px, 12px, and the arrow is absent on outline/choice/qty controls).</p>
+
+  <h2 class="ds-h2">Live</h2>
+
+  <h3 class="ds-h3">Primary .cta — 55px black button</h3>
+  <div class="ds-demo on-white">
+    <div class="maxw"><a class="cta" href="#">Send</a></div>
+  </div>
+  <p class="ds-caption">Rest — pdp/site.css .cta.</p>
+  <div class="ds-demo on-white">
+    <div class="maxw"><a class="cta is-hover" href="#">Send</a></div>
+  </div>
+  <p class="ds-caption">Hover, forced static — arrow slides to 14px wide with a 10px left margin, over .35s var(--ease). Hover it live above too.</p>
+  <div class="ds-demo on-white">
+    <div class="maxw"><a class="cta" href="#" style="outline:2px solid currentColor;outline-offset:3px">Send</a></div>
+  </div>
+  <p class="ds-caption">:focus-visible — 2px currentColor outline, 3px offset.</p>
+
+  <h3 class="ds-h3">Product Add to Bag (.buy .cta)</h3>
+  <div class="ds-demo on-white">
+    <div class="buy">
+      <button class="cta">Add to Bag</button>
+      <button class="apple-pay" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+    </div>
+  </div>
+  <p class="ds-caption">Rest — 47px tall, 13.033px type, 8px grid gap. template.html .buy .cta.</p>
+  <div class="ds-demo on-white">
+    <div class="buy">
+      <button class="cta is-hover">Add to Bag</button>
+      <button class="apple-pay" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+    </div>
+  </div>
+  <p class="ds-caption">Hover, forced static — arrow is 12px here, margin 8px (8px shorter button, 15% smaller type and arrow than the site's other black buttons).</p>
+
+  <h3 class="ds-h3">Apple Pay</h3>
+  <div class="row-demo">
+    <div class="ds-demo on-white" style="flex:1;min-width:220px">
+      <button class="apple-pay" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+    </div>
+    <div class="ds-demo on-white" style="flex:1;min-width:220px">
+      <button class="apple-pay lg" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+    </div>
+  </div>
+  <p class="ds-caption">Left: 47px, product page (16.6px, -apple-system). Right: 55px, Custom page (23px). Same svg glyph both places (template.html line 171; custom.html line 344).</p>
+  <div class="ds-demo on-white">
+    <button class="apple-pay" disabled aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+  </div>
+  <p class="ds-caption">Disabled — Custom's Apple Pay only, opacity .25. The product page's own Apple Pay has no disabled state.</p>
+
+  <h3 class="ds-h3">Custom .next</h3>
+  <div class="ds-demo on-white">
+    <div class="maxw"><button class="next">Continue</button></div>
+  </div>
+  <p class="ds-caption">Rest — identical to .cta (55px, 15.333px, .08em).</p>
+  <div class="ds-demo on-white">
+    <div class="maxw"><button class="next" disabled>Continue</button></div>
+  </div>
+  <p class="ds-caption">Disabled — opacity .1, cursor not-allowed. custom.html .next[disabled].</p>
+
+  <h3 class="ds-h3">Outline (empty-bag Checkout)</h3>
+  <div class="ds-demo on-white">
+    <div class="maxw"><button class="cta outline">Checkout</button></div>
+  </div>
+  <p class="ds-caption">body.bag-empty #checkout — transparent, black text, 1px black border. bag.html line 34.</p>
+
+  <h3 class="ds-h3">Phone bag dock</h3>
+  <div class="ds-demo on-white">
+    <button class="dock"><span>Add to Bag</span><span>$220</span></button>
+  </div>
+  <p class="ds-caption">template.html .dock — 68px tall, 1.5px black border, white fill, 14px ls .08em; second span drops the uppercase.</p>
+
+  <h3 class="ds-h3">Choice buttons</h3>
+  <div class="row-demo">
+    <div class="ds-demo on-white" style="flex:1;min-width:260px">
+      <div class="choices"><button>Dog</button><button class="is-hover">Cat</button><button>Horse</button><button aria-pressed="true">Other</button></div>
+    </div>
+  </div>
+  <p class="ds-caption">1px rule border → black on hover (Cat, forced); aria-pressed fills black (Other). custom.html .choices.</p>
+
+  <h3 class="ds-h3">Qty stepper</h3>
+  <div class="ds-demo on-white">
+    <span class="qty"><button aria-label="One fewer">−</button><span>2</span><button class="is-hover" aria-label="One more">+</button><button class="remove">Remove</button></span>
+  </div>
+  <p class="ds-caption">bag.html .qty — round 28px buttons, rule border → black on hover; Remove is a 13px underlined grey text button.</p>
+
+  <h3 class="ds-h3">Text links</h3>
+  <div class="row-demo">
+    <a class="hover-line" href="#" style="font-size:17px">Instagram</a>
+    <a class="hover-line is-hover" href="#" style="font-size:17px">hello@studiomacon.co</a>
+    <a class="back" href="#"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back</span></a>
+    <a class="back is-hover" href="#"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back</span></a>
+    <a class="acc-link" href="#">Contact us</a>
+    <button class="footer-submit hover-line">Submit</button>
+  </div>
+  <p class="ds-caption">.hover-line: underline appears 6px below on hover, .45s ease (9px offset in the nav, 3px on accordion links/Remove). .back: grey → black with the arrow nudging 4px left. site.css .hover-line, .back.</p>
+
+  <h3 class="ds-h3">Email button</h3>
+  <div class="ds-demo on-dark">
+    <a class="email-btn" href="#">Browse Artifacts</a>
+  </div>
+  <p class="ds-caption">build_emails.py button() — inline-block, black, 17px 44px padding, 500 weight, 12px, ls .14em, uppercase.</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Button</th><th>Height</th><th>Type</th><th>Tracking</th><th>Arrow</th></tr>
+    <tr><td>.cta / .next</td><td>55px</td><td>15.333px uppercase</td><td>.08em</td><td>14px, 10px margin on hover</td></tr>
+    <tr><td>.buy .cta</td><td>47px</td><td>13.033px uppercase</td><td>.08em</td><td>12px, 8px margin on hover</td></tr>
+    <tr><td>Apple Pay (product)</td><td>47px</td><td>16.6px -apple-system</td><td>-.01em</td><td>none</td></tr>
+    <tr><td>Apple Pay (Custom)</td><td>55px</td><td>23px -apple-system</td><td>-.01em</td><td>none</td></tr>
+    <tr><td>Outline (#checkout)</td><td>55px</td><td>15.333px uppercase</td><td>.08em</td><td>none</td></tr>
+    <tr><td>Phone dock</td><td>68px</td><td>14px uppercase (2nd span normal case)</td><td>.08em</td><td>none</td></tr>
+    <tr><td>Choice button</td><td>48px</td><td>15px</td><td>0</td><td>none</td></tr>
+    <tr><td>Qty stepper</td><td>28px round</td><td>15px</td><td>0</td><td>none</td></tr>
+    <tr><td>Email button</td><td>auto (17px/44px pad)</td><td>12px uppercase, weight 500</td><td>.14em</td><td>none</td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">All buttons stay full width in their column at every size — none of them shrink to fit their label. The phone dock only appears on phones (site.css .dock, hidden ≥768 in template.html). Apple Pay switches to the native OS button under <code>@supports (-webkit-appearance:-apple-pay-button)</code> in Safari, hiding the custom markup entirely.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep buttons square-cornered and full-width in their column.</li>
+      <li>Write labels in Title Case in the markup — CSS uppercases them.</li>
+      <li>Show only one black button per screen region (the paired Add to Bag / Apple Pay is the one exception).</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Round a button's corners or size it to its text.</li>
+      <li>Introduce a grey button — the site has only black, outline and white/bordered.</li>
+      <li>Resize the arrow mask independent of its button's own scale (14/12px are the only two sizes in use).</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    pdp/site.css — lines 64–65 (.cta), 224–231 (.back), 240–245 (arrow mask)<br>
+    pdp/template.html — lines 39–52 (.apple-pay, .buy .cta), 66–71 (.dock), 171 (Apple Pay svg)<br>
+    pdp/pages/custom.html — lines 116–118 (.choices), 142–144 (.next), 157–164 (Custom Apple Pay)<br>
+    pdp/pages/bag.html — lines 19–24 (.qty, .remove), 34 (outline Checkout)<br>
+    pdp/email/build_emails.py — lines 152–156 (button())
+  </p>
+</main>
+</body>
+</html>

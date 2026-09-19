@@ -1,0 +1,283 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   STUDIO MAÇON — DESIGN TOKENS
+   Extracted from pdp/site.css, pdp/template.html, pdp/pages/*.html,
+   pdp/build_pdp.py (injected CSS) and pdp/email/build_emails.py, then
+   checked against computed styles on the live preview at 390 and 1440 wide.
+   Nothing here is invented: every value is in use on the site or in the emails.
+   "use:" notes say where. Where the site clusters, a scale is named; where it
+   does not, the outlier is kept and marked so it can be normalised later.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Self-hosted faces (pdp/fonts). Paths resolve relative to this file. */
+@font-face{font-family:"Instrument Serif";src:url(../pdp/fonts/instrument-serif.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url(../pdp/fonts/instrument-serif-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Henry";src:url(../pdp/fonts/henry-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
+
+:root{
+  /* ── COLOUR ──────────────────────────────────────────────────────────── */
+  --ink:#000;                    /* use: all text, black buttons, rules on hover, the drawer type, wipe panel. 53 uses */
+  --paper:#fff;                  /* use: page background, button text on black, nav over dark imagery, drawer, toast, dock. 27 uses */
+  --field:#f7f7f7;               /* use: the grey behind every photograph while it loads (.gallery figure, .wall figure, .rel-frame, .piece .pic, .line img, .panel) */
+  --rule:#e3e3e3;                /* use: accordion row rules, size box border, bag line rules, size-list cells, email footer rule */
+  --film:#111;                   /* use: behind the home film and the phone rubber-band (pages/shop.html) */
+  --placeholder:#d9d9d9;         /* use: empty tiles (Ephemeral set, .big closing blocks) */
+  --placeholder-warm:#e6e6e4;    /* use: .placeholder-fill on parked shop tiles */
+  --cutout:#eeeeec;              /* use: background behind cut-out commission pieces (pages/custom.html) */
+  --parchment:#e9e1cf;           /* use: the lead frame on Custom before its picture loads — outlier, one use */
+  --note:#fff4c2;                /* use: .todo highlighter on unconfirmed copy — editorial, never customer-facing */
+  --alert:#c8321e;               /* use: size-picker nudge border, required asterisk, editor remove — the only non-grey on the site */
+  --placeholder-text:#777;       /* use: default input placeholder (site.css .field) — outlier, see --ink-35 */
+
+  /* ink at opacity: the greys are never mixed, they are black with alpha over white */
+  --ink-08:rgba(0,0,0,.08);      /* use: bag toast shadow */
+  --ink-12:rgba(0,0,0,.12);      /* use: optional upload tile border, email code-box border, editor panel shadow */
+  --ink-20:rgba(0,0,0,.2);       /* use: footer newsletter rule, Custom .line rule (.5px) */
+  --ink-22:rgba(0,0,0,.22);      /* use: Custom .line placeholder — outlier, sits between .2 and .25 */
+  --ink-25:rgba(0,0,0,.25);      /* use: default .field rule (1.5px), editor buttons */
+  --ink-28:rgba(0,0,0,.28);      /* use: dashed upload tile — outlier */
+  --ink-30:rgba(0,0,0,.3);       /* use: locked step titles, editor toggle border */
+  --ink-35:rgba(0,0,0,.35);      /* use: newsletter + contact + checkout placeholders, accordion plus icon at rest, optional tile text */
+  --ink-40:rgba(0,0,0,.4);       /* use: Back link at rest, step numbers, hover-line at rest */
+  --ink-45:rgba(0,0,0,.45);      /* use: grid counts, toast price, Done ticks, shop tile scrim top */
+  --ink-50:rgba(0,0,0,.5);       /* use: .label overline, notes, fine print, Remove, upload tile text. 11 uses — the muted text default */
+  --ink-55:rgba(0,0,0,.55);      /* use: tile prices (.cost, .rel-cost), bag meta, hints. 8 uses */
+  --ink-62:rgba(0,0,0,.62);      /* use: locked step on hover — outlier */
+  --ink-65:rgba(0,0,0,.65);      /* use: step number on hover — outlier */
+  --paper-40:rgba(255,255,255,.4); /* use: scroll-cue outline on the film */
+
+  /* overlays */
+  --scrim:linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,0));   /* use: shop tile hover label, Custom wall label (site) */
+  --scrim-email:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0)); /* use: bag-email product card — 3% lighter than the site */
+  --field-black:linear-gradient(to right,#000 0 70vw,#fff 70vw);   /* use: Contact and Shipping split, the 70vw black field */
+
+  /* email-only colours (emails are flat hex, no alpha, for mail clients) */
+  --email-grey-text:#333333;     /* use: email step and note body copy */
+  --email-grey-meta:#6b6b6b;     /* use: email prices, code-box note */
+  --email-grey-fine:#8a8a8a;     /* use: email footer and its links */
+  --email-card-fallback:#8a7a6a; /* use: bgcolor behind bag-email card photos before they load */
+  --highlighter:#fbe84a;         /* use: the MACON10 code highlighter */
+  --highlighter-deep:#f6df3c;    /* use: highlighter gradient tail */
+  --highlighter-swipe:linear-gradient(176deg,#ffffff 0%,#ffffff 42%,#fbe84a 44%,#f6df3c 90%,#ffffff 93%);
+
+  /* ── TYPE: FAMILIES ──────────────────────────────────────────────────── */
+  --serif:"Instrument Serif","Times New Roman",serif;                          /* use: every title, tile name, drawer, footer line, prices in email cards */
+  --serif-email:'Instrument Serif','Times New Roman',Georgia,serif;            /* use: build_emails.py SERIF (Georgia added for mail apps) */
+  --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;                          /* use: body, nav, labels, buttons, forms */
+  --script:"Henry",var(--serif);                                               /* use: only the film tagline "Artifacts of Love", italic */
+  --apple:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;    /* use: Apple Pay button fallback */
+
+  /* ── TYPE: SERIF SCALE (px) — always uppercase except .step-name and the tagline ── */
+  --t-tile:22px;                 /* use: tile name on phones and Also Worth Keeping on phones (calc(18px + 3pt)); email trio names */
+  --t-line:26px;                 /* use: bag line item name */
+  --t-code:30px;                 /* use: email code MACON10 (ls .06em) */
+  --t-fine:30.4px;               /* use: footer "Artifacts of Love, Made to Order." (calc((32px - 5pt) * 1.2), lh 1.05, ls .02em) */
+  --t-note:31px;                 /* use: email notes-list titles — outlier next to 30/30.4 */
+  --t-menu:34px;                 /* use: drawer links (lh 1.05); h2 base size on phones (lh 1.02) */
+  --t-card:35px;                 /* use: email bag-card product name — outlier next to 34 */
+  --t-tile-lg:38px;              /* use: Also Worth Keeping name on desktop (calc(22px + 12pt)) */
+  --t-tile-over:38.83px;         /* use: shop tile hover name on desktop (calc(49.5px - 8pt), lh .95, ls .01em) — near-duplicate of 38px */
+  --t-h2:42px;                   /* use: h2 desktop; Also Worth Keeping h2 on phones */
+  --t-h1:46px;                   /* use: h1 on phones; email h1 (40px on phones in email) */
+  --t-h1-md:53px;                /* use: h1 ≥768; Also Worth Keeping h2 desktop */
+  --t-title-email:54px;          /* use: email bag/browse title with the 48px rule under it */
+  --t-wall-sm:57.5px;            /* use: Totems/Jewelry/Inspiration/Past Work heads on phones — outlier between 53 and 60 */
+  --t-h1-lg:60px;                /* use: h1 ≥1200 */
+  --t-wall-md:66.25px;           /* use: wall heads ≥768 */
+  --t-wall-lg:75px;              /* use: wall heads ≥1200 */
+
+  /* ── TYPE: SANS SCALE (px) ───────────────────────────────────────────── */
+  --t-11:11px;                   /* use: toast "Added to bag" label (500, ls .12em), email code note (ls .14em), editor headings */
+  --t-micro:11.667px;            /* use: calc(17px - 4pt): product Field Notes label on phones, Custom step titles and .terms dt — near 12 */
+  --t-12:12px;                   /* use: upload tiles (ls .06em), Done ticks, email footer, email button (500, ls .14em) */
+  --t-13:13px;                   /* use: calc(17px - 3pt): .label overline, accordion heads, tile prices on phones, counts, fine notes, Remove, email prices */
+  --t-buy:13.033px;              /* use: Add to Bag on the product page only (calc((18px - 2pt) * .85)) */
+  --t-14:14px;                   /* use: meta lines, .rel-cost desktop, hints, dock, dl dt, email eyebrow */
+  --t-footer:14.333px;           /* use: calc(17px - 2pt): footer links + newsletter, contact/checkout inputs, .ways */
+  --t-nav:14.667px;              /* use: calc(16px - 1pt): Menu/Shop/Custom/About/Bag, Close, Back */
+  --t-15:15px;                   /* use: eyebrow on phones, product description on phones, size label, size cells, choices, summary dl, tile hover meta */
+  --t-cta:15.333px;              /* use: calc(18px - 2pt): every 55px black button and the Custom .next */
+  --t-16:16px;                   /* use: eyebrow ≥768, description ≥768, size value, Custom inputs, bag amount, email body */
+  --t-17:17px;                   /* use: body default (lh 1.5), prose and ledes (lh 1.55), accordion bodies */
+  --t-18:18px;                   /* use: default .field input size (site.css) — overridden everywhere it is used */
+  --t-price:19px;                /* use: product price, Custom price line */
+  --t-tagline:20px;              /* use: 15pt — film tagline in Henry italic */
+  --t-step-name:22.667px;        /* use: 17pt — Story step names, serif italic (the only lower-case serif) */
+
+  /* ── TYPE: LINE-HEIGHT ───────────────────────────────────────────────── */
+  --lh-title:1;                  /* use: h1, wall heads, tile names, prices in email cards */
+  --lh-h2:1.02;                  /* use: h2 */
+  --lh-fine:1.05;                /* use: footer fine line, drawer links */
+  --lh-over:.95;                 /* use: shop tile hover name */
+  --lh-two-line:.98;             /* use: drawer "Shipping & Returns" */
+  --lh-toast:1.35;               /* use: bag toast; email "friends" intro */
+  --lh-body:1.5;                 /* use: body default, footer newsletter, notes */
+  --lh-prose:1.55;               /* use: prose, ledes, descriptions, accordion bodies (12 uses) */
+  --lh-email:1.6;                /* use: email body copy and notes */
+  --lh-email-fine:1.7;           /* use: email footer */
+
+  /* ── TYPE: LETTER-SPACING ────────────────────────────────────────────── */
+  --ls-body:-.005em;             /* use: body, h1, h2 — the site's one negative tracking */
+  --ls-apple:-.01em;             /* use: Apple Pay label */
+  --ls-over:.01em;               /* use: shop tile hover name */
+  --ls-fine:.02em;               /* use: footer fine line */
+  --ls-tile:.06em;               /* use: upload tiles, Done ticks, email code */
+  --ls-cta:.08em;                /* use: black buttons, dock, product Field Notes label on phones */
+  --ls-toast:.12em;              /* use: toast label, editor heading */
+  --ls-label:.14em;              /* use: .label, accordion heads, step titles, email button + code note */
+
+  /* ── SPACING ─────────────────────────────────────────────────────────── */
+  /* the page frame */
+  --pad:24px;                    /* use: site.css --pad on phones; 40px ≥768 */
+  --pad-md:40px;
+  --edge:48px;                   /* use: calc(var(--pad) + 24px) — nav, footer, page columns on phones; 64px ≥768 */
+  --edge-md:64px;
+  --gutter:16px;                 /* use: phones only — every text block and grid sits 16px from the screen edge */
+  --nav-inset:28px;              /* use: phones — Menu/Bag/Close/drawer links sit gutter + 12px in */
+  --photo-inset:8px;             /* use: phones — product hero and shop grid are 8px from the edge, 8px apart */
+  --wall-inset:7.5vw;            /* use: shop grid and Also Worth Keeping sit edge + 7.5vw in, "so the pieces read smaller and calmer" */
+  --head:84px;                   /* use: nav row height on phones; 110px ≥768 */
+  --head-md:110px;
+  --drawer:min(84vw,360px);      /* use: menu sheet width, and how far the page is pushed */
+
+  /* the step scale actually in use (gap/padding/margin counts across all CSS) */
+  --sp-2:2px;   /* tile name→price on phones */
+  --sp-4:4px;   /* name→price, thumbnails */
+  --sp-6:6px;   /* dl row gap, toast label→name */
+  --sp-8:8px;   /* grid gap on phones, size cells, buy buttons, choices, tile hover label gap (12 uses — the smallest common step) */
+  --sp-10:10px; /* eyebrow→title, masonry gap on phones, wall-head gap */
+  --sp-12:12px; /* grid gap ≥768, gallery figure gap, h1→price, size box, label→field */
+  --sp-14:14px; /* qty stepper gap, toast under Bag, label→description */
+  --sp-16:16px; /* size list padding, choices row */
+  --sp-18:18px; /* dl column gap, price→buttons, field button inset, Remove inset */
+  --sp-20:20px; /* bag line padding, tile label→frame */
+  --sp-22:22px; /* h1 bottom margin */
+  --sp-24:24px; /* sticky column top padding, form rows, drawer link gap (24.8), footer newsletter */
+  --sp-28:28px; /* h2 bottom margin, newsletter p, Back, cta after copy */
+  --sp-32:32px; /* footer mark→fine, nav link gap, lede→cta */
+  --sp-36:36px; /* page top below the nav (calc(var(--head) + 36px)), page bottom */
+  --sp-40:40px; /* Bag h1 bottom, story blocks, ship gap */
+  --sp-44:44px; /* welcome h1 bottom, description block top */
+  --sp-48:48px; /* column gap between gallery and info, bag grid gap, sticky bottom padding, tile scrim top */
+  --sp-52:52px; /* footer bottom padding */
+  --sp-56:56px; /* footer gap on phones, related blurb bottom, steps gap */
+  --sp-64:64px; /* bag grid gap ≥900, shipping page bottom, scroll cue bottom */
+  --sp-72:72px; /* related top on phones */
+  --sp-96:96px; /* footer top padding; .panel/.section margin on phones */
+  --sp-120:120px; /* closing chunk margin; set spacer base (120px + 10vh) */
+  --sp-140:140px; /* .panel/.section margin ≥768 */
+  --sp-180:180px; /* related top ≥768 (180px + 10vh) */
+  --sp-204:204px; /* closing top ≥768 — outlier */
+  --sp-236:236px; /* Story history top — outlier */
+
+  /* ── SIZE: CONTROLS ──────────────────────────────────────────────────── */
+  --h-cta:55px;                  /* use: every black button, Custom .next, Custom Apple Pay */
+  --h-buy:47px;                  /* use: product Add to Bag + Apple Pay ("8px shorter than the site's other black buttons") */
+  --h-size:52px;                 /* use: size toggle row */
+  --h-choice:48px;               /* use: Custom choice buttons */
+  --h-cell:40px;                 /* use: size list cells */
+  --h-dock:68px;                 /* use: phone sticky bag bar */
+  --h-qty:28px;                  /* use: bag quantity stepper buttons (round) */
+  --h-mark:38px;                 /* use: footer eye mark */
+  --w-logo:88px;                 /* use: nav logotype base (site.css); 108px on phones, 147px ≥768; aspect 888/331 */
+  --w-logo-sm:108px;
+  --w-logo-md:147px;
+  --w-toast-img:40px;            /* use: toast thumbnail 40×50 */
+  --w-line-img:96px;             /* use: bag line thumbnail 96×120 */
+  --w-mini-img:56px;             /* use: checkout mini thumbnail 56×70 */
+
+  /* ── RADII ───────────────────────────────────────────────────────────── */
+  --r-photo:6px;                 /* use: every framed photograph on the site: tiles, related frames, product hero on phones, bag thumbnails, masonry (17 uses) */
+  --r-thumb:4px;                 /* use: product thumbnails strip on phones — the only 4px */
+  --r-toast:8px;                 /* use: bag toast — the only 8px */
+  --r-cue:11px;                  /* use: scroll cue pill (22×34) */
+  --r-badge:13px;                /* use: editor position badge (26px tall pill) */
+  --r-email:16px;                /* use: every email photograph and card (8 uses) — emails are 16, the site is 6 */
+  --r-round:50%;                 /* use: qty stepper buttons, scroll-cue dot */
+  --r-highlighter:3px 6px 4px 7px; /* use: the MACON10 highlighter — deliberately uneven, like a marker */
+  --r-none:0;                    /* use: buttons, size box, fields, footer, tiles on desktop (overlay layout) */
+
+  /* ── SHADOWS ─────────────────────────────────────────────────────────── */
+  --shadow-lift:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25); /* use: bag line thumbnail; every email photo, card and trio image */
+  --shadow-peek:0 14px 22px -12px rgba(0,0,0,.4);   /* use: email stacked-card peek strip */
+  --shadow-toast:0 10px 30px rgba(0,0,0,.08);       /* use: bag toast */
+  --shadow-panel:0 8px 30px rgba(0,0,0,.12);        /* use: Custom edit panel (internal tool) */
+
+  /* ── RULES & BORDERS ─────────────────────────────────────────────────── */
+  --rule-1:1px solid var(--rule);          /* use: accordion rows, size box, bag lines, size cells, choices, qty buttons, summary total */
+  --rule-ink:1px solid var(--ink);         /* use: accordion row on hover, size cell hover, choice hover, empty-bag Checkout outline, checkout total, editor */
+  --rule-hair:.5px solid rgba(0,0,0,.2);   /* use: footer newsletter, Custom .line (renders 1px on 1x screens) */
+  --rule-hair-ink:.5px solid var(--ink);   /* use: contact form + checkout fields */
+  --rule-field:1.5px solid rgba(0,0,0,.25);/* use: site.css default .field — overridden on every page that uses it */
+  --rule-dock:1.5px solid var(--ink);      /* use: phone bag dock */
+  --rule-dashed:1px dashed rgba(0,0,0,.28);/* use: upload tiles */
+  --rule-cue:1px solid rgba(255,255,255,.4);/* use: scroll cue */
+  --rule-email:1px solid #e3e3e3;          /* use: email footer top */
+  --rule-email-title:48px;                 /* use: the short black rule under email titles (48×1) */
+  --underline-offset:6px;                  /* use: .hover-line; 9px in the nav; 3px on accordion links and Remove */
+  --underline-offset-nav:9px;
+  --underline-offset-text:3px;
+  --focus:2px solid currentColor;          /* use: :focus-visible, offset 3px */
+
+  /* ── MOTION ──────────────────────────────────────────────────────────── */
+  --ease:cubic-bezier(.22,.7,.2,1);          /* use: site default — accordions, size panel, arrows, toast, dock, chevron */
+  --ease-emerge:cubic-bezier(.16,1,.3,1);    /* use: .dr-emerge scroll-in, menu items, thumbnails, Contact/Shipping pictures (21 uses — the most common) */
+  --ease-drawer:cubic-bezier(.65,0,.25,1);   /* use: menu sheet slide, page push, logotype letters */
+  --ease-settle:cubic-bezier(.2,1.25,.35,1); /* use: grid tiles dropping into place (slight overshoot) */
+  --ease-zoom:cubic-bezier(.2,.7,.2,1);      /* use: tile image zoom, related frame lift */
+  --ease-stamp:cubic-bezier(.3,1.4,.5,1);    /* use: provenance stamp press */
+  --ease-cedilla:cubic-bezier(.34,1.25,.5,1);/* use: the Ç cedilla lift */
+  --ease-fall:cubic-bezier(.45,.02,.78,.26); /* use: logotype letters falling */
+  --ease-cue:cubic-bezier(.45,0,.25,1);      /* use: scroll cue dot */
+  --ease-info:cubic-bezier(.2,.8,.2,1);      /* use: product info column push-in on arrival */
+  --ease-wipe:cubic-bezier(.5,0,.25,1);      /* use: page wipe (parked) */
+  --ease-fade-out:cubic-bezier(.4,0,.6,1);   /* use: leaving a page, veil to white */
+  --ease-fade-in:cubic-bezier(.4,0,.2,1);    /* use: arriving, veil lifts */
+
+  --d-hover:.2s;      /* border colour on hover (size cells, choices, qty, upload tiles) */
+  --d-color:.25s;     /* accordion text colour; arrow opacity */
+  --d-nav:.3s;        /* nav colour switch; accordion rule; size list fade */
+  --d-fade:.35s;      /* opacity: toast, tile label, accordion body, dock, arrow width, chevron */
+  --d-move:.45s;      /* transform: toast, tile label, hover underline, plus icon rotate, size panel */
+  --d-open:.5s;       /* accordion grid-rows, accordion body transform, bump */
+  --d-drawer:.6s;     /* menu sheet + page push */
+  --d-fly:.7s;        /* logotype flight, tile drop opacity, thumbnails */
+  --d-settle:.9s;     /* tiles dropping into place */
+  --d-emerge:1.1s;    /* .dr-emerge scroll-in (18 uses) */
+  --d-zoom:1.2s;      /* tile image zoom on hover; hero quiet fades */
+  --d-fade-out:300ms; /* page leave */
+  --d-fade-in:450ms;  /* page arrive */
+  --d-wipe:420ms;     /* wipe cover (500ms reveal) */
+  --d-toast:2600ms;   /* toast stays on screen */
+  --emerge-from:66px; /* .dr-emerge starting offset (blur 16px, scale .985) */
+  --stagger-menu:60ms;   /* drawer items, + 220ms head start */
+  --stagger-thumbs:70ms; /* product thumbnails, + 350ms */
+
+  /* ── Z-INDEX ─────────────────────────────────────────────────────────── */
+  --z-over:1;          /* tile hover label */
+  --z-cue:2;           /* scroll cue, film tagline */
+  --z-stamp:3;         /* provenance stamp, logotype build */
+  --z-dock:15;         /* phone bag bar */
+  --z-head:20;         /* the nav */
+  --z-tool:50;         /* Custom edit panel (49 for its toggle) */
+  --z-veil-drawer:59;  /* arriving veil beneath an open drawer */
+  --z-drawer:60;       /* menu sheet */
+  --z-veil:2147482000; /* page fade veil */
+  --z-wipe:2147483000; /* page wipe */
+
+  /* ── BREAKPOINTS (for reference — custom properties cannot hold media queries) ──
+     phones      : (max-width:767px)   one gutter, centred titles, 2-across grid, drawer nav
+     desktop     : (min-width:768px)   --pad 40, --head 110, split layouts, hover overlays  (20 uses)
+     grid-2      : (min-width:600px)   shop grid 2 across
+     grid-3      : (min-width:900px)   shop grid 3 across; bag/checkout two columns
+     wide        : (min-width:1200px)  h1 60px, wall heads 75px
+     inspiration : (min-width:1600px)  masonry 5 columns
+     email       : (max-width:620px)   email stack; h1 40px
+     reduced     : (prefers-reduced-motion:reduce) all transitions and animations off
+     touch       : (hover:none)        tile labels always shown, hover images hidden
+  */
+}
+
+/* Desktop values of the responsive tokens, so components can rely on the variables */
+@media (min-width:768px){
+  :root{--pad:40px;--edge:64px;--head:110px}
+}

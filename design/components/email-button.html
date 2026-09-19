@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Email Button</title>
+<link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="_shell.css">
+<style>
+  .frame{width:100%;max-width:600px;margin:0 auto;background:#fff}
+  .site-cta{display:block;width:100%;height:55px;line-height:55px;background:#000;color:#fff;text-align:center;
+    font:400 15.333px 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;box-sizing:border-box}
+  .side{display:grid;gap:24px;margin:0 0 12px}
+  @media (min-width:768px){.side{grid-template-columns:1fr 1fr;align-items:end}}
+  .side figure{margin:0}
+  .side figcaption{font-size:var(--t-13);color:var(--ink-50);margin-top:12px}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">&larr; Design canon</a><span>Email component</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Email</p>
+  <h1 class="ds-h1">Button</h1>
+  <p class="ds-lede">A black, inline-block cell used for "Browse artifacts" and "Return to checkout". It shares the site's colours but not its exact type or shape — worth flagging as a place the two systems have drifted apart.</p>
+
+  <h2 class="ds-h2">Live</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:4px 24px 53px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>
+      <td bgcolor="#000000" style="background:#000000"><a href="#" style="display:inline-block;padding:17px 44px;font:500 12px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">Browse artifacts</a></td>
+    </tr></table></td></tr>
+    <tr><td align="center" style="padding:16px 24px 53px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>
+      <td bgcolor="#000000" style="background:#000000"><a href="#" style="display:inline-block;padding:17px 44px;font:500 12px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">Return to checkout</a></td>
+    </tr></table></td></tr>
+  </table>
+  <p class="ds-caption">button("Browse artifacts", …) — 4px above; button("Return to checkout", …) — 16px above, "a little more air above the checkout button"</p>
+
+  <h2 class="ds-h2">Side by side with the site .cta</h2>
+  <div class="side">
+    <figure>
+      <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+        <td bgcolor="#000000" style="background:#000000"><a href="#" style="display:inline-block;padding:17px 44px;font:500 12px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">Browse artifacts</a></td>
+      </tr></table>
+      <figcaption>Email button — inline-block, sized to its label</figcaption>
+    </figure>
+    <figure>
+      <a class="site-cta" href="#">Add to bag</a>
+      <figcaption>Site .cta — full width, 55px tall</figcaption>
+    </figure>
+  </div>
+
+  <h2 class="ds-h2">Markup</h2>
+  <pre class="ds-code">&lt;tr&gt;&lt;td align="center" style="padding:{top}px 24px 53px"&gt;&lt;table role="presentation" cellpadding="0" cellspacing="0"&gt;&lt;tr&gt;
+&lt;td bgcolor="#000000" style="background:#000000"&gt;&lt;a href="{href}" style="display:inline-block;padding:17px 44px;
+font:500 12px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none"&gt;{label}&lt;/a&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;
+
+# top = 16 if label == "Return to checkout" else 4</pre>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Email button</th><th>Site .cta</th></tr>
+    <tr><td>Weight</td><td>500</td><td>400</td></tr>
+    <tr><td>Size</td><td>12px</td><td>15.333px (<code>--t-cta</code>)</td></tr>
+    <tr><td>Tracking</td><td>.14em (<code>--ls-label</code>)</td><td>.08em (<code>--ls-cta</code>)</td></tr>
+    <tr><td>Width</td><td>inline-block, padding 17px 44px, sized to its label</td><td>full width, fixed 55px tall (<code>--h-cta</code>)</td></tr>
+    <tr><td>Colour</td><td>black cell, white text</td><td>black background, white text — same</td></tr>
+  </table>
+  <p class="ds-note"><b>Flag for normalising:</b> the email button is heavier (500 vs 400), smaller (12 vs 15.333px), more tightly tracked in absolute terms but reads looser because the type is smaller, and shaped to its label rather than the site's fixed 55px-tall full-width bar. It works fine on its own inside an email, but it is not the same component as the site button — treat any effort to unify them as a real design decision, not a bug fix.</p>
+
+  <h2 class="ds-h2">Phones</h2>
+  <p class="ds-note">No phone-specific override for the button in build_emails.py; it keeps its padding and type size at every width.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Use "Browse artifacts" for shop-facing emails, "Return to checkout" for abandoned-checkout emails.</li>
+      <li>Give "Return to checkout" the extra 12px of air above it (16px vs. 4px).</li>
+      <li>Keep the button its own table cell — mail clients need the table wrapper, not just an &lt;a&gt;.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't assume the email button and the site .cta are interchangeable — they differ in weight, size, tracking and width.</li>
+      <li>Don't stretch the email button full-width; it is meant to size to its label.</li>
+      <li>Don't drop the bgcolor attribute — some mail clients need it alongside the inline background.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src"><code>build_emails.py</code>: <code>button(label, href)</code>. Site .cta: <code>pdp/site.css</code> (not re-read here; values taken from <code>tokens.css</code> — <code>--h-cta</code>, <code>--t-cta</code>, <code>--ls-cta</code>). Rendered: <code>email/shopify/welcome-1.html</code>, <code>email/shopify/checkout-1.html</code>.</p>
+</main>
+</body></html>

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Nav Header</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<link rel="stylesheet" href="../assets/logotype-mask.css">
+<style>
+  /* ── the real header, copied from pdp/site.css, made absolute so it sits inside a demo frame instead of the viewport ── */
+  .demo-head{position:absolute;inset:12px 0 auto;z-index:20;height:var(--head);pointer-events:none;
+    display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 calc(var(--pad) + 24px);font-size:var(--t-nav)}
+  .demo-head > *{pointer-events:auto}
+  .demo-head .left,.demo-head .logotype,.demo-head .right{color:#000;transition:color .3s ease}
+  .demo-head .on-dark{color:#fff}
+  body.white-right .demo-head .right.on-dark{color:#000}
+  .demo-head .left{justify-self:start;display:flex;gap:32px}
+  .demo-head .right{justify-self:end;white-space:nowrap;position:relative}
+  .demo-head .right a.bump{animation:hbump .5s var(--ease)}
+  @keyframes hbump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
+  .demo-head .right a{display:inline-block}
+  .demo-head .desk{display:none}
+  .demo-head .logotype{width:88px;position:relative;top:6px}
+  @media (min-width:768px){ .demo-head .mob{display:none} .demo-head .desk{display:inline} .demo-head .logotype{width:147px;top:-2px} }
+  @media (max-width:767px){ .demo-head .logotype{width:108px;top:-4px} .demo-head{top:-2px} }
+  .hover-line{text-decoration:underline;text-decoration-color:rgba(0,0,0,0);text-underline-offset:6px;
+    text-decoration-thickness:1px;transition:text-decoration-color .45s ease}
+  .hover-line:hover,.hover-line.is-hover{text-decoration-color:currentColor}
+  .demo-head .hover-line{text-underline-offset:9px}
+  /* the Back link, riding in the nav row on desktop */
+  .demo-back{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin:0;font-size:var(--t-nav);color:var(--ink-40);transition:color .2s ease}
+  .demo-back:hover,.demo-back.is-hover{color:#000}
+  .demo-back-icon{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ease)}
+  .demo-back:hover .demo-back-icon,.demo-back.is-hover .demo-back-icon{transform:translateX(-4px)}
+  @media (min-width:768px){ .demo-head .demo-back{position:absolute;top:50%;margin:0;transform:translateY(-50%)} }
+
+  /* frames */
+  .frame{position:relative;height:150px;overflow:hidden}
+  .frame.tall{height:300px}
+  .frame-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+  /* big-logotype hero static frame */
+  .hero-frame{position:relative;height:420px;overflow:hidden;background:var(--film)}
+  .hero-frame img.poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+  .hero-frame .big-logo{position:absolute;left:50%;top:50%;width:calc(147px * 2.8125);transform:translate(-50%,-50%);color:#fff}
+  .hero-frame .tagline{position:absolute;left:0;right:0;top:calc(50% + 100px);margin:0;text-align:center;color:#fff;
+    font:italic 400 15pt/1.2 var(--script)}
+  .hero-frame .note{position:absolute;left:0;right:0;bottom:16px;text-align:center;color:rgba(255,255,255,.7);font-size:12px}
+
+  .bump-demo{display:inline-flex;align-items:center;gap:16px}
+  .bump-btn{border:1px solid var(--rule);padding:8px 14px;font-size:13px;background:#fff}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Nav Header</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Nav</p>
+  <h1 class="ds-h1">Nav Header</h1>
+  <p class="ds-lede">The fixed header that rides over every page. It never paints a background of its own — instead each part of it (the links, the centre logotype, the Bag link) reads the luminance of whatever is directly beneath it and flips between black and white on its own.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <ul class="ds-note" style="list-style:disc;padding-left:20px">
+    <li><b>Left</b> — "Menu" on phones (opens the drawer); "Shop / Custom / About" on desktop</li>
+    <li><b>Centre</b> — the logotype, a CSS mask of <code>logotype.png</code> painted in <code>currentColor</code>, so it recolours with the rest of the nav</li>
+    <li><b>Right</b> — "Bag (0)", with a toast that can drop beneath it and a bump animation when a piece is added</li>
+    <li><b>Back</b> — an optional fourth part that rides into the nav row on desktop product/custom pages</li>
+  </ul>
+
+  <h2 class="ds-h2">Live</h2>
+
+  <h3 class="ds-h3">On white</h3>
+  <div class="ds-demo on-white tight">
+    <div class="frame">
+      <header class="demo-head">
+        <div class="left"><a href="#" class="mob hover-line">Menu</a><a href="#" class="desk hover-line">Shop</a><a href="#" class="desk hover-line">Custom</a><a href="#" class="desk hover-line">About</a></div>
+        <a class="logotype" href="#" aria-label="Studio Maçon"></a>
+        <div class="right"><a href="#">Bag (0)</a></div>
+      </header>
+    </div>
+  </div>
+  <p class="ds-caption">Default state — black nav on the plain page background.</p>
+
+  <h3 class="ds-h3">Over a dark photograph</h3>
+  <div class="ds-demo tight">
+    <div class="frame">
+      <img class="frame-photo" src="../../pdp/img/pip/hero.jpg" alt="">
+      <header class="demo-head">
+        <div class="left"><a href="#" class="mob hover-line on-dark">Menu</a><a href="#" class="desk hover-line on-dark">Shop</a><a href="#" class="desk hover-line on-dark">Custom</a><a href="#" class="desk hover-line on-dark">About</a></div>
+        <a class="logotype on-dark" href="#" aria-label="Studio Maçon"></a>
+        <div class="right on-dark"><a href="#">Bag (0)</a></div>
+      </header>
+    </div>
+  </div>
+  <p class="ds-caption"><code>.on-dark</code> — site.js samples the pixels straight under each nav part (threshold 0.82) and adds this class part by part; here it is forced on all three to show the white state over <code>pip/hero.jpg</code>.</p>
+
+  <h3 class="ds-h3">White right column (product / custom pages)</h3>
+  <div class="ds-demo tight white-right">
+    <div class="frame" style="background:linear-gradient(to right,#111 0 60%,#fff 60%)">
+      <header class="demo-head">
+        <div class="left"><a href="#" class="mob hover-line on-dark">Menu</a><a href="#" class="desk hover-line on-dark">Shop</a><a href="#" class="desk hover-line on-dark">Custom</a><a href="#" class="desk hover-line on-dark">About</a></div>
+        <a class="logotype on-dark" href="#" aria-label="Studio Maçon"></a>
+        <div class="right on-dark"><a href="#">Bag (0)</a></div>
+      </header>
+    </div>
+  </div>
+  <p class="ds-caption"><code>body.white-right</code> — on a product page the right third of the screen is a white info column, so Bag would otherwise read <code>.on-dark</code> from the dark gallery photo behind the rest of the nav. This rule forces it back to black ≥768px only; phones have no white column, so Bag there follows the rest of the nav.</p>
+
+  <h3 class="ds-h3">Back, in the nav row (desktop)</h3>
+  <div class="ds-demo on-white tight">
+    <div class="frame">
+      <header class="demo-head">
+        <a class="demo-back" href="#"><svg class="demo-back-icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>Back to Shop</a>
+        <a class="logotype" href="#" aria-label="Studio Maçon"></a>
+        <div class="right"><a href="#">Bag (0)</a></div>
+      </header>
+    </div>
+  </div>
+  <p class="ds-caption">Hover state, forced: <a class="demo-back is-hover" href="#" style="display:inline-flex;margin-left:0"><svg class="demo-back-icon" viewBox="0 0 24 24" style="width:12px;height:12px;vertical-align:-1px"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> Back to Shop</a> — the arrow slides -4px left, the text darkens to black. On phones <code>.back</code> is hidden entirely.</p>
+
+  <h3 class="ds-h3">The big-logotype hero (shop.html)</h3>
+  <div class="ds-demo tight">
+    <div class="hero-frame">
+      <img class="poster" src="../../pdp/video/poster-process.jpg" alt="">
+      <div class="big-logo logotype"></div>
+      <p class="tagline">Artifacts of Love</p>
+      <p class="note">static frame — scale 2.8125, centred on the film</p>
+    </div>
+  </div>
+  <p class="ds-caption">On the shop page only, the nav's own logotype starts 2.8125× its normal size, centred on the film, with the tagline "Artifacts of Love" set in Henry italic (15pt) beneath it. As the visitor scrolls, the logotype is scrubbed — not eased on a timer — from that size down into its normal nav position over <code>max(240px, min(45vh, 560px))</code> of scroll. If nothing is scrolled for 8 seconds it fades where it sits (<code>body.hero-quiet</code>) and hands off to the scroll cue; once it has travelled the whole distance it docks for good (<code>body.logo-docked</code>) and never flies back down, even at the very top of the page.</p>
+
+  <h3 class="ds-h3">Bag counter bump</h3>
+  <div class="ds-demo on-white tight" style="padding:40px">
+    <div class="bump-demo">
+      <a href="#" class="bag-count-demo" id="bagLink" style="font-size:var(--t-nav)">Bag (0)</a>
+      <button class="bump-btn" type="button" id="bumpBtn">Add to bag</button>
+    </div>
+  </div>
+  <p class="ds-caption">Pressing Add replays the <code>bump</code> keyframes on the Bag link: <code>scale(1.15)</code> at 35% of a 0.5s pass, back to none. Click to replay.</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Header height</td><td>84px phones / 110px ≥768</td><td><code>--head</code> / <code>--head-md</code></td></tr>
+    <tr><td>Header top offset</td><td>12px desktop / -2px phones</td><td>site.css only, not tokenised</td></tr>
+    <tr><td>Side padding (edge)</td><td>48px phones / 64px ≥768</td><td><code>--edge</code> / <code>--edge-md</code> (calc(pad + 24))</td></tr>
+    <tr><td>Phone nav inset (Menu/Bag)</td><td>28px</td><td><code>--nav-inset</code></td></tr>
+    <tr><td>Logotype width</td><td>88px base / 108px phones / 147px ≥768</td><td><code>--w-logo</code> / <code>--w-logo-sm</code> / <code>--w-logo-md</code></td></tr>
+    <tr><td>Logotype aspect ratio</td><td>888 / 331</td><td>site.css only</td></tr>
+    <tr><td>Logotype top offset</td><td>6px base / -4px phones / -2px ≥768</td><td>site.css only</td></tr>
+    <tr><td>Nav font size</td><td>calc(16px - 1pt) = 14.667px</td><td><code>--t-nav</code></td></tr>
+    <tr><td>Left link gap</td><td>32px</td><td><code>--sp-32</code></td></tr>
+    <tr><td>Hover-line underline offset (nav)</td><td>9px</td><td><code>--underline-offset-nav</code></td></tr>
+    <tr><td>Hover-line colour fade</td><td>.45s ease</td><td><code>--d-move</code></td></tr>
+    <tr><td>Bag bump</td><td>scale(1.15) over .5s, site ease</td><td><code>--d-open</code> / <code>--ease</code></td></tr>
+    <tr><td>z-index</td><td>20</td><td><code>--z-head</code></td></tr>
+    <tr><td>Logo scrub span</td><td>max(240px, min(45vh, 560px))</td><td>site.js only</td></tr>
+    <tr><td>Hero quiet timer</td><td>8000ms</td><td>site.js only</td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">Below 768px: Menu replaces Shop/Custom/About, the logotype grows slightly (108px) and sits 4px higher, the nav shifts 8px higher overall, Back disappears, and the header padding switches to the 28px phone inset rather than the 64px desktop edge.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Let the nav tone itself — never hardcode black or white on a new page</li>
+      <li>Keep the logotype a mask on <code>currentColor</code>, never a flat image</li>
+      <li>Leave Back off phone layouts entirely</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Give the header a background colour or blur — it must never paint one</li>
+      <li>Move Bag's on-dark override to phones — there is no white column there</li>
+      <li>Replay the big logotype hero anywhere but the shop page's film</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/site.css</code> — <code>.head</code>, <code>.hover-line</code>, <code>.logotype</code>, <code>.bag-toast</code>, <code>.back</code>, keyframes <code>bump</code><br>
+    <code>pdp/partials/nav.html</code> — header markup<br>
+    <code>pdp/partials/site.js</code> — nav tone logic (~lines 27–140)<br>
+    <code>pdp/pages/shop.html</code> — <code>.logo-hero</code>, <code>.logo-scrub</code>, <code>.logo-docked</code>, hero tagline, MaconScrub/MaconHeroQuiet (site.js ~lines 285–401 of shop.html's own script)
+  </p>
+</main>
+<script>
+  document.getElementById('bumpBtn').addEventListener('click', function () {
+    var a = document.getElementById('bagLink');
+    a.classList.remove('bag-count-demo-bump');
+    void a.offsetWidth;
+    a.style.animation = 'none'; void a.offsetWidth;
+    a.style.animation = 'hbump .5s cubic-bezier(.22,.7,.2,1)';
+  });
+</script>
+</body>
+</html>

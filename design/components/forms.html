@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Forms</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  a{color:inherit;text-decoration:none}
+  button{background:none;border:0;padding:0;cursor:pointer;font:inherit;color:inherit}
+  input,textarea,select{font:inherit;color:inherit}
+
+  /* default .field, unmodified — nobody uses it as-is */
+  .field{display:flex;border-bottom:1.5px solid rgba(0,0,0,.25);padding:0 0 10px 18px;max-width:380px}
+  .field input,.field textarea{flex:1;border:0;outline:0;font-size:18px;background:none;min-width:0;resize:none}
+  .field input::placeholder,.field textarea::placeholder{color:#777}
+
+  /* footer newsletter field */
+  .news-field{display:flex;border-bottom:.5px solid rgba(0,0,0,.2);padding:0 0 10px;max-width:340px}
+  .news-field input{flex:1;border:0;outline:0;font-size:14.333px;opacity:.8;background:none}
+  .news-field input::placeholder{color:rgba(0,0,0,.35)}
+  .news-field button{padding:0 0 0 18px;font-size:14.333px}
+  .news-field.focus{border-bottom-color:#000}
+
+  /* contact form */
+  .cform{display:grid;gap:30px;max-width:460px}
+  .cform .crow{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .cfield{display:flex;border-bottom:.5px solid #000;padding:0 0 10px}
+  .cfield input,.cfield textarea{flex:1;border:0;outline:0;font-size:14.333px;opacity:.8;background:none;resize:none}
+  .cfield input::placeholder,.cfield textarea::placeholder{color:rgba(0,0,0,.35)}
+  .cfield textarea{min-height:120px}
+  .sent-msg{margin:0;font-size:17px}
+
+  /* checkout field with select */
+  .cofield{display:flex;border-bottom:.5px solid #000;padding:0 0 10px;max-width:380px}
+  .cofield input,.cofield select{flex:1;border:0;outline:0;font-size:14.333px;background:none;width:100%}
+  .cofield input::placeholder{color:rgba(0,0,0,.35)}
+
+  /* custom .line */
+  .cline{display:block;border-bottom:.5px solid rgba(0,0,0,.2);padding:0 0 6px;max-width:380px}
+  .cline input,.cline textarea{width:100%;border:0;outline:0;background:none;font-size:16px;resize:none}
+  .cline input::placeholder,.cline textarea::placeholder{color:rgba(0,0,0,.22)}
+  .cline textarea{min-height:0;height:26px;line-height:26px;padding:0;overflow:hidden}
+  .cline.focus{border-bottom-color:#000}
+
+  /* custom .q */
+  .q{margin:0 0 20px;max-width:420px}
+  .q > .label{display:block;margin:0 0 12px;color:#000;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+  .req{color:#c8321e;font-size:calc(1em + 2pt);line-height:0}
+  .hint{margin:-6px 0 12px;font-size:14px;color:rgba(0,0,0,.55)}
+
+  /* upload tiles */
+  .uploads{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px}
+  .tile{position:relative;aspect-ratio:1;border:1px dashed rgba(0,0,0,.28);border-radius:6px;display:grid;place-items:center;
+    text-align:center;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(0,0,0,.5);cursor:pointer;overflow:hidden}
+  .tile.focus,.tile:hover{border-color:#000;color:#000}
+  .tile.optional{border-color:rgba(0,0,0,.12);color:rgba(0,0,0,.35)}
+  .tile .plus{display:block;font-size:20px;letter-spacing:0;margin-bottom:4px}
+  .tile.filled{border-style:solid}
+  .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+  /* size need-nudge */
+  .need-demo{border:1px solid #c8321e;padding:0 20px;height:52px;display:flex;align-items:center;font-size:15px;max-width:260px}
+
+  .demo-label{font-size:11px;color:var(--ink-50);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px;display:block}
+  .stack{display:flex;flex-direction:column;gap:24px}
+  .swatch{display:inline-flex;align-items:center;gap:8px;font-size:13px}
+  .swatch i{display:inline-block;width:14px;height:14px;border-radius:2px;background:#000}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Forms</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Forms</p>
+  <h1 class="ds-h1">Forms</h1>
+  <p class="ds-lede">Every input treatment on the site — none of them share exactly the same rule weight, colour or placeholder tone. This page shows each one as it actually appears, plus the base <code>.field</code> rule that nobody uses unmodified.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note">Inputs are always underlined, never boxed — the site has no bordered text field anywhere. Every field's rule darkens to black on focus. Four different rule specs and three placeholder colours are in live use; see the inconsistency table below.</p>
+
+  <h2 class="ds-h2">Live</h2>
+
+  <h3 class="ds-h3">Default .field (site.css base — unmodified)</h3>
+  <div class="ds-demo on-white">
+    <label class="field"><input placeholder="Type something"></label>
+  </div>
+  <p class="ds-caption">Rest — 1.5px rgba(0,0,0,.25) rule, padding 0 0 10px 18px, 18px input, placeholder #777. No page on the site actually ships this untouched; every real field overrides at least the rule and placeholder.</p>
+
+  <h3 class="ds-h3">Footer newsletter field</h3>
+  <div class="ds-demo on-white">
+    <label class="news-field"><input placeholder="Email address"><button class="hover-line" type="button">Submit</button></label>
+  </div>
+  <p class="ds-caption">Rest — site.css footer .field.</p>
+  <div class="ds-demo on-white">
+    <label class="news-field focus"><input placeholder="Email address" style="opacity:1"><button type="button">Submit</button></label>
+  </div>
+  <p class="ds-caption">Focus-within, forced static — rule darkens to black (site.css :focus-within).</p>
+
+  <h3 class="ds-h3">Contact form</h3>
+  <div class="ds-demo on-white">
+    <form class="cform">
+      <div class="crow">
+        <label class="cfield"><input placeholder="First Name"></label>
+        <label class="cfield"><input placeholder="Last Name"></label>
+      </div>
+      <label class="cfield"><input type="email" placeholder="Email"></label>
+      <label class="cfield"><textarea placeholder="Message"></textarea></label>
+      <a class="cta" href="#" style="display:flex;align-items:center;justify-content:center;width:100%;height:55px;background:#000;color:#fff;font-size:15.333px;text-transform:uppercase;letter-spacing:.08em;margin-top:10px">Send</a>
+    </form>
+  </div>
+  <p class="ds-caption">Rest — gap 30px, .row two columns gap 24px, .5px #000 rule, textarea min-height 120px, .cta margin-top 10px. pages/contact.html .form.</p>
+  <div class="ds-demo on-white">
+    <p class="sent-msg">Sent, thank you. A confirmation is on its way to your inbox.</p>
+  </div>
+  <p class="ds-caption">Sent state — the form's outerHTML is replaced with this line. pages/contact.html script.</p>
+
+  <h3 class="ds-h3">Checkout field with select</h3>
+  <div class="ds-demo on-white">
+    <div class="stack" style="max-width:380px">
+      <label class="cofield"><input placeholder="Address"></label>
+      <label class="cofield"><select><option>Country</option><option>United States</option><option>Canada</option></select></label>
+    </div>
+  </div>
+  <p class="ds-caption">pages/checkout.html .co .field — same hairline as the contact form (.5px #000), native select included.</p>
+
+  <h3 class="ds-h3">Custom .line</h3>
+  <div class="ds-demo on-white">
+    <div class="stack">
+      <span class="cline"><input placeholder="What kind of animal?"></span>
+      <span class="cline focus"><input placeholder="What kind of animal?" style="color:#000"></span>
+      <span class="cline"><textarea placeholder="Anything else we should know" rows="1"></textarea></span>
+    </div>
+  </div>
+  <p class="ds-caption">Rest, focus (forced static), and the single-line textarea used for "Other" reveals and notes. pages/custom.html .line — .5px rgba(0,0,0,.2) rule, 16px input, placeholder rgba(0,0,0,.22).</p>
+
+  <h3 class="ds-h3">Custom question (.q)</h3>
+  <div class="ds-demo on-white">
+    <div class="q">
+      <span class="label">Species <span class="req">*</span></span>
+      <div class="choices" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px">
+        <button style="height:48px;border:1px solid var(--rule);font-size:15px">Dog</button>
+        <button style="height:48px;border:1px solid var(--rule);font-size:15px">Cat</button>
+        <button style="height:48px;border:1px solid var(--rule);font-size:15px">Horse</button>
+        <button style="height:48px;border:1px solid var(--rule);font-size:15px" aria-pressed="true">Other</button>
+      </div>
+      <p class="hint">Optional: anything that inspires the piece, or photos of a ring that fits well.</p>
+    </div>
+  </div>
+  <p class="ds-caption">pages/custom.html .q — label black with a red required asterisk, .hint 14px rgba(0,0,0,.55).</p>
+
+  <h3 class="ds-h3">Upload tiles</h3>
+  <div class="ds-demo on-white">
+    <div class="uploads">
+      <label class="tile"><span class="plus">+</span>Front</label>
+      <label class="tile focus"><span class="plus">+</span>Side</label>
+      <label class="tile optional"><span class="plus">+</span>Optional</label>
+      <label class="tile filled"><img src="../../pdp/img/pip/hero.jpg" alt=""></label>
+    </div>
+  </div>
+  <p class="ds-caption">Left to right: rest, hover/keyboard-focus (forced static, border → black), optional (lighter, rgba(0,0,0,.12)/.35), filled (shows the uploaded image). pages/custom.html .tile — square dashed rgba(0,0,0,.28), radius 6px, 12px ls .06em uppercase rgba(0,0,0,.5), + at 20px.</p>
+
+  <h3 class="ds-h3">Size-picker "need" nudge</h3>
+  <div class="ds-demo on-white">
+    <div class="need-demo">Select a size</div>
+  </div>
+  <p class="ds-caption">Shown when Add to Bag is pressed with no size chosen — border flips to #c8321e for .2s. pdp/site.css [data-size].need.</p>
+
+  <h2 class="ds-h2">The inconsistency</h2>
+  <table class="ds-spec">
+    <tr><th>Rule</th><th>Where</th></tr>
+    <tr><td>1.5px rgba(0,0,0,.25)</td><td>site.css default .field (unused as-is)</td></tr>
+    <tr><td>.5px rgba(0,0,0,.2)</td><td>footer newsletter field, Custom .line</td></tr>
+    <tr><td>.5px #000</td><td>contact form, checkout fields</td></tr>
+    <tr><td>1px rgba(0,0,0,.25)</td><td>Custom edit-mode text inputs (internal tool, .ed input[type=text])</td></tr>
+  </table>
+  <table class="ds-spec">
+    <tr><th>Placeholder colour</th><th>Where</th></tr>
+    <tr><td>#777</td><td>site.css default .field (unused as-is)</td></tr>
+    <tr><td>rgba(0,0,0,.35)</td><td>footer newsletter, contact, checkout</td></tr>
+    <tr><td>rgba(0,0,0,.22)</td><td>Custom .line</td></tr>
+  </table>
+  <p class="ds-caption">pdp/site.css lines 102–104; pages/contact.html lines 26–29; pages/checkout.html lines 15–17; pages/custom.html lines 125–127; pages/custom.html line 52 (editor).</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Field</th><th>Rule</th><th>Input size</th><th>Placeholder</th></tr>
+    <tr><td>Default .field</td><td>1.5px rgba(0,0,0,.25)</td><td>18px</td><td>#777</td></tr>
+    <tr><td>Footer newsletter</td><td>.5px rgba(0,0,0,.2)</td><td>14.333px</td><td>rgba(0,0,0,.35)</td></tr>
+    <tr><td>Contact / Checkout</td><td>.5px #000</td><td>14.333px</td><td>rgba(0,0,0,.35)</td></tr>
+    <tr><td>Custom .line</td><td>.5px rgba(0,0,0,.2)</td><td>16px</td><td>rgba(0,0,0,.22)</td></tr>
+    <tr><td>Upload tile</td><td>1px dashed rgba(0,0,0,.28)</td><td>—</td><td>—</td></tr>
+    <tr><td>Size-picker "need"</td><td>1px solid #c8321e</td><td>—</td><td>—</td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">The contact form's two-column .row collapses to one column implicitly at narrow widths where the form itself is centred and full-width; no explicit breakpoint changes field styling. Upload tiles stay a 4-across grid at every width.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Underline every field — never box one.</li>
+      <li>Darken the rule to black on focus.</li>
+      <li>Match the rule/placeholder pair already used on that page's form (see the inconsistency table) rather than inventing a new pairing.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Ship the raw default .field — every real page overrides it.</li>
+      <li>Add a border, background fill or radius to a text input.</li>
+      <li>Use a fourth placeholder colour; pick from #777 (legacy default), rgba(0,0,0,.35), or rgba(0,0,0,.22).</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    pdp/site.css — lines 102–104 (.field), 115–117 (footer .field), 210 ([data-size].need)<br>
+    pdp/pages/contact.html — lines 23–31 (.form .field)<br>
+    pdp/pages/checkout.html — lines 15–17 (.co .field)<br>
+    pdp/pages/custom.html — lines 125–140 (.line, .tile)<br>
+    design/tokens.css — --rule-field, --rule-hair, --rule-hair-ink, --ink-20/22/25/28/35
+  </p>
+</main>
+</body>
+</html>

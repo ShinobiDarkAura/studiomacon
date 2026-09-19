@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Prose</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .prose{margin:0 auto;max-width:620px;text-align:center}
+  .prose p{margin:0 0 1em;font-size:17px;line-height:1.55}
+  .lede{margin:0 auto;max-width:620px;font-size:17px;line-height:1.55;text-align:center}
+  .desc{margin:0;font-size:15px;line-height:1.55}
+  @media (min-width:768px){ .desc{font-size:16px} }
+  .acc-body{font-size:17px;line-height:1.55;text-align:left}
+  .acc-body p{margin:0 0 .9em}
+  .acc-body p:last-child{margin:0}
+  .acc-body a{text-decoration:underline;text-underline-offset:3px}
+  .acc-body dl{margin:18px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px}
+  .acc-body dt{text-transform:uppercase;font-size:14px;padding-top:2px;color:var(--ink-50)}
+  .acc-body dd{margin:0}
+  .rel-blurb{margin:0 auto;max-width:480px;font-size:16px;line-height:1.55;text-align:center}
+  .footer-news-p{font-size:14.333px;line-height:1.5;max-width:340px}
+  .note-p{font-size:13px;color:var(--ink-50);line-height:1.5;max-width:400px}
+  .hint-p{font-size:14px;color:var(--ink-55)}
+  .thanks-p{font-size:16px;line-height:1.55}
+  .email-col{width:378px;max-width:100%;font-size:16px;line-height:1.6}
+  .voice-box{border:1px solid var(--rule);padding:24px;font-size:15px;line-height:1.6;max-width:620px}
+  .voice-box b{display:block;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-50);margin:0 0 12px;font-weight:400}
+  .voice-box ul{margin:0;padding-left:18px}
+  .voice-box li{margin:0 0 8px}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Prose</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Prose</p>
+  <h1 class="ds-h1">Prose</h1>
+  <p class="ds-lede">The site's body copy: the default sans paragraph, centred ledes, product descriptions, accordion bodies, and the smaller notes and fine print scattered around checkout and forms.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note">Body default is 17px/1.5. <code>.prose p</code> and <code>.lede</code> both run 17px/1.55, centred, max-width 620px. On phones every title in a prose block is centred too. Product description (<code>.desc</code>) is smaller — 15px on phones, 16px desktop — because it shares column space with the price and buttons rather than standing alone.</p>
+
+  <h2 class="ds-h2">Live</h2>
+
+  <h3 class="ds-h3">Body default &amp; lede</h3>
+  <div class="ds-demo on-white">
+    <p class="lede">Maçon makes artifacts and jewelry to be carried, worn and handed down. Every piece is drawn on paper, carved by hand in wax and cast in bronze, silver or gold, then finished by hand in our studio.</p>
+  </div>
+  <p class="ds-caption">Home welcome copy — pages/shop.html line 219. 17px/1.55, centred, 620px max-width.</p>
+
+  <h3 class="ds-h3">.prose (Our Practice, Story)</h3>
+  <div class="ds-demo on-white">
+    <div class="prose">
+      <p>Each piece begins as a sketch on paper. Next, the object is carved by hand, first in wax, then fine-tuned in metal. We work closely with a local foundry to cast the wax carvings in bronze, silver or gold, and each piece is then refined and polished in our studio.</p>
+      <p>If its path is to become a collection piece, a rubber mold is made so that we can make the children of that original and share them with you. If it's a custom piece, it is one of a kind.</p>
+    </div>
+  </div>
+  <p class="ds-caption">Story — Our Practice. pages/story.html lines 77–78.</p>
+
+  <h3 class="ds-h3">Product description (.desc)</h3>
+  <div class="ds-demo on-white">
+    <p class="label" style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-50);margin:0 0 14px">Field Notes</p>
+    <p class="desc">Cast from a single sketch of a horse mid-stride, carried in the pocket the way the smallest totems always are.</p>
+  </div>
+  <p class="ds-caption">template.html .desc-block — 15px phones, 16px desktop, 1.55.</p>
+
+  <h3 class="ds-h3">Accordion body</h3>
+  <div class="ds-demo on-white">
+    <div class="acc-body">
+      <p>Each piece is individually made to order. Please allow up to 10 business days for us to create your piece before it heads out to you.</p>
+      <dl>
+        <dt>Metal</dt><dd>Bronze, silver or 14k gold</dd>
+        <dt>Care</dt><dd>Wipe with a soft cloth; avoid <a href="#">perfume and lotion</a> on the piece</dd>
+      </dl>
+    </div>
+  </div>
+  <p class="ds-caption">pages/shipping.html open state; dl pattern from template.html accordion. 17px/1.55, dl gap 6px 18px, dt uppercase 14px, links underlined offset 3px.</p>
+
+  <h3 class="ds-h3">Related blurb &amp; footer newsletter</h3>
+  <div class="ds-demo on-white">
+    <p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p>
+  </div>
+  <p class="ds-caption">template.html .rel-blurb — 16px/1.55, 480px max-width.</p>
+  <div class="ds-demo on-white">
+    <p class="footer-news-p">Sign up for updates on new pieces and the occasional story from the studio.</p>
+  </div>
+  <p class="ds-caption">footer .news p — 14.333px/1.5. site.css line 114.</p>
+
+  <h3 class="ds-h3">Notes, fine print &amp; hints</h3>
+  <div class="ds-demo on-white">
+    <p class="note-p" style="margin:0 0 14px">Every piece is made to order. Please allow up to 10 business days before it ships.</p>
+    <p class="note-p" style="margin:0 0 14px">Your deposit reserves a place in the studio and begins the sketch.</p>
+    <p class="hint-p">Three are required: front, side and a close-up of the face. A fourth angle helps.</p>
+  </div>
+  <p class="ds-caption">bag.html/checkout.html .note (13px, rgba(0,0,0,.5)); custom.html .fine-print (13px); custom.html .hint (14px, rgba(0,0,0,.55)).</p>
+
+  <h3 class="ds-h3">Thank-you state &amp; email body</h3>
+  <div class="ds-demo on-white">
+    <p class="thanks-p">Thank you. Your request is with us. Taking you to checkout to begin your commission.</p>
+  </div>
+  <p class="ds-caption">custom.html .thanks — 16px/1.55.</p>
+  <div class="ds-demo on-white">
+    <div class="email-col">Your piece is being carved by hand this week. We'll write again the moment it's cast and on its way to you.</div>
+  </div>
+  <p class="ds-caption">Email body copy — 16px/1.6, held to a 378px column (600px email width minus 2×111px side padding). build_emails.py line 145.</p>
+
+  <h2 class="ds-h2">Voice</h2>
+  <div class="voice-box">
+    <b>Voice</b>
+    <ul>
+      <li>Site copy is third-person field notes — "Maçon makes…", "Each piece is…" — never "we" or "I" anywhere on the site.</li>
+      <li>Customer emails are the one exception: they speak as "we" ("We'll write again the moment it's cast…").</li>
+      <li>Pieces are artifacts — never "products," and never sales or stock language ("in stock," "buy now," "limited").</li>
+      <li>Never "talisman" or "heirloom."</li>
+      <li>No exclamation marks anywhere on the site.</li>
+    </ul>
+  </div>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Body default</td><td>17px / 1.5</td><td><code>--t-17 / --lh-body</code></td></tr>
+    <tr><td>.prose p / .lede</td><td>17px / 1.55, 620px, centred</td><td><code>--t-17 / --lh-prose</code></td></tr>
+    <tr><td>.desc</td><td>15px → 16px / 1.55</td><td><code>--t-15 / --t-16 / --lh-prose</code></td></tr>
+    <tr><td>.acc-body</td><td>17px / 1.55, p margin .9em</td><td><code>--t-17 / --lh-prose</code></td></tr>
+    <tr><td>.acc-body dl</td><td>grid auto/1fr, gap 6px 18px</td><td><code>--sp-6 / --sp-18</code></td></tr>
+    <tr><td>.rel-blurb</td><td>16px / 1.55, 480px</td><td><code>--t-16 / --lh-prose</code></td></tr>
+    <tr><td>footer news p</td><td>14.333px / 1.5</td><td><code>--t-footer / --lh-body</code></td></tr>
+    <tr><td>Notes / fine print</td><td>13px, rgba(0,0,0,.5), 1.5</td><td><code>--t-13 / --ink-50 / --lh-body</code></td></tr>
+    <tr><td>.hint</td><td>14px, rgba(0,0,0,.55)</td><td><code>--t-14 / --ink-55</code></td></tr>
+    <tr><td>.thanks</td><td>16px / 1.55</td><td><code>--t-16 / --lh-prose</code></td></tr>
+    <tr><td>Email body</td><td>16px / 1.6, 378px column</td><td><code>--t-16 / --lh-email</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">.desc steps from 15px to 16px at 768px. On phones every prose block, and every title inside one, is centre-aligned; above 768px, .prose stays centred but sits in its own column rather than filling the page width.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Write in third person field notes, active voice, plain description.</li>
+      <li>Keep prose paragraphs inside the 620px column and centred.</li>
+      <li>Use "we" only inside a customer email, never on the site itself.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Use "talisman," "heirloom," or sales language like "in stock" or "buy now."</li>
+      <li>Add an exclamation mark anywhere.</li>
+      <li>Call a piece a "product" — it's an artifact or a piece.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    pdp/site.css — lines 90–99 (.acc-body), 107–119 (footer .news p), 142–144 (.intro/.prose)<br>
+    pdp/template.html — lines 55–56 (.desc)<br>
+    pdp/pages/shop.html — line 219 (welcome copy)<br>
+    pdp/pages/story.html — lines 77–78 (Our Practice)<br>
+    pdp/pages/custom.html — lines 130, 165–166 (.reassure, .fine-print, .thanks)<br>
+    pdp/pages/bag.html, checkout.html — .note<br>
+    pdp/email/build_emails.py — line 145 (body())
+  </p>
+</main>
+</body>
+</html>

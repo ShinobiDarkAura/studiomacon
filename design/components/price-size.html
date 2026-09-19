@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Price & Size Selector</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .price{font-size:var(--t-price);margin:0 0 18px}
+  .size{position:relative;margin:0 0 12px;border:var(--rule-1);text-align:left;max-width:340px}
+  .size-toggle{display:flex;align-items:center;gap:16px;width:100%;height:var(--h-size);padding:0 20px 0 16px;cursor:pointer;background:none;border:0}
+  .size-label{font-size:var(--t-15);text-transform:uppercase;margin-right:auto}
+  .size-value{font-size:var(--t-16)}
+  .size.picked .size-value{font-weight:500}
+  .chev{width:12px;height:8px;flex:none;transition:transform .35s var(--ease);
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.3'/%3E%3C/svg%3E") center/12px 8px no-repeat}
+  .size.open .chev{transform:rotate(180deg)}
+  .size-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+  .size.open .size-panel{grid-template-rows:1fr}
+  .size-inner{overflow:hidden}
+  .size-list{list-style:none;margin:0;padding:4px 16px 16px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+    border-top:var(--rule-1);padding-top:16px;opacity:0;transition:opacity .3s ease}
+  .size.open .size-list{opacity:1;transition-delay:.08s}
+  .size-list li{display:grid;place-items:center;height:var(--h-cell);border:var(--rule-1);font-size:var(--t-15);cursor:pointer;
+    transition:border-color .2s ease,background .2s ease,color .2s ease}
+  .size-list li:hover,.size-list li:focus{border-color:var(--ink);outline:none}
+  .size-list li[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  [data-size].need{border-color:var(--alert) !important;transition:border-color .2s}
+
+  .buy{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-8);max-width:340px}
+  .cta{display:flex;align-items:center;justify-content:center;width:100%;height:var(--h-buy);
+    background:var(--ink);color:var(--paper);font-size:calc((18px - 2pt) * .85);text-transform:uppercase;letter-spacing:var(--ls-cta);border:0;cursor:pointer}
+  .apple-pay{display:flex;align-items:center;justify-content:center;width:100%;height:var(--h-buy);background:var(--ink);color:var(--paper);
+    gap:3px;letter-spacing:var(--ls-apple);font:500 16.6px/1 var(--apple)}
+  .apple-pay svg{width:13.6px;height:16.6px;margin-top:-2px;fill:var(--paper)}
+
+  .frame-row{display:flex;flex-wrap:wrap;gap:32px}
+  .frame-cell{flex:1 1 260px}
+  .frame-cell h3{font-size:var(--t-13);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ink-50);margin:0 0 14px;font-weight:400}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Price &amp; Size Selector</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Price &amp; Size Selector</p>
+  <h1 class="ds-h1">Price &amp; Size Selector</h1>
+  <p class="ds-lede">The price line, then — on pieces that come in sizes — a single bordered control that opens into a grid of choices. Picking one closes it and locks the price row in place above the buy buttons.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note"><code>.price</code> sits above an optional <code>.size</code> block: a <code>.size-toggle</code> row (label, current value, chevron) that opens a <code>.size-panel</code> of a 5-column <code>.size-list</code>. Picking a size sets <code>.picked</code> on the block and bolds the value. Pressing Add to Bag with nothing picked opens the panel and adds <code>.need</code>, a red border that clears itself after 1.6s.</p>
+
+  <h2 class="ds-h2">Live</h2>
+  <p class="ds-note">Working control — click to open, pick a size, click outside or press Escape to close, or press Add to Bag with nothing chosen.</p>
+  <div class="ds-demo on-white" id="live-demo">
+    <p class="price">$220</p>
+    <div class="size" data-size id="live-size">
+      <button type="button" class="size-toggle" aria-haspopup="listbox" aria-expanded="false">
+        <span class="size-label">Size</span><span class="size-value">Select size</span><i class="chev" aria-hidden="true"></i>
+      </button>
+      <div class="size-panel"><div class="size-inner">
+        <ul class="size-list" role="listbox" aria-label="Size">
+          <li role="option" aria-selected="false" tabindex="0" data-value="5.5">5.5</li>
+          <li role="option" aria-selected="false" tabindex="0" data-value="6">6</li>
+          <li role="option" aria-selected="false" tabindex="0" data-value="6.5">6.5</li>
+          <li role="option" aria-selected="false" tabindex="0" data-value="7">7</li>
+          <li role="option" aria-selected="false" tabindex="0" data-value="7.5">7.5</li>
+          <li role="option" aria-selected="false" tabindex="0" data-value="8">8</li>
+          <li role="option" aria-selected="false" tabindex="0" data-value="8.5">8.5</li>
+          <li role="option" aria-selected="false" tabindex="0" data-value="9">9</li>
+          <li role="option" aria-selected="false" tabindex="0" data-value="9.5">9.5</li>
+          <li role="option" aria-selected="false" tabindex="0" data-value="10">10</li>
+        </ul>
+      </div></div>
+    </div>
+    <div class="buy">
+      <button type="button" class="cta" id="live-add">Add to Bag</button>
+      <button type="button" class="apple-pay" aria-label="Buy with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
+    </div>
+  </div>
+  <p class="ds-caption">Ring sizes as run in Shopify (5.5–11 in half steps); the grid above shows the first ten.</p>
+
+  <h2 class="ds-h2">States (forced, static)</h2>
+  <div class="frame-row">
+    <div class="frame-cell">
+      <h3>Closed</h3>
+      <div class="ds-demo on-white tight" style="padding:24px">
+        <p class="price">$220</p>
+        <div class="size">
+          <button type="button" class="size-toggle"><span class="size-label">Size</span><span class="size-value">Select size</span><i class="chev"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="frame-cell">
+      <h3>Open</h3>
+      <div class="ds-demo on-white tight" style="padding:24px">
+        <p class="price">$220</p>
+        <div class="size open" style="margin-bottom:180px">
+          <button type="button" class="size-toggle"><span class="size-label">Size</span><span class="size-value">Select size</span><i class="chev"></i></button>
+          <div class="size-panel"><div class="size-inner">
+            <ul class="size-list">
+              <li>5.5</li><li>6</li><li>6.5</li><li>7</li><li>7.5</li>
+              <li>8</li><li>8.5</li><li aria-selected="true">9</li><li>9.5</li><li>10</li>
+            </ul>
+          </div></div>
+        </div>
+      </div>
+    </div>
+    <div class="frame-cell">
+      <h3>Picked</h3>
+      <div class="ds-demo on-white tight" style="padding:24px">
+        <p class="price">$220</p>
+        <div class="size picked">
+          <button type="button" class="size-toggle"><span class="size-label">Size</span><span class="size-value">9</span><i class="chev"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="frame-cell">
+      <h3>Need (no size picked)</h3>
+      <div class="ds-demo on-white tight" style="padding:24px">
+        <p class="price">$220</p>
+        <div class="size need">
+          <button type="button" class="size-toggle"><span class="size-label">Size</span><span class="size-value">Select size</span><i class="chev"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Price</td><td>19px, margin 0 0 18px</td><td><code>--t-price</code></td></tr>
+    <tr><td>Custom price line</td><td>"$925 Totems / $1,600+ Jewelry"</td><td>same <code>--t-price</code> rule</td></tr>
+    <tr><td>Size box border</td><td>1px solid var(--rule)</td><td><code>--rule-1</code></td></tr>
+    <tr><td>Toggle height</td><td>52px</td><td><code>--h-size</code></td></tr>
+    <tr><td>Label</td><td>15px uppercase</td><td><code>--t-15</code></td></tr>
+    <tr><td>Value</td><td>16px, 500 weight when picked</td><td><code>--t-16</code></td></tr>
+    <tr><td>Chevron</td><td>12×8, rotates 180°</td><td>—</td></tr>
+    <tr><td>Size-list columns / gap</td><td>5 columns, gap 8px</td><td><code>--sp-8</code></td></tr>
+    <tr><td>Size cell</td><td>40px, 1px rule → black on hover</td><td><code>--h-cell</code></td></tr>
+    <tr><td>Selected cell</td><td>black fill, white text</td><td><code>--ink</code> / <code>--paper</code></td></tr>
+    <tr><td>Need nudge</td><td>border #c8321e, self-clears after 1.6s</td><td><code>--alert</code></td></tr>
+    <tr><td>Buy row</td><td>1fr 1fr, gap 8px</td><td><code>--sp-8</code></td></tr>
+    <tr><td>Buy button height</td><td>47px (8px shorter than other black buttons)</td><td><code>--h-buy</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">No layout change below 768px — the size box and buy row keep the same structure; the surrounding <code>.info</code> column simply centres and narrows to the phone gutter.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Open the size panel and flag it red when Add to Bag is pressed with nothing picked — never block the click silently.</li>
+      <li>Bold the value only once a size is picked; the placeholder ("Select size") stays regular weight.</li>
+      <li>Close the panel on Escape or an outside click, same as any other disclosure control on the site.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't invent a size range — pull it from Shopify's variants for that piece.</li>
+      <li>Don't leave the "need" red border on permanently; it is a one-time nudge, not a validation state.</li>
+      <li>Don't shrink the buy buttons below 47px — that height is already 8px under the site's other black buttons.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/template.html</code> — <code>.price</code>, <code>.size</code>, <code>.size-toggle</code>, <code>.size-panel</code>, <code>.size-list</code>, <code>.buy</code>, <code>.apple-pay</code><br>
+    <code>pdp/build_pdp.py</code> lines 326–345 — size selector markup, driven by <code>shopify/variants.json</code><br>
+    <code>pdp/partials/site.js</code> — size open/pick/close behaviour and the "need" nudge on Add to Bag<br>
+    <code>pdp/site.css</code> — <code>[data-size].need</code>
+  </p>
+</main>
+<script>
+  (function () {
+    var box = document.getElementById('live-size');
+    var toggle = box.querySelector('.size-toggle'), value = box.querySelector('.size-value');
+    var items = [].slice.call(box.querySelectorAll('li'));
+    function open(on) {
+      box.classList.toggle('open', on);
+      toggle.setAttribute('aria-expanded', on);
+    }
+    toggle.addEventListener('click', function () { open(!box.classList.contains('open')); });
+    items.forEach(function (li) {
+      li.addEventListener('click', function () {
+        items.forEach(function (x) { x.setAttribute('aria-selected', x === li); });
+        value.textContent = li.dataset.value;
+        box.classList.add('picked');
+        open(false);
+      });
+    });
+    document.addEventListener('click', function (e) { if (!box.contains(e.target)) open(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') open(false); });
+
+    document.getElementById('live-add').addEventListener('click', function (e) {
+      var picked = box.classList.contains('picked');
+      if (!picked) {
+        e.stopPropagation();
+        box.classList.add('open', 'need');
+        toggle.setAttribute('aria-expanded', true);
+        setTimeout(function () { box.classList.remove('need'); }, 1600);
+      }
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Type Hierarchy</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .row{display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:16px 0;border-bottom:1px solid var(--rule)}
+  .row:last-child{border-bottom:0}
+  .sample{font-family:var(--serif);text-transform:uppercase;white-space:nowrap;letter-spacing:var(--ls-body)}
+  .sample.sans{font-family:var(--sans);text-transform:none;letter-spacing:0}
+  .sample.italic{font-style:italic;text-transform:none}
+  .meta{font-size:13px;color:var(--ink-50);text-align:right;line-height:1.5;min-width:220px}
+  .meta b{color:var(--ink);font-weight:500}
+  .meta code{font:12px/1.4 ui-monospace,Menlo,monospace}
+  .resp{display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;margin:0 0 4px}
+  .resp .sample{font-family:var(--serif);text-transform:uppercase}
+  .resp-tag{font-size:11px;color:var(--ink-50);letter-spacing:.06em;text-transform:uppercase}
+  .oddity{display:flex;justify-content:space-between;gap:18px;padding:10px 0;border-bottom:1px solid var(--rule);font-size:14px}
+  .oddity:last-child{border-bottom:0}
+  .oddity .val{font:13px/1.4 ui-monospace,Menlo,monospace;color:var(--ink)}
+  .oddity .note{color:var(--ink-50);text-align:right;max-width:420px}
+  .rule-line{margin:0 0 14px;font-size:15px;line-height:1.55;max-width:620px}
+  @media (max-width:767px){ .meta{min-width:0;text-align:left} .row{flex-direction:column;gap:6px} }
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Type Hierarchy</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Type Hierarchy</p>
+  <h1 class="ds-h1">Type Hierarchy</h1>
+  <p class="ds-lede">Every serif and sans size the site actually sets, live at its real size and weight, with the token and the page it comes from. The site runs two families and never mixes them mid-word: Instrument Serif carries every title and name, Helvetica Neue carries everything else.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note">Serif titles are always uppercase, always weight 400 — the site never bolds Instrument Serif, it leans on size and spacing instead. The two exceptions are <b>.step-name</b> (Story page) and the home film's Henry <b>.tagline</b>, both lower-case italic. Sans weight 500 is reserved for a short list: the picked ring-size value, checkout/bag summary totals, the "Added to Bag" toast label, and the black email button.</p>
+
+  <h2 class="ds-h2">Live — Serif Scale</h2>
+
+  <h3 class="ds-h3">Titles: h1 / h2</h3>
+  <div class="ds-demo on-white">
+    <div class="row"><span class="sample" style="font-size:46px;line-height:1">Small Things, Made</span><span class="meta"><b>h1</b> · 46px · <code>--t-h1</code> · phones · used on every page h1 (product name, Bag, Checkout, 404, Story, Custom "Let's Make…")</span></div>
+    <div class="row"><span class="sample" style="font-size:34px;line-height:1.02">Also Worth Keeping</span><span class="meta"><b>h2</b> · 34px · <code>--t-menu</code> · base size, phones · shared token with drawer links; every real h2 on the site overrides this with a bigger scale (wall heads, related)</span></div>
+  </div>
+  <p class="ds-caption">Rest state — the site's raw <code>h1</code>/<code>h2</code> rule before any page-level override.</p>
+
+  <h3 class="ds-h3">Responsive steps</h3>
+  <div class="ds-demo on-white">
+    <div class="resp"><span class="sample" style="font-size:46px">H1</span><span class="resp-tag">46px phones</span><span class="sample" style="font-size:53px">H1</span><span class="resp-tag">53px ≥768</span><span class="sample" style="font-size:60px">H1</span><span class="resp-tag">60px ≥1200</span></div>
+    <div class="resp"><span class="sample" style="font-size:34px">H2</span><span class="resp-tag">34px phones</span><span class="sample" style="font-size:42px">H2</span><span class="resp-tag">42px ≥768</span></div>
+    <div class="resp"><span class="sample" style="font-size:57.5px">Wall</span><span class="resp-tag">57.5px phones</span><span class="sample" style="font-size:66.25px">Wall</span><span class="resp-tag">66.25px ≥768</span><span class="sample" style="font-size:75px">Wall</span><span class="resp-tag">75px ≥1200</span></div>
+    <div class="resp"><span class="sample" style="font-size:42px">Related</span><span class="resp-tag">42px phones</span><span class="sample" style="font-size:53px">Related</span><span class="resp-tag">53px ≥768</span></div>
+  </div>
+  <p class="ds-caption">h1 <code>--t-h1 / --t-h1-md / --t-h1-lg</code>; h2 <code>--t-menu / --t-h2</code>; wall heads <code>--t-wall-sm / --t-wall-md / --t-wall-lg</code>; related h2 <code>--t-h2 / --t-h1-md</code> (site.css lines 61–62, 127–137; template.html lines 103, 115; shop.html lines 128–131).</p>
+
+  <h3 class="ds-h3">Wall heads &amp; related heads</h3>
+  <div class="ds-demo on-white">
+    <div class="row"><span class="sample" style="font-size:57.5px">Totems</span><span class="meta"><b>wall-head h2</b> · 57.5px · <code>--t-wall-sm</code> · phones · shop.html Totems/Jewelry heads — sits between the 53 and 60 steps of h1, an outlier scale of its own</span></div>
+    <div class="row"><span class="sample" style="font-size:42px">Also Worth Keeping</span><span class="meta"><b>.related h2</b> · 42px · <code>--t-h2</code> · phones · template.html Also Worth Keeping</span></div>
+  </div>
+  <p class="ds-caption">shop.html line 128 (<code>.wall-head h2</code>); template.html line 103/115 (<code>.related h2</code>).</p>
+
+  <h3 class="ds-h3">Menu, tile and line names</h3>
+  <div class="ds-demo on-dark">
+    <div class="row"><span class="sample" style="font-size:34px;line-height:1.05">Shop</span><span class="meta" style="color:rgba(255,255,255,.6)"><b>drawer link</b> · 34px · <code>--t-menu</code> · site.css .menu-sheet a</span></div>
+  </div>
+  <p class="ds-caption">Mobile drawer links, white on black. Shipping &amp; Returns uses <code>--lh-two-line: .98</code> to hold its two lines close.</p>
+  <div class="ds-demo on-white">
+    <div class="row"><span class="sample" style="font-size:22px">Milo</span><span class="meta"><b>tile name</b> · 22px · <code>--t-tile</code> · phones · shop grid + Also Worth Keeping names on phones</span></div>
+    <div class="row"><span class="sample" style="font-size:26px">Wonder Horn</span><span class="meta"><b>bag line name</b> · 26px · <code>--t-line</code> · bag.html .line .nm</span></div>
+    <div class="row"><span class="sample" style="font-size:38px">Milo</span><span class="meta"><b>related tile name</b> · 38px · <code>--t-tile-lg</code> · desktop · Also Worth Keeping name, desktop</span></div>
+    <div class="row"><span class="sample" style="font-size:38.83px;line-height:.95;letter-spacing:.01em">Milo</span><span class="meta"><b>shop hover overlay name</b> · 38.83px · <code>--t-tile-over</code> · desktop · shop grid hover label — near-duplicate of 38px</span></div>
+  </div>
+  <p class="ds-caption">site.css var(--tile-name); template.html .rel-name; bag.html .line .nm; shop.html .piece .name (desktop hover overlay).</p>
+
+  <h3 class="ds-h3">Footer &amp; email</h3>
+  <div class="ds-demo on-white">
+    <div class="row"><span class="sample" style="font-size:30.4px;line-height:1.05;letter-spacing:.02em">Artifacts of Love, Made to Order.</span><span class="meta"><b>footer fine</b> · 30.4px · <code>--t-fine</code> · footer .fine (calc((32px - 5pt) * 1.2))</span></div>
+    <div class="row"><span class="sample" style="font-size:46px">Bag</span><span class="meta"><b>email h1</b> · 46px · <code>--t-h1</code> · email build_emails.py h1() — 40px on phones (max-width:620px)</span></div>
+    <div class="row"><span class="sample" style="font-size:54px">Your Bag</span><span class="meta"><b>email title</b> · 54px · <code>--t-title-email</code> · email bag/browse title, with a 48px black rule under it</span></div>
+    <div class="row"><span class="sample" style="font-size:35px">Wonder Horn</span><span class="meta"><b>email card name</b> · 35px · <code>--t-card</code> · email bag-card product name — outlier next to 34</span></div>
+    <div class="row"><span class="sample" style="font-size:31px">Sketched by Hand</span><span class="meta"><b>email notes title</b> · 31px · <code>--t-note</code> · email notes-list titles — outlier next to 30/30.4</span></div>
+    <div class="row"><span class="sample" style="font-size:30px;letter-spacing:.06em">MACON10</span><span class="meta"><b>email code</b> · 30px · <code>--t-code</code> · email discount code, in the highlighter swipe</span></div>
+    <div class="row"><span class="sample" style="font-size:22px">Milo</span><span class="meta"><b>email trio/card name</b> · 22px · <code>--t-tile</code> · email trio and browse-grid names, shared with the phone tile size</span></div>
+  </div>
+  <p class="ds-caption">pdp/email/build_emails.py lines 128, 133, 171, 183, 197, 240–241, 263, 383, 411 — email type is flat px in inline styles, no tokens at build time.</p>
+
+  <h3 class="ds-h3">The two exceptions: lower-case serif</h3>
+  <div class="ds-demo on-white">
+    <div class="row"><span class="sample italic" style="font-size:22.667px">carved by hand, cast in metal</span><span class="meta"><b>.step-name</b> · 22.667px · <code>--t-step-name</code> · Story page, italic, the only lower-case serif on the site</span></div>
+    <div class="row"><span class="sample italic" style="font-size:20px">Artifacts of Love</span><span class="meta"><b>.tagline</b> · 20px · <code>--t-tagline</code> · home film, Henry italic (var(--script))</span></div>
+  </div>
+  <p class="ds-caption">pages/story.html line 31 (<code>.step-name</code>, 17pt); pages/shop.html line 32 (<code>.tagline</code>, 15pt, font-family "Henry").</p>
+
+  <h2 class="ds-h2">Live — Sans Scale</h2>
+  <div class="ds-demo on-white">
+    <div class="row"><span class="sample sans" style="font-size:19px">$260</span><span class="meta"><b>19</b> · <code>--t-price</code> · product price, Custom price line</span></div>
+    <div class="row"><span class="sample sans" style="font-size:18px">Default field input</span><span class="meta"><b>18</b> · <code>--t-18</code> · site.css default .field — overridden everywhere it's used</span></div>
+    <div class="row"><span class="sample sans" style="font-size:17px">Body copy at its default size</span><span class="meta"><b>17</b> · <code>--t-17</code> · body default, prose, ledes, accordion bodies</span></div>
+    <div class="row"><span class="sample sans" style="font-size:16px">Eyebrow, description ≥768</span><span class="meta"><b>16</b> · <code>--t-16</code> · eyebrow desktop, description desktop, size value, Custom inputs</span></div>
+    <div class="row"><span class="sample sans" style="font-size:15.333px;letter-spacing:.08em;text-transform:uppercase">Add to Bag</span><span class="meta"><b>15.333</b> · <code>--t-cta</code> · every 55px black button + Custom .next</span></div>
+    <div class="row"><span class="sample sans" style="font-size:15px">Eyebrow phones, size cells, choices</span><span class="meta"><b>15</b> · <code>--t-15</code> · eyebrow phones, description phones, size label, choices, summary dl</span></div>
+    <div class="row"><span class="sample sans" style="font-size:14.667px">Menu · Shop · Custom · About · Bag</span><span class="meta"><b>14.667</b> · <code>--t-nav</code> · nav links, Close, Back (calc(16px - 1pt))</span></div>
+    <div class="row"><span class="sample sans" style="font-size:14.333px">Footer links, newsletter, contact inputs</span><span class="meta"><b>14.333</b> · <code>--t-footer</code> · footer links + newsletter, contact/checkout inputs, .ways</span></div>
+    <div class="row"><span class="sample sans" style="font-size:14px">Meta lines, hints, dock, dl dt</span><span class="meta"><b>14</b> · <code>--t-14</code> · meta lines, .rel-cost desktop, hints, dock, email eyebrow</span></div>
+    <div class="row"><span class="sample sans" style="font-size:13.033px;letter-spacing:.08em;text-transform:uppercase">Add to Bag</span><span class="meta"><b>13.033</b> · <code>--t-buy</code> · Add to Bag on the product page only</span></div>
+    <div class="row"><span class="sample sans" style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-50)">Field Notes</span><span class="meta"><b>13</b> · <code>--t-13</code> · .label overline, accordion heads, tile prices phones, counts</span></div>
+    <div class="row"><span class="sample sans" style="font-size:12px;letter-spacing:.06em;text-transform:uppercase">Upload tiles, email button</span><span class="meta"><b>12</b> · <code>--t-12</code> · upload tiles, Done ticks, email footer, email button</span></div>
+    <div class="row"><span class="sample sans" style="font-size:11.667px;letter-spacing:.08em;text-transform:uppercase">Field Notes</span><span class="meta"><b>11.667</b> · <code>--t-micro</code> · product Field Notes label on phones, Custom step titles, .terms dt</span></div>
+    <div class="row"><span class="sample sans" style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:500">Added to Bag</span><span class="meta"><b>11</b> · <code>--t-11</code> · toast label (500), email code note, editor headings</span></div>
+  </div>
+  <p class="ds-caption">Descending, largest to smallest. site.css lines 17, 34, 43, 63–65, 89, 95, 97, 103; template.html lines 22–23, 43, 55.</p>
+
+  <h2 class="ds-h2">Line-Height &amp; Letter-Spacing Tokens</h2>
+  <div class="ds-demo on-white">
+    <div class="row"><span class="sample sans" style="line-height:1;display:block;max-width:280px">A title held<br>tight, lh 1</span><span class="meta"><code>--lh-title: 1</code> · h1, wall heads, tile names</span></div>
+    <div class="row"><span class="sample sans" style="line-height:1.02;display:block;max-width:280px;font-family:var(--serif);text-transform:uppercase">Also Worth<br>Keeping</span><span class="meta"><code>--lh-h2: 1.02</code> · h2</span></div>
+    <div class="row"><span class="sample sans" style="line-height:1.5;display:block;max-width:340px;font-size:17px;text-transform:none">Maçon makes artifacts and jewelry to be carried, worn and handed down.</span><span class="meta"><code>--lh-body: 1.5</code> · body default, footer newsletter, notes</span></div>
+    <div class="row"><span class="sample sans" style="line-height:1.55;display:block;max-width:340px;font-size:17px;text-transform:none">Each piece is drawn on paper, carved by hand in wax and cast in bronze.</span><span class="meta"><code>--lh-prose: 1.55</code> · prose, ledes, descriptions, accordion bodies</span></div>
+  </div>
+  <div class="ds-demo on-white">
+    <div class="row"><span class="sample sans" style="letter-spacing:-.005em;text-transform:none;font-size:17px">Body and titles, -.005em</span><span class="meta"><code>--ls-body: -.005em</code> · the site's one negative tracking</span></div>
+    <div class="row"><span class="sample sans" style="letter-spacing:.14em;text-transform:uppercase;font-size:13px">Overline, .14em</span><span class="meta"><code>--ls-label: .14em</code> · .label, accordion heads, step titles</span></div>
+    <div class="row"><span class="sample sans" style="letter-spacing:.08em;text-transform:uppercase;font-size:15.333px">Buttons, .08em</span><span class="meta"><code>--ls-cta: .08em</code> · black buttons, dock</span></div>
+  </div>
+  <p class="ds-caption">Rules observed: titles use <code>-.005em</code>; overlines use <code>.14em</code>; buttons use <code>.08em</code>.</p>
+
+  <h2 class="ds-h2">Near-Duplicates to Normalise</h2>
+  <p class="rule-line">Most of these come from CSS <code>calc()</code> built on point values (pt→px at 1.333), which leaves oddball decimals sitting a fraction away from a round number already in use elsewhere. Kept as separate tokens for now because each one measures true to the live site.</p>
+  <div class="ds-demo on-white tight" style="padding:24px">
+    <div class="oddity"><span class="val">14.333 vs 14</span><span class="note">footer/contact/checkout text (calc(17px - 2pt)) vs meta/dock/dl (site.css lines 95, 107)</span></div>
+    <div class="oddity"><span class="val">14.667 vs 15</span><span class="note">nav links (calc(16px - 1pt)) vs eyebrow-phones/choices (site.css line 34; template.html line 22)</span></div>
+    <div class="oddity"><span class="val">15.333 vs 15</span><span class="note">every .cta button (calc(18px - 2pt)) vs the plain 15 scale step (site.css line 65)</span></div>
+    <div class="oddity"><span class="val">13.033 vs 13</span><span class="note">product Add to Bag only (calc((18px - 2pt) * .85)) vs .label/accordion heads (template.html line 43)</span></div>
+    <div class="oddity"><span class="val">11.667 vs 12</span><span class="note">phone Field Notes label, Custom step titles, .terms dt (calc(17px - 4pt)) (template.html line 89; custom.html lines 74, 96)</span></div>
+    <div class="oddity"><span class="val">38.83 vs 38</span><span class="note">shop hover name (calc(49.5px - 8pt)) vs Also Worth Keeping desktop name (calc(22px + 12pt)) (shop.html line 191; template.html line 111)</span></div>
+    <div class="oddity"><span class="val">57.5 between 53 and 60</span><span class="note">wall heads on phones sit between h1's own two steps, its own scale (shop.html line 128)</span></div>
+    <div class="oddity"><span class="val">30.4 / 30 / 31</span><span class="note">footer fine (calc((32px - 5pt) * 1.2)), email code, email notes title — three near-identical values, no shared token (site.css line 111; build_emails.py lines 163, 263)</span></div>
+    <div class="oddity"><span class="val">34 / 35</span><span class="note">drawer/h2-base vs email bag-card product name (site.css line 62; build_emails.py line 240)</span></div>
+  </div>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">At 768px: h1 46→53px, h2 34→42px, wall heads 57.5→66.25px, eyebrow 15→16px, description 15→16px. At 1200px: h1 53→60px, wall heads 66.25→75px. Below 768px, tile names step down from the desktop hover-overlay size (38.83px) to the phone under-picture size (22px) because the layout itself changes from an overlay to a caption.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Set serif titles in uppercase, weight 400, at one of the sizes on this page.</li>
+      <li>Use the responsive token pair (phones → desktop) rather than a single fixed size.</li>
+      <li>Keep <code>-.005em</code> tracking on any new title-sized serif.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Bold Instrument Serif — the family has no bold cut in use anywhere on the site.</li>
+      <li>Invent a new near-duplicate size; check this page's oddity list first.</li>
+      <li>Set body copy below 13px or above 19px — nothing on the site does.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    pdp/site.css — lines 20 (body), 60–65 (eyebrow, h1, h2, .label, .cta), 107–119 (footer), 121–138 (responsive h1/h2/eyebrow)<br>
+    pdp/template.html — lines 17–23 (price, h1 override, size), 43–55 (buy .cta, apple-pay, desc), 89, 103, 111 (related, tile names)<br>
+    pdp/pages/shop.html — lines 30–32 (tagline), 128–131 (wall-head h2), 162–191 (tile names, hover name)<br>
+    pdp/pages/story.html — line 31 (.step-name)<br>
+    pdp/email/build_emails.py — lines 128–263, 383, 411 (all email sizes)<br>
+    design/tokens.css — the full <code>--t-*</code> serif and sans scale, <code>--lh-*</code>, <code>--ls-*</code>
+  </p>
+</main>
+</body>
+</html>

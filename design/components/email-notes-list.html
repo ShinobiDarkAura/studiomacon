@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Email Notes List</title>
+<link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="_shell.css">
+<style>.frame{width:100%;max-width:600px;margin:0 auto;background:#fff}</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">&larr; Design canon</a><span>Email component</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Email</p>
+  <h1 class="ds-h1">Notes List</h1>
+  <p class="ds-lede">A narrow, centred column of short Q&amp;A-style notes — a serif title over a plain-text answer, repeated with generous space between. Used for post-purchase and care copy.</p>
+
+  <h2 class="ds-h2">Live — "Meant to be handled" (thanks-2 care copy)</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto">
+      <tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Bronze</div>
+        <div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">The patina darkens where the thumb rests and brightens where it rubs. To keep it as it is, wipe with a soft dry cloth. Avoid polish; it takes the patina with it.</div></td></tr>
+      <tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Silver</div>
+        <div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Silver darkens slowly in the air. A polishing cloth brings it back; wearing it often does the same.</div></td></tr>
+      <tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Share it</div>
+        <div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Photographs of Maçon pieces in their new homes are always welcome: <a href="https://www.instagram.com/studiomacon/">@studiomacon</a>.</div></td></tr>
+    </table></td></tr>
+  </table>
+  <p class="ds-caption">thanks-2: notes([("Bronze", …), ("Silver", …), ("Share it", …)])</p>
+
+  <h2 class="ds-h2">Live — "Your piece is being made" (order copy)</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto">
+      <tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Made to order</div>
+        <div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces come out alike.</div></td></tr>
+      <tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">On its way</div>
+        <div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">You can expect it to ship within about ten business days. We'll send you tracking as soon as possible.</div></td></tr>
+      <tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Questions</div>
+        <div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr>
+    </table></td></tr>
+  </table>
+  <p class="ds-caption">thanks-1: notes([("Made to order", …), ("On its way", …), ("Questions", …)])</p>
+
+  <h2 class="ds-h2">Markup</h2>
+  <pre class="ds-code">&lt;tr&gt;&lt;td class="pad" style="padding:4px 24px 26px"&gt;&lt;table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+style="max-width:244px;margin:0 auto"&gt;
+&lt;tr&gt;&lt;td align="center" style="padding:0 0 42px"&gt;&lt;div style="font:400 31px/1 {SERIF};text-transform:uppercase;padding-bottom:7px"&gt;{title}&lt;/div&gt;
+&lt;div style="font:400 15px/1.6 {SANS};color:#333333"&gt;{text}&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+{...repeated per row...}
+&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;</pre>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Column width</td><td>max-width 244px, centred</td><td>—</td></tr>
+    <tr><td>Title</td><td>31px/1 serif, uppercase, 7px above the body text</td><td><code>--t-note</code></td></tr>
+    <tr><td>Body</td><td>15px/1.6 sans, #333333</td><td><code>--t-15</code>, <code>--lh-email</code>, <code>--email-grey-text</code></td></tr>
+    <tr><td>Row spacing</td><td>42px between each title/body pair</td><td>—</td></tr>
+  </table>
+  <p class="ds-note">31px is an outlier: the closest sizes elsewhere are the email code at 30px (<code>--t-code</code>) and the footer's fine line at 30.4px (<code>--t-fine</code>). All three are close enough to look like a typo of one another, but each is a distinct, deliberate value — none has been unified into a shared token yet.</p>
+
+  <h2 class="ds-h2">Phones</h2>
+  <p class="ds-note">No phone-specific override for notes() in build_emails.py — the 244px column and its type sizes stay fixed; only the outer .pad 24px side padding is standard across all rows.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep each note to a short title (one or two words) and a single short paragraph.</li>
+      <li>Use notes() in pairs or trios — it always groups related short answers.</li>
+      <li>Keep the 244px column centred; it is deliberately narrower than the page's other text blocks.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't round 31px down to 30px to match the code box or footer fine line — it is its own size.</li>
+      <li>Don't widen the notes column to match the 294/338/378px text() widths; it is a distinct, narrower measure.</li>
+      <li>Don't drop the 42px gap between rows — the notes read as one another's neighbors, not as a bullet list.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src"><code>build_emails.py</code>: <code>notes(rows)</code>. Care copy: <code>EMAILS["thanks-2"]</code>. Order copy: <code>EMAILS["thanks-1"]</code>. Rendered: <code>email/shopify/thanks-2.html</code>.</p>
+</main>
+</body></html>

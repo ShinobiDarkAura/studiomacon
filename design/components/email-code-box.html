@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Email Code Box</title>
+<link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="_shell.css">
+<style>.frame{width:100%;max-width:600px;margin:0 auto;background:#fff}</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">&larr; Design canon</a><span>Email component</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Email</p>
+  <h1 class="ds-h1">Code Box</h1>
+  <p class="ds-lede">The discount-code box: a thin bordered cell with a small uppercase note above the code, and the code itself set in serif and struck through with a yellow highlighter.</p>
+
+  <h2 class="ds-h2">Live — "10% off your first purchase"</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:24px 24px 49px"><table role="presentation" cellpadding="0" cellspacing="0" style="border:1px solid rgba(0,0,0,.12)"><tr><td align="center" style="padding:24px 34px">
+      <div style="font:400 11px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;padding-bottom:10px">10% off your first purchase</div>
+      <div style="font:400 30px/1 'Instrument Serif','Times New Roman',Georgia,serif;letter-spacing:.06em;color:#000000"><span style="padding:2px 8px 0;background-color:#fbe84a;background-image:linear-gradient(176deg,#ffffff 0%,#ffffff 42%,#fbe84a 44%,#f6df3c 90%,#ffffff 93%);border-radius:3px 6px 4px 7px">MACON10</span></div>
+    </td></tr></table></td></tr>
+  </table>
+  <p class="ds-caption">welcome-1 / welcome-2: code("10% off your first purchase")</p>
+
+  <h2 class="ds-h2">Live — "10% off, two days left"</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:24px 24px 49px"><table role="presentation" cellpadding="0" cellspacing="0" style="border:1px solid rgba(0,0,0,.12)"><tr><td align="center" style="padding:24px 34px">
+      <div style="font:400 11px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;padding-bottom:10px">10% off, two days left</div>
+      <div style="font:400 30px/1 'Instrument Serif','Times New Roman',Georgia,serif;letter-spacing:.06em;color:#000000"><span style="padding:2px 8px 0;background-color:#fbe84a;background-image:linear-gradient(176deg,#ffffff 0%,#ffffff 42%,#fbe84a 44%,#f6df3c 90%,#ffffff 93%);border-radius:3px 6px 4px 7px">MACON10</span></div>
+    </td></tr></table></td></tr>
+  </table>
+  <p class="ds-caption">welcome-3: code("10% off, two days left")</p>
+
+  <h2 class="ds-h2">Markup</h2>
+  <pre class="ds-code">&lt;tr&gt;&lt;td class="pad" align="center" style="padding:10px 24px 49px"&gt;&lt;table role="presentation" cellpadding="0" cellspacing="0"
+style="border:1px solid rgba(0,0,0,.12)"&gt;&lt;tr&gt;&lt;td align="center" style="padding:24px 34px"&gt;
+&lt;div style="font:400 11px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;padding-bottom:10px"&gt;{note}&lt;/div&gt;
+&lt;div style="font:400 30px/1 {SERIF};letter-spacing:.06em;color:#000000"&gt;&lt;span style="padding:2px 8px 0;
+background-color:#fbe84a;background-image:linear-gradient(176deg,#ffffff 0%,#ffffff 42%,
+#fbe84a 44%,#f6df3c 90%,#ffffff 93%);border-radius:3px 6px 4px 7px"&gt;MACON10&lt;/span&gt;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;</pre>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Box border</td><td>1px solid rgba(0,0,0,.12)</td><td><code>--ink-12</code></td></tr>
+    <tr><td>Box padding</td><td>24px 34px</td><td>—</td></tr>
+    <tr><td>Note</td><td>11px/1 sans, ls .14em, uppercase, #6b6b6b, 10px above the code</td><td><code>--t-11</code>, <code>--ls-label</code>, <code>--email-grey-meta</code></td></tr>
+    <tr><td>Code</td><td>30px/1 serif, ls .06em, black</td><td><code>--t-code</code>, <code>--ls-tile</code></td></tr>
+    <tr><td>Highlighter fill</td><td>#fbe84a, padding 2px 8px 0</td><td><code>--highlighter</code></td></tr>
+    <tr><td>Highlighter gradient</td><td>176deg, white 0&ndash;42%, #fbe84a 44%, #f6df3c 90%, white 93%</td><td><code>--highlighter-swipe</code>, <code>--highlighter-deep</code></td></tr>
+    <tr><td>Highlighter radius</td><td>3px 6px 4px 7px — deliberately uneven, like a marker stroke</td><td><code>--r-highlighter</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Phones</h2>
+  <p class="ds-note">No phone-specific override in build_emails.py — the box has a fixed padding and sits inside the standard .pad 24px side gutter.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Reserve the yellow highlighter for the discount code, and only the code.</li>
+      <li>Keep the note above the code in grey uppercase, never black.</li>
+      <li>Keep the box border at .12 opacity — it should read as a light frame, not a heavy outline.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Never use the highlighter yellow anywhere else in an email — not on a headline, a button, or a price.</li>
+      <li>Don't round the highlighter's corners evenly; the uneven radius is what makes it read as marker ink.</li>
+      <li>Don't change the note copy without checking it still fits one line inside 34px padding.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src"><code>build_emails.py</code>: <code>code(note)</code>. Used with "10% off your first purchase" (welcome-1, welcome-2) and "10% off, two days left" (welcome-3). Rendered: <code>email/shopify/welcome-1.html</code>.</p>
+</main>
+</body></html>

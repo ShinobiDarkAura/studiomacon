@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Product Gallery</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  /* ── desktop composition: 70/30 split, scaled down so it fits the page ── */
+  .pg-desktop{--scale-h:280px;display:grid;grid-template-columns:70fr 30fr;gap:0 var(--sp-48);background:var(--paper)}
+  .pg-desktop .gallery{padding-left:12px;display:flex;flex-direction:column}
+  .pg-desktop .gallery figure{margin:0 0 12px;background:var(--field);overflow:hidden}
+  .pg-desktop .gallery figure:last-child{margin-bottom:0}
+  .pg-desktop .gallery figure img{display:block;width:100%;height:var(--scale-h);object-fit:cover}
+  .pg-desktop .gallery figure.after-hero img{height:calc(var(--scale-h) * 1.2)}          /* pictures after the hero run 20% taller */
+  .pg-desktop .info-col{position:relative}
+  .pg-desktop .info-sticky{position:sticky;top:0;display:flex;flex-direction:column;justify-content:center;min-height:var(--scale-h);
+    padding:24px 0 48px;margin-right:var(--sp-16)}
+  .pg-desktop .eyebrow{font-size:var(--t-16);margin:0 0 10px}
+  .pg-desktop h1{font:400 var(--t-h1-md)/var(--lh-title) var(--serif);text-transform:uppercase;margin:0 0 12px}
+  .pg-desktop .price{font-size:var(--t-price);margin:0 0 18px}
+  .pg-desktop .desc-block{margin:44px 0 12px}
+  .pg-desktop .label{font-size:var(--t-13);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ink-50);margin:0 0 14px}
+
+  /* ── phone stack ── */
+  .pg-phone{max-width:300px;margin:0 auto}
+  .pg-phone .hero{aspect-ratio:4/5;border-radius:var(--r-photo);overflow:hidden;background:var(--field);margin:0 0 10px}
+  .pg-phone .hero img{width:100%;height:100%;object-fit:cover}
+  .pg-phone .thumbs{display:flex;gap:var(--sp-8);margin:0 0 32px}
+  .pg-phone .thumbs span{flex:1 1 0;aspect-ratio:4/5;border-radius:var(--r-thumb);overflow:hidden;background:var(--field)}
+  .pg-phone .thumbs img{width:100%;height:100%;object-fit:cover}
+  .pg-phone .info{text-align:center}
+  .pg-phone .eyebrow{font-size:var(--t-15);margin:0 0 10px}
+  .pg-phone h1{font:400 var(--t-h1)/var(--lh-title) var(--serif);text-transform:uppercase;margin:0 0 12px}
+  .pg-phone .price{font-size:var(--t-price);margin:0 0 18px}
+
+  /* ── dock: fixed sticky bag bar, phones only ── */
+  .dock-frame{position:relative;height:120px;background:var(--field);margin:24px 0 0}
+  .dock{position:absolute;left:24px;right:24px;bottom:24px;display:flex;align-items:center;justify-content:center;gap:26px;
+    height:var(--h-dock);background:var(--paper);border:var(--rule-dock);font-size:calc(18px - 3pt);letter-spacing:var(--ls-cta);text-transform:uppercase}
+  .dock span:last-child{text-transform:none}
+
+  .measure{font-size:var(--t-13);color:var(--ink-50);text-align:center;margin:6px 0 0}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Product Gallery</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Product Gallery</p>
+  <h1 class="ds-h1">Product Gallery</h1>
+  <p class="ds-lede">The product page's whole composition: photographs running full-bleed down the left, an information column pinned beside them. On a phone the two stack — one photo, a thumbnail strip, then the details, centred.</p>
+
+  <h2 class="ds-h2">Anatomy — desktop (≥768px)</h2>
+  <p class="ds-note">A 70fr/30fr grid, gap 48px, flush to the page's right margin. The gallery sits 12px in from the left edge; each photograph runs one full screen tall, 12px apart, and every picture after the hero runs 20% taller. The info column is <code>position:sticky</code>, pinned to <code>top:var(--head)</code>, and centres its own contents vertically with <code>justify-content:safe center</code> so nothing is ever cut off if the column is short.</p>
+  <div class="ds-demo on-white">
+    <div class="pg-desktop">
+      <div class="gallery">
+        <figure class="hero"><img src="../../pdp/img/pip/hero.jpg" alt=""></figure>
+        <figure class="after-hero"><img src="../../pdp/img/pip/plain-1.jpg" alt=""></figure>
+        <figure class="after-hero"><img src="../../pdp/img/pip/hand-1.jpg" alt=""></figure>
+      </div>
+      <div class="info-col">
+        <div class="info-sticky">
+          <a class="back" style="display:flex;align-items:center;gap:8px;margin:0 0 28px;font-size:calc(16px - 1pt);color:var(--ink-40)">← Back</a>
+          <p class="eyebrow">Bronze Totem</p>
+          <h1>Pip</h1>
+          <p class="price">$220</p>
+          <div style="height:52px;border:var(--rule-1);margin:0 0 12px"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 44px">
+            <div style="height:47px;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase">Add to Bag</div>
+            <div style="height:47px;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase"> Pay</div>
+          </div>
+          <div class="desc-block">
+            <p class="label">Field Notes</p>
+            <p style="margin:0;font-size:16px;line-height:1.55">A small bronze figure, cast from a single carving, meant to sit in a pocket or on a shelf.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="ds-caption">Scaled down to fit the page — each figure is a fraction of its true one-screen-tall height. Widths and the 12px rhythm are exact.</p>
+
+  <h2 class="ds-h2">Anatomy — phones</h2>
+  <p class="ds-note">The hero runs 4:5, radius 6px, 8px in from the screen edge. A thumbnail strip (radius 4px, gap 8px) follows, one entry per picture or film, sharing the width evenly. The info column then centres everything below it.</p>
+  <div class="ds-demo on-white">
+    <div class="pg-phone">
+      <div class="hero"><img src="../../pdp/img/pip/hero.jpg" alt=""></div>
+      <div class="thumbs">
+        <span><img src="../../pdp/img/pip/hero.jpg" alt=""></span>
+        <span><img src="../../pdp/img/pip/plain-1.jpg" alt=""></span>
+        <span><img src="../../pdp/img/pip/hand-1.jpg" alt=""></span>
+        <span><img src="../../pdp/img/pip/hand-2.jpg" alt=""></span>
+      </div>
+      <div class="info">
+        <p class="eyebrow">Bronze Totem</p>
+        <h1>Pip</h1>
+        <p class="price">$220</p>
+      </div>
+    </div>
+    <div class="dock-frame">
+      <div class="dock"><span>Add to Bag</span><span>$220</span></div>
+    </div>
+  </div>
+  <p class="ds-caption">The <code>.dock</code> sticky bag bar (phones only) — appears once the real Add to Bag button has scrolled off, hidden here in a relative frame instead of fixed to the viewport.</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Split ratio</td><td>70fr / 30fr</td><td>—</td></tr>
+    <tr><td>Column gap</td><td>48px</td><td><code>--sp-48</code></td></tr>
+    <tr><td>Gallery left inset (desktop)</td><td>12px</td><td>untokenised, one use</td></tr>
+    <tr><td>Gap between gallery figures</td><td>12px</td><td><code>--sp-12</code></td></tr>
+    <tr><td>Hero / first figure height (desktop)</td><td>100svh</td><td>—</td></tr>
+    <tr><td>Figures after the hero</td><td>120svh (+20%)</td><td>—</td></tr>
+    <tr><td>Info column sticky offset</td><td><code>top:var(--head)</code> (84px / 110px)</td><td><code>--head</code> / <code>--head-md</code></td></tr>
+    <tr><td>Info column padding</td><td>24px 0 48px</td><td><code>--sp-24</code> / <code>--sp-48</code></td></tr>
+    <tr><td>Info vertical centring</td><td><code>justify-content:safe center</code></td><td>—</td></tr>
+    <tr><td>Phone hero</td><td>4:5, radius 6px, 8px inset</td><td><code>--r-photo</code> / <code>--photo-inset</code></td></tr>
+    <tr><td>Phone thumb strip</td><td>radius 4px, gap 8px</td><td><code>--r-thumb</code> / <code>--sp-8</code></td></tr>
+    <tr><td>Desc block margin</td><td>44px 0 12px</td><td><code>--sp-44</code></td></tr>
+    <tr><td>Dock height / rule</td><td>68px, 1.5px solid black</td><td><code>--h-dock</code> / <code>--rule-dock</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">Below 768px the split collapses: the gallery shows only the hero (other figures are hidden, replaced by the thumbnail strip), and the info column is no longer sticky — it flows centred beneath the hero. The <code>.dock</code> bag bar exists only on phones; ≥768px it is <code>display:none</code> in favour of the in-column Add to Bag row.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep the info column's own scroll independent of the gallery — it is a sticky, internally-scrolling panel, not a fixed sidebar.</li>
+      <li>Let each photograph run the full height of a screen; never crop a gallery image to a fixed pixel box.</li>
+      <li>Show the dock only after the real Add to Bag button has scrolled away.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't add a shadow or a background colour to a gallery figure — it uses the plain <code>--field</code> placeholder until the photo loads.</li>
+      <li>Don't stretch phone thumbnails past 4:5 — however many exist, they share the width evenly.</li>
+      <li>Don't remove the "Back" link's fade-out; it belongs to the product column and disappears once that column has scrolled past.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/template.html</code> — <code>.gallery</code>, <code>.info</code>, <code>.product</code> grid, <code>.thumbs</code>, <code>.dock</code>, the phone <code>@media (max-width:767px)</code> block<br>
+    <code>pdp/site.css</code> — <code>.split</code> (the same sticky/safe-center pattern used on info pages)
+  </p>
+</main>
+</body>
+</html>

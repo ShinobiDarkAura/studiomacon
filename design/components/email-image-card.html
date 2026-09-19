@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Email Image &amp; Card</title>
+<link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="_shell.css">
+<style>.frame{width:100%;max-width:600px;margin:0 auto;background:#fff}</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">&larr; Design canon</a><span>Email component</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Email</p>
+  <h1 class="ds-h1">Image &amp; Card</h1>
+  <p class="ds-lede">Three image treatments: the plain hero photograph, the Klaviyo bag card with a background-image scrim and a stacked "peek" card behind it, and the Shopify version of the same card as a plain photo with type beneath.</p>
+
+  <h2 class="ds-h2">Live — hero image()</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:24px 24px 63px"><a href="#"><img src="../../pdp/img/email/welcome-hero.jpg" width="504" alt="Pip, held in the palm of a hand" style="width:100%;max-width:504px;height:auto;margin:0 auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"></a></td></tr>
+  </table>
+  <p class="ds-caption">welcome-1: image(HERO1, "Pip, held in the palm of a hand")</p>
+
+  <h2 class="ds-h2">Live — bag card, Klaviyo (background-image + scrim)</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:24px 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr><td align="center" style="padding:0 0 12px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr>
+        <td height="272" valign="bottom" background="../../pdp/img/pip/hand-1.jpg" bgcolor="#8a7a6a" style="height:272px;border-radius:16px;background-image:url(../../pdp/img/pip/hand-1.jpg);background-size:cover;background-position:center">
+          <div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))">
+            <div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#ffffff">Pip</div>
+            <div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#ffffff;padding-top:7px">$220</div>
+          </div></td></tr></table></td></tr>
+      <tr><td align="center" style="padding:0 16px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:376px;border-radius:0 0 16px 16px;box-shadow:0 14px 22px -12px rgba(0,0,0,.4)"><tr>
+        <td height="49" background="../../pdp/img/rebi/hand-1.jpg" bgcolor="#8a7a6a" style="height:49px;font-size:0;line-height:0;border-radius:0 0 16px 16px;background-image:url(../../pdp/img/rebi/hand-1.jpg);background-size:cover;background-position:center bottom">&nbsp;</td></tr></table></td></tr>
+    </table></td></tr>
+  </table>
+  <p class="ds-caption">the abandoned-checkout card: items() row for the first piece, then a peek strip 49px tall for the next piece stacked behind it</p>
+
+  <h2 class="ds-h2">Live — bag card, Shopify (photo + type below)</h2>
+  <table role="presentation" class="ds-demo on-white tight frame" width="100%" cellpadding="0" cellspacing="0">
+    <tr><td align="center" style="padding:24px 24px 40px"><a href="#" style="text-decoration:none;color:#000000">
+      <img src="../../pdp/img/pip/hand-1.jpg" width="408" alt="PIP" style="width:100%;max-width:408px;height:auto;border-radius:16px;margin:0 auto;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)">
+      <div style="max-width:408px;margin:0 auto;text-align:left">
+        <div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#000000;padding:20px 0 6px">PIP</div>
+        <div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6b6b6b">$220</div>
+      </div></a></td></tr>
+  </table>
+  <p class="ds-caption">to_shopify_cart(): Shopify's checker rejects background-images, so the same card becomes a plain &lt;img&gt; with name/price underneath — black name here vs. white-on-scrim in Klaviyo</p>
+
+  <h2 class="ds-h2">Markup</h2>
+  <pre class="ds-code">&lt;!-- image() --&gt;
+&lt;tr&gt;&lt;td class="pad" align="center" style="padding:0 24px 63px"&gt;&lt;a href="{link}"&gt;&lt;img src="{src}" width="504" alt="{alt}"
+style="width:100%;max-width:504px;height:auto;margin:0 auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"&gt;&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+
+&lt;!-- items(): Klaviyo card + peek strip --&gt;
+&lt;td height="272" valign="bottom" background="{image}" bgcolor="#8a7a6a"
+style="height:272px;border-radius:16px;background-image:url({image});background-size:cover;background-position:center"&gt;
+&lt;div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;
+background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))"&gt;
+&lt;div style="font:400 35px/1 {SERIF};text-transform:uppercase;color:#ffffff"&gt;{title}&lt;/div&gt;
+&lt;div style="font:400 16px/1 {SANS};color:#ffffff;padding-top:7px"&gt;${price}&lt;/div&gt;&lt;/div&gt;&lt;/td&gt;
+
+&lt;td height="49" background="{image}" bgcolor="#8a7a6a" style="height:49px;font-size:0;line-height:0;
+border-radius:0 0 16px 16px;background-image:url({image});background-size:cover;background-position:center bottom"&gt;&amp;nbsp;&lt;/td&gt;
+
+&lt;!-- to_shopify_cart(): plain photo card --&gt;
+&lt;img src="@HELD@" width="408" alt="@LABEL@" style="width:100%;max-width:408px;height:auto;border-radius:16px;margin:0 auto;{SH}"&gt;
+&lt;div style="max-width:408px;margin:0 auto;text-align:left"&gt;
+&lt;div style="font:400 35px/1 {SERIF};text-transform:uppercase;color:#000000;padding:20px 0 6px"&gt;@LABEL@&lt;/div&gt;
+&lt;div style="font:400 16px/1 {SANS};color:#6b6b6b"&gt;@PRICE@&lt;/div&gt;&lt;/div&gt;</pre>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Hero image</td><td>504px wide, radius 16px, 63px below</td><td><code>--r-email</code></td></tr>
+    <tr><td>Card shadow</td><td>0 18px 28px -12px rgba(0,0,0,.45), 0 4px 10px -4px rgba(0,0,0,.25)</td><td><code>--shadow-lift</code> — same shadow as the site's bag line thumbnail</td></tr>
+    <tr><td>Peek strip shadow</td><td>0 14px 22px -12px rgba(0,0,0,.4)</td><td><code>--shadow-peek</code></td></tr>
+    <tr><td>Card width</td><td>408px (peek strip 376px, 32px narrower)</td><td>—</td></tr>
+    <tr><td>Card photo height</td><td>272px (peek strip 49px)</td><td>—</td></tr>
+    <tr><td>Scrim (Klaviyo card)</td><td>linear-gradient(to top, rgba(0,0,0,.42), rgba(0,0,0,0))</td><td><code>--scrim-email</code> — 3% lighter than the site's own <code>--scrim</code> (.45)</td></tr>
+    <tr><td>Card radius</td><td>16px</td><td><code>--r-email</code> vs. the site's own photo radius of <code>--r-photo</code> (6px)</td></tr>
+    <tr><td>Card fallback colour</td><td>bgcolor #8a7a6a, shown before the photo loads</td><td><code>--email-card-fallback</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Phones</h2>
+  <p class="ds-note">None of these three blocks have a phone-specific rule in build_emails.py — width:100% and max-width already do the shrinking, and .pad only changes the outer 24px side padding.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Use 16px radius and the lift shadow on every email photo — it is the one radius/shadow pair emails use everywhere.</li>
+      <li>Keep the Klaviyo scrim at .42, not the site's .45 — it is intentionally a touch lighter over a smaller image.</li>
+      <li>Show the peek strip only when a second piece exists in the bag.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't use the site's 6px photo radius in an email — email photos are always 16px.</li>
+      <li>Don't put a background-image card into a Shopify template; their checker rejects it — use the plain photo card instead.</li>
+      <li>Don't skip the bgcolor fallback; some clients never load the background-image at all.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src"><code>build_emails.py</code>: <code>image()</code>, <code>items()</code>, <code>to_shopify_cart()</code>. Rendered: <code>email/shopify/checkout-1.html</code> (photo card), <code>email/welcome-1.html</code> (hero image, Klaviyo-only file, not read here — see build_emails.py for its exact markup).</p>
+</main>
+</body></html>

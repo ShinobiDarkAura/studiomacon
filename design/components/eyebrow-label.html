@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Eyebrow &amp; Label</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .eyebrow{font-size:15px;margin:0 0 10px}
+  @media (min-width:768px){ .eyebrow{font-size:16px} }
+  .label{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-50)}
+  .demo-h1{font:400 34px/1 var(--serif);text-transform:uppercase;letter-spacing:var(--ls-body);margin:0}
+  .with-h1{max-width:420px}
+  .fn-label{font-size:11.667px;letter-spacing:.08em;text-transform:uppercase;color:#000}
+  .terms-dt{font-size:11.667px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-50)}
+  .count{font-size:13px;color:var(--ink-45)}
+  .wallhead-demo{display:flex;align-items:baseline;gap:10px}
+  .wallhead-demo h2{font:400 42px/1 var(--serif);text-transform:uppercase;margin:0}
+  .email-eyebrow{font-size:14px;color:#000}
+  .prose-eyebrow p{font-size:17px}
+  .prose-eyebrow .eyebrow{margin:0 0 10px}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Eyebrow &amp; Label</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Eyebrow &amp; Label</p>
+  <h1 class="ds-h1">Eyebrow &amp; Label</h1>
+  <p class="ds-lede">The two overlines on the site. <code>.eyebrow</code> sits above every page's h1 and reads in sentence case. <code>.label</code> is the smaller, always-uppercase tag used for field names, section markers and counts.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note"><b>.eyebrow</b> — sans, 15px (16px ≥768), sentence case, <code>margin:0 0 10px</code>, always the line directly over an h1.<br><b>.label</b> — sans, 13px, <code>letter-spacing:.14em</code>, uppercase, <code>rgba(0,0,0,.5)</code>.</p>
+
+  <h2 class="ds-h2">Live</h2>
+
+  <h3 class="ds-h3">.eyebrow over an h1</h3>
+  <div class="ds-demo on-white">
+    <div class="with-h1"><p class="eyebrow">Studio Maçon</p><h1 class="demo-h1">Small Things,<br>Made to Last</h1></div>
+  </div>
+  <p class="ds-caption">pages/shop.html — the home welcome block.</p>
+  <div class="ds-demo on-white">
+    <div class="with-h1"><p class="eyebrow">Kindred</p><h1 class="demo-h1">Also Worth<br>Keeping</h1></div>
+  </div>
+  <p class="ds-caption">template.html — product related section.</p>
+  <div class="ds-demo on-white">
+    <div class="with-h1"><p class="eyebrow">Say Hello</p><h1 class="demo-h1">Contact</h1></div>
+  </div>
+  <p class="ds-caption">pages/contact.html.</p>
+  <div class="ds-demo on-white">
+    <div class="with-h1"><p class="eyebrow">Made to Order</p><h1 class="demo-h1">Shipping &amp;<br>Returns</h1></div>
+  </div>
+  <p class="ds-caption">pages/shipping.html.</p>
+  <div class="ds-demo on-white">
+    <div class="with-h1"><p class="eyebrow">Custom Artifacts</p><h1 class="demo-h1">Let's Make<br>Something Real</h1></div>
+  </div>
+  <p class="ds-caption">pages/custom.html.</p>
+  <div class="ds-demo on-white">
+    <div class="with-h1"><p class="eyebrow">Page Not Found</p><h1 class="demo-h1">Lost Along<br>the Way</h1></div>
+  </div>
+  <p class="ds-caption">pages/404.html.</p>
+
+  <h3 class="ds-h3">.label on its own</h3>
+  <div class="ds-demo on-white">
+    <p class="label" style="margin:0 0 18px">Field Notes</p>
+    <p class="label" style="margin:0 0 18px">Summary</p>
+    <p class="label" style="margin:0 0 18px">Your Order</p>
+    <p class="label">Species</p>
+  </div>
+  <p class="ds-caption">Rest state — template.html .desc-block .label, bag.html .summary .label, checkout.html aside .label, custom.html .q .label (black variant shown separately below).</p>
+
+  <h3 class="ds-h3">Variants</h3>
+  <div class="ds-demo on-white">
+    <p class="fn-label">Field Notes</p>
+  </div>
+  <p class="ds-caption">Product page, phones only — an outlier: calc(17px - 4pt), letter-spacing .08em (not the usual .14em), and black, not grey. template.html line 89.</p>
+  <div class="ds-demo on-white">
+    <dl style="display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:0"><dt class="terms-dt">Deposit</dt><dd style="margin:0;font-size:15px">25% to begin your commission</dd></dl>
+  </div>
+  <p class="ds-caption">Custom .terms dt and step titles — calc(17px - 4pt), ls .14em, grey. custom.html lines 74, 96.</p>
+  <div class="ds-demo on-white">
+    <div class="wallhead-demo"><h2>Totems</h2><span class="count">9</span></div>
+  </div>
+  <p class="ds-caption">.wall-head .count — 13px, rgba(0,0,0,.45), sits beside a wall head rather than above it. shop.html line 129.</p>
+  <div class="ds-demo on-dark">
+    <p class="email-eyebrow">Your Order</p>
+  </div>
+  <p class="ds-caption">Email eyebrow — 14px sans, black on white in the real email (shown here on dark only to separate it visually), 17px of space below it. build_emails.py line 125.</p>
+
+  <h3 class="ds-h3">The .prose inconsistency</h3>
+  <div class="ds-demo on-white prose-eyebrow">
+    <p class="eyebrow">About Maçon</p>
+    <p>Because <code>.prose p</code> sets font-size:17px and outranks <code>.eyebrow</code>'s 15/16px by specificity, an eyebrow placed inside a <code>.prose</code> block renders at 17px instead of its usual size — visible on the home welcome block and Story's "Our Practice".</p>
+  </div>
+  <p class="ds-caption">Unstyled here as the site actually renders it: 17px, not 15/16px. pages/shop.html .welcome .prose; pages/story.html .prose (site.css line 144, .prose p{font-size:17px}).</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>.eyebrow size</td><td>15px / 16px ≥768</td><td><code>--t-15 / --t-16</code></td></tr>
+    <tr><td>.eyebrow margin</td><td>0 0 10px</td><td><code>--sp-10</code></td></tr>
+    <tr><td>.label size</td><td>13px</td><td><code>--t-13</code></td></tr>
+    <tr><td>.label letter-spacing</td><td>.14em</td><td><code>--ls-label</code></td></tr>
+    <tr><td>.label color</td><td>rgba(0,0,0,.5)</td><td><code>--ink-50</code></td></tr>
+    <tr><td>Field Notes (phones)</td><td>11.667px, ls .08em, black</td><td><code>--t-micro / --ls-cta</code></td></tr>
+    <tr><td>.terms dt / step titles</td><td>11.667px, ls .14em, grey</td><td><code>--t-micro / --ls-label / --ink-50</code></td></tr>
+    <tr><td>.wall-head .count</td><td>13px, rgba(0,0,0,.45)</td><td><code>--t-13 / --ink-45</code></td></tr>
+    <tr><td>Email eyebrow</td><td>14px, black, 17px below</td><td><code>--t-14</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">The only size change is .eyebrow itself: 15px on phones, 16px at 768px and up. .label never changes size across breakpoints. On phones every title (including its eyebrow) is centred (site.css line 249).</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Write .eyebrow copy in sentence case — "Say Hello", not "SAY HELLO".</li>
+      <li>Use .label for anything that names a field, section or count, in uppercase.</li>
+      <li>Keep exactly one .eyebrow directly above one h1 per section.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Put an eyebrow inside a .prose block without checking it doesn't quietly become 17px.</li>
+      <li>Reuse the phone-only Field Notes variant (black, .08em) anywhere else.</li>
+      <li>Stack two .label rows without at least a field's worth of space between them.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    pdp/site.css — lines 60 (.eyebrow), 63 (.label), 144 (.prose p), 249 (phone title centring)<br>
+    pdp/template.html — lines 22 (.size-label), 89 (.desc-block .label phones)<br>
+    pdp/pages/shop.html — lines 128–129 (.wall-head, .count)<br>
+    pdp/pages/custom.html — lines 74 (.terms dt), 96 (.step .acc-head)<br>
+    pdp/email/build_emails.py — line 125 (eyebrow())
+  </p>
+</main>
+</body>
+</html>

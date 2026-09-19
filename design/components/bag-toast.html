@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Bag Toast</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .head-frame{position:relative;height:120px;display:flex;justify-content:flex-end}
+  .bag-link{position:relative;font-size:var(--t-nav);text-transform:uppercase}
+  .bag-toast{position:absolute;top:calc(100% + 14px);right:0;width:max-content;max-width:calc(100vw - 2 * var(--gutter,16px));
+    border-radius:var(--r-toast);display:flex;align-items:center;gap:12px;padding:10px 14px 10px 10px;
+    background:var(--paper);color:var(--ink);border:1px solid var(--rule);box-shadow:var(--shadow-toast);
+    font-size:var(--t-13);line-height:var(--lh-toast);white-space:nowrap;
+    opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .35s ease,transform .45s var(--ease)}
+  .bag-toast.on{opacity:1;transform:none;pointer-events:auto}
+  .bag-toast img{width:var(--w-toast-img);height:50px;object-fit:cover;border-radius:6px}
+  .bag-toast .price-note{color:var(--ink-45);margin-left:6px}
+  .bag-toast b{display:block;font-weight:500;font-size:11px;letter-spacing:var(--ls-toast);text-transform:uppercase;margin-bottom:2px}
+  .bag-link.bump{animation:bump .5s var(--ease)}
+  @keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
+
+  .add-btn{display:inline-flex;align-items:center;justify-content:center;height:47px;padding:0 24px;
+    background:var(--ink);color:var(--paper);font-size:13px;text-transform:uppercase;letter-spacing:var(--ls-cta);border:0;cursor:pointer;margin:0 0 24px}
+
+  .frame-row{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+  .frame-cell{flex:1 1 300px}
+  .frame-cell h3{font-size:var(--t-13);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ink-50);margin:0 0 14px;font-weight:400}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Bag Toast</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Bag Toast</p>
+  <h1 class="ds-h1">Bag Toast</h1>
+  <p class="ds-lede">A small confirmation that appears under the Bag link the moment a piece is added — a thumbnail, the piece's name and size, and its price — then clears itself after 2.6 seconds.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note">The toast is appended once, inside <code>.head .right</code>, and reused for every add. It carries a 40×50 thumbnail, a bold "Added to bag" label, the piece name and size, and a muted price note. The Bag link itself bumps (a quick scale) each time.</p>
+
+  <h2 class="ds-h2">Live</h2>
+  <p class="ds-note">Press Add to Bag — the toast appears under the link, the counter and the link itself bump, and it clears after 2.6s.</p>
+  <div class="ds-demo on-white">
+    <div class="head-frame">
+      <span class="bag-link" id="bag-link">Bag (<span id="bag-count">0</span>)
+        <div class="bag-toast" id="toast" role="status" aria-live="polite"></div>
+      </span>
+    </div>
+    <button class="add-btn" id="add-btn" type="button">Add to Bag</button>
+  </div>
+
+  <h2 class="ds-h2">State (forced, static)</h2>
+  <div class="frame-row">
+    <div class="frame-cell">
+      <h3>On</h3>
+      <div class="ds-demo on-white">
+        <div class="head-frame">
+          <span class="bag-link">Bag (1)
+            <div class="bag-toast on">
+              <img src="../../pdp/img/pip/hero.jpg" alt="">
+              <span><b>Added to bag</b>Pip · Size 7<span class="price-note">$220</span></span>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="frame-cell">
+      <h3>No size (piece without a size option)</h3>
+      <div class="ds-demo on-white">
+        <div class="head-frame">
+          <span class="bag-link">Bag (1)
+            <div class="bag-toast on">
+              <img src="../../pdp/img/milo/hero.jpg" alt="">
+              <span><b>Added to bag</b>Milo<span class="price-note">$240</span></span>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Position</td><td>absolute, top <code>calc(100% + 14px)</code>, right 0</td><td><code>--sp-14</code></td></tr>
+    <tr><td>Max width, phones</td><td><code>calc(100vw - 2 * var(--gutter))</code></td><td><code>--gutter</code></td></tr>
+    <tr><td>Card radius</td><td>8px</td><td><code>--r-toast</code></td></tr>
+    <tr><td>Card padding</td><td>10px 14px 10px 10px</td><td>—</td></tr>
+    <tr><td>Border / shadow</td><td>1px solid var(--rule), <code>0 10px 30px rgba(0,0,0,.08)</code></td><td><code>--rule</code> / <code>--shadow-toast</code></td></tr>
+    <tr><td>Thumbnail</td><td>40×50, radius 6px</td><td><code>--w-toast-img</code> / <code>--r-photo</code></td></tr>
+    <tr><td>Type size / line-height</td><td>13px / 1.35</td><td><code>--t-13</code> / <code>--lh-toast</code></td></tr>
+    <tr><td>Label ("Added to bag")</td><td>11px, 500 weight, ls .12em, uppercase</td><td><code>--t-11</code> / <code>--ls-toast</code></td></tr>
+    <tr><td>Price note</td><td>45% black</td><td><code>--ink-45</code></td></tr>
+    <tr><td>Distance below Bag link</td><td>14px</td><td><code>--sp-14</code></td></tr>
+    <tr><td>Enter/exit</td><td>opacity .35s, transform .45s <code>var(--ease)</code>, translateY(-6px) → 0</td><td><code>--d-fade</code> / <code>--d-move</code></td></tr>
+    <tr><td>On-screen duration</td><td>2600ms</td><td><code>--d-toast</code></td></tr>
+    <tr><td>Bag link bump</td><td>scale to 1.15 at 35%, back to 1, over .5s</td><td><code>--ease</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">The toast is capped at <code>calc(100vw - 2 * var(--gutter))</code> on phones so it can never run past the screen edge; on desktop it simply sizes to its content, right-aligned under the Bag link.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Reuse one toast element per page, refilling it on every add, rather than stacking a new one each time.</li>
+      <li>Bump the Bag link every time, even if the toast is still on screen from a previous add.</li>
+      <li>Leave out the size segment entirely when a piece has none, rather than showing an empty "· Size".</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't let the toast block interaction — it stays <code>pointer-events:none</code> until it's on.</li>
+      <li>Don't extend the 2.6s dwell time; it's tuned to be noticed without lingering.</li>
+      <li>Don't reposition the toast away from the Bag link — it belongs directly under it, right-aligned.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/partials/site.js</code> lines 395–440 — toast build and the Add to Bag click handler, <code>.bump</code> on the Bag link<br>
+    <code>pdp/site.css</code> — <code>.bag-toast</code>, <code>.head .right a.bump</code>, <code>@keyframes bump</code>
+  </p>
+</main>
+<script>
+  (function () {
+    var toast = document.getElementById('toast'), link = document.getElementById('bag-link'), count = document.getElementById('bag-count');
+    var n = 0, timer = null;
+    document.getElementById('add-btn').addEventListener('click', function () {
+      n += 1; count.textContent = n;
+      toast.innerHTML = '';
+      var img = document.createElement('img'); img.src = '../../pdp/img/pip/hero.jpg'; img.alt = '';
+      toast.appendChild(img);
+      var tx = document.createElement('span'), b = document.createElement('b');
+      b.textContent = 'Added to bag';
+      tx.appendChild(b);
+      tx.appendChild(document.createTextNode('Pip · Size 7'));
+      var p = document.createElement('span'); p.className = 'price-note'; p.textContent = '$220';
+      tx.appendChild(p);
+      toast.appendChild(tx);
+      link.classList.remove('bump'); void link.offsetWidth; link.classList.add('bump');
+      toast.classList.add('on');
+      clearTimeout(timer);
+      timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Scroll Cue</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  /* copied exactly from pdp/pages/shop.html */
+  .demo-frame{position:relative;height:340px;overflow:hidden;background:var(--film)}
+  .demo-scroll-cue{position:absolute;left:50%;bottom:64px;scale:1.2;transform-origin:bottom center;z-index:2;width:22px;height:34px;margin-left:-11px;
+    border:1px solid rgba(255,255,255,.4);border-radius:11px;pointer-events:none;transition:opacity .5s ease;opacity:0}
+  .demo-scroll-cue i{position:absolute;left:50%;top:7px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#fff;
+    animation:cue-demo 2.8s cubic-bezier(.45,0,.25,1) infinite}
+  @keyframes cue-demo{
+    0%{transform:translateY(0);opacity:0;filter:blur(0)}
+    15%{opacity:1}
+    55%{transform:translateY(10px);opacity:1;filter:blur(0)}
+    80%{transform:translateY(13px);opacity:0;filter:blur(1.5px)}
+    100%{transform:translateY(13px);opacity:0}
+  }
+  .demo-frame.hero-quiet .demo-scroll-cue{opacity:1}
+  @media (prefers-reduced-motion:reduce){ .demo-scroll-cue i{animation:none} }
+  .replay-btn{border:1px solid var(--rule);padding:8px 16px;font-size:13px;background:#fff;margin:0 0 12px}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Scroll Cue</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Shop hero</p>
+  <h1 class="ds-h1">Scroll Cue</h1>
+  <p class="ds-lede">A small mouse outline with a drifting dot, shown over the shop page's film once the visitor has sat still on it for a while — a quiet nudge to keep scrolling rather than an instruction.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <ul class="ds-note" style="list-style:disc;padding-left:20px">
+    <li><b>Outline</b> — a rounded 22×34 pill, faint white border</li>
+    <li><b>Dot</b> — 4px white, loops down and fades inside the outline</li>
+  </ul>
+
+  <h2 class="ds-h2">Live</h2>
+  <button class="replay-btn" type="button" id="toggleBtn">Show cue (body.hero-quiet)</button>
+  <div class="ds-demo tight">
+    <div class="demo-frame" id="frame">
+      <span class="demo-scroll-cue" id="cue"><i></i></span>
+    </div>
+  </div>
+  <p class="ds-caption">Shown on a dark frame, standing in for the film. The cue itself never fades in on its own timer in this demo — toggle it to see the state after 8 seconds of stillness (<code>body.hero-quiet</code>) on the real page.</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Size</td><td>22px × 34px</td><td>site.css only</td></tr>
+    <tr><td>Border</td><td>1px solid rgba(255,255,255,.4)</td><td><code>--rule-cue</code> / <code>--paper-40</code></td></tr>
+    <tr><td>Radius</td><td>11px</td><td><code>--r-cue</code></td></tr>
+    <tr><td>Scale</td><td>1.2</td><td>site.css only</td></tr>
+    <tr><td>Dot</td><td>4px, white, top 7px, border-radius 50%</td><td><code>--r-round</code></td></tr>
+    <tr><td>Dot animation</td><td><code>cue</code> 2.8s cubic-bezier(.45,0,.25,1) infinite</td><td><code>--ease-cue</code></td></tr>
+    <tr><td>Position</td><td>bottom 64px, centred</td><td><code>--sp-64</code></td></tr>
+    <tr><td>Fade in</td><td>after 8s of stillness (body.hero-quiet)</td><td>site.js only</td></tr>
+    <tr><td>Fade out</td><td>on scroll, opacity .5s ease</td><td>site.css only</td></tr>
+    <tr><td>z-index</td><td>2</td><td><code>--z-cue</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Keyframes</h2>
+  <pre class="ds-code">@keyframes cue{
+  0%{transform:translateY(0);opacity:0;filter:blur(0)}
+  15%{opacity:1}
+  55%{transform:translateY(10px);opacity:1;filter:blur(0)}
+  80%{transform:translateY(13px);opacity:0;filter:blur(1.5px)}
+  100%{transform:translateY(13px);opacity:0}
+}</pre>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">No change in size or position between phones and desktop; it only ever appears on the shop page's full-screen film, which fills the viewport at every width.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep it on dark or photographic grounds only — it is a white outline</li>
+      <li>Let it wait the full 8 seconds before appearing</li>
+      <li>Hide it the instant scrolling starts</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Show it on any page besides the shop hero</li>
+      <li>Speed up or shorten the loop — 2.8s is deliberately slow</li>
+      <li>Run it under reduced motion — the dot's animation is switched off</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/pages/shop.html</code> — <code>.scroll-cue</code>, keyframes <code>cue</code>, <code>body.hero-quiet</code> (~lines 17–39)<br>
+    <code>pdp/pages/shop.html</code> script — <code>MaconHeroQuiet</code> 8000ms timer (~lines 285–296)
+  </p>
+</main>
+<script>
+  document.getElementById('toggleBtn').addEventListener('click', function () {
+    document.getElementById('frame').classList.toggle('hero-quiet');
+  });
+</script>
+</body>
+</html>

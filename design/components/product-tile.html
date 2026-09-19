@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Product Tile</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  /* ── shared tile anatomy (site.css / template.html, unscoped classnames kept as-is) ── */
+  .tile-grid{display:grid;gap:var(--sp-12)}
+  .piece{position:relative;display:block;text-decoration:none}
+  .piece .pic{position:relative;display:block;overflow:hidden;aspect-ratio:4/5;background:var(--field)}
+  .piece .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    object-position:var(--x,50%) var(--y,50%);transform-origin:var(--x,50%) var(--y,50%);
+    transform:scale(var(--z,1.12));transition:transform var(--d-zoom) var(--ease-zoom),opacity var(--d-open) ease}
+
+  /* desktop overlay layout: body:not(.labels-under), forced here so both layouts show at once */
+  .tile-grid.overlay{grid-template-columns:repeat(3,1fr)}
+  .tile-grid.overlay .piece{color:var(--paper);aspect-ratio:4/5;overflow:hidden;border-radius:var(--r-none)}
+  .tile-grid.overlay .piece .held{opacity:0;transition:opacity .5s ease}
+  .tile-grid.overlay .piece:hover .held,.tile-grid.overlay .piece.is-hover .held{opacity:1}
+  .tile-grid.overlay .piece .over{position:absolute;inset:auto 0 0 0;z-index:var(--z-over);display:flex;flex-direction:column;
+    align-items:flex-start;gap:var(--sp-8);padding:48px 18px 16px;font-size:var(--t-15);background:var(--scrim);
+    opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .45s var(--ease)}
+  .tile-grid.overlay .piece:hover .over,.tile-grid.overlay .piece.is-hover .over{opacity:1;transform:none}
+  .tile-grid.overlay .piece .cost{order:-1}
+  .tile-grid.overlay .piece .name{font:400 var(--t-tile-over)/var(--lh-over) var(--serif);text-transform:uppercase;letter-spacing:var(--ls-over)}
+  .tile-grid.overlay .piece:hover .pic img,.tile-grid.overlay .piece.is-hover .pic img{transform:scale(calc(var(--z,1.12) * 1.02))}
+  .tile-grid.overlay .piece:hover .pic img.held,.tile-grid.overlay .piece.is-hover .pic img.held{transform:scale(calc(var(--z,1.12) * 1.02))}
+
+  /* phones / body.labels-under: name + price under the frame */
+  .tile-grid.labels-under{grid-template-columns:repeat(2,1fr);gap:var(--sp-8);max-width:420px}
+  .tile-grid.labels-under .piece{color:var(--ink)}
+  .tile-grid.labels-under .piece .pic{border-radius:var(--r-photo)}
+  .tile-grid.labels-under .piece .held{opacity:0}
+  .tile-grid.labels-under .piece:hover .held,.tile-grid.labels-under .piece.is-hover .held{opacity:1}
+  .tile-grid.labels-under .piece .over{display:flex;flex-direction:column;gap:var(--sp-2);padding:10px 0 14px}
+  .tile-grid.labels-under .piece .name{font:400 var(--t-tile)/var(--lh-title) var(--serif);text-transform:uppercase}
+  .tile-grid.labels-under .piece .cost{font-size:var(--t-13);color:var(--ink-55)}
+
+  /* Also Worth Keeping: .rel-piece / .rel-frame */
+  .rel-head{margin:0 0 40px}
+  .rel-eyebrow{font-size:var(--t-15);margin:0 0 10px}
+  .rel-h2{font:400 var(--t-h1-md)/var(--lh-title) var(--serif);text-transform:uppercase;margin:0 0 18px}
+  .rel-blurb{margin:0;max-width:480px;font-size:var(--t-16);line-height:var(--lh-prose)}
+  .rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-12)}
+  .rel-piece{display:block;color:var(--ink);text-decoration:none}
+  .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:var(--r-photo);overflow:hidden;
+    background:var(--field);transition:transform .35s var(--ease-zoom)}
+  .rel-frame img{width:100%;height:100%;object-fit:cover}
+  .rel-piece:hover .rel-frame,.rel-piece.is-hover .rel-frame{transform:translateY(-8px)}
+  .rel-name{display:block;margin:20px 0 4px;font:400 var(--t-tile-lg)/var(--lh-title) var(--serif);text-transform:uppercase}
+  .rel-cost{display:block;font-size:var(--t-14);color:var(--ink-55)}
+  .rel-grid.phone{grid-template-columns:1fr 1fr;gap:var(--sp-8);max-width:420px}
+  .rel-grid.phone .rel-name{margin:10px 0 2px;font-size:var(--t-tile)}
+  .rel-grid.phone .rel-cost{font-size:var(--t-13)}
+
+  .swatch-label{font-size:var(--t-13);color:var(--ink-50);margin:0 0 10px;letter-spacing:var(--ls-label);text-transform:uppercase}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Product Tile</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Product Tile</p>
+  <h1 class="ds-h1">Product Tile</h1>
+  <p class="ds-lede">The one clipped 4:5 frame that carries a piece everywhere it appears — the shop wall, the phone grid, and Also Worth Keeping on a product page. Same frame, three ways of labelling it.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note">Every tile is a link (<code>.piece</code> or <code>.rel-piece</code>) wrapping a clipped <code>.pic</code>/<code>.rel-frame</code> photograph and a label. The still photograph and the in-hand <code>.held</code> photograph sit in the same frame; hovering cross-fades to the held shot and zooms the whole image a further 2%. Framing (<code>--x</code>/<code>--y</code>/<code>--z</code>) is set per piece in the lab, never guessed — the demo below uses centred defaults.</p>
+
+  <h2 class="ds-h2">Live — desktop overlay (3 across)</h2>
+  <p class="ds-note">Default shop-wall layout ≥768px. Name and price are white, rise over a bottom scrim on hover, above a still-to-held cross-fade and a 2% zoom.</p>
+  <div class="ds-demo tight">
+    <div class="tile-grid overlay">
+      <a class="piece"><span class="pic"><img src="../../pdp/img/pip/hero.jpg" alt=""><img class="held" src="../../pdp/img/pip/hand-1.jpg" alt=""></span><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a>
+      <a class="piece is-hover"><span class="pic"><img src="../../pdp/img/rebi/hero.jpg" alt=""><img class="held" src="../../pdp/img/rebi/hand-1.jpg" alt=""></span><span class="over"><span class="name">Rebi</span><span class="cost">$260</span></span></a>
+      <a class="piece"><span class="pic"><img src="../../pdp/img/ori/hero.jpg" alt=""><img class="held" src="../../pdp/img/ori/hand-1.jpg" alt=""></span><span class="over"><span class="name">Ori</span><span class="cost">$310</span></span></a>
+    </div>
+  </div>
+  <p class="ds-caption">Middle tile carries <code>.is-hover</code> to hold the hover state open — still shot faded out, label risen, image zoomed. Try hovering the others.</p>
+
+  <h2 class="ds-h2">Live — phones / labels-under (2 across)</h2>
+  <p class="ds-note">Below 768px, and on desktop when the shop opts into <code>body.labels-under</code>: a rounded 6px frame with the name and price set underneath it, always visible (no scrim, no rising label).</p>
+  <div class="ds-demo tight on-white">
+    <div class="tile-grid labels-under">
+      <a class="piece"><span class="pic"><img src="../../pdp/img/pip/hero.jpg" alt=""><img class="held" src="../../pdp/img/pip/hand-1.jpg" alt=""></span><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a>
+      <a class="piece is-hover"><span class="pic"><img src="../../pdp/img/zuma/hero.jpg" alt=""><img class="held" src="../../pdp/img/zuma/hand-1.jpg" alt=""></span><span class="over"><span class="name">Zuma</span><span class="cost">$180</span></span></a>
+    </div>
+  </div>
+  <p class="ds-caption">On a touch device (<code>hover:none</code>) the held image never shows — the still is the only picture, labels stay put.</p>
+
+  <h2 class="ds-h2">Live — Also Worth Keeping</h2>
+  <p class="ds-note">The related-pieces card on a product page: a lighter cousin of the labels-under tile — the frame lifts <code>-8px</code> on hover instead of cross-fading, and the name runs larger (38px desktop, 22px phones).</p>
+  <div class="ds-demo tight on-white">
+    <header class="rel-head">
+      <p class="rel-eyebrow">Kindred</p>
+      <h2 class="rel-h2">Also Worth Keeping</h2>
+      <p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p>
+    </header>
+    <div class="rel-grid">
+      <a class="rel-piece"><span class="rel-frame"><img src="../../pdp/img/pip/hero.jpg" alt=""></span><span class="rel-name">Pip</span><span class="rel-cost">$220</span></a>
+      <a class="rel-piece is-hover"><span class="rel-frame"><img src="../../pdp/img/milo/hero.jpg" alt=""></span><span class="rel-name">Milo</span><span class="rel-cost">$240</span></a>
+      <a class="rel-piece"><span class="rel-frame"><img src="../../pdp/img/eleph/hero.jpg" alt=""></span><span class="rel-name">Eleph</span><span class="rel-cost">$295</span></a>
+    </div>
+  </div>
+  <p class="ds-caption">Phone version: 2 across, gap 8px, name drops to <code>var(--tile-name)</code> (22px).</p>
+  <div class="ds-demo tight on-white">
+    <div class="rel-grid phone">
+      <a class="rel-piece"><span class="rel-frame"><img src="../../pdp/img/pip/hero.jpg" alt=""></span><span class="rel-name">Pip</span><span class="rel-cost">$220</span></a>
+      <a class="rel-piece"><span class="rel-frame"><img src="../../pdp/img/milo/hero.jpg" alt=""></span><span class="rel-name">Milo</span><span class="rel-cost">$240</span></a>
+    </div>
+  </div>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Frame ratio</td><td>4:5, clipped</td><td>—</td></tr>
+    <tr><td>Frame radius, overlay tile</td><td>0 (desktop shop wall)</td><td><code>--r-none</code></td></tr>
+    <tr><td>Frame radius, labels-under / related</td><td>6px</td><td><code>--r-photo</code></td></tr>
+    <tr><td>Grid gap, 3-across / ≥900</td><td>12px</td><td><code>--sp-12</code></td></tr>
+    <tr><td>Grid gap, 2-across / phones</td><td>8px</td><td><code>--sp-8</code></td></tr>
+    <tr><td>Default zoom</td><td><code>scale(1.12)</code>, further <code>×1.02</code> on hover</td><td>untokenised — inline <code>--z</code> per piece</td></tr>
+    <tr><td>Zoom transition</td><td>1.2s <code>cubic-bezier(.2,.7,.2,1)</code></td><td><code>--d-zoom</code> / <code>--ease-zoom</code></td></tr>
+    <tr><td>Held cross-fade</td><td>opacity .5s ease</td><td><code>--d-open</code></td></tr>
+    <tr><td>Overlay scrim</td><td><code>linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,0))</code></td><td><code>--scrim</code></td></tr>
+    <tr><td>Overlay label pad</td><td>48px 18px 16px</td><td><code>--sp-48</code> top</td></tr>
+    <tr><td>Overlay name</td><td>38.83px / .95 / +.01em, white</td><td><code>--t-tile-over</code> / <code>--lh-over</code> / <code>--ls-over</code></td></tr>
+    <tr><td>Overlay price</td><td>15px, white, sits above the name (<code>order:-1</code>)</td><td><code>--t-15</code></td></tr>
+    <tr><td>Related lift</td><td><code>translateY(-8px)</code>, .35s</td><td><code>--ease-zoom</code></td></tr>
+    <tr><td>Related name, desktop</td><td>38px serif uppercase</td><td><code>--t-tile-lg</code></td></tr>
+    <tr><td>Related name, phones</td><td>22px</td><td><code>--t-tile</code></td></tr>
+    <tr><td>Related price, desktop / phones</td><td>14px / 13px, 55% black</td><td><code>--t-14</code> / <code>--t-13</code> / <code>--ink-55</code></td></tr>
+    <tr><td>Labels-under name, desktop</td><td>38px (matches related — <code>body.labels-under</code> reuses the same rule)</td><td><code>--t-tile-lg</code></td></tr>
+    <tr><td>Labels-under name, phones</td><td>22px</td><td><code>--t-tile</code></td></tr>
+    <tr><td>Labels-under price</td><td>14px desktop / 13px phones, 55% black</td><td><code>--t-14</code> / <code>--t-13</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">Below 768px the shop grid always shows labels-under (never the overlay). Also Worth Keeping switches its own name size at the same breakpoint (38px → 22px) and its grid drops from 3 to 2 columns, gap 12px → 8px. On <code>(hover:none)</code> the <code>.held</code> in-hand photograph never renders — only the still shows.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep every tile's photograph inside its own 4:5 frame so a zoomed image never spills onto a neighbour.</li>
+      <li>Let the studio set <code>--x</code>/<code>--y</code>/<code>--z</code> per piece in the lab rather than defaulting every piece to dead centre.</li>
+      <li>Use the overlay layout only where hover is reliable (desktop, mouse); fall back to labels-under everywhere else.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't round the corners of the desktop overlay tile — that radius belongs only to labels-under and related frames.</li>
+      <li>Don't call a piece a "product" in tile copy — it's a piece, or an artifact.</li>
+      <li>Don't show the in-hand photo on a touch device; there is no hover to reveal it cleanly.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/pages/shop.html</code> — <code>.piece</code>, <code>.pic</code>, <code>.over</code>, <code>.name</code>, <code>.cost</code>, <code>.held</code>, body.labels-under and phone blocks, <code>(hover:none)</code><br>
+    <code>pdp/build_pdp.py</code> lines 820–835 — shop tile markup (figure &gt; a.piece[style --x --y --z] &gt; span.pic &gt; img + img.held, span.over)<br>
+    <code>pdp/build_pdp.py</code> lines 738–757 — Also Worth Keeping markup and copy<br>
+    <code>pdp/template.html</code> — <code>.related</code>, <code>.rel-grid</code>, <code>.rel-frame</code>, <code>.rel-name</code>, <code>.rel-cost</code> and their phone overrides
+  </p>
+</main>
+</body>
+</html>

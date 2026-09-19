@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — 404 Page</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  /* copied exactly from pdp/pages/404.html + site.css body.fit */
+  .demo-frame{position:relative;height:520px;overflow:hidden;background:#fff;border:1px solid var(--rule);
+    display:flex;flex-direction:column}
+  .demo-fit-main{flex:1;display:flex;flex-direction:column;justify-content:center;width:100%}
+  .demo-lost{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;padding:36px 48px}
+  .demo-lost .eyebrow{font-size:15px;margin:0 0 10px;text-align:center}
+  .demo-lost h1{font:400 46px/1 var(--serif);text-transform:uppercase;letter-spacing:-.005em;margin:0 0 22px;text-align:center}
+  .demo-lost p.lede{margin:0 0 32px;font-size:17px;line-height:1.55;text-align:center}
+  .demo-lost .cta{display:flex;align-items:center;justify-content:center;width:100%;max-width:320px;margin:0 auto;height:55px;
+    background:#000;color:#fff;font-size:calc(18px - 2pt);text-transform:uppercase;letter-spacing:.08em}
+  .demo-fit-footer{min-height:0;padding:48px 48px 32px;text-align:center;color:var(--ink-50);font-size:13px}
+  @media (min-width:768px){ .demo-lost h1{font-size:53px} }
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>404 Page</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Info page</p>
+  <h1 class="ds-h1">404 Page</h1>
+  <p class="ds-lede">The whole site's "something went wrong" moment. It stays as calm and undramatic as any other page — a short line of copy and one way back, centred and settled with the footer close behind it rather than far below the fold.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <ul class="ds-note" style="list-style:disc;padding-left:20px">
+    <li><b>Eyebrow</b> — "Page Not Found"</li>
+    <li><b>Headline</b> — "Lost Along the Way"</li>
+    <li><b>Lede</b> — one calm sentence, no apology, no exclamation</li>
+    <li><b>CTA</b> — "Back to the Shop", the one way out</li>
+  </ul>
+
+  <h2 class="ds-h2">Live</h2>
+  <div class="ds-demo tight">
+    <div class="demo-frame">
+      <div class="demo-fit-main">
+        <main class="demo-lost">
+          <p class="eyebrow">Page Not Found</p>
+          <h1>Lost Along the Way</h1>
+          <p class="lede">This page has wandered off. The pieces are all still here.</p>
+          <a class="cta" href="#">Back to the Shop</a>
+        </main>
+      </div>
+      <footer class="demo-fit-footer">footer, close behind — body.fit</footer>
+    </div>
+  </div>
+  <p class="ds-caption">Whole composition, in a tall frame: <code>body.fit</code> centres the message vertically and pulls the footer up right behind it, rather than leaving a short page mostly blank.</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Max width</td><td>620px</td><td>site.css only</td></tr>
+    <tr><td>Top padding</td><td>calc(var(--head) + 36px)</td><td><code>--head</code> / <code>--sp-36</code></td></tr>
+    <tr><td>Side padding</td><td>calc(var(--pad) + 24px) = edge</td><td><code>--edge</code></td></tr>
+    <tr><td>Bottom padding</td><td>36px</td><td><code>--sp-36</code></td></tr>
+    <tr><td>Lede bottom margin</td><td>32px</td><td><code>--sp-32</code></td></tr>
+    <tr><td>CTA max width</td><td>320px</td><td>site.css only</td></tr>
+    <tr><td>CTA height</td><td>55px</td><td><code>--h-cta</code></td></tr>
+    <tr><td>body.fit footer top padding</td><td>48px</td><td><code>--sp-48</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Copy voice</h2>
+  <p class="ds-note">Calm and third-person, never an apology and never an exclamation point. "This page has wandered off. The pieces are all still here." carries the miss lightly and points straight at the one thing to do next — the same restraint the rest of the site's copy keeps.</p>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">The headline and body scale with the shared h1 rule (46px phones, 53px ≥768). Layout does not otherwise change — it is centred at every width, since the whole page is only ever this one short block plus the footer.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep the copy to one calm sentence</li>
+      <li>Always give exactly one way back — the Shop</li>
+      <li>Use <code>body.fit</code> so the footer sits close</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Add a search box, sitemap, or a second link</li>
+      <li>Use humour, an apology, or an exclamation mark</li>
+      <li>Let the page run to full viewport height with the footer stranded far below</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/pages/404.html</code> — full markup and inline <code>.lost</code> styles<br>
+    <code>pdp/site.css</code> — <code>body.fit</code> (~lines 218–221)
+  </p>
+</main>
+</body>
+</html>

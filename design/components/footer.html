@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Footer</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  /* ── exact footer markup and CSS from pdp/site.css ── */
+  .demo-footer{display:grid;gap:56px;align-content:end;min-height:85vh;padding:96px calc(var(--pad) + 24px) 52px;--f-size:calc(17px - 2pt)}
+  .demo-footer .brand{order:3}
+  .demo-footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
+  .demo-footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
+  .demo-footer .fine{margin:0;font:400 calc((32px - 5pt) * 1.2)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
+  .demo-footer .links{display:flex;flex-wrap:wrap;gap:10px 31px;margin:0;font-size:var(--f-size);list-style:none;padding:0}
+  .demo-footer .news{order:1;max-width:460px}
+  .demo-footer .news p{margin:0 0 28px;font-size:var(--f-size);line-height:1.5}
+  .demo-footer .field{display:flex;border-bottom:.5px solid rgba(0,0,0,.2);padding:0 0 10px 0}
+  .demo-footer .field input{flex:1;border:0;outline:0;font-size:var(--f-size);background:none;min-width:0;opacity:.8}
+  .demo-footer .field input::placeholder{color:rgba(0,0,0,.35)}
+  .demo-footer .field button{padding:0 0 0 18px;font-size:var(--f-size)}
+  .hover-line{text-decoration:underline;text-decoration-color:rgba(0,0,0,0);text-underline-offset:6px;text-decoration-thickness:1px;transition:text-decoration-color .45s ease}
+  .hover-line:hover{text-decoration-color:currentColor}
+
+  @media (min-width:768px){
+    .demo-footer{grid-template-columns:1fr auto 1fr;align-items:end;gap:40px;min-height:20vh;padding:96px calc(var(--pad) + 24px) 52px}
+    .demo-footer .middle{margin-bottom:16px}
+    .demo-footer .brand,.demo-footer .middle,.demo-footer .news{order:0}
+    .demo-footer .middle{justify-self:center;align-items:center}
+    .demo-footer .links{justify-content:center}
+    .demo-footer .news{justify-self:end;width:100%;max-width:274px}
+  }
+  @media (max-width:767px){
+    .demo-footer{min-height:75vh;text-align:center}
+    .demo-footer .middle{align-items:center}
+    .demo-footer .links{justify-content:center}
+    .demo-footer .mark{margin-left:auto;margin-right:auto}
+    .demo-footer .news{justify-self:center;margin:0 auto;width:100%}
+    .demo-footer .field{text-align:left}
+  }
+  .demo-footer.fit{min-height:0;padding-top:48px}
+  .demo-frame{position:relative;overflow:hidden;background:#fff;border:1px solid var(--rule)}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Footer</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Chrome</p>
+  <h1 class="ds-h1">Footer</h1>
+  <p class="ds-lede">The footer that closes every page: the loop mark and fine line, the site links, and a newsletter signup. It reorders itself between phones and desktop rather than only resizing.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <ul class="ds-note" style="list-style:disc;padding-left:20px">
+    <li><b>Brand</b> — the loop mark and "Artifacts of Love, Made to Order."</li>
+    <li><b>Middle</b> — the site links: About, Custom, Shipping &amp; Returns, Inspiration, Contact</li>
+    <li><b>News</b> — one line of copy and an email field with Submit</li>
+  </ul>
+
+  <h2 class="ds-h2">Live</h2>
+  <h3 class="ds-h3">Full width</h3>
+  <div class="ds-demo on-white tight">
+    <div class="demo-frame">
+      <footer class="demo-footer">
+        <div class="brand">
+          <img class="mark" src="../../pdp/img/mark-loop-sm.webp" alt="Studio Maçon">
+          <p class="fine">Artifacts of Love,<br>Made to Order.</p>
+        </div>
+        <div class="middle">
+          <nav class="links">
+            <a class="hover-line" href="#">About</a>
+            <a class="hover-line" href="#">Custom</a>
+            <a class="hover-line" href="#">Shipping &amp; Returns</a>
+            <a class="hover-line" href="#">Inspiration</a>
+            <a class="hover-line" href="#">Contact</a>
+          </nav>
+        </div>
+        <div class="news">
+          <p>Subscribe to hear about new pieces before anyone else.</p>
+          <form class="field" data-newsletter>
+            <input type="email" placeholder="Email address" aria-label="Email address" required>
+            <button type="button">Submit</button>
+          </form>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <p class="ds-caption">Desktop order is fixed in the markup (brand, middle, news); phones reorder to news → links → brand using CSS <code>order</code>, and centre everything. Resize the window to see both.</p>
+
+  <h3 class="ds-h3">body.fit variant</h3>
+  <div class="ds-demo on-white tight">
+    <div class="demo-frame">
+      <footer class="demo-footer fit">
+        <div class="brand">
+          <img class="mark" src="../../pdp/img/mark-loop-sm.webp" alt="Studio Maçon">
+          <p class="fine">Artifacts of Love,<br>Made to Order.</p>
+        </div>
+        <div class="middle">
+          <nav class="links">
+            <a class="hover-line" href="#">About</a>
+            <a class="hover-line" href="#">Custom</a>
+            <a class="hover-line" href="#">Shipping &amp; Returns</a>
+            <a class="hover-line" href="#">Inspiration</a>
+            <a class="hover-line" href="#">Contact</a>
+          </nav>
+        </div>
+        <div class="news">
+          <p>Subscribe to hear about new pieces before anyone else.</p>
+          <form class="field" data-newsletter>
+            <input type="email" placeholder="Email address" aria-label="Email address" required>
+            <button type="button">Submit</button>
+          </form>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <p class="ds-caption">On short pages (<code>body.fit</code>, e.g. 404), the footer drops its minimum height to 0 and its top padding to 48px so it sits close under the centred content instead of demanding most of a screen.</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Padding</td><td>96px top, 48px/64px side, 52px bottom</td><td><code>--sp-96</code> / <code>--edge</code> / <code>--sp-52</code></td></tr>
+    <tr><td>Grid gap</td><td>56px phones / 40px ≥768</td><td><code>--sp-56</code></td></tr>
+    <tr><td>Min height</td><td>85vh phones (75vh once stacked) / 20vh ≥768</td><td>site.css only</td></tr>
+    <tr><td>Mark height</td><td>38px</td><td><code>--h-mark</code></td></tr>
+    <tr><td>Mark→fine gap</td><td>32px</td><td><code>--sp-32</code></td></tr>
+    <tr><td>Fine line type</td><td>serif, calc((32px-5pt)*1.2) = 30.4px / 1.05, ls .02em, uppercase</td><td><code>--t-fine</code> / <code>--lh-fine</code> / <code>--ls-fine</code></td></tr>
+    <tr><td>Links gap</td><td>10px row / 31px column</td><td><code>--sp-10</code></td></tr>
+    <tr><td>Newsletter field rule</td><td>.5px rgba(0,0,0,.2)</td><td><code>--rule-hair</code></td></tr>
+    <tr><td>Desktop columns</td><td>1fr auto 1fr</td><td>site.css only</td></tr>
+    <tr><td>body.fit top padding</td><td>48px</td><td><code>--sp-48</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">Below 768px: brand, links and newsletter stack and centre, in the order news → links → brand, min-height 75vh once the phone gutter media query stacks it (85vh at the unstacked breakpoint boundary). At 768px and up: three columns (1fr auto 1fr), brand left, links centred, newsletter right, min-height 20vh.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep the fine line exactly "Artifacts of Love, Made to Order."</li>
+      <li>Use <code>body.fit</code> on any page short enough that the footer would otherwise float far below the fold</li>
+      <li>Keep the newsletter field a single hairline rule, no box</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Reorder the desktop columns — brand/middle/news is fixed</li>
+      <li>Add a border or background behind the footer</li>
+      <li>Change the newsletter copy per page — it is one line everywhere</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/site.css</code> — <code>footer</code>, <code>.field</code>, <code>body.fit footer</code>, phone footer overrides (~lines 106–120, 218–221, 253–264)<br>
+    <code>pdp/partials/footer.html</code> — footer markup
+  </p>
+</main>
+</body>
+</html>

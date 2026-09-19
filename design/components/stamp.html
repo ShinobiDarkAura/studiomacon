@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Provenance Stamp</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  /* copied exactly from pdp/pages/shop.html .stamped/.stamp */
+  .demo-frame{position:relative;overflow:visible;padding:64px 24px;background:var(--paper);border:1px solid var(--rule)}
+  .demo-h1{margin:0;font:400 46px/1 var(--serif);text-transform:uppercase;letter-spacing:-.005em}
+  .stamped{position:relative;display:inline-block}
+  .stamped .stamp{position:absolute;z-index:3;width:2.93em;
+    left:min(calc(100% + .64em - 1.465em), calc(50vw + 50% - 2.93em + .73em));
+    top:calc(.2em - .84em - 1.465em);
+    transform:rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;
+    transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
+  .stamped .stamp.on{opacity:1;transform:rotate(-14deg)}
+  .replay-btn{border:1px solid var(--rule);padding:8px 16px;font-size:13px;background:#fff;margin:0 0 24px}
+  @media (min-width:768px){ .demo-h1{font-size:53px} }
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Provenance Stamp</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Shop hero</p>
+  <h1 class="ds-h1">Provenance Stamp</h1>
+  <p class="ds-lede">The Bureau of Provenance mark, pressed onto the shop hero's headline once it has settled into view — a single, deliberate press rather than a decoration that is simply there.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <ul class="ds-note" style="list-style:disc;padding-left:20px">
+    <li><b>Headline</b> — "Small Things, Made to Last," the stamp lands on the comma</li>
+    <li><b>Stamp</b> — the provenance-stamp.png artwork, rotated and scaled down as it presses</li>
+  </ul>
+
+  <h2 class="ds-h2">Live</h2>
+  <button class="replay-btn" type="button" id="pressBtn">Press</button>
+  <div class="ds-demo tight">
+    <div class="demo-frame">
+      <h1 class="demo-h1 stamped">Small Things,<br>Made to Last<img class="stamp" id="stamp" src="../../pdp/img/provenance-stamp.png" alt="" aria-hidden="true"></h1>
+    </div>
+  </div>
+  <p class="ds-caption">At rest the stamp is scaled 1.35× and invisible; pressing runs it down to scale 1 and fades it in over .45s, <code>cubic-bezier(.3,1.4,.5,1)</code> — the eased overshoot reads as a hand coming down and catching. On the live page this fires automatically, 500ms after the headline has scrolled 90% into view.</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Width</td><td>2.93em (relative to the h1's own size)</td><td>site.css only</td></tr>
+    <tr><td>Position</td><td>in em, pinned to the h1's top-right, near the comma</td><td>site.css only</td></tr>
+    <tr><td>Rotation</td><td>-14deg, held through the press</td><td>site.css only (<code>--stamp-tilt</code> default)</td></tr>
+    <tr><td>Press scale</td><td>1.35 → 1</td><td>site.css only</td></tr>
+    <tr><td>Press easing</td><td>cubic-bezier(.3,1.4,.5,1)</td><td><code>--ease-stamp</code></td></tr>
+    <tr><td>Scale/rotate duration</td><td>.45s</td><td><code>--d-move</code></td></tr>
+    <tr><td>Opacity duration</td><td>.25s ease</td><td><code>--d-color</code></td></tr>
+    <tr><td>z-index</td><td>3</td><td><code>--z-stamp</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Why it is measured in em</h2>
+  <p class="ds-note">Every measurement — width, left offset, top offset — is written in <code>em</code> against the headline's own font size, not the viewport. That is what lets the stamp land on the comma in "Small Things," at 390px and at 1440px alike: as the h1 resizes across breakpoints (46px → 53px → 60px), the stamp resizes and repositions with it automatically, with no separate media query of its own.</p>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">No breakpoint changes the stamp's own rules; it tracks the h1's font-size at every width. The section it sits in (<code>.welcome</code>) allows horizontal overflow on phones because the stamp may bleed slightly off the right edge there.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep the stamp pinned to a headline, never to the viewport</li>
+      <li>Trigger the press once, on first view, not on every scroll into frame</li>
+      <li>Use the exact provenance-stamp.png artwork</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Resize the stamp in px — it must stay in em with the headline</li>
+      <li>Change the -14deg tilt</li>
+      <li>Reuse the press animation for anything other than this stamp</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/pages/shop.html</code> — <code>.stamped</code>, <code>.stamp</code> (~lines 110–117), press trigger script (~lines 272–283)
+  </p>
+</main>
+<script>
+  document.getElementById('pressBtn').addEventListener('click', function () {
+    var s = document.getElementById('stamp');
+    s.classList.remove('on'); void s.offsetWidth; s.classList.add('on');
+  });
+</script>
+</body>
+</html>

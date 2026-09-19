@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Bag Line</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .lines{border-top:var(--rule-1)}
+  .line{display:grid;grid-template-columns:96px 1fr auto;gap:20px;align-items:center;padding:20px 0;border-bottom:var(--rule-1)}
+  .line img{width:var(--w-line-img);height:120px;object-fit:cover;border-radius:var(--r-photo);background:var(--field);
+    box-shadow:var(--shadow-lift)}
+  .line .nm{font:400 var(--t-line)/var(--lh-title) var(--serif);text-transform:uppercase;margin:0 0 6px}
+  .line .meta{font-size:var(--t-14);color:var(--ink-55)}
+  .qty{display:inline-flex;align-items:center;gap:14px;margin-top:14px;font-size:var(--t-15)}
+  .qty button{width:var(--h-qty);height:var(--h-qty);border:var(--rule-1);border-radius:var(--r-round);
+    display:inline-flex;align-items:center;justify-content:center;line-height:0;padding:0;background:none;cursor:pointer}
+  .qty button:hover{border-color:var(--ink)}
+  .qty .remove{width:auto;height:auto;border:0;display:inline;line-height:1;border-radius:0;margin-left:18px;
+    font-size:var(--t-13);color:var(--ink-50);text-decoration:underline;text-underline-offset:var(--underline-offset-text);cursor:pointer}
+  .line .amt{font-size:var(--t-16);text-align:right}
+
+  .summary{max-width:340px}
+  .summary dl{display:grid;grid-template-columns:1fr auto;gap:12px 0;margin:0 0 24px;font-size:var(--t-15)}
+  .summary dd{margin:0;text-align:right;padding-left:18px}
+  .summary .total{padding-top:14px;border-top:var(--rule-1);font-weight:500}
+  .summary .note{margin:14px 0 0;font-size:var(--t-13);color:var(--ink-50);line-height:var(--lh-body)}
+  .cta{display:flex;align-items:center;justify-content:center;width:100%;height:var(--h-cta);
+    background:var(--ink);color:var(--paper);font-size:calc(18px - 2pt);text-transform:uppercase;letter-spacing:var(--ls-cta);border:0;cursor:pointer}
+  .cta.outline{background:none;color:var(--ink);border:var(--rule-ink)}
+
+  .empty p{margin:0 0 28px;font-size:var(--t-17)}
+
+  .mini{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:var(--rule-1);font-size:var(--t-14)}
+  .mini img{width:var(--w-mini-img);height:70px;object-fit:cover;border-radius:var(--r-photo)}
+
+  .frame-row{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+  .frame-cell{flex:1 1 320px}
+  .frame-cell h3{font-size:var(--t-13);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ink-50);margin:0 0 14px;font-weight:400}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Bag Line</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Bag Line</p>
+  <h1 class="ds-h1">Bag Line</h1>
+  <p class="ds-lede">One row per piece in the bag: thumbnail, name and quantity stepper on the left, running total on the right. The order summary sits beside it; an empty bag and the checkout mini-row use lighter versions of the same parts.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note">A <code>.line</code> is a three-column grid — image, details, amount. The thumbnail carries <code>--shadow-lift</code>, the only shadow ever placed on a site photograph (the same shadow used on every email photo and card). The quantity stepper is two round buttons around a number, with Remove set apart to its right.</p>
+
+  <h2 class="ds-h2">Live — bag lines</h2>
+  <div class="ds-demo on-white">
+    <section class="lines">
+      <div class="line">
+        <img src="../../pdp/img/pip/hero.jpg" alt="">
+        <div>
+          <p class="nm">Pip</p>
+          <p class="meta">$220</p>
+          <span class="qty"><button type="button" aria-label="One fewer">−</button><span>1</span><button type="button" aria-label="One more">+</button><button type="button" class="remove">Remove</button></span>
+        </div>
+        <p class="amt">$220</p>
+      </div>
+      <div class="line">
+        <img src="../../pdp/img/rebi/hero.jpg" alt="">
+        <div>
+          <p class="nm">Rebi</p>
+          <p class="meta">$260 · Size 7</p>
+          <span class="qty"><button type="button" aria-label="One fewer">−</button><span>2</span><button type="button" aria-label="One more">+</button><button type="button" class="remove">Remove</button></span>
+        </div>
+        <p class="amt">$520</p>
+      </div>
+    </section>
+  </div>
+
+  <h2 class="ds-h2">Live — summary</h2>
+  <div class="ds-demo on-white">
+    <aside class="summary">
+      <p class="label" style="font-size:var(--t-13);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ink-50);margin:0 0 18px">Summary</p>
+      <dl>
+        <dt>Subtotal</dt><dd>$740</dd>
+        <dt>Shipping</dt><dd>Calculated at checkout</dd>
+        <dt class="total">Total</dt><dd class="total">$740</dd>
+      </dl>
+      <button class="cta" type="button">Checkout</button>
+      <p class="note">Every piece is made to order. Please allow up to 10 business days before it ships.</p>
+    </aside>
+  </div>
+
+  <div class="frame-row">
+    <div class="frame-cell">
+      <h3>Empty state</h3>
+      <div class="ds-demo on-white empty">
+        <p>Your bag is empty.</p>
+        <a class="cta" href="#" onclick="return false">Continue Shopping</a>
+      </div>
+    </div>
+    <div class="frame-cell">
+      <h3>Outline checkout (empty bag)</h3>
+      <div class="ds-demo on-white">
+        <button class="cta outline" type="button">Checkout</button>
+      </div>
+      <p class="ds-caption">When the bag is empty, Checkout steps back to an outline button rather than solid black.</p>
+    </div>
+  </div>
+
+  <h2 class="ds-h2">Live — checkout mini row</h2>
+  <div class="ds-demo on-white" style="max-width:340px">
+    <div class="mini"><img src="../../pdp/img/pip/hero.jpg" alt=""><span>Pip</span><span>$220</span></div>
+    <div class="mini"><img src="../../pdp/img/rebi/hero.jpg" alt=""><span>Rebi · Size 7 × 2</span><span>$520</span></div>
+  </div>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Line grid</td><td>96px 1fr auto, gap 20px</td><td><code>--w-line-img</code> / <code>--sp-20</code></td></tr>
+    <tr><td>Line rule</td><td>1px solid var(--rule) top and bottom</td><td><code>--rule-1</code></td></tr>
+    <tr><td>Thumbnail</td><td>96×120, radius 6px</td><td><code>--w-line-img</code> / <code>--r-photo</code></td></tr>
+    <tr><td>Thumbnail shadow</td><td><code>0 18px 28px -12px rgba(0,0,0,.45), 0 4px 10px -4px rgba(0,0,0,.25)</code></td><td><code>--shadow-lift</code></td></tr>
+    <tr><td>Name</td><td>26px serif uppercase, lh 1</td><td><code>--t-line</code></td></tr>
+    <tr><td>Meta</td><td>14px, 55% black</td><td><code>--t-14</code> / <code>--ink-55</code></td></tr>
+    <tr><td>Qty gap</td><td>14px</td><td>—</td></tr>
+    <tr><td>Qty buttons</td><td>28px round, 1px rule → black on hover</td><td><code>--h-qty</code> / <code>--r-round</code></td></tr>
+    <tr><td>Summary dl</td><td>15px, gap 12px 0</td><td><code>--t-15</code></td></tr>
+    <tr><td>Total rule</td><td>1px rule top, 14px pad, 500 weight</td><td><code>--rule-1</code></td></tr>
+    <tr><td>Note</td><td>13px, 50% black</td><td><code>--t-13</code> / <code>--ink-50</code></td></tr>
+    <tr><td>Checkout mini thumb</td><td>56×70, radius 6px</td><td><code>--w-mini-img</code> / <code>--r-photo</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">≥900px the bag becomes a 1fr / 340px grid, gap 64px, with the summary sticky at <code>top:calc(var(--head) + 24px)</code>. Below that the summary sits directly under the lines, full width, not sticky.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Keep the lift shadow only on bag/email photographs — it never appears on a shop-wall or gallery picture.</li>
+      <li>Show the outline Checkout button only when the bag is empty; solid black otherwise.</li>
+      <li>Carry a piece's size into the meta line ("$260 · Size 7") whenever it has one.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't let quantity drop below 1 — the row removes itself instead.</li>
+      <li>Don't add a shadow anywhere else on the page to "match" the bag; it's deliberately singular.</li>
+      <li>Don't call Remove a button style — it's an underlined text link, not a black or outline button.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/pages/bag.html</code> — <code>.line</code>, <code>.qty</code>, <code>.summary</code>, <code>.empty</code>, <code>body.bag-empty #checkout</code>, the ≥900px grid<br>
+    <code>pdp/pages/checkout.html</code> — <code>.mini</code>
+  </p>
+</main>
+</body>
+</html>

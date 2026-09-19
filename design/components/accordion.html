@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio Maçon DS — Accordion</title>
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="_shell.css">
+<style>
+  .acc{text-align:left}
+  .acc-item{border-bottom:var(--rule-1);transition:border-color .3s ease}
+  .acc-item:hover{border-bottom-color:var(--ink)}
+  .acc-head{display:flex;width:100%;justify-content:space-between;align-items:center;background:none;border:0;cursor:pointer;
+    padding:19px 0;font-size:var(--t-13);letter-spacing:var(--ls-label);text-transform:uppercase;text-align:left;color:var(--ink)}
+  .acc-head::after{content:"";width:10px;height:10px;flex:none;
+    background:linear-gradient(currentColor,currentColor) center/10px 1.5px no-repeat,
+               linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat;
+    color:var(--ink);opacity:.35;transition:transform .45s var(--ease),opacity .45s ease}
+  .acc-head:hover::after,.acc-item:hover .acc-head::after{opacity:1}
+  .acc-head:hover,.acc-item:hover .acc-head{color:var(--ink)}
+  .acc-head{transition:padding-bottom .5s var(--ease),color .25s ease}
+  .acc-item.open .acc-head{padding-bottom:27px}
+  .acc-item.open .acc-head::after{transform:rotate(90deg);
+    background:linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat}
+  .acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+  .acc-item.open .acc-panel{grid-template-rows:1fr}
+  .acc-inner{overflow:hidden}
+  .acc-body{padding:0 0 20px;font-size:var(--t-17);line-height:var(--lh-prose);opacity:0;transform:translateY(-6px);
+    transition:opacity .35s ease,transform .5s var(--ease)}
+  .acc-item.open .acc-body{opacity:1;transform:none;transition-delay:.08s}
+  .acc-body p{margin:0 0 .9em}
+  .acc-body p:last-child{margin:0}
+  .acc-body a{text-decoration:underline;text-underline-offset:var(--underline-offset-text)}
+  .acc-body dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px}
+  .acc-body dt{text-transform:uppercase;font-size:var(--t-14);padding-top:2px}
+  .acc-body dd{margin:0}
+  .acc-body .after-dl{margin-top:18px}
+
+  /* shipping policies: a top rule on the whole group */
+  .policies{border-top:var(--rule-1)}
+
+  /* Custom steps */
+  .step .acc-head{font-size:var(--t-micro);letter-spacing:var(--ls-label);justify-content:flex-start}
+  .step .acc-head .n{color:var(--ink-40);margin-right:14px;transition:color .25s ease}
+  .step .acc-head .done{margin-left:auto;margin-right:18px;font-size:var(--t-12);letter-spacing:.06em;text-transform:none;color:var(--ink-45)}
+  .step .acc-head .done .tick{width:10px;height:8px;margin-left:6px;vertical-align:1px}
+  .step.locked .acc-head{color:var(--ink-30);cursor:default}
+  .step.locked:hover .acc-head{color:var(--ink-62)}
+  .step.locked:hover .acc-head .n{color:var(--ink-50)}
+  .step.locked .acc-head::after{opacity:.15}
+  .step.open .acc-head{padding-bottom:39px}
+
+  .frame-row{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+  .frame-cell{flex:1 1 300px}
+  .frame-cell h3{font-size:var(--t-13);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ink-50);margin:0 0 14px;font-weight:400}
+</style>
+</head>
+<body>
+<main class="ds-page">
+  <div class="ds-top"><a href="../index.html">← Design canon</a><span>Accordion</span></div>
+  <p class="ds-eyebrow">Studio Maçon · Accordion</p>
+  <h1 class="ds-h1">Accordion</h1>
+  <p class="ds-lede">A row that opens on a grid-row transition, so any length of copy expands at the same steady pace. Used for a piece's Care/Materials/Sizing/Shipping, the general shipping policies, and the Custom order's locked-in-order steps.</p>
+
+  <h2 class="ds-h2">Anatomy</h2>
+  <p class="ds-note"><code>.acc-item</code> holds a <code>.acc-head</code> button (a plus icon drawn from two gradients, rotating to a minus when open) and an <code>.acc-panel</code> &gt; <code>.acc-inner</code> &gt; <code>.acc-body</code>. The row's own bottom rule darkens to black on hover; the body fades and rises in with a small delay once it opens.</p>
+
+  <h2 class="ds-h2">Live — product (real copy)</h2>
+  <p class="ds-note">Click any row. This is the site's own Care, Materials, Sizing and Shipping copy from <code>build_pdp.py</code>.</p>
+  <div class="ds-demo on-white">
+    <div class="acc" id="live-acc">
+      <div class="acc-item">
+        <button class="acc-head" aria-expanded="false">Care</button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
+          <p>Bronze is meant to be handled. The patina darkens where your thumb sits and brightens where it rubs, so over time it records how you hold it.</p>
+          <p>To keep the surface as it is, wipe it with a soft dry cloth. Avoid polish; it takes the patina with it.</p>
+        </div></div></div>
+      </div>
+      <div class="acc-item open">
+        <button class="acc-head" aria-expanded="true">Materials</button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
+          <p>Solid cast bronze, hand-finished.</p>
+        </div></div></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-head" aria-expanded="false">Sizing</button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
+          <dl><dt>Dimensions</dt><dd>2.4 × 3.1 in</dd></dl>
+          <p class="after-dl">If your piece needs resizing, takes a knock, or needs adjusting, write to <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and we'll look after it.</p>
+        </div></div></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
+          <p>Each piece is made to order; please allow up to 10 business days before it ships. Standard shipping takes 3–7 business days, international 5–10.</p>
+          <p>Pieces in original condition (excluding custom work) may be returned within 14 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size. <a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.</p>
+        </div></div></div>
+      </div>
+    </div>
+  </div>
+  <p class="ds-caption">"Materials" is forced open above (<code>.open</code>) to show the state statically alongside the interactive rows.</p>
+
+  <h2 class="ds-h2">Live — shipping policies</h2>
+  <p class="ds-note">The same accordion, grouped under one top rule instead of each row starting bare (<code>pages/shipping.html</code>).</p>
+  <div class="ds-demo on-white">
+    <div class="acc policies" id="live-acc-2">
+      <div class="acc-item">
+        <button class="acc-head" aria-expanded="false">Making Your Piece</button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece is made to order after it's ordered — nothing sits pre-made on a shelf.</p></div></div></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-head" aria-expanded="false">Shipping</button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Standard shipping takes 3–7 business days once a piece is finished.</p></div></div></div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-head" aria-expanded="false">Returns</button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>We accept pieces (excluding custom work) in their original condition for store credit toward your next purchase. Returns and exchanges must be started within 14 days of the delivery date.</p></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="ds-h2">Live — Custom steps</h2>
+  <p class="ds-note">Steps unlock in order: a locked step is dimmed and its head does nothing on click; finishing a step marks it <code>Done</code> and unlocks the next. Number, then title; a tick replaces the plus icon's usual role once a step is complete.</p>
+  <div class="ds-demo on-white">
+    <div class="acc steps-acc" id="live-steps" style="border-top:1px solid var(--rule)">
+      <div class="acc-item step open" data-step="1">
+        <button class="acc-head" aria-expanded="true"><span class="n">01</span>Your Piece</button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Totem or jewelry — pick the kind of piece to begin.</p></div></div></div>
+      </div>
+      <div class="acc-item step" data-step="2">
+        <button class="acc-head" aria-expanded="false"><span class="n">02</span>Details &amp; Photos<span class="done">Done<svg class="tick" viewBox="0 0 12 10" aria-hidden="true"><path d="M1 5.2l3.3 3.3L11 1.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></span></button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>What it should carry, and any reference photos.</p></div></div></div>
+      </div>
+      <div class="acc-item step locked" data-step="3">
+        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">03</span>Payment</button>
+        <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Locked until Details &amp; Photos is finished.</p></div></div></div>
+      </div>
+    </div>
+  </div>
+  <p class="ds-caption">Step 1 is forced open, step 2 shows the completed "Done" tick, step 3 is locked — its head reads at 30% black and won't open on click.</p>
+
+  <h2 class="ds-h2">Spec</h2>
+  <table class="ds-spec">
+    <tr><th>Part</th><th>Value</th><th>Token</th></tr>
+    <tr><td>Row rule</td><td>1px solid var(--rule) → black on hover, .3s</td><td><code>--rule-1</code> / <code>--ink</code></td></tr>
+    <tr><td>Head</td><td>13px, ls .14em, uppercase, padding 19px 0</td><td><code>--t-13</code> / <code>--ls-label</code></td></tr>
+    <tr><td>Head padding, open</td><td>19px 0 27px (bottom grows)</td><td>—</td></tr>
+    <tr><td>Head padding, Custom step open</td><td>19px 0 39px</td><td>—</td></tr>
+    <tr><td>Plus icon</td><td>10×10, 1.5px strokes, opacity .35 → 1 on hover</td><td><code>--ink-35</code></td></tr>
+    <tr><td>Open rotation</td><td>90° (reads as a minus)</td><td>.45s <code>--ease</code></td></tr>
+    <tr><td>Panel open/close</td><td><code>grid-template-rows</code> 0fr → 1fr, .5s</td><td><code>--d-open</code> / <code>--ease</code></td></tr>
+    <tr><td>Body</td><td>17/1.55, fades + rises in, .08s delay</td><td><code>--t-17</code> / <code>--lh-prose</code></td></tr>
+    <tr><td>Body dl gap</td><td>6px 18px</td><td>—</td></tr>
+    <tr><td>Step number</td><td>40% black, margin-right 14px</td><td><code>--ink-40</code></td></tr>
+    <tr><td>Step "Done"</td><td>12px, ls .06em, 45% black</td><td><code>--t-12</code> / <code>--ink-45</code></td></tr>
+    <tr><td>Step locked</td><td>30% black; 62% on hover</td><td><code>--ink-30</code> / <code>--ink-62</code></td></tr>
+  </table>
+
+  <h2 class="ds-h2">Responsive</h2>
+  <p class="ds-note">No structural change on phones — the accordion sits inside <code>.info</code>/<code>.acc</code>, which switches to left-aligned text and the phone gutter, but the row, head and panel mechanics are identical at every width.</p>
+
+  <h2 class="ds-h2">Do / Don't</h2>
+  <div class="ds-dd">
+    <div class="yes"><b>Do</b><ul>
+      <li>Let the grid-row transition handle height — never measure or animate a fixed pixel height in script.</li>
+      <li>Keep the plus icon at .35 opacity at rest; it only reaches full black on hover or while open.</li>
+      <li>Lock later Custom steps until the one before them is done, and mark a finished step "Done" rather than just closing it.</li>
+    </ul></div>
+    <div class="no"><b>Don't</b><ul>
+      <li>Don't open a locked step by any means other than finishing the step before it.</li>
+      <li>Don't skip the 0.08s body delay — it is what keeps the open feel deliberate rather than instant.</li>
+      <li>Don't restyle the accordion for the Custom steps beyond number, Done tick, and lock state — it's the same component.</li>
+    </ul></div>
+  </div>
+
+  <h2 class="ds-h2">Source</h2>
+  <p class="ds-src">
+    <code>pdp/site.css</code> — <code>.acc</code>, <code>.acc-item</code>, <code>.acc-head</code>, <code>.acc-panel</code>, <code>.acc-body</code><br>
+    <code>pdp/build_pdp.py</code> lines 200–262 — accordion markup and the real Care/Materials/Sizing/Shipping copy<br>
+    <code>pdp/pages/custom.html</code> — <code>.step</code>, <code>.n</code>, <code>.done</code>, locked state, open head padding-bottom 39px<br>
+    <code>pdp/pages/shipping.html</code> — <code>.policies .acc{border-top:1px solid var(--rule)}</code><br>
+    <code>pdp/partials/site.js</code> lines 14–21 — the click-to-toggle behaviour shared by every accordion
+  </p>
+</main>
+<script>
+  ['live-acc', 'live-acc-2', 'live-steps'].forEach(function (id) {
+    document.getElementById(id).querySelectorAll('.acc-head').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var item = b.parentElement;
+        if (item.classList.contains('locked')) return;
+        var open = !item.classList.contains('open');
+        item.classList.toggle('open', open);
+        b.setAttribute('aria-expanded', open);
+      });
+    });
+  });
+</script>
+</body>
+</html>
