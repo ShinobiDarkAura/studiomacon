@@ -689,22 +689,14 @@
     if (!lines.length) return Promise.reject(new Error('Nothing to check out'));
     if (window.maconTrack) maconTrack('checkout', items);
     if (button) { button.setAttribute('aria-busy', 'true'); button.dataset.label = button.textContent; button.textContent = 'One moment…'; }
-    return fetch('https://' + cfg.shop + '/api/' + cfg.api + '/graphql.json', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': cfg.token},
-      body: JSON.stringify({query: 'mutation($lines:[CartLineInput!],$codes:[String!]){cartCreate(input:{lines:$lines,discountCodes:$codes}){cart{checkoutUrl} userErrors{message}}}',
-                            variables: {lines: lines, codes: (function () { try { var c = sessionStorage.getItem('macon-discount'); return c ? [c] : []; } catch (e) { return []; } })()}})
-    }).then(function (r) { return r.json(); }).then(function (d) {
-      var res = d && d.data && d.data.cartCreate;
-      if (!res || !res.cart) throw new Error((res && res.userErrors[0] && res.userErrors[0].message) || 'Checkout is unavailable right now');
-      // the bag is left alone here: a shopper who backs out of Shopify's checkout
-      // must find their pieces still waiting. It is emptied on the thank-you page.
-      location.href = res.cart.checkoutUrl;
-    }).catch(function (e) {
-      if (button) { button.removeAttribute('aria-busy'); button.textContent = button.dataset.label; }
-      alert('Sorry, checkout could not start: ' + e.message + '. Please try again, or write to hello@studiomacon.co.');
-      throw e;
-    });
+    // Shopify's standard cart link: the same checkout, but it counts as an Online Store checkout, which is
+    // what Shopify's own abandoned-checkout emails listen to (checkouts opened through the Storefront API do not)
+    var code = ''; try { code = sessionStorage.getItem('macon-discount') || ''; } catch (e) {}
+    var path = lines.map(function (l) { return l.merchandiseId.split('/').pop() + ':' + l.quantity; }).join(',');
+    location.href = 'https://' + cfg.shop + '/cart/' + path + (code ? '?discount=' + encodeURIComponent(code) : '');
+    // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
+    // pieces still waiting. It is emptied on the thank-you page.
+    return Promise.resolve();
   };
 
   // Enquiries (contact + commission forms) go to the Bureau of Provenance, which emails the studio and replies to the sender
