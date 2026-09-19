@@ -638,6 +638,12 @@ def editable(doc, page):
 def save(name, doc, product=None):
     doc = seo(name, doc, product)
     doc = light(doc)
+    # home-screen icon for iPhones, and the two Search Console tags the Wix site carried (keeps those
+    # URL-prefix properties verified after the switch)
+    doc = doc.replace('<link rel="icon" href="img/favicon.png">',
+                      '<link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png">'
+                      '<meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs">'
+                      '<meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">', 1)
     left = re.findall(r"\{\{[A-Z]+\}\}", doc)
     assert not left, (name, "unfilled template tokens", left)
     with open(os.path.join(OUT, name), "w", encoding="utf-8") as f:

@@ -1,3 +1,15 @@
 # fonts may be read by email apps and other sites
 /fonts/*
   Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=2592000
+
+# pictures and films: kept a day, then refreshed quietly in the background for a week, so a replaced
+# photo still shows up by the next day
+/img/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/video/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# the stylesheet is always linked with a version (site.css?v=…), so it can be kept for a year
+/site.css
+  Cache-Control: public, max-age=31536000, immutable

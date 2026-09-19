@@ -7,11 +7,19 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.hostname.startsWith('www.')) {
-      url.hostname = url.hostname.slice(4);
-      return Response.redirect(url.toString(), 301);
+    // One permanent hop for anything that needs tidying: www to the bare domain, and old links shared as
+    // /Product-Page/Pip/ or /story/ (Wix ignored case and a closing slash). Real files keep their case.
+    const to = new URL(url);
+    if (to.hostname.startsWith('www.')) to.hostname = to.hostname.slice(4);
+    if (to.pathname.length > 1) to.pathname = to.pathname.replace(/\/+$/, '');
+    if (!/\.[a-z0-9]+$/i.test(to.pathname)) to.pathname = to.pathname.toLowerCase();
+    if (to.href !== url.href) return Response.redirect(to.toString(), 301);
+    let res = await env.ASSETS.fetch(request);
+    // the preview address stays up after launch; keep it out of search results so only studiomacon.co is found
+    if (url.hostname.endsWith('.workers.dev')) {
+      res = new Response(res.body, res);
+      res.headers.set('X-Robots-Tag', 'noindex');
     }
-    const res = await env.ASSETS.fetch(request);
     const range = request.headers.get('range');
     if (!range || res.status !== 200) return res;
 
