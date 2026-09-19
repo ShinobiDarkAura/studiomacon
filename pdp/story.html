@@ -1083,10 +1083,27 @@
       g.addEventListener('input', function (e) { var k = e.target.dataset.k; if (!k) return; st[k] = k === 'ar' ? e.target.value : +e.target.value; apply(); });
       apply();
     });
+    // Vertical spacing: each slider adds or removes room above a section (0 = as it is now).
+    var GAPS = [['Above Our Practice', '.opening + .section', 'marginTop'], ['Above process film', '.steps', 'marginTop'],
+                ['Above Drawn Together', '.history', 'marginTop'], ['Below Drawn Together', '.history', 'marginBottom']];
+    var sp = saved.sp = saved.sp || {};
+    var sg = document.createElement('div'); sg.innerHTML = '<h4>Spacing between sections</h4>'; box.appendChild(sg);
+    GAPS.forEach(function (g, i) {
+      var el = document.querySelector(g[1]); if (!el) return;
+      var base = parseFloat(getComputedStyle(el)[g[2]]) || 0;
+      var l = document.createElement('label'); l.style.gridTemplateColumns = '112px 1fr 36px';
+      l.innerHTML = '<span>' + g[0] + '</span><input type="range" min="-240" max="400" step="4"><output></output>';
+      sg.appendChild(l);
+      var r = l.querySelector('input'), o = l.querySelector('output');
+      function apply() { var d = sp[i] || 0; r.value = d; o.textContent = (d > 0 ? '+' : '') + d; el.style[g[2]] = (base + d) + 'px'; try { localStorage.setItem('macon-tune', JSON.stringify(saved)); } catch (e) {} }
+      r.addEventListener('input', function () { sp[i] = +r.value; apply(); });
+      apply();
+    });
     var row = document.createElement('div'); row.className = 'row';
     row.innerHTML = '<button type="button" class="dark">Copy settings</button><button type="button">Reset</button>'; box.appendChild(row);
     row.children[0].onclick = function () {
-      var t = FILMS.map(function (f, i) { var s = state[i]; return s ? f[0] + ': width ' + s.w + '%, shape ' + s.ar + ', corners ' + s.r + 'px, shadow ' + s.sh + '×' : ''; }).join('\n');
+      var t = FILMS.map(function (f, i) { var s = state[i]; return s ? f[0] + ': width ' + s.w + '%, shape ' + s.ar + ', corners ' + s.r + 'px, shadow ' + s.sh + '×' : ''; }).join('\n')
+      t += '\n' + GAPS.map(function (g, i) { var d = sp[i] || 0; return g[0] + ': ' + (d > 0 ? '+' : '') + d + 'px'; }).join('\n');
       (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { row.children[0].textContent = 'Copied'; setTimeout(function () { row.children[0].textContent = 'Copy settings'; }, 1500); }, function () { prompt('Copy these settings:', t); });
     };
     row.children[1].onclick = function () { try { localStorage.removeItem('macon-tune'); } catch (e) {} location.reload(); };
