@@ -222,7 +222,7 @@ EMAILS.update({
     body=eyebrow("Before you decide") + title("Questions<br>answered") + CART
        + notes([("Solid metal", "Every piece is cast solid in bronze, silver or gold. Nothing is plated, and it has real weight in the hand."),
                 ("Made to order", "It is made once it is chosen, and leaves the studio within about ten business days."),
-                ("If it is not right", "Rings are made to size and remade if the fit is off. Any piece can come back within 14 days."),
+                ("If it is not right", "Rings are made to size and remade if the fit is off. Any piece can be returned for store credit within 14 days."),
                 ("A real reply", 'Replying to this email reaches the studio directly, not a help desk.')])
        + button("Return to checkout", CHECKOUT)),
  # Browse abandonment (trigger: Viewed Product; skip if they checked out or were emailed in the last day). After 1 day.
