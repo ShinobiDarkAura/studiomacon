@@ -227,7 +227,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     order = body["order"] if isinstance(body.get("order"), list) else before.get("order") or []
                     write_json(target, {"products": body.get("products") or {}, "pages": body.get("pages") or {},
                                         "shared": body.get("shared") or {}, "stamp": body.get("stamp") or {},
-                                        "order": [str(x) for x in order]},
+                                        "order": [str(x) for x in order],
+                                        "rules": body.get("rules") if isinstance(body.get("rules"), dict) else before.get("rules") or {}},          # never dropped by a save
                                indent=1, ensure_ascii=False)
                     try:
                         rebuild()

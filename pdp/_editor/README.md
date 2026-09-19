@@ -48,3 +48,9 @@ the original wording returns.
 The file is shared through git like everything else. If you and Alex both edit at the
 same time on different machines, whoever saves second can overwrite the first. Easiest
 rule: one of you at a time, and `git pull` before you start.
+
+**Matching colours on the shop grid.** In the lab (http://localhost:3470/pdp/_editor/lab.html), hover a grid tile:
+two sliders appear, **Cool ↔ Warm** and **Mag. ↔ Green**. The picture changes as you drag, and **reset colour**
+puts it back. Press Save & rebuild; the colour is baked into the grid's copy of the picture (the original photograph
+is never touched). A first pass that matches every tile's backdrop to the others automatically:
+`python3 pdp/tools/match_tiles.py --write`.

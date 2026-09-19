@@ -605,5 +605,8 @@
   "meridian-egg-ring",
   "wonderhorn-talisman",
   "starshipkey-pendant"
- ]
+ ],
+ "rules": {
+  "totem_stack": "head-on or 3/4 view, another angle, one in hand, one in situ, one composite, one video (where each exists)"
+ }
 }

@@ -95,6 +95,14 @@
   .fb .chg{left:6px;top:6px;padding:2px 8px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
      background:rgba(0,0,0,.6);color:#fff;border:0;border-radius:4px}
   .fb .zm{left:8px;right:8px;bottom:8px;width:auto;margin:0;accent-color:#fff}
+  /* colour balance for grid tiles: warm/cool and green/magenta, previewed live, baked in when the site is built */
+  .fb .tn{position:absolute;z-index:3;left:8px;right:8px;bottom:34px;display:grid;gap:4px;opacity:0;transition:opacity .15s ease;
+    font:500 9px/1 -apple-system,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+  .fb:hover .tn{opacity:1}
+  .fb .tn label{display:grid;grid-template-columns:62px 1fr 26px;align-items:center;gap:6px}
+  .fb .tn input{width:100%;margin:0;accent-color:#fff}
+  .fb .tn output{text-align:right}
+  .fb .tn .tn-reset{justify-self:end;background:none;border:0;color:#fff;font:inherit;text-decoration:underline;cursor:pointer;padding:0}
   .fb .grip{right:6px;top:6px;width:26px;height:26px;display:grid;place-items:center;border-radius:5px;
      background:rgba(0,0,0,.6);color:#fff;font-size:14px;cursor:move}
   .fb.drag{opacity:.3}
@@ -408,7 +416,19 @@ async function readSets() {
 }
 
 const X_SVG = '<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
-const tileFrame = sl => Object.assign({x: 50, y: 50, z: 1.12}, (EDITS.products[sl] || {}).tile);
+const tileFrame = sl => Object.assign({x: 50, y: 50, z: 1.12, warm: 0, tint: 0}, (EDITS.products[sl] || {}).tile);
+// the same colour balance the build bakes in (build_pdp.tint_gains), shown live through an SVG colour matrix
+const gains = (w, t) => [1 + w * .01 - t * .005, 1 + t * .01, 1 - w * .01 - t * .005];
+function tintFilter(sl, f) {
+  let svg = document.getElementById('tn-defs');
+  if (!svg) { svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.id = 'tn-defs'; svg.setAttribute('width', 0); svg.setAttribute('height', 0); svg.style.position = 'absolute'; document.body.appendChild(svg); }
+  const id = 'tn-' + sl; let fl = svg.querySelector('#' + id);
+  if (!fl) { fl = document.createElementNS('http://www.w3.org/2000/svg', 'filter'); fl.id = id; fl.setAttribute('color-interpolation-filters', 'sRGB');
+    fl.innerHTML = '<feColorMatrix type="matrix"/>'; svg.appendChild(fl); }
+  const [r, g, b] = gains(+f.warm || 0, +f.tint || 0);
+  fl.firstChild.setAttribute('values', `${r} 0 0 0 0  0 ${g} 0 0 0  0 0 ${b} 0 0  0 0 0 1 0`);
+  return (+f.warm || +f.tint) ? `url(#${id})` : 'none';
+}
 const picFrame = (sl, src) => Object.assign({x: 50, y: 50, z: 1}, ((EDITS.products[sl] || {}).frames || {})[src]);
 const look = f => `object-position:${f.x}% ${f.y}%;transform-origin:${f.x}% ${f.y}%;transform:scale(${f.z})`;
 
@@ -419,6 +439,10 @@ function box(kind, sl, src, f, extra) {
     ${kind === 'tile' ? '<span class="grip" draggable="true" title="Drag to reorder">⠿</span>'
                       : `<button class="x" data-src="${src}" title="Remove from the page" aria-label="Remove from the page">${X_SVG}</button>`}
     <input class="zm" type="range" min="1" max="2.5" step="0.01" value="${f.z}" title="Zoom">
+    ${kind === 'tile' ? `<div class="tn">
+      <label>Cool ↔ Warm<input type="range" data-tn="warm" min="-20" max="20" step="0.5" value="${f.warm || 0}"><output>${f.warm || 0}</output></label>
+      <label>Mag. ↔ Green<input type="range" data-tn="tint" min="-20" max="20" step="0.5" value="${f.tint || 0}"><output>${f.tint || 0}</output></label>
+      <button type="button" class="tn-reset">reset colour</button></div>` : ''}
   </div>`;
 }
 
@@ -435,6 +459,7 @@ function skeleton() {
   $('#skPics').classList.add('guided');
   $('#skPics').innerHTML = list.map((src, i) => box(i === 0 ? 'lead' : 'pic', slug, src, picFrame(slug, src), `data-i="${i}"`)).join('');
 
+  $('#pane-skel').querySelectorAll('.fb.tile').forEach(fb => { fb.querySelector('img').style.filter = tintFilter(fb.dataset.slug, tileFrame(fb.dataset.slug)); });
   $('#pane-skel').querySelectorAll('.fb img').forEach(im => { if (!im.complete) im.onload = guides; });
   guides();
 }
@@ -449,12 +474,31 @@ function keep(fb, f) {
   if (fb.dataset.slug === slug) draw();
 }
 
+// colour balance (tiles): preview while dragging, keep on release
+pane.addEventListener('input', ev => {
+  const r = ev.target.closest && ev.target.closest('[data-tn]'); if (!r) return;
+  const fb = r.closest('.fb'), f = fb._f || fbFrame(fb);
+  f[r.dataset.tn] = +r.value; r.nextElementSibling.textContent = r.value;
+  fb.querySelector('img').style.filter = tintFilter(fb.dataset.slug, f); fb._f = f;
+});
+pane.addEventListener('change', ev => {
+  const r = ev.target.closest && ev.target.closest('[data-tn]'); if (!r) return;
+  const fb = r.closest('.fb'); if (fb._f) { keep(fb, fb._f); touched(); }
+});
+pane.addEventListener('click', ev => {
+  const b = ev.target.closest && ev.target.closest('.tn-reset'); if (!b) return;
+  const fb = b.closest('.fb'), f = fbFrame(fb); f.warm = 0; f.tint = 0;
+  fb.querySelectorAll('[data-tn]').forEach(x => { x.value = 0; x.nextElementSibling.textContent = '0'; });
+  fb.querySelector('img').style.filter = tintFilter(fb.dataset.slug, f); keep(fb, f); touched();
+});
+
 // zoom
 pane.addEventListener('input', ev => {
   if (!ev.target.classList.contains('zm')) return;
   const fb = ev.target.closest('.fb'), f = fbFrame(fb);
   f.z = +ev.target.value;
   fb.querySelector('img').style.cssText = look(f);
+  if (fb.dataset.kind === 'tile') fb.querySelector('img').style.filter = tintFilter(fb.dataset.slug, f);          // keep the colour preview
   fb._f = f;
 });
 pane.addEventListener('change', ev => {
@@ -476,6 +520,7 @@ pane.addEventListener('pointerdown', ev => {
     f.y = Math.max(0, Math.min(100, y0 - (e.clientY - sy) / r.height * k));
     f.x = Math.round(f.x * 10) / 10; f.y = Math.round(f.y * 10) / 10;
     im.style.cssText = look(f);
+    if (fb.dataset.kind === 'tile') im.style.filter = tintFilter(fb.dataset.slug, f);
   };
   const up = () => {
     im.removeEventListener('pointermove', move); im.removeEventListener('pointerup', up);
