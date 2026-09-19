@@ -11,15 +11,10 @@
     addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
   })();
 
-  // Once the page has moved, a white fade sits behind the header and the nav turns black (site.css, .head::before)
+  // Once the page has moved, a soft blur sits behind the header (site.css, .head::before)
   (function () {
     var root = document.documentElement, on = false;
-    // on the home page it waits until the film has scrolled away: over the film the nav stays white, with no fade
-    var film = document.querySelector('.film');
-    function check() {
-      var edge = film ? film.getBoundingClientRect().bottom - 90 : 0, now = film ? edge <= 0 : scrollY > 24;
-      if (now !== on) { on = now; root.classList.toggle('past-top', on); }
-    }
+    function check() { var now = scrollY > 24; if (now !== on) { on = now; root.classList.toggle('past-top', on); } }
     addEventListener('scroll', check, {passive: true}); check();
   })();
 
