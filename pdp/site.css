@@ -307,7 +307,7 @@ footer .news .legal a{text-underline-offset:4px}
 
 /* ── a soft blur behind the header once the page moves, so text scrolling underneath never fights
    the nav. Blur, not a colour: it works over white pages, the black panels and photographs alike ── */
-.head::before{content:"";position:fixed;left:0;right:0;top:0;height:calc(var(--head) + 44px);z-index:-1;pointer-events:none;
+.head::before{content:"";position:fixed;left:0;right:0;top:0;height:calc((var(--head) + 44px) * 1.5);z-index:-1;pointer-events:none;
   -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
   -webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent);
   opacity:0;transition:opacity .45s ease}
