@@ -17,7 +17,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Long Gallop", "description": "A long silver head in profile, cut as if the wind had just passed through. Wearers report a pull toward open ground and early mornings. The only one of its kind, carved in wax and polished by hand.", "image": ["https://studiomacon.co/img/ooak-pendant/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ooak-pendant", "offers": [{"@type": "Offer", "price": "640.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ooak-pendant.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789844223">
+<link rel="stylesheet" href="site.css?v=1789855985">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -889,6 +889,8 @@
       if (!drawer) { build(); void drawer.offsetWidth; }          // laid out closed first, so the very first open slides in too
       if (on) { last = document.activeElement; paint(); }
       drawer.inert = !on;
+      if (!on) { drawer.classList.add('closing'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('closing'); }, 720); }
+      else { clearTimeout(drawer._shut); drawer.classList.remove('closing'); }
       requestAnimationFrame(function () { drawer.classList.toggle('open', on); veil.classList.toggle('open', on); });
       document.documentElement.classList.toggle('bag-open', on);
       if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});
