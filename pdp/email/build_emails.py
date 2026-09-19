@@ -233,10 +233,8 @@ def items(loop, title, image, price, link):
            f'<div style="font:400 16px/1 {SANS};color:#ffffff;padding-top:7px">${price}</div></div>'
            f'</td></tr></table></a></td></tr>')
     # every further piece sits behind the first like a stacked deck: only its bottom 18% shows below
-    # each one further back is 32px narrower
-    peek = (f'{{% assign pw = forloop.index0 | times: 32 %}}{{% assign pw = 408 | minus: pw %}}'
-            f'<tr><td align="center" style="padding:0"><a href="{link}" style="text-decoration:none">'
-            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:{{{{ pw }}}}px;'
+    peek = (f'<tr><td align="center" style="padding:0 16px"><a href="{link}" style="text-decoration:none">'
+            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:376px;'
             f'border-radius:0 0 16px 16px;box-shadow:0 14px 22px -12px rgba(0,0,0,.4)"><tr>'
             f'<td height="49" background="{image}" bgcolor="#8a7a6a" style="height:49px;font-size:0;line-height:0;'
             f'border-radius:0 0 16px 16px;background-image:url({image});background-size:cover;background-position:center bottom">&nbsp;</td>'
