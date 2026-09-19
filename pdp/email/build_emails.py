@@ -298,9 +298,9 @@ EMAILS.update({
     subject="Your piece is being made",
     preview="What happens between now and its arrival.",
     body=eyebrow("Studio Maçon") + h1("Your piece<br>is being made") + ORDER
-       + notes([("Made to order", "The piece is being made for you now, in the studio in California."),
-                ("On its way", "It leaves the studio within about ten business days. A tracking link follows when it ships."),
-                ("Questions", 'A reply to this email reaches the studio directly, at <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>.')])),
+       + notes([("Made to order", "We start on your order as soon as it comes in. No two pieces come out alike."),
+                ("On its way", "You can expect it to ship within about ten business days. We'll send you tracking as soon as possible."),
+                ("Questions", "Just reply to this email! We respond to every message directly.")])),
  "thanks-2": dict(
     subject="How to care for your piece",
     preview="Bronze and silver, and how they change with handling.",
