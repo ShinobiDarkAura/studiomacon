@@ -396,7 +396,7 @@ def shop_config():
     tc = SHOPIFY.get("totem-commission", {}).get("variants", [{}])[0].get("id", "")
     return ('<script>window.MACON_SHOP = ' + json.dumps({"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"],
                                                           "enquiry": c.get("enquiryUrl", ""), "totemCommission": tc,
-                                                          "klaviyo": c.get("klaviyo", ""), "klaviyoList": c.get("klaviyoList", "")}) + ';</script>\n')
+                                                          "klaviyo": c.get("klaviyo", ""), "klaviyoList": c.get("klaviyoList", ""), "subscribeUrl": c.get("subscribeUrl", "")}) + ';</script>\n')
 
 
 # The arriving half of the page wipe goes in the head, ahead of everything else.

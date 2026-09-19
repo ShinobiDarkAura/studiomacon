@@ -5,5 +5,6 @@
   "apiVersion": "2025-07",
   "enquiryUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry",
   "klaviyo": "QQsc9L",
-  "klaviyoList": "VRbP98"
+  "klaviyoList": "VRbP98",
+  "subscribeUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/subscribe"
 }

@@ -373,7 +373,7 @@
 
 <button class="dock" id="dock" aria-label="Add to Bag, $260"><span>Add to Bag</span><span>$260</span></button>
 
-<script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581", "klaviyo": "QQsc9L", "klaviyoList": "VRbP98"};</script>
+<script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581", "klaviyo": "QQsc9L", "klaviyoList": "VRbP98", "subscribeUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/subscribe"};</script>
 <script>
   (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
   // A refresh always starts at the top of the page; Back and Forward still return to where you were
@@ -708,24 +708,35 @@
       .then(function (j) { if (window.maconTrack) maconTrack('lead', payload.form); return j; });
   };
 
-  // Newsletter (footer): subscribes straight to the Klaviyo list the studio sends from
+  // Newsletter (footer): subscribes the visitor to Shopify email marketing (see the subscribe function)
   document.querySelectorAll('form[data-newsletter]').forEach(function (f) {
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var cfg = window.MACON_SHOP || {}, input = f.querySelector('input[type=email]'), email = input.value, btn = f.querySelector('button');
-      if (!cfg.klaviyo || !cfg.klaviyoList) return;
       btn.textContent = '…';
-      var body = new URLSearchParams();                                     // Klaviyo's own subscribe endpoint, the one its embedded forms use
-      body.append('g', cfg.klaviyoList); body.append('email', email); body.append('$fields', '$source');
-      body.append('$source', 'Website footer');
-      fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe?company_id=' + cfg.klaviyo,
-            {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: body})
-        .then(function (r) { return r.json(); })
-        .then(function (res) {
-          if (res && res.success === false) throw new Error((res.errors || [])[0] || 'refused');
-          btn.textContent = "You're on the list"; input.value = '';
-          if (window.maconTrack) maconTrack('signup', email);          // Klaviyo now knows this visitor
-        })
+      var done = function () {
+        btn.textContent = "You're on the list"; input.value = '';
+        if (window.maconTrack) maconTrack('signup', email);
+      };
+      // the old Klaviyo list, used only until the Shopify sign-up is switched on
+      var viaKlaviyo = function () {
+        if (!cfg.klaviyo || !cfg.klaviyoList) throw new Error('no list');
+        var body = new URLSearchParams();                                   // Klaviyo's own subscribe endpoint, the one its embedded forms use
+        body.append('g', cfg.klaviyoList); body.append('email', email); body.append('$fields', '$source');
+        body.append('$source', 'Website footer');
+        return fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe?company_id=' + cfg.klaviyo,
+                     {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: body})
+          .then(function (r) { return r.json(); })
+          .then(function (res) { if (res && res.success === false) throw new Error('refused'); });
+      };
+      // subscribes straight into Shopify, which is what starts Shopify Email's welcome series
+      (cfg.subscribeUrl
+        ? fetch(cfg.subscribeUrl, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email: email})})
+            .then(function (r) { return r.json(); })
+            .then(function (j) { if (!j.ok) throw new Error(j.reason); })
+            .catch(viaKlaviyo)                                               // not switched on yet, or unreachable: the old list, so no one is lost
+        : viaKlaviyo())
+        .then(done)
         .catch(function () { btn.textContent = 'Try again'; });
     });
   });

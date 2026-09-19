@@ -294,3 +294,43 @@ for name, e in EMAILS.items():
     with open(os.path.join(PDP, "email", name + ".html"), "w", encoding="utf-8") as f:
         f.write(page(e["preview"], e["body"]))
     print(f"{name}.html   subject: {e['subject']}   preview: {e['preview']}")
+
+# ── Shopify Email versions (Marketing → Shopify Email → "Code your own") ────────────────────
+# Same design; Shopify's own placeholders. Browse abandonment is left out: Shopify Email cannot see
+# visits to this custom site. For the bag emails Shopify gives each piece's title and photo but not
+# its price, so the title picks our held/worn photograph and the price from the catalogue.
+_TITLES = _json.load(open(os.path.join(PDP, "shopify", "titles.json")))
+def _line_case():
+    whens = "".join(
+        f'{{% when "{t}" %}}{{% assign held = "{IMG}/held-{h}.jpg" %}}{{% assign cost = "{_PRICE.get(h, 0):.0f}" %}}'
+        for h, t in _TITLES.items() if h in _PRICE)
+    return ('{% assign held = line.image_url %}{% assign cost = "" %}'
+            '{% case line.product_title %}' + whens + '{% endcase %}')
+
+def to_shopify(html, name):
+    import re
+    html = html.replace("{% unsubscribe_url %}", "{{ unsubscribe_url }}")
+    html = html.replace("{{ organization.name }} · {{ organization.full_address }}",
+                        "{{ shop.name }} · {{ shop.address.city }}")
+    html = html.replace("</body>", "{{ open_tracking_block }}\n</body>")
+    if name.startswith("checkout"):
+        html = html.replace("{% for item in event.extra.line_items %}",
+                            "{% for line in abandoned_checkout.line_items %}" + _line_case())
+        html = (html.replace("{{ item.product.title }}", "{{ line.product_title }}")
+                    .replace(IMG + "/held-{{ item.product.id }}.jpg", "{{ held }}")
+                    .replace("${{ item.line_price|floatformat:0 }}", "{% if cost != '' %}${{ cost }}{% endif %}")
+                    .replace("{{ event.extra.checkout_url }}", "{{ abandoned_checkout.url }}"))
+    if name == "thanks-1":                                   # Shopify's order emails list the pieces already; this one shows the studio
+        html = re.sub(r'{% for item in event\.extra\.line_items %}.*?{% endfor %}',
+                      f'<tr><td align="center"><img src="{HERO1}" width="408" alt="A small bronze totem held in the palm" '
+                      f'style="width:100%;max-width:408px;height:auto;border-radius:16px;margin:0 auto 40px;{SH}"></td></tr>', html, flags=re.S)
+    left = re.findall(r'{{\s*(?:event|item|organization)\.[^}]*}}|{%[^%]*event\.[^%]*%}', html)
+    assert not left, (name, left[:3])                          # nothing Klaviyo-only may remain
+    return html
+
+os.makedirs(os.path.join(PDP, "email", "shopify"), exist_ok=True)
+for name, e in EMAILS.items():
+    if name.startswith("browse"): continue
+    with open(os.path.join(PDP, "email", "shopify", name + ".html"), "w", encoding="utf-8") as f:
+        f.write(to_shopify(page(e["preview"], e["body"]), name))
+    print(f"shopify/{name}.html")
