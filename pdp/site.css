@@ -305,15 +305,14 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
 footer .news .legal{margin:18px 0 0;font-size:12px;letter-spacing:.02em;color:rgba(0,0,0,.5)}
 footer .news .legal a{text-underline-offset:4px}
 
-/* ── a soft blur behind the header once the page moves, so text scrolling underneath never fights
-   the nav. Blur, not a colour: it works over white pages, the black panels and photographs alike ── */
-.head::before{content:"";position:fixed;left:0;right:0;top:0;height:calc(var(--head) + 44px);z-index:-1;pointer-events:none;
-  -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
-  -webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent);
-  opacity:0;transition:opacity .45s ease}
+/* ── once the page moves, a white fade sits behind the header and the whole nav turns black, on every page,
+   so text scrolling underneath never fights it. The home film is the exception: over it the nav stays white
+   with no fade (site.js only sets past-top once the film has scrolled away) ── */
+.head::before{content:"";position:fixed;left:0;right:0;top:0;height:calc((var(--head) + 44px) * 1.5);z-index:-1;pointer-events:none;
+  background:linear-gradient(#fff 40%,rgba(255,255,255,0));opacity:0;transition:opacity .45s ease}
 html.past-top .head::before{opacity:1}
+html.past-top .head .left,html.past-top .head .logotype,html.past-top .head .right{color:#000 !important}
 html.menu-open .head::before{opacity:0}
-@media (prefers-reduced-transparency:reduce){ .head::before{display:none} }
 
 /* ── bag lines, shared by the Bag page and the desktop bag drawer ── */
 .line{display:grid;grid-template-columns:96px 1fr;gap:20px;align-items:center;padding:20px 0;border-bottom:1px solid var(--rule)}
