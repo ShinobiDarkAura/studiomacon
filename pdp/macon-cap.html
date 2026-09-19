@@ -17,7 +17,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Maçon Cap", "description": "A cotton cap with the Maçon mark stitched on the front. It offers a little shade on bright days; wearers report being asked where they found it. Each cap is checked by hand before it ships.", "image": ["https://studiomacon.co/img/macon-cap/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "macon-cap", "offers": [{"@type": "Offer", "price": "50.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/macon-cap.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789858879">
+<link rel="stylesheet" href="site.css?v=1789858962">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -153,7 +153,7 @@
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
-      overscroll-behavior:contain;scrollbar-width:none;text-align:left;padding:24px 0 48px;
+      overscroll-behavior:auto;scrollbar-width:none;text-align:left;padding:24px 0 48px;          /* at its end the wheel carries on down the page */
       display:flex;flex-direction:column;justify-content:safe center}
     .info > *{flex:none}
     .info::-webkit-scrollbar{display:none}

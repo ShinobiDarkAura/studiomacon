@@ -141,7 +141,7 @@
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
-      overscroll-behavior:contain;scrollbar-width:none;text-align:left;padding:24px 0 48px;
+      overscroll-behavior:auto;scrollbar-width:none;text-align:left;padding:24px 0 48px;          /* at its end the wheel carries on down the page */
       display:flex;flex-direction:column;justify-content:safe center}
     .info > *{flex:none}
     .info::-webkit-scrollbar{display:none}
