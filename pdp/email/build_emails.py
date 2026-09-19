@@ -217,12 +217,13 @@ EMAILS.update({
        + text("Every Maçon piece is made to order once it is chosen, so nothing is lost by taking a moment. "
               "The checkout is saved exactly as it was.", "0 178px 31px") + button("Return to checkout", CHECKOUT)),
  "checkout-2": dict(
-    subject="A question about your piece?",
-    preview="Sizing, patina, timing: the studio answers every note.",
-    body=eyebrow("Before you decide") + title("Questions,<br>answered") + CART
-       + notes([("Sizing", "Rings can be made in any size. If the fit is not right, the studio will make it right."),
-                ("Timing", "Each piece is made to order and leaves the studio within about ten business days."),
-                ("Questions", 'A reply to this email reaches the studio directly, at <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>.')])
+    subject="Questions answered",
+    preview="Solid metal, made to order, and what happens if it is not right.",
+    body=eyebrow("Before you decide") + title("Questions<br>answered") + CART
+       + notes([("Solid metal", "Every piece is cast solid in bronze, silver or gold. Nothing is plated, and it has real weight in the hand."),
+                ("Made to order", "It is made once it is chosen, and leaves the studio within about ten business days."),
+                ("If it is not right", "Rings are made to size and remade if the fit is off. Any piece can come back within 14 days."),
+                ("A real reply", 'Replying to this email reaches the studio directly, not a help desk.')])
        + button("Return to checkout", CHECKOUT)),
  # Browse abandonment (trigger: Viewed Product; skip if they checked out or were emailed in the last day). After 1 day.
  "browse-1": dict(
