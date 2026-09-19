@@ -222,7 +222,7 @@ EMAILS = {
 # ── flows that show the shopper's own pieces (Klaviyo fills these in) ──────────────
 def items(loop, title, image, price, link):
     """One row per piece, filled in by Klaviyo. For the preview, one sample row stands in."""
-    row = (f'<tr><td align="center" style="padding:0 0 40px"><a href="{link}" style="text-decoration:none">'
+    row = (f'<tr><td align="center" style="padding:0"><a href="{link}" style="text-decoration:none">'
            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;'
            f'box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr>'
            f'<td height="272" valign="bottom" background="{image}" bgcolor="#8a7a6a" '
@@ -232,8 +232,18 @@ def items(loop, title, image, price, link):
            f'<div style="font:400 35px/1 {SERIF};text-transform:uppercase;color:#ffffff">{title}</div>'
            f'<div style="font:400 16px/1 {SANS};color:#ffffff;padding-top:7px">${price}</div></div>'
            f'</td></tr></table></a></td></tr>')
-    return (f'<tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
-            + (f'{{% for item in {loop} %}}{row}{{% endfor %}}' if loop else row) + '</table></td></tr>')
+    # every further piece sits behind the first like a stacked deck: only its bottom 18% shows below
+    # each one further back is 32px narrower
+    peek = (f'{{% assign pw = forloop.index0 | times: 32 %}}{{% assign pw = 408 | minus: pw %}}'
+            f'<tr><td align="center" style="padding:0"><a href="{link}" style="text-decoration:none">'
+            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:{{{{ pw }}}}px;'
+            f'border-radius:0 0 16px 16px;box-shadow:0 14px 22px -12px rgba(0,0,0,.4)"><tr>'
+            f'<td height="49" background="{image}" bgcolor="#8a7a6a" style="height:49px;font-size:0;line-height:0;'
+            f'border-radius:0 0 16px 16px;background-image:url({image});background-size:cover;background-position:center bottom">&nbsp;</td>'
+            f'</tr></table></a></td></tr>')
+    rows = (f'{{% for item in {loop} %}}{{% if forloop.first %}}{row}{{% else %}}{peek}{{% endif %}}{{% endfor %}}' if loop else row)
+    return (f'<tr><td class="pad" style="padding:0 24px 53px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+            + rows + '</table></td></tr>')
 
 CART = items("event.extra.line_items", "{{ item.product.title }}", IMG + "/held-{{ item.product.id }}.jpg",
              "{{ item.line_price|floatformat:0 }}", "{{ event.extra.checkout_url }}")
@@ -243,7 +253,7 @@ ORDER = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.pro
 CHECKOUT = "{{ event.extra.checkout_url }}"
 
 def notes(rows):
-    cells = "".join(f'<tr><td align="center" style="padding:0 0 34px"><div style="font:400 27px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
+    cells = "".join(f'<tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
                     f'<div style="font:400 15px/1.6 {SANS};color:#333333">{d}</div></td></tr>' for t, d in rows)
     return (f'<tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto">'
             f'{cells}</table></td></tr>')
