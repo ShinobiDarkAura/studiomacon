@@ -213,7 +213,7 @@ EMAILS = {
  "welcome-3": dict(
     subject="Your welcome code closes soon",
     preview="MACON10 is good for two more days.",
-    body=eyebrow("Studio Maçon") + h1("Meant to<br>be held") + image(INSITU, "Zuma resting on a stack of books at home")
+    body=eyebrow("Studio Maçon") + h1("Meant to<br>be held") + image(HAND, "Ren, held in the palm of a hand")
        + text("They're small, but you really feel the weight of one in your hand. "
               "And the longer you keep it close, the more it becomes yours.", "0 131px 34px")          # narrower column
        + code("10% off, two days left") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
