@@ -318,6 +318,25 @@ EMAILS.update({
                              '<a href="https://www.instagram.com/studiomacon/">@studiomacon</a>.')])
        + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
        + friends() + trio(three(("Rebi", "rebi"), ("Zuma Ring", "zuma-ring"), ("Yaël", "yael")))),
+
+ # Thank customers after they purchase: the email Shopify sends after a customer's second order
+ "thanks-repeat": dict(
+    subject="Look who's back",
+    preview="Your second piece is underway. Thank you, truly.",
+    body=eyebrow("Studio Maçon") + h1("Good to see<br>you again") + image(HAND, "Ren, held in the palm of a hand")
+       + text("A second order means a lot to a studio our size. We've already started on it, and we'll send tracking "
+              "as soon as it's on its way. Thank you for coming back!", "0 131px 34px")
+       + button("Browse artifacts", SITE + "/shop")
+       + friends() + trio(three(("Milo", "milo"), ("Eclipse Ring", "eclipse-ring"), ("Ibi", "ibi")))),
+ # Win back customers: sent to customers who haven't ordered in 60 days
+ "winback-1": dict(
+    subject="We've been thinking of you",
+    preview="A few new things from the studio, whenever you're ready.",
+    body=eyebrow("Studio Maçon") + h1("It's been<br>a little while") + image(INSITU, "Zuma resting on a stack of books at home")
+       + text("We hope your piece has found a good spot. Things have been busy here, with new pieces coming out of "
+              "the wax and into the world. Come take a look whenever you like.", "0 131px 34px")
+       + button("Browse artifacts", SITE + "/shop")
+       + friends() + trio(three(("Rebi", "rebi"), ("Lunar Canyon", "lunar-canyon-ring"), ("Yaël", "yael")))),
 })
 
 os.makedirs(os.path.join(PDP, "email"), exist_ok=True)
