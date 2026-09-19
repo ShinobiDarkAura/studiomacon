@@ -215,9 +215,9 @@ EMAILS = {
  "welcome-3": dict(
     subject="Your welcome code closes soon",
     preview="MACON10 is good for two more days.",
-    body=eyebrow("Studio Maçon") + h1("Meant to<br>be held") + image(TURN, "A piece turned slowly in the hand")
-       + text("They're small, but you really feel the weight of one in your hand. "
-              "And the longer you keep it close, the more it becomes yours.", "0 131px 34px")          # narrower column
+    body=eyebrow("Studio Maçon") + h1("Made to live<br>with you") + image(TURN, "A silver ring turned slowly between two fingers")
+       + text("On a finger, in a pocket, or on a shelf by the bed, our pieces slowly pick up the marks of your days. "
+              "Give it time, and yours won't look like anyone else's.", "0 131px 34px")          # narrower column
        + code("10% off, two days left") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
        + friends() + trio(three(("Milo", "milo"), ("Eleph", "eleph"), ("Ibi", "ibi")))),
 }
