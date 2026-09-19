@@ -138,8 +138,8 @@ def text(t, pad="0 111px 34px"):
             f'<div style="max-width:{w}px;margin:0 auto">{t}</div></td></tr>')
 
 def image(src, alt, link=SITE + "/shop?discount=" + CODE):
-    return (f'<tr><td class="pad" style="padding:0 24px 63px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
-            f'style="width:100%;max-width:504px;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"></a></td></tr>')
+    return (f'<tr><td class="pad" align="center" style="padding:0 24px 63px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
+            f'style="width:100%;max-width:504px;height:auto;margin:0 auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"></a></td></tr>')
 
 def button(label, href):
     top = 16 if label == "Return to checkout" else 4          # a little more air above the checkout button
