@@ -187,11 +187,16 @@ EMAILS = {
 # ── flows that show the shopper's own pieces (Klaviyo fills these in) ──────────────
 def items(loop, title, image, price, link):
     """One row per piece, filled in by Klaviyo. For the preview, one sample row stands in."""
-    row = (f'<tr><td align="center" style="padding:0 0 31px"><a href="{link}"><img src="{image}" width="408" alt="" '
-           f'style="width:100%;max-width:408px;height:auto;border-radius:16px;margin:0 auto;'
-           f'box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"></a>'
-           f'<div style="font:400 30px/1 {SERIF};text-transform:uppercase;color:#000000;padding-top:18px">{title}</div>'
-           f'<div style="font:400 14px/1 {SANS};color:#6b6b6b;padding-top:9px">${price}</div></td></tr>')
+    row = (f'<tr><td align="center" style="padding:0 0 40px"><a href="{link}" style="text-decoration:none">'
+           f'<table role="presentation" width="408" cellpadding="0" cellspacing="0" style="width:408px;max-width:100%;border-radius:16px;'
+           f'box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr>'
+           f'<td width="408" height="272" valign="bottom" background="{image}" bgcolor="#8a7a6a" '
+           f'style="height:272px;border-radius:16px;background-image:url({image});background-size:cover;background-position:center">'
+           f'<div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;'
+           f'background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))">'
+           f'<div style="font:400 35px/1 {SERIF};text-transform:uppercase;color:#ffffff">{title}</div>'
+           f'<div style="font:400 17px/1 {SANS};color:#ffffff;padding-top:7px">${price}</div></div>'
+           f'</td></tr></table></a></td></tr>')
     return (f'<tr><td class="pad" style="padding:0 60px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             + (f'{{% for item in {loop} %}}{row}{{% endfor %}}' if loop else row) + '</table></td></tr>')
 
@@ -215,15 +220,15 @@ EMAILS.update({
     preview="The piece is waiting where you left it.",
     body=eyebrow("Your bag") + title("We saved it<br>for you") + CART
        + text("Every Maçon piece is made to order once it is chosen, so nothing is lost by taking a moment. "
-              "The checkout is saved exactly as it was.", "0 178px 31px") + button("Return to checkout", CHECKOUT)),
+              "The checkout is saved exactly as it was.", "0 153px 31px") + button("Return to checkout", CHECKOUT)),
  "checkout-2": dict(
     subject="Questions answered",
     preview="Solid metal, made to order, and what happens if it is not right.",
     body=eyebrow("Before you decide") + title("Questions<br>answered") + CART
        + notes([("Solid metal", "Every piece is cast solid in bronze, silver or gold. Nothing is plated, and it has real weight in the hand."),
-                ("Made to order", "It is made once it is chosen, and leaves the studio within about ten business days."),
-                ("If it is not right", "Rings are made to size and remade if the fit is off. Any piece can be returned for store credit within 14 days."),
-                ("A real reply", 'Replying to this email reaches the studio directly, not a help desk.')])
+                ("Made to order", "It is made by hand once it is chosen, and it leaves the studio in California within about ten business days."),
+                ("If it's not right", "Rings are made to size and remade if the fit is off. Any piece can be returned for store credit in 14 days."),
+                ("Still curious?", "A reply to this email reaches the studio directly, not a help desk. Every note is read and answered in turn.")])
        + button("Return to checkout", CHECKOUT)),
  # Browse abandonment (trigger: Viewed Product; skip if they checked out or were emailed in the last day). After 1 day.
  "browse-1": dict(
@@ -233,12 +238,12 @@ EMAILS.update({
        + "{% if event.ProductID|slice:'11:25' in '" + ",".join(TOTEM_IDS) + "' %}"
        + title("They're thinking<br>about you, too") + VIEWED
        + text("Every totem is drawn, carved in wax and cast in bronze by hand, then finished in the studio in California. "
-              "No two leave quite alike.", "0 178px 31px") + button("Take another look", "{{ event.URL }}")
+              "No two leave quite alike.", "0 153px 31px") + button("Take another look", "{{ event.URL }}")
        + text("Other totems", "8px 48px 18px") + trio(three(("Pip", "pip"), ("Ori", "ori"), ("Milo", "milo")))
        + "{% else %}"
        + title("Still catching<br>the light") + VIEWED
        + text("Every piece is drawn, carved in wax and cast in silver or gold by hand, then finished in the studio in California. "
-              "No two leave quite alike.", "0 178px 31px") + button("Take another look", "{{ event.URL }}")
+              "No two leave quite alike.", "0 153px 31px") + button("Take another look", "{{ event.URL }}")
        + text("Other jewelry", "8px 48px 18px")
        + "{% if 'Eclipse' in event.ProductName %}" + trio(three(("Zuma Ring", "zuma-ring"), ("Lunar Canyon", "lunar-canyon-ring"), ("Caldera Arc", "ear-cuff")))
        + "{% else %}" + trio(three(("Eclipse Ring", "eclipse-ring"), ("Meridian Egg", "meridian-egg-ring"), ("Sietch Ring", "sietch-aperture"))) + "{% endif %}"
