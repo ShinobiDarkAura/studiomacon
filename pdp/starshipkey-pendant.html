@@ -427,6 +427,13 @@
     var eye = document.querySelector('.head .logotype');
     if (!eye || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     eye.addEventListener('animationend', function () { eye.classList.remove('eye-blink', 'eye-look'); });
+    function look() { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add('eye-look'); }
+    // it looks around once when it first appears (on the home page, once the intro has faded), and whenever it is hovered
+    var home = document.querySelector('.film');
+    if (!home) setTimeout(look, 600);
+    else new MutationObserver(function (m, o) { if (document.body.classList.contains('logo-docked')) { o.disconnect(); setTimeout(look, 700); } })
+      .observe(document.body, {attributes: true, attributeFilter: ['class']});
+    eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
     (function next() {
       setTimeout(function () {
         if (!document.hidden) { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add(Math.random() < 0.25 ? 'eye-look' : 'eye-blink'); }

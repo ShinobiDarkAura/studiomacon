@@ -55,7 +55,9 @@
   .head .logotype{transition:transform .7s var(--ease),color .3s ease}
   body.logo-scrub .head .logotype{transition:color .3s ease}
   /* on the home page the logotype is not a link: it points at the page you are on */
-  body .head .logotype{pointer-events:none;cursor:default}
+  body .head .logotype{cursor:default}          /* it points at the page you are on, but can still be hovered to make the eye look around */
+  /* once the film has scrolled past, the nav stays black */
+  body.past-film .head .left,body.past-film .head .logotype,body.past-film .head .right{color:#000 !important}
   /* arriving back from a piece, it is simply already the right size: no flight */
   body.logo-still .head .logotype{transition:none}
   body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(3.3088)}
@@ -369,9 +371,12 @@
     chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
     window.MaconHeroQuiet();
   })();
+  // on the home page the eye is hoverable; a click takes you back to the top instead of reloading the page
+  document.querySelector('.head .logotype').addEventListener('click', function (e) { e.preventDefault(); scrollTo({top: 0, behavior: 'smooth'}); }, true);
   function cue() {
     if (document.documentElement.classList.contains('menu-open')) return;          // frozen while the drawer is open
     var on = scrollY > 40;
+    document.body.classList.toggle('past-film', document.querySelector('.film').getBoundingClientRect().bottom <= 100);
     var build = document.querySelector('.logo-build');          // the intro's MAÇON fades as the film scrolls away
     if (build) build.style.setProperty('--scroll-fade', String(Math.max(0, 1 - scrollY / ((window.MaconScrubSpan ? window.MaconScrubSpan() : 400) * 0.45))));          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
     document.querySelector('.film').classList.toggle('scrolled', on);
