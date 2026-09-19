@@ -22,6 +22,10 @@
   .step{margin:0 0 16px;page-break-inside:avoid}
   .step .t{font-weight:600;font-size:12.6px;margin-bottom:4px}
   .link{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:#111;background:#f4f1ea;padding:1px 5px;border-radius:3px;word-break:break-all}
+  a{color:#111;text-decoration:none;border-bottom:1px solid #b9b3a6}
+  a.link{border-bottom:1px solid #cfc8b9}
+  .go{display:block;margin:5px 0 7px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.6px;word-break:break-all}
+  .go a{border-bottom:1px solid #cfc8b9}
   .foot{position:absolute;left:0.8in;right:0.8in;bottom:0.5in;display:flex;justify-content:space-between;font-size:8.4px;color:#9a9a9a;letter-spacing:.06em}
   .cover{display:flex;flex-direction:column;justify-content:center;height:100%}
   .cover h1{font-size:62px;margin-bottom:22px}
@@ -88,7 +92,7 @@
 
   <div class="step"><div class="t"><span class="who">Alex</span>1 · Un-proxy the email signing records</div>
     <p>Cloudflare → studiomacon.co → DNS → Records. These are orange (“proxied”), which breaks signing. Open each,
-      set <strong>Proxy status → DNS only</strong>, save:</p>
+      set <strong>Proxy status → DNS only</strong>, save:</p><p class="go"><a href="https://dash.cloudflare.com/?to=/:account/studiomacon.co/dns/records">dash.cloudflare.com → studiomacon.co → DNS → Records</a></p>
     <p><span class="link">kl._domainkey</span> <span class="link">kl2._domainkey</span> <span class="link">hello</span>
        <span class="link">newsletter</span> <span class="link">s1._domainkey</span> <span class="link">s2._domainkey</span>
        <span class="link">sel1._domainkey</span> <span class="link">sg</span></p>
@@ -96,13 +100,13 @@
       publishes DMARC is treated as suspicious.</p></div>
 
   <div class="step"><div class="t"><span class="who">Alex</span>2 · Make Shopify send as studiomacon.co</div>
-    <p>Shopify admin → Settings → Notifications → Sender email → <em>Authenticate</em>. Shopify gives four CNAME
+    <p class="go"><a href="https://admin.shopify.com/store/w3nidi-ny/settings/notifications">admin.shopify.com → Settings → Notifications</a></p><p>Shopify admin → Settings → Notifications → Sender email → <em>Authenticate</em>. Shopify gives four CNAME
       records; add them in Cloudflare as <strong>DNS only</strong>. Send me a screenshot and I'll check they match.</p>
     <p>Why: order confirmations and shipping emails are the ones customers actually wait for. Sent from an
       unauthenticated address, they are the most likely of all our mail to be filtered.</p></div>
 
   <div class="step"><div class="t"><span class="who">Hannah</span>3 · Paste the four order emails into Shopify</div>
-    <p>Shopify admin → Settings → Notifications → Customer notifications. For each one below, open it,
+    <p class="go"><a href="https://admin.shopify.com/store/w3nidi-ny/settings/notifications">admin.shopify.com → Settings → Notifications → Customer notifications</a></p><p class="go"><a href="file:///Users/aco/Documents/git/studiomacon/pdp/email/shopify">the template files: pdp/email/shopify/</a></p><p>Shopify admin → Settings → Notifications → Customer notifications. For each one below, open it,
       select all the code, and paste in the file Alex sends:</p>
     <table>
       <tr><th>Shopify notification</th><th>File</th><th>What it is</th></tr>
@@ -116,7 +120,7 @@
       in Stage 3 instead.</p></div>
 
   <div class="step"><div class="t"><span class="who">Alex</span>4 · Klaviyo key for the footer sign-up</div>
-    <p>The site's footer box is wired but needs one value: Klaviyo → Settings → API keys → a private key with
+    <p class="go"><a href="https://www.klaviyo.com/settings/account/api-keys">klaviyo.com → Settings → API keys</a></p><p>The site's footer box is wired but needs one value: Klaviyo → Settings → API keys → a private key with
       <span class="link">list write</span>. Send it to me and the sign-up starts working the same day.</p></div>
 <div class="foot"><span>Studio Maçon</span><span>3</span></div></section>
 
@@ -125,14 +129,14 @@
   <h2>Ads plumbing</h2>
 
   <div class="step"><div class="t"><span class="who">Hannah</span>5 · Shopify's “Facebook &amp; Instagram” app</div>
-    <p><span class="link">apps.shopify.com/facebook</span> → Install → log in with the account that runs our ads.</p>
+    <p class="go"><a href="https://apps.shopify.com/facebook">https://apps.shopify.com/facebook</a></p><p>Install, then log in with the account that runs our ads.</p>
     <ul><li>Pixel: choose the existing one ending <strong>…574699</strong>. Never a new one.</li>
       <li>Data sharing: <strong>Maximum</strong>.</li>
       <li>If it offers to make a catalog: yes.</li></ul>
     <p>Why: the purchase happens on Shopify's checkout, so this app is what tells Meta a sale happened.</p></div>
 
   <div class="step"><div class="t"><span class="who">Hannah</span>6 · Shopify's “Google &amp; YouTube” app</div>
-    <p><span class="link">apps.shopify.com/google</span> → Install → connect Analytics <strong>G-B5GNGQ1WME</strong>
+    <p class="go"><a href="https://apps.shopify.com/google">https://apps.shopify.com/google</a></p><p>Install, then connect Analytics <strong>G-B5GNGQ1WME</strong>
       and Google Ads <strong>AW-16466703173</strong>, conversion tracking on. Connect Merchant Center but skip
       adding products for now.</p></div>
 
@@ -154,16 +158,15 @@
       page, a product, the bag, a Wix redirect, video on iPhone, and that mail to hello@ still arrives.</p></div>
 
   <div class="step"><div class="t"><span class="who">Hannah</span>9 · Give Shopify the product photographs</div>
-    <p>Products → Import → the file <span class="link">shopify/product-images.csv</span> → tick
+    <p class="go"><a href="https://admin.shopify.com/store/w3nidi-ny/products">admin.shopify.com → Products → Import</a></p><p class="go"><a href="file:///Users/aco/Documents/git/studiomacon/pdp/shopify/product-images.csv">the file: pdp/shopify/product-images.csv</a></p><p>Products → Import → that file → tick
       <strong>Overwrite products with matching handles</strong>. Only works after step 8, since Shopify fetches each
       photograph from studiomacon.co.</p></div>
 
   <div class="step"><div class="t"><span class="who">Hannah</span>10 · Point Meta's catalog at the new site</div>
-    <p><span class="link">business.facebook.com/commerce</span> → our catalog → Catalog → Data sources →
-      Supplementary feeds → Add → Scheduled feed:</p>
-    <p><span class="link">https://studiomacon.co/meta-catalog.csv</span> — repeat Daily, currency USD.</p>
+    <p class="go"><a href="https://business.facebook.com/commerce">business.facebook.com/commerce</a></p><p>Our catalog → Catalog → Data sources → Supplementary feeds → Add → Scheduled feed:</p>
+    <p class="go"><a href="https://studiomacon.co/meta-catalog.csv">https://studiomacon.co/meta-catalog.csv</a></p><p>Repeat: Daily. Currency: USD.</p>
     <p>Then move each product ad onto that catalog. Google Merchant Center gets the same treatment with
-      <span class="link">https://studiomacon.co/google-products.xml</span>.</p></div>
+      the Google feed.</p><p class="go"><a href="https://merchants.google.com">merchants.google.com</a></p><p class="go"><a href="https://studiomacon.co/google-products.xml">https://studiomacon.co/google-products.xml</a></p></div>
 
   <div class="step"><div class="t"><span class="who claude">Claude</span>11 · Emails repointed and resubmitted</div>
     <p>I rebuild the emails against the live domain, re-submit the sitemap in Search Console, and re-check the
@@ -180,23 +183,23 @@
       <li>Buy a real piece with a real card, from a phone, using a personal email address.</li>
       <li>Expect: Shopify's <strong>order confirmation</strong> within a minute, and our “Your piece is being made”
         if it is set as the confirmation template.</li>
-      <li>In Shopify, mark it fulfilled and paste any tracking number. Expect the <strong>shipping email</strong>
+      <li>In Shopify (<a href="https://admin.shopify.com/store/w3nidi-ny/orders">Orders</a>), mark it fulfilled and paste any tracking number. Expect the <strong>shipping email</strong>
         with a working Follow your parcel button.</li>
       <li>Then refund it. Expect the <strong>refund notification</strong>.</li>
       <li>Check each email in Gmail: not in spam, photographs visible, ç in Maçon correct, buttons working on a phone.</li>
     </ul></div>
 
   <div class="step"><div class="t"><span class="who">Hannah</span>13 · Meta is hearing the site</div>
-    <p>Events Manager → pixel …574699 → Test events → open studiomacon.co. Look at a piece, add to bag, start
+    <p class="go"><a href="https://business.facebook.com/events_manager2">business.facebook.com → Events Manager → Test events</a></p><p>Pixel …574699 → Test events → open studiomacon.co. Look at a piece, add to bag, start
       checkout. You should see <strong>PageView, ViewContent, AddToCart, InitiateCheckout</strong>. Purchase appears
       from the real order in step 12.</p></div>
 
   <div class="step"><div class="t"><span class="who">Hannah</span>14 · Google is hearing the site</div>
-    <p>Analytics → Reports → Realtime; open the site on your phone and you should appear within a minute.
-      Also check Commerce Manager → Items shows about 69 items with no red issues.</p></div>
+    <p class="go"><a href="https://analytics.google.com/analytics/web/#/realtime/overview">analytics.google.com → Realtime</a></p><p>Open the site on your phone and you should appear within a minute.
+      Also check Commerce Manager → Items shows about 69 items with no red issues.</p><p class="go"><a href="https://business.facebook.com/commerce">business.facebook.com/commerce → Items</a></p></div>
 
   <div class="step"><div class="t"><span class="who">Alex</span>15 · Spam check</div>
-    <p>Send one of our emails to the address that <span class="link">mail-tester.com</span> gives you; aim for 9/10
+    <p class="go"><a href="https://www.mail-tester.com">https://www.mail-tester.com</a></p><p>Send one of our emails to the address it gives you; aim for 9/10
       or better. It reads SPF, DKIM, DMARC and the content, and names anything that needs fixing.</p></div>
 <div class="foot"><span>Studio Maçon</span><span>6</span></div></section>
 
@@ -209,7 +212,7 @@
       disconnect Facebook and Google in Wix, then cancel the Wix plan. Keep the domain — it lives at GoDaddy.</p></div>
 
   <div class="step"><div class="t"><span class="who">Alex</span>17 · Decide where the welcome email lives</div>
-    <p>Right now Klaviyo sends the welcome series with MACON10, and Shopify sends the order emails. That works.
+    <p class="go"><a href="https://www.klaviyo.com/flows">klaviyo.com/flows</a></p><p>Right now Klaviyo sends the welcome series with MACON10, and Shopify sends the order emails. That works.
       The alternative is moving everything into Shopify Messaging and turning the Klaviyo flows off, which means one
       list and one bill. Either is fine; the mistake would be leaving both switched on, since new subscribers would
       get two welcomes.</p></div>
@@ -219,8 +222,9 @@
       any product is failing in the catalogs, and fix the site side of anything that looks wrong.</p></div>
 
   <h3>Apple Pay — my recommendation</h3>
-  <p>Today our Apple Pay button builds the cart and hands off to Shopify's checkout, where Apple Pay is offered.
-    It is one page-load slower than the instant sheet. The instant sheet only exists if the payment sheet runs on our
+  <p>The Apple Pay button is now a plain <strong>Buy Now</strong> button: it builds the cart and goes straight
+    to Shopify's checkout, where Apple Pay and the cards are offered. Apple's own guidelines forbid showing the Apple
+    Pay mark on a button that does not open the Apple Pay sheet, so the mark is gone until it really does. The instant sheet only exists if the payment sheet runs on our
     own domain, which means either embedding Shopify's own accelerated-checkout button, or registering the domain
     with Apple and driving Shopify's Storefront API ourselves.</p>
   <p><strong>Recommendation: leave it as it is for launch.</strong> Embedding Shopify's button brings Shopify's
@@ -238,14 +242,14 @@
     <tr><td>Meta domain verification</td><td>ae0yp3uhbruy2um27iahgcmha7bnph</td></tr>
     <tr><td>Google Analytics</td><td>G-B5GNGQ1WME</td></tr>
     <tr><td>Google Ads</td><td>AW-16466703173</td></tr>
-    <tr><td>Shopify store</td><td>w3nidi-ny.myshopify.com</td></tr>
-    <tr><td>Meta feed</td><td>https://studiomacon.co/meta-catalog.csv</td></tr>
-    <tr><td>Google feed</td><td>https://studiomacon.co/google-products.xml</td></tr>
-    <tr><td>Sitemap</td><td>https://studiomacon.co/sitemap.xml</td></tr>
-    <tr><td>Preview site (stays up after launch)</td><td>studiomacon.studiomacon.workers.dev</td></tr>
+    <tr><td>Shopify store</td><td><a href="https://admin.shopify.com/store/w3nidi-ny">w3nidi-ny.myshopify.com</a></td></tr>
+    <tr><td>Meta feed</td><td><a href="https://studiomacon.co/meta-catalog.csv">https://studiomacon.co/meta-catalog.csv</a></td></tr>
+    <tr><td>Google feed</td><td><a href="https://studiomacon.co/google-products.xml">https://studiomacon.co/google-products.xml</a></td></tr>
+    <tr><td>Sitemap</td><td><a href="https://studiomacon.co/sitemap.xml">https://studiomacon.co/sitemap.xml</a></td></tr>
+    <tr><td>Preview site (stays up after launch)</td><td><a href="https://studiomacon.studiomacon.workers.dev">studiomacon.studiomacon.workers.dev</a></td></tr>
     <tr><td>Welcome discount</td><td>MACON10 — 10% off a first order</td></tr>
-    <tr><td>Email templates</td><td>site folder → pdp/email/shopify/</td></tr>
-    <tr><td>Product photo import</td><td>site folder → pdp/shopify/product-images.csv</td></tr>
+    <tr><td>Email templates</td><td><a href="file:///Users/aco/Documents/git/studiomacon/pdp/email/shopify">pdp/email/shopify/</a></td></tr>
+    <tr><td>Product photo import</td><td><a href="file:///Users/aco/Documents/git/studiomacon/pdp/shopify/product-images.csv">pdp/shopify/product-images.csv</a></td></tr>
   </table>
 
   <h3>Order of play, in one line</h3>
