@@ -67,6 +67,13 @@
     /* photographs left, words right, in the same centre column as the opening (mirrored) */
     .history{grid-template-columns:minmax(0,600px) minmax(0,420px);justify-content:center;column-gap:clamp(64px,9vw,140px);align-items:center}          /* a little more air between the photographs and the words */
     .history .intro{justify-self:start}
+    /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
+    .history{align-items:stretch}
+    .childhood{padding:0;align-items:stretch}
+    .polaroid:first-child{align-self:flex-end}
+    .polaroid:last-child{align-self:flex-start}
+    .polaroid:first-child .card{transform:rotate(-3.5deg) translate(14px,0)}
+    .polaroid:last-child .card{transform:rotate(2.8deg) translate(-14px,0)}
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
     .opening{grid-template-columns:minmax(0,420px) minmax(0,600px);justify-content:center;column-gap:clamp(40px,6vw,96px);align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
@@ -120,11 +127,11 @@
       <figure class="polaroid"><span class="card"><img src="img/pages/alex-polaroid.jpg" alt="Alex as a child, drawing"></span></figure>
     </div>
     <div class="intro">
-      <p class="eyebrow">Our History</p>
+      <p class="eyebrow">Our Story</p>
       <h1>Drawn<br>Together</h1>
-      <p class="lede">Alex and Hannah met in a figure drawing class at RISD in 2008: two freshmen at neighbouring easels, learning to look at the same thing and see it differently. They became close friends, and then, as people do, drifted apart across distance and years.</p>
-      <p class="lede">When they found their way back, they married in 2023. Through all of it they made things for each other, small objects shaped by hand and given without occasion, because making was the truest way either of them knew to say it.</p>
-      <p class="lede">That is where Maçon comes from. Artifacts of love: pieces drawn from the ancient objects that have always moved them, and pieces that are themselves the evidence of a love that is still being made, meant to be held.</p>
+      <p class="lede">We met in a figure drawing class at RISD in 2008. Two eager freshmen at neighboring easels, learning to see. We became close friends and yet, over the years, we drifted apart.</p>
+      <p class="lede">When we found our way back to each other, we married in 2023. Through all of it, though, we kept making things for each other. Small gestures that reminded us of what was there all along. Probably because making things was the only way either of us knew to say it.</p>
+      <p class="lede">That is where Maçon comes from. Pieces spoken as a language for a love we had no words for all along. Artifacts of love.</p>
     </div>
   </section>
 </main>
