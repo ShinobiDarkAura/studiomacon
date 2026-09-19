@@ -644,6 +644,18 @@ def save(name, doc, product=None):
                       '<link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png">'
                       '<meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs">'
                       '<meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">', 1)
+    # large photographs also offer their phone-sized copy, so phones do not download the 2400 px one
+    def phone(m):
+        tag, src, w = m.group(0), m.group(1), m.group(2)
+        small = src.replace(".jpg.webp", "--m.jpg.webp")
+        # not the top picture: on phones it fills the whole screen height, cropped, and needs every pixel
+        if "srcset" in tag or 'fetchpriority="high"' in tag or int(w) <= 1380 or not os.path.exists(os.path.join(OUT, small)):
+            return tag
+        return tag.replace(f'src="{src}"', f'src="{src}" srcset="{small} 1200w, {src} {w}w" '
+                                            f'sizes="(max-width: 767px) 100vw, 60vw"', 1)
+    doc = re.sub(r'<img width="(?:\d+)"[^>]*?src="(img/[^"]+\.jpg\.webp)"[^>]*>',
+                 lambda m: phone(type("M", (), {"group": lambda self, i: [m.group(0), m.group(1),
+                     re.search(r'width="(\d+)"', m.group(0)).group(1)][i]})()), doc)
     left = re.findall(r"\{\{[A-Z]+\}\}", doc)
     assert not left, (name, "unfilled template tokens", left)
     with open(os.path.join(OUT, name), "w", encoding="utf-8") as f:

@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Ida's Wonder Horn", "description": "A silver spiral on a thirty inch chain, after the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment hums along. Its inner curl is filed and polished by hand.", "image": ["https://studiomacon.co/img/wonderhorn-talisman/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "wonderhorn-talisman", "offers": [{"@type": "Offer", "price": "390.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/wonderhorn-talisman.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789772008">
+<link rel="stylesheet" href="site.css?v=1789810744">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -293,9 +293,9 @@
   <section class="product">
     <div class="gallery" data-under-nav>
       <figure class="hero"><img width="3000" height="2000" src="img/wonderhorn-talisman/plain-1.jpg.webp" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Ida&#x27;s Wonder Horn" fetchpriority="high"></figure>
-      <figure><img width="3127" height="2088" src="img/wonderhorn-talisman/plain-2.jpg.webp" alt="" loading="lazy"></figure>
-      <figure><img width="3600" height="2400" src="img/wonderhorn-talisman/plain-3.jpg.webp" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="" loading="lazy"></figure>
-      <figure><img width="2400" height="1352" src="img/wonderhorn-talisman/hand-1.jpg.webp" alt="" loading="lazy"></figure>
+      <figure><img width="3127" height="2088" src="img/wonderhorn-talisman/plain-2.jpg.webp" srcset="img/wonderhorn-talisman/plain-2--m.jpg.webp 1200w, img/wonderhorn-talisman/plain-2.jpg.webp 3127w" sizes="(max-width: 767px) 100vw, 60vw" alt="" loading="lazy"></figure>
+      <figure><img width="3600" height="2400" src="img/wonderhorn-talisman/plain-3.jpg.webp" srcset="img/wonderhorn-talisman/plain-3--m.jpg.webp 1200w, img/wonderhorn-talisman/plain-3.jpg.webp 3600w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="" loading="lazy"></figure>
+      <figure><img width="2400" height="1352" src="img/wonderhorn-talisman/hand-1.jpg.webp" srcset="img/wonderhorn-talisman/hand-1--m.jpg.webp 1200w, img/wonderhorn-talisman/hand-1.jpg.webp 2400w" sizes="(max-width: 767px) 100vw, 60vw" alt="" loading="lazy"></figure>
     </div>
 
     <div class="info">
@@ -681,9 +681,16 @@
   window.MaconCheckout = function (items, button) {
     var cfg = window.MACON_SHOP || {};
     var lines = items.filter(function (i) { return i.variant; }).map(function (i) { return {merchandiseId: i.variant, quantity: i.qty || 1}; });
-    if (!lines.length) return Promise.reject(new Error('Nothing to check out'));
+    if (!lines.length) {
+      if (button) { button.textContent = 'Please re-add your piece'; setTimeout(function () { button.textContent = button.dataset.label || 'Checkout'; }, 3500); }
+      return Promise.reject(new Error('Nothing to check out'));
+    }
+    if (button && button.disabled) return Promise.resolve();          // a second tap while the first is on its way
+    if (button) button.disabled = true;
     if (window.maconTrack) maconTrack('checkout', items);
     if (button) { button.setAttribute('aria-busy', 'true'); button.dataset.label = button.textContent; button.textContent = 'One moment…'; }
+    // coming back from Shopify with the Back button restores this page from memory: make the button usable again
+    if (button) addEventListener('pageshow', function () { button.disabled = false; button.removeAttribute('aria-busy'); if (button.dataset.label) button.textContent = button.dataset.label; }, {once: true});
     // Shopify's standard cart link: the same checkout, but it counts as an Online Store checkout, which is
     // what Shopify's own abandoned-checkout emails listen to (checkouts opened through the Storefront API do not)
     var code = ''; try { code = sessionStorage.getItem('macon-discount') || ''; } catch (e) {}
@@ -708,7 +715,8 @@
     f.addEventListener('submit', function (e) {
       e.preventDefault();
       var cfg = window.MACON_SHOP || {}, input = f.querySelector('input[type=email]'), email = input.value, btn = f.querySelector('button');
-      btn.textContent = '…';
+      if (btn.disabled) return;          // already sending
+      btn.disabled = true; btn.textContent = '…';
       var done = function () {
         btn.textContent = "You're on the list"; input.value = '';
         if (window.maconTrack) maconTrack('signup', email);
@@ -732,7 +740,7 @@
             .catch(viaKlaviyo)                                               // not switched on yet, or unreachable: the old list, so no one is lost
         : viaKlaviyo())
         .then(done)
-        .catch(function () { btn.textContent = 'Try again'; });
+        .catch(function () { btn.textContent = 'Try again'; btn.disabled = false; });
     });
   });
 
@@ -748,7 +756,8 @@
     function add(item) {
       var items = read();
       var same = items.filter(function (i) { return i.slug === item.slug && (i.size || '') === (item.size || ''); })[0];
-      if (same) same.qty = (same.qty || 1) + 1; else { item.qty = 1; items.push(item); }
+      if (same) { same.qty = (same.qty || 1) + 1; if (item.variant) same.variant = item.variant; if (item.price) same.price = item.price; if (item.img) same.img = item.img; }          // keep the newest Shopify id, so an old bag never checks out a retired size
+      else { item.qty = 1; items.push(item); }
       write(items);
       if (window.maconTrack) maconTrack('add', {variant: item.variant, name: item.name, slug: item.slug, price: item.price, qty: 1, image: item.image});
     }

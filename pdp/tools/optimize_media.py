@@ -27,6 +27,22 @@ def make_tile(src):
     im.save(out, "WEBP", quality=80, method=6)
 
 
+PHONE = 1200          # a phone at 3x fills at most ~1200 px, so phones get this lighter copy (see srcset in build_pdp.save)
+
+
+def make_phone(src):
+    """A phone-sized copy of a large photograph, <name>--m.<ext>.webp, used through srcset."""
+    out = src.with_name(src.stem + "--m" + src.suffix + ".webp")
+    if out.exists() and out.stat().st_mtime >= src.stat().st_mtime:
+        return
+    im = ImageOps.exif_transpose(Image.open(src))
+    if im.width <= PHONE * 1.15:          # already small: no second copy
+        return
+    im = im.convert("RGB")
+    im.thumbnail((PHONE, PHONE * 3), Image.LANCZOS)
+    im.save(out, "WEBP", quality=78, method=6)
+
+
 def main():
     before, after = defaultdict(int), defaultdict(int)
     for src in sorted(ROOT.rglob("*")):
@@ -34,8 +50,10 @@ def main():
             continue
         rel = src.relative_to(ROOT)
         top = rel.parts[0] if len(rel.parts) > 1 else "(root)"
-        if src.stem.endswith("--tile"):
+        if src.stem.endswith("--tile") or src.stem.endswith("--m"):
             continue
+        if src.suffix.lower() in (".jpg", ".jpeg") and top not in SMALL:
+            make_phone(src)
         if len(rel.parts) > 1 and rel.parts[0] in PIECES:          # any photograph of a piece may be chosen for the grids
             make_tile(src)
         out = src.with_name(src.name + ".webp")

@@ -41,7 +41,7 @@ button{background:none;border:0;padding:0;cursor:pointer}
 .head .left{justify-self:start;display:flex;gap:32px}
 .head .right{justify-self:end;white-space:nowrap;position:relative}
 /* added-to-bag toast, tucked under the Bag link */
-.bag-toast{position:absolute;top:calc(100% + 14px);right:0;width:max-content;border-radius:8px;display:flex;align-items:center;gap:12px;padding:10px 14px 10px 10px;
+.bag-toast{position:absolute;top:calc(100% + 14px);right:0;width:max-content;max-width:calc(100vw - 2 * var(--gutter, 16px));border-radius:8px;display:flex;align-items:center;gap:12px;padding:10px 14px 10px 10px;
   background:#fff;color:#000;border:1px solid var(--rule);box-shadow:0 10px 30px rgba(0,0,0,.08);font-size:13px;line-height:1.35;
   white-space:nowrap;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .35s ease,transform .45s var(--ease)}
 .bag-toast.on{opacity:1;transform:none}
