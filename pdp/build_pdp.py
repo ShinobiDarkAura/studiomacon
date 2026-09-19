@@ -790,7 +790,7 @@ def related_block(p, products):
         for x in pick)
     return ('<section class="related" aria-label="Other pieces">'
             '<p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2>'
-            '<p class="rel-blurb">Pieces that tend to share a pocket, a shelf or a story with this one.</p>'
+            '<p class="rel-blurb">We’d like to introduce you to a few friends</p>'
             f'<div class="rel-grid">{tiles}</div></section>')
 
 
