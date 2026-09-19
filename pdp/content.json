@@ -79,8 +79,8 @@
     "x": 50,
     "y": 50,
     "z": 1,
-    "warm": -3.5,
-    "tint": 0.0
+    "warm": -2.5,
+    "tint": -0.5
    },
    "gallery": [
     "img/eleph/hires-1.jpg",
@@ -255,8 +255,8 @@
     "x": 50,
     "y": 50,
     "z": 1,
-    "warm": -5.0,
-    "tint": 0.0
+    "warm": -6.0,
+    "tint": 0.5
    },
    "tile_before_hires": {
     "x": 50,
@@ -299,7 +299,7 @@
     "x": 50,
     "y": 50,
     "z": 1,
-    "warm": -2.0,
+    "warm": -6.5,
     "tint": 1.5
    },
    "tile_before_hires": {
@@ -322,7 +322,7 @@
     "x": 50,
     "y": 50,
     "z": 1,
-    "warm": -1.5,
+    "warm": -5.5,
     "tint": 0.5
    },
    "gallery": [
@@ -360,7 +360,7 @@
     "x": 50,
     "y": 50,
     "z": 1,
-    "warm": -2.0,
+    "warm": -6.5,
     "tint": 0.0
    },
    "gallery": [
