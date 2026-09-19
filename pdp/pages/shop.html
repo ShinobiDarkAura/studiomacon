@@ -40,6 +40,9 @@
   body.hero-quiet .film .tagline{opacity:0}
   .logo-build{transition:opacity 1.2s ease}
   body.hero-quiet .logo-build{opacity:0}
+  /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
+     and stays there: it never flies back down, even at the top of the page */
+  body.logo-docked .head .logotype{transform:none !important;opacity:1 !important;transition:opacity .8s ease,color .3s ease !important}
   /* once it has faded away, it simply reappears in the nav: no shrinking flight back up */
   body.hero-quiet:not(.logo-hero) .head .logotype{transition:opacity .6s ease,color .3s ease}
   /* On the shop page the logotype starts 2.8x larger in the middle of the film and is
@@ -281,7 +284,11 @@
   window.MaconHeroQuiet = function () {
     clearTimeout(quiet);
     if (scrollY > 40) { document.body.classList.remove('hero-quiet'); return; }
-    quiet = setTimeout(function () { if (scrollY <= 40) document.body.classList.add('hero-quiet'); }, 8000);
+    quiet = setTimeout(function () {
+      if (scrollY > 40) return;
+      document.body.classList.add('hero-quiet');                        // the big logotype fades where it is...
+      setTimeout(function () { document.body.classList.add('logo-docked'); }, 1300);   // ...then reappears in the nav
+    }, 8000);
   };
 
   // The big logotype sits exactly in the middle of the first screen
