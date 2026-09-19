@@ -349,6 +349,7 @@
         .then(function (res) {
           if (res && res.success === false) throw new Error((res.errors || [])[0] || 'refused');
           btn.textContent = "You're on the list"; input.value = '';
+          if (window.maconTrack) maconTrack('signup', email);          // Klaviyo now knows this visitor
         })
         .catch(function () { btn.textContent = 'Try again'; });
     });
@@ -368,7 +369,7 @@
       var same = items.filter(function (i) { return i.slug === item.slug && (i.size || '') === (item.size || ''); })[0];
       if (same) same.qty = (same.qty || 1) + 1; else { item.qty = 1; items.push(item); }
       write(items);
-      if (window.maconTrack) maconTrack('add', {variant: item.variant, name: item.name, slug: item.slug, price: item.price, qty: 1});
+      if (window.maconTrack) maconTrack('add', {variant: item.variant, name: item.name, slug: item.slug, price: item.price, qty: 1, image: item.image});
     }
     return {read: read, write: write, count: count, add: add};
   })();
@@ -396,6 +397,7 @@
           return;
         }
         MaconBag.add({
+          image: location.origin + '/img/email/tile-' + location.pathname.split('/').pop().replace('.html', '') + '.jpg',
           slug: location.pathname.split('/').pop().replace('.html', ''),
           name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
           img: hero ? hero.getAttribute('src') : '', size: size,
