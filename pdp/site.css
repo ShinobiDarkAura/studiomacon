@@ -187,7 +187,7 @@ footer .field button{padding:0 0 0 18px}
 .menu-sheet a{font:400 34px/1.05 var(--serif);text-transform:uppercase;color:#000}
 .menu-sheet a.two-line{line-height:.98}          /* Shipping / & Returns: the two lines held close */
 /* the page slides right as the menu comes in from the left edge */
-body > :not(.menu-sheet):not(script):not(.dock){transition:transform .6s cubic-bezier(.65,0,.25,1)}
+body > :not(.menu-sheet):not(script):not(.dock):not(.bag-veil):not(.bag-drawer){transition:transform .6s cubic-bezier(.65,0,.25,1)}          /* the bag keeps its own timing */
 html.menu-open body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(var(--drawer))}
 html.menu-open .dock{visibility:hidden}
 html.menu-open{overflow:hidden}          /* lock the page on the root only: locking the body too made it a scrolling box of its own, which shifted the page 16px while the drawer was open */
