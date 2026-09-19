@@ -131,7 +131,8 @@ def image(src, alt, link=SITE + "/shop?discount=" + CODE):
             f'style="width:100%;max-width:504px;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"></a></td></tr>')
 
 def button(label, href):
-    return (f'<tr><td align="center" style="padding:4px 24px 53px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
+    top = 16 if label == "Return to checkout" else 4          # a little more air above the checkout button
+    return (f'<tr><td align="center" style="padding:{top}px 24px 53px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
             f'<td bgcolor="#000000" style="background:#000000"><a href="{href}" style="display:inline-block;padding:17px 44px;'
             f'font:500 12px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">{label}</a>'
             f'</td></tr></table></td></tr>')
