@@ -16,7 +16,7 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789811819">
+<link rel="stylesheet" href="site.css?v=1789839743">
 <style>
   .done-page{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
   .done-page p.lede{margin:0 0 32px;font-size:17px;line-height:1.55}
@@ -179,6 +179,7 @@
       <input type="email" placeholder="Email address" aria-label="Email address" required>
       <button>Submit</button>
     </form>
+    <p class="legal" data-edit="page:confirmation.html:d221367e"><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/privacy-policy">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/terms-of-service">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/refund-policy">Refunds</a></p>
   </div>
 </footer>
 <script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581", "klaviyo": "QQsc9L", "klaviyoList": "VRbP98", "subscribeUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/subscribe"};</script>
@@ -193,6 +194,13 @@
       addEventListener('load', function () { scrollTo(0, 0); });
     }
     addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
+  })();
+
+  // Once the page has moved, a soft blur sits behind the header (site.css, .head::before)
+  (function () {
+    var root = document.documentElement, on = false;
+    function check() { var now = scrollY > 24; if (now !== on) { on = now; root.classList.toggle('past-top', on); } }
+    addEventListener('scroll', check, {passive: true}); check();
   })();
 
   // Accordions: the height eases through a grid-row transition, so nothing is

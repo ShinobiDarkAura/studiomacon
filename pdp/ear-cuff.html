@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Caldera Arc", "description": "A clean silver line that rests on the ear, no piercing required. Light breaks into odd colours across its mirrored edge. Shaped and polished by hand to hold securely.", "image": ["https://studiomacon.co/img/ear-cuff/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ear-cuff", "offers": [{"@type": "Offer", "price": "260.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ear-cuff.html"}, {"@type": "Offer", "price": "490.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ear-cuff.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789811819">
+<link rel="stylesheet" href="site.css?v=1789839743">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -391,6 +391,7 @@
       <input type="email" placeholder="Email address" aria-label="Email address" required>
       <button>Submit</button>
     </form>
+    <p class="legal"><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/privacy-policy">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/terms-of-service">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/refund-policy">Refunds</a></p>
   </div>
 </footer>
 
@@ -408,6 +409,13 @@
       addEventListener('load', function () { scrollTo(0, 0); });
     }
     addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
+  })();
+
+  // Once the page has moved, a soft blur sits behind the header (site.css, .head::before)
+  (function () {
+    var root = document.documentElement, on = false;
+    function check() { var now = scrollY > 24; if (now !== on) { on = now; root.classList.toggle('past-top', on); } }
+    addEventListener('scroll', check, {passive: true}); check();
   })();
 
   // Accordions: the height eases through a grid-row transition, so nothing is

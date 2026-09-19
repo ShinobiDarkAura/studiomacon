@@ -11,6 +11,13 @@
     addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
   })();
 
+  // Once the page has moved, a soft blur sits behind the header (site.css, .head::before)
+  (function () {
+    var root = document.documentElement, on = false;
+    function check() { var now = scrollY > 24; if (now !== on) { on = now; root.classList.toggle('past-top', on); } }
+    addEventListener('scroll', check, {passive: true}); check();
+  })();
+
   // Accordions: the height eases through a grid-row transition, so nothing is
   // measured in script and a panel of any length opens at the same pace.
   document.querySelectorAll('.acc-head').forEach(function (b) {

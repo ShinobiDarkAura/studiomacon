@@ -300,3 +300,17 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   .head .mob::after,.menu-close::after,footer .field button::after{content:"";position:absolute;inset:-12px -10px}
   .menu-sheet a{padding-block:4px}
 }
+
+/* privacy, terms and refunds (Shopify hosts the policies): quiet, under the sign-up */
+footer .news .legal{margin:18px 0 0;font-size:12px;letter-spacing:.02em;color:rgba(0,0,0,.5)}
+footer .news .legal a{text-underline-offset:4px}
+
+/* ── a soft blur behind the header once the page moves, so text scrolling underneath never fights
+   the nav. Blur, not a colour: it works over white pages, the black panels and photographs alike ── */
+.head::before{content:"";position:fixed;left:0;right:0;top:0;height:calc(var(--head) + 44px);z-index:-1;pointer-events:none;
+  -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
+  -webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent);
+  opacity:0;transition:opacity .45s ease}
+html.past-top .head::before{opacity:1}
+html.menu-open .head::before{opacity:0}
+@media (prefers-reduced-transparency:reduce){ .head::before{display:none} }
