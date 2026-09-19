@@ -40,6 +40,7 @@
   body.hero-quiet.logo-hero .head .logotype{opacity:0;transition:opacity 1.2s ease,transform .7s var(--ease),color .3s ease}
   body.hero-quiet .film .tagline{opacity:0}
   .logo-build{transition:opacity 1.2s ease;opacity:var(--scroll-fade,1)}
+  body.logo-scrub .logo-build{transition:opacity .2s linear}          /* while scrolling it follows the scroll, not the slow idle fade */
   body.hero-quiet .logo-build{opacity:0}
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
      and stays there: it never flies back down, even at the top of the page */
@@ -378,7 +379,7 @@
     var on = scrollY > 40;
     document.body.classList.toggle('past-film', document.querySelector('.film').getBoundingClientRect().bottom <= 100);
     var build = document.querySelector('.logo-build');          // the intro's MAÇON fades as the film scrolls away
-    if (build) build.style.setProperty('--scroll-fade', String(Math.max(0, 1 - scrollY / ((window.MaconScrubSpan ? window.MaconScrubSpan() : 400) * 0.45))));          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
+    if (build) build.style.setProperty('--scroll-fade', String(Math.max(0, 1 - scrollY / 140)));          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
     document.querySelector('.film').classList.toggle('scrolled', on);
     var flying = scrollY < (window.MaconScrubSpan ? window.MaconScrubSpan() : 400);
     if (!flying && scrollY > 0) document.body.classList.add('logo-docked');          // scrolled all the way into the nav: it stays there
