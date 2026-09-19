@@ -51,6 +51,7 @@ def eye(w=150):
 EYE = eye()
 HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 3 / 2)
 HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 3 / 2)
+INSITU = jpg("_originals/insitu-zuma.jpg", "insitu-zuma.jpg", 1200, 4 / 5, (0.5, 0.62))          # Zuma at home, on a stack of books
 FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 1, (0.5, 0.3) if n == "cast" else (0.5, 0.5)) for n in ("drawn", "cast", "finished")]
 POUR = jpg("_originals/still-cast.jpg", "pour-hero.jpg", 1200, 4 / 5)
 STEPS = [png(f"img/pages/{n}.png", f"step-{n}.png", 260) for n in ("draw", "cast", "polish")]
@@ -212,9 +213,9 @@ EMAILS = {
  "welcome-3": dict(
     subject="Your welcome code closes soon",
     preview="MACON10 is good for two more days.",
-    body=eyebrow("Studio Maçon") + h1("Meant to<br>be held") + image(HAND, "Ren, held in the palm of a hand")
-       + text("Every piece is cast and finished by hand, so no two are alike. "
-              "They continue to evolve as you live with them.", "0 147px 34px")          # 20% narrower column
+    body=eyebrow("Studio Maçon") + h1("Meant to<br>be held") + image(INSITU, "Zuma resting on a stack of books at home")
+       + text("Our pieces are small enough to close a hand around, and heavy enough that you notice them there. "
+              "Keep one close and it changes with you: the patina deepens and wears in its own way, until it's unmistakably yours.", "0 147px 34px")          # 20% narrower column
        + code("10% off, two days left") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
        + friends() + trio(three(("Milo", "milo"), ("Eleph", "eleph"), ("Ibi", "ibi")))),
 }
