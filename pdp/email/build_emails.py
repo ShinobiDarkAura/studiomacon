@@ -242,7 +242,7 @@ EMAILS.update({
  "checkout-1": dict(
     subject="We saved it for you",
     preview="The piece is waiting where you left it.",
-    body=eyebrow("Your bag") + title("We saved it<br>for you") + CART
+    body=eyebrow("Studio Maçon") + title("We saved it<br>for you") + CART
        + text("Every Maçon piece is made to order once it is chosen, so nothing is lost by taking a moment. "
               "The checkout is saved exactly as it was.", "0 153px 31px") + button("Return to checkout", CHECKOUT)),
  "checkout-2": dict(
