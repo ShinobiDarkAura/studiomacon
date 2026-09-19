@@ -100,7 +100,7 @@ def h1(t):
 def text(t, pad="0 111px 28px"):
     return f'<tr><td class="pad" align="center" style="padding:{pad};font:400 16px/1.6 {SANS};color:#000000">{t}</td></tr>'
 
-def image(src, alt, link=SITE + "/shop"):
+def image(src, alt, link=SITE + "/shop?discount=" + CODE):
     return (f'<tr><td class="pad" style="padding:0 48px 52px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
             f'style="width:100%;max-width:504px;height:auto;border-radius:6px"></a></td></tr>')
 
@@ -147,7 +147,7 @@ EMAILS = {
     body=eyebrow("Studio Maçon") + h1("Small things,<br>made to last") + image(HERO1, "Pip, held in the palm of a hand")
        + text("Maçon makes artifacts and jewelry to be carried, worn and handed down. Each piece is drawn on paper, "
               "carved by hand in wax and cast in bronze, silver or gold, then finished by hand in the studio.")
-       + code("10% off a first piece") + button("See the pieces", SITE + "/shop")
+       + code("10% off a first piece") + button("See the pieces", SITE + "/shop?discount=" + CODE)
        + text("A few to start with", "8px 48px 18px") + trio(PIECES)),
  "welcome-2": dict(
     subject="How a Maçon piece is made",
@@ -155,7 +155,7 @@ EMAILS = {
     body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal")
        + text("No two pieces leave the studio quite alike. The patina is built up by hand, and it keeps changing: "
               "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
-       + steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop")
+       + steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
        + text("A few to start with", "8px 48px 18px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
  "welcome-3": dict(
     subject="Your welcome code closes soon",
@@ -163,7 +163,7 @@ EMAILS = {
     body=eyebrow("A last note") + h1("Meant to<br>be held") + image(HAND, "Ren, held in the palm of a hand")
        + text("Every piece is made to order, so it is made for whoever asks for it. "
               "The welcome code is good for two more days.")
-       + code("10% off, two days left") + button("Choose a piece", SITE + "/shop")
+       + code("10% off, two days left") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
        + text("A few to start with", "8px 48px 18px") + trio(three(("Milo", "milo"), ("Eleph", "eleph"), ("Ibi", "ibi")))),
 }
 
@@ -231,7 +231,7 @@ EMAILS.update({
                 ("Silver", "Silver darkens slowly in the air. A polishing cloth brings it back; wearing it often does the same."),
                 ("Share it", 'Photographs of Maçon pieces in their new homes are always welcome: '
                              '<a href="https://www.instagram.com/studiomacon/">@studiomacon</a>.')])
-       + button("See the other pieces", SITE + "/shop")
+       + button("See the other pieces", SITE + "/shop?discount=" + CODE)
        + text("Others in the collection", "8px 48px 18px") + trio(three(("Rebi", "rebi"), ("Zuma Ring", "zuma-ring"), ("Yaël", "yael")))),
 })
 
