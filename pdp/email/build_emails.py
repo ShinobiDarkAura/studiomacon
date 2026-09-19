@@ -20,10 +20,10 @@ SERIF = "'Instrument Serif','Times New Roman',Georgia,serif"
 SANS = "'Helvetica Neue',Helvetica,Arial,sans-serif"
 
 # ── images, sized for email (2x for sharp screens) ──────────────────────────────────
-def jpg(src, name, w=1200, ratio=None):
+def jpg(src, name, w=1200, ratio=None, centre=(0.5, 0.5)):
     im = ImageOps.exif_transpose(Image.open(os.path.join(PDP, src))).convert("RGB")
     if ratio:                                                      # cover-crop to a shape
-        im = ImageOps.fit(im, (w, round(w / ratio)), Image.LANCZOS)
+        im = ImageOps.fit(im, (w, round(w / ratio)), Image.LANCZOS, centering=centre)
     else:
         im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
     im.save(os.path.join(PDP, "img/email", name), quality=82, optimize=True, progressive=True)
@@ -51,7 +51,7 @@ def eye(w=150):
 EYE = eye()
 HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 3 / 2)
 HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 3 / 2)
-FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 3 / 2) for n in ("drawn", "cast", "finished")]
+FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 1, (0.5, 0.3) if n == "cast" else (0.5, 0.5)) for n in ("drawn", "cast", "finished")]
 POUR = jpg("_originals/still-cast.jpg", "pour-hero.jpg", 1200, 4 / 5)
 STEPS = [png(f"img/pages/{n}.png", f"step-{n}.png", 260) for n in ("draw", "cast", "polish")]
 # an email-sized picture of every piece, the one the shop grid shows (also used by the site's Klaviyo events)
@@ -115,6 +115,10 @@ def title(t):
             f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>'
             f'<tr><td align="center" style="padding:0 0 40px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
             f'<td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0">&nbsp;</td></tr></table></td></tr>')
+
+def friends():
+    return ('<tr><td class="pad" align="center" style="padding:8px 48px 22px;font:400 16px/1.35 ' + SANS + ';color:#000000">'
+            "We'd like to introduce you<br>to a few friends</td></tr>")
 
 def text(t, pad="0 111px 34px"):
     return f'<tr><td class="pad" align="center" style="padding:{pad};font:400 16px/1.6 {SANS};color:#000000">{t}</td></tr>'
@@ -180,24 +184,24 @@ EMAILS = {
     body=eyebrow("Studio Maçon") + h1("Small things,<br>made to last") + image(HERO1, "Pip, held in the palm of a hand")
        + text("Maçon makes artifacts and jewelry to be carried, worn and handed down. Each piece is drawn on paper, "
               "carved by hand in wax and cast in bronze, silver or gold, then finished by hand in the studio.")
-       + code("10% off a first piece") + button("See the pieces", SITE + "/shop?discount=" + CODE)
-       + text("We\'d like to introduce you<br>to a few friends of ours", "8px 48px 22px") + trio(PIECES)),
+       + code("10% off your first purchase") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
+       + friends() + trio(PIECES)),
  "welcome-2": dict(
     subject="How a Maçon piece is made",
     preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
     body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal")
        + text("No two pieces leave the studio quite alike. The patina is built up by hand, and it keeps changing: "
               "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
-       + film_steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
-       + text("We\'d like to introduce you<br>to a few friends of ours", "8px 48px 22px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
+       + film_steps() + code("10% off your first purchase") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
+       + friends() + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
  "welcome-3": dict(
     subject="Your welcome code closes soon",
     preview="MACON10 is good for two more days.",
     body=eyebrow("A last note") + h1("Meant to<br>be held") + image(HAND, "Ren, held in the palm of a hand")
        + text("Every piece is made to order, so it is made for whoever asks for it. "
               "The welcome code is good for two more days.")
-       + code("10% off, two days left") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
-       + text("We\'d like to introduce you<br>to a few friends of ours", "8px 48px 22px") + trio(three(("Milo", "milo"), ("Eleph", "eleph"), ("Ibi", "ibi")))),
+       + code("10% off, two days left") + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
+       + friends() + trio(three(("Milo", "milo"), ("Eleph", "eleph"), ("Ibi", "ibi")))),
 }
 
 # ── flows that show the shopper's own pieces (Klaviyo fills these in) ──────────────
@@ -254,13 +258,13 @@ EMAILS.update({
        + "{% if event.ProductID|slice:'11:25' in '" + ",".join(TOTEM_IDS) + "' %}"
        + title("They're thinking<br>about you, too") + VIEWED
        + text("Every totem is drawn, carved in wax and cast in bronze by hand, then finished in the studio in California. "
-              "No two leave quite alike.", "0 153px 31px") + button("Take another look", "{{ event.URL }}")
-       + text("Other totems", "8px 48px 18px") + trio(three(("Pip", "pip"), ("Ori", "ori"), ("Milo", "milo")))
+              "No two leave quite alike.", "0 153px 31px") + button("Browse artifacts", "{{ event.URL }}")
+       + friends() + trio(three(("Pip", "pip"), ("Ori", "ori"), ("Milo", "milo")))
        + "{% else %}"
        + title("Still catching<br>the light") + VIEWED
        + text("Every piece is drawn, carved in wax and cast in silver or gold by hand, then finished in the studio in California. "
-              "No two leave quite alike.", "0 153px 31px") + button("Take another look", "{{ event.URL }}")
-       + text("Other jewelry", "8px 48px 18px")
+              "No two leave quite alike.", "0 153px 31px") + button("Browse artifacts", "{{ event.URL }}")
+       + friends()
        + "{% if 'Eclipse' in event.ProductName %}" + trio(three(("Zuma Ring", "zuma-ring"), ("Lunar Canyon", "lunar-canyon-ring"), ("Caldera Arc", "ear-cuff")))
        + "{% else %}" + trio(three(("Eclipse Ring", "eclipse-ring"), ("Meridian Egg", "meridian-egg-ring"), ("Sietch Ring", "sietch-aperture"))) + "{% endif %}"
        + "{% endif %}"),
@@ -281,8 +285,8 @@ EMAILS.update({
                 ("Silver", "Silver darkens slowly in the air. A polishing cloth brings it back; wearing it often does the same."),
                 ("Share it", 'Photographs of Maçon pieces in their new homes are always welcome: '
                              '<a href="https://www.instagram.com/studiomacon/">@studiomacon</a>.')])
-       + button("See the other pieces", SITE + "/shop?discount=" + CODE)
-       + text("Others in the collection", "8px 48px 18px") + trio(three(("Rebi", "rebi"), ("Zuma Ring", "zuma-ring"), ("Yaël", "yael")))),
+       + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
+       + friends() + trio(three(("Rebi", "rebi"), ("Zuma Ring", "zuma-ring"), ("Yaël", "yael")))),
 })
 
 os.makedirs(os.path.join(PDP, "email"), exist_ok=True)
