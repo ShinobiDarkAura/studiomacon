@@ -79,7 +79,8 @@
    "gallery": [
     "img/eleph/hires-1.jpg",
     "img/eleph/hand-2.jpg",
-    "img/eleph/plain-2.jpg"
+    "img/eleph/plain-2.jpg",
+    "img/eleph/hires-3.jpg"
    ],
    "hero": "img/eleph/hero.jpg",
    "hidden": [],
@@ -106,7 +107,8 @@
    },
    "gallery": [
     "img/ibi/hires-2.jpg",
-    "img/ibi/hand-2.jpg"
+    "img/ibi/hand-2.jpg",
+    "img/ibi/hires-4.jpg"
    ],
    "hero": "img/ibi/hero.jpg",
    "hidden": [],
@@ -248,7 +250,9 @@
    "hero": "img/ori/plain-1.jpg",
    "gallery": [
     "img/ori/plain-3.jpg",
-    "img/ori/hand-2.jpg"
+    "img/ori/hand-2.jpg",
+    "img/ori/hires-1.jpg",
+    "img/ori/hires-2.jpg"
    ],
    "hidden": [],
    "tile_hover": "img/ori/hand-1.jpg",
