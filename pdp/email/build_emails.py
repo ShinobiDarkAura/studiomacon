@@ -330,6 +330,18 @@ EMAILS.update({
               "as soon as it's on its way. Thank you for coming back!", "0 131px 34px")
        + button("Browse artifacts", SITE + "/shop")
        + friends() + trio(three(("Milo", "milo"), ("Eclipse Ring", "eclipse-ring"), ("Ibi", "ibi")))),
+ # Shipping confirmation (Shopify notification: Shipping confirmation). Sent the moment a parcel gets tracking.
+ "shipping-1": dict(
+    subject="Your piece is on its way",
+    preview="It has left the studio, with tracking.",
+    body=eyebrow("Studio Ma\u00e7on") + h1("On its way<br>to you") + image(HAND, "Ren, held in the palm of a hand")
+       + text("Your piece has left the studio in California. Tracking can take a day to start moving, "
+              "so don't worry if it looks quiet at first.", "0 131px 34px")
+       + button("Follow your parcel", "{{ fulfillment.tracking_url | default: order_status_url }}")
+       + notes([("Tracking", "{{ fulfillment.tracking_company }} &#183; {{ fulfillment.tracking_number }}"),
+                ("When it lands", "Bronze darkens where a thumb rests and brightens where it rubs. "
+                                  "A soft dry cloth is all it ever needs; polish takes the patina with it."),
+                ("Questions", "Just reply to this email! We respond to every message directly.")])),
  # Win back customers: sent to customers who haven't ordered in 60 days
  "winback-1": dict(
     subject="We've been thinking of you",
