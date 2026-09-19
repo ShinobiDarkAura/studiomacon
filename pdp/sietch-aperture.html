@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Sietch Ring", "description": "Sterling silver with a single opening, recovered from the wake of a passing comet. Through it appear landscapes found on no map; cartographers have stopped asking. The opening is polished by hand from the inside out.", "image": ["https://studiomacon.co/img/sietch-aperture/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "sietch-aperture", "offers": [{"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/sietch-aperture.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/sietch-aperture.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/sietch-aperture.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/sietch-aperture.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/sietch-aperture.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/sietch-aperture.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/sietch-aperture.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/sietch-aperture.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789840824">
+<link rel="stylesheet" href="site.css?v=1789841099">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -803,6 +803,79 @@
     return {read: read, write: write, count: count, add: add};
   })();
 
+  // The bag's lines, drawn the same way on the Bag page and in the desktop drawer. Returns the subtotal.
+  window.MaconBagMoney = function (n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits: n % 1 ? 2 : 0}); };
+  window.MaconBagLines = function (lines) {
+    var items = MaconBag.read(), money = MaconBagMoney, sub = 0;
+    lines.innerHTML = '';
+    items.forEach(function (it, i) {
+      sub += it.price * it.qty;
+      var row = document.createElement('div'); row.className = 'line';
+      // one price per piece: the line's total, with the price of one alongside when there are several
+      var price = it.qty > 1 ? money(it.price * it.qty) + ' (' + money(it.price) + ' each)' : money(it.price);
+      row.innerHTML = '<a href="' + it.slug + '.html"><img src="' + it.img + '" alt=""></a>' +
+        '<div><p class="nm"><a href="' + it.slug + '.html">' + it.name + '</a></p>' +
+        '<p class="meta">' + price + (it.size ? ' · Size ' + it.size : '') + '</p>' +
+        '<span class="qty"><button type="button" data-d="-1" aria-label="One fewer">−</button><span>' + it.qty + '</span>' +
+        '<button type="button" data-d="1" aria-label="One more">+</button><button type="button" class="remove">Remove</button></span></div>';
+      row.querySelectorAll('[data-d]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var all = MaconBag.read(); all[i].qty += +b.dataset.d;
+          if (all[i].qty < 1) all.splice(i, 1);
+          MaconBag.write(all);
+        });
+      });
+      row.querySelector('.remove').addEventListener('click', function () { var all = MaconBag.read(); all.splice(i, 1); MaconBag.write(all); });
+      lines.appendChild(row);
+    });
+    return sub;
+  };
+
+  // Desktop: Bag opens a drawer from the right instead of leaving the page (phones still go to bag.html)
+  (function () {
+    var link = document.querySelector('.head .right a'); if (!link) return;
+    var wide = matchMedia('(min-width:768px)'), drawer = null, veil = null, last = null;
+    if (!/bag\.html$/.test(location.pathname)) link.setAttribute('data-bag-drawer', '');          // the page fade leaves this link to the drawer
+    function build() {
+      veil = document.createElement('div'); veil.className = 'bag-veil';
+      drawer = document.createElement('aside'); drawer.className = 'bag-drawer'; drawer.setAttribute('aria-label', 'Your bag');
+      drawer.setAttribute('role', 'dialog'); drawer.setAttribute('aria-modal', 'true'); drawer.inert = true;
+      drawer.innerHTML = '<div class="bd-head"><p class="bd-title">Bag</p><button type="button" class="bd-close">Close</button></div>' +
+        '<div class="bd-lines lines"></div>' +
+        '<div class="bd-empty" hidden><p>Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
+        '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
+        '<p class="bd-note">Shipping is calculated at checkout. Every piece is made to order; please allow up to 10 business days before it ships.</p>' +
+        '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
+      document.body.appendChild(veil); document.body.appendChild(drawer);
+      veil.addEventListener('click', function () { set(false); });
+      drawer.querySelector('.bd-close').addEventListener('click', function () { set(false); });
+      drawer.querySelector('.bd-foot .cta').addEventListener('click', function () { MaconCheckout(MaconBag.read(), this).catch(function () {}); });
+      document.addEventListener('bag:change', paint);
+    }
+    function paint() {
+      if (!drawer) return;
+      var sub = MaconBagLines(drawer.querySelector('.bd-lines')), empty = !MaconBag.count();
+      drawer.querySelector('.bd-sub').textContent = MaconBagMoney(sub);
+      drawer.querySelector('.bd-empty').hidden = !empty;
+      drawer.querySelector('.bd-foot').hidden = empty;
+    }
+    function set(on) {
+      if (!drawer) build();
+      if (on) { last = document.activeElement; paint(); }
+      drawer.inert = !on; drawer.classList.toggle('open', on); veil.classList.toggle('open', on);
+      document.documentElement.classList.toggle('bag-open', on);
+      if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});
+    }
+    link.addEventListener('click', function (e) {
+      if (!wide.matches || /bag\.html$/.test(location.pathname)) return;          // phones, and the Bag page itself, keep the page
+      e.preventDefault(); set(true);
+    });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) set(false); });
+    var toNarrow = function (e) { if (!e.matches && drawer && drawer.classList.contains('open')) set(false); };
+    if (wide.addEventListener) wide.addEventListener('change', toNarrow); else wide.addListener(toNarrow);
+    addEventListener('pageshow', function (e) { if (e.persisted && drawer) set(false); });          // back from Shopify: closed, not stuck open
+  })();
+
   (function () {
     var bag = document.querySelector('.head .right a'); if (!bag) return;
     bag.setAttribute('href', 'bag.html');
@@ -983,6 +1056,7 @@
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest('a[href]');
       if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
+      if (a.hasAttribute('data-bag-drawer') && matchMedia('(min-width:768px)').matches) return;          // desktop Bag opens its drawer instead
       var href = a.getAttribute('href') || '';
       if (!href || href[0] === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return;
       var to = new URL(a.href, location.href);
