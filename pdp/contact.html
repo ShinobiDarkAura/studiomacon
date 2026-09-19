@@ -815,8 +815,8 @@
     place(); addEventListener('resize', place); addEventListener('load', place);
   })();
 
-  // Apple Pay (product pages): this piece alone, straight to Shopify checkout where Apple Pay is offered
-  document.querySelectorAll('.buy .apple-pay').forEach(function (b) {
+  // Buy Now (product pages): this piece alone, straight to Shopify checkout, where Apple Pay and cards are offered
+  document.querySelectorAll('.buy .buy-now').forEach(function (b) {
     b.addEventListener('click', function (e) {
       var sizeBox = document.querySelector('[data-size]');
       if (sizeBox && !sizeBox.classList.contains('picked')) {

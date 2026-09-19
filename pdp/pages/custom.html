@@ -152,16 +152,8 @@
   .summary > span:nth-child(odd){padding-right:18px}
   .summary .total{padding-top:12px;border-top:1px solid var(--rule);margin-top:2px}
   .summary .due{font-weight:500}
-  .pay{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+  .pay{display:grid;grid-template-columns:1fr;gap:8px;align-items:stretch}
   .pay .next{margin-top:0}
-  .apple-pay{display:flex;align-items:center;justify-content:center;height:55px;background:#000;color:#fff;gap:5px;
-    font:500 23px/1 -apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif}
-  .apple-pay[disabled]{opacity:.25;cursor:not-allowed}
-  .apple-pay svg{width:19px;height:23px;margin-top:-3px;fill:#fff}
-  @supports (-webkit-appearance:-apple-pay-button){
-    .apple-pay{-webkit-appearance:-apple-pay-button;-apple-pay-button-type:plain;-apple-pay-button-style:black}
-    .apple-pay > *{display:none}
-  }
   .fine-print{margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(0,0,0,.5)}
   .thanks{padding:8px 0 4px;font-size:16px;line-height:1.55}
 
@@ -341,7 +333,6 @@
             </div>
             <div class="pay">
               <button type="button" class="next" data-pay>Pay Deposit</button>
-              <button type="button" class="apple-pay" data-pay aria-label="Pay deposit with Apple Pay"><svg viewBox="0 0 17 20" aria-hidden="true"><path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.5 4.8 1.8 5.9.9 7.5c-1.9 3.3-.5 8.1 1.3 10.8.9 1.3 2 2.7 3.3 2.7 1.3-.1 1.8-.9 3.4-.9s2 .9 3.4.8c1.4 0 2.3-1.3 3.2-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1-2.8-4.7ZM11.5 3c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.1 1.1.1 2.3-.6 3-1.5Z"/></svg><span>Pay</span></button>
             </div>
             <p class="fine-print">Your deposit reserves a place in the studio and begins the sketch.</p>
           </div>
