@@ -69,8 +69,9 @@ def three(*pairs):
     return [(n, slug, f"{IMG}/tile-{slug}.jpg") for n, slug in pairs]
 _IDS = _json.load(open(os.path.join(PDP, "shopify", "ids.json")))
 TOTEM_IDS, JEWEL_IDS = [], []
+EMAIL_HELD = {"ear-cuff": "img/ear-cuff/hires-3.jpg"}          # emails only: a different photo from the site's hover
 for _slug, _vs in _IDS.items():
-    _held = (_C.get(_slug) or {}).get("tile_hover") or f"img/{_slug}/" + {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(_slug, "hand-1.jpg")
+    _held = EMAIL_HELD.get(_slug) or (_C.get(_slug) or {}).get("tile_hover") or f"img/{_slug}/" + {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(_slug, "hand-1.jpg")
     if not os.path.exists(os.path.join(PDP, _held)): continue
     jpg(_held, f"held-{_slug}.jpg", 960, 3 / 2); jpg(_held, f"held-{_vs[0]['product']}.jpg", 960, 3 / 2)
     (TOTEM_IDS if _slug in ("pip","rebi","ren","zuma","ori","yael","milo","eleph","ibi") else JEWEL_IDS).append(_vs[0]["product"])
