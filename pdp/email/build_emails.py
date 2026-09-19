@@ -102,6 +102,7 @@ def page(preheader, body):
   body{{margin:0;padding:0;background:#ffffff}} a{{color:#000000}} img{{border:0;display:block}}
   @media (max-width:620px){{ .wrap{{width:100%!important}} .pad{{padding-left:24px!important;padding-right:24px!important}}
     .h1{{font-size:40px!important}} .col{{display:block!important;width:100%!important;padding:0 0 24px!important}}
+    .trio{{padding:0 4px!important}} .trio-t{{font-size:18px!important;padding-top:16px!important}} .trio-d{{font-size:12px!important}}
     .duo{{display:inline-block!important;width:50%!important;box-sizing:border-box}} .gone{{display:none!important}} }}
 </style></head>
 <body style="margin:0;padding:0;background:#ffffff">
@@ -175,10 +176,10 @@ def film_steps():
             ("Cast", "Carved in wax, then cast in bronze or silver."),
             ("Finished", "Polished by hand, its patina built up slowly.")]
     cells = "".join(
-        f'<td class="col" width="33%" valign="top" align="center" style="padding:0 6px">'
+        f'<td class="trio" width="33%" valign="top" align="center" style="padding:0 6px">'
         f'<img src="{src}" width="160" alt="" style="width:100%;height:auto;border-radius:16px;{SH}">'
-        f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:24px 0 9px">{t}</div>'
-        f'<div style="font:400 14px/1.55 {SANS};color:#333333">{d}</div></td>' for src, (t, d) in zip(FILM, rows))
+        f'<div class="trio-t" style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:24px 0 9px">{t}</div>'
+        f'<div class="trio-d" style="font:400 14px/1.55 {SANS};color:#333333">{d}</div></td>' for src, (t, d) in zip(FILM, rows))
     return (f'<tr><td class="pad" style="padding:8px 24px 48px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             f'<tr>{cells}</tr></table></td></tr>')
 
