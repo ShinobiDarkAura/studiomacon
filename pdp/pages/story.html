@@ -17,12 +17,12 @@
   .opening{overflow-x:clip}
   /* less room above Our Practice (trimmed twice, 20% each time) */
   .opening + .section{margin-top:24px}
-  @media (min-width:768px){ .opening + .section{margin-top:0} .opening{padding-bottom:calc(var(--head) * .58) !important} }
+  @media (min-width:768px){ .opening + .section{margin-top:4px} .opening{padding-bottom:calc(var(--head) * .58) !important} }
   .opening .hand{margin:0}
   /* the films on this page are framed like the ones in the emails: 16px corners and a soft drop shadow */
   .opening .hand video,.process-film video{display:block;background:#111;object-fit:cover;margin:0 auto}
-  .opening .hand video{--w:100%;--ar:24/23;--r:16px;--sh:1;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
-  .process-film video{--w:100%;--ar:16/9;--r:16px;--sh:1;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
+  .opening .hand video{--w:100%;--ar:24/23;--r:24px;--sh:0;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
+  .process-film video{--w:86%;--ar:16/9;--r:24px;--sh:0;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
   /* the email drop shadow, scaled by --sh (0 = none, 1 = as in the emails, 2 = twice as deep) */
   .opening .hand video,.process-film video{box-shadow:0 calc(22px * var(--sh)) calc(48px * var(--sh)) calc(-16px * var(--sh)) rgba(0,0,0,calc(.26 * min(var(--sh), 1.4))),
     0 calc(3px * var(--sh)) calc(12px * var(--sh)) calc(-4px * var(--sh)) rgba(0,0,0,calc(.12 * min(var(--sh), 1.4)))}
@@ -48,7 +48,7 @@
   .step-name{margin:24px 0 0;font:italic 400 17pt/1.2 var(--serif)}
   .steps .art{padding:10% 0 0;display:grid;place-items:end center;height:420px}          /* same box for all three, so the labels line up */
   .steps img{margin:0 auto;width:323px;max-width:100%}
-  .history{display:grid;gap:40px;padding:480px calc(var(--pad) + 24px) 0}          /* 35% more room under the process film */
+  .history{display:grid;gap:40px;padding:300px calc(var(--pad) + 24px) 0;margin-bottom:72px}          /* 35% more room under the process film */
   .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
   .history .intro p.lede{margin:0;max-width:391px}
   .history .intro p.lede + p.lede{margin-top:1em}
@@ -137,10 +137,10 @@
   // try sizes, then "Copy settings" and paste them to Claude.
   (function () {
     if (!/[?&]tune\b/.test(location.search)) return;
-    var FILMS = [['Top film', '.opening .hand video', {w: 100, ar: '24/23', r: 16, sh: 1}],
-                 ['Process film', '.process-film video', {w: 100, ar: '16/9', r: 16, sh: 1}]];
+    var FILMS = [['Top film', '.opening .hand video', {w: 100, ar: '24/23', r: 24, sh: 0}],
+                 ['Process film', '.process-film video', {w: 86, ar: '16/9', r: 24, sh: 0}]];
     var SHAPES = ['1/1', '24/23', '6/5', '5/4', '4/3', '3/2', '16/9', '2.2/1', '4/5', '3/4'];
-    var saved = {}; try { saved = JSON.parse(localStorage.getItem('macon-tune') || '{}'); } catch (e) {}
+    var saved = {}; try { saved = JSON.parse(localStorage.getItem('macon-tune-2') || '{}'); } catch (e) {}
     var css = document.createElement('style');
     css.textContent = '.tune{position:fixed;right:16px;bottom:16px;z-index:9999;width:280px;max-height:80vh;overflow:auto;background:#fff;border:1px solid #ddd;border-radius:12px;box-shadow:0 12px 40px -12px rgba(0,0,0,.35);padding:14px 16px;font:12px/1.4 -apple-system,system-ui,sans-serif;color:#000}' +
       '.tune h4{margin:12px 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.tune h4:first-child{margin-top:0}' +
@@ -164,7 +164,7 @@
         v.style.setProperty('--w', st.w + '%'); v.style.setProperty('--ar', st.ar); v.style.setProperty('--r', st.r + 'px'); v.style.setProperty('--sh', st.sh);
         g.querySelectorAll('[data-k]').forEach(function (el) { el.value = st[el.dataset.k]; var o = el.nextElementSibling; if (o && o.tagName === 'OUTPUT') o.textContent = st[el.dataset.k] + (el.dataset.k === 'w' ? '%' : el.dataset.k === 'r' ? 'px' : '×'); });
         requestAnimationFrame(function () { var r = v.getBoundingClientRect(); g.querySelector('.size').textContent = Math.round(r.width) + ' × ' + Math.round(r.height) + ' px on this screen'; });
-        saved[i] = st; try { localStorage.setItem('macon-tune', JSON.stringify(saved)); } catch (e) {}
+        saved[i] = st; try { localStorage.setItem('macon-tune-2', JSON.stringify(saved)); } catch (e) {}
       }
       g.addEventListener('input', function (e) { var k = e.target.dataset.k; if (!k) return; st[k] = k === 'ar' ? e.target.value : +e.target.value; apply(); });
       apply();
@@ -181,7 +181,7 @@
       l.innerHTML = '<span>' + g[0] + '</span><input type="range" min="-240" max="400" step="4"><output></output>';
       sg.appendChild(l);
       var r = l.querySelector('input'), o = l.querySelector('output');
-      function apply() { var d = sp[i] || 0; r.value = d; o.textContent = (d > 0 ? '+' : '') + d; el.style[g[2]] = (base + d) + 'px'; try { localStorage.setItem('macon-tune', JSON.stringify(saved)); } catch (e) {} }
+      function apply() { var d = sp[i] || 0; r.value = d; o.textContent = (d > 0 ? '+' : '') + d; el.style[g[2]] = (base + d) + 'px'; try { localStorage.setItem('macon-tune-2', JSON.stringify(saved)); } catch (e) {} }
       r.addEventListener('input', function () { sp[i] = +r.value; apply(); });
       apply();
     });
@@ -192,7 +192,7 @@
       t += '\n' + GAPS.map(function (g, i) { var d = sp[i] || 0; return g[0] + ': ' + (d > 0 ? '+' : '') + d + 'px'; }).join('\n');
       (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { row.children[0].textContent = 'Copied'; setTimeout(function () { row.children[0].textContent = 'Copy settings'; }, 1500); }, function () { prompt('Copy these settings:', t); });
     };
-    row.children[1].onclick = function () { try { localStorage.removeItem('macon-tune'); } catch (e) {} location.reload(); };
+    row.children[1].onclick = function () { try { localStorage.removeItem('macon-tune-2'); } catch (e) {} location.reload(); };
   })();
 </script>
 </body>
