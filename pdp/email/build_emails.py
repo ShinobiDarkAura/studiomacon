@@ -79,7 +79,7 @@ def page(preheader, body):
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">{preheader}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center">
 <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px">
-  <tr><td align="center" style="padding:44px 0 36px"><a href="{SITE}"><img src="{EYE}" width="75" alt="Studio Maçon" style="width:75px;height:auto"></a></td></tr>
+  <tr><td align="center" style="padding:44px 0 36px"><a href="{SITE}"><img src="{EYE}" width="64" alt="Studio Maçon" style="width:64px;height:auto"></a></td></tr>
 {body}
   <tr><td class="pad" align="center" style="padding:56px 48px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 {SANS};color:#8a8a8a">
     Every piece is made to order in the studio in California.<br>
@@ -93,14 +93,14 @@ def eyebrow(t):
     return f'<tr><td class="pad" align="center" style="padding:0 48px 14px;font:400 14px/1.4 {SANS};color:#000000">{t}</td></tr>'
 
 def h1(t):
-    return (f'<tr><td class="pad h1" align="center" style="padding:0 48px 26px;font:400 46px/1 {SERIF};'
+    return (f'<tr><td class="pad h1" align="center" style="padding:0 48px 42px;font:400 46px/1 {SERIF};'
             f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>')
 
 def text(t, pad="0 64px 28px"):
     return f'<tr><td class="pad" align="center" style="padding:{pad};font:400 16px/1.6 {SANS};color:#000000">{t}</td></tr>'
 
 def image(src, alt, link=SITE + "/shop"):
-    return (f'<tr><td class="pad" style="padding:0 48px 36px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
+    return (f'<tr><td class="pad" style="padding:0 48px 52px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
             f'style="width:100%;max-width:504px;height:auto;border-radius:6px"></a></td></tr>')
 
 def button(label, href):
@@ -110,8 +110,8 @@ def button(label, href):
             f'</td></tr></table></td></tr>')
 
 def code(note):
-    return (f'<tr><td class="pad" align="center" style="padding:0 48px 30px"><table role="presentation" cellpadding="0" cellspacing="0" '
-            f'style="border:1px solid #000000"><tr><td align="center" style="padding:18px 34px">'
+    return (f'<tr><td class="pad" align="center" style="padding:16px 48px 30px"><table role="presentation" cellpadding="0" cellspacing="0" '
+            f'style="border:1px solid rgba(0,0,0,.12)"><tr><td align="center" style="padding:24px 34px">'
             f'<div style="font:400 11px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;padding-bottom:10px">{note}</div>'
             f'<div style="font:400 30px/1 {SERIF};letter-spacing:.06em;color:#000000"><span style="padding:2px 8px 0;'
             f'background-color:#fbe84a;background-image:linear-gradient(176deg,#ffffff 0%,#ffffff 42%,'
@@ -143,7 +143,7 @@ EMAILS = {
  "welcome-1": dict(
     subject="Welcome to Maçon",
     preview="10% off a first piece, and a little about how they are made.",
-    body=eyebrow("Studio Maçon") + h1("Small things,<br>kept close") + image(HERO1, "Eleph, a small bronze totem")
+    body=eyebrow("Studio Maçon") + h1("Small things,<br>made to last") + image(HERO1, "Eleph, a small bronze totem")
        + text("Maçon makes artifacts and jewelry to be carried, worn and handed down. Each piece is drawn on paper, "
               "carved by hand in wax and cast in bronze, silver or gold, then finished by hand in the studio.")
        + code("10% off a first piece") + button("See the pieces", SITE + "/shop")
@@ -151,7 +151,7 @@ EMAILS = {
  "welcome-2": dict(
     subject="How a Maçon piece is made",
     preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
-    body=eyebrow("Field notes") + h1("Carved by hand,<br>born of fire")
+    body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal")
        + text("No two pieces leave the studio quite alike. The patina is built up by hand, and it keeps changing: "
               "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
        + steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop")),
