@@ -138,7 +138,7 @@ def button(label, href):
             f'</td></tr></table></td></tr>')
 
 def code(note):
-    return (f'<tr><td class="pad" align="center" style="padding:18px 24px 49px"><table role="presentation" cellpadding="0" cellspacing="0" '
+    return (f'<tr><td class="pad" align="center" style="padding:10px 24px 49px"><table role="presentation" cellpadding="0" cellspacing="0" '
             f'style="border:1px solid rgba(0,0,0,.12)"><tr><td align="center" style="padding:24px 34px">'
             f'<div style="font:400 11px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;padding-bottom:10px">{note}</div>'
             f'<div style="font:400 30px/1 {SERIF};letter-spacing:.06em;color:#000000"><span style="padding:2px 8px 0;'
