@@ -51,7 +51,7 @@ def eye(w=150):
 EYE = eye()
 HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 3 / 2)
 HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 3 / 2)
-FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 4 / 5, (0.5, 0.3) if n == "cast" else (0.5, 0.5)) for n in ("drawn", "cast", "finished")]
+FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 1, (0.5, 0.3) if n == "cast" else (0.5, 0.5)) for n in ("drawn", "cast", "finished")]
 POUR = jpg("_originals/still-cast.jpg", "pour-hero.jpg", 1200, 4 / 5)
 STEPS = [png(f"img/pages/{n}.png", f"step-{n}.png", 260) for n in ("draw", "cast", "polish")]
 # an email-sized picture of every piece, the one the shop grid shows (also used by the site's Klaviyo events)
@@ -62,7 +62,7 @@ for _slug in os.listdir(os.path.join(PDP, "img")):
     if not os.path.isdir(os.path.join(PDP, "_originals", _slug)): continue
     _still = (_C.get(_slug) or {}).get("tile_image") or f"img/{_slug}/{'plain-3.jpg' if _slug == 'wonderhorn-talisman' else 'hero.jpg'}"
     if os.path.exists(os.path.join(PDP, _still)):
-        jpg(_still, f"tile-{_slug}.jpg", 520, 1); jpg(_still, f"wide-{_slug}.jpg", 960, 3 / 2)
+        jpg(_still, f"tile-{_slug}.jpg", 520, 4 / 5); jpg(_still, f"wide-{_slug}.jpg", 960, 3 / 2)
 
 _PRICE = {k: v["variants"][0]["price"] for k, v in _json.load(open(os.path.join(PDP, "shopify", "variants.json"))).items()}
 def three(*pairs):
