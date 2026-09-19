@@ -51,6 +51,8 @@ def eye(w=150):
 EYE = eye()
 HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 4 / 5)
 HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 4 / 5)
+FILM = [jpg(f"_originals/still-{n}.jpg", f"still-{n}.jpg", 720, 3 / 2) for n in ("drawn", "cast", "finished")]
+POUR = jpg("_originals/still-cast.jpg", "pour-hero.jpg", 1200, 4 / 5)
 STEPS = [png(f"img/pages/{n}.png", f"step-{n}.png", 260) for n in ("draw", "cast", "polish")]
 # an email-sized picture of every piece, the one the shop grid shows (also used by the site's Klaviyo events)
 import json as _json
@@ -90,7 +92,7 @@ def page(preheader, body):
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">{preheader}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center">
 <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px">
-  <tr><td align="center" style="padding:48px 0 40px"><a href="{SITE}"><img src="{EYE}" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>
+  <tr><td align="center" style="padding:53px 0 44px"><a href="{SITE}"><img src="{EYE}" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>
 {body}
   <tr><td class="pad" align="center" style="padding:56px 48px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 {SANS};color:#8a8a8a">
     Every piece is made to order in the studio in California.<br>
@@ -101,10 +103,10 @@ def page(preheader, body):
 </table></td></tr></table></body></html>"""
 
 def eyebrow(t):
-    return f'<tr><td class="pad" align="center" style="padding:0 48px 15px;font:400 14px/1.4 {SANS};color:#000000">{t}</td></tr>'
+    return f'<tr><td class="pad" align="center" style="padding:0 48px 17px;font:400 14px/1.4 {SANS};color:#000000">{t}</td></tr>'
 
 def h1(t):
-    return (f'<tr><td class="pad h1" align="center" style="padding:0 48px 46px;font:400 46px/1 {SERIF};'
+    return (f'<tr><td class="pad h1" align="center" style="padding:0 48px 51px;font:400 46px/1 {SERIF};'
             f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>')
 
 def title(t):
@@ -114,21 +116,21 @@ def title(t):
             f'<tr><td align="center" style="padding:0 0 40px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
             f'<td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0">&nbsp;</td></tr></table></td></tr>')
 
-def text(t, pad="0 111px 31px"):
+def text(t, pad="0 111px 34px"):
     return f'<tr><td class="pad" align="center" style="padding:{pad};font:400 16px/1.6 {SANS};color:#000000">{t}</td></tr>'
 
 def image(src, alt, link=SITE + "/shop?discount=" + CODE):
-    return (f'<tr><td class="pad" style="padding:0 48px 57px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
-            f'style="width:100%;max-width:504px;height:auto;border-radius:6px"></a></td></tr>')
+    return (f'<tr><td class="pad" style="padding:0 48px 63px"><a href="{link}"><img src="{src}" width="504" alt="{alt}" '
+            f'style="width:100%;max-width:504px;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"></a></td></tr>')
 
 def button(label, href):
-    return (f'<tr><td align="center" style="padding:4px 48px 48px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
+    return (f'<tr><td align="center" style="padding:4px 48px 53px"><table role="presentation" cellpadding="0" cellspacing="0"><tr>'
             f'<td bgcolor="#000000" style="background:#000000"><a href="{href}" style="display:inline-block;padding:17px 44px;'
             f'font:500 12px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">{label}</a>'
             f'</td></tr></table></td></tr>')
 
 def code(note):
-    return (f'<tr><td class="pad" align="center" style="padding:16px 48px 30px"><table role="presentation" cellpadding="0" cellspacing="0" '
+    return (f'<tr><td class="pad" align="center" style="padding:18px 48px 33px"><table role="presentation" cellpadding="0" cellspacing="0" '
             f'style="border:1px solid rgba(0,0,0,.12)"><tr><td align="center" style="padding:24px 34px">'
             f'<div style="font:400 11px/1 {SANS};letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;padding-bottom:10px">{note}</div>'
             f'<div style="font:400 30px/1 {SERIF};letter-spacing:.06em;color:#000000"><span style="padding:2px 8px 0;'
@@ -138,11 +140,25 @@ def code(note):
 def trio(items):
     cells = "".join(
         f'<td class="col" width="33%" valign="top" style="padding:0 6px"><a href="{SITE}/product-page/{slug}" style="text-decoration:none;color:#000000">'
-        f'<img src="{src}" width="160" alt="{name}" style="width:100%;height:auto;border-radius:6px">'
+        f'<img src="{src}" width="160" alt="{name}" style="width:100%;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)">'
         f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:12px 0 4px">{name}</div>'
         f'<div style="font:400 13px/1 {SANS};color:#6b6b6b">${_PRICE.get(slug, 220):.0f}</div></a></td>' for name, slug, src in items)
-    return (f'<tr><td class="pad" style="padding:0 42px 40px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+    return (f'<tr><td class="pad" style="padding:0 42px 44px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             f'<tr>{cells}</tr></table></td></tr>')
+
+def film_steps():
+    rows = [("Drawn", "Each piece begins as a pencil sketch on paper."),
+            ("Cast", "Carved in wax, then cast in bronze or silver."),
+            ("Finished", "Polished by hand, its patina built up slowly.")]
+    cells = "".join(
+        f'<td class="col" width="33%" valign="top" align="center" style="padding:0 6px">'
+        f'<img src="{src}" width="160" alt="" style="width:100%;height:auto;border-radius:16px;{SH}">'
+        f'<div style="font:400 22px/1 {SERIF};text-transform:uppercase;padding:24px 0 9px">{t}</div>'
+        f'<div style="font:400 14px/1.55 {SANS};color:#333333">{d}</div></td>' for src, (t, d) in zip(FILM, rows))
+    return (f'<tr><td class="pad" style="padding:8px 42px 48px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
+            f'<tr>{cells}</tr></table></td></tr>')
+
+SH = "box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"
 
 def steps():
     rows = [("Drawn", "Each piece begins as a pencil sketch on paper."),
@@ -174,6 +190,22 @@ EMAILS = {
               "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
        + steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
        + text("A few to start with", "8px 48px 18px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
+ "welcome-2-film": dict(
+    subject="How a Maçon piece is made",
+    preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
+    body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal")
+       + text("No two pieces leave the studio quite alike. The patina is built up by hand, and it keeps changing: "
+              "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
+       + film_steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
+       + text("A few to start with", "8px 48px 20px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
+ "welcome-2-pour": dict(
+    subject="How a Maçon piece is made",
+    preview="Drawn on paper, carved in wax, cast in metal, finished by hand.",
+    body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal") + image(POUR, "Plaster being poured for a casting mould")
+       + text("No two pieces leave the studio quite alike. Each is drawn on paper, carved in wax and cast in metal, "
+              "and the patina keeps changing: it darkens where the thumb rests and brightens where it rubs.")
+       + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop?discount=" + CODE)
+       + text("A few to start with", "8px 48px 20px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
  "welcome-3": dict(
     subject="Your welcome code closes soon",
     preview="MACON10 is good for two more days.",
@@ -195,7 +227,7 @@ def items(loop, title, image, price, link):
            f'<div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;'
            f'background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))">'
            f'<div style="font:400 35px/1 {SERIF};text-transform:uppercase;color:#ffffff">{title}</div>'
-           f'<div style="font:400 17px/1 {SANS};color:#ffffff;padding-top:7px">${price}</div></div>'
+           f'<div style="font:400 16px/1 {SANS};color:#ffffff;padding-top:7px">${price}</div></div>'
            f'</td></tr></table></a></td></tr>')
     return (f'<tr><td class="pad" style="padding:0 60px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">'
             + (f'{{% for item in {loop} %}}{row}{{% endfor %}}' if loop else row) + '</table></td></tr>')
