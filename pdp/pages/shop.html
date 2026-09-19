@@ -55,7 +55,7 @@
   body .head .logotype{pointer-events:none;cursor:default}
   /* arriving back from a piece, it is simply already the right size: no flight */
   body.logo-still .head .logotype{transition:none}
-  body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(2.8125)}
+  body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(3.3088)}
 
   /* ── load-in: MAÇON arrives letter by letter, kept centred; the cedilla rises last and lifts the C; then the tagline types out ── */
   .logo-build{position:absolute;left:50%;top:50%;z-index:3;display:flex;height:var(--lh);transform:translate(-50%,-50%);pointer-events:none;color:#fff}
@@ -309,7 +309,7 @@
     // How far the logotype has travelled is a reading of the scroll position: at the top
     // of the film it is full size in the middle, and by the time the film is a third gone
     // it has arrived in the nav. Anything in between is held exactly where you left it.
-    var BIG = 2.8125, dist, ticking;
+    var BIG = 3.3088, dist, ticking;
     function span() { return Math.max(240, Math.min(innerHeight * 0.45, 560)); }
     function scrub() {
       ticking = false;

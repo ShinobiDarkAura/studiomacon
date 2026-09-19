@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789842572">
+<link rel="stylesheet" href="site.css?v=1789843282">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -65,7 +65,7 @@
   body .head .logotype{pointer-events:none;cursor:default}
   /* arriving back from a piece, it is simply already the right size: no flight */
   body.logo-still .head .logotype{transition:none}
-  body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(2.8125)}
+  body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(3.3088)}
 
   /* ── load-in: MAÇON arrives letter by letter, kept centred; the cedilla rises last and lifts the C; then the tagline types out ── */
   .logo-build{position:absolute;left:50%;top:50%;z-index:3;display:flex;height:var(--lh);transform:translate(-50%,-50%);pointer-events:none;color:#fff}
@@ -1213,7 +1213,7 @@
     // How far the logotype has travelled is a reading of the scroll position: at the top
     // of the film it is full size in the middle, and by the time the film is a third gone
     // it has arrived in the nav. Anything in between is held exactly where you left it.
-    var BIG = 2.8125, dist, ticking;
+    var BIG = 3.3088, dist, ticking;
     function span() { return Math.max(240, Math.min(innerHeight * 0.45, 560)); }
     function scrub() {
       ticking = false;

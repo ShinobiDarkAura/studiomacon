@@ -54,7 +54,7 @@ button{background:none;border:0;padding:0;cursor:pointer}
 .head .desk{display:none}
 .logotype{display:block;aspect-ratio:888/331;background:currentColor;
   -webkit-mask:url(img/logotype.png) center/contain no-repeat;mask:url(img/logotype.png) center/contain no-repeat}
-.head .logotype{width:88px;position:relative;top:6px}
+.head .logotype{width:75px;position:relative;top:6px}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
@@ -122,7 +122,7 @@ footer .field button{padding:0 0 0 18px}
   :root{--pad:40px;--head:110px}
   .head .mob{display:none}
   .head .desk{display:inline}
-  .head .logotype{width:147px;top:-2px}          /* 8px higher on desktop */
+  .head .logotype{width:125px;top:-2px}          /* 8px higher on desktop; 15% smaller than it was */
   .eyebrow{font-size:16px}
   h1{font-size:53px}
   h2{font-size:42px}
@@ -252,7 +252,7 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
 
 /* phones: bigger logotype sitting a little higher; footer centred and shorter */
 @media (max-width:767px){
-  .head .logotype{width:108px;top:-4px}
+  .head .logotype{width:92px;top:-4px}
   .head{top:-2px}          /* 8px higher, centred in the white band above the main image */
   .back{display:none}          /* no Back to Shop on phones */
   footer{min-height:85vh;min-height:85svh;text-align:center}
@@ -305,14 +305,7 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
 footer .news .legal{margin:18px 0 0;font-size:12px;letter-spacing:.02em;color:rgba(0,0,0,.5)}
 footer .news .legal a{text-underline-offset:4px}
 
-/* ── once the page moves, a white fade sits behind the header and the whole nav turns black, on every page,
-   so text scrolling underneath never fights it. The home film is the exception: over it the nav stays white
-   with no fade (site.js only sets past-top once the film has scrolled away) ── */
-.head::before{content:"";position:fixed;left:0;right:0;top:0;height:calc((var(--head) + 44px) * 1.5);z-index:-1;pointer-events:none;
-  background:linear-gradient(#fff 40%,rgba(255,255,255,0));opacity:0;transition:opacity .45s ease}
-html.past-top .head::before{opacity:1}
-html.past-top .head .left,html.past-top .head .logotype,html.past-top .head .right{color:#000 !important}
-html.menu-open .head::before{opacity:0}
+/* (no fade behind the header: the nav reads what is under it and changes colour instead; see Nav tone in site.js) */
 
 /* ── bag lines, shared by the Bag page and the desktop bag drawer ── */
 .line{display:grid;grid-template-columns:96px 1fr;gap:20px;align-items:center;padding:20px 0;border-bottom:1px solid var(--rule)}
