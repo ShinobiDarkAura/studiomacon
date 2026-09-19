@@ -49,7 +49,7 @@ def eye(w=150):
     frames[0].save(os.path.join(PDP, "img/email/eye.gif"), save_all=True, append_images=frames[1:], duration=times, loop=0, optimize=True)
     return f"{IMG}/eye.gif"
 EYE = eye()
-HERO1 = jpg("img/eleph/hires-1.jpg", "welcome-hero.jpg", 1200, 4 / 5)
+HERO1 = jpg("img/pip/hand-2.jpg", "welcome-hero.jpg", 1200, 4 / 5)
 HAND = jpg("img/ren/hand-2.jpg", "in-hand.jpg", 1200, 4 / 5)
 STEPS = [png(f"img/pages/{n}.png", f"step-{n}.png", 260) for n in ("draw", "cast", "polish")]
 # an email-sized picture of every piece, the one the shop grid shows (also used by the site's Klaviyo events)
@@ -61,8 +61,9 @@ for _slug in os.listdir(os.path.join(PDP, "img")):
     _still = (_C.get(_slug) or {}).get("tile_image") or f"img/{_slug}/{'plain-3.jpg' if _slug == 'wonderhorn-talisman' else 'hero.jpg'}"
     if os.path.exists(os.path.join(PDP, _still)): jpg(_still, f"tile-{_slug}.jpg", 520, 4 / 5)
 
-PIECES = [(n, slug, jpg(img, f"tile-{slug}.jpg", 520, 4 / 5)) for n, slug, img in [
-    ("Pip", "pip", "img/pip/hero.jpg"), ("Rebi", "rebi", "img/rebi/hero.jpg"), ("Ori", "ori", "img/ori/plain-1.jpg")]]
+def three(*pairs):
+    return [(n, slug, f"{IMG}/tile-{slug}.jpg") for n, slug in pairs]
+PIECES = three(("Pip", "pip"), ("Rebi", "rebi"), ("Ori", "ori"))
 
 # ── building blocks ─────────────────────────────────────────────────────────────────
 def page(preheader, body):
@@ -96,7 +97,7 @@ def h1(t):
     return (f'<tr><td class="pad h1" align="center" style="padding:0 48px 42px;font:400 46px/1 {SERIF};'
             f'text-transform:uppercase;letter-spacing:-.005em;color:#000000">{t}</td></tr>')
 
-def text(t, pad="0 64px 28px"):
+def text(t, pad="0 111px 28px"):
     return f'<tr><td class="pad" align="center" style="padding:{pad};font:400 16px/1.6 {SANS};color:#000000">{t}</td></tr>'
 
 def image(src, alt, link=SITE + "/shop"):
@@ -143,7 +144,7 @@ EMAILS = {
  "welcome-1": dict(
     subject="Welcome to Maçon",
     preview="10% off a first piece, and a little about how they are made.",
-    body=eyebrow("Studio Maçon") + h1("Small things,<br>made to last") + image(HERO1, "Eleph, a small bronze totem")
+    body=eyebrow("Studio Maçon") + h1("Small things,<br>made to last") + image(HERO1, "Pip, held in the palm of a hand")
        + text("Maçon makes artifacts and jewelry to be carried, worn and handed down. Each piece is drawn on paper, "
               "carved by hand in wax and cast in bronze, silver or gold, then finished by hand in the studio.")
        + code("10% off a first piece") + button("See the pieces", SITE + "/shop")
@@ -154,14 +155,16 @@ EMAILS = {
     body=eyebrow("Field notes") + h1("Carved by hand,<br>cast in metal")
        + text("No two pieces leave the studio quite alike. The patina is built up by hand, and it keeps changing: "
               "it darkens where the thumb rests and brightens where it rubs, recording how it is held.")
-       + steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop")),
+       + steps() + code("Still yours for a first piece") + button("Choose a piece", SITE + "/shop")
+       + text("A few to start with", "8px 48px 18px") + trio(three(("Ren", "ren"), ("Zuma", "zuma"), ("Yaël", "yael")))),
  "welcome-3": dict(
     subject="Your welcome code closes soon",
     preview="MACON10 is good for two more days.",
     body=eyebrow("A last note") + h1("Meant to<br>be held") + image(HAND, "Ren, held in the palm of a hand")
        + text("Every piece is made to order, so it is made for whoever asks for it. "
               "The welcome code is good for two more days.")
-       + code("10% off, two days left") + button("Choose a piece", SITE + "/shop")),
+       + code("10% off, two days left") + button("Choose a piece", SITE + "/shop")
+       + text("A few to start with", "8px 48px 18px") + trio(three(("Milo", "milo"), ("Eleph", "eleph"), ("Ibi", "ibi")))),
 }
 
 # ── flows that show the shopper's own pieces (Klaviyo fills these in) ──────────────
@@ -209,7 +212,8 @@ EMAILS.update({
     preview="A second look at the piece you were studying.",
     body=eyebrow("A second look") + h1("Still<br>on your mind") + VIEWED
        + text("Every piece is drawn, carved in wax and cast by hand, then finished in the studio in California. "
-              "No two leave quite alike.") + button("Take another look", "{{ event.URL }}")),
+              "No two leave quite alike.") + button("Take another look", "{{ event.URL }}")
+       + text("Others in the collection", "8px 48px 18px") + trio(three(("Pip", "pip"), ("Ori", "ori"), ("Eclipse Ring", "eclipse-ring")))),
  # Post-purchase (trigger: Placed Order). 1: straight away. 2: after 21 days.
  "thanks-1": dict(
     subject="Your piece is being made",
@@ -227,7 +231,8 @@ EMAILS.update({
                 ("Silver", "Silver darkens slowly in the air. A polishing cloth brings it back; wearing it often does the same."),
                 ("Share it", 'Photographs of Maçon pieces in their new homes are always welcome: '
                              '<a href="https://www.instagram.com/studiomacon/">@studiomacon</a>.')])
-       + button("See the other pieces", SITE + "/shop")),
+       + button("See the other pieces", SITE + "/shop")
+       + text("Others in the collection", "8px 48px 18px") + trio(three(("Rebi", "rebi"), ("Zuma Ring", "zuma-ring"), ("Yaël", "yael")))),
 })
 
 os.makedirs(os.path.join(PDP, "email"), exist_ok=True)
