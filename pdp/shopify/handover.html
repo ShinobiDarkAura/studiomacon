@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Studio Maçon — launch handover</title>
+<style>
+  @font-face{font-family:'Instrument Serif';src:url(instrument-serif.woff2) format('woff2');font-weight:400}
+  @page{size:letter;margin:0}
+  *{box-sizing:border-box}
+  body{margin:0;font:11.2px/1.55 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#111}
+  .page{width:8.5in;height:11in;padding:0.72in 0.8in;page-break-after:always;position:relative;background:#fff}
+  .page:last-child{page-break-after:auto}
+  .kicker{font-size:8.4px;letter-spacing:.16em;text-transform:uppercase;color:#7a7a7a;margin:0 0 18px}
+  h1{font:400 44px/1.02 'Instrument Serif',Georgia,serif;text-transform:uppercase;margin:0 0 16px;letter-spacing:.01em}
+  h2{font:400 26px/1.05 'Instrument Serif',Georgia,serif;text-transform:uppercase;margin:0 0 10px}
+  h3{font:600 11.2px/1.3 inherit;letter-spacing:.1em;text-transform:uppercase;margin:20px 0 7px}
+  p{margin:0 0 9px;max-width:6.3in}
+  ul{margin:0 0 10px;padding-left:16px;max-width:6.4in}
+  li{margin:0 0 5px}
+  .lead{font-size:12.4px;line-height:1.6;max-width:6.1in}
+  .rule{height:1px;background:#e3e0d9;margin:16px 0}
+  .who{display:inline-block;font-size:8px;letter-spacing:.12em;text-transform:uppercase;border:1px solid #111;border-radius:99px;padding:2px 8px;margin-right:8px;vertical-align:2px}
+  .who.claude{background:#111;color:#fff;border-color:#111}
+  .who.done{border-color:#9a9a9a;color:#6a6a6a}
+  .step{margin:0 0 16px;page-break-inside:avoid}
+  .step .t{font-weight:600;font-size:12.6px;margin-bottom:4px}
+  .link{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;color:#111;background:#f4f1ea;padding:1px 5px;border-radius:3px;word-break:break-all}
+  .foot{position:absolute;left:0.8in;right:0.8in;bottom:0.5in;display:flex;justify-content:space-between;font-size:8.4px;color:#9a9a9a;letter-spacing:.06em}
+  .cover{display:flex;flex-direction:column;justify-content:center;height:100%}
+  .cover h1{font-size:62px;margin-bottom:22px}
+  .logo{width:58px;margin-bottom:40px}
+  .cols{display:flex;gap:26px}
+  .cols > div{flex:1}
+  table{border-collapse:collapse;width:100%;font-size:10.4px;margin:6px 0 12px}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid #e3e0d9;vertical-align:top}
+  th{font-size:8.4px;letter-spacing:.12em;text-transform:uppercase;color:#7a7a7a;font-weight:600}
+  .box{border:1px solid #e3e0d9;border-radius:10px;padding:14px 16px;margin:12px 0;background:#faf8f4}
+  .box p:last-child,.box ul:last-child{margin-bottom:0}
+  .tick{color:#2b7a4b;font-weight:700}
+  .warn{color:#a8552a;font-weight:700}
+</style></head><body>
+
+<section class="page"><div class="cover">
+  <img class="logo" src="logotype.png" alt="">
+  <p class="kicker">Studio Maçon · handover · updated September 2026</p>
+  <h1>Getting ready<br>to run ads</h1>
+  <p class="lead">Everything that has to be true before we spend money on Meta ads: the site tracked properly,
+  the emails arriving in inboxes rather than spam, and an order that goes all the way through — paid,
+  confirmed, shipped, tracked.</p>
+  <p class="lead">Each item below says who does it. “Claude” means it needs no login and is already done or can be
+  done any time. “Alex” or “Hannah” means it needs an account only you can get into.</p>
+  <div class="rule"></div>
+  <p><strong>The one rule:</strong> Stage 1 is safe to do today. Stages 2 and 3 happen on the day studiomacon.co
+  moves off Wix — not before, because until then those links still point at the old site.</p>
+</div>
+<div class="foot"><span>Studio Maçon</span><span>1</span></div></section>
+
+<section class="page">
+  <p class="kicker">Where things stand</p>
+  <h2>Already done</h2>
+  <table>
+    <tr><th>Area</th><th>State</th></tr>
+    <tr><td>Website, all pages, phone and desktop</td><td>Built and tested on the preview</td></tr>
+    <tr><td>Shopify: products, prices, sizes, payments, shipping, tax</td><td>Live, out of test mode</td></tr>
+    <tr><td>Checkout and Apple Pay buttons</td><td>Create a Shopify cart and hand off to Shopify checkout</td></tr>
+    <tr><td>Contact and commission forms</td><td>Tested end to end; SPF, DKIM, DMARC all pass</td></tr>
+    <tr><td>Meta pixel, GA4, Google Ads, Klaviyo on-site</td><td>In every page; they switch on by themselves on studiomacon.co</td></tr>
+    <tr><td>Product feeds for Meta and Google</td><td>meta-catalog.csv and google-products.xml, rebuilt with the site</td></tr>
+    <tr><td>Old Wix addresses</td><td>Redirect to the matching new page</td></tr>
+    <tr><td>Emails designed and built</td><td>3 welcome, 2 abandoned checkout, browse, 2 thank-you, repeat order, win-back, <strong>and now shipping/tracking</strong></td></tr>
+    <tr><td>DNS</td><td>On Cloudflare; switch day is a two-record change</td></tr>
+  </table>
+
+  <h2>What is missing</h2>
+  <ul>
+    <li><span class="warn">Emails have never been sent from Shopify.</span> The templates are written, but Shopify's
+      “send a test” has been unavailable, so none of the order emails have been seen in a real inbox.</li>
+    <li><span class="warn">No test order has been placed</span> with a real card, so the full chain — pay, confirm,
+      fulfil, track — is unproven.</li>
+    <li>Klaviyo's signing records at Cloudflare are set to “proxied”, which breaks its email signing and makes
+      Klaviyo mail more likely to land in spam.</li>
+    <li>Shopify's own emails are still sent as a Shopify address, not an authenticated studiomacon.co sender.</li>
+    <li>The footer newsletter box needs one Shopify key before it can add people to the list.</li>
+    <li>Product photographs are missing inside Shopify, so checkout and receipts show grey boxes.</li>
+  </ul>
+<div class="foot"><span>Studio Maçon</span><span>2</span></div></section>
+
+<section class="page">
+  <p class="kicker">Stage 1 · this week, before the switch</p>
+  <h2>Email that actually<br>arrives</h2>
+
+  <div class="step"><div class="t"><span class="who">Alex</span>1 · Un-proxy the email signing records</div>
+    <p>Cloudflare → studiomacon.co → DNS → Records. These are orange (“proxied”), which breaks signing. Open each,
+      set <strong>Proxy status → DNS only</strong>, save:</p>
+    <p><span class="link">kl._domainkey</span> <span class="link">kl2._domainkey</span> <span class="link">hello</span>
+       <span class="link">newsletter</span> <span class="link">s1._domainkey</span> <span class="link">s2._domainkey</span>
+       <span class="link">sel1._domainkey</span> <span class="link">sg</span></p>
+    <p>Why: Klaviyo's welcome and reminder emails are signed with those records. Unsigned mail from a domain that
+      publishes DMARC is treated as suspicious.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Alex</span>2 · Make Shopify send as studiomacon.co</div>
+    <p>Shopify admin → Settings → Notifications → Sender email → <em>Authenticate</em>. Shopify gives four CNAME
+      records; add them in Cloudflare as <strong>DNS only</strong>. Send me a screenshot and I'll check they match.</p>
+    <p>Why: order confirmations and shipping emails are the ones customers actually wait for. Sent from an
+      unauthenticated address, they are the most likely of all our mail to be filtered.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Hannah</span>3 · Paste the four order emails into Shopify</div>
+    <p>Shopify admin → Settings → Notifications → Customer notifications. For each one below, open it,
+      select all the code, and paste in the file Alex sends:</p>
+    <table>
+      <tr><th>Shopify notification</th><th>File</th><th>What it is</th></tr>
+      <tr><td>Order confirmation</td><td>thanks-1.html</td><td>“Your piece is being made”</td></tr>
+      <tr><td>Shipping confirmation</td><td>shipping-1.html</td><td>“On its way to you”, with the tracking button</td></tr>
+      <tr><td>Shipping update</td><td>shipping-1.html</td><td>Same template; used if tracking changes</td></tr>
+      <tr><td>Abandoned checkout</td><td>checkout-1.html</td><td>Only if we send it from Shopify instead of Klaviyo</td></tr>
+    </table>
+    <p>After each paste, press <strong>Preview</strong>, then <strong>Send test email</strong> to hello@ and to a
+      personal Gmail. If Shopify still says tests are unavailable, tell me and we prove it with the real test order
+      in Stage 3 instead.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Alex</span>4 · Klaviyo key for the footer sign-up</div>
+    <p>The site's footer box is wired but needs one value: Klaviyo → Settings → API keys → a private key with
+      <span class="link">list write</span>. Send it to me and the sign-up starts working the same day.</p></div>
+<div class="foot"><span>Studio Maçon</span><span>3</span></div></section>
+
+<section class="page">
+  <p class="kicker">Stage 1 · continued</p>
+  <h2>Ads plumbing</h2>
+
+  <div class="step"><div class="t"><span class="who">Hannah</span>5 · Shopify's “Facebook &amp; Instagram” app</div>
+    <p><span class="link">apps.shopify.com/facebook</span> → Install → log in with the account that runs our ads.</p>
+    <ul><li>Pixel: choose the existing one ending <strong>…574699</strong>. Never a new one.</li>
+      <li>Data sharing: <strong>Maximum</strong>.</li>
+      <li>If it offers to make a catalog: yes.</li></ul>
+    <p>Why: the purchase happens on Shopify's checkout, so this app is what tells Meta a sale happened.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Hannah</span>6 · Shopify's “Google &amp; YouTube” app</div>
+    <p><span class="link">apps.shopify.com/google</span> → Install → connect Analytics <strong>G-B5GNGQ1WME</strong>
+      and Google Ads <strong>AW-16466703173</strong>, conversion tracking on. Connect Merchant Center but skip
+      adding products for now.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Hannah</span>7 · Leave the Wix catalog alone</div>
+    <p>If Meta warns about removing a catalog, click <strong>Keep</strong>. The old catalog keeps the ads running
+      until switch day.</p></div>
+
+  <div class="box"><p><strong>Meta ads cannot be judged before this is done.</strong> Until the pixel hears
+    purchases from Shopify, the ad account has no idea which ads pay for themselves, and Meta's own optimisation
+    is guessing. Stage 1 is the difference between spending money and learning something.</p></div>
+<div class="foot"><span>Studio Maçon</span><span>4</span></div></section>
+
+<section class="page">
+  <p class="kicker">Stage 2 · switch day</p>
+  <h2>The day itself</h2>
+
+  <div class="step"><div class="t"><span class="who claude">Claude</span><span class="who">Alex</span>8 · Point the domain at the new site</div>
+    <p>Alex says go. I delete the two Wix records and attach the new site, about five minutes, then check the home
+      page, a product, the bag, a Wix redirect, video on iPhone, and that mail to hello@ still arrives.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Hannah</span>9 · Give Shopify the product photographs</div>
+    <p>Products → Import → the file <span class="link">shopify/product-images.csv</span> → tick
+      <strong>Overwrite products with matching handles</strong>. Only works after step 8, since Shopify fetches each
+      photograph from studiomacon.co.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Hannah</span>10 · Point Meta's catalog at the new site</div>
+    <p><span class="link">business.facebook.com/commerce</span> → our catalog → Catalog → Data sources →
+      Supplementary feeds → Add → Scheduled feed:</p>
+    <p><span class="link">https://studiomacon.co/meta-catalog.csv</span> — repeat Daily, currency USD.</p>
+    <p>Then move each product ad onto that catalog. Google Merchant Center gets the same treatment with
+      <span class="link">https://studiomacon.co/google-products.xml</span>.</p></div>
+
+  <div class="step"><div class="t"><span class="who claude">Claude</span>11 · Emails repointed and resubmitted</div>
+    <p>I rebuild the emails against the live domain, re-submit the sitemap in Search Console, and re-check the
+      feeds. Nothing for you to do.</p></div>
+<div class="foot"><span>Studio Maçon</span><span>5</span></div></section>
+
+<section class="page">
+  <p class="kicker">Stage 3 · the same day</p>
+  <h2>Proving it works</h2>
+
+  <div class="step"><div class="t"><span class="who">Alex</span><span class="who">Hannah</span>12 · One real order, all the way through</div>
+    <p>This is the important one, and it is the only way to see every email at once.</p>
+    <ul>
+      <li>Buy a real piece with a real card, from a phone, using a personal email address.</li>
+      <li>Expect: Shopify's <strong>order confirmation</strong> within a minute, and our “Your piece is being made”
+        if it is set as the confirmation template.</li>
+      <li>In Shopify, mark it fulfilled and paste any tracking number. Expect the <strong>shipping email</strong>
+        with a working Follow your parcel button.</li>
+      <li>Then refund it. Expect the <strong>refund notification</strong>.</li>
+      <li>Check each email in Gmail: not in spam, photographs visible, ç in Maçon correct, buttons working on a phone.</li>
+    </ul></div>
+
+  <div class="step"><div class="t"><span class="who">Hannah</span>13 · Meta is hearing the site</div>
+    <p>Events Manager → pixel …574699 → Test events → open studiomacon.co. Look at a piece, add to bag, start
+      checkout. You should see <strong>PageView, ViewContent, AddToCart, InitiateCheckout</strong>. Purchase appears
+      from the real order in step 12.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Hannah</span>14 · Google is hearing the site</div>
+    <p>Analytics → Reports → Realtime; open the site on your phone and you should appear within a minute.
+      Also check Commerce Manager → Items shows about 69 items with no red issues.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Alex</span>15 · Spam check</div>
+    <p>Send one of our emails to the address that <span class="link">mail-tester.com</span> gives you; aim for 9/10
+      or better. It reads SPF, DKIM, DMARC and the content, and names anything that needs fixing.</p></div>
+<div class="foot"><span>Studio Maçon</span><span>6</span></div></section>
+
+<section class="page">
+  <p class="kicker">Stage 4 · the following weeks</p>
+  <h2>Tidying and<br>the ad plan</h2>
+
+  <div class="step"><div class="t"><span class="who">Hannah</span>16 · Retire the Wix side</div>
+    <p>Only once Stage 3 is clean: delete the old Wix catalog in Commerce Manager (check no ad uses it),
+      disconnect Facebook and Google in Wix, then cancel the Wix plan. Keep the domain — it lives at GoDaddy.</p></div>
+
+  <div class="step"><div class="t"><span class="who">Alex</span>17 · Decide where the welcome email lives</div>
+    <p>Right now Klaviyo sends the welcome series with MACON10, and Shopify sends the order emails. That works.
+      The alternative is moving everything into Shopify Messaging and turning the Klaviyo flows off, which means one
+      list and one bill. Either is fine; the mistake would be leaving both switched on, since new subscribers would
+      get two welcomes.</p></div>
+
+  <div class="step"><div class="t"><span class="who claude">Claude</span>18 · Watch the first week</div>
+    <p>Once orders start, I can read the feeds and Search Console, check what the pixel is receiving and whether
+      any product is failing in the catalogs, and fix the site side of anything that looks wrong.</p></div>
+
+  <h3>Apple Pay — my recommendation</h3>
+  <p>Today our Apple Pay button builds the cart and hands off to Shopify's checkout, where Apple Pay is offered.
+    It is one page-load slower than the instant sheet. The instant sheet only exists if the payment sheet runs on our
+    own domain, which means either embedding Shopify's own accelerated-checkout button, or registering the domain
+    with Apple and driving Shopify's Storefront API ourselves.</p>
+  <p><strong>Recommendation: leave it as it is for launch.</strong> Embedding Shopify's button brings Shopify's
+    styling into our layout, and the Storefront route is a week of work plus an Apple merchant verification that
+    cannot even be started until the domain is live. Neither changes whether a sale completes. Revisit once ads are
+    running and we can see how many people drop at checkout.</p>
+<div class="foot"><span>Studio Maçon</span><span>7</span></div></section>
+
+<section class="page">
+  <p class="kicker">Cheat sheet</p>
+  <h2>Numbers and<br>addresses</h2>
+  <table>
+    <tr><th>Thing</th><th>Value</th></tr>
+    <tr><td>Meta pixel</td><td>501136812574699</td></tr>
+    <tr><td>Meta domain verification</td><td>ae0yp3uhbruy2um27iahgcmha7bnph</td></tr>
+    <tr><td>Google Analytics</td><td>G-B5GNGQ1WME</td></tr>
+    <tr><td>Google Ads</td><td>AW-16466703173</td></tr>
+    <tr><td>Shopify store</td><td>w3nidi-ny.myshopify.com</td></tr>
+    <tr><td>Meta feed</td><td>https://studiomacon.co/meta-catalog.csv</td></tr>
+    <tr><td>Google feed</td><td>https://studiomacon.co/google-products.xml</td></tr>
+    <tr><td>Sitemap</td><td>https://studiomacon.co/sitemap.xml</td></tr>
+    <tr><td>Preview site (stays up after launch)</td><td>studiomacon.studiomacon.workers.dev</td></tr>
+    <tr><td>Welcome discount</td><td>MACON10 — 10% off a first order</td></tr>
+    <tr><td>Email templates</td><td>site folder → pdp/email/shopify/</td></tr>
+    <tr><td>Product photo import</td><td>site folder → pdp/shopify/product-images.csv</td></tr>
+  </table>
+
+  <h3>Order of play, in one line</h3>
+  <p>Un-proxy the DNS records and authenticate the sender → paste the order emails → install the two Shopify apps
+    → switch the domain → import the photographs → repoint the catalogs → place one real order and follow it all the
+    way to a refund → check the pixel, Analytics and a spam score → only then turn the ads up.</p>
+
+  <div class="box"><p><strong>If something looks wrong at any point,</strong> a screenshot is enough. Most of these
+    settings are reversible, and the domain can be pointed back at Wix in minutes if it ever needs to be.</p></div>
+<div class="foot"><span>Studio Maçon</span><span>8</span></div></section>
+
+</body></html>
