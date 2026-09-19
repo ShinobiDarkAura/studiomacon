@@ -162,7 +162,7 @@ footer .field button{padding:0 0 0 18px}
   .split{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
   .split .pics figcaption{padding-left:var(--pad)}
   .split .copy{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;scrollbar-width:none;
-    overscroll-behavior:contain;padding:24px 0 48px;display:flex;flex-direction:column;justify-content:safe center}
+    overscroll-behavior:auto;padding:24px 0 48px;          /* at its end the wheel carries on down the page */display:flex;flex-direction:column;justify-content:safe center}
   .split .copy > *{flex:none}
   .split .copy::-webkit-scrollbar{display:none}
 }
