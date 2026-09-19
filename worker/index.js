@@ -2,8 +2,15 @@
 // a video by asking for it in byte ranges, and will not play one from a server that answers
 // every range with the whole file. Cloudflare's static serving does exactly that, so here
 // each range request is answered with just the bytes asked for (206 Partial Content).
+// On the real domain it also sends www.studiomacon.co to studiomacon.co (one permanent hop, path and
+// query kept), so old links and anything bookmarked from the Wix days still land.
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.hostname.startsWith('www.')) {
+      url.hostname = url.hostname.slice(4);
+      return Response.redirect(url.toString(), 301);
+    }
     const res = await env.ASSETS.fetch(request);
     const range = request.headers.get('range');
     if (!range || res.status !== 200) return res;
