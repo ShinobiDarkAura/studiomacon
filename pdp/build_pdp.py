@@ -257,6 +257,7 @@ def accordions(slug, k, notes):
 
 with open(os.path.join(OUT, "shopify", "variants.json")) as _f:
     SHOPIFY = json.load(_f)
+LIVE_PRICE = {v["id"].split("/")[-1]: v["price"] for d in SHOPIFY.values() for v in d.get("variants", [])}          # variant number -> current Shopify price
 
 
 def page(p, template, related=""):
@@ -682,6 +683,19 @@ def tile_style(slug):
             + (f';--hz:{hz:g}' if hz else "") + '"')
 
 
+def category(slug, family):
+    """Google's product category (Meta reads the same field): totems as art, jewelry by kind. Matches Shopify."""
+    if family == "Totems":
+        return "Home & Garden > Decor > Artwork > Sculptures & Statues"
+    if slug == "ear-cuff":
+        return "Apparel & Accessories > Jewelry > Earrings"
+    if slug in ("starshipkey-pendant", "wonderhorn-talisman"):
+        return "Apparel & Accessories > Jewelry > Necklaces"
+    if slug == "macon-cap":
+        return "Apparel & Accessories > Clothing Accessories > Hats"
+    return "Apparel & Accessories > Jewelry > Rings"
+
+
 def feeds(products):
     """Product feeds for Meta's catalog (meta-catalog.csv) and Google Merchant Center (google-products.xml).
     Each lists every size of every piece on the shop, with its real page, its photographs, price and stock,
@@ -705,9 +719,9 @@ def feeds(products):
                 "id": f'shopify_US_{v["product"]}_{v["variant"]}', "item_group_id": f'shopify_US_{v["product"]}',
                 "title": p["name"] + (f' ({v["value"]})' if sized else ""), "description": desc,
                 "availability": "in stock" if v["available"] else "out of stock", "condition": "new",
-                "price": f'{v["price"]:.2f} USD', "link": f"{SITE}/{slug}.html", "image_link": f"{SITE}/{shots[0]}",
+                "price": f'{LIVE_PRICE.get(v["variant"], v["price"]):.2f} USD', "link": f"{SITE}/{slug}.html", "image_link": f"{SITE}/{shots[0]}",
                 "additional_image_link": ",".join(f"{SITE}/{x}" for x in shots[1:]), "brand": "Studio Maçon",
-                "product_type": family, "size": v["value"] if sized else "",
+                "product_type": family, "size": v["value"] if sized else "", "google_product_category": category(slug, family),
             })
     cols = list(rows[0])
     buf = io.StringIO(); w = csv.DictWriter(buf, cols); w.writeheader(); w.writerows(rows)
@@ -716,7 +730,7 @@ def feeds(products):
     e = sx.escape
     items = "".join(
         "<item>" + "".join(f"<g:{k}>{e(str(r[k]))}</g:{k}>" for k in ("id", "item_group_id", "title", "description", "availability",
-                                                                      "condition", "price", "link", "image_link", "brand", "product_type") if r[k])
+                                                                      "condition", "price", "link", "image_link", "brand", "product_type", "google_product_category") if r[k])
         + "".join(f"<g:additional_image_link>{e(u)}</g:additional_image_link>" for u in r["additional_image_link"].split(",") if u)
         + (f"<g:size>{e(r['size'])}</g:size>" if r["size"] else "") + "<g:identifier_exists>no</g:identifier_exists></item>\n"
         for r in rows)
@@ -763,6 +777,11 @@ def main():
     # pieces and the product pages all speak with the same voice
     for x in products:
         x["name"] = _content.product(x["slug"], "name", x["name"])
+        # Shopify is the one source of prices: the lowest size's price (e.g. Caldera Arc from $260)
+        vs = (SHOPIFY.get(x["slug"]) or {}).get("variants") or []
+        if vs:
+            low = min(v["price"] for v in vs)
+            x["price"] = int(low) if float(low).is_integer() else low
         x["price"] = _content.product(x["slug"], "price", x["price"])
     template = shared(open(os.path.join(OUT, "template.html"), encoding="utf-8").read())
     # info pages: story, custom, contact, shipping
