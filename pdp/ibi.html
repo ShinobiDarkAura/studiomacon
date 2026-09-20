@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Ibi", "description": "Tall, still solid bronze with a long and patient posture. Attempts to photograph it end in lens fog; photographers blame the weather. Cast on request and patinated by hand.", "image": ["https://studiomacon.co/img/ibi/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ibi", "offers": [{"@type": "Offer", "price": "180.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ibi.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789942633">
+<link rel="stylesheet" href="site.css?v=1789943692">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -128,7 +128,7 @@
   .rel-piece:hover .rel-frame{transform:translateY(-8px)}          /* the picture lifts, the label stays put */
   .rel-name{display:block;margin:20px 0 4px;font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
   .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
-  @media (max-width:767px){
+  @media (max-width:1099px){
     .related{display:flex;flex-direction:column;justify-content:center;min-height:0;padding:72px var(--gutter) 24px;text-align:center}
     .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
     .related .rel-blurb{margin:0 auto 32px;max-width:300px;font-size:15px;line-height:1.55}
@@ -156,6 +156,12 @@
     /* every gallery photograph fills one full screen height */
     .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
     .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
+    /* Tablets: the photo column is only ~320px wide, so a full screen of height turns each
+       photograph into a 1:3 sliver and the page into 9,700px. Keep them in proportion instead. */
+    @media (max-width:1099px){
+      .gallery figure img,.gallery .hero img,.gallery figure video,.gallery .hero video{height:auto;aspect-ratio:4/5}
+      .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:auto;aspect-ratio:4/5}
+    }
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;

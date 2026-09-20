@@ -131,7 +131,7 @@
   /* pinned to the headline, not the window: every measure is in the headline's own type size (em),
      so at any screen width it lands on the comma of "Things," at the same size and angle */
   .welcome .prose h1.stamped{position:relative;display:inline-block}
-  .stamped .stamp{position:absolute;z-index:3;width:2.93em;left:min(calc(100% + .64em - 1.465em), calc(50vw + 50% - 2.93em + .73em));top:calc(var(--cap-top,.2em) - .84em - 1.465em);
+  .stamped .stamp{position:absolute;z-index:3;width:2.93em;left:min(calc(100% + .64em - 1.465em), calc(50vw + 50% - 2.93em - 12px));          /* the second term holds it inside the screen: it used to add .73em and pushed it off the right edge on phones */top:calc(var(--cap-top,.2em) - .84em - 1.465em);
     transform:rotate(var(--stamp-tilt,-14deg)) scale(1.35);opacity:0;pointer-events:none;
     transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
   /* pressed down onto the words */

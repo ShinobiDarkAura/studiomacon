@@ -257,6 +257,10 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   .head .logotype{width:92px;top:-4px}
   .head{top:-2px}          /* 8px higher, centred in the white band above the main image */
   .back{display:none}          /* no Back to Shop on phones */
+}
+/* tablets: the header has no room for it either — it ran under the logo mark at 768–1024 */
+@media (max-width:1099px){
+  .back{display:none}
   footer{min-height:95vh;min-height:95svh;text-align:center}
   footer .middle{align-items:center}
   footer .links{justify-content:center}

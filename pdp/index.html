@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789942633">
+<link rel="stylesheet" href="site.css?v=1789943692">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -141,7 +141,7 @@
   /* pinned to the headline, not the window: every measure is in the headline's own type size (em),
      so at any screen width it lands on the comma of "Things," at the same size and angle */
   .welcome .prose h1.stamped{position:relative;display:inline-block}
-  .stamped .stamp{position:absolute;z-index:3;width:2.93em;left:min(calc(100% + .64em - 1.465em), calc(50vw + 50% - 2.93em + .73em));top:calc(var(--cap-top,.2em) - .84em - 1.465em);
+  .stamped .stamp{position:absolute;z-index:3;width:2.93em;left:min(calc(100% + .64em - 1.465em), calc(50vw + 50% - 2.93em - 12px));          /* the second term holds it inside the screen: it used to add .73em and pushed it off the right edge on phones */top:calc(var(--cap-top,.2em) - .84em - 1.465em);
     transform:rotate(var(--stamp-tilt,-14deg)) scale(1.35);opacity:0;pointer-events:none;
     transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
   /* pressed down onto the words */

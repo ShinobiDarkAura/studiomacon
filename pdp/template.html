@@ -117,7 +117,7 @@
   .rel-piece:hover .rel-frame{transform:translateY(-8px)}          /* the picture lifts, the label stays put */
   .rel-name{display:block;margin:20px 0 4px;font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
   .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
-  @media (max-width:767px){
+  @media (max-width:1099px){
     .related{display:flex;flex-direction:column;justify-content:center;min-height:0;padding:72px var(--gutter) 24px;text-align:center}
     .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
     .related .rel-blurb{margin:0 auto 32px;max-width:300px;font-size:15px;line-height:1.55}
@@ -145,6 +145,12 @@
     /* every gallery photograph fills one full screen height */
     .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
     .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
+    /* Tablets: the photo column is only ~320px wide, so a full screen of height turns each
+       photograph into a 1:3 sliver and the page into 9,700px. Keep them in proportion instead. */
+    @media (max-width:1099px){
+      .gallery figure img,.gallery .hero img,.gallery figure video,.gallery .hero video{height:auto;aspect-ratio:4/5}
+      .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:auto;aspect-ratio:4/5}
+    }
 
     /* transparent, pinned, and scrolls on its own when every accordion is open */
     .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
