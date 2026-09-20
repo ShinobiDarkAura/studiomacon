@@ -21,7 +21,7 @@
   .ship .intro p.lede{margin:0}
   .policies{margin:48px 0 0}
   .policies .acc{border-top:1px solid var(--rule)}
-  @media (min-width:768px){
+  @media (min-width:1024px){
     /* the black field is painted on the section too, so nothing white shows
        behind the illustration while it slides in */
     .ship{background:linear-gradient(to right,#000 0 70vw,#fff 70vw);
@@ -31,7 +31,7 @@
     .ship .text{align-self:center;padding:calc(var(--head) + 40px) 0 64px}
   }
   /* tablets: the black field narrows (to 62%, still clear of the logotype), so the text column keeps room for its title and fields */
-  @media (min-width:768px) and (max-width:1099px){ body .ship{grid-template-columns:62vw minmax(0,1fr);gap:0 32px;background:linear-gradient(to right,#000 0 62vw,#fff 62vw)} }
+  @media (min-width:1024px) and (max-width:1099px){ body .ship{grid-template-columns:1fr 1fr;gap:0 32px;background:linear-gradient(to right,#000 0 50%,#fff 50%)} }
   /* on load: the branch slides in from the left, then the text rises in turn */
   /* the black field is painted at once; only the box rises into it */
   .ship .branch img{transform:translateY(90px);opacity:0;filter:blur(10px);
@@ -41,7 +41,7 @@
   .ship .intro > :nth-child(2){--stagger:650ms !important}
   .ship .intro > :nth-child(3){--stagger:850ms !important}
   .ship .policies{--stagger:1050ms !important}
-  @media (max-width:767px){
+  @media (max-width:1023px){
     .ship{padding:0 !important;gap:0}
     .ship .branch{height:60vh;height:60svh;padding:calc(var(--head) + 8px) 12vw 8vh;overflow:hidden}
     .ship .branch{display:flex;align-items:center;justify-content:center}

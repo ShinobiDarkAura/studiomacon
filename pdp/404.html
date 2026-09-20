@@ -16,11 +16,14 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789943692">
+<link rel="stylesheet" href="site.css?v=1789947916">
 <style>
-  .lost{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
+  /* centred at every width: the title, the line under it and the button all sit on one axis */
+  .lost{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
+  .lost h1{font-size:clamp(38px,7vw,58px)}          /* a little smaller than the shop's headlines */
   .lost p.lede{margin:0 0 32px;font-size:17px;line-height:1.55}
-  .lost .cta{max-width:320px}
+  .lost .cta{width:100%;max-width:320px}
 </style>
 <style>
 .wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;
@@ -146,7 +149,7 @@
 
 <main class="lost">
   <p class="eyebrow" data-edit="page:404.html:e637d9fa">Page Not Found</p>
-  <h1 data-edit="page:404.html:316b410f">Lost Along the Way</h1>
+  <h1 data-edit="page:404.html:8f79768e">Lost Along<br>the Way</h1>
   <p class="lede" data-edit="page:404.html:88b77915">This page has wandered off. The pieces are all still here.</p>
   <a class="cta" href="index.html">Back to the Shop</a>
 </main>

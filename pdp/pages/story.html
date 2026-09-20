@@ -94,16 +94,19 @@
     .opening .hand{padding-bottom:48px}          /* room under the first film */
     .section .prose{padding-top:36px}          /* air above Our Practice */
     .history{padding-top:72px !important}          /* and more again above Our Story */
-    .process-film video{--w:100%;--ar:24/23}          /* the second film takes the first one's frame */
+    .process-film video{--w:100%;--ar:24/23}
+    .opening .hand,.steps{padding-left:24px;padding-right:24px}          /* 8px further in than the page gutter */
+    .opening .hand video,.process-film video{--sh:1}          /* the films carry their shadow on a phone */          /* the second film takes the first one's frame */
     .steps .process-film{max-width:100%}          /* --about-col counts the scrollbar into 100vw, so it fell 5px short */
     .steps{padding:8px 16px 24px}          /* the rest of the room under it comes from Our Story below */
-    .history{margin-bottom:8px}
+    .history{margin-bottom:48px}
     /* Our Story reads like the sections above it: words first, then the photographs */
-    .history{display:flex;flex-direction:column;gap:72px}          /* the photographs sit well clear of the words */
+    .history{display:flex;flex-direction:column;align-items:center;gap:72px}          /* the words sit on the page's centre line, not against its left edge */
+    .history .intro{width:100%}          /* the photographs sit well clear of the words */
     /* phones: the Polaroids keep 16px off each edge and never overlap the blurb */
-    .childhood{padding:0 16px}
-    .polaroid{width:min(44%,240px)}
-    .polaroid:first-child .card{transform:rotate(-3.5deg) translate(8px,0)}
+    .childhood{padding:0 16px;align-items:flex-start}
+    .polaroid{width:min(46%,268px)}          /* the pair reaches ~90% of the screen */
+    .polaroid:first-child .card{transform:rotate(-3.5deg) translate(8px,36px)}          /* one sits lower than the other */
     .polaroid:last-child .card{transform:rotate(2.8deg) translate(-8px,0)}
     .history .intro{order:1}
     .history .childhood{order:2}
@@ -116,6 +119,8 @@
     .opening .intro p.lede,.history .intro p.lede{max-width:470px}
     .childhood{max-width:620px;margin:0 auto;gap:28px}
     .polaroid{width:min(38%,232px)}
+    .childhood{align-items:flex-start}
+    .polaroid:first-child .card{transform:rotate(-3.5deg) translate(8px,44px)}
   }
 
 </style>

@@ -7,9 +7,12 @@
 <link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <style>
-  .lost{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
+  /* centred at every width: the title, the line under it and the button all sit on one axis */
+  .lost{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
+  .lost h1{font-size:clamp(38px,7vw,58px)}          /* a little smaller than the shop's headlines */
   .lost p.lede{margin:0 0 32px;font-size:17px;line-height:1.55}
-  .lost .cta{max-width:320px}
+  .lost .cta{width:100%;max-width:320px}
 </style>
 </head>
 <body class="fit">
@@ -18,7 +21,7 @@
 
 <main class="lost">
   <p class="eyebrow">Page Not Found</p>
-  <h1>Lost Along the Way</h1>
+  <h1>Lost Along<br>the Way</h1>
   <p class="lede">This page has wandered off. The pieces are all still here.</p>
   <a class="cta" href="index.html">Back to the Shop</a>
 </main>

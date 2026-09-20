@@ -252,15 +252,14 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   .wall-head{justify-content:center}
 }
 
+/* the header has no room for Back on phones, and it ran under the logo mark on tablets */
+@media (max-width:1099px){
+  .back{display:none}
+}
 /* phones: bigger logotype sitting a little higher; footer centred and shorter */
 @media (max-width:767px){
   .head .logotype{width:92px;top:-4px}
   .head{top:-2px}          /* 8px higher, centred in the white band above the main image */
-  .back{display:none}          /* no Back to Shop on phones */
-}
-/* tablets: the header has no room for it either — it ran under the logo mark at 768–1024 */
-@media (max-width:1099px){
-  .back{display:none}
   footer{min-height:95vh;min-height:95svh;text-align:center}
   footer .middle{align-items:center}
   footer .links{justify-content:center}
@@ -301,8 +300,14 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
 }
 
 /* ── tablets (768–1099px): the text column keeps enough room for its titles and fields ── */
-@media (min-width:768px) and (max-width:1099px){
-  body .split,body .product,body .commission{grid-template-columns:minmax(0,1fr) minmax(300px,1fr);gap:0 32px}
+/* Tablets below 1024 read as a tall phone: the two columns squeezed and cropped there. */
+@media (max-width:1023px){
+  body .split,body .product,body .commission{display:block;margin-right:0}
+  body .split .copy{position:static;height:auto;overflow:visible}
+}
+/* 1024-1099: an even split rather than the old 70/30 */
+@media (min-width:1024px) and (max-width:1099px){
+  body .split,body .product,body .commission{grid-template-columns:1fr 1fr;gap:0 32px}
 }
 
 /* ── touch screens: iPhone zooms into any field set smaller than 16px, so fields are 16px there ── */

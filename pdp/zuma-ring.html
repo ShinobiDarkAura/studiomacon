@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Zuma Ring", "description": "Sterling silver carrying the shoulder line of the Zuma totem around the finger. Unearthed glyphs record rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand.", "image": ["https://studiomacon.co/img/zuma-ring/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "zuma-ring", "offers": [{"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789943692">
+<link rel="stylesheet" href="site.css?v=1789947916">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -24,6 +24,8 @@
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
   /* the hero is a track of pictures that slides; nothing is created or destroyed on a tap */
   .gallery .hero{overflow:hidden;border-radius:14px}
+  /* above the carousel, each photograph is its own object again */
+  @media (min-width:1024px){ .gallery figure img,.gallery figure video,.gallery .hero img,.gallery .hero video{border-radius:14px} .gallery .hero{border-radius:0}}
   .gallery .hero .shots{display:flex;width:100%;transition:transform .5s cubic-bezier(.2,.7,.2,1);will-change:transform}
   .gallery .hero .shot{flex:0 0 100%;min-width:100%;background:var(--field)}          /* never white behind a picture */
   @media (prefers-reduced-motion:reduce){ .gallery .hero .shots{transition:none} }
@@ -85,7 +87,7 @@
   .dock span:last-child{text-transform:none}
 
   /* ── phones: one 24px side margin for the whole page, left-aligned text, stacked buttons ── */
-  @media (max-width:767px){
+  @media (max-width:1023px){
     .info,.product .info h1,.product .info .eyebrow{text-align:center}
     .info .desc-block{text-align:center}
     .buy{grid-template-columns:1fr}          /* one under the other, not side by side */
@@ -111,7 +113,7 @@
   }
   @keyframes thumb-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){ .thumbs button{animation:none} }
-  @media (min-width:768px){ .thumbs{display:none} }
+  @media (min-width:1024px){ .thumbs{display:none} }
   /* phones: other pieces, one full screen, 2 × 2 */
   /* desktop: four across under the product, title centred above */
   /* three across, held to the same margins as the shop grid on the home page */
@@ -129,7 +131,8 @@
   .rel-name{display:block;margin:20px 0 4px;font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
   .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
   @media (max-width:1099px){
-    .related{display:flex;flex-direction:column;justify-content:center;min-height:0;padding:72px var(--gutter) 24px;text-align:center}
+    .related{display:flex;flex-direction:column;justify-content:center;min-height:0;
+      padding:72px calc(var(--pad) + 24px) 24px;text-align:center}          /* the same inset as the pieces above it */
     .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
     .related .rel-blurb{margin:0 auto 32px;max-width:300px;font-size:15px;line-height:1.55}
     /* phones: two pieces only, at the size and spacing of the shop grid, rather than three squeezed small */
@@ -144,8 +147,11 @@
     .rel-cost{display:block;font-size:13px;color:rgba(0,0,0,.55)}
     .related + .closing{padding-top:24px}
   }
+  @media (max-width:767px){
+    .related{padding-left:var(--gutter);padding-right:var(--gutter)}
+  }
 
-  @media (min-width:768px){
+  @media (min-width:1024px){
     .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
       margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
     .gallery figure:not(.hero){display:block;margin-top:0}

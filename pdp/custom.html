@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789943692">
+<link rel="stylesheet" href="site.css?v=1789947916">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -167,7 +167,7 @@
   .fine-print{margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(0,0,0,.5)}
   .thanks{padding:8px 0 4px;font-size:16px;line-height:1.55}
 
-  @media (min-width:768px){
+  @media (min-width:1024px){
     .commission{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;align-items:start;
       padding-right:calc(var(--pad) + 24px)}
     .examples{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;padding:0}
@@ -179,7 +179,7 @@
     .order > *{flex:none}
     .order::-webkit-scrollbar{display:none}
   }
-  @media (max-width:767px){
+  @media (max-width:1023px){
     .commission{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 var(--gutter)}
     .commission > .examples{display:contents}
     .commission .examples .lead{grid-column:1/-1;order:-2;margin:0 calc(-1 * var(--gutter));aspect-ratio:auto;height:60vh;height:60svh}
@@ -210,7 +210,7 @@
     .commission .examples figure:not(.lead) .over .name{order:-1;font:400 var(--tile-name)/1 var(--serif);text-transform:uppercase;letter-spacing:0}
     .commission .examples figure:not(.lead) .over .date{color:rgba(0,0,0,.55)}
   }
-  @media (min-width:768px){ .past-head{display:none} }
+  @media (min-width:1024px){ .past-head{display:none} }
 </style>
 <style>
 .wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;

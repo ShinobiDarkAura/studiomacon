@@ -30,7 +30,7 @@
   .form textarea{min-height:120px}
   .form .cta{margin-top:10px}
   .sent{margin:0;font-size:17px}
-  @media (min-width:768px){
+  @media (min-width:1024px){
     /* the black field is a true 70% of the screen */
     .split{grid-template-columns:70vw minmax(0,1fr)}
     .split{background:linear-gradient(to right,#000 0 70vw,#fff 70vw)}
@@ -40,7 +40,7 @@
     .split .copy .ways{position:absolute;left:0;right:0;bottom:17px;margin:0}
   }
   /* tablets: the black field narrows (to 62%, still clear of the logotype), so the text column keeps room for its title and fields */
-  @media (min-width:768px) and (max-width:1099px){ body .split{grid-template-columns:62vw minmax(0,1fr);gap:0 32px;background:linear-gradient(to right,#000 0 62vw,#fff 62vw)} }
+  @media (min-width:1024px) and (max-width:1099px){ body .split{grid-template-columns:1fr 1fr;gap:0 32px;background:linear-gradient(to right,#000 0 50%,#fff 50%)} }
   @media (max-width:767px){
     .split .pics figure{aspect-ratio:auto;height:60vh;height:60svh;padding:calc(var(--head) + 8px) 12vw 5vh;
       display:flex;align-items:center;justify-content:center;overflow:hidden}          /* the poster rises inside the panel */
