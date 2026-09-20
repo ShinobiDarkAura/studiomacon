@@ -565,7 +565,7 @@
     place(); addEventListener('resize', place); addEventListener('load', place);
   })();
 
-  // Buy Now (product pages): this piece alone, straight to Shopify checkout, where Apple Pay and cards are offered
+  // Buy with Shop (product pages): this piece alone, straight to Shop Pay
   document.querySelectorAll('.buy .buy-now').forEach(function (b) {
     b.addEventListener('click', function (e) {
       var sizeBox = document.querySelector('[data-size]');
@@ -574,6 +574,12 @@
         setTimeout(function () { sizeBox.classList.remove('need'); }, 1600); return;
       }
       var variant = sizeBox ? sizeBox.dataset.variant : document.getElementById('bag').dataset.variant;
+      var id = String(variant || '').split('/').pop();
+      var shop = (window.MACON_SHOP || {}).shop;
+      if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
+        location.href = 'https://' + shop + '/cart/' + id + ':1?payment=shop_pay';
+        return;
+      }
       MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
     });
   });

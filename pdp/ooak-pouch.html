@@ -53,11 +53,12 @@
   .size-list li:hover,.size-list li:focus{border-color:#000;outline:none}
   .size-list li[aria-selected="true"]{background:#000;color:#fff;border-color:#000}
   .buy{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  /* straight to checkout, where Apple Pay and the cards are offered */
-  .buy-now{display:flex;align-items:center;justify-content:center;width:100%;height:47px;background:#fff;color:#000;
-    border:1px solid #000;letter-spacing:.02em;text-transform:uppercase;cursor:pointer;
-    font:500 calc((18px - 2pt) * .85)/1 var(--sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);transition:background .25s ease,color .25s ease}
-  .buy-now:hover{background:#000;color:#fff}
+  /* Shop Pay: a cart link with ?payment=shop_pay, so this really is Shop Pay and not a lookalike */
+  .buy-now{display:flex;align-items:center;justify-content:center;gap:.34em;width:100%;height:47px;
+    background:#5a31f4;color:#fff;border:1px solid #5a31f4;letter-spacing:.02em;cursor:pointer;
+    font:500 calc((18px - 2pt) * .85)/1 var(--sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);transition:background .25s ease,border-color .25s ease}
+  .buy-now .shop-word{font-weight:700;font-size:1.22em;letter-spacing:-.01em}
+  .buy-now:hover{background:#4a27cc;border-color:#4a27cc}
   /* product buttons: 8px shorter than the site's other black buttons, type and arrow 15% smaller */
   .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85)}
   .buy .cta::after{height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
@@ -88,18 +89,19 @@
   @media (max-width:767px){
     .info,.product .info h1,.product .info .eyebrow{text-align:center}
     .info .desc-block{text-align:center}
+    .buy{grid-template-columns:1fr}          /* one under the other, not side by side */
     .info .desc{max-width:85%;margin:0 auto}          /* the note reads narrower than the buttons above it */
     .info .acc,.info form{text-align:left}
     .gallery{padding:calc(var(--head) - 6px) 8px 0}          /* the main image starts 8px below the logotype, 8px from the sides */
     .info{padding-left:8px;padding-right:8px}
-    .gallery .hero img,.gallery .hero video{height:auto;aspect-ratio:4/5;border-radius:14px}
+    .gallery .hero img,.gallery .hero video{height:auto;aspect-ratio:4/5;border-radius:0}
     .closing{padding:96px 8px 0}
     .big{--w:100%;width:100%;margin-left:0;aspect-ratio:auto;height:50vh;height:50svh}
     .chunk{padding:0}
     /* thumbnails of every picture and film, under the main image */
     .thumbs{display:flex;gap:8px;margin:10px 0 0}
     .thumbs::-webkit-scrollbar{display:none}
-    .thumbs button{flex:1 1 0;min-width:0;aspect-ratio:4/5;padding:0;border-radius:4px;overflow:hidden}          /* however many there are, they share the full width */
+    .thumbs button{flex:1 1 0;min-width:0;aspect-ratio:4/5;padding:0;border-radius:10px;overflow:hidden}          /* however many there are, they share the full width */
     .thumbs button.on{opacity:1}
     .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#000}
     .thumbs img{width:100%;height:100%;object-fit:cover}
@@ -358,7 +360,7 @@
       
       <div class="buy" id="bag" data-variant="">
         <button class="cta">Add to Bag</button>
-        <button class="buy-now" type="button">Buy Now</button>
+        <button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">Buy with <span class="shop-word">shop</span></button>
       </div>
       <div class="desc-block"><p class="label">Field Notes</p><p class="desc" data-edit="description">A small pouch of glass beads and soft leather, sized to carry a single totem against the chest. Those who wear it report steadier breathing on crowded days. The only one of its kind, beaded and stitched by hand.</p></div>
       <div class="acc">
@@ -989,7 +991,7 @@
     place(); addEventListener('resize', place); addEventListener('load', place);
   })();
 
-  // Buy Now (product pages): this piece alone, straight to Shopify checkout, where Apple Pay and cards are offered
+  // Buy with Shop (product pages): this piece alone, straight to Shop Pay
   document.querySelectorAll('.buy .buy-now').forEach(function (b) {
     b.addEventListener('click', function (e) {
       var sizeBox = document.querySelector('[data-size]');
@@ -998,6 +1000,12 @@
         setTimeout(function () { sizeBox.classList.remove('need'); }, 1600); return;
       }
       var variant = sizeBox ? sizeBox.dataset.variant : document.getElementById('bag').dataset.variant;
+      var id = String(variant || '').split('/').pop();
+      var shop = (window.MACON_SHOP || {}).shop;
+      if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
+        location.href = 'https://' + shop + '/cart/' + id + ':1?payment=shop_pay';
+        return;
+      }
       MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
     });
   });

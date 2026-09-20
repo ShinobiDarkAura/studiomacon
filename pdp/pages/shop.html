@@ -40,10 +40,10 @@
     font:italic 400 15pt/1.2 "Henry",var(--serif);transition:opacity .5s ease}
   @media (max-width:767px){ .film .tagline{transform:translateY(calc(var(--lh) / 2 + 12px))} }
   .film.scrolled .tagline{opacity:0}
-  .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden}
+  .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden;transition-delay:0s}
   /* the cue waits 5s before fading in */
   /* after a while on the film: the centred logotype and tagline fade away, the scroll cue fades in */
-  .scroll-cue{opacity:0;transition:opacity 1.2s ease}
+  .scroll-cue{opacity:0;transition:opacity 1.8s ease 3.3s}          /* in only once the logotype has gone, and slowly */
   body.hero-quiet .scroll-cue{opacity:1}
   body.hero-quiet.logo-hero .head .logotype{opacity:0;transition:opacity 1.2s ease,transform .7s var(--ease),color .3s ease}
   body.hero-quiet .film .tagline{opacity:0;transition:opacity 2.8s ease}
@@ -52,6 +52,7 @@
   /* the timed fade sets its own duration: while resting at the top the body still carries
      .logo-scrub, whose .2s transition was making this fade in a blink */
   body.hero-quiet .logo-build{opacity:0;transition:opacity 2.8s ease}
+  @media (max-width:767px){ body.hero-quiet .logo-build,body.hero-quiet .film .tagline{transition-duration:2.32s} }
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
      and stays there: it never flies back down, even at the top of the page */
   body.logo-docked .head .logotype{transform:none !important;opacity:1 !important;transition:opacity .8s ease,color .3s ease !important}
@@ -318,7 +319,8 @@
     quiet = setTimeout(function () {
       if (scrollY > 40) return;
       document.body.classList.add('hero-quiet');                        // the big logotype fades where it is...
-      setTimeout(function () { document.body.classList.add('logo-docked'); }, 2950);   // ...then reappears in the nav (after the 2.8s fade, not part-way through it)
+      setTimeout(function () { document.body.classList.add('logo-docked'); },
+                 matchMedia('(max-width:767px)').matches ? 2470 : 2950);   // ...then reappears in the nav, once the fade has finished
     }, 8000);
   };
 
