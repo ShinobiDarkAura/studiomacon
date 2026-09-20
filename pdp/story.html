@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789860010">
+<link rel="stylesheet" href="site.css?v=1789940002">
 <style>
   .head .on-dark{color:#000}
   .opening{display:grid;gap:40px;padding:calc(var(--head) + 48px) calc(var(--pad) + 24px) 0}
@@ -61,6 +61,9 @@
   .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
   .history .intro p.lede{margin:0;max-width:360px}
   .history .intro p.lede + p.lede{margin-top:1em}
+  /* the two names link to their own Instagram: underlined quietly, never a different colour */
+  .intro p.lede a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+  .intro p.lede a:hover{text-decoration-color:rgba(0,0,0,.35)}
   .history .intro h1{margin-bottom:38px}
   /* Drawn Together: the two childhood photographs as real Polaroids, off-white paper with a little grain,
      laid slightly askew and overlapping, with a soft, layered shadow */
@@ -256,9 +259,9 @@
     <div class="intro">
       <p class="eyebrow" data-edit="page:story.html:c8927cf4">Our Story</p>
       <h1 data-edit="page:story.html:b9a5e0f1">Drawn<br>Together</h1>
-      <p class="lede" data-edit="page:story.html:49c0e5d5">We met in a figure drawing class at RISD in 2008. Two eager freshmen at neighboring easels, learning to make art together. We became close but our journey was a winding one, leading us apart for a decade.</p>
-      <p class="lede" data-edit="page:story.html:d1f49e2e">When we finally found our way back to each other, we married in 2023. Through it all, we never stopped making things for each other. Little objects that kept us connected over many years and miles apart.</p>
-      <p class="lede" data-edit="page:story.html:71dfdf77">That is where Maçon comes from: our art in place of words for a feeling we couldn’t name.<br><i>Artifacts of love.</i></p>
+      <p class="lede" data-edit="page:story.html:32edd261"><a href="https://www.instagram.com/inchoate.light/" target="_blank" rel="noopener">Alex Cohen</a> and <a href="https://www.instagram.com/hannahwcohen/" target="_blank" rel="noopener">Hannah Woodard</a> met in a figure drawing class at RISD in 2008. Two eager freshmen at neighboring easels, learning to make art together. They became close, but the journey was winding and led them apart for a decade.</p>
+      <p class="lede" data-edit="page:story.html:65727a4d">When they finally found their way back to each other, they married in 2023. Through it all, they never stopped making things for one another. Little objects that kept them connected over many years and miles apart.</p>
+      <p class="lede" data-edit="page:story.html:698cb2c5">That is how Maçon was born. Out of the art they made for each other to express a feeling too vast for language.<br><i>Artifacts of love.</i></p>
     </div>
   </section>
 </main>
@@ -473,13 +476,15 @@
     // coming back (Back button or history) the page simply reappears as it was, with no entrance
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
+    var phone = matchMedia('(max-width:767px)').matches;
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add('is-seen');
         io.unobserve(e.target);
       });
-    }, {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});
+    }, phone ? {threshold: 0, rootMargin: '0px 0px -4% 0px'}          // phones: a block is most of the screen, so asking for 16% of it
+             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});     // meant scrolling well past a paragraph before it moved
     // the footer sits against the page's bottom edge, where the main trigger line
     // can never be crossed, so it reveals as soon as any of it is on screen
     var edge = still ? null : new IntersectionObserver(function (entries) {

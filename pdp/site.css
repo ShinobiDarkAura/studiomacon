@@ -13,7 +13,7 @@
   --pad:24px;
   --head:84px;
   --ease:cubic-bezier(.22,.7,.2,1);
-  --tile-name:calc(18px + 3pt);          /* piece names under pictures: shop grid (phones) and Also Worth Keeping, always the same */
+  --tile-name:calc(18px + 4pt);          /* piece names under pictures: shop grid (phones) and Also Worth Keeping, always the same */
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -280,10 +280,13 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   /* Menu and Bag sit 12px inside the page gutter; the drawer's Close and its links share that same line */
   :root{--nav-inset:calc(var(--gutter) + 12px)}
   .head{padding-left:var(--nav-inset) !important;padding-right:var(--nav-inset) !important}
-  .menu-close{left:var(--nav-inset)}
+  /* Close sits exactly where Menu was: the header is lifted 14px on phones, so this follows it */
+  .menu-close{left:var(--nav-inset);top:14px}
   .menu-sheet{padding-left:var(--nav-inset) !important;padding-right:var(--nav-inset) !important}
-  .welcome .prose,.wall-head,.shop-wall,.inspiration-wall,.gallery,.info,.related,.opening,.prose,.steps,.history,
+  .wall-head,.shop-wall,.inspiration-wall,.gallery,.info,.related,.opening,.prose,.steps,.history,
   .split .copy,.bag-page{padding-left:var(--gutter) !important;padding-right:var(--gutter) !important}
+  /* the opening blurb sits in from the grid, on the menu and bag's own inset */
+  .welcome .prose{padding-left:var(--nav-inset) !important;padding-right:var(--nav-inset) !important}
 }
 
 /* ── tablets (768–1099px): the text column keeps enough room for its titles and fields ── */

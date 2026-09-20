@@ -204,7 +204,7 @@ def accordions(slug, k, notes):
     chain = re.search(r'(\d+)"\s*chain', " ".join(notes), re.I)
 
     care = {
-        "totem": "<p>Bronze is meant to be handled. The patina darkens where your thumb sits and brightens where it rubs, so over time it records how you hold it.</p><p>To keep the surface as it is, wipe it with a soft dry cloth. Avoid polish; it takes the patina with it.</p>",
+        "totem": "",          # bronze care is not written anywhere on the site: a handwritten card goes in the parcel
         "ring": "<p>Sterling silver darkens with time and air. Wear it often and it stays bright; bring back the shine with a soft polishing cloth.</p><p>Take it off to swim or clean, and store it on its own so it stays unscratched.</p>",
         "pendant": "<p>Worn long, it rests just below the breastbone and turns with you as you move.</p><p>Sterling silver darkens with time and air. Wear it often and it stays bright, or bring back the shine with a soft polishing cloth. Take it off to swim.</p>",
         "jewellery": "<p>Sterling silver darkens with time and air. Wear it often and it stays bright; bring back the shine with a soft polishing cloth. Take it off to swim.</p>",
@@ -235,10 +235,10 @@ def accordions(slug, k, notes):
         key = f"care:{k}:{n[0]}"
         return f'<p>{_content.shared(key, m.group(1))}</p>'
     care_html = re.sub(r"<p>(.*?)</p>", one_para, care, flags=re.S)
-    items = [
-        ("Care" if k in ("totem", "apparel") else "Wear &amp; Care", care_html),
-        ("Materials", f"<p>{html.escape(mat)}</p>"),
-    ]
+    items = []
+    if care_html.strip():
+        items.append(("Care" if k in ("totem", "apparel") else "Wear &amp; Care", care_html))
+    items.append(("Materials", f"<p>{html.escape(mat)}</p>"))
     if k != "totem":                       # totems carry no sizing row
         items.append(("Sizing", sizing))
     # Shipping reads the same on every piece, so it is edited once for the whole shop.

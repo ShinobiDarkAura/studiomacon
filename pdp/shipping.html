@@ -16,7 +16,7 @@
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789860010">
+<link rel="stylesheet" href="site.css?v=1789940002">
 <style>
   /* one screen: the keepsake box on the left, the policy on the right */
   .ship{display:grid;gap:40px;min-height:100vh;min-height:100svh;padding:calc(var(--head) + 40px) calc(var(--pad) + 24px) 64px;align-items:center}
@@ -58,6 +58,8 @@
     .ship .branch img{width:auto;height:auto;max-width:100%;max-height:100%}          /* the whole box, inside the panel */
     .ship .text{padding:40px var(--gutter) 64px;max-width:none}
     .ship .intro{text-align:center}
+    /* phones: the opening line reads better a touch narrower than the accordions below it */
+    .ship .intro p.lede{max-width:88%;margin:0 auto}
   }
 </style>
 <style>
@@ -446,13 +448,15 @@
     // coming back (Back button or history) the page simply reappears as it was, with no entrance
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
+    var phone = matchMedia('(max-width:767px)').matches;
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add('is-seen');
         io.unobserve(e.target);
       });
-    }, {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});
+    }, phone ? {threshold: 0, rootMargin: '0px 0px -4% 0px'}          // phones: a block is most of the screen, so asking for 16% of it
+             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});     // meant scrolling well past a paragraph before it moved
     // the footer sits against the page's bottom edge, where the main trigger line
     // can never be crossed, so it reveals as soon as any of it is on screen
     var edge = still ? null : new IntersectionObserver(function (entries) {

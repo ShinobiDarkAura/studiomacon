@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789860010">
+<link rel="stylesheet" href="site.css?v=1789940002">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -365,7 +365,7 @@
     <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/ data-edit="page:custom.html:5d21839e"><path d="M19 12H5"/></svg><span>Back</span></a>
     <p class="eyebrow">Custom Artifacts</p>
     <h1 class="kept" data-edit="page:custom.html:903ea8e4">Let's Make<br>Something Real</h1>
-    <p class="body" data-edit="page:custom.html:b2ee22c3">A one-of-a-kind piece, sketched for you, carved by hand in wax and cast at our local foundry. A bronze totem of the animal you love most, or a ring, pendant or cuff in silver, bronze or gold. Never molded or repeated.</p>
+    <p class="body" data-edit="page:custom.html:e7c56272">A one-of-a-kind piece, sketched for you, carved by hand in wax and cast at our local foundry. A bronze totem of the animal you love most, or a ring, pendant or cuff in silver or gold. Never molded or repeated.</p>
     <p class="price" data-edit="page:custom.html:34d43ed0">$925 Totems / $1,200+ Jewelry</p>
     <button type="button" class="next start" id="start">Start a Commission</button>
 
@@ -739,13 +739,15 @@
     // coming back (Back button or history) the page simply reappears as it was, with no entrance
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
+    var phone = matchMedia('(max-width:767px)').matches;
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add('is-seen');
         io.unobserve(e.target);
       });
-    }, {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});
+    }, phone ? {threshold: 0, rootMargin: '0px 0px -4% 0px'}          // phones: a block is most of the screen, so asking for 16% of it
+             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});     // meant scrolling well past a paragraph before it moved
     // the footer sits against the page's bottom edge, where the main trigger line
     // can never be crossed, so it reveals as soon as any of it is on screen
     var edge = still ? null : new IntersectionObserver(function (entries) {

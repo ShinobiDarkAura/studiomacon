@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Zuma Ring", "description": "Sterling silver carrying the shoulder line of the Zuma totem around the finger. Unearthed glyphs record rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand.", "image": ["https://studiomacon.co/img/zuma-ring/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "zuma-ring", "offers": [{"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789860010">
+<link rel="stylesheet" href="site.css?v=1789940002">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -121,12 +121,14 @@
   .rel-name{display:block;margin:20px 0 4px;font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
   .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
   @media (max-width:767px){
-    .related{display:flex;flex-direction:column;justify-content:center;min-height:100vh;min-height:100svh;padding:72px 8px 48px;text-align:center}
+    .related{display:flex;flex-direction:column;justify-content:center;min-height:100vh;min-height:100svh;padding:72px var(--gutter) 48px;text-align:center}
     .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
     .related .rel-blurb{margin:0 auto 32px;max-width:300px;font-size:15px;line-height:1.55}
-    .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left}
-    .rel-grid{width:75%}          /* phones: a little smaller, not so small the names crowd */
-    .rel-name{font-size:calc(var(--tile-name) - 3px) !important}
+    /* phones: two pieces only, at the size and spacing of the shop grid, rather than three squeezed small */
+    .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gutter);text-align:left}
+    .rel-grid{width:100%}
+    .rel-piece:nth-child(3){display:none}
+    .rel-name{font-size:var(--tile-name) !important}
     .rel-piece{display:block;color:#000}
     .rel-frame{display:block;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--field)}
     .rel-frame img{width:100%;height:100%;object-fit:cover}
@@ -580,13 +582,15 @@
     // coming back (Back button or history) the page simply reappears as it was, with no entrance
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
     var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
+    var phone = matchMedia('(max-width:767px)').matches;
     var io = still ? null : new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add('is-seen');
         io.unobserve(e.target);
       });
-    }, {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});
+    }, phone ? {threshold: 0, rootMargin: '0px 0px -4% 0px'}          // phones: a block is most of the screen, so asking for 16% of it
+             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});     // meant scrolling well past a paragraph before it moved
     // the footer sits against the page's bottom edge, where the main trigger line
     // can never be crossed, so it reveals as soon as any of it is on screen
     var edge = still ? null : new IntersectionObserver(function (entries) {

@@ -28,9 +28,11 @@
   }
   /* the line under the big logotype on the film */
   @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
-  .film .tagline{position:fixed;left:0;right:0;top:calc(50vh + 100px);pointer-events:none;z-index:2;margin:0;text-align:center;color:#fff;
+  /* sits under the logotype, measured off the logo itself. It used to be fixed at 50vh while the logo is
+     centred in 100svh, so on an iPhone the browser's bottom bar pushed the line ~25-40px further down. */
+  .film .tagline{position:absolute;left:0;right:0;top:50%;transform:translateY(calc(var(--lh) / 2 + 44px));pointer-events:none;z-index:2;margin:0;text-align:center;color:#fff;
     font:italic 400 15pt/1.2 "Henry",var(--serif);transition:opacity .5s ease}
-  @media (max-width:767px){ .film .tagline{top:calc(50vh + 70px)} }
+  @media (max-width:767px){ .film .tagline{transform:translateY(calc(var(--lh) / 2 + 12px))} }
   .film.scrolled .tagline{opacity:0}
   .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden}
   /* the cue waits 5s before fading in */
@@ -100,8 +102,10 @@
   body.logo-anim .head .logotype{opacity:0}
   .tagline .ch{opacity:0}
   .tagline .ch.on{opacity:1}
-  @media (max-width:767px){ .logo-build{--lh:calc(108px * 2.8125 * 331 / 888)} }
-  @media (min-width:768px){ .logo-build{--lh:calc(147px * 2.8125 * 331 / 888)} }
+  @media (max-width:767px){ .film{--lh:calc(108px * 2.8125 * 331 / 888)} }
+  /* phones: the lockup sits 3.5% high of centre, so the browser bar does not crowd it */
+  @media (max-width:767px){ .logo-build,.film .tagline{margin-top:-3.5svh} }
+  @media (min-width:768px){ .film{--lh:calc(147px * 2.8125 * 331 / 888)} }
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
   .welcome .prose h1{margin-bottom:44px}
@@ -147,7 +151,8 @@
   @media (min-width:600px){ .wall{grid-template-columns:repeat(2,1fr)} }
   @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} body.labels-under .wall{grid-template-columns:repeat(4,1fr)} }
   /* phones: two across, 8px from the edges, 8px between */
-  @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 8px} }
+  /* phones: the space between pieces matches the space to the edge of the page */
+  @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:var(--gutter);padding:0 var(--gutter)} }
   @media (hover:none){ .piece .held{display:none} }
   /* the in-hand picture is framed on its own (--hx/--hy/--hz, measured by tools/align_hover.py)
      so the piece lands where the still's piece lands, and hovering does not make it jump */
@@ -217,6 +222,7 @@
   <section class="film" aria-label="Studio Maçon film">
     <video autoplay muted loop playsinline preload="metadata" poster="video/poster-process.jpg">
       <source src="video/film-process-480.mp4" type="video/mp4" media="(max-width:700px)">
+      <source src="video/film-process-1080.mp4" type="video/mp4">
       <source src="video/film-process.mp4" type="video/mp4">
     </video>
     <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:154;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:172;--g:17"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:123;--g:-10"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:240;--g:20"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:123;--g:20"><i class="ll-glyph"></i></span></div>
@@ -417,6 +423,67 @@
     reset(); addEventListener('load', function () { requestAnimationFrame(reset); });
   })();
   addEventListener('pageshow', function (e) { if (e.persisted) still(); });
+</script>
+<script>
+  // Colour editor for the grid (open the home page with ?tint). Click a piece to select it, drag the
+  // sliders, then "Copy settings" and paste the values back to Claude. Nothing here changes the site.
+  (function () {
+    if (!/[?&]tint\b/.test(location.search)) return;
+    function baked(src) {                                     // the balance already baked into the file name
+      var m = /--c([mp])([\d.]+)([mp])([\d.]+)\./.exec(src || '');
+      return m ? {warm: (m[1] === 'm' ? -1 : 1) * parseFloat(m[2]), tint: (m[3] === 'm' ? -1 : 1) * parseFloat(m[4])} : {warm: 0, tint: 0};
+    }
+    var gains = function (w, t) { return [1 + w * .01 - t * .005, 1 + t * .01, 1 - w * .01 - t * .005]; };
+    var defs = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    defs.setAttribute('width', 0); defs.setAttribute('height', 0); defs.style.position = 'absolute'; document.body.appendChild(defs);
+    function paint(tile) {                                    // show the chosen balance on top of the baked one
+      var id = 'tn-' + tile.slug, fl = defs.querySelector('#' + id);
+      if (!fl) { fl = document.createElementNS('http://www.w3.org/2000/svg', 'filter'); fl.id = id;
+        fl.setAttribute('color-interpolation-filters', 'sRGB'); fl.innerHTML = '<feColorMatrix type="matrix"/>'; defs.appendChild(fl); }
+      var want = gains(tile.warm, tile.tint), has = gains(tile.b.warm, tile.b.tint);
+      fl.firstChild.setAttribute('values', (want[0] / has[0]) + ' 0 0 0 0  0 ' + (want[1] / has[1]) + ' 0 0 0  0 0 ' + (want[2] / has[2]) + ' 0 0  0 0 0 1 0');
+      tile.imgs.forEach(function (im) { im.style.filter = 'url(#' + id + ')'; });
+    }
+    var tiles = [], cur = null;
+    document.querySelectorAll('.piece[href]').forEach(function (a) {
+      var imgs = [].slice.call(a.querySelectorAll('img')); if (!imgs.length) return;
+      var b = baked(imgs[0].getAttribute('src'));
+      tiles.push({el: a, slug: a.getAttribute('href').replace('.html', ''), imgs: imgs, b: b, warm: b.warm, tint: b.tint});
+      a.removeAttribute('href');                                // while editing, a piece selects instead of opening
+    });
+    var css = document.createElement('style');
+    css.textContent = '.tint{position:fixed;right:16px;bottom:16px;z-index:9999;width:260px;background:#fff;border:1px solid #ddd;border-radius:12px;box-shadow:0 12px 40px -12px rgba(0,0,0,.35);padding:14px 16px;font:12px/1.4 -apple-system,system-ui,sans-serif;color:#000}' +
+      '.tint h4{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.tint label{display:grid;grid-template-columns:74px 1fr 34px;gap:8px;align-items:center;margin:6px 0}' +
+      '.tint output{text-align:right;font-variant-numeric:tabular-nums}.tint .row{display:flex;gap:8px;margin-top:12px}.tint .hint{color:#777;margin:8px 0 0}' +
+      '.tint button{flex:1;padding:7px;border:1px solid #000;border-radius:6px;background:#fff;cursor:pointer;font:inherit}.tint button.dark{background:#000;color:#fff}' +
+      '.piece.tint-on{outline:2px solid #000;outline-offset:3px}';
+    document.head.appendChild(css);
+    var box = document.createElement('div'); box.className = 'tint';
+    box.innerHTML = '<h4>Grid colour</h4><p class="hint" id="tint-who">Click a piece to start.</p>' +
+      '<label>Cool ↔ Warm<input type="range" data-k="warm" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
+      '<label>Mag. ↔ Green<input type="range" data-k="tint" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
+      '<div class="row"><button type="button" class="dark">Copy settings</button><button type="button">Reset piece</button></div>';
+    document.body.appendChild(box);
+    var who = box.querySelector('#tint-who'), rs = [].slice.call(box.querySelectorAll('input'));
+    function show() {
+      rs.forEach(function (r) { r.disabled = !cur; if (cur) { r.value = cur[r.dataset.k]; r.nextElementSibling.textContent = cur[r.dataset.k]; } });
+      who.textContent = cur ? cur.slug + ' — baked in: warm ' + cur.b.warm + ', tint ' + cur.b.tint : 'Click a piece to start.';
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('.piece'); if (!a || !tiles.some(function (t) { return t.el === a; })) return;
+      e.preventDefault(); e.stopPropagation();
+      tiles.forEach(function (t) { t.el.classList.toggle('tint-on', t.el === a); if (t.el === a) cur = t; });
+      show();
+    }, true);
+    box.addEventListener('input', function (e) { if (!cur || !e.target.dataset.k) return; cur[e.target.dataset.k] = +e.target.value; e.target.nextElementSibling.textContent = e.target.value; paint(cur); });
+    box.querySelectorAll('button')[1].onclick = function () { if (!cur) return; cur.warm = cur.b.warm; cur.tint = cur.b.tint; paint(cur); show(); };
+    box.querySelectorAll('button')[0].onclick = function () {
+      var t = tiles.filter(function (x) { return x.warm !== x.b.warm || x.tint !== x.b.tint; })
+        .map(function (x) { return x.slug + ': warm ' + x.warm + ', tint ' + x.tint; }).join('\n') || 'no changes';
+      var b = box.querySelectorAll('button')[0];
+      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy settings'; }, 1500); }, function () { prompt('Copy these settings:', t); });
+    };
+  })();
 </script>
 </body>
 </html>
