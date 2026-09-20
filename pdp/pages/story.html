@@ -89,12 +89,19 @@
     .opening .intro p.lede{max-width:85%}          /* the opening line reads narrower than the page */
     /* phones: the process film follows the text, then the childhood photographs */
     .opening .hand{padding-bottom:48px}          /* room under the first film */
+    .section .prose{padding-top:36px}          /* air above Our Practice */
+    .history{padding-top:72px !important}          /* and more again above Our Story */
     .process-film video{--w:100%;--ar:24/23}          /* the second film takes the first one's frame */
     .steps .process-film{max-width:100%}          /* --about-col counts the scrollbar into 100vw, so it fell 5px short */
     .steps{padding:8px 16px 24px}          /* the rest of the room under it comes from Our Story below */
-    .history{padding-top:0 !important;margin-bottom:8px}
+    .history{margin-bottom:8px}
     /* Our Story reads like the sections above it: words first, then the photographs */
-    .history{display:flex;flex-direction:column;gap:24px}
+    .history{display:flex;flex-direction:column;gap:72px}          /* the photographs sit well clear of the words */
+    /* phones: the Polaroids keep 16px off each edge and never overlap the blurb */
+    .childhood{padding:0 16px}
+    .polaroid{width:min(44%,240px)}
+    .polaroid:first-child .card{transform:rotate(-3.5deg) translate(8px,0)}
+    .polaroid:last-child .card{transform:rotate(2.8deg) translate(-8px,0)}
     .history .intro{order:1}
     .history .childhood{order:2}
   }

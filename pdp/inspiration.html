@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789942084">
+<link rel="stylesheet" href="site.css?v=1789942633">
 <style>
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head h1{margin:0;font-size:57.5px}
@@ -603,8 +603,8 @@
         e.target.classList.add('is-seen');
         io.unobserve(e.target);
       });
-    }, phone ? {threshold: 0, rootMargin: '0px 0px -4% 0px'}          // phones: a block is most of the screen, so asking for 16% of it
-             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});     // meant scrolling well past a paragraph before it moved
+    }, phone ? {threshold: 0, rootMargin: '0px 0px 18% 0px'}          // phones: start a block just BEFORE it reaches the screen, so
+             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});      // it is already arriving rather than blank when you get there
     // the footer sits against the page's bottom edge, where the main trigger line
     // can never be crossed, so it reveals as soon as any of it is on screen
     var edge = still ? null : new IntersectionObserver(function (entries) {

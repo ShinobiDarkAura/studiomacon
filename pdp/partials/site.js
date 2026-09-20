@@ -191,8 +191,8 @@
         e.target.classList.add('is-seen');
         io.unobserve(e.target);
       });
-    }, phone ? {threshold: 0, rootMargin: '0px 0px -4% 0px'}          // phones: a block is most of the screen, so asking for 16% of it
-             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});     // meant scrolling well past a paragraph before it moved
+    }, phone ? {threshold: 0, rootMargin: '0px 0px 18% 0px'}          // phones: start a block just BEFORE it reaches the screen, so
+             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});      // it is already arriving rather than blank when you get there
     // the footer sits against the page's bottom edge, where the main trigger line
     // can never be crossed, so it reveals as soon as any of it is on screen
     var edge = still ? null : new IntersectionObserver(function (entries) {

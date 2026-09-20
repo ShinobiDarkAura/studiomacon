@@ -195,6 +195,11 @@
       track.appendChild(slide);
     });
     hero.innerHTML = ''; hero.appendChild(track);
+    // loading a picture is not the same as being ready to paint it: without this the first
+    // slide in each direction decoded as it arrived, which is the flash that only happens once
+    [].forEach.call(track.querySelectorAll('img'), function (im) {
+      if (im.decode) im.decode().catch(function () {});
+    });
 
     var at = 0;
     var strip = document.createElement('div');

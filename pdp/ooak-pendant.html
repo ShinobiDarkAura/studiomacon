@@ -17,7 +17,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Long Gallop", "description": "A long silver head in profile, cut as if the wind had just passed through. Wearers report a pull toward open ground and early mornings. The only one of its kind, carved in wax and polished by hand.", "image": ["https://studiomacon.co/img/ooak-pendant/hero.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ooak-pendant", "offers": [{"@type": "Offer", "price": "640.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ooak-pendant.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789942084">
+<link rel="stylesheet" href="site.css?v=1789942633">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -325,6 +325,11 @@
       track.appendChild(slide);
     });
     hero.innerHTML = ''; hero.appendChild(track);
+    // loading a picture is not the same as being ready to paint it: without this the first
+    // slide in each direction decoded as it arrived, which is the flash that only happens once
+    [].forEach.call(track.querySelectorAll('img'), function (im) {
+      if (im.decode) im.decode().catch(function () {});
+    });
 
     var at = 0;
     var strip = document.createElement('div');
@@ -617,8 +622,8 @@
         e.target.classList.add('is-seen');
         io.unobserve(e.target);
       });
-    }, phone ? {threshold: 0, rootMargin: '0px 0px -4% 0px'}          // phones: a block is most of the screen, so asking for 16% of it
-             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});     // meant scrolling well past a paragraph before it moved
+    }, phone ? {threshold: 0, rootMargin: '0px 0px 18% 0px'}          // phones: start a block just BEFORE it reaches the screen, so
+             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});      // it is already arriving rather than blank when you get there
     // the footer sits against the page's bottom edge, where the main trigger line
     // can never be crossed, so it reveals as soon as any of it is on screen
     var edge = still ? null : new IntersectionObserver(function (entries) {
