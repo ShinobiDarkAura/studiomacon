@@ -12,6 +12,7 @@ import html, json, os, re
 from PIL import Image
 
 import hashlib
+import subprocess
 import sys
 import content as _content          # the studio's own edits, made in pdp/_editor
 
@@ -891,6 +892,9 @@ def main():
     with open(os.path.join(OUT, "robots.txt"), "w") as f:
         f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nSitemap: {SITE}/sitemap.xml\n")
     print(f"{len(products)} pages")
+    # the emails name prices by hand (a marketing email has no cart to read from),
+    # so re-write them from Shopify before anyone copies a template out
+    subprocess.run([sys.executable, os.path.join(OUT, "tools", "sync_email_prices.py")], check=True)
 
 
 if __name__ == "__main__":
