@@ -20,7 +20,10 @@
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
   /* the film fills the first screen; the nav sits over it in white */
-  .film{position:relative;height:100vh;height:100svh;overflow:hidden;background:#111}          /* the screen's height with the toolbar showing, and it never changes: sized to the toolbar instead, it resized whenever the drawer locked scrolling and nudged the grid below */
+  .film{position:relative;height:100vh;height:100svh;overflow:hidden;background:#111}
+  /* phones: the film runs edge to edge behind the browser bars. The lockup and the cue still
+     sit against the visible area (svh), so nothing important hides under the toolbar. */
+  @media (max-width:767px){ .film{height:100lvh} }          /* phones: edge to edge, behind the browser bars */
   /* phones: no rubber-band pull at the top, which showed a strip of white above the film */
   @media (max-width:767px){ html{overscroll-behavior-y:none;background:#111} body{background:#fff} }
   .film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -28,7 +31,7 @@
   /* the outline is a phone, not a mouse: taller, with a phone's softer corner */
   .scroll-cue{position:absolute;left:50%;bottom:64px;scale:1.2;transform-origin:bottom center;z-index:2;width:22px;height:38px;margin-left:-11px;
     border:1px solid rgba(255,255,255,.32);border-radius:6px;pointer-events:none;transition:opacity .5s ease}
-  @media (max-width:767px){ .scroll-cue{bottom:36px} }
+  @media (max-width:767px){ .scroll-cue{bottom:auto;top:calc(100svh - 74px)} }
   .scroll-cue i{position:absolute;left:50%;bottom:7px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#fff;
     animation:cue 2.8s cubic-bezier(.45,0,.25,1) infinite}
   /* the dot rises: a phone is scrolled by pushing the page up */
@@ -117,9 +120,9 @@
   body.logo-anim .head .logotype{opacity:0}
   .tagline .ch{opacity:0}
   .tagline .ch.on{opacity:1}
-  @media (max-width:767px){ .film{--lh:calc(108px * 2.8125 * 331 / 888)} }
+  @media (max-width:767px){ .film{--lh:calc(94px * 2.8125 * 331 / 888)} }          /* 13% smaller than it was */
   /* phones: the lockup sits 3.5% high of centre, so the browser bar does not crowd it */
-  @media (max-width:767px){ .logo-build,.film .tagline{margin-top:-3.5svh} }
+  @media (max-width:767px){ .logo-build,.film .tagline{top:46.5svh;margin-top:0} }
   @media (min-width:768px){ .film{--lh:calc(147px * 2.8125 * 331 / 888)} }
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
@@ -167,7 +170,7 @@
   @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} body.labels-under .wall{grid-template-columns:repeat(4,1fr)} }
   /* phones: two across, 8px from the edges, 8px between */
   /* phones: the space between pieces matches the space to the edge of the page */
-  @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:var(--gutter);padding:0 var(--gutter)} }
+  @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 var(--gutter)} }
   @media (hover:none){ .piece .held{display:none} }
   /* the in-hand picture is framed on its own (--hx/--hy/--hz, measured by tools/align_hover.py)
      so the piece lands where the still's piece lands, and hovering does not make it jump */
@@ -739,7 +742,10 @@
     document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
     GROUPS.forEach(function (g) {
       document.querySelectorAll(g).forEach(function (group) {
-        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });
+        // on a phone the whole details column is on screen at once, so a long cascade just
+        // reads as the lower blocks (Field Notes especially) being late
+        var cap = phone && g === '.info' ? 2 : 6, step = phone && g === '.info' ? 45 : 90;
+        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
       });
     });
     // Also Worth Keeping reads as one block, so the heading, the line under it and

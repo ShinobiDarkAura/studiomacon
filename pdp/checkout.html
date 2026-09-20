@@ -508,7 +508,10 @@
     document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
     GROUPS.forEach(function (g) {
       document.querySelectorAll(g).forEach(function (group) {
-        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });
+        // on a phone the whole details column is on screen at once, so a long cascade just
+        // reads as the lower blocks (Field Notes especially) being late
+        var cap = phone && g === '.info' ? 2 : 6, step = phone && g === '.info' ? 45 : 90;
+        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
       });
     });
     // Also Worth Keeping reads as one block, so the heading, the line under it and

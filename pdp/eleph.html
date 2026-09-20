@@ -23,7 +23,7 @@
   .gallery figure:not(.hero){display:none}          /* mobile: hero only up top */
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
   /* the hero is a track of pictures that slides; nothing is created or destroyed on a tap */
-  .gallery .hero{overflow:hidden}
+  .gallery .hero{overflow:hidden;border-radius:14px}
   .gallery .hero .shots{display:flex;width:100%;transition:transform .5s cubic-bezier(.2,.7,.2,1);will-change:transform}
   .gallery .hero .shot{flex:0 0 100%;min-width:100%;background:var(--field)}          /* never white behind a picture */
   @media (prefers-reduced-motion:reduce){ .gallery .hero .shots{transition:none} }
@@ -87,10 +87,11 @@
   @media (max-width:767px){
     .info,.product .info h1,.product .info .eyebrow{text-align:center}
     .info .desc-block{text-align:center}
+    .info .desc{max-width:85%;margin:0 auto}          /* the note reads narrower than the buttons above it */
     .info .acc,.info form{text-align:left}
     .gallery{padding:calc(var(--head) - 6px) 8px 0}          /* the main image starts 8px below the logotype, 8px from the sides */
     .info{padding-left:8px;padding-right:8px}
-    .gallery .hero img,.gallery .hero video{height:auto;aspect-ratio:4/5;border-radius:6px}
+    .gallery .hero img,.gallery .hero video{height:auto;aspect-ratio:4/5;border-radius:14px}
     .closing{padding:96px 8px 0}
     .big{--w:100%;width:100%;margin-left:0;aspect-ratio:auto;height:50vh;height:50svh}
     .chunk{padding:0}
@@ -126,11 +127,11 @@
   .rel-name{display:block;margin:20px 0 4px;font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
   .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
   @media (max-width:767px){
-    .related{display:flex;flex-direction:column;justify-content:center;min-height:100vh;min-height:100svh;padding:72px var(--gutter) 48px;text-align:center}
+    .related{display:flex;flex-direction:column;justify-content:center;min-height:0;padding:72px var(--gutter) 24px;text-align:center}
     .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
     .related .rel-blurb{margin:0 auto 32px;max-width:300px;font-size:15px;line-height:1.55}
     /* phones: two pieces only, at the size and spacing of the shop grid, rather than three squeezed small */
-    .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gutter);text-align:left}
+    .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left}
     .rel-grid{width:100%}
     .rel-piece:nth-child(3){display:none}
     .rel-name{font-size:var(--tile-name) !important}
@@ -139,7 +140,7 @@
     .rel-frame img{width:100%;height:100%;object-fit:cover}
     .rel-name{margin:10px 0 2px;font-size:var(--tile-name)}
     .rel-cost{display:block;font-size:13px;color:rgba(0,0,0,.55)}
-    .related + .closing{padding-top:48px}
+    .related + .closing{padding-top:24px}
   }
 
   @media (min-width:768px){
@@ -711,7 +712,10 @@
     document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
     GROUPS.forEach(function (g) {
       document.querySelectorAll(g).forEach(function (group) {
-        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, 6) * 90 + 'ms'); });
+        // on a phone the whole details column is on screen at once, so a long cascade just
+        // reads as the lower blocks (Field Notes especially) being late
+        var cap = phone && g === '.info' ? 2 : 6, step = phone && g === '.info' ? 45 : 90;
+        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
       });
     });
     // Also Worth Keeping reads as one block, so the heading, the line under it and
