@@ -45,7 +45,9 @@
   body.hero-quiet .film .tagline{opacity:0}
   .logo-build{transition:opacity 1.56s ease;opacity:var(--scroll-fade,1)}
   body.logo-scrub .logo-build{transition:opacity .2s linear}          /* while scrolling it follows the scroll, not the slow idle fade */
-  body.hero-quiet .logo-build{opacity:0}
+  /* the timed fade sets its own duration: while resting at the top the body still carries
+     .logo-scrub, whose .2s transition was making this fade in a blink */
+  body.hero-quiet .logo-build{opacity:0;transition:opacity 1.56s ease}
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
      and stays there: it never flies back down, even at the top of the page */
   body.logo-docked .head .logotype{transform:none !important;opacity:1 !important;transition:opacity .8s ease,color .3s ease !important}
@@ -311,7 +313,7 @@
     quiet = setTimeout(function () {
       if (scrollY > 40) return;
       document.body.classList.add('hero-quiet');                        // the big logotype fades where it is...
-      setTimeout(function () { document.body.classList.add('logo-docked'); }, 1300);   // ...then reappears in the nav
+      setTimeout(function () { document.body.classList.add('logo-docked'); }, 1690);   // ...then reappears in the nav (after the 1.56s fade, not part-way through it)
     }, 8000);
   };
 
