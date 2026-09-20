@@ -63,7 +63,7 @@
     <tr><th>Area</th><th>State</th></tr>
     <tr><td>Website, all pages, phone and desktop</td><td>Built and tested on the preview</td></tr>
     <tr><td>Shopify: products, prices, sizes, payments, shipping, tax</td><td>Live, out of test mode</td></tr>
-    <tr><td>Checkout and Apple Pay buttons</td><td>Create a Shopify cart and hand off to Shopify checkout</td></tr>
+    <tr><td>Add to Bag and Buy Now buttons</td><td>Create a Shopify cart and hand off to Shopify checkout</td></tr>
     <tr><td>Contact and commission forms</td><td>Tested end to end; SPF, DKIM, DMARC all pass</td></tr>
     <tr><td>Meta pixel, GA4, Google Ads, Klaviyo on-site</td><td>In every page; they switch on by themselves on studiomacon.co</td></tr>
     <tr><td>Product feeds for Meta and Google</td><td>meta-catalog.csv and google-products.xml, rebuilt with the site</td></tr>
@@ -81,7 +81,9 @@
     <li>Klaviyo's signing records at Cloudflare are set to “proxied”, which breaks its email signing and makes
       Klaviyo mail more likely to land in spam.</li>
     <li>Shopify's own emails are still sent as a Shopify address, not an authenticated studiomacon.co sender.</li>
-    <li>The footer newsletter box needs one Shopify key before it can add people to the list.</li>
+    <li>The footer newsletter box needs a Shopify app token before it can add people to the customer list.</li>
+    <li>Klaviyo is being retired in favour of Shopify. Its welcome series is the only flow running; there are no
+      cart or browse emails to lose.</li>
     <li>Product photographs are missing inside Shopify, so checkout and receipts show grey boxes.</li>
   </ul>
 <div class="foot"><span>Studio Maçon</span><span>2</span></div></section>
@@ -96,8 +98,9 @@
     <p><span class="link">kl._domainkey</span> <span class="link">kl2._domainkey</span> <span class="link">hello</span>
        <span class="link">newsletter</span> <span class="link">s1._domainkey</span> <span class="link">s2._domainkey</span>
        <span class="link">sel1._domainkey</span> <span class="link">sg</span></p>
-    <p>Why: Klaviyo's welcome and reminder emails are signed with those records. Unsigned mail from a domain that
-      publishes DMARC is treated as suspicious.</p></div>
+    <p>Why: Klaviyo's welcome emails are signed with those records, and Klaviyo keeps sending until Shopify takes
+      over. Unsigned mail from a domain that publishes DMARC is treated as suspicious.</p>
+    <p><span class="tick">Done 19 September</span> — checked from outside Cloudflare; Klaviyo shows the domain Active.</p></div>
 
   <div class="step"><div class="t"><span class="who">Alex</span>2 · Make Shopify send as studiomacon.co</div>
     <p class="go"><a href="https://admin.shopify.com/store/w3nidi-ny/settings/notifications">admin.shopify.com → Settings → Notifications</a></p><p>Shopify admin → Settings → Notifications → Sender email → <em>Authenticate</em>. Shopify gives four CNAME
@@ -120,8 +123,9 @@
       in Stage 3 instead.</p></div>
 
   <div class="step"><div class="t"><span class="who">Alex</span>4 · Klaviyo key for the footer sign-up</div>
-    <p class="go"><a href="https://www.klaviyo.com/settings/account/api-keys">klaviyo.com → Settings → API keys</a></p><p>The site's footer box is wired but needs one value: Klaviyo → Settings → API keys → a private key with
-      <span class="link">list write</span>. Send it to me and the sign-up starts working the same day.</p></div>
+    <p class="go"><a href="https://www.klaviyo.com/settings/account/api-keys">klaviyo.com → Settings → API keys</a></p><p>The site's footer box is wired but has nowhere to put people. Shopify admin → Settings → Apps and sales
+      channels → Develop apps → Create an app → Admin API scope <span class="link">write_customers</span> → install,
+      then copy the access token. Send it to me and the sign-up starts working the same day.</p></div>
 <div class="foot"><span>Studio Maçon</span><span>3</span></div></section>
 
 <section class="page">
@@ -212,10 +216,19 @@
       disconnect Facebook and Google in Wix, then cancel the Wix plan. Keep the domain — it lives at GoDaddy.</p></div>
 
   <div class="step"><div class="t"><span class="who">Alex</span>17 · Decide where the welcome email lives</div>
-    <p class="go"><a href="https://www.klaviyo.com/flows">klaviyo.com/flows</a></p><p>Right now Klaviyo sends the welcome series with MACON10, and Shopify sends the order emails. That works.
-      The alternative is moving everything into Shopify Messaging and turning the Klaviyo flows off, which means one
-      list and one bill. Either is fine; the mistake would be leaving both switched on, since new subscribers would
-      get two welcomes.</p></div>
+    <p class="go"><a href="https://www.klaviyo.com/flows">klaviyo.com/flows</a></p><p>The decision is made: everything moves to Shopify and Klaviyo is switched off. Two things to know.</p>
+    <ul>
+      <li><strong>Order and shipping emails move exactly as designed</strong> — Shopify's notification templates take
+        our full HTML.</li>
+      <li><strong>The welcome series may not.</strong> Shopify's marketing automations use their own drag-and-drop
+        editor, which may refuse pasted HTML. Test one before cancelling anything: create an automation, add an email,
+        and look for an Import HTML or code block. Send me a screenshot either way.</li>
+      <li><strong>Browse abandonment cannot move at all.</strong> Shopify only sees what happens on Shopify, and our
+        product pages are our own site. Abandoned checkout is fine, since checkout is Shopify's.</li>
+      <li>Do not leave both running: a new subscriber would get two welcomes.</li>
+    </ul>
+    <p>Once Klaviyo is off, tell me and I strip its script from the site — with no cart or browse flows live, it is
+      doing nothing else.</p></div>
 
   <div class="step"><div class="t"><span class="who claude">Claude</span>18 · Watch the first week</div>
     <p>Once orders start, I can read the feeds and Search Console, check what the pixel is receiving and whether
@@ -248,6 +261,7 @@
     <tr><td>Sitemap</td><td><a href="https://studiomacon.co/sitemap.xml">https://studiomacon.co/sitemap.xml</a></td></tr>
     <tr><td>Preview site (stays up after launch)</td><td><a href="https://studiomacon.studiomacon.workers.dev">studiomacon.studiomacon.workers.dev</a></td></tr>
     <tr><td>Welcome discount</td><td>MACON10 — 10% off a first order</td></tr>
+    <tr><td>Shopify automations</td><td><a href="https://admin.shopify.com/store/w3nidi-ny/marketing/automations">admin.shopify.com → Marketing → Automations</a></td></tr>
     <tr><td>Email templates</td><td><a href="file:///Users/aco/Documents/git/studiomacon/pdp/email/shopify">pdp/email/shopify/</a></td></tr>
     <tr><td>Product photo import</td><td><a href="file:///Users/aco/Documents/git/studiomacon/pdp/shopify/product-images.csv">pdp/shopify/product-images.csv</a></td></tr>
   </table>
