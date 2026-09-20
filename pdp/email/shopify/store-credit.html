@@ -25,7 +25,7 @@
   <tr><td align="center" style="padding:36px 24px 10px"><table role="presentation" width="290" cellpadding="0" cellspacing="0" style="width:290px"><tr>
     <td align="center" bgcolor="#000000" style="background:#000000"><a href="{{ shop.url }}" style="display:block;padding:17px 10px;font:500 12px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">BROWSE ARTIFACTS</a></td>
   </tr></table></td></tr>
-  <tr><td align="center" style="padding:0 24px 8px;font:400 13px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif"><a href="{{ routes.account_profile_url }}" style="color:#8a8a8a;text-decoration:underline;text-underline-offset:3px">View your store credit</a></td></tr>
+  {% if routes.account_profile_url %}<tr><td align="center" style="padding:0 24px 8px;font:400 13px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif"><a href="{{ routes.account_profile_url }}" style="color:#8a8a8a;text-decoration:underline;text-underline-offset:3px">View your store credit</a></td></tr>{% endif %}
 <tr><td style="padding:44px 0 52px"><div style="height:1px;background:#efece5;font-size:0;line-height:1px">&#160;</div></td></tr>
   <tr><td class="pad" style="padding:0 24px 44px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto">
     <tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Helvetica Neue',Helvetica,Arial,sans-serif;text-transform:uppercase;padding-bottom:7px">QUESTIONS?</div>
