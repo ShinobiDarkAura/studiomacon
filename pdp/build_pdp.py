@@ -688,13 +688,15 @@ def save(name, doc, product=None):
 
 
 def align_style(slug):
-    """Move the in-hand photograph so the piece sits where it does in the still (img/hover-align.json)."""
+    """Frame the in-hand photograph so the piece sits where it does in the still, at the size it
+    reads there, and hovering a tile no longer makes the piece jump (img/hover-align.json, written
+    by tools/align_hover.py)."""
     path = os.path.join(OUT, "img", "hover-align.json")
     if not os.path.exists(path):
         return ""
     with open(path) as f:
         a = json.load(f).get(slug)
-    return (f' style="--ox:{a["ox"]}%;--oy:{a["oy"]}%;--tx:{a["tx"]}%;--ty:{a["ty"]}%;--s:{a["s"]}"' if a else "")
+    return (f' style="--hx:{a["hx"]:g}%;--hy:{a["hy"]:g}%;--hz:{a["hz"]:g}"' if a else "")
 
 
 def tile_style(slug):
