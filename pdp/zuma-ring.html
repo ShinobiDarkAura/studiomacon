@@ -25,7 +25,7 @@
   /* the hero is a track of pictures that slides; nothing is created or destroyed on a tap */
   .gallery .hero{overflow:hidden}
   .gallery .hero .shots{display:flex;width:100%;transition:transform .5s cubic-bezier(.2,.7,.2,1);will-change:transform}
-  .gallery .hero .shot{flex:0 0 100%;min-width:100%}
+  .gallery .hero .shot{flex:0 0 100%;min-width:100%;background:var(--field)}          /* never white behind a picture */
   @media (prefers-reduced-motion:reduce){ .gallery .hero .shots{transition:none} }
   .gallery video{display:block;width:100%;height:100vh;height:100svh;object-fit:cover;background:var(--field)}
 
@@ -313,10 +313,16 @@
     // meant the old picture vanished for a frame before the new one painted, which read as a flash
     var track = document.createElement('div');
     track.className = 'shots';
-    figs.forEach(function (f) {
+    figs.forEach(function (f, i) {
       var media = f.querySelector('img, video'); if (!media) return;
       var slide = document.createElement('div'); slide.className = 'shot';
-      slide.appendChild(media.cloneNode(true));
+      var copy = media.cloneNode(true);
+      if (copy.tagName === 'IMG') {
+        copy.loading = 'eager';          // a slide sitting off to the side still counts as hidden, so a lazy
+        copy.decoding = 'async';         // picture only began loading as it arrived: that was the white flash
+        if (i) copy.setAttribute('fetchpriority', 'low');
+      }
+      slide.appendChild(copy);
       track.appendChild(slide);
     });
     hero.innerHTML = ''; hero.appendChild(track);
