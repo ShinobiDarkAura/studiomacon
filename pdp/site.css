@@ -282,7 +282,9 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   .head{padding-left:var(--nav-inset) !important;padding-right:var(--nav-inset) !important}
   /* Close sits exactly where Menu was: the header is lifted 14px on phones, so this follows it */
   /* phones: a 1px X, centred exactly where the Menu label sat. The 40px box is the tap area. */
-  .menu-close{left:calc(var(--nav-inset) - 13px);top:20px;width:40px;height:40px;padding:0;font-size:0;color:transparent;background:none;border:0}
+  /* the X is a 15px stroke turned 45deg, so its shape is only 10.6px wide: the box is offset
+     by half that (5.3px) so the shape's left edge lines up with the menu items, not the box's */
+  .menu-close{left:calc(var(--nav-inset) - 14.7px);top:20px;width:40px;height:40px;padding:0;font-size:0;color:transparent;background:none;border:0}
   .menu-close::before,.menu-close::after{content:"";position:absolute;left:50%;top:50%;width:15px;height:1px;
     margin:-.5px 0 0 -7.5px;background:currentColor;color:#000}
   .menu-close::before{transform:rotate(45deg)}
