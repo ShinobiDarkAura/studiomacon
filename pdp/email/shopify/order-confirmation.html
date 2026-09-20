@@ -40,8 +40,8 @@
         <td align="right" style="padding-top:10px;font:400 26px/1.2 'Instrument Serif','Times New Roman',Georgia,serif;color:#000000">{{ total_price | money }}</td></tr>
   </table></td></tr>
   {% if requires_shipping and shipping_address %}
-  <tr><td style="padding:34px 0 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="font:400 14px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">
-    <div style="font:400 13px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8a8a8a;padding-bottom:8px">Shipping to</div>
+  <tr><td style="padding:34px 0 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="text-align:center;font:400 14px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">
+    <div style="font:400 13px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8a8a8a;padding-bottom:8px;text-align:center">Shipping to</div>
     {{ shipping_address.name }}<br>{{ shipping_address.street }}<br>
     {{ shipping_address.city }}{% if shipping_address.province %}, {{ shipping_address.province }}{% endif %} {{ shipping_address.zip }}<br>{{ shipping_address.country }}
   </td></tr></table></td></tr>
