@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="x-apple-disable-message-reformatting"><title>Studio Ma&#231;on</title>
+
+<style>
+  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;src:url(https://studiomacon.studiomacon.workers.dev/fonts/instrument-serif.woff2) format('woff2')}
+  body{margin:0;padding:0;background:#ffffff} a{color:#000000} img{border:0;display:block}
+  @media (max-width:620px){ .wrap{width:100%!important} .pad{padding-left:24px!important;padding-right:24px!important}
+    .h1{font-size:40px!important} .col{display:block!important;width:100%!important;padding:0 0 24px!important} }
+</style></head>
+<body style="margin:0;padding:0;background:#ffffff">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0">What happens between now and its arrival.&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center">
+<table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
+  <tr><td align="center" style="padding:53px 0 44px"><a href="https://studiomacon.co"><img src="https://studiomacon.studiomacon.workers.dev/img/email/eye.gif?v=210bf680" width="54" alt="Studio Ma&#231;on" style="width:54px;height:auto"></a></td></tr>
+<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Ma&#231;on</td></tr><tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">YOUR ORDER<br>IS PLACED</td></tr><tr><td class="pad" style="padding:0 24px 53px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center"><img src="https://studiomacon.studiomacon.workers.dev/img/email/welcome-hero.jpg" width="408" alt="A small bronze totem held in the palm" style="width:100%;max-width:408px;height:auto;border-radius:16px;margin:0 auto 40px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"></td></tr></table></td></tr><tr><td class="pad" style="padding:0 24px 8px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:408px;margin:0 auto">
+  <tr><td align="center" style="padding:0 0 30px;border-top:1px solid #e3e3e3;padding-top:44px">
+    <div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#000000">ORDER {{ order_name }}</div>
+    <div style="font:400 13px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8a8a8a;padding-top:6px">{{ date | date: "%B %e, %Y" }}</div></td></tr>
+  {% for line in line_items %}
+  <tr><td style="padding:0 0 22px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+    <td width="76" valign="top" style="width:76px;padding-right:16px">
+      {% if line.image %}<img src="{{ line | img_url: 'compact' }}" width="76" alt="{{ line.title }}" style="width:76px;height:auto;border-radius:8px;background:#f4f1ea">
+      {% else %}<div style="width:76px;height:95px;border-radius:8px;background:#f4f1ea"></div>{% endif %}
+    </td>
+    <td valign="top" style="font:400 15px/1.5 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">
+      <div style="font:400 22px/1.1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase">{{ line.title }}</div>
+      {% if line.variant_title %}<div style="font:400 13px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8a8a8a">{{ line.variant_title }}</div>{% endif %}
+      <div style="font:400 13px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8a8a8a">Quantity: {{ line.quantity }}</div>
+    </td>
+    <td valign="top" align="right" style="font:400 15px/1.5 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000;white-space:nowrap">{{ line.final_line_price | money }}</td>
+  </tr></table></td></tr>
+  {% endfor %}
+  <tr><td style="padding:14px 0 0;border-top:1px solid #e3e3e3"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font:400 14px/1.9 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">
+    <tr><td>Subtotal</td><td align="right">{{ subtotal_price | money }}</td></tr>
+    {% for discount in discounts %}<tr><td>Discount &#183; {{ discount.code }}</td><td align="right">&#8722;{{ discount.savings | money }}</td></tr>{% endfor %}
+    <tr><td>Shipping</td><td align="right">{{ shipping_price | money }}</td></tr>
+    <tr><td>Tax</td><td align="right">{{ tax_price | money }}</td></tr>
+    <tr><td style="padding-top:10px;font:400 26px/1.2 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#000000">Total</td>
+        <td align="right" style="padding-top:10px;font:400 26px/1.2 'Instrument Serif','Times New Roman',Georgia,serif;color:#000000">{{ total_price | money }}</td></tr>
+  </table></td></tr>
+  {% if requires_shipping and shipping_address %}
+  <tr><td style="padding:34px 0 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="font:400 14px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">
+    <div style="font:400 13px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#8a8a8a;padding-bottom:8px">Shipping to</div>
+    {{ shipping_address.name }}<br>{{ shipping_address.street }}<br>
+    {{ shipping_address.city }}{% if shipping_address.province %}, {{ shipping_address.province }}{% endif %} {{ shipping_address.zip }}<br>{{ shipping_address.country }}
+  </td></tr></table></td></tr>
+  {% endif %}
+  <tr><td align="center" style="padding:36px 0 52px"><a href="{{ order_status_url }}" style="display:inline-block;background:#000000;color:#ffffff;text-decoration:none;padding:15px 34px;font:500 13px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase">View your order</a></td></tr>
+</table></td></tr>
+<tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto"><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">MADE TO ORDER</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces are alike.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">ON ITS WAY</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">You can expect it to ship within about ten business days. We'll send you tracking as soon as possible.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">QUESTIONS</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr></table></td></tr>
+  <tr><td class="pad" align="center" style="padding:56px 24px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8a8a8a">
+    Every piece is made to order in the studio in California.<br>
+    <a href="https://studiomacon.co/story" style="color:#8a8a8a">About</a> &nbsp;&#183;&nbsp; <a href="https://www.instagram.com/studiomacon/" style="color:#8a8a8a">Instagram</a>
+    &nbsp;&#183;&nbsp; <a href="{{ unsubscribe_url }}" style="color:#8a8a8a">Unsubscribe</a><br>
+    {{ shop.name }} &#183; {{ shop.address.city }}
+  </td></tr>
+</table></td></tr></table>{{ open_tracking_block }}
+</body></html>
