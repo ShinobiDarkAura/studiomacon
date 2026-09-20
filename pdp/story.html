@@ -96,9 +96,16 @@
 
     .opening,.prose,.history,.opening .intro,.history .intro{text-align:center}
     .opening .intro p.lede,.history .intro p.lede{margin-left:auto;margin-right:auto}
+    .opening .intro p.lede{max-width:85%}          /* the opening line reads narrower than the page */
     /* phones: the process film follows the text, then the childhood photographs */
-    .steps{padding:8px 16px 140px}          /* the same 16px edges as the rest of the page; generous room under the film */
-    .history{padding-top:0 !important}
+    .opening .hand{padding-bottom:48px}          /* room under the first film */
+    .process-film video{--w:100%;--ar:24/23}          /* the second film takes the first one's frame */
+    .steps{padding:8px 16px 24px}          /* the rest of the room under it comes from Our Story below */
+    .history{padding-top:0 !important;margin-bottom:8px}
+    /* Our Story reads like the sections above it: words first, then the photographs */
+    .history{display:flex;flex-direction:column;gap:24px}
+    .history .intro{order:1}
+    .history .childhood{order:2}
   }
 </style>
 <style>
