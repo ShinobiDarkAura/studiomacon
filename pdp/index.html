@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789940375">
+<link rel="stylesheet" href="site.css?v=1789940726">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -28,15 +28,16 @@
   /* the outline is a phone, not a mouse: taller, with a phone's softer corner */
   .scroll-cue{position:absolute;left:50%;bottom:64px;scale:1.2;transform-origin:bottom center;z-index:2;width:22px;height:38px;margin-left:-11px;
     border:1px solid rgba(255,255,255,.32);border-radius:6px;pointer-events:none;transition:opacity .5s ease}
-  @media (max-width:767px){ .scroll-cue{bottom:48px} }
-  .scroll-cue i{position:absolute;left:50%;top:7px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#fff;
+  @media (max-width:767px){ .scroll-cue{bottom:36px} }
+  .scroll-cue i{position:absolute;left:50%;bottom:7px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#fff;
     animation:cue 2.8s cubic-bezier(.45,0,.25,1) infinite}
+  /* the dot rises: a phone is scrolled by pushing the page up */
   @keyframes cue{
     0%{transform:translateY(0);opacity:0;filter:blur(0)}
     15%{opacity:1}
-    55%{transform:translateY(10px);opacity:1;filter:blur(0)}
-    80%{transform:translateY(13px);opacity:0;filter:blur(1.5px)}
-    100%{transform:translateY(13px);opacity:0}
+    55%{transform:translateY(-10px);opacity:1;filter:blur(0)}
+    80%{transform:translateY(-13px);opacity:0;filter:blur(1.5px)}
+    100%{transform:translateY(-13px);opacity:0}
   }
   /* the line under the big logotype on the film */
   @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}

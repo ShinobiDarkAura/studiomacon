@@ -281,7 +281,12 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   :root{--nav-inset:calc(var(--gutter) + 12px)}
   .head{padding-left:var(--nav-inset) !important;padding-right:var(--nav-inset) !important}
   /* Close sits exactly where Menu was: the header is lifted 14px on phones, so this follows it */
-  .menu-close{left:var(--nav-inset);top:14px}
+  /* phones: a 1px X, centred exactly where the Menu label sat. The 40px box is the tap area. */
+  .menu-close{left:calc(var(--nav-inset) - 13px);top:20px;width:40px;height:40px;padding:0;font-size:0;color:transparent;background:none;border:0}
+  .menu-close::before,.menu-close::after{content:"";position:absolute;left:50%;top:50%;width:15px;height:1px;
+    margin:-.5px 0 0 -7.5px;background:currentColor;color:#000}
+  .menu-close::before{transform:rotate(45deg)}
+  .menu-close::after{transform:rotate(-45deg)}
   .menu-sheet{padding-left:var(--nav-inset) !important;padding-right:var(--nav-inset) !important}
   .wall-head,.shop-wall,.inspiration-wall,.gallery,.info,.related,.opening,.prose,.steps,.history,
   .split .copy,.bag-page{padding-left:var(--gutter) !important;padding-right:var(--gutter) !important}
@@ -304,7 +309,7 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   .head .mob,footer .field button{position:relative}
   /* .menu-close must keep position:absolute: making it relative dropped it into the sheet's
      centred column, where its top/left were ignored and it sat far below the Menu button */
-  .head .mob::after,.menu-close::after,footer .field button::after{content:"";position:absolute;inset:-12px -10px}
+  .head .mob::after,footer .field button::after{content:"";position:absolute;inset:-12px -10px}
   .menu-sheet a{padding-block:4px}
 }
 
