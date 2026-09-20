@@ -301,7 +301,9 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
 
 /* ── bigger tap areas on phones, with no change to how anything looks ── */
 @media (pointer:coarse){
-  .head .mob,.menu-close,footer .field button{position:relative}
+  .head .mob,footer .field button{position:relative}
+  /* .menu-close must keep position:absolute: making it relative dropped it into the sheet's
+     centred column, where its top/left were ignored and it sat far below the Menu button */
   .head .mob::after,.menu-close::after,footer .field button::after{content:"";position:absolute;inset:-12px -10px}
   .menu-sheet a{padding-block:4px}
 }

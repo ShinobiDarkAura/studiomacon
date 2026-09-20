@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789940002">
+<link rel="stylesheet" href="site.css?v=1789940375">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -25,8 +25,10 @@
   @media (max-width:767px){ html{overscroll-behavior-y:none;background:#111} body{background:#fff} }
   .film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   /* scroll cue: a mouse outline with a dot that drifts down and fades, on a slow loop */
-  .scroll-cue{position:absolute;left:50%;bottom:64px;scale:1.2;transform-origin:bottom center;z-index:2;width:22px;height:34px;margin-left:-11px;
-    border:1px solid rgba(255,255,255,.4);border-radius:11px;pointer-events:none;transition:opacity .5s ease}
+  /* the outline is a phone, not a mouse: taller, with a phone's softer corner */
+  .scroll-cue{position:absolute;left:50%;bottom:64px;scale:1.2;transform-origin:bottom center;z-index:2;width:22px;height:38px;margin-left:-11px;
+    border:1px solid rgba(255,255,255,.32);border-radius:6px;pointer-events:none;transition:opacity .5s ease}
+  @media (max-width:767px){ .scroll-cue{bottom:48px} }
   .scroll-cue i{position:absolute;left:50%;top:7px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#fff;
     animation:cue 2.8s cubic-bezier(.45,0,.25,1) infinite}
   @keyframes cue{
@@ -51,7 +53,7 @@
   body.hero-quiet .scroll-cue{opacity:1}
   body.hero-quiet.logo-hero .head .logotype{opacity:0;transition:opacity 1.2s ease,transform .7s var(--ease),color .3s ease}
   body.hero-quiet .film .tagline{opacity:0}
-  .logo-build{transition:opacity 1.2s ease;opacity:var(--scroll-fade,1)}
+  .logo-build{transition:opacity 1.56s ease;opacity:var(--scroll-fade,1)}
   body.logo-scrub .logo-build{transition:opacity .2s linear}          /* while scrolling it follows the scroll, not the slow idle fade */
   body.hero-quiet .logo-build{opacity:0}
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
