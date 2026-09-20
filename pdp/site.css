@@ -134,6 +134,10 @@ footer .field button{padding:0 0 0 18px}
   footer .middle{justify-self:center;align-items:center}
   footer .links{justify-content:center}
   footer .news{justify-self:end;width:100%;max-width:274px}
+  /* the wordmark reads off the left edge, the sign-up off the right: each justified to its own side */
+  footer .brand{justify-self:start;text-align:left}
+  footer .news{text-align:right}
+  footer .news .field{text-align:left}          /* the field itself still reads left to right */
 }
 @media (min-width:1200px){
   h1{font-size:60px}

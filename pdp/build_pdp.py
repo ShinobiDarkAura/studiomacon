@@ -108,7 +108,12 @@ MADE_LINE = {
 # pieces whose page still builds but which are left off the shop and Also Worth Keeping for now
 HIDE_FROM_SHOP = {"macon-cap"}          # remove a slug here to bring it back
 
-HIDE_FROM_GALLERY = {"img/ori/plain-2.jpg"} | {f"img/{t}/hand-1.jpg" for t in ("pip", "rebi", "ren", "zuma", "ori", "yael", "milo", "eleph", "ibi")}          # totems: the first in-hand shot repeats the second
+# Photographs that repeat one already in the gallery: same framing, sometimes only a higher-resolution
+# copy of it. Measured by comparing normalised thumbnails, then checked by eye.
+HIDE_FROM_GALLERY = ({"img/ori/plain-2.jpg", "img/ori/hires-1.jpg", "img/zuma/plain-1.jpg",
+                      "img/lunar-canyon-ring/hand-2.jpg", "img/zuma-ring/hand-1.jpg",
+                      "img/eclipse-ring/hand-1.jpg", "img/starshipkey-pendant/hand-1.jpg"}          # these two rings lead with hand-2, so the repeat is hand-1
+                     | {f"img/{t}/hand-1.jpg" for t in ("pip", "rebi", "ren", "zuma", "ori", "yael", "milo", "eleph", "ibi")})          # totems: the first in-hand shot repeats the second
 
 TODO = '<span class="todo">{}</span>'
 
