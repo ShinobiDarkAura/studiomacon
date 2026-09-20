@@ -383,24 +383,12 @@
         btn.textContent = "You're on the list"; input.value = '';
         if (window.maconTrack) maconTrack('signup', email);
       };
-      // the old Klaviyo list, used only until the Shopify sign-up is switched on
-      var viaKlaviyo = function () {
-        if (!cfg.klaviyo || !cfg.klaviyoList) throw new Error('no list');
-        var body = new URLSearchParams();                                   // Klaviyo's own subscribe endpoint, the one its embedded forms use
-        body.append('g', cfg.klaviyoList); body.append('email', email); body.append('$fields', '$source');
-        body.append('$source', 'Website footer');
-        return fetch('https://manage.kmail-lists.com/ajax/subscriptions/subscribe?company_id=' + cfg.klaviyo,
-                     {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: body})
-          .then(function (r) { return r.json(); })
-          .then(function (res) { if (res && res.success === false) throw new Error('refused'); });
-      };
       // subscribes straight into Shopify, which is what starts Shopify Email's welcome series
       (cfg.subscribeUrl
         ? fetch(cfg.subscribeUrl, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email: email})})
             .then(function (r) { return r.json(); })
             .then(function (j) { if (!j.ok) throw new Error(j.reason); })
-            .catch(viaKlaviyo)                                               // not switched on yet, or unreachable: the old list, so no one is lost
-        : viaKlaviyo())
+        : Promise.reject(new Error('no sign-up url')))
         .then(done)
         .catch(function () { btn.textContent = 'Try again'; btn.disabled = false; });
     });

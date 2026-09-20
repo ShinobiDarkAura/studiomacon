@@ -398,7 +398,7 @@ def shop_config():
     tc = SHOPIFY.get("totem-commission", {}).get("variants", [{}])[0].get("id", "")
     return ('<script>window.MACON_SHOP = ' + json.dumps({"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"],
                                                           "enquiry": c.get("enquiryUrl", ""), "totemCommission": tc,
-                                                          "klaviyo": c.get("klaviyo", ""), "klaviyoList": c.get("klaviyoList", ""), "subscribeUrl": c.get("subscribeUrl", "")}) + ';</script>\n')
+                                                          "subscribeUrl": c.get("subscribeUrl", "")}) + ';</script>\n')
 
 
 # The arriving half of the page wipe goes in the head, ahead of everything else.
@@ -505,10 +505,6 @@ TRACKING = ("""<meta name="facebook-domain-verification" content="%s">
   var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=%s'; document.head.appendChild(g);
   window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
   gtag('js', new Date()); gtag('config', '%s'); gtag('config', '%s');
-  // Klaviyo: knows a visitor once they have signed up or come in from one of its emails, and hears which
-  // pieces they look at and bag, for the browse and cart emails. (Shopify's Klaviyo app cannot see this site.)
-  var k = document.createElement('script'); k.async = true; k.src = 'https://static.klaviyo.com/onsite/js/%s/klaviyo.js'; document.head.appendChild(k);
-  window.klaviyo = window.klaviyo || []; var kl = function (a) { try { window.klaviyo.push(a); } catch (e) {} };
   var ITEMS = %s;                                     // Shopify variant id -> catalog id
   var idOf = function (v) { v = String(v || '').split('/').pop(); return ITEMS[v] || v; };
   window.maconTrack = function (kind, x) {
@@ -516,11 +512,7 @@ TRACKING = ("""<meta name="facebook-domain-verification" content="%s">
       var list = [].concat(x || []), ids = list.map(function (i) { return idOf(i.variant); });
       var value = list.reduce(function (n, i) { return n + (i.price || 0) * (i.qty || 1); }, 0);
       var g4 = list.map(function (i) { return {item_id: idOf(i.variant), item_name: i.name || i.slug, price: i.price, quantity: i.qty || 1}; });
-      if (kind === 'view') kl(['track', 'Viewed Product', {ProductName: list[0].name, ProductID: idOf(list[0].variant), Price: list[0].price,
-                               ImageURL: list[0].image, URL: location.href.split('#')[0].split('?')[0]}]);
-      if (kind === 'add') kl(['track', 'Added to Cart', {ProductName: list[0].name, ProductID: idOf(list[0].variant), Price: list[0].price,
-                              ImageURL: list[0].image || '', URL: location.origin + '/' + (list[0].slug || '') + '.html'}]);
-      if (kind === 'signup') { kl(['identify', {'$email': x}]); return; }
+      if (kind === 'signup') return;
       if (kind === 'view') { fbq('track', 'ViewContent', {content_ids: ids, content_type: 'product', content_name: list[0].name, value: value, currency: 'USD'});
                              gtag('event', 'view_item', {currency: 'USD', value: value, items: g4}); }
       if (kind === 'add') { fbq('track', 'AddToCart', {content_ids: ids, content_type: 'product', value: value, currency: 'USD'});
@@ -532,7 +524,7 @@ TRACKING = ("""<meta name="facebook-domain-verification" content="%s">
   };
 })();
 </script>
-""" % (META_DOMAIN_TAG, META_PIXEL, GA4, GA4, GOOGLE_ADS, json.load(open(os.path.join(OUT, "shopify", "config.json")))["klaviyo"],
+""" % (META_DOMAIN_TAG, META_PIXEL, GA4, GA4, GOOGLE_ADS,
           json.dumps(VARIANT_TO_ITEM, separators=(",", ":"))))
 
 
