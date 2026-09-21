@@ -129,7 +129,10 @@
   .info{position:relative}
   body.sizing-cross .info{overflow:hidden}          /* only while the columns cross does the edge need to clip */
   /* while they cross, both occupy the same box so neither pushes the page around */
-  body.sizing-cross .info-main,body.sizing-cross .sizer-panel{position:absolute;inset:0 0 auto 0;display:block}
+  body.sizing-cross.sizing-open .info-main{position:absolute;inset:0 0 auto 0;display:block}
+  body.sizing-cross.sizing-open .sizer-panel{position:relative;display:block}
+  body.sizing-cross.sizing-closing .sizer-panel{position:absolute;inset:0 0 auto 0;display:block}
+  body.sizing-cross.sizing-closing .info-main{position:relative;display:block}
   body.sizing-cross{--cross:.52s cubic-bezier(.22,1,.36,1)}
 
   body.sizing-closing .sizer-panel{animation:panel-out var(--cross,.42s cubic-bezier(.4,0,.2,1)) both}          /* it leaves the way it came */
