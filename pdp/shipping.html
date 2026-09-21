@@ -1243,7 +1243,8 @@
     // an overlay: nothing in the column moves, so there is no height for the page to jump to
     document.body.classList.toggle('sizing-open', on);
     if (on) {
-      panel.hidden = false; shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
+      panel.hidden = false; panel.classList.remove('settled'); shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
+      clearTimeout(panel._settle); panel._settle = setTimeout(function () { panel.classList.add('settled'); }, 1400);          // after the last line has risen in
       var col = panel.closest('.info'); if (col && col.scrollTop) col.scrollTo({top: 0, behavior: 'smooth'});          // opened from the Sizing row, lower down: its top is never left above the fold
     }
     // once it has faded out it is put away again: left in the layout it keeps stretching

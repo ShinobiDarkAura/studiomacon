@@ -128,6 +128,7 @@
     transition:opacity .32s ease,transform .44s cubic-bezier(.22,1,.36,1),visibility 0s}
   body.sizing-open .info > :not(.back):not(.sizer-panel){visibility:hidden}
   body.sizing-open .sizer-panel .st{animation:sizer-in .62s cubic-bezier(.16,1,.3,1) both}
+  body.sizing-open .sizer-panel.settled .st{animation:none}          /* once it has arrived, nothing is left to replay (the print dialog rebuilt its preview and restarted it) */
   body.sizing-open .sizer-panel .st:nth-child(1){animation-delay:120ms}
   body.sizing-open .sizer-panel .st:nth-child(2){animation-delay:210ms}
   body.sizing-open .sizer-panel .st:nth-child(3){animation-delay:300ms}
@@ -604,12 +605,12 @@
           <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we’ll wrap it for free and write out your note by hand. Add their address at checkout and it goes straight to them. If it isn’t quite right, they can return it within 30 days for store credit.</p></div></div></div>
         </div>
         <div class="acc-item">
-          <button class="acc-head" aria-expanded="false">Wear &amp; Care</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Sterling silver darkens with time and air. Wear it often and it stays bright; bring back the shine with a soft polishing cloth. Take it off to swim or clean, and store it on its own so it stays unscratched.</p></div></div></div>
-        </div>
-        <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
           <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="keep-para">Each piece is made to order; please allow up to 10 business days before it ships. Shipping is free on all orders within the continental US, and every order arrives in a special box, wrapped with care.</p><p>Pieces in original condition may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size.</p><p class="acc-more"><a href="shipping.html">Full details</a></p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Wear &amp; Care</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Sterling silver darkens with time and air. Wear it often and it stays bright; bring back the shine with a soft polishing cloth. Take it off to swim or clean, and store it on its own so it stays unscratched.</p></div></div></div>
         </div>
       </div>
       <div class="sizer-panel" id="sizer-panel" data-no-emerge hidden>
@@ -1620,7 +1621,8 @@
     // an overlay: nothing in the column moves, so there is no height for the page to jump to
     document.body.classList.toggle('sizing-open', on);
     if (on) {
-      panel.hidden = false; shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
+      panel.hidden = false; panel.classList.remove('settled'); shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
+      clearTimeout(panel._settle); panel._settle = setTimeout(function () { panel.classList.add('settled'); }, 1400);          // after the last line has risen in
       var col = panel.closest('.info'); if (col && col.scrollTop) col.scrollTo({top: 0, behavior: 'smooth'});          // opened from the Sizing row, lower down: its top is never left above the fold
     }
     // once it has faded out it is put away again: left in the layout it keeps stretching

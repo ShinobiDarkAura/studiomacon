@@ -128,6 +128,7 @@
     transition:opacity .32s ease,transform .44s cubic-bezier(.22,1,.36,1),visibility 0s}
   body.sizing-open .info > :not(.back):not(.sizer-panel){visibility:hidden}
   body.sizing-open .sizer-panel .st{animation:sizer-in .62s cubic-bezier(.16,1,.3,1) both}
+  body.sizing-open .sizer-panel.settled .st{animation:none}          /* once it has arrived, nothing is left to replay (the print dialog rebuilt its preview and restarted it) */
   body.sizing-open .sizer-panel .st:nth-child(1){animation-delay:120ms}
   body.sizing-open .sizer-panel .st:nth-child(2){animation-delay:210ms}
   body.sizing-open .sizer-panel .st:nth-child(3){animation-delay:300ms}
@@ -1586,7 +1587,8 @@
     // an overlay: nothing in the column moves, so there is no height for the page to jump to
     document.body.classList.toggle('sizing-open', on);
     if (on) {
-      panel.hidden = false; shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
+      panel.hidden = false; panel.classList.remove('settled'); shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
+      clearTimeout(panel._settle); panel._settle = setTimeout(function () { panel.classList.add('settled'); }, 1400);          // after the last line has risen in
       var col = panel.closest('.info'); if (col && col.scrollTop) col.scrollTo({top: 0, behavior: 'smooth'});          // opened from the Sizing row, lower down: its top is never left above the fold
     }
     // once it has faded out it is put away again: left in the layout it keeps stretching
