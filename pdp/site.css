@@ -382,6 +382,16 @@ footer .news .legal a{text-underline-offset:4px}
 .bag-drawer .bd-foot{flex:none;padding:22px 0 calc(36px + env(safe-area-inset-bottom));border-top:1px solid var(--rule)}
 .bag-drawer .bd-foot dl{display:grid;grid-template-columns:1fr auto;margin:0 0 10px;font-size:15px;font-weight:500}
 .bag-drawer .bd-foot dd{margin:0}
+/* gift wrap: a tick in the bag, a note box opens beneath it */
+.gift{margin:0 0 18px;text-align:left}
+.gift-check{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer}
+.gift-check input{width:18px;height:18px;margin:0;accent-color:#000;flex:none}
+.gift-check em{font-style:normal;color:rgba(0,0,0,.5);margin-left:6px}
+.gift-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.22,1,.36,1)}
+.gift.on .gift-more{grid-template-rows:1fr}
+.gift-more > div{overflow:hidden}
+.gift textarea{display:block;width:100%;margin:12px 0 0;padding:12px 14px;border:1px solid var(--rule);border-radius:0;font:inherit;font-size:14px;line-height:1.5;resize:vertical;background:#fff}
+.gift textarea:focus{outline:none;border-color:#000}
 .bag-drawer .bd-note{margin:0 0 20px;font-size:13px;line-height:1.5;color:rgba(0,0,0,.5)}
 .bag-drawer .cta{max-width:none;width:100%}
 .bag-drawer .bd-page{display:block;margin-top:14px;text-align:center;font-size:13px;color:rgba(0,0,0,.5);text-decoration:underline;text-underline-offset:3px}

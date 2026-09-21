@@ -406,10 +406,30 @@
     // what Shopify's own abandoned-checkout emails listen to (checkouts opened through the Storefront API do not)
     var code = ''; try { code = sessionStorage.getItem('macon-discount') || ''; } catch (e) {}
     var path = lines.map(function (l) { return l.merchandiseId.split('/').pop() + ':' + l.quantity; }).join(',');
-    location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(code ? {discount: code} : {});
+    var extra = code ? {discount: code} : {};
+    var gift = MaconGift.read();          // lands on the order as "Gift wrap" and "Gift note", which Flow and the staff email read
+    if (gift.wrap) { extra['attributes[Gift wrap]'] = 'Yes'; if (gift.note) extra['attributes[Gift note]'] = gift.note; }
+    location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(extra);
     // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
     // pieces still waiting. It is emptied on the thank-you page.
     return Promise.resolve();
+  };
+
+  // Gift wrap: free, chosen in the bag, remembered for this visit until the order goes through
+  window.MaconGift = {
+    read: function () { try { var g = JSON.parse(localStorage.getItem('macon-gift') || '{}'); return {wrap: !!g.wrap, note: String(g.note || '').slice(0, 240)}; } catch (e) { return {wrap: false, note: ''}; } },
+    write: function (g) { try { localStorage.setItem('macon-gift', JSON.stringify(g)); } catch (e) {} },
+    mount: function (box) {
+      var g = MaconGift.read();
+      box.className = 'gift';
+      box.innerHTML = '<label class="gift-check"><input type="checkbox"><span>Wrap it as a gift <em>Free</em></span></label>' +
+        '<div class="gift-more"><div><textarea maxlength="240" rows="3" placeholder="Add a note and we\u2019ll write it out by hand (optional)"></textarea></div></div>';
+      var box2 = box.querySelector('input'), note = box.querySelector('textarea');
+      box2.checked = g.wrap; note.value = g.note; box.classList.toggle('on', g.wrap);
+      function save() { MaconGift.write({wrap: box2.checked, note: note.value.trim()}); box.classList.toggle('on', box2.checked); }
+      box2.addEventListener('change', function () { save(); document.querySelectorAll('.gift input').forEach(function (x) { if (x !== box2) { x.checked = box2.checked; x.closest('.gift').classList.toggle('on', box2.checked); } }); });
+      note.addEventListener('input', save);
+    }
   };
 
   // Enquiries (contact + commission forms) go to the Bureau of Provenance, which emails the studio and replies to the sender
@@ -505,8 +525,10 @@
         '<div class="bd-empty" hidden><p>Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
         '<p class="bd-note">Shipping is calculated at checkout. Every piece is made to order; please allow up to 10 business days before it ships.</p>' +
+        '<div class="bd-gift"></div>' +
         '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
       document.body.appendChild(veil); document.body.appendChild(drawer);
+      MaconGift.mount(drawer.querySelector('.bd-gift'));
       veil.addEventListener('click', function () { set(false); });
       drawer.querySelector('.bd-close').addEventListener('click', function () { set(false); });
       drawer.querySelector('.bd-foot .cta').addEventListener('click', function () { MaconCheckout(MaconBag.read(), this).catch(function () {}); });
@@ -554,7 +576,7 @@
     document.querySelectorAll('.cta, .dock').forEach(function (b) {
       if (!/add to bag/i.test(b.textContent)) return;
       b.addEventListener('click', function (e) {
-        var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price');
+        var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price .amt') || document.querySelector('.info .price');          // the amount alone, not the shipping notes beside it
         var sizeBox = document.querySelector('[data-size]'), size = sizeBox && sizeBox.classList.contains('picked') ? sizeBox.querySelector('.size-value').textContent : '';
         if (sizeBox && !size) {                       // rings need a size before they go in the bag
           e.stopPropagation();                        // or the picker's click-outside handler shuts it again
@@ -621,7 +643,7 @@
       var id = String(variant || '').split('/').pop();
       var shop = (window.MACON_SHOP || {}).shop;
       if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
-        var price = parseFloat((document.querySelector('.info .price') || {}).textContent || '') || 0;
+        var price = parseFloat(((document.querySelector('.info .price .amt') || document.querySelector('.info .price') || {}).textContent || '').replace(/[^0-9.]/g, '')) || 0;
         if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
         location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery({payment: 'shop_pay'});
         return;

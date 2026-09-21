@@ -263,6 +263,10 @@ def accordions(slug, k, notes):
               "in a special box, wrapped with care.")
     ship_b = ("Pieces in original condition may be returned within 30 days of delivery for store credit. "
               "If a piece doesn't fit, we'll gladly help you find the right size.")
+    gift = ("Every piece arrives in our box, ready to give. Tick <em>Wrap it as a gift</em> in your bag and we\u2019ll wrap it "
+            "for free, and write out a note by hand if you add one. Add their address at checkout and it goes straight to them. "
+            "If it isn\u2019t quite right, they can send it back within 30 days for store credit.")
+    items.append(("Giving It as a Gift", f'<p>{_content.shared("gift:1", gift)}</p>'))
     items.append(("Shipping &amp; Returns",
                   f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
