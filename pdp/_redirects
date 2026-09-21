@@ -31,3 +31,32 @@
 /terms-of-service                    https://w3nidi-ny.myshopify.com/policies/terms-of-service 301
 /refund-policy                       https://w3nidi-ny.myshopify.com/policies/refund-policy 301
 /product-page/*                      /#pieces 301
+
+# extensionless: /pip as well as /pip.html, for links typed by hand or written into an ad
+/bag                                 /bag.html 301
+/checkout                            /checkout.html 301
+/confirmation                        /confirmation.html 301
+/inspiration                         /inspiration.html 301
+/ooak-pendant                        /ooak-pendant.html 301
+/ooak-pouch                          /ooak-pouch.html 301
+/ooak-vessel                         /ooak-vessel.html 301
+/shipping                            /shipping.html 301
+/ear-cuff                            /ear-cuff.html 301
+/eclipse-ring                        /eclipse-ring.html 301
+/eleph                               /eleph.html 301
+/ibi                                 /ibi.html 301
+/lunar-canyon-ring                   /lunar-canyon-ring.html 301
+/macon-cap                           /macon-cap.html 301
+/meridian-egg-ring                   /meridian-egg-ring.html 301
+/milo                                /milo.html 301
+/ori                                 /ori.html 301
+/pip                                 /pip.html 301
+/rebi                                /rebi.html 301
+/ren                                 /ren.html 301
+/sietch-aperture                     /sietch-aperture.html 301
+/starshipkey-pendant                 /starshipkey-pendant.html 301
+/wonderhorn-talisman                 /wonderhorn-talisman.html 301
+/yael                                /yael.html 301
+/zuma-ring                           /zuma-ring.html 301
+/zuma                                /zuma.html 301
+/about                               /story.html 301
