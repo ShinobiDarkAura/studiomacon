@@ -369,12 +369,12 @@ footer .news .legal a{text-underline-offset:4px}
 /* ── desktop bag drawer: slides in from the right over a soft veil ── */
 .bag-veil{position:fixed;inset:0;z-index:58;background:rgba(0,0,0,.18);opacity:0;visibility:hidden;transition:opacity .7s cubic-bezier(.32,.72,0,1),visibility 0s linear .7s}
 .bag-veil.open{opacity:1;visibility:visible;transition:opacity .7s cubic-bezier(.32,.72,0,1),visibility 0s}
-.bag-veil.closing{visibility:visible}          /* it fades out with the drawer instead of blinking off */
+.bag-veil.bag-leaving{visibility:visible}          /* it fades out with the drawer instead of blinking off (not "closing": the product pages' photo section uses that name) */
 .bag-drawer{position:fixed;top:0;right:0;z-index:59;height:100vh;height:100svh;width:min(460px,92vw);background:#fff;
   display:flex;flex-direction:column;padding:0 calc(var(--pad) + 24px);box-shadow:-24px 0 60px -30px rgba(0,0,0,.35);
   transform:translateX(100%);visibility:hidden;transition:transform .7s cubic-bezier(.32,.72,0,1),visibility 0s linear .7s}
 .bag-drawer.open{transform:none;visibility:visible;transition:transform .7s cubic-bezier(.32,.72,0,1),visibility 0s}
-.bag-drawer.closing{visibility:visible}          /* stays on screen while it slides back out */
+.bag-drawer.bag-leaving{visibility:visible}          /* stays on screen while it slides back out */
 .bag-drawer .bd-head{display:flex;justify-content:space-between;align-items:center;height:var(--head);margin-top:12px;flex:none;font-size:calc(16px - 1pt)}
 .bag-drawer .bd-title{margin:0}
 .bag-drawer .bd-lines{flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;border-top:1px solid var(--rule);scrollbar-width:none;padding-bottom:24px}

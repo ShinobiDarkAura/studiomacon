@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Studio Maçon", "url": "https://studiomacon.co", "logo": "https://studiomacon.co/img/favicon.png", "email": "hello@studiomacon.co", "sameAs": ["https://www.instagram.com/studiomacon/"]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790017076">
+<link rel="stylesheet" href="site.css?v=1790019756">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -1049,7 +1049,7 @@
         '<div class="bd-lines lines"></div>' +
         '<div class="bd-empty" hidden><p data-edit="page:index.html:e000f14a">Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
-        '<p class="bd-note" data-edit="page:index.html:5e7b168d">Shipping is calculated at checkout. Every piece is made to order; please allow up to 10 business days before it ships.</p>' +
+        '<p class="bd-note" data-edit="page:index.html:dad0ea7c">Shipping is calculated at checkout. Every piece is made to order and ships by ' + maconShipBy() + '.</p>' +
         '<div class="bd-gift"></div>' +
         '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
       document.body.appendChild(veil); document.body.appendChild(drawer);
@@ -1070,8 +1070,8 @@
       if (!drawer) { build(); void drawer.offsetWidth; }          // laid out closed first, so the very first open slides in too
       if (on) { last = document.activeElement; paint(); }
       drawer.inert = !on;
-      if (!on) { drawer.classList.add('closing'); veil.classList.add('closing'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('closing'); veil.classList.remove('closing'); }, 720); }
-      else { clearTimeout(drawer._shut); drawer.classList.remove('closing'); veil.classList.remove('closing'); }
+      if (!on) { drawer.classList.add('bag-leaving'); veil.classList.add('bag-leaving'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('bag-leaving'); veil.classList.remove('bag-leaving'); }, 720); }
+      else { clearTimeout(drawer._shut); drawer.classList.remove('bag-leaving'); veil.classList.remove('bag-leaving'); }
       requestAnimationFrame(function () { drawer.classList.toggle('open', on); veil.classList.toggle('open', on); });
       document.documentElement.classList.toggle('bag-open', on);
       if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});
@@ -1366,10 +1366,8 @@
 
 // Ships by: ten working days from today. Weekends and the federal holidays are skipped,
 // because those are the days the foundry and the post office are shut too.
-(function () {
-  var el = document.querySelector('[data-ship-by]');
-  if (!el) return;
-
+// the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
+window.maconShipBy = (function () {
   function holidays(y) {
     var nth = function (m, dow, n) {          // the nth given weekday of a month
       var d = new Date(y, m, 1), c = 0;
@@ -1395,7 +1393,13 @@
     if (hol.indexOf(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()) > -1) continue;
     left--;
   }
-  el.textContent = 'Ships by ' + d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+  var when = d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+  return function () { return when; };
+})();
+(function () {
+  var el = document.querySelector('[data-ship-by]');
+  if (!el) return;
+  el.textContent = 'Ships by ' + maconShipBy();
   el.hidden = false;
 })();
 

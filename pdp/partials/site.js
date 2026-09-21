@@ -528,7 +528,7 @@
         '<div class="bd-lines lines"></div>' +
         '<div class="bd-empty" hidden><p>Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
-        '<p class="bd-note">Shipping is calculated at checkout. Every piece is made to order; please allow up to 10 business days before it ships.</p>' +
+        '<p class="bd-note">Shipping is calculated at checkout. Every piece is made to order and ships by ' + maconShipBy() + '.</p>' +
         '<div class="bd-gift"></div>' +
         '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
       document.body.appendChild(veil); document.body.appendChild(drawer);
@@ -549,8 +549,8 @@
       if (!drawer) { build(); void drawer.offsetWidth; }          // laid out closed first, so the very first open slides in too
       if (on) { last = document.activeElement; paint(); }
       drawer.inert = !on;
-      if (!on) { drawer.classList.add('closing'); veil.classList.add('closing'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('closing'); veil.classList.remove('closing'); }, 720); }
-      else { clearTimeout(drawer._shut); drawer.classList.remove('closing'); veil.classList.remove('closing'); }
+      if (!on) { drawer.classList.add('bag-leaving'); veil.classList.add('bag-leaving'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('bag-leaving'); veil.classList.remove('bag-leaving'); }, 720); }
+      else { clearTimeout(drawer._shut); drawer.classList.remove('bag-leaving'); veil.classList.remove('bag-leaving'); }
       requestAnimationFrame(function () { drawer.classList.toggle('open', on); veil.classList.toggle('open', on); });
       document.documentElement.classList.toggle('bag-open', on);
       if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});
@@ -845,10 +845,8 @@
 
 // Ships by: ten working days from today. Weekends and the federal holidays are skipped,
 // because those are the days the foundry and the post office are shut too.
-(function () {
-  var el = document.querySelector('[data-ship-by]');
-  if (!el) return;
-
+// the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
+window.maconShipBy = (function () {
   function holidays(y) {
     var nth = function (m, dow, n) {          // the nth given weekday of a month
       var d = new Date(y, m, 1), c = 0;
@@ -874,7 +872,13 @@
     if (hol.indexOf(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()) > -1) continue;
     left--;
   }
-  el.textContent = 'Ships by ' + d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+  var when = d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+  return function () { return when; };
+})();
+(function () {
+  var el = document.querySelector('[data-ship-by]');
+  if (!el) return;
+  el.textContent = 'Ships by ' + maconShipBy();
   el.hidden = false;
 })();
 

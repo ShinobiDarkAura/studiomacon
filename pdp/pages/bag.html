@@ -42,7 +42,7 @@
       </dl>
       <div id="gift"></div>
       <button class="cta" type="button" id="checkout">Checkout</button>
-      <p class="note">Every piece is made to order. Please allow up to 10 business days before it ships.</p>
+      <p class="note" data-ship-note>Every piece is made to order. Please allow up to 10 business days before it ships.</p>
     </aside>
   </div>
   <div class="empty" id="empty" hidden>
@@ -68,6 +68,7 @@
     render(); document.addEventListener('bag:change', render);
   })();
   MaconGift.mount(document.getElementById('gift'));
+  var sn = document.querySelector('[data-ship-note]'); if (sn && window.maconShipBy) sn.textContent = 'Every piece is made to order and ships by ' + maconShipBy() + '.';
   document.getElementById('checkout').addEventListener('click', function () {
     MaconCheckout(MaconBag.read(), this).catch(function () {});
   });
