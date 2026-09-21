@@ -563,7 +563,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Giving It as a Gift</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Tick <em>Wrap it as a gift</em> in your bag and we’ll wrap it for free, and write out a note by hand if you add one. Add their address at checkout and it goes straight to them. If it isn’t quite right, they can send it back within 30 days for store credit.</p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Tick <em>Add gift wrapping</em> in your bag and we’ll wrap it for free, and write out a note by hand if you add one. Add their address at checkout and it goes straight to them. If it isn’t quite right, they can send it back within 30 days for store credit.</p></div></div></div>
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
@@ -1036,7 +1036,7 @@
     mount: function (box) {
       var g = MaconGift.read();
       box.className = 'gift';
-      box.innerHTML = '<label class="gift-check"><input type="checkbox"><span>Wrap it as a gift <em>Free</em></span></label>' +
+      box.innerHTML = '<label class="gift-check"><input type="checkbox"><span>Add gift wrapping <em>Free</em></span></label>' +
         '<div class="gift-more"><div><textarea maxlength="240" rows="3" placeholder="Add a note and we\u2019ll write it out by hand (optional)"></textarea></div></div>';
       var box2 = box.querySelector('input'), note = box.querySelector('textarea');
       box2.checked = g.wrap; note.value = g.note; box.classList.toggle('on', g.wrap);

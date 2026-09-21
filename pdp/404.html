@@ -656,7 +656,7 @@
     mount: function (box) {
       var g = MaconGift.read();
       box.className = 'gift';
-      box.innerHTML = '<label class="gift-check"><input type="checkbox"><span>Wrap it as a gift <em>Free</em></span></label>' +
+      box.innerHTML = '<label class="gift-check"><input type="checkbox"><span>Add gift wrapping <em>Free</em></span></label>' +
         '<div class="gift-more"><div><textarea maxlength="240" rows="3" placeholder="Add a note and we\u2019ll write it out by hand (optional)"></textarea></div></div>';
       var box2 = box.querySelector('input'), note = box.querySelector('textarea');
       box2.checked = g.wrap; note.value = g.note; box.classList.toggle('on', g.wrap);
