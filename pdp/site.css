@@ -444,11 +444,11 @@ body.ship-on .head{transform:translateY(var(--ship-h,38px))}
 /* the piece is gone: an ink stamp across its picture, pressed a little crooked like a real one */
 .product.claimed .ship-free,.product.claimed .ship-by{display:none !important}
 .product.claimed .gallery .hero{position:relative}
-.product.claimed .gallery .hero::after{content:"Sold";position:absolute;z-index:5;top:32px;left:24px;
-  transform:rotate(-12deg);padding:.18em .5em .1em;border:2.9px solid currentColor;border-radius:5.7px;
-  color:#fff;font:400 24.6px/1 var(--serif);letter-spacing:.06em;text-transform:uppercase;
+.product.claimed .gallery .hero::after{content:"Sold";position:absolute;z-index:5;top:48px;left:40px;
+  transform:rotate(-12deg);padding:.18em .5em .1em;border:3.3px solid currentColor;border-radius:6.6px;
+  color:#fff;font:400 28.3px/1 var(--serif);letter-spacing:.06em;text-transform:uppercase;
   pointer-events:none}
-@media (min-width:1024px){ .product.claimed .gallery .hero::after{top:144px;left:56px;font-size:37.8px;border-width:2.4px;border-radius:4.7px} }
+@media (min-width:1024px){ .product.claimed .gallery .hero::after{top:144px;left:72px;font-size:37.8px;border-width:2.4px;border-radius:4.7px} }
 
 
 /* ── a look at the shop without the capitals (open any page with ?case) ──
