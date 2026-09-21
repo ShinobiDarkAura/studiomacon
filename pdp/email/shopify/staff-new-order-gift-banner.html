@@ -1,0 +1,9 @@
+{% comment %} Paste at the very top of Settings → Notifications → Staff notifications → New order, just inside <body>. Shows only on gift orders. {% endcomment %}
+{% assign gift_wrap = false %}{% assign gift_note = '' %}
+{% for attribute in attributes %}{% assign k = attribute | first %}{% if k == 'Gift wrap' %}{% assign gift_wrap = true %}{% endif %}{% if k == 'Gift note' %}{% assign gift_note = attribute | last %}{% endif %}{% endfor %}
+{% if gift_wrap %}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px"><tr><td style="background:#000000;color:#ffffff;padding:20px 24px;font:400 15px/1.5 'Helvetica Neue',Helvetica,Arial,sans-serif">
+  <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding-bottom:6px">Gift order: wrap it</div>
+  {% if gift_note != '' %}<div>Handwritten note: &ldquo;{{ gift_note }}&rdquo;</div>{% else %}<div>No note to write.</div>{% endif %}
+</td></tr></table>
+{% endif %}
