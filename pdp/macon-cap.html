@@ -250,11 +250,11 @@
     .gallery figure{margin-bottom:12px}
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
-    .gallery figure img,.gallery .hero img{height:calc(100vh - 32px);height:calc(100svh - 32px);aspect-ratio:auto;object-fit:cover}
+    .gallery figure img,.gallery .hero img{height:calc(100vh - 28px);height:calc(100svh - 28px);aspect-ratio:auto;object-fit:cover}
     body.ship-on .gallery figure img,body.ship-on .gallery .hero img,
     body.ship-on .gallery .hero .shots,body.ship-on .gallery .hero .shot{
-      height:calc(100svh - 32px - var(--ship-h,38px));transition:height .5s cubic-bezier(.22,1,.36,1)}
-    .gallery .hero .shots,.gallery .hero .shot{height:calc(100vh - 32px);height:calc(100svh - 32px)}
+      height:calc(100svh - 28px - var(--ship-h,38px));transition:height .5s cubic-bezier(.22,1,.36,1)}
+    .gallery .hero .shots,.gallery .hero .shot{height:calc(100vh - 28px);height:calc(100svh - 28px)}
     .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
     /* Tablets: the photo column is only ~320px wide, so a full screen of height turns each
        photograph into a 1:3 sliver and the page into 9,700px. Keep them in proportion instead. */
