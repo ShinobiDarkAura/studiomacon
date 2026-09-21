@@ -88,7 +88,7 @@
      laid slightly askew and overlapping, with a soft, layered shadow */
   /* The three photographs are placed by hand in pdp/_editor/photos.html, which writes the
      numbers below. They are positioned rather than flowed, so the arrangement holds exactly. */
-  .childhood{position:relative;width:600px;height:780px;margin:0 auto;padding:0;
+  .childhood{position:relative;width:600px;height:780px;margin:-16px auto 0;padding:0;
     transform:scale(var(--k,1));transform-origin:top center;margin-bottom:calc(780px * (var(--k,1) - 1))}
   .polaroid,.childhood .strip{position:absolute;left:50%;top:0;margin:0;transform:translate(-50%,0)}
   /* they land one at a time, in reading order: Alex, the strip, then Hannah below */
@@ -109,7 +109,7 @@
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
   .polaroid:first-child .card{width:300px;z-index:1;transform:translate(25px,335px) rotate(-6.5deg)}
   .polaroid:nth-of-type(2) .card{width:300px;z-index:1;transform:translate(129px,-2px) rotate(6deg)}
-  .childhood .strip img{width:354px;z-index:3;transform:translate(315px,11px) rotate(-3.5deg)}
+  .childhood .strip img{width:354px;z-index:3;transform:translate(315px,35px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
      land off the page's centre while everything above them is still centred, so tablets keep the
      stacked, centred reading order instead. */
@@ -120,7 +120,7 @@
     .history .intro{justify-self:start;transform:translateY(-26px)}          /* the photographs are bottom-heavy, so the words ride above their true centre */
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
     .history{align-items:center}          /* the words sit on the centre line of the photographs */
-    .childhood .strip img{transform:translate(363px,3px) rotate(-3.5deg)}
+    .childhood .strip img{transform:translate(363px,27px) rotate(-3.5deg)}
     .polaroid:nth-of-type(2) .card{transform:translate(156px,-2px) rotate(6deg)}
     .polaroid:first-child .card{transform:translate(52px,335px) rotate(-6.5deg)}
     .childhood{--k:.765;margin-left:-117px}          /* 10% smaller, and centred on what it actually contains rather than on its box */
@@ -149,7 +149,7 @@
     .history{display:flex;flex-direction:column;align-items:center;gap:72px}          /* the words sit on the page's centre line, not against its left edge */
     .history .intro{width:100%}          /* the photographs sit well clear of the words */
     /* phones: the Polaroids keep 16px off each edge and never overlap the blurb */
-    .childhood{--k:.58;margin-left:calc(50% - 300px - 72px)}          /* scaled to the phone, and centred on what it contains */
+    .childhood{--k:.58;margin-left:calc(50% - 300px - 100px)}          /* scaled to the phone, and centred on what it contains */
     .history .intro{order:1}
     .history .childhood{order:2}
   }
@@ -159,8 +159,8 @@
     .opening .hand video,.steps .process-film video{width:620px;max-width:100%;margin-left:auto;margin-right:auto}
     .steps .process-film{max-width:none}
     .opening .intro p.lede,.history .intro p.lede{max-width:470px}
-    .childhood{--k:.82;margin-left:calc(50% - 300px - 112px)}
-    .childhood .strip img{transform:translate(339px,11px) rotate(-3.5deg)}
+    .childhood{--k:.82;margin-left:calc(50% - 300px - 151px)}
+    .childhood .strip img{transform:translate(339px,35px) rotate(-3.5deg)}
   }
 
 </style>
