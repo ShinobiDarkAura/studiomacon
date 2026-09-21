@@ -142,6 +142,7 @@ OOAK = [
      "notes": ["Glass beads and vegetable-tanned leather", "Worn on a long cord, close to the chest", "One of one"]},
 ]
 OOAK_SLUGS = {x["slug"] for x in OOAK}
+NO_FILM = {"eclipse-ring"}          # pieces whose product page shows photographs only, though a film exists
 HIDE_FROM_SHOP |= OOAK_SLUGS          # one-of-ones stay off the shop until Ephemeral returns
 
 
@@ -427,7 +428,7 @@ def page(p, template, related=""):
                   f' style="object-position:{hf.get("x", 50):g}% {hf.get("y", 50):g}%'
                   f';transform-origin:{hf.get("x", 50):g}% {hf.get("y", 50):g}%'
                   f';transform:scale({hf.get("z", 1):g})"')
-    if os.path.exists(os.path.join(OUT, "video", "pieces", f"{slug}.mp4")):
+    if slug not in NO_FILM and os.path.exists(os.path.join(OUT, "video", "pieces", f"{slug}.mp4")):
         figs.insert(1, f'<figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/{slug}.jpg" aria-label="{html.escape(name)} in motion"><source src="video/pieces/{slug}.mp4" type="video/mp4"></video></figure>')
     if os.path.exists(os.path.join(OUT, "img", slug, "composite.jpg")):
         figs.append(framed(f"img/{slug}/composite.jpg", ' loading="lazy"'))
