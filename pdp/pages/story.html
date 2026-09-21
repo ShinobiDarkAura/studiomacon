@@ -80,19 +80,19 @@
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
   .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-37px,335px) rotate(-6.5deg)}
   .polaroid:last-child .card{width:300px;z-index:1;transform:translate(35px,-2px) rotate(6deg)}
-  .childhood .strip img{width:308px;z-index:3;transform:translate(279px,59px) rotate(-3.5deg)}
+  .childhood .strip img{width:308px;z-index:3;transform:translate(315px,11px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
      land off the page's centre while everything above them is still centred, so tablets keep the
      stacked, centred reading order instead. */
   @media (min-width:1100px){
     .steps{padding:0}
     /* photographs left, words right, in the same centre column as the opening (mirrored) */
-    .history{grid-template-columns:minmax(0,600px) minmax(0,420px);justify-content:center;column-gap:clamp(32px,4.5vw,72px);align-items:center}          /* the photographs sit close to the words */
+    .history{grid-template-columns:minmax(0,600px) minmax(0,378px);justify-content:center;column-gap:clamp(32px,4.5vw,72px);align-items:center}          /* the photographs sit close to the words */
     .history .intro{justify-self:start}
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
     .history{align-items:center}          /* the words sit on the centre line of the photographs */
-    .childhood .strip img{transform:translate(327px,59px) rotate(-3.5deg)}
-    .childhood{margin-left:-125px}          /* the arrangement leans right, so centre it on what it actually contains */
+    .childhood .strip img{transform:translate(327px,11px) rotate(-3.5deg)}
+    .childhood{--k:.9;margin-left:-125px}          /* 10% smaller, and centred on what it actually contains rather than on its box */
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
     .opening{grid-template-columns:minmax(0,420px) minmax(0,600px);justify-content:center;column-gap:clamp(40px,6vw,96px);align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
@@ -118,7 +118,7 @@
     .history{display:flex;flex-direction:column;align-items:center;gap:72px}          /* the words sit on the page's centre line, not against its left edge */
     .history .intro{width:100%}          /* the photographs sit well clear of the words */
     /* phones: the Polaroids keep 16px off each edge and never overlap the blurb */
-    .childhood{--k:.58;margin-left:calc(50% - 300px - 115px)}          /* scaled to the phone, and centred on what it contains */
+    .childhood{--k:.58;margin-left:calc(50% - 300px - 125px)}          /* scaled to the phone, and centred on what it contains */
     .history .intro{order:1}
     .history .childhood{order:2}
   }
@@ -129,6 +129,7 @@
     .steps .process-film{max-width:none}
     .opening .intro p.lede,.history .intro p.lede{max-width:470px}
     .childhood{--k:.82;margin-left:calc(50% - 300px - 162px)}
+    .childhood .strip img{transform:translate(279px,11px) rotate(-3.5deg)}
   }
 
 </style>

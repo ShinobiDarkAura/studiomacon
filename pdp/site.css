@@ -193,7 +193,7 @@ footer .field button{padding:0 0 0 18px}
 /* the drawer is most of a small phone, but never wider than 360px; the page is pushed by the same amount */
 :root{--drawer:min(84vw,360px)}
 .menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100svh;width:var(--drawer);z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:24.8px;
-  padding:0 calc(var(--pad) + 34px);transform:translateX(-100%);visibility:hidden;
+  padding:0 calc(var(--pad) + 24px);transform:translateX(-100%);visibility:hidden;
   transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s linear .6s}
 .menu-sheet.open{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s}
 .menu-sheet a{font:400 34px/1.05 var(--serif);text-transform:uppercase;color:#000}
@@ -297,12 +297,12 @@ a.cta::after,button.cta::after,.next::after{content:"";width:0;height:14px;margi
   /* phones: a 1px X, centred exactly where the Menu label sat. The 40px box is the tap area. */
   /* a 19px stroke turned 45deg is 13.4px of actual shape. The box is offset so the shape's left
      edge meets the INK of the menu words, which itself starts 1.4px inside its own text box. */
-  .menu-close{left:calc(var(--nav-inset) - 11.9px);top:18px;width:44px;height:44px;padding:0;font-size:0;color:transparent;background:none;border:0}
+  .menu-close{left:calc(var(--nav-inset) - 11.9px);top:18px;width:44px;height:44px;padding:0;font-size:0;color:transparent;background:none;border:0}          /* the X's own left edge meets the menu items: 19px stroke at 45deg spans 13.44px */
   .menu-close::before,.menu-close::after{content:"";position:absolute;left:50%;top:50%;width:19px;height:1px;
-    margin:-.5px 0 0 -9.5px;background:currentColor;color:#000}
+    margin:-.5px 0 0 -14.78px;background:currentColor;color:#000}          /* the drawn X, not its tap box, lines up with the menu words */
   .menu-close::before{transform:rotate(45deg)}
   .menu-close::after{transform:rotate(-45deg)}
-  .menu-sheet{padding-left:var(--nav-inset) !important;padding-right:var(--nav-inset) !important}
+  .menu-sheet{padding-left:calc(var(--nav-inset) + 10px) !important;padding-right:var(--nav-inset) !important}
   .wall-head,.shop-wall,.inspiration-wall,.gallery,.info,.related,.opening,.prose,.steps,.history,
   .split .copy,.bag-page{padding-left:var(--gutter) !important;padding-right:var(--gutter) !important}
   /* the opening blurb sits in from the grid, on the menu and bag's own inset */
