@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789978404">
+<link rel="stylesheet" href="site.css?v=1789979030">
 <style>
   .head .on-dark{color:#000}
   .opening{display:grid;gap:40px;padding:calc(var(--head) + 48px) calc(var(--pad) + 24px) 0}
@@ -59,7 +59,7 @@
   .steps img{margin:0 auto;width:323px;max-width:100%}
   .history{display:grid;gap:40px;padding:300px calc(var(--pad) + 24px) 0;margin-bottom:72px}          /* 35% more room under the process film */
   .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
-  .history .intro p.lede{margin:0;max-width:344px}          /* measured: at 360px the last line was left holding only "a decade." */
+  .history .intro p.lede{margin:0;max-width:378px}          /* measured: at 360px the last line was left holding only "a decade." */
   .history .intro p.lede + p.lede{margin-top:1em}
   /* the two names link to their own Instagram: underlined quietly, never a different colour */
   .intro p.lede a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
@@ -108,7 +108,7 @@
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
   .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-69px,335px) rotate(-6.5deg)}
   .polaroid:last-child .card{width:300px;z-index:1;transform:translate(35px,-2px) rotate(6deg)}
-  .childhood .strip img{width:308px;z-index:3;transform:translate(315px,11px) rotate(-3.5deg)}
+  .childhood .strip img{width:507.6px;z-index:3;transform:translate(225.4px,10.8px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
      land off the page's centre while everything above them is still centred, so tablets keep the
      stacked, centred reading order instead. */
@@ -119,7 +119,7 @@
     .history .intro{justify-self:start;transform:translateY(-26px)}          /* the photographs are bottom-heavy, so the words ride above their true centre */
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
     .history{align-items:center}          /* the words sit on the centre line of the photographs */
-    .childhood .strip img{transform:translate(363px,3px) rotate(-3.5deg)}
+    .childhood .strip img{width:583.7px;transform:translate(283.4px,-0.2px) rotate(-3.5deg)}
     .childhood{--k:.765;margin-left:-117px}          /* 10% smaller, and centred on what it actually contains rather than on its box */
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
@@ -146,7 +146,7 @@
     .history{display:flex;flex-direction:column;align-items:center;gap:72px}          /* the words sit on the page's centre line, not against its left edge */
     .history .intro{width:100%}          /* the photographs sit well clear of the words */
     /* phones: the Polaroids keep 16px off each edge and never overlap the blurb */
-    .childhood{--k:.58;margin-left:calc(50% - 300px - 125px)}          /* scaled to the phone, and centred on what it contains */
+    .childhood{--k:.58;margin-left:calc(50% - 300px - 62px)}          /* scaled to the phone, and centred on what it contains */
     .history .intro{order:1}
     .history .childhood{order:2}
   }
@@ -156,8 +156,8 @@
     .opening .hand video,.steps .process-film video{width:620px;max-width:100%;margin-left:auto;margin-right:auto}
     .steps .process-film{max-width:none}
     .opening .intro p.lede,.history .intro p.lede{max-width:470px}
-    .childhood{--k:.82;margin-left:calc(50% - 300px - 162px)}
-    .childhood .strip img{transform:translate(279px,11px) rotate(-3.5deg)}
+    .childhood{--k:.82;margin-left:calc(50% - 300px - 87px)}
+    .childhood .strip img{transform:translate(238.4px,10.8px) rotate(-3.5deg)}
   }
 
 </style>
@@ -344,7 +344,7 @@
     <div class="childhood">
       <figure class="polaroid"><span class="card"><img width="800" height="800" src="img/pages/hannah-square.jpg" alt="Hannah as a child, drawing"></span></figure>
       <figure class="polaroid"><span class="card"><img width="800" height="800" src="img/pages/alex-polaroid.jpg" alt="Alex as a child, drawing"></span></figure>
-      <figure class="strip"><img width="624" height="1561" src="img/pages/photobooth.png" alt="Alex and Hannah in a photobooth"></figure>
+      <figure class="strip"><img width="1022" height="2481" src="img/pages/photobooth-4.png" alt="Alex and Hannah in a photobooth"></figure>
     </div>
     <div class="intro">
       <p class="eyebrow" data-edit="page:story.html:c8927cf4">Our Story</p>
@@ -400,7 +400,7 @@
   <div class="brand">
     <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
     <p class="fine" data-edit="page:story.html:334e67ad">Artifacts of Love,<br>Made to Order</p>
-    <p class="fine where" data-edit="page:story.html:6c2ee821">to Santa Monica, California</p>
+    <p class="fine where" data-edit="page:story.html:83a980c2">in Santa Monica, California</p>
   </div>
   <div class="middle">
   <nav class="links">
