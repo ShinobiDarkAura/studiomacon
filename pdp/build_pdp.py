@@ -251,7 +251,10 @@ def accordions(slug, k, notes):
     # Shipping reads the same on every piece, so it is edited once for the whole shop.
     ship_a = ("Each piece is made to order; please allow up to 10 business days before it ships. "
               "Standard shipping takes 3–7 business days, international 5–10. "
-              "Shipping is free on orders over $200 within the continental US.")
+              "Shipping is free on orders over $200 within the continental US. "
+              "Every order ships in a special box, wrapped with care. "
+              "International orders may be charged import duties and taxes on arrival. "
+              "These are set by the destination country and are not included in the price.")
     ship_b = ("Pieces in original condition (excluding custom work) may be returned within 30 days of delivery for store credit. "
               "If a piece doesn't fit, we'll gladly help you find the right size. "
               '<a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.')
