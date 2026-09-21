@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Studio Maçon", "url": "https://studiomacon.co", "logo": "https://studiomacon.co/img/favicon.png", "email": "hello@studiomacon.co", "sameAs": ["https://www.instagram.com/studiomacon/"]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789979836">
+<link rel="stylesheet" href="site.css?v=1789981361">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -1612,9 +1612,13 @@ function maconClickQuery(extra) {
   })();
   addEventListener('pageshow', function (e) { if (e.persisted) still(); });
 </script>
+
+
 <script>
-  // Colour editor for the grid (open the home page with ?tint). Click a piece to select it, drag the
-  // sliders, then "Copy settings" and paste the values back to Claude. Nothing here changes the site.
+  // Grid editor, local only: open the home page with ?tint. Click a piece to select it, then set
+  // colour, rotation and zoom for the default and hover shots. Ghost lays the hover over the
+  // default at half opacity so the two can be matched. Nothing here changes the site; Copy
+  // settings puts the numbers on the clipboard to paste back.
   (function () {
     if (!/[?&]tint\b/.test(location.search)) return;
     function baked(src) {                                     // the balance already baked into the file name
@@ -1624,52 +1628,131 @@ function maconClickQuery(extra) {
     var gains = function (w, t) { return [1 + w * .01 - t * .005, 1 + t * .01, 1 - w * .01 - t * .005]; };
     var defs = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     defs.setAttribute('width', 0); defs.setAttribute('height', 0); defs.style.position = 'absolute'; document.body.appendChild(defs);
-    function paint(tile) {                                    // show the chosen balance on top of the baked one
+
+    function paint(tile) {
       var id = 'tn-' + tile.slug, fl = defs.querySelector('#' + id);
       if (!fl) { fl = document.createElementNS('http://www.w3.org/2000/svg', 'filter'); fl.id = id;
         fl.setAttribute('color-interpolation-filters', 'sRGB'); fl.innerHTML = '<feColorMatrix type="matrix"/>'; defs.appendChild(fl); }
       var want = gains(tile.warm, tile.tint), has = gains(tile.b.warm, tile.b.tint);
-      fl.firstChild.setAttribute('values', (want[0] / has[0]) + ' 0 0 0 0  0 ' + (want[1] / has[1]) + ' 0 0 0  0 0 ' + (want[2] / has[2]) + ' 0 0  0 0 0 1 0');
-      tile.imgs.forEach(function (im) { im.style.filter = 'url(#' + id + ')'; });
+      fl.firstChild.setAttribute('values', (want[0]/has[0]) + ' 0 0 0 0  0 ' + (want[1]/has[1]) + ' 0 0 0  0 0 ' + (want[2]/has[2]) + ' 0 0  0 0 0 1 0');
+      tile.imgs.forEach(function (im, i) {
+        var f = tile.frames[i];
+        im.style.filter = 'url(#' + id + ')';
+        im.style.transformOrigin = '50% 50%';
+        im.style.transform = 'translate(' + f.x + '%,' + f.y + '%) scale(' + f.z + ') rotate(' + f.r + 'deg)';
+      });
     }
-    var tiles = [], cur = null;
+
+    var tiles = [], cur = null, layer = 0;                    // 0 default, 1 hover, 2 ghost
     document.querySelectorAll('.piece[href]').forEach(function (a) {
       var imgs = [].slice.call(a.querySelectorAll('img')); if (!imgs.length) return;
       var b = baked(imgs[0].getAttribute('src'));
-      tiles.push({el: a, slug: a.getAttribute('href').replace('.html', ''), imgs: imgs, b: b, warm: b.warm, tint: b.tint});
-      a.removeAttribute('href');                                // while editing, a piece selects instead of opening
+      tiles.push({el: a, slug: a.getAttribute('href').replace('.html', ''), imgs: imgs, b: b, warm: b.warm, tint: b.tint,
+                  frames: imgs.map(function () { return {r: 0, z: 1, x: 0, y: 0}; })});
+      a.removeAttribute('href');
     });
+
     var css = document.createElement('style');
-    css.textContent = '.tint{position:fixed;right:16px;bottom:16px;z-index:9999;width:260px;background:#fff;border:1px solid #ddd;border-radius:12px;box-shadow:0 12px 40px -12px rgba(0,0,0,.35);padding:14px 16px;font:12px/1.4 -apple-system,system-ui,sans-serif;color:#000}' +
-      '.tint h4{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.tint label{display:grid;grid-template-columns:74px 1fr 34px;gap:8px;align-items:center;margin:6px 0}' +
+    css.textContent =
+      '.tint{position:fixed;right:16px;bottom:16px;z-index:9999;width:292px;background:#fff;border:1px solid #ddd;border-radius:12px;box-shadow:0 12px 40px -12px rgba(0,0,0,.35);padding:14px 16px;font:12px/1.4 -apple-system,system-ui,sans-serif;color:#000;max-height:88vh;overflow:auto}' +
+      '.tint h4{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}' +
+      '.tint h5{margin:14px 0 4px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#888}' +
+      '.tint label{display:grid;grid-template-columns:70px 1fr 40px;gap:8px;align-items:center;margin:6px 0}' +
       '.tint output{text-align:right;font-variant-numeric:tabular-nums}.tint .row{display:flex;gap:8px;margin-top:12px}.tint .hint{color:#777;margin:8px 0 0}' +
       '.tint button{flex:1;padding:7px;border:1px solid #000;border-radius:6px;background:#fff;cursor:pointer;font:inherit}.tint button.dark{background:#000;color:#fff}' +
-      '.piece.tint-on{outline:2px solid #000;outline-offset:3px}';
+      '.tint .seg{display:flex;gap:0;margin:2px 0 4px}.tint .seg button{border-radius:0;flex:1}.tint .seg button:first-child{border-radius:6px 0 0 6px}.tint .seg button:last-child{border-radius:0 6px 6px 0}' +
+      '.piece.tint-on{outline:2px solid #000;outline-offset:3px}' +
+      /* the hover shot laid over the default, so sizes can be matched directly */
+      '.piece.ghost img:last-child{opacity:.5 !important;transition:none !important}' +
+      '.piece.ghost img:first-child{opacity:1 !important}' +
+      '.piece.show-hover img:last-child{opacity:1 !important}' +
+      /* thirds and centre lines over the selected piece */
+      '.piece.tint-on .pic::after,.piece.tint-on .placeholder-fill::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;' +
+      'background-image:linear-gradient(to right,transparent calc(33.333% - .5px),rgba(0,140,255,.5) calc(33.333% - .5px),rgba(0,140,255,.5) calc(33.333% + .5px),transparent calc(33.333% + .5px)),' +
+      'linear-gradient(to right,transparent calc(66.666% - .5px),rgba(0,140,255,.5) calc(66.666% - .5px),rgba(0,140,255,.5) calc(66.666% + .5px),transparent calc(66.666% + .5px)),' +
+      'linear-gradient(to bottom,transparent calc(33.333% - .5px),rgba(0,140,255,.5) calc(33.333% - .5px),rgba(0,140,255,.5) calc(33.333% + .5px),transparent calc(33.333% + .5px)),' +
+      'linear-gradient(to bottom,transparent calc(66.666% - .5px),rgba(0,140,255,.5) calc(66.666% - .5px),rgba(0,140,255,.5) calc(66.666% + .5px),transparent calc(66.666% + .5px)),' +
+      'linear-gradient(to right,transparent calc(50% - .5px),rgba(255,0,110,.7) calc(50% - .5px),rgba(255,0,110,.7) calc(50% + .5px),transparent calc(50% + .5px)),' +
+      'linear-gradient(to bottom,transparent calc(50% - .5px),rgba(255,0,110,.7) calc(50% - .5px),rgba(255,0,110,.7) calc(50% + .5px),transparent calc(50% + .5px))}' +
+      '.piece.tint-on .pic,.piece.tint-on .placeholder-fill{position:relative}';
     document.head.appendChild(css);
+
     var box = document.createElement('div'); box.className = 'tint';
-    box.innerHTML = '<h4>Grid colour</h4><p class="hint" id="tint-who" data-edit="page:index.html:55ca21c5">Click a piece to start.</p>' +
-      '<label>Cool ↔ Warm<input type="range" data-k="warm" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
-      '<label>Mag. ↔ Green<input type="range" data-k="tint" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
-      '<div class="row"><button type="button" class="dark">Copy settings</button><button type="button">Reset piece</button></div>';
+    box.innerHTML = '<h4>Grid editor</h4><p class="hint" id="tint-who" data-edit="page:index.html:55ca21c5">Click a piece to start.</p>' +
+      '<h5>Colour</h5>' +
+      '<label>Cool ↔ Warm<input type="range" data-c="warm" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
+      '<label>Mag ↔ Green<input type="range" data-c="tint" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
+      '<h5>Showing</h5><div class="seg"><button type="button" data-l="0" class="dark">Default</button><button type="button" data-l="1">Hover</button><button type="button" data-l="2">Ghost</button></div>' +
+      '<h5>Frame</h5>' +
+      '<label>Rotate<input type="range" data-f="r" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
+      '<label>Zoom<input type="range" data-f="z" min="1" max="2.5" step="0.01" disabled><output>1</output></label>' +
+      '<label>Across<input type="range" data-f="x" min="-30" max="30" step="0.5" disabled><output>0</output></label>' +
+      '<label>Down<input type="range" data-f="y" min="-30" max="30" step="0.5" disabled><output>0</output></label>' +
+      '<div class="row"><button type="button" class="dark" id="tint-copy">Copy settings</button><button type="button" id="tint-reset">Reset piece</button></div>' +
+      '<p class="hint" data-edit="page:index.html:9dc19553">Arrow keys nudge the frame. Ghost shows the hover shot at 50% over the default.</p>';
     document.body.appendChild(box);
-    var who = box.querySelector('#tint-who'), rs = [].slice.call(box.querySelectorAll('input'));
+
+    var who = box.querySelector('#tint-who');
+    var cs = [].slice.call(box.querySelectorAll('[data-c]')), fs = [].slice.call(box.querySelectorAll('[data-f]'));
+    function frame() { return cur ? cur.frames[Math.min(layer, 1)] : null; }
     function show() {
-      rs.forEach(function (r) { r.disabled = !cur; if (cur) { r.value = cur[r.dataset.k]; r.nextElementSibling.textContent = cur[r.dataset.k]; } });
+      cs.forEach(function (r) { r.disabled = !cur; if (cur) { r.value = cur[r.dataset.c]; r.nextElementSibling.textContent = cur[r.dataset.c]; } });
+      var f = frame();
+      fs.forEach(function (r) { r.disabled = !cur; if (f) { r.value = f[r.dataset.f]; r.nextElementSibling.textContent = f[r.dataset.f]; } });
       who.textContent = cur ? cur.slug + ' — baked in: warm ' + cur.b.warm + ', tint ' + cur.b.tint : 'Click a piece to start.';
+      tiles.forEach(function (t) {
+        t.el.classList.toggle('ghost', t === cur && layer === 2);
+        t.el.classList.toggle('show-hover', t === cur && layer === 1);
+      });
     }
     document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('.tint')) return;
       var a = e.target.closest && e.target.closest('.piece'); if (!a || !tiles.some(function (t) { return t.el === a; })) return;
       e.preventDefault(); e.stopPropagation();
       tiles.forEach(function (t) { t.el.classList.toggle('tint-on', t.el === a); if (t.el === a) cur = t; });
       show();
     }, true);
-    box.addEventListener('input', function (e) { if (!cur || !e.target.dataset.k) return; cur[e.target.dataset.k] = +e.target.value; e.target.nextElementSibling.textContent = e.target.value; paint(cur); });
-    box.querySelectorAll('button')[1].onclick = function () { if (!cur) return; cur.warm = cur.b.warm; cur.tint = cur.b.tint; paint(cur); show(); };
-    box.querySelectorAll('button')[0].onclick = function () {
-      var t = tiles.filter(function (x) { return x.warm !== x.b.warm || x.tint !== x.b.tint; })
-        .map(function (x) { return x.slug + ': warm ' + x.warm + ', tint ' + x.tint; }).join('\n') || 'no changes';
-      var b = box.querySelectorAll('button')[0];
-      (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy settings'; }, 1500); }, function () { prompt('Copy these settings:', t); });
+    box.addEventListener('input', function (e) {
+      if (!cur) return;
+      if (e.target.dataset.c) { cur[e.target.dataset.c] = +e.target.value; }
+      else if (e.target.dataset.f) { frame()[e.target.dataset.f] = +e.target.value; }
+      else return;
+      e.target.nextElementSibling.textContent = e.target.value; paint(cur);
+    });
+    box.addEventListener('click', function (e) {
+      var l = e.target.dataset && e.target.dataset.l;
+      if (l === undefined || l === null) return;
+      layer = +l;
+      box.querySelectorAll('[data-l]').forEach(function (b) { b.classList.toggle('dark', b.dataset.l === l); });
+      show();
+    });
+    window.addEventListener('keydown', function (e) {
+      if (!cur || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+      var k = {ArrowLeft: ['x', -1], ArrowRight: ['x', 1], ArrowUp: ['y', -1], ArrowDown: ['y', 1]}[e.key];
+      if (!k) return;
+      e.preventDefault();
+      frame()[k[0]] = Math.round((frame()[k[0]] + k[1] * (e.shiftKey ? 5 : .5)) * 10) / 10;
+      paint(cur); show();
+    });
+    box.querySelector('#tint-reset').onclick = function () {
+      if (!cur) return;
+      cur.warm = cur.b.warm; cur.tint = cur.b.tint;
+      cur.frames = cur.imgs.map(function () { return {r: 0, z: 1, x: 0, y: 0}; });
+      paint(cur); show();
+    };
+    box.querySelector('#tint-copy').onclick = function () {
+      var out = tiles.map(function (x) {
+        var bits = [];
+        if (x.warm !== x.b.warm || x.tint !== x.b.tint) bits.push('warm ' + x.warm + ', tint ' + x.tint);
+        x.frames.forEach(function (f, i) {
+          if (f.r || f.z !== 1 || f.x || f.y) bits.push((i ? 'hover' : 'default') + ': rotate ' + f.r + ', zoom ' + f.z + ', x ' + f.x + ', y ' + f.y);
+        });
+        return bits.length ? x.slug + ' — ' + bits.join('; ') : null;
+      }).filter(Boolean).join('\n') || 'no changes';
+      var b = this;
+      (navigator.clipboard ? navigator.clipboard.writeText(out) : Promise.reject())
+        .then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy settings'; }, 1500); },
+              function () { prompt('Copy these settings:', out); });
     };
   })();
 </script>

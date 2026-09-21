@@ -105,9 +105,9 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .acc-body dt{text-transform:uppercase;font-size:14px;padding-top:2px}
 .acc-body dd{margin:0}
 .acc-body .after-dl{margin-top:18px}
-.acc-body .acc-more{margin-top:22px}          /* 8px more air above it */
+.acc-body p.acc-more:last-child{margin:26px 0 0}          /* 8px more air above it, then 4px again */
 .acc-body .acc-more a,.sizer-panel .more-rows button{display:inline-flex;align-items:center;gap:4px;
-  font-family:inherit;font-weight:400;font-size:calc(1em - 3pt);line-height:1.4;padding:0;border:0;background:none;cursor:pointer;
+  font-family:inherit;font-weight:400;font-size:calc(1em - 1pt);line-height:1.4;padding:0;border:0;background:none;cursor:pointer;
   color:rgba(0,0,0,.5);text-decoration:none}
 .acc-body .acc-more a::after,.sizer-panel .more-rows button::after{content:"";width:1em;height:1em;flex:none;background:currentColor;
   -webkit-mask:var(--arr-r) center/contain no-repeat;mask:var(--arr-r) center/contain no-repeat;transition:transform .3s ease}

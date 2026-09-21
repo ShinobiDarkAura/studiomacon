@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <style>
   /* ── product ───────────────────────────────────────── */
-  .gallery figure{margin:0;background:var(--field);overflow:hidden}
+  .gallery figure{margin:0;background:none;overflow:hidden}          /* the picture carries its own corners; a backing showed outside them */
   .gallery figure:not(.hero){display:none}          /* mobile: hero only up top */
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
   /* the hero is a track of pictures that slides; nothing is created or destroyed on a tap */
@@ -21,9 +21,9 @@
   .gallery video{display:block;width:100%;height:100vh;height:100svh;object-fit:cover;background:var(--field)}
 
   .info{padding:28px var(--pad) 0;text-align:center}
-  .price{font-size:19px;margin:0 0 18px}
+  .price{font-size:19px;margin:0 0 18px;display:flex;align-items:baseline;gap:10px}
   .price .ship-free{margin-left:10px;font-size:14px;opacity:.5}
-  .ship-by{margin:12px 0 0;font-size:14px;color:rgba(0,0,0,.55);text-align:center}          /* a date reads as a promise; a duration reads as a caveat */          /* now that every US order ships free, say so where the money is */
+  .ship-by{margin:0 0 0 auto;font-size:14px;color:rgba(0,0,0,.55)}          /* a date reads as a promise; a duration reads as a caveat */          /* now that every US order ships free, say so where the money is */
   .info h1{margin-bottom:12px}          /* h1 default is 22px; 10px tighter under the name */
   /* ring size: the whole bordered block is the control; sizes open beneath it */
   .size{position:relative;margin:0 0 12px;border:1px solid var(--rule);text-align:left}
@@ -327,10 +327,9 @@
       <div class="info-main">
       <p class="eyebrow" data-edit="eyebrow">{{EYEBROW}}</p>
       <h1 data-edit="name">{{TITLE}}</h1>
-      <p class="price" data-edit="price">{{PRICE}}<span class="ship-free">Free shipping</span></p>
+      <p class="price" data-edit="price">{{PRICE}}<span class="ship-free">Free shipping</span><span class="ship-by" data-ship-by hidden></span></p>
       {{SIZE}}
       {{BUY}}
-      <p class="ship-by" data-ship-by hidden></p>
       <div class="desc-block"><p class="label">Field Notes</p><p class="desc" data-edit="description">{{DESC}}</p></div>
       <div class="acc">
 {{ACCORDIONS}}

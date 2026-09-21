@@ -262,7 +262,7 @@ def accordions(slug, k, notes):
     items.append(("Shipping &amp; Returns",
                   f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
-                  '<p class="acc-more"><a href="shipping.html">Full Details</a></p>'))
+                  '<p class="acc-more"><a href="shipping.html">Full details</a></p>'))
     return "\n".join(
         f'''        <div class="acc-item">
           <button class="acc-head" aria-expanded="false">{t}</button>
