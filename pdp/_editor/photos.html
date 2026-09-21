@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arrange the photographs</title>
+<style>
+  :root{--ui:#111;--line:#e3e3e3}
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.45 -apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ui);background:#fafafa}
+  header{display:flex;align-items:center;gap:18px;padding:14px 20px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:50}
+  header h1{margin:0;font-size:15px;font-weight:600;letter-spacing:.01em}
+  header .hint{color:#777}
+  header .grow{margin-left:auto}
+  button{font:inherit;padding:7px 13px;border:1px solid var(--ui);background:#fff;border-radius:6px;cursor:pointer}
+  button.dark{background:var(--ui);color:#fff}
+  button:disabled{opacity:.4;cursor:default}
+  .wrap{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:0;min-height:calc(100vh - 57px)}
+  .stage{position:relative;padding:60px 40px;overflow:auto;background:#fff}
+  .stage-inner{position:relative;width:600px;margin:0 auto}
+  .side{border-left:1px solid var(--line);padding:20px;background:#fafafa;overflow:auto}
+  .side h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:#777;margin:0 0 10px}
+  .side h2:not(:first-child){margin-top:26px}
+  .row{display:flex;align-items:center;gap:10px;margin:0 0 8px}
+  .row label{width:56px;color:#777}
+  .row input[type=range]{flex:1}
+  .row output{width:56px;text-align:right;font-variant-numeric:tabular-nums}
+  .layers{display:flex;flex-direction:column;gap:6px;margin:0 0 6px}
+  .layers button{text-align:left;display:flex;justify-content:space-between;align-items:center}
+  .layers button[aria-pressed=true]{border-color:#5a31f4;box-shadow:inset 0 0 0 1px #5a31f4;color:#5a31f4}
+  pre{white-space:pre-wrap;word-break:break-word;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;max-height:300px;overflow:auto}
+  .sel{outline:1.5px solid #5a31f4;outline-offset:3px}
+  .handle{position:absolute;width:13px;height:13px;border-radius:50%;background:#fff;border:1.5px solid #5a31f4;z-index:40}
+  .handle.scale{cursor:nwse-resize;right:-7px;bottom:-7px}
+  .handle.rot{cursor:grab;left:50%;margin-left:-6.5px;top:-26px}
+  .handle.rot::after{content:"";position:absolute;left:50%;top:13px;width:1.5px;height:13px;margin-left:-.75px;background:#5a31f4}
+  .note{color:#777;margin:14px 0 0}
+  .err{padding:40px;color:#b00}
+</style>
+</head>
+<body>
+<header>
+  <h1>Arrange the photographs</h1>
+  <span class="hint">Click one to select. Drag to move, corner to scale, top handle to rotate. Arrow keys nudge, Shift for 10px.</span>
+  <span class="grow"></span>
+  <button id="reset">Reset</button>
+  <button id="copy" class="dark">Copy CSS</button>
+</header>
+
+<div class="wrap">
+  <div class="stage"><div class="stage-inner" id="stage"></div></div>
+  <aside class="side">
+    <h2>Layers</h2>
+    <div class="layers" id="layers"></div>
+
+    <h2>Selected</h2>
+    <div id="controls">
+      <div class="row"><label>Width</label><input type="range" id="w" min="60" max="460" step="1"><output id="wv"></output></div>
+      <div class="row"><label>Rotate</label><input type="range" id="r" min="-25" max="25" step=".5"><output id="rv"></output></div>
+      <div class="row"><label>Across</label><input type="range" id="x" min="-260" max="260" step="1"><output id="xv"></output></div>
+      <div class="row"><label>Down</label><input type="range" id="y" min="-260" max="260" step="1"><output id="yv"></output></div>
+      <div class="row"><label>Stack</label><input type="range" id="z" min="0" max="5" step="1"><output id="zv"></output></div>
+    </div>
+
+    <h2>CSS</h2>
+    <pre id="out"></pre>
+    <p class="note">Press Copy CSS and paste it back into the chat. Nothing here changes the live site on its own.</p>
+  </aside>
+</div>
+
+<script>
+(function () {
+  var STAGE = document.getElementById('stage');
+  var LAYERS = document.getElementById('layers');
+  var OUT = document.getElementById('out');
+
+  // Each layer is one photograph. width is in px; x/y are offsets from where the
+  // layout would otherwise put it, so the numbers stay readable as CSS.
+  var DEFAULTS = [
+    {key:'alex',   name:'Alex, childhood',   sel:'.polaroid:last-child .card',  img:'img/pages/alex-polaroid.jpg', kind:'polaroid', w:300, r:2.8,  x:58,  y:0,   z:0},
+    {key:'hannah', name:'Hannah, childhood', sel:'.polaroid:first-child .card', img:'img/pages/hannah-square.jpg', kind:'polaroid', w:300, r:-3.5, x:-58, y:212, z:1},
+    {key:'strip',  name:'Photobooth strip',  sel:'.strip img',                  img:'img/pages/photobooth.png',    kind:'strip',    w:150, r:6,    x:96,  y:300, z:3}
+  ];
+  var layers = load() || JSON.parse(JSON.stringify(DEFAULTS));
+  var sel = layers[2];          // the strip is the one being placed
+
+  function load() {
+    try { var v = localStorage.getItem('macon-photos'); return v ? JSON.parse(v) : null; } catch (e) { return null; }
+  }
+  function save() {
+    try { localStorage.setItem('macon-photos', JSON.stringify(layers)); } catch (e) {}
+  }
+
+  // The polaroid frame comes from the About page's own stylesheet, so the arrangement
+  // you see here is the arrangement the site will render.
+  fetch('../story.html').then(function (r) { return r.text(); }).then(function (html) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var css = [].map.call(doc.querySelectorAll('style'), function (s) { return s.textContent; }).join('\n');
+    var link = document.createElement('link');
+    link.rel = 'stylesheet'; link.href = '../site.css';
+    document.head.appendChild(link);
+    var st = document.createElement('style');
+    // the page's own rules, with the paths rewritten for this folder
+    st.textContent = css.replace(/url\((['"]?)(?!data:|https?:|\/)/g, 'url($1../') +
+      '\n.stage-inner figure{margin:0;position:absolute;left:50%;top:0}' +
+      '\n.stage-inner .card,.stage-inner .strip img{display:block}' +
+      '\n.stage-inner img{height:auto}';
+    document.head.appendChild(st);
+    build();
+  }).catch(function (e) {
+    STAGE.innerHTML = '<p class="err">Could not read story.html. Open this page through the editor server, not from the file system.</p>';
+  });
+
+  function build() {
+    STAGE.innerHTML = '';
+    layers.forEach(function (L) {
+      var fig = document.createElement('figure');
+      fig.dataset.key = L.key;
+      if (L.kind === 'polaroid') {
+        fig.className = 'polaroid';
+        var card = document.createElement('span'); card.className = 'card';
+        var im = document.createElement('img'); im.src = '../' + L.img; im.alt = '';
+        card.appendChild(im); fig.appendChild(card);
+      } else {
+        fig.className = 'strip';
+        var im2 = document.createElement('img'); im2.src = '../' + L.img; im2.alt = '';
+        fig.appendChild(im2);
+      }
+      STAGE.appendChild(fig);
+      fig.addEventListener('pointerdown', function (e) { pick(L); drag(e, fig, L); });
+    });
+    var h = document.createElement('div'); h.className = 'handle scale'; h.id = 'hScale';
+    var g = document.createElement('div'); g.className = 'handle rot'; g.id = 'hRot';
+    STAGE.appendChild(h); STAGE.appendChild(g);
+    h.addEventListener('pointerdown', function (e) { scaleDrag(e); });
+    g.addEventListener('pointerdown', function (e) { rotDrag(e); });
+    paint();
+  }
+
+  function figOf(L) { return STAGE.querySelector('[data-key="' + L.key + '"]'); }
+
+  function paint() {
+    layers.forEach(function (L) {
+      var f = figOf(L); if (!f) return;
+      f.style.width = L.w + 'px';
+      f.style.zIndex = L.z;
+      f.style.transform = 'translate(-50%,0) translate(' + L.x + 'px,' + L.y + 'px) rotate(' + L.r + 'deg)';
+      f.classList.toggle('sel', L === sel);
+    });
+    // the stage has to be tall enough to hold whatever has been dragged down
+    var low = 0;
+    layers.forEach(function (L) { var f = figOf(L); if (f) low = Math.max(low, L.y + f.offsetHeight); });
+    STAGE.style.height = (low + 60) + 'px';
+
+    LAYERS.innerHTML = '';
+    layers.forEach(function (L) {
+      var b = document.createElement('button');
+      b.textContent = L.name;
+      b.setAttribute('aria-pressed', L === sel ? 'true' : 'false');
+      var s = document.createElement('span'); s.textContent = Math.round(L.w) + 'px';
+      s.style.color = '#999'; b.appendChild(s);
+      b.addEventListener('click', function () { pick(L); });
+      LAYERS.appendChild(b);
+    });
+
+    set('w', sel.w); set('r', sel.r); set('x', sel.x); set('y', sel.y); set('z', sel.z);
+    placeHandles();
+    OUT.textContent = css();
+    save();
+  }
+
+  function placeHandles() {
+    var f = figOf(sel); if (!f) return;
+    var hs = document.getElementById('hScale'), hr = document.getElementById('hRot');
+    var box = f.getBoundingClientRect(), stage = STAGE.getBoundingClientRect();
+    hs.style.left = (box.right - stage.left - 7) + 'px';
+    hs.style.top = (box.bottom - stage.top - 7) + 'px';
+    hr.style.left = (box.left + box.width / 2 - stage.left - 6.5) + 'px';
+    hr.style.top = (box.top - stage.top - 26) + 'px';
+    hr.style.marginLeft = '0';
+  }
+
+  function set(id, v) {
+    var i = document.getElementById(id), o = document.getElementById(id + 'v');
+    if (!i) return;
+    i.value = v;
+    o.textContent = (id === 'r' ? v + '°' : (id === 'z' ? v : v + (id === 'w' ? 'px' : 'px')));
+  }
+
+  ['w','r','x','y','z'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', function () {
+      sel[id] = parseFloat(this.value); paint();
+    });
+  });
+
+  function pick(L) { sel = L; paint(); }
+
+  function drag(e, fig, L) {
+    e.preventDefault();
+    var sx = e.clientX, sy = e.clientY, ox = L.x, oy = L.y;
+    function move(ev) { L.x = Math.round(ox + ev.clientX - sx); L.y = Math.round(oy + ev.clientY - sy); paint(); }
+    function up() { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); }
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up);
+  }
+
+  function scaleDrag(e) {
+    e.preventDefault(); e.stopPropagation();
+    var sx = e.clientX, ow = sel.w;
+    function move(ev) { sel.w = Math.max(60, Math.round(ow + (ev.clientX - sx) * 2)); paint(); }
+    function up() { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); }
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up);
+  }
+
+  function rotDrag(e) {
+    e.preventDefault(); e.stopPropagation();
+    var f = figOf(sel), box = f.getBoundingClientRect();
+    var cx = box.left + box.width / 2, cy = box.top + box.height / 2;
+    function move(ev) {
+      var a = Math.atan2(ev.clientY - cy, ev.clientX - cx) * 180 / Math.PI + 90;
+      sel.r = Math.round(a * 2) / 2; paint();
+    }
+    function up() { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); }
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up);
+  }
+
+  window.addEventListener('keydown', function (e) {
+    var k = {ArrowLeft:['x',-1],ArrowRight:['x',1],ArrowUp:['y',-1],ArrowDown:['y',1]}[e.key];
+    if (!k || e.target.tagName === 'INPUT') return;
+    e.preventDefault();
+    sel[k[0]] += k[1] * (e.shiftKey ? 10 : 1); paint();
+  });
+
+  function css() {
+    var L = {};
+    layers.forEach(function (x) { L[x.key] = x; });
+    function block(x) {
+      return x.sel + '{width:' + Math.round(x.w) + 'px;z-index:' + x.z +
+        ';transform:translate(' + Math.round(x.x) + 'px,' + Math.round(x.y) + 'px) rotate(' + x.r + 'deg)}';
+    }
+    return ['/* Drawn Together: arranged in the photo arranger */',
+      '.polaroid{width:auto}',
+      block(L.hannah), block(L.alex),
+      '.strip{margin:0;position:relative}',
+      block(L.strip)].join('\n');
+  }
+
+  document.getElementById('copy').addEventListener('click', function () {
+    navigator.clipboard.writeText(css()).then(function () {
+      var b = document.getElementById('copy'); var t = b.textContent;
+      b.textContent = 'Copied'; setTimeout(function () { b.textContent = t; }, 1200);
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    layers = JSON.parse(JSON.stringify(DEFAULTS)); sel = layers[2]; build();
+  });
+})();
+</script>
+</body>
+</html>
