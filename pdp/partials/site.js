@@ -36,12 +36,23 @@
     else new MutationObserver(function (m, o) { if (document.body.classList.contains('logo-docked')) { o.disconnect(); setTimeout(look, 700); } })
       .observe(document.body, {attributes: true, attributeFilter: ['class']});
     eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
-    (function next() {
-      setTimeout(function () {
-        if (!document.hidden) { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add(Math.random() < 0.25 ? 'eye-look' : 'eye-blink'); }
-        next();
-      }, 5000 + Math.random() * 5000);
-    })();
+    // The blink repaints the logotype's sprite, and a browser counts that as the page's largest paint
+    // arriving 10s in - the number Google scores the page on - even though everything is on screen in
+    // one second. That measurement is sealed at the visitor's first touch, so the eye waits for it.
+    var blinking = false;
+    function startBlinking() {
+      if (blinking) return;
+      blinking = true;
+      (function next() {
+        setTimeout(function () {
+          if (!document.hidden) { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add(Math.random() < 0.25 ? 'eye-look' : 'eye-blink'); }
+          next();
+        }, 5000 + Math.random() * 5000);
+      })();
+    }
+    ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
+      addEventListener(ev, startBlinking, {once: true, passive: true});
+    });
   })();
 
   // Accordions: the height eases through a grid-row transition, so nothing is
