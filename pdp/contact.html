@@ -1207,7 +1207,10 @@
   function open(on) {
     // an overlay: nothing in the column moves, so there is no height for the page to jump to
     document.body.classList.toggle('sizing-open', on);
-    if (on) { panel.hidden = false; shutTable(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+    if (on) {
+      panel.hidden = false; shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
+      var col = panel.closest('.info'); if (col && col.scrollTop) col.scrollTo({top: 0, behavior: 'smooth'});          // opened from the Sizing row, lower down: its top is never left above the fold
+    }
     // once it has faded out it is put away again: left in the layout it keeps stretching
     // the column's own scroll, so the details slide off into empty white afterwards
     else setTimeout(function () {

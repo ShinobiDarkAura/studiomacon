@@ -154,7 +154,7 @@
     body > *:not(main),main > *:not(.product),.product > *:not(.info),.info > *:not(.print-sheet){display:none !important}
     html,body,main,.product,.info{display:block !important;margin:0 !important;padding:0 !important;background:#fff !important;
       position:static !important;overflow:visible !important;height:auto !important;animation:none !important;transform:none !important}
-    .print-sheet{display:block !important;width:176mm;margin:0 auto;padding:11mm 0 0;color:#000;
+    .print-sheet{opacity:1 !important;visibility:visible !important;transform:none !important;filter:none !important;display:block !important;width:176mm;margin:0 auto;padding:11mm 0 0;color:#000;
       -webkit-print-color-adjust:exact;print-color-adjust:exact;font:400 10pt/1.5 var(--sans);text-align:left}
     .ps-head{text-align:center;padding-bottom:6mm;border-bottom:.5px solid #e5e7eb}
     .ps-head img{width:11mm;height:auto;margin:0 auto 5mm;display:block}
@@ -1563,7 +1563,10 @@
   function open(on) {
     // an overlay: nothing in the column moves, so there is no height for the page to jump to
     document.body.classList.toggle('sizing-open', on);
-    if (on) { panel.hidden = false; shutTable(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+    if (on) {
+      panel.hidden = false; shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
+      var col = panel.closest('.info'); if (col && col.scrollTop) col.scrollTo({top: 0, behavior: 'smooth'});          // opened from the Sizing row, lower down: its top is never left above the fold
+    }
     // once it has faded out it is put away again: left in the layout it keeps stretching
     // the column's own scroll, so the details slide off into empty white afterwards
     else setTimeout(function () {

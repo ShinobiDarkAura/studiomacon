@@ -504,7 +504,7 @@ def print_sheet():
     half = (len(rows) + 1) // 2
     head = "<thead><tr><th>Size</th><th>Diameter</th><th>Circumference</th></tr></thead>"
     tables = f'<table>{head}<tbody>{"".join(rows[:half])}</tbody></table><table>{head}<tbody>{"".join(rows[half:])}</tbody></table>'
-    return f"""      <div class="print-sheet" aria-hidden="true">
+    return f"""      <div class="print-sheet" aria-hidden="true" data-no-emerge>
         <div class="ps-head"><img src="img/eye-mark.png" alt="Studio Maçon"><p class="ps-over">The ring sizer</p><h2>Finding your size</h2></div>
         <section class="ps-block ps-calib"><p class="ps-label">Before you cut</p>{check}<p>This line measures exactly 100 mm. If a ruler says otherwise, print again at 100%, with scaling switched off.</p></section>
         <section class="ps-block ps-cut">{strip}</section>
@@ -526,8 +526,8 @@ def sizer_page():
     block = t[t.index("  .print-sheet{display:none}"):]
     block = block[block.index("@media print{") + len("@media print{"):]
     block = block[:block.index("\n  }")]
-    css = block[block.index(".print-sheet{display:block"):]          # the sheet's own look, on screen and paper alike
-    css = css.replace(".print-sheet{display:block !important;", ".print-sheet{display:block;")
+    css = block[block.index(".print-sheet{opacity"):]          # the sheet's own look, on screen and paper alike
+    css = css.replace("display:block !important;", "display:block;", 1)
     doc = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ring Sizer | Studio Maçon</title>
