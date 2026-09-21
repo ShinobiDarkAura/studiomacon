@@ -59,7 +59,7 @@
   .steps img{margin:0 auto;width:323px;max-width:100%}
   .history{display:grid;gap:40px;padding:300px calc(var(--pad) + 24px) 0;margin-bottom:72px}          /* 35% more room under the process film */
   .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
-  .history .intro p.lede{margin:0;max-width:324px}          /* 10% narrower */
+  .history .intro p.lede{margin:0;max-width:360px}
   .history .intro p.lede + p.lede{margin-top:1em}
   /* the two names link to their own Instagram: underlined quietly, never a different colour */
   .intro p.lede a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
@@ -85,7 +85,7 @@
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
   .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-37px,335px) rotate(-6.5deg)}
   .polaroid:last-child .card{width:300px;z-index:1;transform:translate(35px,-2px) rotate(6deg)}
-  .childhood .strip img{width:308px;z-index:3;transform:translate(315px,11px) rotate(-3.5deg)}
+  .childhood .strip img{width:308px;z-index:3;transform:translate(315px,-5px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
      land off the page's centre while everything above them is still centred, so tablets keep the
      stacked, centred reading order instead. */
@@ -96,7 +96,7 @@
     .history .intro{justify-self:start;transform:translateY(-26px)}          /* the photographs are bottom-heavy, so the words ride above their true centre */
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
     .history{align-items:center}          /* the words sit on the centre line of the photographs */
-    .childhood .strip img{transform:translate(351px,11px) rotate(-3.5deg)}
+    .childhood .strip img{transform:translate(351px,-13px) rotate(-3.5deg)}
     .childhood{--k:.9;margin-left:-125px}          /* 10% smaller, and centred on what it actually contains rather than on its box */
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
@@ -108,7 +108,7 @@
     .opening,.prose,.history,.opening .intro,.history .intro{text-align:center}
     .opening .intro p.lede,.history .intro p.lede{margin-left:auto;margin-right:auto}
     .opening .intro p.lede{max-width:85%}          /* the opening line reads narrower than the page */
-    .history .intro p.lede{max-width:83vw}          /* 8% narrower, so it never crowds either edge */
+    .history .intro p.lede{max-width:calc(100vw - 48px)}          /* 24px clear on both edges */
     /* phones: the process film follows the text, then the childhood photographs */
     .opening .hand{padding-bottom:48px}          /* room under the first film */
     .section .prose{padding-top:36px}          /* air above Our Practice */
