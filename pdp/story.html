@@ -65,6 +65,12 @@
   .intro p.lede a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
   .intro p.lede a:hover{text-decoration-color:rgba(0,0,0,.35)}
   .history .intro h1{margin-bottom:38px}
+  .readmore{margin:14px 0 0}
+  .readmore button{font:inherit;padding:0;border:0;background:none;cursor:pointer;
+    color:rgba(0,0,0,.65);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(0,0,0,.3)}
+  .readmore button:hover{color:rgba(0,0,0,.85)}
+  .more[hidden]{display:none}
+  .more p.lede:first-child{margin-top:1em}
   /* Drawn Together: the two childhood photographs as real Polaroids, off-white paper with a little grain,
      laid slightly askew and overlapping, with a soft, layered shadow */
   /* The three photographs are placed by hand in pdp/_editor/photos.html, which writes the
@@ -79,7 +85,7 @@
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
   .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-37px,335px) rotate(-6.5deg)}
   .polaroid:last-child .card{width:300px;z-index:1;transform:translate(35px,-2px) rotate(6deg)}
-  .childhood .strip img{width:268px;z-index:3;transform:translate(255px,59px) rotate(-3.5deg)}
+  .childhood .strip img{width:268px;z-index:3;transform:translate(279px,59px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
      land off the page's centre while everything above them is still centred, so tablets keep the
      stacked, centred reading order instead. */
@@ -89,7 +95,9 @@
     .history{grid-template-columns:minmax(0,600px) minmax(0,420px);justify-content:center;column-gap:clamp(64px,9vw,140px);align-items:center}          /* a little more air between the photographs and the words */
     .history .intro{justify-self:start}
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
-    .history{align-items:stretch}
+    .history{align-items:center}          /* the words sit on the centre line of the photographs */
+    .childhood .strip img{transform:translate(303px,59px) rotate(-3.5deg)}
+    .childhood{margin-left:-125px}          /* the arrangement leans right, so centre it on what it actually contains */
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
     .opening{grid-template-columns:minmax(0,420px) minmax(0,600px);justify-content:center;column-gap:clamp(40px,6vw,96px);align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
@@ -100,6 +108,7 @@
     .opening,.prose,.history,.opening .intro,.history .intro{text-align:center}
     .opening .intro p.lede,.history .intro p.lede{margin-left:auto;margin-right:auto}
     .opening .intro p.lede{max-width:85%}          /* the opening line reads narrower than the page */
+    .history .intro p.lede{max-width:90vw}
     /* phones: the process film follows the text, then the childhood photographs */
     .opening .hand{padding-bottom:48px}          /* room under the first film */
     .section .prose{padding-top:36px}          /* air above Our Practice */
@@ -114,7 +123,7 @@
     .history{display:flex;flex-direction:column;align-items:center;gap:72px}          /* the words sit on the page's centre line, not against its left edge */
     .history .intro{width:100%}          /* the photographs sit well clear of the words */
     /* phones: the Polaroids keep 16px off each edge and never overlap the blurb */
-    .childhood{--k:.58;margin-left:calc(50% - 300px)}          /* the same arrangement, scaled and centred on the phone */
+    .childhood{--k:.58;margin-left:calc(50% - 300px - 109px)}          /* scaled to the phone, and centred on what it contains */
     .history .intro{order:1}
     .history .childhood{order:2}
   }
@@ -124,7 +133,7 @@
     .opening .hand video,.steps .process-film video{width:620px;max-width:100%;margin-left:auto;margin-right:auto}
     .steps .process-film{max-width:none}
     .opening .intro p.lede,.history .intro p.lede{max-width:470px}
-    .childhood{--k:.82;margin-left:calc(50% - 300px)}
+    .childhood{--k:.82;margin-left:calc(50% - 300px - 155px)}
   }
 
 </style>
@@ -316,13 +325,28 @@
     <div class="intro">
       <p class="eyebrow" data-edit="page:story.html:c8927cf4">Our Story</p>
       <h1 data-edit="page:story.html:b9a5e0f1">Drawn<br>Together</h1>
-      <p class="lede" data-edit="page:story.html:0c5f33f8"><a href="https://www.instagram.com/inchoate.light/" target="_blank" rel="noopener">Alex Cohen</a> and <a href="https://www.instagram.com/hannahwcohen/" target="_blank" rel="noopener">Hannah Woodard</a> met in a figure drawing class at RISD in 2008. Two eager freshmen at neighboring easels, learning to make art together. She had grown up in a sylvan corner of rural Vermont, building fairy worlds from branches, leaves and stones, and high heels from construction paper and rolls of toilet paper. He had been drawing wherever he happened to be: at the table, in the car, at restaurants, in the margins of his school notes. They became close, but the journey was winding and led them apart for a decade.</p>
-      <p class="lede" data-edit="page:story.html:65727a4d">When they finally found their way back to each other, they married in 2023. Through it all, they never stopped making things for one another. Little objects that kept them connected over many years and miles apart.</p>
-      <p class="lede" data-edit="page:story.html:791907af">That is how Maçon was born. Out of the art they made for each other to express a feeling too vast for language.<br><i>Artifacts of love.</i><br><span class="where">Made in Santa Monica, California.</span></p>
+      <p class="lede" data-edit="page:story.html:a284affb"><a href="https://www.instagram.com/inchoate.light/" target="_blank" rel="noopener">Alex Cohen</a> and <a href="https://www.instagram.com/hannahwcohen/" target="_blank" rel="noopener">Hannah Woodard</a> met in a figure drawing class at RISD in 2008. Two eager freshmen at neighboring easels, learning to make art together. They became close, but the journey was winding, and it led them apart for a decade.</p>
+      <div class="more" id="more" hidden>
+        <p class="lede" data-edit="page:story.html:09dc22ca">She had grown up in a sylvan corner of rural Vermont, building fairy worlds from branches, leaves and stones. He had been drawing wherever he happened to be: at the table, in the car, in the margins of his school notes. When they finally found their way back to each other, they married in 2023.</p>
+        <p class="lede" data-edit="page:story.html:2fef87eb">Through it all, they never stopped making things for one another. Little objects that kept them connected over many years and miles apart. That is how Maçon was born, out of the art they made for each other to express a feeling too vast for language.<br><i>Artifacts of love.</i></p>
+      </div>
+      <p class="readmore" data-edit="page:story.html:44d11784"><button type="button" id="readmore" aria-expanded="false" aria-controls="more">Read Full Story</button></p>
     </div>
   </section>
 </main>
 <script>
+  // Our Story opens with one paragraph; the rest unfolds on request
+  (function () {
+    var btn = document.getElementById('readmore'), more = document.getElementById('more');
+    if (!btn || !more) return;
+    btn.addEventListener('click', function () {
+      var open = more.hasAttribute('hidden');
+      if (open) { more.removeAttribute('hidden'); } else { more.setAttribute('hidden', ''); }
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.textContent = open ? 'Close' : 'Read Full Story';
+    });
+  })();
+
   // the process film sits below the fold: it loads and plays when it gets there, not on page load
   (function () {
     var v = document.querySelector('video[data-play-when-seen]');
