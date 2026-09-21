@@ -55,6 +55,7 @@
   .intro p.lede a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
   .intro p.lede a:hover{text-decoration-color:rgba(0,0,0,.35)}
   .history .intro h1{margin-bottom:38px}
+  .aol{font:italic 400 1em/1.2 "Henry",var(--serif)}          /* the hero's own line, set the same way */
   .readmore{margin:20px 0 0}
   .readmore button{font-family:inherit;font-weight:400;font-size:calc(1em - 3pt);line-height:1.4;padding:0;border:0;background:none;cursor:pointer;
     display:inline-flex;align-items:center;gap:4px;color:rgba(0,0,0,.5);text-decoration:none}
@@ -83,7 +84,7 @@
   /* they land one at a time, in reading order: Alex, the strip, then Hannah below */
   .childhood .polaroid,.childhood .strip{opacity:0}
   .childhood.is-seen .polaroid,.childhood.is-seen .strip{animation:photo-in .95s cubic-bezier(.16,1,.3,1) both}
-  .childhood.is-seen .polaroid:last-child{animation-delay:0ms}
+  .childhood.is-seen .polaroid:nth-of-type(2){animation-delay:0ms}
   .childhood.is-seen .strip{animation-delay:260ms}
   .childhood.is-seen .polaroid:first-child{animation-delay:520ms}
   @keyframes photo-in{from{opacity:0;transform:translate(-50%,26px)}to{opacity:1;transform:translate(-50%,0)}}
@@ -96,8 +97,8 @@
   .polaroid .card{display:block;padding:7% 7% 26%;background:#f3efe6 url(img/pages/polaroid-paper.png) 0 0/256px;border-radius:2px;
     box-shadow:0 0 0 1px rgba(0,0,0,.04),0 1px 0 rgba(0,0,0,.22),0 2px 2px -1px rgba(0,0,0,.2),0 3px 5px -3px rgba(0,0,0,.16)}          /* hard and shallow: lying flat on the surface, not floating */
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
-  .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-21px,335px) rotate(-6.5deg)}
-  .polaroid:last-child .card{width:300px;z-index:1;transform:translate(83px,-2px) rotate(6deg)}
+  .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-69px,335px) rotate(-6.5deg)}
+  .polaroid:nth-of-type(2) .card{width:300px;z-index:1;transform:translate(35px,-2px) rotate(6deg)}
   .childhood .strip img{width:354px;z-index:3;transform:translate(315px,11px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
      land off the page's centre while everything above them is still centred, so tablets keep the
@@ -110,6 +111,8 @@
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
     .history{align-items:center}          /* the words sit on the centre line of the photographs */
     .childhood .strip img{transform:translate(363px,3px) rotate(-3.5deg)}
+    .polaroid:nth-of-type(2) .card{transform:translate(62px,-2px) rotate(6deg)}
+    .polaroid:first-child .card{transform:translate(-42px,335px) rotate(-6.5deg)}
     .childhood{--k:.765;margin-left:-117px}          /* 10% smaller, and centred on what it actually contains rather than on its box */
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
@@ -136,7 +139,7 @@
     .history{display:flex;flex-direction:column;align-items:center;gap:72px}          /* the words sit on the page's centre line, not against its left edge */
     .history .intro{width:100%}          /* the photographs sit well clear of the words */
     /* phones: the Polaroids keep 16px off each edge and never overlap the blurb */
-    .childhood{--k:.58;margin-left:calc(50% - 300px - 86px)}          /* scaled to the phone, and centred on what it contains */
+    .childhood{--k:.58;margin-left:calc(50% - 300px - 72px)}          /* scaled to the phone, and centred on what it contains */
     .history .intro{order:1}
     .history .childhood{order:2}
   }
@@ -146,8 +149,8 @@
     .opening .hand video,.steps .process-film video{width:620px;max-width:100%;margin-left:auto;margin-right:auto}
     .steps .process-film{max-width:none}
     .opening .intro p.lede,.history .intro p.lede{max-width:470px}
-    .childhood{--k:.82;margin-left:calc(50% - 300px - 107px)}
-    .childhood .strip img{transform:translate(279px,11px) rotate(-3.5deg)}
+    .childhood{--k:.82;margin-left:calc(50% - 300px - 112px)}
+    .childhood .strip img{transform:translate(339px,11px) rotate(-3.5deg)}
   }
 
 </style>
@@ -197,7 +200,7 @@
       <div class="more" id="more">
         <div>
         <p class="lede">They met in a figure drawing class at RISD in 2008, two eager freshmen at neighboring easels, learning to make art together. They became close, but the journey was winding, and it led them apart for a decade.</p>
-        <p class="lede">When they finally found their way back to each other, they married in 2023. Through it all they never stopped making things for one another: little objects that kept them connected over many years and miles apart. Artifacts of love. That is how Maçon was born.</p>
+        <p class="lede">When they finally found their way back to each other, they married in 2023. Through it all they never stopped making things for one another: little objects that kept them connected over many years and miles apart. <span class="aol">Artifacts of love.</span> That is how Maçon was born.</p>
         </div>
       </div>
       <p class="readmore"><button type="button" id="readmore" aria-expanded="false" aria-controls="more">Full story</button></p>
