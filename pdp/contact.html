@@ -1189,9 +1189,10 @@
       return;
     }
     // the same crossing, played backwards
+    body.classList.remove('sizing-open');
     body.classList.add('sizing-cross', 'sizing-closing');
     timer = setTimeout(function () {
-      body.classList.remove('sizing-open', 'sizing-closing', 'sizing-cross');
+      body.classList.remove('sizing-closing', 'sizing-cross');
       panel.hidden = true;
     }, CROSS);
   }

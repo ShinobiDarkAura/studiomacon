@@ -131,7 +131,7 @@
   body.sizing-cross.sizing-open .info > :not(.back):not(.sizer-panel){display:block;position:absolute;inset:0 0 auto 0;animation:main-out var(--cross) both}
   body.sizing-cross.sizing-open .sizer-panel{position:relative;display:block}
   body.sizing-cross.sizing-closing .sizer-panel{position:absolute;inset:0 0 auto 0;display:block}
-  body.sizing-cross.sizing-closing .info > :not(.back):not(.sizer-panel){display:block;animation:main-in var(--cross) both}
+  body.sizing-cross.sizing-closing .info > :not(.back):not(.sizer-panel){display:block;position:static;animation:main-in var(--cross) both}
   body.sizing-cross{--cross:.52s cubic-bezier(.22,1,.36,1)}
 
   body.sizing-closing .sizer-panel{animation:panel-out var(--cross,.42s cubic-bezier(.4,0,.2,1)) both}          /* it leaves the way it came */
@@ -1482,9 +1482,10 @@
       return;
     }
     // the same crossing, played backwards
+    body.classList.remove('sizing-open');
     body.classList.add('sizing-cross', 'sizing-closing');
     timer = setTimeout(function () {
-      body.classList.remove('sizing-open', 'sizing-closing', 'sizing-cross');
+      body.classList.remove('sizing-closing', 'sizing-cross');
       panel.hidden = true;
     }, CROSS);
   }
