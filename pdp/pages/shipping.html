@@ -40,7 +40,8 @@
   .ship .intro > :nth-child(1){--stagger:450ms !important}
   .ship .intro > :nth-child(2){--stagger:650ms !important}
   .ship .intro > :nth-child(3){--stagger:850ms !important}
-  .ship .policies{--stagger:1050ms !important}
+  html:not(.moved) .ship .policies{--stagger:1050ms !important}          /* the long wait is for the opening only; scrolled to, it arrives at once */
+  html.moved .ship .policies{--stagger:0ms !important}
   @media (max-width:1023px){
     .ship{padding:0 !important;gap:0}
     .ship .branch{height:60vh;height:60svh;padding:calc(var(--head) + 8px) 12vw 8vh;overflow:hidden}

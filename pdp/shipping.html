@@ -50,7 +50,8 @@
   .ship .intro > :nth-child(1){--stagger:450ms !important}
   .ship .intro > :nth-child(2){--stagger:650ms !important}
   .ship .intro > :nth-child(3){--stagger:850ms !important}
-  .ship .policies{--stagger:1050ms !important}
+  html:not(.moved) .ship .policies{--stagger:1050ms !important}          /* the long wait is for the opening only; scrolled to, it arrives at once */
+  html.moved .ship .policies{--stagger:0ms !important}
   @media (max-width:1023px){
     .ship{padding:0 !important;gap:0}
     .ship .branch{height:60vh;height:60svh;padding:calc(var(--head) + 8px) 12vw 8vh;overflow:hidden}
@@ -663,7 +664,8 @@
       document.querySelectorAll(g).forEach(function (group) {
         // on a phone the whole details column is on screen at once, so a long cascade just
         // reads as the lower blocks (Field Notes especially) being late
-        var cap = phone && g === '.info' ? 2 : 6, step = phone && g === '.info' ? 45 : 90;
+        var quick = phone && (g === '.info' || g === '.acc');          // accordions too: each row is reached by scrolling, so a long cascade only adds lag
+        var cap = quick ? 2 : 6, step = quick ? 45 : 90;
         [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
       });
     });
@@ -679,6 +681,7 @@
         }
       });
     });
+    addEventListener('scroll', function () { document.documentElement.classList.add('moved'); }, {once: true, passive: true});          // opening-only waits end at the first scroll
     arm(document);
     // Anything on the first screen at load plays its entrance even if it sits in the bottom
     // strip the scroll trigger ignores (it would otherwise wait for a scroll that never comes).
