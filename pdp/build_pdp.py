@@ -143,7 +143,8 @@ OOAK = [
 ]
 OOAK_SLUGS = {x["slug"] for x in OOAK}
 NO_FILM = {"eclipse-ring"}
-NO_COMPOSITE = {"ear-cuff"}          # pieces whose gallery ends without the lifestyle composite          # pieces whose product page shows photographs only, though a film exists
+NO_COMPOSITE = {"ear-cuff"}
+PENDANTS = {"wonderhorn-talisman", "starshipkey-pendant"}          # pieces whose gallery ends without the lifestyle composite          # pieces whose product page shows photographs only, though a film exists
 HIDE_FROM_SHOP |= OOAK_SLUGS          # one-of-ones stay off the shop until Ephemeral returns
 
 
@@ -1038,6 +1039,9 @@ def related_block(p, products):
     slugs = [x["slug"] for x in products]
     start = (slugs.index(p["slug"]) if p["slug"] in slugs else 0) % max(1, len(same))
     pick = (same[start:] + same[:start] + rest)[:3]           # three across; rotated so neighbours differ from page to page
+    if p["slug"] in PENDANTS:          # pendants suggest only the other pendant, then the Caldera Arc: never a ring
+        by = {x["slug"]: x for x in products}
+        pick = [by[s] for s in sorted(PENDANTS - {p["slug"]}) + ["ear-cuff"] if s in by]
     tiles = "".join(
         f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-frame"><img src="{rel_tile(x)}" alt="" loading="lazy"></span>'
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>'

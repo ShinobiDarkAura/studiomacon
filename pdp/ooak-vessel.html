@@ -245,6 +245,7 @@
   @media (max-width:767px){ .related .stamp{width:2.295em;left:calc(100% + .2em - 1.1475em);top:calc(.2em - .84em - 1.1475em)} }          /* phones: 15% smaller, on the end of Worth */
   .rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:left}
   .rel-grid{width:60%;margin:0 auto}          /* 40% smaller than the full width: a closer, quieter row */
+  @media (min-width:1100px){ .rel-grid:has(> :nth-child(2):last-child){grid-template-columns:repeat(2,1fr);width:40%} }          /* a pair (the pendants) stays the same size, centred */
   .rel-name{font-size:calc(var(--tile-name) + 5pt) !important}          /* names scaled down with the pictures */
   .rel-piece{display:block;color:#000}
   .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--field)}
