@@ -113,6 +113,8 @@
   .sizer-panel .helpnote p{margin:0}
   .sizer-panel .intro-box{margin:0 0 34px;padding:20px 18px 18px;background:#f4f3f0;border-radius:12px}
   .sizer-panel .intro-box .printbtn{margin:0}
+  .sizer-panel h2.with-icon{display:flex;align-items:center;gap:10px}
+  .sizer-panel .h-icon{width:32px;height:32px;flex:none}
   @media screen{ .sizer-panel .calib{display:none} }          /* the 100 mm check bar is for the printout only */
   .sizer-panel .helpnote .note-label{text-transform:uppercase;font-size:calc(13px - 3pt);font-weight:600;letter-spacing:.12em;opacity:.5;margin:0 0 8px}
   .sizer-panel::after{content:"";display:block;height:64px}          /* room to scroll past the maker's note */
@@ -601,7 +603,7 @@
       </div>
       <div class="sizer-panel" id="sizer-panel" data-no-emerge hidden>
         <div class="intro-box">
-        <h2 class="st">Finding your size</h2>
+        <h2 class="st with-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>Finding your size</h2>
         <p class="lede st">Two ways to find it: print the sizer below, which is the most accurate, or measure a ring you already wear.</p>
         <div class="printbtn st"><button type="button" data-print-sizer>Print the sizer</button></div>
         </div>
