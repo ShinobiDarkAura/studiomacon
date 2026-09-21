@@ -694,7 +694,7 @@
   // first time about 16% of it is on screen. It never fades back out (toggling
   // flickered), and anything added later is picked up too.
   (function () {
-    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > :not(.info-main), .info-main > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *, .related > :not(.rel-grid), .rel-piece';
     // side-by-side groups cascade instead of arriving at once
@@ -816,12 +816,7 @@
         // on a phone the whole details column is on screen at once, so a long cascade just
         // reads as the lower blocks (Field Notes especially) being late
         var cap = phone && g === '.info' ? 2 : 6, step = phone && g === '.info' ? 45 : 90;
-        // the sizer wrapped the details, so the cascade has to reach through it or the
-        // whole column arrives in one movement
-        var inner = group.querySelector(':scope > .info-main');
-        var kids = [].slice.call(group.children).filter(function (el) { return el !== inner; })
-                     .concat(inner ? [].slice.call(inner.children) : []);
-        kids.forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
+        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
       });
     });
     // Also Worth Keeping reads as one block, so the heading, the line under it and

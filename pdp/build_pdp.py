@@ -279,7 +279,7 @@ with open(os.path.join(OUT, "shopify", "variants.json")) as _f:
 LIVE_PRICE = {v["id"].split("/")[-1]: v["price"] for d in SHOPIFY.values() for v in d.get("variants", [])}          # variant number -> current Shopify price
 
 
-SIZER = """      <div class="sizer-panel" id="sizer-panel" hidden>
+SIZER = """      <div class="sizer-panel" id="sizer-panel" data-no-emerge hidden>
         <h2 class="st"><mark class="hl a">Finding your size</mark></h2>
         <p class="lede st">Two ways to find it: print the sizer below, which is the most accurate, or measure a ring you already wear. If the piece arrives and it is not right, we resize or exchange it. Print at 100%, with page scaling switched off, then hold a ruler against the bar: it must read exactly 100&#160;mm, or the print was scaled and the sizer will be wrong.</p>
         <div class="printbtn st"><button type="button" data-print-sizer>Print the sizer</button></div>
