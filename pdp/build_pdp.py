@@ -519,6 +519,37 @@ def print_sheet():
       </div>
 """
 
+
+def sizer_page():
+    """ring-sizing.html: the printable sizer on its own address, shown as a sheet of paper, for emails to link to."""
+    t = open(os.path.join(OUT, "template.html"), encoding="utf-8").read()
+    block = t[t.index("  .print-sheet{display:none}"):]
+    block = block[block.index("@media print{") + len("@media print{"):]
+    block = block[:block.index("\n  }")]
+    css = block[block.index(".print-sheet{display:block"):]          # the sheet's own look, on screen and paper alike
+    css = css.replace(".print-sheet{display:block !important;", ".print-sheet{display:block;")
+    doc = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ring Sizer | Studio Maçon</title>
+<link rel="icon" href="img/favicon.png">
+<link rel="stylesheet" href="site.css">
+<style>
+  body{{background:#f4f3f0;margin:0}}
+  .bar{{display:flex;justify-content:space-between;align-items:center;gap:16px;max-width:216mm;margin:0 auto;padding:24px 16px}}
+  .bar a{{color:#000;font-size:14px}}
+  .bar button{{font:inherit;font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:#000;color:#fff;border:0;padding:15px 32px;cursor:pointer}}
+  .paper{{width:216mm;max-width:calc(100vw - 32px);margin:0 auto 64px;background:#fff;box-shadow:0 18px 40px -18px rgba(0,0,0,.25);overflow-x:auto}}
+  .paper .print-sheet{{padding-bottom:12mm}}
+  {css}
+  @media print{{ @page{{margin:0}} body{{background:#fff}} .bar{{display:none}} .paper{{width:auto;max-width:none;margin:0;box-shadow:none;overflow:visible}} .paper .print-sheet{{padding-bottom:0}} }}
+</style></head>
+<body>
+<div class="bar"><a href="index.html#pieces">&#8592; Studio Maçon</a><button type="button" onclick="window.print()">Print the sizer</button></div>
+<div class="paper">{print_sheet().replace(' aria-hidden="true"', '')}</div>
+</body></html>
+"""
+    save("ring-sizing.html", doc)
+
 def shop_config():
     with open(os.path.join(OUT, "shopify", "config.json")) as f:
         c = json.load(f)
@@ -1099,6 +1130,7 @@ def main():
     shop = (shop.replace("{{TOTEMCOUNT}}", str(len(totems))).replace("{{JEWELRYCOUNT}}", str(len(products) - len(totems)))
                 .replace("{{TOTEMGRID}}", "\n".join(tiles[:len(totems)])).replace("{{JEWELRYGRID}}", "\n".join(tiles[len(totems):])))
     save("index.html", editable(shop, "index.html"))
+    sizer_page()
     feeds(products)
     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
