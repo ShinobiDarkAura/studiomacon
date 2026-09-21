@@ -17,7 +17,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Hollow Keeper", "description": "A small solid bronze vessel in fitted parts, the lid lifting away to reveal a hollow meant for a single small thing. Whatever is placed inside is said to keep better than expected; keepers report finding it exactly where they left it. Unique, carved and patinated by hand.", "image": ["https://studiomacon.co/img/ooak-vessel/hero.jpg", "https://studiomacon.co/img/ooak-vessel/plain-1.jpg", "https://studiomacon.co/img/ooak-vessel/plain-2.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ooak-vessel", "offers": [{"@type": "Offer", "price": "780.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ooak-vessel.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789986595">
+<link rel="stylesheet" href="site.css?v=1790010990">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}          /* the picture carries its own corners; a backing showed outside them */
@@ -496,19 +496,48 @@
       t.src = media.tagName === 'VIDEO' ? media.getAttribute('poster') : media.getAttribute('src').replace(/\.(jpe?g|png)\.webp$/, '--tile.$1.webp');          // the light grid copy
       t.onerror = function () { t.onerror = null; t.src = media.getAttribute('src'); };
       b.appendChild(t); b.style.setProperty('--i', i); if (i === 0) b.classList.add('on');
-      b.addEventListener('click', function () {
-        if (i === at) return;
-        at = i;
-        track.style.transform = 'translate3d(' + (-i * 100) + '%,0,0)';
-        [].forEach.call(track.children, function (sl, n) {          // only the picture on screen plays
-          var v = sl.querySelector('video'); if (!v) return;
-          if (n === i) { v.muted = true; v.play().catch(function () {}); } else { v.pause(); }
-        });
-        [].forEach.call(strip.children, function (x) { x.classList.toggle('on', x === b); });
-      });
+      b.addEventListener('click', function () { go(i); });
       strip.appendChild(b);
     });
     hero.after(strip);
+
+    function go(i) {
+      i = Math.max(0, Math.min(track.children.length - 1, i));
+      track.style.transition = '';
+      track.style.transform = 'translate3d(' + (-i * 100) + '%,0,0)';
+      if (i === at) return;
+      at = i;
+      [].forEach.call(track.children, function (sl, n) {          // only the picture on screen plays
+        var v = sl.querySelector('video'); if (!v) return;
+        if (n === i) { v.muted = true; v.play().catch(function () {}); } else { v.pause(); }
+      });
+      [].forEach.call(strip.children, function (x, n) { x.classList.toggle('on', n === i); });
+    }
+
+    // a thumb drags the pictures sideways; let go past a fifth of the width, or flick, to turn
+    var x0, y0, t0, dx, sideways;
+    hero.addEventListener('touchstart', function (e) {
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now(); dx = 0; sideways = null;
+    }, { passive: true });
+    hero.addEventListener('touchmove', function (e) {
+      if (x0 == null) return;
+      dx = e.touches[0].clientX - x0;
+      var dy = e.touches[0].clientY - y0;
+      if (sideways === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) sideways = Math.abs(dx) > Math.abs(dy);
+      if (!sideways) return;
+      e.preventDefault();          // a sideways drag moves the pictures, not the page
+      var edge = (at === 0 && dx > 0) || (at === track.children.length - 1 && dx < 0);
+      track.style.transition = 'none';
+      track.style.transform = 'translate3d(calc(' + (-at * 100) + '% + ' + (edge ? dx / 3 : dx) + 'px),0,0)';
+    }, { passive: false });
+    hero.addEventListener('touchend', function () {
+      if (sideways) {
+        var w = hero.offsetWidth, fast = Math.abs(dx) > 30 && Date.now() - t0 < 250;
+        go(Math.abs(dx) > w / 5 || fast ? at + (dx < 0 ? 1 : -1) : at);
+      }
+      x0 = null;
+    });
+    hero.style.touchAction = 'pan-y';
   })();
     </script>
 

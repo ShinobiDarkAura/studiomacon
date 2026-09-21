@@ -438,8 +438,16 @@ body.ship-on .head{transform:translateY(var(--ship-h,38px))}
 
 /* a piece that has sold: the buy row becomes a note and a way onward */
 .buy.sold{display:block;text-align:center}
-.buy.sold .sold-note{margin:0 0 12px;font-size:15px;line-height:1.5;color:rgba(0,0,0,.62)}
-.buy.sold .cta{text-decoration:none}
+.buy.sold .cta{width:100%;background:#e7e5e1;color:rgba(0,0,0,.4);border-color:transparent;cursor:default;pointer-events:none}
+.buy.sold .sold-note{margin:16px 0 0;font-size:14px;line-height:1.5;color:rgba(0,0,0,.55)}
+.buy.sold .sold-note a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+/* the piece is gone: an ink stamp across its picture, pressed a little crooked like a real one */
+.product.claimed .ship-free,.product.claimed .ship-by{display:none !important}
+.product.claimed .gallery .hero{position:relative}
+.product.claimed .gallery .hero::after{content:"Claimed";position:absolute;z-index:5;top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(-12deg);padding:.18em .5em .1em;border:4px solid currentColor;border-radius:8px;
+  color:#a3281f;font:400 clamp(44px,11vw,96px)/1 var(--serif);letter-spacing:.06em;text-transform:uppercase;
+  opacity:.82;mix-blend-mode:multiply;pointer-events:none}
 
 
 /* ── a look at the shop without the capitals (open any page with ?case) ──
