@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Eleph", "description": "Heavy and rounded, with an ombré patina, caught halfway through a long exhale. A low, distant call has been reported by independent observers, always just out of sight. Cast on request and finished entirely by hand.", "image": ["https://studiomacon.co/img/eleph/hero.jpg", "https://studiomacon.co/img/eleph/hires-1.jpg", "https://studiomacon.co/img/eleph/hand-2.jpg", "https://studiomacon.co/img/eleph/plain-2.jpg", "https://studiomacon.co/img/eleph/hires-3.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "eleph", "offers": [{"@type": "Offer", "price": "200.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eleph.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790012877">
+<link rel="stylesheet" href="site.css?v=1790013235">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}          /* the picture carries its own corners; a backing showed outside them */
@@ -104,13 +104,16 @@
   .sizer-panel .t{position:absolute;top:0;width:1px;height:6mm;background:var(--ink);opacity:.5}          /* the half sizes read quieter */
   .sizer-panel .t.major{height:9mm;opacity:1}
   .sizer-panel .n{position:absolute;top:9.6mm;transform:translateX(-50%);font-size:9px;font-weight:400}
-  .sizer-panel .edge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 0 4mm}          /* flush with the ruler's first tick */
+  .sizer-panel .step p.edge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 0 12px}          /* 12px in from the strip's edge */          /* flush with the ruler's first tick */
   .sizer-panel .step p.cut{font-size:13px;color:#000;margin:32px 0 0}          /* black, and 8px nearer the strip */          /* 16px under the strip, and 12px more again */
   .sizer-panel table{border-collapse:collapse;font-size:14px;margin:12px 0 0;width:100%}
   .sizer-panel th,.sizer-panel td{text-align:left;padding:6px 18px 6px 0;border-bottom:1px solid var(--rule)}
   .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
   .sizer-panel .helpnote{margin:30px 0 32px;padding:16px 18px;background:#f4f3f0;border-radius:12px;font-size:15px;line-height:1.55}
   .sizer-panel .helpnote p{margin:0}
+  .sizer-panel .intro-box{margin:0 0 34px;padding:20px 18px 18px;background:#f4f3f0;border-radius:12px}
+  .sizer-panel .intro-box .printbtn{margin:0}
+  @media screen{ .sizer-panel .calib{display:none} }          /* the 100 mm check bar is for the printout only */
   .sizer-panel .helpnote .note-label{text-transform:uppercase;font-size:calc(13px - 3pt);font-weight:600;letter-spacing:.12em;opacity:.5;margin:0 0 8px}
   .sizer-panel::after{content:"";display:block;height:64px}          /* room to scroll past the maker's note */
   /* The panel is an overlay over the details, not a second column sharing their box.
@@ -142,13 +145,36 @@
   @media (prefers-reduced-motion:reduce){ .sizer-panel .tablewrap,.sizer-panel tbody tr{transition:none} }
   .sizer-panel .step p.more-rows{margin:28px 0 0}          /* 16px more air above it */
 
+  /* ── the printed sizer: a page of its own, nothing else from the site ── */
+  .print-sheet{display:none}
   @media print{
-    body.sizing-open .gallery,body.sizing-open .head,body.sizing-open .ship-bar,body.sizing-open footer,
-    body.sizing-open .related,body.sizing-open .back,body.sizing-open .printbtn,body.sizing-open .dock{display:none !important}
-    body.sizing-open .sizer-panel .lede,body.sizing-open .sizer-panel .helpnote,
-    body.sizing-open .sizer-panel table{display:none}
-    body.sizing-open .product{display:block}
-    @page{margin:14mm}
+    @page{margin:0}          /* no browser date, title or address round the edge */
+    body > *:not(main),main > *:not(.product),.product > *:not(.info),.info > *:not(.print-sheet){display:none !important}
+    html,body,main,.product,.info{display:block !important;margin:0 !important;padding:0 !important;background:#fff !important;
+      position:static !important;overflow:visible !important;height:auto !important;animation:none !important;transform:none !important}
+    .print-sheet{display:block !important;width:176mm;margin:0 auto;padding:11mm 0 0;color:#000;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;font:400 10pt/1.5 var(--sans);text-align:left}
+    .ps-head{text-align:center;padding-bottom:6mm;border-bottom:.25mm solid #000}
+    .ps-head img{width:30mm;height:auto;margin:0 auto 4mm;display:block}
+    .ps-over{margin:0 0 2mm;font-size:7.5pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.5}
+    .ps-head h2{margin:0;font:400 30pt/1 var(--serif);text-transform:uppercase}
+    .ps-block{margin:6mm 0 0}
+    .ps-label{margin:0 0 3mm;font-size:7.5pt;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.5}
+    .ps-calib{display:grid;grid-template-columns:104mm 1fr;gap:0 8mm;align-items:end}
+    .ps-calib .ps-label{grid-column:1/-1}
+    .ps-calib p:last-child{margin:0 0 2mm;font-size:8.5pt;line-height:1.45}
+    .ps-cut{padding:5mm 0 3mm;display:flex;justify-content:center;border-top:.2mm dashed #000;border-bottom:.2mm dashed #000}
+    .ps-steps{list-style:none;margin:7mm 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6mm}
+    .ps-steps li{display:flex;gap:3mm;font-size:9pt;line-height:1.45}
+    .ps-steps b{flex:none;font:400 18pt/1 var(--serif);padding:0 1.6mm .4mm;background:#ffe94d;height:max-content}
+    .ps-tip{margin:6mm 0 0;padding:4mm 5mm;background:#f4f3f0;border-radius:3mm;font-size:9pt}
+    .ps-tables{display:grid;grid-template-columns:1fr 1fr;gap:0 10mm;align-items:start}
+    .ps-chart table{width:100%;border-collapse:collapse;font-size:8.5pt;font-variant-numeric:tabular-nums}
+    .ps-chart th{width:33%;text-align:left;font-size:6.5pt;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.5;padding:0 0 1.5mm;border-bottom:.25mm solid #000}
+    .ps-chart td{text-align:left;padding:.8mm 0;border-bottom:.15mm solid #d9d6d0}
+    .ps-foot{margin:6mm 0 0;align-items:baseline;padding-top:4mm;border-top:.25mm solid #000;display:flex;justify-content:space-between;font-size:8pt}
+    .ps-foot p{margin:0}
+    .ps-foot p:last-child{font-family:var(--serif);font-size:10pt;text-transform:uppercase}
   }
   @media (min-width:768px){ .desc{font-size:16px} }
 
@@ -562,7 +588,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Giving It as a Gift</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Tick <em>Add gift wrapping</em> in your bag and we’ll wrap it for free, and write out a note by hand if you add one. Add their address at checkout and it goes straight to them. If it isn’t quite right, they can send it back within 30 days for store credit.</p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we’ll wrap it for free and write out your note by hand. Add their address at checkout and it goes straight to them. If it isn’t quite right, they can return it within 30 days for store credit.</p></div></div></div>
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>

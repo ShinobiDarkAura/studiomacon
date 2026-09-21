@@ -263,9 +263,9 @@ def accordions(slug, k, notes):
               "in a special box, wrapped with care.")
     ship_b = ("Pieces in original condition may be returned within 30 days of delivery for store credit. "
               "If a piece doesn't fit, we'll gladly help you find the right size.")
-    gift = ("Every piece arrives in our box, ready to give. Tick <em>Add gift wrapping</em> in your bag and we\u2019ll wrap it "
-            "for free, and write out a note by hand if you add one. Add their address at checkout and it goes straight to them. "
-            "If it isn\u2019t quite right, they can send it back within 30 days for store credit.")
+    gift = ("Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we\u2019ll wrap it "
+            "for free and write out your note by hand. Add their address at checkout and it goes straight to them. "
+            "If it isn\u2019t quite right, they can return it within 30 days for store credit.")
     items.append(("Giving It as a Gift", f'<p>{_content.shared("gift:1", gift)}</p>'))
     items.append(("Shipping &amp; Returns",
                   f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
@@ -284,10 +284,12 @@ LIVE_PRICE = {v["id"].split("/")[-1]: v["price"] for d in SHOPIFY.values() for v
 
 
 SIZER = """      <div class="sizer-panel" id="sizer-panel" data-no-emerge hidden>
+        <div class="intro-box">
         <h2 class="st">Finding your size</h2>
         <p class="lede st">Two ways to find it: print the sizer below, which is the most accurate, or measure a ring you already wear. If the piece arrives and it is not right, we resize or exchange it. Print at 100%, with page scaling switched off, then hold a ruler against the bar: it must read exactly 100&#160;mm, or the print was scaled and the sizer will be wrong.</p>
         <div class="printbtn st"><button type="button" data-print-sizer>Print the sizer</button></div>
-        <div class="step st">
+        </div>
+        <div class="step st calib">
           <div class="bar"></div>
           <div class="cap"><span>0</span><span>50 mm</span><span>100 mm</span></div>
         </div>
@@ -455,7 +457,7 @@ def page(p, template, related=""):
             .replace("{{HERO}}", hero)
             .replace("{{GALLERY}}", "\n      ".join(figs))
             .replace("{{ACCORDIONS}}", accordions(slug, k, notes))
-            .replace("{{SIZER}}", SIZER if k == "ring" else "")
+            .replace("{{SIZER}}", (SIZER + print_sheet()) if k == "ring" else "")
             .replace("{{CLOSING}}", close)
             .replace("{{RELATED}}", related))
 
@@ -468,6 +470,64 @@ def one_block(doc):
                   lambda m: m.group(1) + join(m.group(2)) + m.group(3),
                   doc, flags=re.S)
 
+
+
+def print_sheet():
+    """The printed ring sizer: its own page, drawn in real millimetres so the strip measures true."""
+    def circ(n): return 36.537 + 2.5535 * n          # the same ISO relation the on-screen table uses
+    # the strip: a wide tab holding the slot, then a narrower band that feeds through it,
+    # the scale measured from the slot, a pointed tail to lead it in
+    slot_x, top, tab, band = 12, 3, 18, 10          # mm
+    mid = top + tab / 2
+    bt, bb = mid - band / 2, mid + band / 2
+    end = slot_x + circ(13) + 10
+    W, H = end + 16, top + tab + 9
+    t = []
+    n = 4.0
+    while n <= 13:
+        x = slot_x + circ(n)
+        major = n % 1 == 0
+        t.append(f'<line x1="{x:.2f}" y1="{bt}" x2="{x:.2f}" y2="{bt + (3.4 if major else 2)}" stroke="#000" stroke-width="{0.28 if major else 0.18}"/>')
+        if major:
+            y = bt + (5.9 if int(n) % 2 == 0 else 8.6)          # staggered: real sizes sit 2.5 mm apart
+            t.append(f'<text x="{x:.2f}" y="{y}" font-size="2.3" text-anchor="middle">{int(n)}</text>')
+        n += 0.5
+    strip = (f'<svg class="ps-strip" width="{W:.1f}mm" height="{H}mm" viewBox="0 0 {W:.1f} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue,Helvetica,Arial,sans-serif">'
+             f'<path d="M2 {top} H{slot_x + 5} V{bt} H{end} L{end + 9} {mid} L{end} {bb} H{slot_x + 5} V{top + tab} H2 Z" fill="#f4f3f0" stroke="#000" stroke-width="0.25" stroke-dasharray="1.4 1"/>'
+             f'<rect x="{slot_x - 0.7}" y="{mid - (band + 2) / 2}" width="1.4" height="{band + 2}" fill="#fff" stroke="#000" stroke-width="0.25"/>'
+             f'<text x="{slot_x - 5.4}" y="{mid}" font-size="2.2" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 {slot_x - 5.4} {mid})" letter-spacing=".35">SLOT</text>'
+             + "".join(t) +
+             f'<text x="{slot_x + 8}" y="{mid + 0.8}" font-size="2.1" letter-spacing=".35">READ AT THE SLOT &#8594;</text>'
+             f'<text x="{W - 1}" y="{H - 1}" font-size="2.8" text-anchor="end">&#9986; cut along the dashes</text>'
+             '</svg>')
+    # a 100 mm check line with millimetre ticks
+    ck = [f'<line x1="{2 + i}" y1="2" x2="{2 + i}" y2="{2 + (4 if i % 10 == 0 else 2.4 if i % 5 == 0 else 1.4)}" stroke="#000" stroke-width="{0.25 if i % 10 == 0 else 0.15}"/>' for i in range(101)]
+    check = ('<svg class="ps-check" width="104mm" height="12mm" viewBox="0 0 104 12" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue,Helvetica,Arial,sans-serif">'
+             '<line x1="2" y1="2" x2="102" y2="2" stroke="#000" stroke-width="0.3"/>' + "".join(ck) +
+             '<text x="2" y="10.5" font-size="2.6">0</text><text x="52" y="10.5" font-size="2.6" text-anchor="middle">50</text><text x="102" y="10.5" font-size="2.6" text-anchor="end">100 mm</text></svg>')
+    rows = []
+    n = 4.0
+    while n <= 13:
+        c = circ(n)
+        rows.append(f"<tr><td>{int(n) if n % 1 == 0 else n}</td><td>{c / 3.141592653589793:.1f}</td><td>{c:.1f}</td></tr>")
+        n += 0.5
+    half = (len(rows) + 1) // 2
+    head = "<thead><tr><th>Size</th><th>Diameter</th><th>Circumference</th></tr></thead>"
+    tables = f'<table>{head}<tbody>{"".join(rows[:half])}</tbody></table><table>{head}<tbody>{"".join(rows[half:])}</tbody></table>'
+    return f"""      <div class="print-sheet" aria-hidden="true">
+        <div class="ps-head"><img src="img/lockup-artifacts.svg" alt="Studio Maçon"><p class="ps-over">The ring sizer</p><h2>Finding your size</h2></div>
+        <section class="ps-block ps-calib"><p class="ps-label">Before you cut</p>{check}<p>This line measures exactly 100 mm. If a ruler says otherwise, print again at 100%, with scaling switched off.</p></section>
+        <section class="ps-block ps-cut">{strip}</section>
+        <ol class="ps-steps">
+          <li><b>1</b><span>Cut out the strip along the dashes, and cut open the slot.</span></li>
+          <li><b>2</b><span>Wrap it around the base of your finger and feed the pointed end through the slot.</span></li>
+          <li><b>3</b><span>Pull it snug, not tight, and read the size at the slot.</span></li>
+        </ol>
+        <p class="ps-tip">Measure at the end of the day, when fingers are at their largest, and warm. A ring should pass the knuckle with a little resistance.</p>
+        <section class="ps-block ps-chart"><p class="ps-label">Or measure a ring you own, straight across the inside, in millimetres</p><div class="ps-tables">{tables}</div></section>
+        <div class="ps-foot"><p>Still unsure? Write to hello@studiomacon.co and we will talk it through.</p><p>Artifacts of love, made to order in Santa Monica, California</p></div>
+      </div>
+"""
 
 def shop_config():
     with open(os.path.join(OUT, "shopify", "config.json")) as f:
