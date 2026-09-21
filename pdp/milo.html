@@ -266,7 +266,8 @@
     .rel-name{margin:10px 0 2px;font-size:var(--tile-name)}
     .rel-cost{display:block;font-size:13px;color:rgba(0,0,0,.55)}
     .related + .closing{padding-top:24px}
-  }
+  }  @media (max-width:767px){ .related{padding-top:104px} }          /* phones: 32px more air above Also Worth Keeping */
+
   @media (max-width:767px){
     .related{padding-left:var(--gutter);padding-right:var(--gutter)}
   }
