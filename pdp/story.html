@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789968842">
+<link rel="stylesheet" href="site.css?v=1789971298">
 <style>
   .head .on-dark{color:#000}
   .opening{display:grid;gap:40px;padding:calc(var(--head) + 48px) calc(var(--pad) + 24px) 0}
@@ -66,9 +66,14 @@
   .intro p.lede a:hover{text-decoration-color:rgba(0,0,0,.35)}
   .history .intro h1{margin-bottom:38px}
   .readmore{margin:14px 0 0}
-  .readmore button{font:inherit;padding:0;border:0;background:none;cursor:pointer;
-    color:rgba(0,0,0,.65);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(0,0,0,.3)}
-  .readmore button:hover{color:rgba(0,0,0,.85)}
+  .readmore button{font-family:inherit;font-weight:400;font-size:calc(1em - 2pt);line-height:1.4;padding:0;border:0;background:none;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;color:rgba(0,0,0,.55);text-decoration:none}
+  .readmore button::after{content:"";width:.62em;height:.62em;flex:none;background:currentColor;
+    -webkit-mask:var(--arr) center/contain no-repeat;mask:var(--arr) center/contain no-repeat;
+    transition:transform .3s var(--ease,ease)}
+  .readmore button:hover{color:rgba(0,0,0,.8)}
+  .readmore button:hover::after{transform:translateX(3px)}
+  .readmore{--arr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 8h11M8.5 3.5L13 8l-4.5 4.5' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E")}
   .more[hidden]{display:none}
   .more p.lede:first-child{margin-top:1em}
   /* Drawn Together: the two childhood photographs as real Polaroids, off-white paper with a little grain,
@@ -85,18 +90,18 @@
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
   .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-37px,335px) rotate(-6.5deg)}
   .polaroid:last-child .card{width:300px;z-index:1;transform:translate(35px,-2px) rotate(6deg)}
-  .childhood .strip img{width:268px;z-index:3;transform:translate(279px,59px) rotate(-3.5deg)}
+  .childhood .strip img{width:308px;z-index:3;transform:translate(279px,59px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
      land off the page's centre while everything above them is still centred, so tablets keep the
      stacked, centred reading order instead. */
   @media (min-width:1100px){
     .steps{padding:0}
     /* photographs left, words right, in the same centre column as the opening (mirrored) */
-    .history{grid-template-columns:minmax(0,600px) minmax(0,420px);justify-content:center;column-gap:clamp(64px,9vw,140px);align-items:center}          /* a little more air between the photographs and the words */
+    .history{grid-template-columns:minmax(0,600px) minmax(0,420px);justify-content:center;column-gap:clamp(32px,4.5vw,72px);align-items:center}          /* the photographs sit close to the words */
     .history .intro{justify-self:start}
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
     .history{align-items:center}          /* the words sit on the centre line of the photographs */
-    .childhood .strip img{transform:translate(303px,59px) rotate(-3.5deg)}
+    .childhood .strip img{transform:translate(327px,59px) rotate(-3.5deg)}
     .childhood{margin-left:-125px}          /* the arrangement leans right, so centre it on what it actually contains */
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
@@ -123,7 +128,7 @@
     .history{display:flex;flex-direction:column;align-items:center;gap:72px}          /* the words sit on the page's centre line, not against its left edge */
     .history .intro{width:100%}          /* the photographs sit well clear of the words */
     /* phones: the Polaroids keep 16px off each edge and never overlap the blurb */
-    .childhood{--k:.58;margin-left:calc(50% - 300px - 109px)}          /* scaled to the phone, and centred on what it contains */
+    .childhood{--k:.58;margin-left:calc(50% - 300px - 115px)}          /* scaled to the phone, and centred on what it contains */
     .history .intro{order:1}
     .history .childhood{order:2}
   }
@@ -133,7 +138,7 @@
     .opening .hand video,.steps .process-film video{width:620px;max-width:100%;margin-left:auto;margin-right:auto}
     .steps .process-film{max-width:none}
     .opening .intro p.lede,.history .intro p.lede{max-width:470px}
-    .childhood{--k:.82;margin-left:calc(50% - 300px - 155px)}
+    .childhood{--k:.82;margin-left:calc(50% - 300px - 162px)}
   }
 
 </style>

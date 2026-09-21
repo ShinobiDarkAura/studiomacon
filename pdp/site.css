@@ -19,6 +19,9 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.5 var(--sans);letter-spacing:-.005em}
+/* no stranded last words: the browser balances headings and avoids a one-word last line in body copy */
+h1,h2,h3,.eyebrow,.menu-sheet a{text-wrap:balance}
+p,li,dd,figcaption,.lede,.desc,.acc-body,.blurb{text-wrap:pretty}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit;text-decoration:none}
 button,select,input,textarea{font:inherit;color:inherit}
@@ -190,7 +193,7 @@ footer .field button{padding:0 0 0 18px}
 /* the drawer is most of a small phone, but never wider than 360px; the page is pushed by the same amount */
 :root{--drawer:min(84vw,360px)}
 .menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100svh;width:var(--drawer);z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:24.8px;
-  padding:0 calc(var(--pad) + 24px);transform:translateX(-100%);visibility:hidden;
+  padding:0 calc(var(--pad) + 34px);transform:translateX(-100%);visibility:hidden;
   transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s linear .6s}
 .menu-sheet.open{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s}
 .menu-sheet a{font:400 34px/1.05 var(--serif);text-transform:uppercase;color:#000}
