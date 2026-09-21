@@ -1110,7 +1110,6 @@
     rows.appendChild(tr);
   }
 
-  var timer;
   function shutTable() {
     var wrap = panel.querySelector('.tablewrap');
     if (!wrap || panel.classList.contains('all-sizes')) return;
@@ -1120,26 +1119,10 @@
   }
 
   function open(on) {
-    clearTimeout(timer);
-    var body = document.body;
-    var CROSS = 520;
-    if (on) {
-      body.classList.remove('sizing-closing', 'sizing-back');
-      // both columns cross at once: the details leave to the left as the sizer arrives from the right
-      panel.hidden = false;
-      body.classList.add('sizing-cross', 'sizing-open');
-      shutTable();
-      window.scrollTo({top: 0, behavior: 'smooth'});
-      timer = setTimeout(function () { body.classList.remove('sizing-cross'); }, CROSS);
-      return;
-    }
-    // the same crossing, played backwards
-    body.classList.remove('sizing-open');
-    body.classList.add('sizing-cross', 'sizing-closing');
-    timer = setTimeout(function () {
-      body.classList.remove('sizing-closing', 'sizing-cross');
-      panel.hidden = true;
-    }, CROSS);
+    // an overlay: nothing in the column moves, so there is no height for the page to jump to
+    document.body.classList.toggle('sizing-open', on);
+    panel.hidden = false;
+    if (on) { shutTable(); window.scrollTo({top: 0, behavior: 'smooth'}); }
   }
 
   window.addEventListener('click', function (e) {

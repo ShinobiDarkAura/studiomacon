@@ -110,40 +110,26 @@
   .sizer-panel th,.sizer-panel td{text-align:left;padding:6px 18px 6px 0;border-bottom:1px solid var(--rule)}
   .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
   .sizer-panel .helpnote{font-size:15px;line-height:1.55;margin:30px 0 0}
-  .sizing-open .info > :not(.back):not(.sizer-panel){display:none}
-
-
-  .sizer-panel[hidden]{display:none}
-  /* the panel and the product column trade places rather than blinking */
-  body.sizing-open .sizer-panel{animation:panel-in var(--cross,.52s cubic-bezier(.22,1,.36,1)) both}
-  body.sizing-open .sizer-panel .st{animation:sizer-in .62s cubic-bezier(.16,1,.3,1) both}
-  body.sizing-open .sizer-panel .st:nth-child(1){animation-delay:40ms}
-  body.sizing-open .sizer-panel .st:nth-child(2){animation-delay:140ms}
-  body.sizing-open .sizer-panel .st:nth-child(3){animation-delay:240ms}
-  body.sizing-open .sizer-panel .st:nth-child(4){animation-delay:340ms}
-  body.sizing-open .sizer-panel .st:nth-child(5){animation-delay:440ms}
-  body.sizing-open .sizer-panel .st:nth-child(6){animation-delay:540ms}
-  @keyframes panel-in{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:none}}
-  @keyframes panel-out{from{opacity:1;transform:none}to{opacity:0;transform:translateX(100%)}}
-  @keyframes main-out{from{opacity:1;transform:none}to{opacity:0;transform:translateX(-100%)}}
-  @keyframes main-in{from{opacity:0;transform:translateX(-100%)}to{opacity:1;transform:none}}
+  /* The panel is an overlay over the details, not a second column sharing their box.
+     The details never move, so the column never resizes and nothing can pile up. */
   .info{position:relative}
-  body.sizing-cross .info{overflow:hidden}          /* only while the columns cross does the edge need to clip */
-  /* while they cross, both occupy the same box so neither pushes the page around */
-  body.sizing-cross.sizing-open .info > :not(.back):not(.sizer-panel){display:block;position:absolute;inset:0 0 auto 0;animation:main-out var(--cross) both}
-  body.sizing-cross.sizing-open .sizer-panel{position:relative;display:block}
-  body.sizing-cross.sizing-closing .sizer-panel{position:absolute;inset:0 0 auto 0;display:block}
-  body.sizing-cross.sizing-closing .info > :not(.back):not(.sizer-panel){display:block;position:static;animation:main-in var(--cross) both}
-  body.sizing-cross{--cross:.52s cubic-bezier(.22,1,.36,1)}
+  .sizer-panel{position:absolute;inset:0;z-index:4;background:#fff;
+    opacity:0;visibility:hidden;transform:translateX(22px);
+    transition:opacity .32s ease,transform .44s cubic-bezier(.22,1,.36,1),visibility 0s linear .44s}
+  body.sizing-open .sizer-panel{opacity:1;visibility:visible;transform:none;
+    transition:opacity .32s ease,transform .44s cubic-bezier(.22,1,.36,1),visibility 0s}
+  body.sizing-open .info > :not(.back):not(.sizer-panel){visibility:hidden}
+  body.sizing-open .sizer-panel .st{animation:sizer-in .62s cubic-bezier(.16,1,.3,1) both}
+  body.sizing-open .sizer-panel .st:nth-child(1){animation-delay:120ms}
+  body.sizing-open .sizer-panel .st:nth-child(2){animation-delay:210ms}
+  body.sizing-open .sizer-panel .st:nth-child(3){animation-delay:300ms}
+  body.sizing-open .sizer-panel .st:nth-child(4){animation-delay:390ms}
+  body.sizing-open .sizer-panel .st:nth-child(5){animation-delay:480ms}
+  body.sizing-open .sizer-panel .st:nth-child(6){animation-delay:570ms}
 
-  body.sizing-closing .sizer-panel{animation:panel-out var(--cross,.42s cubic-bezier(.4,0,.2,1)) both}          /* it leaves the way it came */
-  body.sizing-closing .sizer-panel .st{animation:none}
   @keyframes sizer-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @keyframes sizer-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
-  @media (prefers-reduced-motion:reduce){
-    body.sizing-open .sizer-panel,body.sizing-open .sizer-panel .st,
-    body.sizing-closing .sizer-panel{animation:none}
-  }
+  @media (prefers-reduced-motion:reduce){ .sizer-panel{transition:none} body.sizing-open .sizer-panel .st{animation:none} }
   /* the size table starts at three rows */
   .sizer-panel .tablewrap{display:grid;grid-template-rows:var(--rows,1fr);
     transition:grid-template-rows .55s cubic-bezier(.22,1,.36,1)}
@@ -1462,7 +1448,6 @@
     rows.appendChild(tr);
   }
 
-  var timer;
   function shutTable() {
     var wrap = panel.querySelector('.tablewrap');
     if (!wrap || panel.classList.contains('all-sizes')) return;
@@ -1472,26 +1457,10 @@
   }
 
   function open(on) {
-    clearTimeout(timer);
-    var body = document.body;
-    var CROSS = 520;
-    if (on) {
-      body.classList.remove('sizing-closing', 'sizing-back');
-      // both columns cross at once: the details leave to the left as the sizer arrives from the right
-      panel.hidden = false;
-      body.classList.add('sizing-cross', 'sizing-open');
-      shutTable();
-      window.scrollTo({top: 0, behavior: 'smooth'});
-      timer = setTimeout(function () { body.classList.remove('sizing-cross'); }, CROSS);
-      return;
-    }
-    // the same crossing, played backwards
-    body.classList.remove('sizing-open');
-    body.classList.add('sizing-cross', 'sizing-closing');
-    timer = setTimeout(function () {
-      body.classList.remove('sizing-closing', 'sizing-cross');
-      panel.hidden = true;
-    }, CROSS);
+    // an overlay: nothing in the column moves, so there is no height for the page to jump to
+    document.body.classList.toggle('sizing-open', on);
+    panel.hidden = false;
+    if (on) { shutTable(); window.scrollTo({top: 0, behavior: 'smooth'}); }
   }
 
   window.addEventListener('click', function (e) {
