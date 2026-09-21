@@ -271,6 +271,9 @@ def accordions(slug, k, notes):
                   f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
                   '<p class="acc-more"><a href="shipping.html">Full details</a></p>'))
+    # the order on every piece: size first, then what it is, gifting, care, and shipping last
+    rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "Giving It as a Gift": 2, "Wear &amp; Care": 3, "Care": 3, "Shipping &amp; Returns": 4}
+    items.sort(key=lambda it: rank.get(it[0], 9))
     return "\n".join(
         f'''        <div class="acc-item">
           <button class="acc-head" aria-expanded="false">{t}</button>
