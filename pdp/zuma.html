@@ -159,11 +159,11 @@
       margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
     .gallery figure:not(.hero){display:block;margin-top:0}
     /* 12px inset on the left, and 12px under each picture */
-    .gallery{padding:12px 0 12px 12px}          /* the same 12px inset on all four sides, so the rounded corners read on load */
+    .gallery{padding:16px 0 16px 16px}          /* 16px clear of the banner, and the same inset left and below */
     .gallery figure{margin-bottom:12px}
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
-    .gallery figure img,.gallery .hero img{height:calc(100vh - 24px);height:calc(100svh - 24px);aspect-ratio:auto;object-fit:cover}
+    .gallery figure img,.gallery .hero img{height:calc(100vh - 32px);height:calc(100svh - 32px);aspect-ratio:auto;object-fit:cover}
     .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
     /* Tablets: the photo column is only ~320px wide, so a full screen of height turns each
        photograph into a 1:3 sliver and the page into 9,700px. Keep them in proportion instead. */
