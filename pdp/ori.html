@@ -243,11 +243,16 @@
       margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
     .gallery figure:not(.hero){display:block;margin-top:0}
     /* 12px inset on the left, and 12px under each picture */
-    .gallery{padding:16px 0 16px 16px}          /* 16px clear of the banner, and the same inset left and below */
+    .gallery{padding:16px 0 16px 16px;transition:padding-top .5s cubic-bezier(.22,1,.36,1)}          /* 16px clear of the banner, and the same inset left and below */
+    /* the notice makes room for itself rather than covering the picture */
+    body.ship-on .gallery{padding-top:calc(16px + var(--ship-h,38px))}
     .gallery figure{margin-bottom:12px}
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
     .gallery figure img,.gallery .hero img{height:calc(100vh - 32px);height:calc(100svh - 32px);aspect-ratio:auto;object-fit:cover}
+    body.ship-on .gallery figure img,body.ship-on .gallery .hero img,
+    body.ship-on .gallery .hero .shots,body.ship-on .gallery .hero .shot{
+      height:calc(100svh - 32px - var(--ship-h,38px));transition:height .5s cubic-bezier(.22,1,.36,1)}
     .gallery .hero .shots,.gallery .hero .shot{height:calc(100vh - 32px);height:calc(100svh - 32px)}
     .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
     /* Tablets: the photo column is only ~320px wide, so a full screen of height turns each
@@ -546,7 +551,7 @@
     </div>
   </section>
 
-  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-grid"><a class="rel-piece" href="yael.html"><span class="rel-frame"><img src="img/yael/hires-1--tile--cm5.5p0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Yaël</span><span class="rel-cost">$180</span></a><a class="rel-piece" href="milo.html"><span class="rel-frame"><img src="img/milo/hires-2--tile--cm3.5p0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Milo</span><span class="rel-cost">$180</span></a><a class="rel-piece" href="eleph.html"><span class="rel-frame"><img src="img/eleph/hires-1--tile--cm2.5m0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Eleph</span><span class="rel-cost">$200</span></a></div></section>
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-grid"><a class="rel-piece" href="yael.html"><span class="rel-frame"><img src="img/yael/hires-1--tile--cm5.5p0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Yaël</span><span class="rel-cost">$180</span></a><a class="rel-piece" href="milo.html"><span class="rel-frame"><img src="img/milo/hires-2--tile--cm5p0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Milo</span><span class="rel-cost">$180</span></a><a class="rel-piece" href="eleph.html"><span class="rel-frame"><img src="img/eleph/hires-1--tile--cm1m0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Eleph</span><span class="rel-cost">$200</span></a></div></section>
 
   <!-- lore and making blocks, parked for now
   <section class="closing">
