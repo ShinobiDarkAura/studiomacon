@@ -57,14 +57,19 @@
   .history .intro h1{margin-bottom:38px}
   /* Drawn Together: the two childhood photographs as real Polaroids, off-white paper with a little grain,
      laid slightly askew and overlapping, with a soft, layered shadow */
-  .childhood{display:flex;justify-content:center;align-items:flex-start;padding:12px 0 24px}
-  .polaroid{margin:0;width:min(56%,336px);flex:none}
+  /* The three photographs are placed by hand in pdp/_editor/photos.html, which writes the
+     numbers below. They are positioned rather than flowed, so the arrangement holds exactly. */
+  .childhood{position:relative;width:600px;height:780px;margin:0 auto;padding:0;
+    transform:scale(var(--k,1));transform-origin:top center;margin-bottom:calc(780px * (var(--k,1) - 1))}
+  .polaroid,.childhood .strip{position:absolute;left:50%;top:0;margin:0;transform:translate(-50%,0)}
+  .polaroid{width:auto}
+  .childhood .strip img{display:block;height:auto}
   .polaroid .card{display:block;padding:7% 7% 26%;background:#f3efe6 url(img/pages/polaroid-paper.png) 0 0/256px;border-radius:2px;
     box-shadow:0 0 0 1px rgba(0,0,0,.04),0 1px 0 rgba(0,0,0,.22),0 2px 2px -1px rgba(0,0,0,.2),0 3px 5px -3px rgba(0,0,0,.16)}          /* hard and shallow: lying flat on the surface, not floating */
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
-  .polaroid:first-child .card{transform:rotate(-3.5deg) translate(14px,48px)}
-  .polaroid:last-child .card{transform:rotate(2.8deg) translate(-14px,-44px)}
-  .polaroid:first-child{position:relative;z-index:1}
+  .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-37px,335px) rotate(-6.5deg)}
+  .polaroid:last-child .card{width:300px;z-index:1;transform:translate(35px,-2px) rotate(6deg)}
+  .childhood .strip img{width:268px;z-index:3;transform:translate(255px,59px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
      land off the page's centre while everything above them is still centred, so tablets keep the
      stacked, centred reading order instead. */
@@ -75,11 +80,6 @@
     .history .intro{justify-self:start}
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
     .history{align-items:stretch}
-    .childhood{padding:0;align-items:stretch}
-    .polaroid:first-child{align-self:flex-end}
-    .polaroid:last-child{align-self:flex-start}
-    .polaroid:first-child .card{transform:rotate(-3.5deg) translate(14px,0)}
-    .polaroid:last-child .card{transform:rotate(2.8deg) translate(-14px,0)}
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
     .opening{grid-template-columns:minmax(0,420px) minmax(0,600px);justify-content:center;column-gap:clamp(40px,6vw,96px);align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
@@ -104,10 +104,7 @@
     .history{display:flex;flex-direction:column;align-items:center;gap:72px}          /* the words sit on the page's centre line, not against its left edge */
     .history .intro{width:100%}          /* the photographs sit well clear of the words */
     /* phones: the Polaroids keep 16px off each edge and never overlap the blurb */
-    .childhood{padding:0 16px;align-items:flex-start}
-    .polaroid{width:min(46%,268px)}          /* the pair reaches ~90% of the screen */
-    .polaroid:first-child .card{transform:rotate(-3.5deg) translate(8px,36px)}          /* one sits lower than the other */
-    .polaroid:last-child .card{transform:rotate(2.8deg) translate(-8px,0)}
+    .childhood{--k:.58;margin-left:calc(50% - 300px)}          /* the same arrangement, scaled and centred on the phone */
     .history .intro{order:1}
     .history .childhood{order:2}
   }
@@ -117,10 +114,7 @@
     .opening .hand video,.steps .process-film video{width:620px;max-width:100%;margin-left:auto;margin-right:auto}
     .steps .process-film{max-width:none}
     .opening .intro p.lede,.history .intro p.lede{max-width:470px}
-    .childhood{max-width:620px;margin:0 auto;gap:28px}
-    .polaroid{width:min(38%,232px)}
-    .childhood{align-items:flex-start}
-    .polaroid:first-child .card{transform:rotate(-3.5deg) translate(8px,44px)}
+    .childhood{--k:.82;margin-left:calc(50% - 300px)}
   }
 
 </style>
@@ -161,6 +155,7 @@
     <div class="childhood">
       <figure class="polaroid"><span class="card"><img src="img/pages/hannah-square.jpg" alt="Hannah as a child, drawing"></span></figure>
       <figure class="polaroid"><span class="card"><img src="img/pages/alex-polaroid.jpg" alt="Alex as a child, drawing"></span></figure>
+      <figure class="strip"><img src="img/pages/photobooth.png" alt="Alex and Hannah in a photobooth"></figure>
     </div>
     <div class="intro">
       <p class="eyebrow">Our Story</p>
