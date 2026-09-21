@@ -237,9 +237,10 @@
   .related .rel-blurb{margin:0 auto 56px;max-width:480px;font-size:16px;line-height:1.55}
   /* the Bureau of Provenance stamp, pressed onto the end of "Worth" the way the home page presses it onto "Things," */
   .related h2.stamped{position:relative;display:inline-block;width:max-content;max-width:100%;align-self:center}          /* hugs its words, so the stamp lands on "Worth" on phones too */
-  .related .stamp{position:absolute;z-index:3;width:2.7em;left:calc(100% + .2em - 1.35em);top:calc(.2em - .84em - 1.35em);          /* 8% smaller than the home one, centred just past the H */
+  .related .stamp{position:absolute;z-index:3;width:2.43em;left:calc(100% - .85em);top:calc(.2em - .84em - 1.215em);          /* desktop: its left edge meets the H, so it sits over that letter only */
     transform:rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
   .related .stamp.on{opacity:1;transform:rotate(-14deg)}
+  @media (max-width:767px){ .related .stamp{width:2.295em;left:calc(100% + .2em - 1.1475em);top:calc(.2em - .84em - 1.1475em)} }          /* phones: 15% smaller, on the end of Worth */
   .rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:left}
   .rel-grid{width:60%;margin:0 auto}          /* 40% smaller than the full width: a closer, quieter row */
   .rel-name{font-size:calc(var(--tile-name) + 5pt) !important}          /* names scaled down with the pictures */
