@@ -6,6 +6,8 @@
   "name": "studiomacon",
   "compatibility_date": "2026-09-01",
   "main": "worker/index.js",
+  // keep the preview host alive: the Shopify email templates load their images and fonts from it
+  "workers_dev": true,
   "routes": [
     { "pattern": "studiomacon.co", "custom_domain": true },
     { "pattern": "www.studiomacon.co", "custom_domain": true }
