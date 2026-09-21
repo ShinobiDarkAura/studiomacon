@@ -255,17 +255,14 @@ def accordions(slug, k, notes):
         items.append(("Sizing", sizing))
     # Shipping reads the same on every piece, so it is edited once for the whole shop.
     ship_a = ("Each piece is made to order; please allow up to 10 business days before it ships. "
-              "Standard shipping takes 3–7 business days, international 5–10. "
-              "Shipping is free on all orders within the continental US. "
-              "Every order ships in a special box, wrapped with care. "
-              "International orders may be charged import duties and taxes on arrival. "
-              "These are set by the destination country and are not included in the price.")
-    ship_b = ("Pieces in original condition (excluding custom work) may be returned within 30 days of delivery for store credit. "
-              "If a piece doesn't fit, we'll gladly help you find the right size. "
-              '<a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.')
+              "Shipping is free on all orders within the continental US, and every order arrives "
+              "in a special box, wrapped with care.")
+    ship_b = ("Pieces in original condition may be returned within 30 days of delivery for store credit. "
+              "If a piece doesn't fit, we'll gladly help you find the right size.")
     items.append(("Shipping &amp; Returns",
                   f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
-                  f'<p>{_content.shared("shipping:2", ship_b)}</p>'))
+                  f'<p>{_content.shared("shipping:2", ship_b)}</p>'
+                  '<p class="acc-more"><a href="shipping.html">Shipping and returns in full</a></p>'))
     return "\n".join(
         f'''        <div class="acc-item">
           <button class="acc-head" aria-expanded="false">{t}</button>
@@ -279,7 +276,6 @@ LIVE_PRICE = {v["id"].split("/")[-1]: v["price"] for d in SHOPIFY.values() for v
 
 
 SIZER = """      <div class="sizer-panel" id="sizer-panel" hidden>
-        <p class="eyebrow">Rings</p>
         <h2><mark>Finding your size</mark></h2>
         <p class="lede">Two ways to find it. Printing the sizer is the most accurate; measuring a ring you already wear is the easiest. If the piece arrives and it is not right, we resize or exchange it.</p>
         <div class="printbtn"><button type="button" data-print-sizer>Print the sizer</button></div>
@@ -303,6 +299,7 @@ SIZER = """      <div class="sizer-panel" id="sizer-panel" hidden>
           <h2><mark>Or measure a ring you own</mark></h2>
           <p>Measure straight across the inside of a ring that already fits, edge to edge, in millimetres.</p>
           <table><thead><tr><th>US size</th><th>Inside diameter</th><th>Circumference</th></tr></thead><tbody data-sizes></tbody></table>
+          <p class="more-rows"><button type="button" data-more-sizes aria-expanded="false">Show all sizes</button></p>
         </div>
         <p class="helpnote">Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through.</p>
       </div>

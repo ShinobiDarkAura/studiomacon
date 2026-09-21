@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Eleph", "description": "Heavy and rounded, with an ombré patina, caught halfway through a long exhale. A low, distant call has been reported by independent observers, always just out of sight. Cast on request and finished entirely by hand.", "image": ["https://studiomacon.co/img/eleph/hero.jpg", "https://studiomacon.co/img/eleph/hires-1.jpg", "https://studiomacon.co/img/eleph/hand-2.jpg", "https://studiomacon.co/img/eleph/plain-2.jpg", "https://studiomacon.co/img/eleph/hires-3.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "eleph", "offers": [{"@type": "Offer", "price": "200.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eleph.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789973906">
+<link rel="stylesheet" href="site.css?v=1789977562">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -77,8 +77,8 @@
 
   /* ── ring sizer: takes the column's place, rather than its own page ─ */
   .sizer-panel{text-align:left}
-  .sizer-panel h2{font:400 22px/1.15 var(--serif);text-transform:uppercase;letter-spacing:.01em;margin:0 0 12px}
-  .sizer-panel h2 mark{background:#fff4c2;color:inherit;padding:1px 6px 2px;border-radius:2px}          /* the same yellow the emails use */
+  .sizer-panel h2{font:400 28px/1.12 var(--serif);text-transform:uppercase;letter-spacing:.01em;margin:0 0 14px}
+  .sizer-panel h2 mark{background:#ffe94d;color:inherit;padding:2px 8px 3px;border-radius:2px}          /* the emails' yellow, at full strength */
   .sizer-panel .lede{font-size:16px;line-height:1.55;margin:0 0 30px}
   .sizer-panel .step{margin:0 0 34px}
   .sizer-panel .step p{margin:0 0 10px;font-size:15px;line-height:1.55}
@@ -103,6 +103,24 @@
   .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
   .sizer-panel .helpnote{font-size:15px;line-height:1.55;margin:30px 0 0}
   .sizing-open .info-main{display:none}
+  .sizer-panel[hidden]{display:none}
+  /* the panel and the product column trade places rather than blinking */
+  body.sizing-open .sizer-panel{animation:sizer-in .46s cubic-bezier(.16,1,.3,1) both}
+  body.sizing-closing .sizer-panel{animation:sizer-out .24s ease both}
+  body.sizing-back .info-main{animation:sizer-in .46s cubic-bezier(.16,1,.3,1) both}
+  @keyframes sizer-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes sizer-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
+  @media (prefers-reduced-motion:reduce){
+    body.sizing-open .sizer-panel,body.sizing-closing .sizer-panel,body.sizing-back .info-main{animation:none}
+  }
+  /* the size table starts at three rows */
+  .sizer-panel tbody tr{display:none}
+  .sizer-panel tbody tr:nth-child(-n+3){display:table-row}
+  .sizer-panel.all-sizes tbody tr{display:table-row}
+  .sizer-panel .more-rows{margin:12px 0 0}
+  .sizer-panel .more-rows button{font-family:inherit;font-size:14px;padding:0;border:0;background:none;cursor:pointer;
+    color:rgba(0,0,0,.55);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(0,0,0,.25)}
+  .sizer-panel .more-rows button:hover{color:#000}
   @media print{
     body.sizing-open .gallery,body.sizing-open .head,body.sizing-open .ship-bar,body.sizing-open footer,
     body.sizing-open .related,body.sizing-open .back,body.sizing-open .printbtn,body.sizing-open .dock{display:none !important}
@@ -461,7 +479,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="keep-para">Each piece is made to order; please allow up to 10 business days before it ships. Standard shipping takes 3–7 business days, international 5–10. Shipping is free on all orders within the continental US. Every order ships in a special box, wrapped with care. International orders may be charged import duties and taxes on arrival. These are set by the destination country and are not included in the price.</p><p>Pieces in original condition (excluding custom work) may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size. <a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.</p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="keep-para">Each piece is made to order; please allow up to 10 business days before it ships. Shipping is free on all orders within the continental US, and every order arrives in a special box, wrapped with care.</p><p>Pieces in original condition may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size.</p><p class="acc-more"><a href="shipping.html">Shipping and returns in full</a></p></div></div></div>
         </div>
       </div>
       </div>
@@ -1377,16 +1395,39 @@
     rows.appendChild(tr);
   }
 
+  var timer;
   function open(on) {
-    document.body.classList.toggle('sizing-open', on);
-    panel.hidden = !on;
-    if (on) { window.scrollTo({top: 0, behavior: 'smooth'}); }
+    clearTimeout(timer);
+    var body = document.body;
+    if (on) {
+      body.classList.remove('sizing-closing', 'sizing-back');
+      panel.hidden = false;
+      body.classList.add('sizing-open');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      return;
+    }
+    // let the panel leave before the product column comes back
+    body.classList.add('sizing-closing');
+    timer = setTimeout(function () {
+      body.classList.remove('sizing-open', 'sizing-closing');
+      panel.hidden = true;
+      body.classList.add('sizing-back');
+      timer = setTimeout(function () { body.classList.remove('sizing-back'); }, 480);
+    }, 240);
   }
 
   window.addEventListener('click', function (e) {
     if (!e.target.closest) return;
     if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); open(true); return; }
     if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
+    var more = e.target.closest('[data-more-sizes]');
+    if (more) {
+      e.preventDefault(); e.stopPropagation();
+      var all = panel.classList.toggle('all-sizes');
+      more.setAttribute('aria-expanded', all ? 'true' : 'false');
+      more.textContent = all ? 'Show fewer sizes' : 'Show all sizes';
+      return;
+    }
     if (e.target.closest('.back') && document.body.classList.contains('sizing-open')) {
       e.preventDefault(); e.stopPropagation(); open(false);
     }

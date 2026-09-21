@@ -105,6 +105,9 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .acc-body dt{text-transform:uppercase;font-size:14px;padding-top:2px}
 .acc-body dd{margin:0}
 .acc-body .after-dl{margin-top:18px}
+.acc-body .acc-more{margin-top:14px}
+.acc-body .acc-more a{color:rgba(0,0,0,.55);text-decoration-color:rgba(0,0,0,.25)}
+.acc-body .acc-more a:hover{color:#000}
 
 /* ── underlined fields (newsletter, contact form) ──── */
 .field{display:flex;border-bottom:1.5px solid rgba(0,0,0,.25);padding:0 0 10px 18px}

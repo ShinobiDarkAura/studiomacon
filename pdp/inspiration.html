@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789973906">
+<link rel="stylesheet" href="site.css?v=1789977562">
 <style>
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head h1{margin:0;font-size:57.5px}
@@ -1310,16 +1310,39 @@
     rows.appendChild(tr);
   }
 
+  var timer;
   function open(on) {
-    document.body.classList.toggle('sizing-open', on);
-    panel.hidden = !on;
-    if (on) { window.scrollTo({top: 0, behavior: 'smooth'}); }
+    clearTimeout(timer);
+    var body = document.body;
+    if (on) {
+      body.classList.remove('sizing-closing', 'sizing-back');
+      panel.hidden = false;
+      body.classList.add('sizing-open');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      return;
+    }
+    // let the panel leave before the product column comes back
+    body.classList.add('sizing-closing');
+    timer = setTimeout(function () {
+      body.classList.remove('sizing-open', 'sizing-closing');
+      panel.hidden = true;
+      body.classList.add('sizing-back');
+      timer = setTimeout(function () { body.classList.remove('sizing-back'); }, 480);
+    }, 240);
   }
 
   window.addEventListener('click', function (e) {
     if (!e.target.closest) return;
     if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); open(true); return; }
     if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
+    var more = e.target.closest('[data-more-sizes]');
+    if (more) {
+      e.preventDefault(); e.stopPropagation();
+      var all = panel.classList.toggle('all-sizes');
+      more.setAttribute('aria-expanded', all ? 'true' : 'false');
+      more.textContent = all ? 'Show fewer sizes' : 'Show all sizes';
+      return;
+    }
     if (e.target.closest('.back') && document.body.classList.contains('sizing-open')) {
       e.preventDefault(); e.stopPropagation(); open(false);
     }

@@ -868,16 +868,39 @@
     rows.appendChild(tr);
   }
 
+  var timer;
   function open(on) {
-    document.body.classList.toggle('sizing-open', on);
-    panel.hidden = !on;
-    if (on) { window.scrollTo({top: 0, behavior: 'smooth'}); }
+    clearTimeout(timer);
+    var body = document.body;
+    if (on) {
+      body.classList.remove('sizing-closing', 'sizing-back');
+      panel.hidden = false;
+      body.classList.add('sizing-open');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      return;
+    }
+    // let the panel leave before the product column comes back
+    body.classList.add('sizing-closing');
+    timer = setTimeout(function () {
+      body.classList.remove('sizing-open', 'sizing-closing');
+      panel.hidden = true;
+      body.classList.add('sizing-back');
+      timer = setTimeout(function () { body.classList.remove('sizing-back'); }, 480);
+    }, 240);
   }
 
   window.addEventListener('click', function (e) {
     if (!e.target.closest) return;
     if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); open(true); return; }
     if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
+    var more = e.target.closest('[data-more-sizes]');
+    if (more) {
+      e.preventDefault(); e.stopPropagation();
+      var all = panel.classList.toggle('all-sizes');
+      more.setAttribute('aria-expanded', all ? 'true' : 'false');
+      more.textContent = all ? 'Show fewer sizes' : 'Show all sizes';
+      return;
+    }
     if (e.target.closest('.back') && document.body.classList.contains('sizing-open')) {
       e.preventDefault(); e.stopPropagation(); open(false);
     }
