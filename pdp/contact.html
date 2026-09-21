@@ -162,7 +162,39 @@
   var known = null;
   try { known = localStorage.getItem('macon-em'); } catch (e) {}
   if (known) fbq('init', PIXEL, {em: known}); else fbq('init', PIXEL);
-  fbq('track', 'PageView');
+
+  // A click id only reaches Shopify if we carry it there ourselves: the cookie it becomes
+  // belongs to this domain, and checkout happens on another.
+  try {
+    var q = new URLSearchParams(location.search), keep = {};
+    if (q.get('fbclid')) keep.fbclid = q.get('fbclid');
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function (k) { if (q.get(k)) keep[k] = q.get(k); });
+    if (Object.keys(keep).length) sessionStorage.setItem('macon-click', JSON.stringify(keep));
+  } catch (e) {}
+
+  // The same event, twice: once from the browser, once from our own server, sharing an id
+  // so Meta counts it once. Browser events alone are lost to blockers and ITP; that gap is
+  // what Meta reports as event coverage.
+  var eid = function () {
+    try { if (crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  };
+  var relay = function (name, id, custom) {
+    try {
+      fetch('/_e', {
+        method: 'POST', keepalive: true, credentials: 'same-origin',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ev: name, id: id, url: location.href, em: known || null, custom: custom || {}})
+      }).catch(function () {});
+    } catch (e) {}
+  };
+  window.maconSend = function (name, params, custom) {
+    var id = eid();
+    fbq('track', name, params || {}, {eventID: id});          // eventID, not event_id: the browser key
+    relay(name, id, custom || params || {});
+  };
+
+  maconSend('PageView', {});
   var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=G-B5GNGQ1WME'; document.head.appendChild(g);
   window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
   gtag('js', new Date()); gtag('config', 'G-B5GNGQ1WME'); gtag('config', 'AW-16466703173');
@@ -174,14 +206,14 @@
       var value = list.reduce(function (n, i) { return n + (i.price || 0) * (i.qty || 1); }, 0);
       var g4 = list.map(function (i) { return {item_id: idOf(i.variant), item_name: i.name || i.slug, price: i.price, quantity: i.qty || 1}; });
       if (kind === 'signup') { if (window.maconIdentify) maconIdentify(x); return; }
-      if (kind === 'view') { fbq('track', 'ViewContent', {content_ids: ids, content_type: 'product', content_name: list[0].name, value: value, currency: 'USD'});
+      if (kind === 'view') { maconSend('ViewContent', {content_ids: ids, content_type: 'product', content_name: list[0].name, value: value, currency: 'USD'});
                              gtag('event', 'view_item', {currency: 'USD', value: value, items: g4}); }
-      if (kind === 'add') { fbq('track', 'AddToCart', {content_ids: ids, content_type: 'product', value: value, currency: 'USD'});
+      if (kind === 'add') { maconSend('AddToCart', {content_ids: ids, content_type: 'product', value: value, currency: 'USD'});
                             gtag('event', 'add_to_cart', {currency: 'USD', value: value, items: g4}); }
       // Shopify's own checkout fires InitiateCheckout with an id Meta can deduplicate against.
       // Ours carried no id, so the two could never be matched and checkouts counted twice.
       if (kind === 'checkout') { gtag('event', 'begin_checkout', {currency: 'USD', value: value, items: g4}); }
-      if (kind === 'lead') { fbq('track', 'Contact'); gtag('event', 'generate_lead', {form: x}); }
+      if (kind === 'lead') { maconSend('Contact', {}); gtag('event', 'generate_lead', {form: x}); }
     } catch (e) {}
   };
 })();
@@ -671,7 +703,7 @@
     // what Shopify's own abandoned-checkout emails listen to (checkouts opened through the Storefront API do not)
     var code = ''; try { code = sessionStorage.getItem('macon-discount') || ''; } catch (e) {}
     var path = lines.map(function (l) { return l.merchandiseId.split('/').pop() + ':' + l.quantity; }).join(',');
-    location.href = 'https://' + cfg.shop + '/cart/' + path + (code ? '?discount=' + encodeURIComponent(code) : '');
+    location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(code ? {discount: code} : {});
     // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
     // pieces still waiting. It is emptied on the thank-you page.
     return Promise.resolve();
@@ -888,7 +920,7 @@
       if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
         var price = parseFloat((document.querySelector('.info .price') || {}).textContent || '') || 0;
         if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
-        location.href = 'https://' + shop + '/cart/' + id + ':1?payment=shop_pay';
+        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery({payment: 'shop_pay'});
         return;
       }
       MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
@@ -1193,6 +1225,18 @@
     }
   }, true);
 })();
+
+// The ad click id lives in a cookie scoped to this domain, so Shopify's checkout cannot read it.
+// Carrying fbclid across lets Shopify rebuild it there, which is what ties a sale back to the ad.
+function maconClickQuery(extra) {
+  var p = [];
+  Object.keys(extra || {}).forEach(function (k) { p.push(k + '=' + encodeURIComponent(extra[k])); });
+  try {
+    var saved = JSON.parse(sessionStorage.getItem('macon-click') || '{}');
+    Object.keys(saved).forEach(function (k) { p.push(k + '=' + encodeURIComponent(saved[k])); });
+  } catch (e) {}
+  return p.length ? '?' + p.join('&') : '';
+}
 </script>
 <script>
   document.getElementById('contact-form').addEventListener('submit', function (e) {

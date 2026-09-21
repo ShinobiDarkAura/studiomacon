@@ -406,7 +406,7 @@
     // what Shopify's own abandoned-checkout emails listen to (checkouts opened through the Storefront API do not)
     var code = ''; try { code = sessionStorage.getItem('macon-discount') || ''; } catch (e) {}
     var path = lines.map(function (l) { return l.merchandiseId.split('/').pop() + ':' + l.quantity; }).join(',');
-    location.href = 'https://' + cfg.shop + '/cart/' + path + (code ? '?discount=' + encodeURIComponent(code) : '');
+    location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(code ? {discount: code} : {});
     // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
     // pieces still waiting. It is emptied on the thank-you page.
     return Promise.resolve();
@@ -623,7 +623,7 @@
       if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
         var price = parseFloat((document.querySelector('.info .price') || {}).textContent || '') || 0;
         if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
-        location.href = 'https://' + shop + '/cart/' + id + ':1?payment=shop_pay';
+        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery({payment: 'shop_pay'});
         return;
       }
       MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
@@ -928,4 +928,16 @@
     }
   }, true);
 })();
+
+// The ad click id lives in a cookie scoped to this domain, so Shopify's checkout cannot read it.
+// Carrying fbclid across lets Shopify rebuild it there, which is what ties a sale back to the ad.
+function maconClickQuery(extra) {
+  var p = [];
+  Object.keys(extra || {}).forEach(function (k) { p.push(k + '=' + encodeURIComponent(extra[k])); });
+  try {
+    var saved = JSON.parse(sessionStorage.getItem('macon-click') || '{}');
+    Object.keys(saved).forEach(function (k) { p.push(k + '=' + encodeURIComponent(saved[k])); });
+  } catch (e) {}
+  return p.length ? '?' + p.join('&') : '';
+}
 </script>
