@@ -155,7 +155,7 @@
 
   /* the grid sits further in than the rest of the page, so the pieces read smaller and calmer */
   .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 24px + 7.5vw)}
-  .wall figure{margin:0;border-radius:6px;overflow:hidden;background:var(--field)}
+  .wall figure{margin:0;border-radius:14px;overflow:hidden;background:var(--field)}
   .wall figure.dr-emerge{filter:none;transform:translateY(90px);
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
   .wall figure.dr-emerge.is-seen{transform:none}
@@ -182,8 +182,8 @@
   @media (max-width:767px){
      .wall figure{overflow:visible;background:none;border-radius:0}
      .piece{position:relative;display:block;color:#000}
-     .piece .pic{border-radius:6px}
-     .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:6px}
+     .piece .pic{border-radius:14px}
+     .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:14px}
      .piece .held{opacity:0}
      .piece:hover .held, .piece:focus-visible .held{opacity:1}
      .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}
@@ -196,8 +196,8 @@
   @media (min-width:768px){
     body.labels-under .wall figure{overflow:visible;background:none;border-radius:0}
     body.labels-under .piece{position:relative;display:block;color:#000}
-    body.labels-under .piece .pic{border-radius:6px}
-    body.labels-under .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:6px}
+    body.labels-under .piece .pic{border-radius:14px}
+    body.labels-under .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:14px}
     body.labels-under .piece .held{opacity:0}
     body.labels-under .piece:hover .held,body.labels-under .piece:focus-visible .held{opacity:1}
     body.labels-under .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}

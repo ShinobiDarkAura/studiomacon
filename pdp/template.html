@@ -14,7 +14,7 @@
   /* the hero is a track of pictures that slides; nothing is created or destroyed on a tap */
   .gallery .hero{overflow:hidden;border-radius:14px}
   /* above the carousel, each photograph is its own object again */
-  @media (min-width:1024px){ .gallery figure img,.gallery figure video,.gallery .hero img,.gallery .hero video{border-radius:14px} .gallery .hero{border-radius:0}}
+  @media (min-width:1024px){ .gallery figure img,.gallery figure video,.gallery .hero img,.gallery .hero video{border-radius:30px} .gallery .hero{border-radius:0}}
   .gallery .hero .shots{display:flex;width:100%;transition:transform .5s cubic-bezier(.2,.7,.2,1);will-change:transform}
   .gallery .hero .shot{flex:0 0 100%;min-width:100%;background:var(--field)}          /* never white behind a picture */
   @media (prefers-reduced-motion:reduce){ .gallery .hero .shots{transition:none} }
@@ -115,7 +115,7 @@
   .rel-grid{width:60%;margin:0 auto}          /* 40% smaller than the full width: a closer, quieter row */
   .rel-name{font-size:calc(var(--tile-name) + 5pt) !important}          /* names scaled down with the pictures */
   .rel-piece{display:block;color:#000}
-  .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--field)}
+  .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--field)}
   .rel-frame img{width:100%;height:100%;object-fit:cover}
   .rel-frame{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
   .rel-piece:hover .rel-frame{transform:translateY(-8px)}          /* the picture lifts, the label stays put */
@@ -132,7 +132,7 @@
     .rel-piece:nth-child(3){display:none}
     .rel-name{font-size:var(--tile-name) !important}
     .rel-piece{display:block;color:#000}
-    .rel-frame{display:block;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--field)}
+    .rel-frame{display:block;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--field)}
     .rel-frame img{width:100%;height:100%;object-fit:cover}
     .rel-name{margin:10px 0 2px;font-size:var(--tile-name)}
     .rel-cost{display:block;font-size:13px;color:rgba(0,0,0,.55)}
