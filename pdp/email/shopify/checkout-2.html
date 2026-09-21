@@ -7,7 +7,9 @@
   body{margin:0;padding:0;background:#f4f1ea} a{color:#000000} img{border:0;display:block}
   @media (max-width:620px){ .wrap{width:100%!important} .pad{padding-left:24px!important;padding-right:24px!important}
     .h1{font-size:40px!important} .col{display:block!important;width:100%!important;padding:0 0 24px!important}
-    .cart{padding-left:24px!important;padding-right:24px!important} }
+    .cart{padding-left:28px!important;padding-right:28px!important}
+    .lbl{text-align:center!important;font-size:calc(22px + 2pt)!important} .lblp{text-align:center!important}
+    .lbl1{text-align:center!important;font-size:calc(28px + 2pt)!important} }
 </style></head>
 <body style="margin:0;padding:0;background:#f4f1ea">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0">What it's made of, and what happens if it doesn't fit.&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
@@ -95,7 +97,7 @@
 {% assign cost = "260" %}
 {% assign label = "Caldera Arc" %}
 {% endcase %}
-{% if forloop.first %}<tr><td align="center" style="padding:0"><a href="{{ abandoned_checkout.url }}" style="text-decoration:none;color:#000000"><img src="{{ held }}" width="376" alt="{{ label }}" style="width:100%;max-width:376px;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><div style="max-width:376px;text-align:left;font:400 28px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding:18px 0 5px">{{ label }}</div><div style="max-width:376px;text-align:left;font:400 14px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6b6b6b">
+{% if forloop.first %}<tr><td align="center" style="padding:0"><a href="{{ abandoned_checkout.url }}" style="text-decoration:none;color:#000000"><img src="{{ held }}" width="376" alt="{{ label }}" style="width:100%;max-width:376px;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><div class="lbl1" style="max-width:376px;text-align:center;font:400 28px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding:18px 0 5px">{{ label }}</div><div class="lblp" style="max-width:376px;text-align:center;font:400 14px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6b6b6b">
 {% if cost != '' %}${{ cost }}
 {% endif %}</div></a></td></tr>
 {% endif %}
@@ -189,7 +191,7 @@
 {% endcase %}
 {% assign c = forloop.index0 | modulo: per %}
 {% if c == 0 %}<tr>
-{% endif %}<td class="col" width="{{ w }}%" valign="top" style="padding:0 6px"><a href="{{ abandoned_checkout.url }}" style="text-decoration:none;color:#000000"><img src="{{ held }}" width="160" alt="{{ label }}" style="width:100%;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><div style="font:400 22px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding:16px 0 4px">{{ label }}</div><div style="font:400 13px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6b6b6b">
+{% endif %}<td class="col" width="{{ w }}%" valign="top" style="padding:0 6px"><a href="{{ abandoned_checkout.url }}" style="text-decoration:none;color:#000000"><img src="{{ held }}" width="160" alt="{{ label }}" style="width:100%;height:auto;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><div class="lbl" style="text-align:center;font:400 22px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding:16px 0 4px">{{ label }}</div><div class="lblp" style="text-align:center;font:400 13px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#6b6b6b">
 {% if cost != '' %}${{ cost }}
 {% endif %}</div></a></td>
 {% if forloop.last %}
