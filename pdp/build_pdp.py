@@ -302,7 +302,7 @@ SIZER = """      <div class="sizer-panel" id="sizer-panel" data-no-emerge hidden
           <div class="tablewrap"><div><table><thead><tr><th>US size</th><th>Inside diameter</th><th>Circumference</th></tr></thead><tbody data-sizes></tbody></table></div></div>
           <p class="more-rows linky"><button type="button" data-more-sizes aria-expanded="false">Show all sizes</button></p>
         </div>
-        <aside class="helpnote st"><p class="note-label">Maker’s note</p><p>Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through.</p></aside>
+        <aside class="helpnote st"><p class="note-label">Maker’s note</p><p>Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we’ll help you figure out the best size for you.</p></aside>
       </div>
 """
 
