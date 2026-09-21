@@ -120,7 +120,8 @@ footer .brand{order:3}
 footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
 footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
 footer .fine{margin:0;font:400 calc((32px - 5pt) * 1.2)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
-footer .fine.where{margin:16px 0 0;font-family:"Morello Pencil","Instrument Serif",serif;font-size:21px;letter-spacing:.01em;text-transform:none;opacity:.6}          /* where the studio is, in the studio's own hand */
+footer .fine.where{margin:16px 0 0;font-family:"Morello Pencil","Instrument Serif",serif;font-size:21px;letter-spacing:.01em;text-transform:none;opacity:.6;
+  display:inline-block;transform:rotate(-5deg);transform-origin:left center}          /* where the studio is, in the studio's own hand */
 footer .links{display:flex;flex-wrap:wrap;gap:10px 31px;margin:0;font-size:var(--f-size)}
 footer .news{order:1;max-width:460px}
 footer .news p{margin:0 0 28px;font-size:var(--f-size);line-height:1.5}
