@@ -584,7 +584,12 @@
         // on a phone the whole details column is on screen at once, so a long cascade just
         // reads as the lower blocks (Field Notes especially) being late
         var cap = phone && g === '.info' ? 2 : 6, step = phone && g === '.info' ? 45 : 90;
-        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
+        // the sizer wrapped the details, so the cascade has to reach through it or the
+        // whole column arrives in one movement
+        var inner = group.querySelector(':scope > .info-main');
+        var kids = [].slice.call(group.children).filter(function (el) { return el !== inner; })
+                     .concat(inner ? [].slice.call(inner.children) : []);
+        kids.forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
       });
     });
     // Also Worth Keeping reads as one block, so the heading, the line under it and
