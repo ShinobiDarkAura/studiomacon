@@ -109,10 +109,11 @@
   .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
   .sizer-panel .helpnote{font-size:15px;line-height:1.55;margin:30px 0 0}
   .sizing-open .info-main{display:none}
-  body.sizing-leaving .info-main{display:block;animation:main-out .34s cubic-bezier(.4,0,.2,1) both}
+  body.sizing-cross.sizing-open .info-main{animation:main-out var(--cross) both}
+  body.sizing-cross.sizing-closing .info-main{animation:main-in var(--cross) both}
   .sizer-panel[hidden]{display:none}
   /* the panel and the product column trade places rather than blinking */
-  body.sizing-open .sizer-panel{animation:panel-in .52s cubic-bezier(.22,1,.36,1) both}
+  body.sizing-open .sizer-panel{animation:panel-in var(--cross,.52s cubic-bezier(.22,1,.36,1)) both}
   body.sizing-open .sizer-panel .st{animation:sizer-in .62s cubic-bezier(.16,1,.3,1) both}
   body.sizing-open .sizer-panel .st:nth-child(1){animation-delay:40ms}
   body.sizing-open .sizer-panel .st:nth-child(2){animation-delay:140ms}
@@ -120,14 +121,17 @@
   body.sizing-open .sizer-panel .st:nth-child(4){animation-delay:340ms}
   body.sizing-open .sizer-panel .st:nth-child(5){animation-delay:440ms}
   body.sizing-open .sizer-panel .st:nth-child(6){animation-delay:540ms}
-  @keyframes panel-in{from{opacity:0;transform:translateX(42px)}to{opacity:1;transform:none}}
-  @keyframes panel-out{from{opacity:1;transform:none}to{opacity:0;transform:translateX(42px)}}
-  @keyframes main-out{from{opacity:1;transform:none}to{opacity:0;transform:translateX(-42px)}}
-  @keyframes main-in{from{opacity:0;transform:translateX(-42px)}to{opacity:1;transform:none}}
-  .info{overflow:hidden}          /* the columns slide past the edge, not across the page */
-  body.sizing-closing .info-main{display:block;animation:main-in .52s cubic-bezier(.22,1,.36,1) both;animation-delay:.12s}
+  @keyframes panel-in{from{opacity:0;transform:translateX(100%)}to{opacity:1;transform:none}}
+  @keyframes panel-out{from{opacity:1;transform:none}to{opacity:0;transform:translateX(100%)}}
+  @keyframes main-out{from{opacity:1;transform:none}to{opacity:0;transform:translateX(-100%)}}
+  @keyframes main-in{from{opacity:0;transform:translateX(-100%)}to{opacity:1;transform:none}}
+  .info{overflow:hidden;position:relative}          /* the columns slide past the edge, not across the page */
+  /* while they cross, both occupy the same box so neither pushes the page around */
+  body.sizing-cross .info-main,body.sizing-cross .sizer-panel{position:absolute;inset:0 0 auto 0;display:block}
+  body.sizing-cross{--cross:.52s cubic-bezier(.22,1,.36,1)}
+
   body.sizing-back .info-main{animation:main-in .52s cubic-bezier(.22,1,.36,1) both}
-  body.sizing-closing .sizer-panel{animation:panel-out .42s cubic-bezier(.4,0,.2,1) both}          /* it leaves the way it came */
+  body.sizing-closing .sizer-panel{animation:panel-out var(--cross,.42s cubic-bezier(.4,0,.2,1)) both}          /* it leaves the way it came */
   body.sizing-closing .sizer-panel .st{animation:none}
   body.sizing-back .info-main{animation:sizer-in .46s cubic-bezier(.16,1,.3,1) both}
   @keyframes sizer-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -244,6 +248,7 @@
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
     .gallery figure img,.gallery .hero img{height:calc(100vh - 32px);height:calc(100svh - 32px);aspect-ratio:auto;object-fit:cover}
+    .gallery .hero .shots,.gallery .hero .shot{height:calc(100vh - 32px);height:calc(100svh - 32px)}
     .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
     /* Tablets: the photo column is only ~320px wide, so a full screen of height turns each
        photograph into a 1:3 sliver and the page into 9,700px. Keep them in proportion instead. */
@@ -830,7 +835,7 @@
   // first time about 16% of it is on screen. It never fades back out (toggling
   // flickered), and anything added later is picked up too.
   (function () {
-    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > :not(.info-main), .info-main > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *, .related > :not(.rel-grid), .rel-piece';
     // side-by-side groups cascade instead of arriving at once
@@ -1490,27 +1495,23 @@
   function open(on) {
     clearTimeout(timer);
     var body = document.body;
+    var CROSS = 520;
     if (on) {
       body.classList.remove('sizing-closing', 'sizing-back');
-      // the product column leaves to the left before the sizer arrives from the right
-      body.classList.add('sizing-leaving');
+      // both columns cross at once: the details leave to the left as the sizer arrives from the right
+      panel.hidden = false;
+      body.classList.add('sizing-cross', 'sizing-open');
+      shutTable();
       window.scrollTo({top: 0, behavior: 'smooth'});
-      timer = setTimeout(function () {
-        body.classList.remove('sizing-leaving');
-        panel.hidden = false;
-        body.classList.add('sizing-open');
-        shutTable();
-      }, 300);
+      timer = setTimeout(function () { body.classList.remove('sizing-cross'); }, CROSS);
       return;
     }
-    // let the panel leave before the product column comes back
-    body.classList.add('sizing-closing');
+    // the same crossing, played backwards
+    body.classList.add('sizing-cross', 'sizing-closing');
     timer = setTimeout(function () {
-      body.classList.remove('sizing-open', 'sizing-closing');
+      body.classList.remove('sizing-open', 'sizing-closing', 'sizing-cross');
       panel.hidden = true;
-      body.classList.add('sizing-back');
-      timer = setTimeout(function () { body.classList.remove('sizing-back'); }, 480);
-    }, 240);
+    }, CROSS);
   }
 
   window.addEventListener('click', function (e) {

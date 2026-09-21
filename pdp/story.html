@@ -108,7 +108,7 @@
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
   .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-21px,335px) rotate(-6.5deg)}
   .polaroid:last-child .card{width:300px;z-index:1;transform:translate(83px,-2px) rotate(6deg)}
-  .childhood .strip img{width:308px;z-index:3;transform:translate(315px,11px) rotate(-3.5deg)}
+  .childhood .strip img{width:354px;z-index:3;transform:translate(315px,11px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
      land off the page's centre while everything above them is still centred, so tablets keep the
      stacked, centred reading order instead. */
@@ -385,7 +385,7 @@
       <div class="more" id="more">
         <div>
         <p class="lede" data-edit="page:story.html:15d07e3d">They met in a figure drawing class at RISD in 2008, two eager freshmen at neighboring easels, learning to make art together. They became close, but the journey was winding, and it led them apart for a decade.</p>
-        <p class="lede" data-edit="page:story.html:d95cfd2c">When they finally found their way back to each other, they married in 2023. Through it all they never stopped making things for one another: little objects that kept them connected over many years and miles apart.<br><i>Artifacts of love.</i><br>That is how Maçon was born.</p>
+        <p class="lede" data-edit="page:story.html:8d1fd9fe">When they finally found their way back to each other, they married in 2023. Through it all they never stopped making things for one another: little objects that kept them connected over many years and miles apart. Artifacts of love. That is how Maçon was born.</p>
         </div>
       </div>
       <p class="readmore" data-edit="page:story.html:2c607376"><button type="button" id="readmore" aria-expanded="false" aria-controls="more">Full story</button></p>
@@ -675,7 +675,7 @@
   // first time about 16% of it is on screen. It never fades back out (toggling
   // flickered), and anything added later is picked up too.
   (function () {
-    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > :not(.info-main), .info-main > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *, .related > :not(.rel-grid), .rel-piece';
     // side-by-side groups cascade instead of arriving at once
@@ -1335,27 +1335,23 @@
   function open(on) {
     clearTimeout(timer);
     var body = document.body;
+    var CROSS = 520;
     if (on) {
       body.classList.remove('sizing-closing', 'sizing-back');
-      // the product column leaves to the left before the sizer arrives from the right
-      body.classList.add('sizing-leaving');
+      // both columns cross at once: the details leave to the left as the sizer arrives from the right
+      panel.hidden = false;
+      body.classList.add('sizing-cross', 'sizing-open');
+      shutTable();
       window.scrollTo({top: 0, behavior: 'smooth'});
-      timer = setTimeout(function () {
-        body.classList.remove('sizing-leaving');
-        panel.hidden = false;
-        body.classList.add('sizing-open');
-        shutTable();
-      }, 300);
+      timer = setTimeout(function () { body.classList.remove('sizing-cross'); }, CROSS);
       return;
     }
-    // let the panel leave before the product column comes back
-    body.classList.add('sizing-closing');
+    // the same crossing, played backwards
+    body.classList.add('sizing-cross', 'sizing-closing');
     timer = setTimeout(function () {
-      body.classList.remove('sizing-open', 'sizing-closing');
+      body.classList.remove('sizing-open', 'sizing-closing', 'sizing-cross');
       panel.hidden = true;
-      body.classList.add('sizing-back');
-      timer = setTimeout(function () { body.classList.remove('sizing-back'); }, 480);
-    }, 240);
+    }, CROSS);
   }
 
   window.addEventListener('click', function (e) {

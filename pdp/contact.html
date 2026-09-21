@@ -517,7 +517,7 @@
   // first time about 16% of it is on screen. It never fades back out (toggling
   // flickered), and anything added later is picked up too.
   (function () {
-    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > :not(.info-main), .info-main > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
                  '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
                  '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *, .related > :not(.rel-grid), .rel-piece';
     // side-by-side groups cascade instead of arriving at once
@@ -1177,27 +1177,23 @@
   function open(on) {
     clearTimeout(timer);
     var body = document.body;
+    var CROSS = 520;
     if (on) {
       body.classList.remove('sizing-closing', 'sizing-back');
-      // the product column leaves to the left before the sizer arrives from the right
-      body.classList.add('sizing-leaving');
+      // both columns cross at once: the details leave to the left as the sizer arrives from the right
+      panel.hidden = false;
+      body.classList.add('sizing-cross', 'sizing-open');
+      shutTable();
       window.scrollTo({top: 0, behavior: 'smooth'});
-      timer = setTimeout(function () {
-        body.classList.remove('sizing-leaving');
-        panel.hidden = false;
-        body.classList.add('sizing-open');
-        shutTable();
-      }, 300);
+      timer = setTimeout(function () { body.classList.remove('sizing-cross'); }, CROSS);
       return;
     }
-    // let the panel leave before the product column comes back
-    body.classList.add('sizing-closing');
+    // the same crossing, played backwards
+    body.classList.add('sizing-cross', 'sizing-closing');
     timer = setTimeout(function () {
-      body.classList.remove('sizing-open', 'sizing-closing');
+      body.classList.remove('sizing-open', 'sizing-closing', 'sizing-cross');
       panel.hidden = true;
-      body.classList.add('sizing-back');
-      timer = setTimeout(function () { body.classList.remove('sizing-back'); }, 480);
-    }, 240);
+    }, CROSS);
   }
 
   window.addEventListener('click', function (e) {
