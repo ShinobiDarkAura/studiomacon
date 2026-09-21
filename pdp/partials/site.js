@@ -69,7 +69,13 @@
       var edge = hero ? hero.getBoundingClientRect().bottom : innerHeight * 0.7;
       return edge <= 0;
     };
-    var sync = function () { document.body.classList.toggle('ship-on', past()); };
+    // Once it has arrived it stays: scrolling back up to the hero should not take it away again.
+    var sync = function () {
+      if (!past()) return;
+      document.body.classList.add('ship-on');
+      removeEventListener('scroll', sync);
+      removeEventListener('resize', sync);
+    };
     addEventListener('scroll', sync, {passive: true});
     addEventListener('resize', sync, {passive: true});
     sync();
