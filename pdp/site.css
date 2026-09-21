@@ -445,10 +445,10 @@ body.ship-on .head{transform:translateY(var(--ship-h,38px))}
 .product.claimed .ship-free,.product.claimed .ship-by{display:none !important}
 .product.claimed .gallery .hero{position:relative}
 .product.claimed .gallery .hero::after{content:"Sold";position:absolute;z-index:5;top:32px;left:24px;
-  transform:rotate(-12deg);padding:.18em .5em .1em;border:2.64px solid currentColor;border-radius:5.2px;
-  color:#fff;font:400 clamp(22.4px,5.25vw,42px)/1 var(--serif);letter-spacing:.06em;text-transform:uppercase;
+  transform:rotate(-12deg);padding:.18em .5em .1em;border:2.9px solid currentColor;border-radius:5.7px;
+  color:#fff;font:400 24.6px/1 var(--serif);letter-spacing:.06em;text-transform:uppercase;
   pointer-events:none}
-@media (min-width:1024px){ .product.claimed .gallery .hero::after{top:120px;left:56px} }
+@media (min-width:1024px){ .product.claimed .gallery .hero::after{top:120px;left:56px;font-size:37.8px;border-width:2.4px;border-radius:4.7px} }
 
 
 /* ── a look at the shop without the capitals (open any page with ?case) ──
