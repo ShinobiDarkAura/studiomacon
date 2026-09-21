@@ -251,7 +251,7 @@ def accordions(slug, k, notes):
     # Shipping reads the same on every piece, so it is edited once for the whole shop.
     ship_a = ("Each piece is made to order; please allow up to 10 business days before it ships. "
               "Standard shipping takes 3–7 business days, international 5–10. "
-              "Shipping is free on orders over $200 within the continental US. "
+              "Shipping is free on all orders within the continental US. "
               "Every order ships in a special box, wrapped with care. "
               "International orders may be charged import duties and taxes on arrival. "
               "These are set by the destination country and are not included in the price.")
