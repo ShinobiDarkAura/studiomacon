@@ -382,7 +382,8 @@ def page(p, template, related=""):
     size_select, buy_variant = "", ""
     # A piece that has sold cannot be added to a bag. Every piece here is one of one, so this
     # is the normal end of a product's life, not an error state.
-    in_stock = any(v.get("available", True) for v in variants) if variants else True
+    # only one-of-ones can sell out; every other piece is made to order and never runs out
+    in_stock = slug not in OOAK_SLUGS or (any(v.get("available", True) for v in variants) if variants else True)
     if in_stock:
         buy_block = ('<div class="buy" id="bag" data-variant="{{VARIANT}}">'
                      '<button class="cta">Add to Bag</button>'
@@ -772,7 +773,7 @@ def seo(name, doc, product=None):
         # availability follows Shopify, the same flag the feeds read: every piece is one of one,
         # so a page that keeps saying InStock after it sells is a catalogue mismatch waiting to happen
         def _avail(v):
-            return "https://schema.org/InStock" if v.get("available", True) else "https://schema.org/SoldOut"
+            return "https://schema.org/InStock" if v.get("available", True) or name[:-5] not in OOAK_SLUGS else "https://schema.org/SoldOut"
         offers = [{"@type": "Offer", "price": f'{v["price"]:.2f}', "priceCurrency": "USD", "availability": _avail(v),
                    "url": url} for v in SHOPIFY.get(product["slug"], {}).get("variants", [])] or \
                  [{"@type": "Offer", "price": f'{float(product["price"]):.2f}', "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": url}]
@@ -892,7 +893,7 @@ def feeds(products):
             rows.append({
                 "id": f'shopify_US_{v["product"]}_{v["variant"]}', "item_group_id": f'shopify_US_{v["product"]}',
                 "title": p["name"] + (f' ({v["value"]})' if sized else ""), "description": desc,
-                "availability": "in stock" if v["available"] else "out of stock", "condition": "new",
+                "availability": "in stock" if v["available"] or slug not in OOAK_SLUGS else "out of stock", "condition": "new",
                 "price": f'{LIVE_PRICE.get(v["variant"], v["price"]):.2f} USD', "link": f"{SITE}/{slug}.html", "image_link": f"{SITE}/{shots[0]}",
                 "additional_image_link": ",".join(f"{SITE}/{x}" for x in shots[1:]), "brand": "Studio Maçon",
                 "product_type": family, "size": v["value"] if sized else "", "google_product_category": category(slug, family),
