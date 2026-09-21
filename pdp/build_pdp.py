@@ -112,7 +112,8 @@ HIDE_FROM_SHOP = {"macon-cap"}          # remove a slug here to bring it back
 # copy of it. Measured by comparing normalised thumbnails, then checked by eye.
 HIDE_FROM_GALLERY = ({"img/ori/plain-2.jpg", "img/ori/hires-1.jpg", "img/zuma/plain-1.jpg",
                       "img/lunar-canyon-ring/hand-2.jpg", "img/zuma-ring/hand-1.jpg",
-                      "img/eclipse-ring/hand-1.jpg", "img/starshipkey-pendant/hand-1.jpg"}          # these two rings lead with hand-2, so the repeat is hand-1
+                      "img/eclipse-ring/hand-1.jpg", "img/starshipkey-pendant/hand-1.jpg",
+                      "img/wonderhorn-talisman/hand-1.jpg"}          # these two rings lead with hand-2, so the repeat is hand-1
                      | {f"img/{t}/hand-1.jpg" for t in ("pip", "rebi", "ren", "zuma", "ori", "yael", "milo", "eleph", "ibi")})          # totems: the first in-hand shot repeats the second
 
 TODO = '<span class="todo">{}</span>'
@@ -357,7 +358,12 @@ def page(p, template, related=""):
             style = (f' style="object-position:{f.get("x", 50):g}% {f.get("y", 50):g}%'
                      f';transform-origin:{f.get("x", 50):g}% {f.get("y", 50):g}%'
                      f';transform:scale({f.get("z", 1):g})"')
-        return f'<figure><img src="{src}"{style} alt=""{extra}></figure>'
+        # a real description, not an empty alt: these photographs are how the piece is found in image search
+        shot = src.rsplit("/", 1)[-1].split(".")[0].replace("--m", "").rstrip("-0123456789").strip("-")
+        how = {"hand": "held in the hand", "plain": "seen on its own", "hires": "close up",
+               "hero": "", "composite": "at home on a shelf"}.get(shot, "")
+        alt = f'{name}, {how}' if how else name
+        return f'<figure><img src="{src}"{style} alt="{html.escape(alt)}"{extra}></figure>'
 
     figs = [framed(g, ' loading="lazy"') for g in gallery]
     hf = (_content.product(slug, "frames", {}) or {}).get(hero)
@@ -613,6 +619,17 @@ NOINDEX = {"bag.html", "checkout.html", "confirmation.html", "404.html"} | {f"{x
 SITEMAP = []
 
 
+def _shots(doc, slug, hero):
+    """Every photograph on the page, for Product.image: Google Images and Lens are one of the
+    few places a piece like this is found, and the field takes a list."""
+    seen, out = set(), [hero]
+    for m in re.finditer(rf'src="(img/{re.escape(slug)}/[a-z0-9.-]+\.jpg)', doc):
+        u = f"{SITE}/{m.group(1)}"
+        if u not in seen and u != hero and "--tile" not in u:
+            seen.add(u); out.append(u)
+    return out[:6]
+
+
 def seo(name, doc, product=None):
     """Description, canonical, share tags, and product details for Google, added to <head>."""
     title = re.search(r"<title>(.*?)</title>", doc).group(1)
@@ -631,12 +648,22 @@ def seo(name, doc, product=None):
         tags.append('<meta name="robots" content="noindex">')
     else:
         SITEMAP.append(url)
+    if name == "index.html":
+        # who the studio is, and where else it lives: branded searches from the ads land on this
+        org = {"@context": "https://schema.org", "@type": "Organization", "name": "Studio Ma\u00e7on",
+               "url": SITE, "logo": f"{SITE}/img/favicon.png", "email": "hello@studiomacon.co",
+               "sameAs": ["https://www.instagram.com/studiomacon/"]}
+        tags.append('<script type="application/ld+json">' + json.dumps(org, ensure_ascii=False).replace("</", "<\\/") + '</script>')
     if product:
-        offers = [{"@type": "Offer", "price": f'{v["price"]:.2f}', "priceCurrency": "USD", "availability": "https://schema.org/InStock",
+        # availability follows Shopify, the same flag the feeds read: every piece is one of one,
+        # so a page that keeps saying InStock after it sells is a catalogue mismatch waiting to happen
+        def _avail(v):
+            return "https://schema.org/InStock" if v.get("available", True) else "https://schema.org/SoldOut"
+        offers = [{"@type": "Offer", "price": f'{v["price"]:.2f}', "priceCurrency": "USD", "availability": _avail(v),
                    "url": url} for v in SHOPIFY.get(product["slug"], {}).get("variants", [])] or \
                  [{"@type": "Offer", "price": f'{float(product["price"]):.2f}', "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": url}]
         ld = {"@context": "https://schema.org", "@type": "Product", "name": product["name"], "description": DESC[product["slug"]],
-              "image": [image], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": product["slug"], "offers": offers}
+              "image": _shots(doc, product["slug"], image), "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": product["slug"], "offers": offers}
         tags.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + '</script>')
     return doc.replace("</title>", "</title>\n" + "\n".join(tags), 1)
 
@@ -754,7 +781,8 @@ def feeds(products):
     e = sx.escape
     items = "".join(
         "<item>" + "".join(f"<g:{k}>{e(str(r[k]))}</g:{k}>" for k in ("id", "item_group_id", "title", "description", "availability",
-                                                                      "condition", "price", "link", "image_link", "brand", "product_type", "google_product_category") if r[k])
+                                                                      "condition", "price", "image_link", "brand", "product_type", "google_product_category") if r[k])
+        + f"<link>{e(str(r['link']))}</link>"
         + "".join(f"<g:additional_image_link>{e(u)}</g:additional_image_link>" for u in r["additional_image_link"].split(",") if u)
         + (f"<g:size>{e(r['size'])}</g:size>" if r["size"] else "") + "<g:identifier_exists>no</g:identifier_exists></item>\n"
         for r in rows)
