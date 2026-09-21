@@ -842,8 +842,17 @@ def tile_style(slug):
     if not isinstance(t, dict):
         return ""
     hz = _content.product(slug, "hover_z", None)          # extra zoom on the in-hand picture alone
+    # framing set by hand in the grid editor: a scale, a nudge and a turn, about the picture's centre
+    fr = _content.product(slug, "frame", None) or {}
+    bits = ""
+    for key, pre in (("default", "fd"), ("hover", "fh")):
+        f = fr.get(key)
+        if not f:
+            continue
+        bits += (f';--{pre}z:{f.get("z", 1):g};--{pre}x:{f.get("x", 0):g}%'
+                 f';--{pre}y:{f.get("y", 0):g}%;--{pre}r:{f.get("r", 0):g}deg')
     return (f' style="--x:{t.get("x", 50):g}%;--y:{t.get("y", 50):g}%;--z:{t.get("z", 1.12):g}'
-            + (f';--hz:{hz:g}' if hz else "") + '"')
+            + (f';--hz:{hz:g}' if hz else "") + bits + '"')
 
 
 def category(slug, family):

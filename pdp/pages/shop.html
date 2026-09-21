@@ -170,6 +170,11 @@
   .piece .pic img.held{object-position:var(--hx,var(--x,50%)) var(--hy,var(--y,50%));
     transform-origin:var(--hx,var(--x,50%)) var(--hy,var(--y,50%));
     transform:scale(calc(var(--z,1.12) * var(--hz,1)))}
+  /* a piece framed by hand in the grid editor: scale, nudge and turn, about the picture's own centre */
+  .piece[style*="--fdz"] .pic img:not(.held){transform-origin:50% 50%;
+    transform:translate(var(--fdx,0%),var(--fdy,0%)) scale(var(--fdz,1)) rotate(var(--fdr,0deg))}
+  .piece[style*="--fhz"] .pic img.held{transform-origin:50% 50%;
+    transform:translate(var(--fhx,0%),var(--fhy,0%)) scale(var(--fhz,1)) rotate(var(--fhr,0deg))}
 
   /* every tile's pictures sit in one clipped 4:5 frame, in every layout, so a zoomed picture
      can never spill onto its neighbours; framing is set in the lab (by default a little closer

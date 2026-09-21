@@ -126,6 +126,14 @@
     "x": 48.6,
     "y": 62.1,
     "z": 1.18
+   },
+   "frame": {
+    "hover": {
+     "z": 1.06,
+     "x": 2.5,
+     "y": 0,
+     "r": -1
+    }
    }
   },
   "lunar-canyon-ring": {
@@ -241,6 +249,14 @@
     "x": 50.1,
     "y": 50.1,
     "z": 1.2
+   },
+   "frame": {
+    "hover": {
+     "z": 1.07,
+     "x": 0,
+     "y": 2.5,
+     "r": 0
+    }
    }
   },
   "ori": {
@@ -272,7 +288,15 @@
    ],
    "hidden": [],
    "tile_hover": "img/ori/hand-1.jpg",
-   "hover_z": 1.15
+   "hover_z": 1.15,
+   "frame": {
+    "hover": {
+     "z": 1.27,
+     "x": -3.5,
+     "y": 1,
+     "r": 1
+    }
+   }
   },
   "pip": {
    "frames": {
@@ -308,7 +332,15 @@
     "z": 1.54
    },
    "hero": "img/pip/hero.jpg",
-   "tile_hover": "img/pip/hand-2.jpg"
+   "tile_hover": "img/pip/hand-2.jpg",
+   "frame": {
+    "hover": {
+     "z": 1.29,
+     "x": -4.5,
+     "y": 4.5,
+     "r": 0
+    }
+   }
   },
   "rebi": {
    "frames": {
@@ -375,7 +407,21 @@
    },
    "hero": "img/ren/hero.jpg",
    "hidden": [],
-   "tile_hover": "img/ren/hires-1-mirrored.jpg"
+   "tile_hover": "img/ren/hires-1-mirrored.jpg",
+   "frame": {
+    "default": {
+     "z": 1.11,
+     "x": 0,
+     "y": 0,
+     "r": 0
+    },
+    "hover": {
+     "z": 1.11,
+     "x": -5.5,
+     "y": -5,
+     "r": -1
+    }
+   }
   },
   "sietch-aperture": {
    "frames": {
@@ -503,6 +549,14 @@
     "x": 49.9,
     "y": 49.8,
     "z": 1.65
+   },
+   "frame": {
+    "default": {
+     "z": 1.03,
+     "x": 0,
+     "y": 0,
+     "r": 0
+    }
    }
   },
   "zuma": {
@@ -537,7 +591,21 @@
     "img/zuma/plain-2.jpg"
    ],
    "hidden": [],
-   "tile_hover": "img/zuma/hand-1.jpg"
+   "tile_hover": "img/zuma/hand-1.jpg",
+   "frame": {
+    "default": {
+     "z": 1.01,
+     "x": 0,
+     "y": 0,
+     "r": 0
+    },
+    "hover": {
+     "z": 1.1,
+     "x": 3.5,
+     "y": -3,
+     "r": 1.5
+    }
+   }
   },
   "zuma-ring": {
    "frames": {
