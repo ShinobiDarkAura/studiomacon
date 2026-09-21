@@ -234,6 +234,11 @@
   .related{padding:calc(180px + 10vh) calc(var(--pad) + 24px + 7.5vw) 0;text-align:center}
   .related h2{margin:0 0 20px;font:400 53px/1 var(--serif);text-transform:uppercase}
   .related .rel-blurb{margin:0 auto 56px;max-width:480px;font-size:16px;line-height:1.55}
+  /* the Bureau of Provenance stamp, pressed onto the end of "Worth" the way the home page presses it onto "Things," */
+  .related h2.stamped{position:relative;display:inline-block;width:max-content;max-width:100%;align-self:center}          /* hugs its words, so the stamp lands on "Worth" on phones too */
+  .related .stamp{position:absolute;z-index:3;width:2.93em;left:calc(100% - .45em - 1.465em);top:calc(.2em - .84em - 1.465em);
+    transform:rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
+  .related .stamp.on{opacity:1;transform:rotate(-14deg)}
   .rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:left}
   .rel-grid{width:60%;margin:0 auto}          /* 40% smaller than the full width: a closer, quieter row */
   .rel-name{font-size:calc(var(--tile-name) + 5pt) !important}          /* names scaled down with the pictures */
@@ -538,7 +543,7 @@
 
     function go(i) {
       i = Math.max(0, Math.min(track.children.length - 1, i));
-      track.style.transition = '';
+      if (track.style.transition) { track.style.transition = ''; void track.offsetWidth; }          // after a swipe: the slide is registered before it moves, or Safari skips a frame (the flicker)
       track.style.transform = 'translate3d(' + (-i * 100) + '%,0,0)';
       if (i === at) return;
       at = i;
@@ -606,7 +611,20 @@
     </div>
   </section>
 
-  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-grid"><a class="rel-piece" href="rebi.html"><span class="rel-frame"><img src="img/rebi/hero--tile--cm5.5p0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Rebi</span><span class="rel-cost">$200</span></a><a class="rel-piece" href="ren.html"><span class="rel-frame"><img src="img/ren/hero--tile--cm6p0.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Ren</span><span class="rel-cost">$240</span></a><a class="rel-piece" href="zuma.html"><span class="rel-frame"><img src="img/zuma/hero--tile--cm4.5p1.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Zuma</span><span class="rel-cost">$200</span></a></div></section>
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-grid"><a class="rel-piece" href="rebi.html"><span class="rel-frame"><img src="img/rebi/hero--tile--cm5.5p0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Rebi</span><span class="rel-cost">$200</span></a><a class="rel-piece" href="ren.html"><span class="rel-frame"><img src="img/ren/hero--tile--cm6p0.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Ren</span><span class="rel-cost">$240</span></a><a class="rel-piece" href="zuma.html"><span class="rel-frame"><img src="img/zuma/hero--tile--cm4.5p1.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Zuma</span><span class="rel-cost">$200</span></a></div></section>
+  <script>
+  // the stamp presses down once the heading it sits on is in view, as on the home page
+  (function () {
+    var stamp = document.querySelector('.related .stamp'); if (!stamp) return;
+    var press = function () { stamp.classList.add('on'); };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return press();
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      io.disconnect(); setTimeout(press, 500);
+    }, {threshold: 0.9});
+    io.observe(stamp.closest('h2'));
+  })();
+  </script>
 
   <!-- lore and making blocks, parked for now
   <section class="closing">

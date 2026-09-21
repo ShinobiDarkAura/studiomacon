@@ -1038,7 +1038,7 @@ def related_block(p, products):
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>'
         for x in pick)
     return ('<section class="related" aria-label="Other pieces">'
-            '<p class="eyebrow">Kindred</p><h2>Also Worth<br>Keeping</h2>'
+            '<p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img class="stamp" src="img/provenance-stamp.png" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2>'
             '<p class="rel-blurb">We’d like to introduce you to a few friends</p>'
             f'<div class="rel-grid">{tiles}</div></section>')
 
