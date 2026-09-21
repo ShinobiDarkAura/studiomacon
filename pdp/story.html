@@ -70,13 +70,18 @@
     display:inline-flex;align-items:center;gap:4px;color:rgba(0,0,0,.5);text-decoration:none}
   .readmore button::after{content:"";width:1em;height:1em;flex:none;background:currentColor;
     -webkit-mask:var(--arr) center/contain no-repeat;mask:var(--arr) center/contain no-repeat;
-    transition:transform .3s ease}
+    transition:transform .3s ease,opacity .28s ease,width .28s ease,margin .28s ease}
+  .readmore button[aria-expanded="true"]::after{opacity:0;width:0;margin-left:-4px}          /* gone while the story is open */
   .readmore button:hover{color:#000}
   .readmore button:hover::after{transform:translateX(5px)}
   /* lucide arrow-right, drawn at the type's own size */
   .readmore{--arr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E")}
-  .more[hidden]{display:none}
-  .more p.lede:first-child{margin-top:1em}
+  .more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.22,1,.36,1)}
+  .more > div{overflow:hidden}
+  .more.open{grid-template-rows:1fr}
+  .more p.lede{margin-top:1em;opacity:0;transform:translateY(6px);transition:opacity .45s ease .12s,transform .45s ease .12s}
+  .more.open p.lede{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){ .more,.more p.lede{transition:none} }
   /* Drawn Together: the two childhood photographs as real Polaroids, off-white paper with a little grain,
      laid slightly askew and overlapping, with a soft, layered shadow */
   /* The three photographs are placed by hand in pdp/_editor/photos.html, which writes the
@@ -84,6 +89,17 @@
   .childhood{position:relative;width:600px;height:780px;margin:0 auto;padding:0;
     transform:scale(var(--k,1));transform-origin:top center;margin-bottom:calc(780px * (var(--k,1) - 1))}
   .polaroid,.childhood .strip{position:absolute;left:50%;top:0;margin:0;transform:translate(-50%,0)}
+  /* they land one at a time, in reading order: Alex, the strip, then Hannah below */
+  .childhood .polaroid,.childhood .strip{opacity:0}
+  .childhood.is-seen .polaroid,.childhood.is-seen .strip{animation:photo-in .95s cubic-bezier(.16,1,.3,1) both}
+  .childhood.is-seen .polaroid:last-child{animation-delay:0ms}
+  .childhood.is-seen .strip{animation-delay:260ms}
+  .childhood.is-seen .polaroid:first-child{animation-delay:520ms}
+  @keyframes photo-in{from{opacity:0;transform:translate(-50%,26px)}to{opacity:1;transform:translate(-50%,0)}}
+  @media (prefers-reduced-motion:reduce){
+    .childhood .polaroid,.childhood .strip{opacity:1}
+    .childhood.is-seen .polaroid,.childhood.is-seen .strip{animation:none}
+  }
   .polaroid{width:auto}
   .childhood .strip img{display:block;height:auto}
   .polaroid .card{display:block;padding:7% 7% 26%;background:#f3efe6 url(img/pages/polaroid-paper.png) 0 0/256px;border-radius:2px;
@@ -332,23 +348,36 @@
     <div class="intro">
       <p class="eyebrow" data-edit="page:story.html:c8927cf4">Our Story</p>
       <h1 data-edit="page:story.html:b9a5e0f1">Drawn<br>Together</h1>
-      <p class="lede" data-edit="page:story.html:a284affb"><a href="https://www.instagram.com/inchoate.light/" target="_blank" rel="noopener">Alex Cohen</a> and <a href="https://www.instagram.com/hannahwcohen/" target="_blank" rel="noopener">Hannah Woodard</a> met in a figure drawing class at RISD in 2008. Two eager freshmen at neighboring easels, learning to make art together. They became close, but the journey was winding, and it led them apart for a decade.</p>
-      <div class="more" id="more" hidden>
-        <p class="lede" data-edit="page:story.html:09dc22ca">She had grown up in a sylvan corner of rural Vermont, building fairy worlds from branches, leaves and stones. He had been drawing wherever he happened to be: at the table, in the car, in the margins of his school notes. When they finally found their way back to each other, they married in 2023.</p>
-        <p class="lede" data-edit="page:story.html:2fef87eb">Through it all, they never stopped making things for one another. Little objects that kept them connected over many years and miles apart. That is how Maçon was born, out of the art they made for each other to express a feeling too vast for language.<br><i>Artifacts of love.</i></p>
+      <p class="lede" data-edit="page:story.html:0d3481b7"><a href="https://www.instagram.com/hannahwcohen/" target="_blank" rel="noopener">Hannah Woodard</a> grew up in a sylvan corner of Vermont, building tiny worlds from branches, leaves and stones from her forest. <a href="https://www.instagram.com/inchoate.light/" target="_blank" rel="noopener">Alex Cohen</a> grew up in New York, drawing constantly: at the dinner table, on road trips, in the margins of his school notes.</p>
+      <div class="more" id="more">
+        <div>
+        <p class="lede" data-edit="page:story.html:15d07e3d">They met in a figure drawing class at RISD in 2008, two eager freshmen at neighboring easels, learning to make art together. They became close, but the journey was winding, and it led them apart for a decade.</p>
+        <p class="lede" data-edit="page:story.html:12e2bdf0">When they finally found their way back to each other, they married in 2023. Through it all they never stopped making things for one another: little objects that kept them connected over many years and miles apart. That is how Maçon was born.<br><i>Artifacts of love.</i></p>
+        </div>
+      </div>
       </div>
       <p class="readmore" data-edit="page:story.html:8af8a2ac"><button type="button" id="readmore" aria-expanded="false" aria-controls="more">Full Story</button></p>
     </div>
   </section>
 </main>
 <script>
+  // the three photographs land one after another, once the block is on screen
+  (function () {
+    var block = document.querySelector('.childhood');
+    if (!block) return;
+    if (!('IntersectionObserver' in window)) { block.classList.add('is-seen'); return; }
+    new IntersectionObserver(function (es, o) {
+      es.forEach(function (e) { if (e.isIntersecting) { block.classList.add('is-seen'); o.disconnect(); } });
+    }, {threshold: 0.12}).observe(block);
+  })();
+
   // Our Story opens with one paragraph; the rest unfolds on request
   (function () {
     var btn = document.getElementById('readmore'), more = document.getElementById('more');
     if (!btn || !more) return;
     btn.addEventListener('click', function () {
-      var open = more.hasAttribute('hidden');
-      if (open) { more.removeAttribute('hidden'); } else { more.setAttribute('hidden', ''); }
+      var open = !more.classList.contains('open');
+      more.classList.toggle('open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       btn.textContent = open ? 'Close' : 'Full Story';
     });

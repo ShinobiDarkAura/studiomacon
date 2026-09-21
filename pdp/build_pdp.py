@@ -276,17 +276,15 @@ LIVE_PRICE = {v["id"].split("/")[-1]: v["price"] for d in SHOPIFY.values() for v
 
 
 SIZER = """      <div class="sizer-panel" id="sizer-panel" hidden>
-        <h2><mark>Finding your size</mark></h2>
-        <p class="lede">Two ways to find it. Printing the sizer is the most accurate; measuring a ring you already wear is the easiest. If the piece arrives and it is not right, we resize or exchange it.</p>
-        <div class="printbtn"><button type="button" data-print-sizer>Print the sizer</button></div>
-        <div class="step">
-          <h2><mark>1. Check the print</mark></h2>
-          <p>Print at 100%, with page scaling and &#8220;fit to page&#8221; switched off. Then hold a ruler against the bar below. It must measure exactly 100&#160;mm. If it does not, the print was scaled and the sizer will be wrong.</p>
+        <h2 class="st"><mark class="hl a">Finding your size</mark></h2>
+        <p class="lede st">Two ways to find it: print the sizer below, which is the most accurate, or measure a ring you already wear. If the piece arrives and it is not right, we resize or exchange it. Print at 100%, with page scaling switched off, then hold a ruler against the bar: it must read exactly 100&#160;mm, or the print was scaled and the sizer will be wrong.</p>
+        <div class="printbtn st"><button type="button" data-print-sizer>Print the sizer</button></div>
+        <div class="step st">
           <div class="bar"></div>
           <div class="cap"><span>0</span><span>50 mm</span><span>100 mm</span></div>
         </div>
-        <div class="step">
-          <h2><mark>2. Cut and wrap</mark></h2>
+        <div class="step st">
+          <h2><mark class="hl b">1. Cut and wrap</mark></h2>
           <p>Cut out the strip and the slot in it. Wrap it around the base of your finger, pointed end first, and feed it through the slot.</p>
           <div class="sizer">
             <div class="slot"></div>
@@ -295,13 +293,13 @@ SIZER = """      <div class="sizer-panel" id="sizer-panel" hidden>
           </div>
           <p class="cut">Measure at the end of the day, when fingers are at their largest, and warm. A ring should pass the knuckle with a little resistance.</p>
         </div>
-        <div class="step">
-          <h2><mark>Or measure a ring you own</mark></h2>
+        <div class="step st">
+          <h2><mark class="hl c">2. Or measure a ring you own</mark></h2>
           <p>Measure straight across the inside of a ring that already fits, edge to edge, in millimetres.</p>
           <table><thead><tr><th>US size</th><th>Inside diameter</th><th>Circumference</th></tr></thead><tbody data-sizes></tbody></table>
           <p class="more-rows"><button type="button" data-more-sizes aria-expanded="false">Show all sizes</button></p>
         </div>
-        <p class="helpnote">Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through.</p>
+        <p class="helpnote st">Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through.</p>
       </div>
 """
 

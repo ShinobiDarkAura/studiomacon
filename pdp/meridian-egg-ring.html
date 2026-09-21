@@ -78,7 +78,13 @@
   /* ── ring sizer: takes the column's place, rather than its own page ─ */
   .sizer-panel{text-align:left}
   .sizer-panel h2{font:400 28px/1.12 var(--serif);text-transform:uppercase;letter-spacing:.01em;margin:0 0 14px}
-  .sizer-panel h2 mark{background:#ffe94d;color:inherit;padding:2px 8px 3px;border-radius:2px}          /* the emails' yellow, at full strength */
+  /* highlighter, not a rectangle: each stroke is its own shape and none of them line up */
+  .sizer-panel h2 mark{background:none;color:inherit;padding:2px 9px 3px;position:relative;isolation:isolate}
+  .sizer-panel h2 mark::before{content:"";position:absolute;inset:0;z-index:-1;background:#ffe94d;
+    mix-blend-mode:multiply;opacity:.92}
+  .sizer-panel h2 mark.a::before{clip-path:polygon(1% 14%,99% 6%,100% 82%,99.4% 96%,2% 91%,0.4% 40%);transform:rotate(-.5deg) scaleY(1.04)}
+  .sizer-panel h2 mark.b::before{clip-path:polygon(2% 8%,98% 15%,99.6% 88%,96% 97%,1% 90%,0% 34%);transform:rotate(.7deg) scaleY(.98)}
+  .sizer-panel h2 mark.c::before{clip-path:polygon(0.5% 18%,97% 4%,100% 74%,98% 94%,3% 96%,1.5% 52%);transform:rotate(-.9deg) scaleY(1.06)}
   .sizer-panel .lede{font-size:16px;line-height:1.55;margin:0 0 30px}
   .sizer-panel .step{margin:0 0 34px}
   .sizer-panel .step p{margin:0 0 10px;font-size:15px;line-height:1.55}
@@ -89,15 +95,15 @@
   /* the printed strip only works at 100%: this bar is exactly 100mm, so a scaled print is caught */
   .sizer-panel .bar{width:100mm;max-width:100%;height:13px;border:1px solid var(--ink)}
   .sizer-panel .cap{display:flex;justify-content:space-between;width:100mm;max-width:100%;margin-top:5px;
-    font-size:12px;letter-spacing:.08em;text-transform:uppercase}
-  .sizer-panel .sizer{margin:22px 0 0;width:74mm;max-width:100%;border:1px solid var(--ink);border-radius:2px;background:var(--field);padding:0 0 3mm}
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding-bottom:16px}
+  .sizer-panel .sizer{margin:22px 0 0;width:74mm;max-width:100%;border:0;border-radius:16px;background:var(--field);padding:0 0 3mm;overflow:hidden}
   .sizer-panel .slot{width:11mm;height:5mm;margin:4mm 0 5mm 4mm;border:1px solid var(--ink);border-radius:1px}
   .sizer-panel .ticks{position:relative;height:17mm;margin:0 4mm}
   .sizer-panel .t{position:absolute;top:0;width:1px;height:6mm;background:var(--ink)}
   .sizer-panel .t.major{height:9mm}
   .sizer-panel .n{position:absolute;top:9.6mm;transform:translateX(-50%);font-size:9px;font-weight:400}
   .sizer-panel .edge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 4mm}
-  .sizer-panel .cut{font-size:13px;color:rgba(0,0,0,.55);margin:12px 0 0}
+  .sizer-panel .cut{font-size:13px;color:rgba(0,0,0,.55);margin:28px 0 0}          /* 16px more air under the strip */
   .sizer-panel table{border-collapse:collapse;font-size:14px;margin:12px 0 0;width:100%}
   .sizer-panel th,.sizer-panel td{text-align:left;padding:6px 18px 6px 0;border-bottom:1px solid var(--rule)}
   .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
@@ -105,13 +111,23 @@
   .sizing-open .info-main{display:none}
   .sizer-panel[hidden]{display:none}
   /* the panel and the product column trade places rather than blinking */
-  body.sizing-open .sizer-panel{animation:sizer-in .46s cubic-bezier(.16,1,.3,1) both}
-  body.sizing-closing .sizer-panel{animation:sizer-out .24s ease both}
+  body.sizing-open .sizer-panel{animation:sizer-fade .3s ease both}
+  body.sizing-open .sizer-panel .st{animation:sizer-in .62s cubic-bezier(.16,1,.3,1) both}
+  body.sizing-open .sizer-panel .st:nth-child(1){animation-delay:40ms}
+  body.sizing-open .sizer-panel .st:nth-child(2){animation-delay:140ms}
+  body.sizing-open .sizer-panel .st:nth-child(3){animation-delay:240ms}
+  body.sizing-open .sizer-panel .st:nth-child(4){animation-delay:340ms}
+  body.sizing-open .sizer-panel .st:nth-child(5){animation-delay:440ms}
+  body.sizing-open .sizer-panel .st:nth-child(6){animation-delay:540ms}
+  @keyframes sizer-fade{from{opacity:0}to{opacity:1}}
+  body.sizing-closing .sizer-panel{animation:sizer-out .26s ease both}          /* the whole panel leaves as one */
+  body.sizing-closing .sizer-panel .st{animation:none}
   body.sizing-back .info-main{animation:sizer-in .46s cubic-bezier(.16,1,.3,1) both}
   @keyframes sizer-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @keyframes sizer-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){
-    body.sizing-open .sizer-panel,body.sizing-closing .sizer-panel,body.sizing-back .info-main{animation:none}
+    body.sizing-open .sizer-panel,body.sizing-open .sizer-panel .st,
+    body.sizing-closing .sizer-panel,body.sizing-back .info-main{animation:none}
   }
   /* the size table starts at three rows */
   .sizer-panel tbody tr{display:none}
@@ -488,17 +504,15 @@
       </div>
       </div>
       <div class="sizer-panel" id="sizer-panel" hidden>
-        <h2><mark>Finding your size</mark></h2>
-        <p class="lede">Two ways to find it. Printing the sizer is the most accurate; measuring a ring you already wear is the easiest. If the piece arrives and it is not right, we resize or exchange it.</p>
-        <div class="printbtn"><button type="button" data-print-sizer>Print the sizer</button></div>
-        <div class="step">
-          <h2><mark>1. Check the print</mark></h2>
-          <p>Print at 100%, with page scaling and &#8220;fit to page&#8221; switched off. Then hold a ruler against the bar below. It must measure exactly 100&#160;mm. If it does not, the print was scaled and the sizer will be wrong.</p>
+        <h2 class="st"><mark class="hl a">Finding your size</mark></h2>
+        <p class="lede st">Two ways to find it: print the sizer below, which is the most accurate, or measure a ring you already wear. If the piece arrives and it is not right, we resize or exchange it. Print at 100%, with page scaling switched off, then hold a ruler against the bar: it must read exactly 100&#160;mm, or the print was scaled and the sizer will be wrong.</p>
+        <div class="printbtn st"><button type="button" data-print-sizer>Print the sizer</button></div>
+        <div class="step st">
           <div class="bar"></div>
           <div class="cap"><span>0</span><span>50 mm</span><span>100 mm</span></div>
         </div>
-        <div class="step">
-          <h2><mark>2. Cut and wrap</mark></h2>
+        <div class="step st">
+          <h2><mark class="hl b">1. Cut and wrap</mark></h2>
           <p>Cut out the strip and the slot in it. Wrap it around the base of your finger, pointed end first, and feed it through the slot.</p>
           <div class="sizer">
             <div class="slot"></div>
@@ -507,13 +521,13 @@
           </div>
           <p class="cut">Measure at the end of the day, when fingers are at their largest, and warm. A ring should pass the knuckle with a little resistance.</p>
         </div>
-        <div class="step">
-          <h2><mark>Or measure a ring you own</mark></h2>
+        <div class="step st">
+          <h2><mark class="hl c">2. Or measure a ring you own</mark></h2>
           <p>Measure straight across the inside of a ring that already fits, edge to edge, in millimetres.</p>
           <table><thead><tr><th>US size</th><th>Inside diameter</th><th>Circumference</th></tr></thead><tbody data-sizes></tbody></table>
           <p class="more-rows"><button type="button" data-more-sizes aria-expanded="false">Show all sizes</button></p>
         </div>
-        <p class="helpnote">Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through.</p>
+        <p class="helpnote st">Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through.</p>
       </div>
 
     </div>
