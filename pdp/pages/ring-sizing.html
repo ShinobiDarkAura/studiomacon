@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ring Sizing | Studio Maçon</title>
+<meta name="description" content="Find your ring size at home: print the sizer, or measure a ring you already wear.">
+<link rel="icon" href="img/favicon.png">
+<link rel="stylesheet" href="site.css?v={{CSSV}}">
+<style>
+  .sizing{padding:calc(var(--head) + 64px) var(--pad) 0;max-width:760px;margin:0 auto}
+  .sizing h1{margin-bottom:22px}
+  .sizing .lede{font-size:17px;line-height:1.55;margin:0 0 44px;max-width:520px}
+
+  .step{margin:0 0 44px}
+  .step h2{font:400 22px/1.15 var(--serif);text-transform:uppercase;letter-spacing:.01em;margin:0 0 12px}
+  .step p{margin:0 0 10px;font-size:16px;line-height:1.55;max-width:520px}
+  .step ol{margin:0;padding-left:1.2em;font-size:16px;line-height:1.7;max-width:520px}
+
+  /* The printed sizer only works if the page prints at 100%. The check bar is
+     exactly 100mm: if a ruler says otherwise, the print was scaled. */
+  .check{margin:22px 0 10px}
+  .check .bar{position:relative;width:100mm;height:13px;border:1px solid var(--ink);border-right-width:1px}
+  .check .bar span{position:absolute;top:0;bottom:0;width:1px;background:var(--ink)}
+  .check .cap{display:flex;justify-content:space-between;width:100mm;margin-top:5px;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+
+  /* the sizer itself: a strip with the US sizes marked at their true circumferences */
+  .sizer{position:relative;margin:26px 0 0;width:74mm;border:1px solid var(--ink);border-radius:2px;
+    background:var(--field);padding:0 0 3mm}
+  .sizer .slot{width:11mm;height:5mm;margin:4mm 0 5mm 4mm;border:1px solid var(--ink);border-radius:1px}
+  .sizer .ticks{position:relative;height:17mm;margin:0 4mm}
+  .sizer .t{position:absolute;top:0;width:1px;height:6mm;background:var(--ink)}
+  .sizer .t.major{height:9mm}
+  .sizer .n{position:absolute;top:9.6mm;transform:translateX(-50%);font-size:9px;letter-spacing:.02em}
+  .sizer .edge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 4mm}
+
+  .cut{margin:12px 0 0;font-size:13px;color:rgba(0,0,0,.55);max-width:520px}
+
+  .fallback{border-top:1px solid var(--rule);padding-top:38px}
+  table.sizes{border-collapse:collapse;font-size:15px;margin:14px 0 0}
+  table.sizes th,table.sizes td{text-align:left;padding:7px 26px 7px 0;border-bottom:1px solid var(--rule)}
+  table.sizes th{text-transform:uppercase;font-size:13px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
+
+  .helpnote{border-top:1px solid var(--rule);margin-top:44px;padding:38px 0 0;font-size:16px;line-height:1.55;max-width:520px}
+
+  .printbtn{margin:0 0 44px}
+  .printbtn button{font-family:inherit;font-size:calc(18px - 2pt);text-transform:uppercase;letter-spacing:.08em;
+    height:47px;padding:0 26px;border:1px solid var(--ink);background:#000;color:#fff;cursor:pointer;
+    transition:background .25s ease}
+  .printbtn button:hover{background:#333}
+
+  @media (max-width:1023px){
+    .sizing{padding-left:var(--gutter);padding-right:var(--gutter)}
+  }
+
+  /* printing: only the sizer, at exactly 100% */
+  @media print{
+    .head,.ship-bar,footer,.printbtn,.menu-sheet,.dock{display:none !important}
+    .sizing{padding:0;max-width:none}
+    .sizing .lede,.fallback,.helpnote{display:none}
+    .step h2{font-size:16px}
+    body{background:#fff}
+    .sizer{background:none;break-inside:avoid}
+    @page{margin:14mm}
+  }
+</style>
+</head>
+<body>
+
+{{NAV}}
+
+<main class="sizing">
+  <p class="eyebrow">Rings</p>
+  <h1>Finding<br>Your Size</h1>
+  <p class="lede">Two ways to find it. Printing the sizer is the most accurate; measuring a ring you already wear is the easiest. If the piece arrives and it isn't right, we resize or exchange it.</p>
+
+  <div class="printbtn"><button type="button" id="print">Print the sizer</button></div>
+
+  <section class="step">
+    <h2>1. Check the print</h2>
+    <p>Print this page at 100%, with page scaling and “fit to page” switched off. Then hold a ruler against the bar below. It must measure exactly 100&nbsp;mm, or roughly 3&nbsp;<sup>15</sup>&frasl;<sub>16</sub> inches. If it doesn't, the print was scaled and the sizer will be wrong.</p>
+    <div class="check">
+      <div class="bar" id="bar"></div>
+      <div class="cap"><span>0</span><span>50 mm</span><span>100 mm</span></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <h2>2. Cut and wrap</h2>
+    <p>Cut out the strip below and the small slot in it. Wrap the strip around the base of your finger, pointed end first, and feed it through the slot.</p>
+    <div class="sizer" id="sizer">
+      <div class="slot"></div>
+      <div class="ticks" id="ticks"></div>
+      <p class="edge">Pull to fit, then read the size</p>
+    </div>
+    <p class="cut">Measure at the end of the day, when fingers are at their largest, and warm. A ring should pass the knuckle with a little resistance.</p>
+  </section>
+
+  <section class="step fallback">
+    <h2>Or measure a ring you own</h2>
+    <p>Take a ring that fits the right finger and measure straight across the inside, from edge to edge, in millimetres. Match it below.</p>
+    <table class="sizes">
+      <thead><tr><th>US size</th><th>Inside diameter</th><th>Inside circumference</th></tr></thead>
+      <tbody id="table"></tbody>
+    </table>
+  </section>
+
+  <p class="helpnote">Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through. Every ring is made to order, so it is worth getting right the first time.</p>
+</main>
+
+<script>
+  // US ring sizes: circumference in mm is 36.537 + 2.5535 * size, the standard ISO relation.
+  // Diameter follows from it, so one formula keeps the strip and the table in agreement.
+  (function () {
+    var sizes = [];
+    for (var s = 4; s <= 13; s += 0.5) sizes.push(s);
+    var circ = function (s) { return 36.537 + 2.5535 * s; };
+
+    var ticks = document.getElementById('ticks');
+    var lo = circ(4), hi = circ(13), span = hi - lo;          // the strip covers sizes 4 to 13
+    sizes.forEach(function (s) {
+      var x = (circ(s) - lo) / span * 100;
+      var t = document.createElement('i');
+      t.className = 't' + (s % 1 === 0 ? ' major' : '');
+      t.style.left = x + '%';
+      ticks.appendChild(t);
+      if (s % 1 === 0) {
+        var n = document.createElement('b');
+        n.className = 'n'; n.style.left = x + '%'; n.textContent = s;
+        n.style.fontWeight = '400';
+        ticks.appendChild(n);
+      }
+    });
+
+    var body = document.getElementById('table');
+    sizes.forEach(function (s) {
+      var c = circ(s), d = c / Math.PI;
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>' + (s % 1 === 0 ? s : s.toFixed(1)) + '</td><td>' +
+        d.toFixed(2) + ' mm</td><td>' + c.toFixed(1) + ' mm</td>';
+      body.appendChild(tr);
+    });
+
+    document.getElementById('print').addEventListener('click', function () { window.print(); });
+  })();
+</script>
+
+{{FOOTER}}
+{{SITEJS}}
+</body>
+</html>

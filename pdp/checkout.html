@@ -1043,6 +1043,43 @@
       try { sessionStorage.removeItem(KEY); } catch (err) {}
     });
   })();
+
+
+
+// Ships by: ten working days from today. Weekends and the federal holidays are skipped,
+// because those are the days the foundry and the post office are shut too.
+(function () {
+  var el = document.querySelector('[data-ship-by]');
+  if (!el) return;
+
+  function holidays(y) {
+    var nth = function (m, dow, n) {          // the nth given weekday of a month
+      var d = new Date(y, m, 1), c = 0;
+      while (true) { if (d.getDay() === dow && ++c === n) return new Date(d); d.setDate(d.getDate() + 1); }
+    };
+    var last = function (m, dow) {
+      var d = new Date(y, m + 1, 0);
+      while (d.getDay() !== dow) d.setDate(d.getDate() - 1);
+      return d;
+    };
+    return [
+      new Date(y, 0, 1), nth(0, 1, 3), nth(1, 1, 3), last(4, 1),
+      new Date(y, 5, 19), new Date(y, 6, 4), nth(8, 1, 1),
+      nth(9, 1, 2), new Date(y, 10, 11), nth(10, 4, 4), new Date(y, 11, 25)
+    ].map(function (d) { return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); });
+  }
+
+  var d = new Date(), left = 10, hol = holidays(d.getFullYear()).concat(holidays(d.getFullYear() + 1));
+  while (left > 0) {
+    d.setDate(d.getDate() + 1);
+    var day = d.getDay();
+    if (day === 0 || day === 6) continue;
+    if (hol.indexOf(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()) > -1) continue;
+    left--;
+  }
+  el.textContent = 'Ships by ' + d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+  el.hidden = false;
+})();
 </script>
 <script>
   (function () {

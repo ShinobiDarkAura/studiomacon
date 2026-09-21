@@ -229,6 +229,11 @@ def accordions(slug, k, notes):
         note = ('If your piece needs resizing, takes a knock, or needs adjusting, write to '
                 '<a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and '
                 "we'll look after it.")          # settled copy, not a placeholder
+        if k == "ring":          # a ring that does not fit is the one real risk of buying online
+            note = ('Unsure of your size? <a href="ring-sizing.html">Print our ring sizer</a> '
+                    'or measure a ring you already wear. If it arrives and it is not right, '
+                    'we will resize or exchange it: write to '
+                    '<a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a>.')
         sizing += f'<p class="after-dl">{_content.shared("sizing:" + k, note)}</p>'
 
     # Care belongs to the kind of piece: a change on one totem is a change on every totem.
@@ -656,6 +661,7 @@ PAGE_META = {          # search and share descriptions for the non-product pages
     "contact.html": "Questions about a piece, an order or a commission. Write to Studio Maçon.",
     "shipping.html": "Every piece is made to order. Delivery times, international shipping, sizing and returns.",
     "inspiration.html": "The images, objects and places behind Studio Maçon's artifacts.",
+    "ring-sizing.html": "Find your ring size at home: print the Studio Maçon sizer, or measure a ring you already wear.",
     "bag.html": "Your bag at Studio Maçon.",
 }
 NOINDEX = {"bag.html", "checkout.html", "confirmation.html", "404.html"} | {f"{x}.html" for x in ("ooak-vessel", "ooak-pendant", "ooak-pouch", "macon-cap")}

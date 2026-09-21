@@ -22,7 +22,8 @@
 
   .info{padding:28px var(--pad) 0;text-align:center}
   .price{font-size:19px;margin:0 0 18px}
-  .price .ship-free{margin-left:10px;font-size:14px;opacity:.5}          /* now that every US order ships free, say so where the money is */
+  .price .ship-free{margin-left:10px;font-size:14px;opacity:.5}
+  .ship-by{margin:12px 0 0;font-size:14px;color:rgba(0,0,0,.55);text-align:center}          /* a date reads as a promise; a duration reads as a caveat */          /* now that every US order ships free, say so where the money is */
   .info h1{margin-bottom:12px}          /* h1 default is 22px; 10px tighter under the name */
   /* ring size: the whole bordered block is the control; sizes open beneath it */
   .size{position:relative;margin:0 0 12px;border:1px solid var(--rule);text-align:left}
@@ -249,6 +250,7 @@
       <p class="price" data-edit="price">{{PRICE}}<span class="ship-free">Free shipping</span></p>
       {{SIZE}}
       {{BUY}}
+      <p class="ship-by" data-ship-by hidden></p>
       <div class="desc-block"><p class="label">Field Notes</p><p class="desc" data-edit="description">{{DESC}}</p></div>
       <div class="acc">
 {{ACCORDIONS}}
