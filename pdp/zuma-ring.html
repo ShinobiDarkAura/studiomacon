@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Zuma Ring", "description": "Sterling silver carrying the shoulder line of the Zuma totem around the finger. Unearthed glyphs record rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand.", "image": ["https://studiomacon.co/img/zuma-ring/hero.jpg", "https://studiomacon.co/img/zuma-ring/hand-2.jpg", "https://studiomacon.co/img/zuma-ring/hires-1.jpg", "https://studiomacon.co/img/zuma-ring/plain-1.jpg", "https://studiomacon.co/img/zuma-ring/plain-2.jpg", "https://studiomacon.co/img/zuma-ring/composite.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "zuma-ring", "offers": [{"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790016834">
+<link rel="stylesheet" href="site.css?v=1790017076">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}          /* the picture carries its own corners; a backing showed outside them */
@@ -1359,6 +1359,11 @@
       MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
     });
   });
+
+  // While the print dialog is open, every change of printer or paper lays the page out again, which the
+  // page took as a resize and replayed the sizer drawer's slide and fade behind the dialog. Held still until it closes.
+  addEventListener('beforeprint', function () { document.documentElement.classList.add('printing'); });
+  addEventListener('afterprint', function () { setTimeout(function () { document.documentElement.classList.remove('printing'); }, 400); });
 
   // Mobile menu
   (function () {

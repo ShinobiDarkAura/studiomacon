@@ -656,6 +656,11 @@
     });
   });
 
+  // While the print dialog is open, every change of printer or paper lays the page out again, which the
+  // page took as a resize and replayed the sizer drawer's slide and fade behind the dialog. Held still until it closes.
+  addEventListener('beforeprint', function () { document.documentElement.classList.add('printing'); });
+  addEventListener('afterprint', function () { setTimeout(function () { document.documentElement.classList.remove('printing'); }, 400); });
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;

@@ -475,3 +475,6 @@ body.title-case footer .fine,body.title-case .label,body.title-case .sizer-panel
 body.title-case .bd-head,body.title-case .size-label,body.title-case .edge,
 body.title-case .cap,body.title-case .ship-bar p{text-transform:none;letter-spacing:.005em}
 body.title-case .eyebrow,body.title-case .label,body.title-case .acc-head{letter-spacing:.04em}
+
+/* the print dialog is open: nothing on the page animates when it re-lays itself out for a new printer */
+html.printing *,html.printing *::before,html.printing *::after{transition:none !important}
