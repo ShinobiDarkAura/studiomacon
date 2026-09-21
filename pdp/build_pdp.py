@@ -217,17 +217,13 @@ def accordions(slug, k, notes):
         "apparel": "<p>Hand wash cold and reshape while damp. Dry flat, out of direct sun.</p>",
     }[k]
 
+    # Only real measurements are shown. A row saying "to confirm" on a $370 ring reads as an
+    # unfinished page, which is worse than the row not being there.
     rows = []
     if dims:
         rows.append(("Dimensions", dims.replace(" x ", " × ")))
     if chain:
         rows.append(("Chain", f"{chain.group(1)} inches"))
-    if k == "ring":
-        rows.append(("Size", TODO.format("size range to confirm")))
-    if k in ("pendant", "ring", "jewellery") and not dims:
-        rows.append(("Dimensions", TODO.format("to confirm")))
-    if k == "apparel":
-        rows.append(("Fit", TODO.format("to confirm")))
     sizing = "<dl>" + "".join(f"<dt>{a}</dt><dd>{b}</dd>" for a, b in rows) + "</dl>"
     if k != "apparel":
         note = ('If your piece needs resizing, takes a knock, or needs adjusting, write to '
@@ -245,7 +241,11 @@ def accordions(slug, k, notes):
     if care_html.strip():
         items.append(("Care" if k in ("totem", "apparel") else "Wear &amp; Care", care_html))
     items.append(("Materials", f"<p>{html.escape(mat)}</p>"))
-    if k != "totem":                       # totems carry no sizing row
+    if k == "totem":                       # a totem has a size, just nothing to size it to
+        if dims:
+            shown = dims.replace(" x ", " \u00d7 ")
+            items.append(("Dimensions", '<dl><dt>Height &#215; width &#215; depth</dt><dd>' + shown + '</dd></dl>'))
+    elif rows or k != "apparel":
         items.append(("Sizing", sizing))
     # Shipping reads the same on every piece, so it is edited once for the whole shop.
     ship_a = ("Each piece is made to order; please allow up to 10 business days before it ships. "
