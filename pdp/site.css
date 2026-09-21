@@ -395,7 +395,8 @@ footer .news .legal a{text-underline-offset:4px}
 .gift-more > div{overflow:hidden}
 .gift textarea{display:block;width:100%;margin:12px 0 0;padding:12px 14px;border:1px solid var(--rule);border-radius:0;font:inherit;font-size:14px;line-height:1.5;resize:vertical;background:#fff;height:112px}
 .gift textarea:focus{outline:none;border-color:#000}
-.bag-drawer .bd-note{margin:0 0 20px;font-size:13px;line-height:1.5;color:rgba(0,0,0,.5)}
+.bag-drawer .bd-note{margin:0;padding-bottom:21px;border-bottom:1px solid var(--rule);font-size:13px;line-height:1.5;color:rgba(0,0,0,.5)}          /* a second rule, the same distance below the note as the first sits above Subtotal */
+.bag-drawer .bd-foot .gift{margin-top:25px}
 .bag-drawer .cta{max-width:none;width:100%}
 .bag-drawer .bd-page{display:block;margin-top:14px;text-align:center;font-size:13px;color:rgba(0,0,0,.5);text-decoration:underline;text-underline-offset:3px}
 .bag-drawer .bd-empty{padding-top:28px;padding-bottom:calc(36px + env(safe-area-inset-bottom))}          /* the button never sits on the very edge */
