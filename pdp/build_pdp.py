@@ -224,11 +224,11 @@ def accordions(slug, k, notes):
         rows.append(("Dimensions", dims.replace(" x ", " × ")))
     if chain:
         rows.append(("Chain", f"{chain.group(1)} inches"))
-    sizing = "<dl>" + "".join(f"<dt>{a}</dt><dd>{b}</dd>" for a, b in rows) + "</dl>"
+    sizing = ("<dl>" + "".join(f"<dt>{a}</dt><dd>{b}</dd>" for a, b in rows) + "</dl>") if rows else ""
     if k != "apparel":
         note = ('If your piece needs resizing, takes a knock, or needs adjusting, write to '
                 '<a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and '
-                + TODO.format("we'll look after it") + ".")
+                "we'll look after it.")          # settled copy, not a placeholder
         sizing += f'<p class="after-dl">{_content.shared("sizing:" + k, note)}</p>'
 
     # Care belongs to the kind of piece: a change on one totem is a change on every totem.
@@ -240,7 +240,8 @@ def accordions(slug, k, notes):
     items = []
     if care_html.strip():
         items.append(("Care" if k in ("totem", "apparel") else "Wear &amp; Care", care_html))
-    items.append(("Materials", f"<p>{html.escape(mat)}</p>"))
+    if "todo" not in mat.lower():          # no half-written row goes to a customer
+        items.append(("Materials", f"<p>{html.escape(mat)}</p>"))
     if k == "totem":                       # a totem has a size, just nothing to size it to
         if dims:
             shown = dims.replace(" x ", " \u00d7 ")
