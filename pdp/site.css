@@ -104,6 +104,7 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .acc-body dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px}
 .acc-body dt{text-transform:uppercase;font-size:14px;padding-top:2px}
 .acc-body dd{margin:0}
+.acc-body dl:has(> .lone){display:block}          /* a measurement with no label needs no two-column grid */
 .acc-body .after-dl{margin-top:18px}
 .acc-body p.acc-more:last-child{margin:26px 0 0}          /* 8px more air above it, then 4px again */
 .acc-body .acc-more a,.sizer-panel .more-rows button{display:inline-flex;align-items:center;gap:4px;

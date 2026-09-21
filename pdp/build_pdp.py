@@ -250,7 +250,11 @@ def accordions(slug, k, notes):
     if k == "totem":                       # a totem has a size, just nothing to size it to
         if dims:
             shown = dims.replace(" x ", " \u00d7 ")
-            items.append(("Dimensions", '<dl><dt>Height &#215; width &#215; depth</dt><dd>' + shown + '</dd></dl>'))
+            nums = re.findall(r"[\d.]+", dims)
+            unit = (re.search(r"[a-zA-Z\"']+\s*$", dims.strip()) or [""])[0].strip()
+            if len(nums) == 3:
+                shown = " \u00d7 ".join(n + L for n, L in zip(nums, "hwd")) + (" " + unit if unit else "")
+            items.append(("Dimensions", '<dl><dd class="lone">' + shown + '</dd></dl>'))
     elif rows or k != "apparel":
         items.append(("Sizing", sizing))
     # Shipping reads the same on every piece, so it is edited once for the whole shop.
