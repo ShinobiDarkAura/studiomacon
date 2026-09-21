@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Yaël", "description": "Slender solid bronze, balanced on the narrowest of footings. Altar bells resonate in its presence; neighbors report faint chimes at dusk. Its fine upper curves are refined patiently by hand after casting.", "image": ["https://studiomacon.co/img/yael/hero.jpg", "https://studiomacon.co/img/yael/hires-1.jpg", "https://studiomacon.co/img/yael/plain-1.jpg", "https://studiomacon.co/img/yael/hand-2.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "yael", "offers": [{"@type": "Offer", "price": "180.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/yael.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790012331">
+<link rel="stylesheet" href="site.css?v=1790012877">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}          /* the picture carries its own corners; a backing showed outside them */
@@ -111,7 +111,8 @@
   .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
   .sizer-panel .helpnote{margin:30px 0 32px;padding:16px 18px;background:#f4f3f0;border-radius:12px;font-size:15px;line-height:1.55}
   .sizer-panel .helpnote p{margin:0}
-  .sizer-panel .helpnote .note-label{text-transform:uppercase;font-size:13px;letter-spacing:.12em;margin:0 0 8px}
+  .sizer-panel .helpnote .note-label{text-transform:uppercase;font-size:calc(13px - 3pt);font-weight:600;letter-spacing:.12em;opacity:.5;margin:0 0 8px}
+  .sizer-panel::after{content:"";display:block;height:64px}          /* room to scroll past the maker's note */
   /* The panel is an overlay over the details, not a second column sharing their box.
      The details never move, so the column never resizes and nothing can pile up. */
   .info{position:relative}
@@ -1027,16 +1028,18 @@
 
   // Gift wrap: free, chosen in the bag, remembered for this visit until the order goes through
   window.MaconGift = {
-    read: function () { try { var g = JSON.parse(localStorage.getItem('macon-gift') || '{}'); return {wrap: !!g.wrap, note: String(g.note || '').slice(0, 240)}; } catch (e) { return {wrap: false, note: ''}; } },
+    read: function () { try { var g = JSON.parse(localStorage.getItem('macon-gift') || '{}'); return {wrap: !!g.wrap, note: String(g.note || '').slice(0, 200)}; } catch (e) { return {wrap: false, note: ''}; } },
     write: function (g) { try { localStorage.setItem('macon-gift', JSON.stringify(g)); } catch (e) {} },
     mount: function (box) {
       var g = MaconGift.read();
       box.className = 'gift';
-      box.innerHTML = '<label class="gift-check"><input type="checkbox"><span>Add gift wrapping <em>Free</em></span></label>' +
-        '<div class="gift-more"><div><textarea maxlength="240" rows="3" placeholder="Add a note and we\u2019ll write it out by hand (optional)"></textarea></div></div>';
+      box.innerHTML = '<div class="gift-row"><label class="gift-check"><input type="checkbox"><span>Add gift wrapping <em>Free</em></span></label><span class="gift-count" aria-live="polite"></span></div>' +
+        '<div class="gift-more"><div><textarea maxlength="200" rows="3" aria-label="Gift note" placeholder="Write a note and we\u2019ll copy it out by hand on a card (optional)"></textarea></div></div>';
       var box2 = box.querySelector('input'), note = box.querySelector('textarea');
       box2.checked = g.wrap; note.value = g.note; box.classList.toggle('on', g.wrap);
-      function save() { MaconGift.write({wrap: box2.checked, note: note.value.trim()}); box.classList.toggle('on', box2.checked); }
+      var count = box.querySelector('.gift-count');
+      function save() { MaconGift.write({wrap: box2.checked, note: note.value.trim()}); box.classList.toggle('on', box2.checked); count.textContent = note.value.length + ' / 200'; }
+      count.textContent = note.value.length + ' / 200';
       box2.addEventListener('change', function () { save(); document.querySelectorAll('.gift input').forEach(function (x) { if (x !== box2) { x.checked = box2.checked; x.closest('.gift').classList.toggle('on', box2.checked); } }); });
       note.addEventListener('input', save);
     }

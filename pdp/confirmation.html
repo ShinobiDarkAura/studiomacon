@@ -16,7 +16,7 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790012331">
+<link rel="stylesheet" href="site.css?v=1790012877">
 <style>
   .done-page{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
   .done-page p.lede{margin:0 0 32px;font-size:17px;line-height:1.55}
@@ -648,16 +648,18 @@
 
   // Gift wrap: free, chosen in the bag, remembered for this visit until the order goes through
   window.MaconGift = {
-    read: function () { try { var g = JSON.parse(localStorage.getItem('macon-gift') || '{}'); return {wrap: !!g.wrap, note: String(g.note || '').slice(0, 240)}; } catch (e) { return {wrap: false, note: ''}; } },
+    read: function () { try { var g = JSON.parse(localStorage.getItem('macon-gift') || '{}'); return {wrap: !!g.wrap, note: String(g.note || '').slice(0, 200)}; } catch (e) { return {wrap: false, note: ''}; } },
     write: function (g) { try { localStorage.setItem('macon-gift', JSON.stringify(g)); } catch (e) {} },
     mount: function (box) {
       var g = MaconGift.read();
       box.className = 'gift';
-      box.innerHTML = '<label class="gift-check"><input type="checkbox"><span>Add gift wrapping <em>Free</em></span></label>' +
-        '<div class="gift-more"><div><textarea maxlength="240" rows="3" placeholder="Add a note and we\u2019ll write it out by hand (optional)"></textarea></div></div>';
+      box.innerHTML = '<div class="gift-row"><label class="gift-check"><input type="checkbox"><span>Add gift wrapping <em>Free</em></span></label><span class="gift-count" aria-live="polite"></span></div>' +
+        '<div class="gift-more"><div><textarea maxlength="200" rows="3" aria-label="Gift note" placeholder="Write a note and we\u2019ll copy it out by hand on a card (optional)"></textarea></div></div>';
       var box2 = box.querySelector('input'), note = box.querySelector('textarea');
       box2.checked = g.wrap; note.value = g.note; box.classList.toggle('on', g.wrap);
-      function save() { MaconGift.write({wrap: box2.checked, note: note.value.trim()}); box.classList.toggle('on', box2.checked); }
+      var count = box.querySelector('.gift-count');
+      function save() { MaconGift.write({wrap: box2.checked, note: note.value.trim()}); box.classList.toggle('on', box2.checked); count.textContent = note.value.length + ' / 200'; }
+      count.textContent = note.value.length + ' / 200';
       box2.addEventListener('change', function () { save(); document.querySelectorAll('.gift input').forEach(function (x) { if (x !== box2) { x.checked = box2.checked; x.closest('.gift').classList.toggle('on', box2.checked); } }); });
       note.addEventListener('input', save);
     }
