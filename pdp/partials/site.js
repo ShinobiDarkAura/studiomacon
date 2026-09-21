@@ -55,6 +55,33 @@
     });
   })();
 
+  // Free shipping notice: shows once the first screen is behind you, so it never covers the
+  // film or a product's opening photograph. Dismissing it keeps it away for the rest of the visit.
+  (function () {
+    var bar = document.querySelector('.ship-bar');
+    if (!bar) return;
+    var gone = false;
+    try { gone = sessionStorage.getItem('macon-ship-hide') === '1'; } catch (e) {}
+    if (gone) { bar.remove(); return; }
+
+    var hero = document.querySelector('.film, .gallery .hero, .opening .hand, .branch');
+    var past = function () {
+      var edge = hero ? hero.getBoundingClientRect().bottom : innerHeight * 0.7;
+      return edge <= 0;
+    };
+    var sync = function () { document.body.classList.toggle('ship-on', past()); };
+    addEventListener('scroll', sync, {passive: true});
+    addEventListener('resize', sync, {passive: true});
+    sync();
+
+    bar.querySelector('.ship-x').addEventListener('click', function () {
+      document.body.classList.remove('ship-on');
+      try { sessionStorage.setItem('macon-ship-hide', '1'); } catch (e) {}
+      setTimeout(function () { bar.remove(); }, 520);
+      removeEventListener('scroll', sync);
+    });
+  })();
+
   // Accordions: the height eases through a grid-row transition, so nothing is
   // measured in script and a panel of any length opens at the same pace.
   document.querySelectorAll('.acc-head').forEach(function (b) {

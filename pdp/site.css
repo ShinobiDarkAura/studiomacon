@@ -388,3 +388,33 @@ html.bag-open{overflow:hidden}
 .bag-drawer .bd-head,.bag-drawer .bd-lines,.bag-drawer .bd-foot,.bag-drawer .bd-empty{opacity:0;transform:translateX(24px);transition:opacity .4s ease,transform .6s cubic-bezier(.32,.72,0,1)}
 .bag-drawer.open .bd-head,.bag-drawer.open .bd-lines,.bag-drawer.open .bd-foot,.bag-drawer.open .bd-empty{opacity:1;transform:none;transition-delay:.12s}
 @media (prefers-reduced-motion:reduce){ .bag-drawer .bd-head,.bag-drawer .bd-lines,.bag-drawer .bd-foot,.bag-drawer .bd-empty{transition:none;transform:none;opacity:1} }
+
+/* ── free shipping notice ───────────────────────────────
+   A slim black bar that arrives once the hero is behind you, never over it, and stays
+   dismissed for the rest of the visit. The header slides down to make room rather than
+   sitting under it. */
+.ship-bar{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:center;gap:10px;
+  min-height:var(--ship-h,34px);padding:0 44px 0 16px;background:#000;color:#fff;
+  transform:translateY(-100%);transition:transform .5s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.ship-bar p{display:flex;align-items:center;gap:9px;margin:0;
+  font:500 calc(16px - 3.5pt)/1 var(--sans,'Helvetica Neue',Helvetica,Arial,sans-serif);letter-spacing:.06em;text-transform:uppercase}
+.ship-where{opacity:.62;letter-spacing:.05em}
+.ship-truck{width:30px;height:16px;flex:none;fill:none;stroke:#fff;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.ship-truck .speed{opacity:.55}
+.ship-x{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:30px;height:30px;padding:0;
+  background:none;border:0;color:#fff;opacity:.6;font-size:19px;line-height:1;cursor:pointer}
+.ship-x:hover{opacity:1}
+body.ship-on .ship-bar{transform:none}
+body.ship-on .head{transform:translateY(var(--ship-h,34px))}
+.head{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+@media (max-width:767px){
+  :root{--ship-h:30px}
+  .ship-bar p{font-size:calc(16px - 4.5pt);gap:7px}
+  .ship-truck{width:26px;height:14px}
+  .ship-where{display:none}          /* the line has to fit one row on a phone */
+  body.ship-on .head{transform:translateY(calc(var(--ship-h) + 8px))}          /* the header sits at -2px here, so it needs a little more room */
+}
+@media (prefers-reduced-motion:reduce){ .ship-bar,.head{transition:none} }
+
+.bag-page .ship-note{white-space:nowrap}
+.bag-page .ship-sub{opacity:.55}

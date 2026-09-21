@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Yaël", "description": "Slender solid bronze, balanced on the narrowest of footings. Altar bells resonate in its presence; neighbors report faint chimes at dusk. Its fine upper curves are refined patiently by hand after casting.", "image": ["https://studiomacon.co/img/yael/hero.jpg", "https://studiomacon.co/img/yael/hires-1.jpg", "https://studiomacon.co/img/yael/plain-1.jpg", "https://studiomacon.co/img/yael/hand-2.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "yael", "offers": [{"@type": "Offer", "price": "180.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/yael.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789948225">
+<link rel="stylesheet" href="site.css?v=1789962129">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -312,6 +312,15 @@
 </head>
 <body class="white-right" data-slug="yael">
 
+<!-- Free shipping notice: slides down once the hero is behind you, and stays gone once dismissed. -->
+<aside class="ship-bar" role="status" aria-live="polite">
+  <p><svg class="ship-truck" viewBox="0 0 34 18" aria-hidden="true" focusable="false">
+    <path class="speed s1" d="M1 6h7"/><path class="speed s2" d="M0 10h5"/><path class="speed s3" d="M3 14h6"/>
+    <path d="M12 3h11v9H12z"/><path d="M23 6h4.4l3.1 3.3V12H23z"/>
+    <circle cx="16" cy="14.4" r="2.1"/><circle cx="26.4" cy="14.4" r="2.1"/>
+  </svg>Free shipping on orders over $200 <span class="ship-where">&#183; Continental US</span></p>
+  <button class="ship-x" type="button" aria-label="Dismiss">&#215;</button>
+</aside>
 <nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping<br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><a href="bag.html" style="--i:6">Bag</a></nav>
 <header class="head">
   <div class="left">
@@ -406,7 +415,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Each piece is made to order; please allow up to 10 business days before it ships. Standard shipping takes 3–7 business days, international 5–10. Pieces in original condition (excluding custom work) may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size. <a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.</p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Each piece is made to order; please allow up to 10 business days before it ships. Standard shipping takes 3–7 business days, international 5–10. Shipping is free on orders over $200 within the continental US. Pieces in original condition (excluding custom work) may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size. <a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.</p></div></div></div>
         </div>
       </div>
     </div>
@@ -506,6 +515,33 @@
     }
     ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
       addEventListener(ev, startBlinking, {once: true, passive: true});
+    });
+  })();
+
+  // Free shipping notice: shows once the first screen is behind you, so it never covers the
+  // film or a product's opening photograph. Dismissing it keeps it away for the rest of the visit.
+  (function () {
+    var bar = document.querySelector('.ship-bar');
+    if (!bar) return;
+    var gone = false;
+    try { gone = sessionStorage.getItem('macon-ship-hide') === '1'; } catch (e) {}
+    if (gone) { bar.remove(); return; }
+
+    var hero = document.querySelector('.film, .gallery .hero, .opening .hand, .branch');
+    var past = function () {
+      var edge = hero ? hero.getBoundingClientRect().bottom : innerHeight * 0.7;
+      return edge <= 0;
+    };
+    var sync = function () { document.body.classList.toggle('ship-on', past()); };
+    addEventListener('scroll', sync, {passive: true});
+    addEventListener('resize', sync, {passive: true});
+    sync();
+
+    bar.querySelector('.ship-x').addEventListener('click', function () {
+      document.body.classList.remove('ship-on');
+      try { sessionStorage.setItem('macon-ship-hide', '1'); } catch (e) {}
+      setTimeout(function () { bar.remove(); }, 520);
+      removeEventListener('scroll', sync);
     });
   })();
 
