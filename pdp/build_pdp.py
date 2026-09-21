@@ -249,7 +249,7 @@ def accordions(slug, k, notes):
         items.append(("Sizing", sizing))
     # Shipping reads the same on every piece, so it is edited once for the whole shop.
     ship_a = "Each piece is made to order; please allow up to 10 business days before it ships. Standard shipping takes 3–7 business days, international 5–10."
-    ship_b = ("Pieces in original condition (excluding custom work) may be returned within 14 days of delivery for store credit. "
+    ship_b = ("Pieces in original condition (excluding custom work) may be returned within 30 days of delivery for store credit. "
               "If a piece doesn't fit, we'll gladly help you find the right size. "
               '<a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.')
     items.append(("Shipping &amp; Returns",
