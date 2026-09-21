@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Film frames</title>
+<style>
+  :root{--ui:#111;--line:#e3e3e3}
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;color:var(--ui);
+    font:14px/1.5 -apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;padding:40px 40px 90px}
+  h1{font-size:15px;font-weight:600;letter-spacing:.01em;margin:0 0 4px}
+  .note{color:#777;margin:0 0 30px;max-width:640px}
+  h2{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#888;margin:0 0 12px;font-weight:500}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:56px 48px}
+
+  /* The frame is the picture; the film lives in its window. The window is clipped to the
+     aperture and the artwork sits on top, so nothing of the video laps over the card. */
+  .artifact{position:relative;width:100%;margin:0}
+  .artifact > img{display:block;width:100%;height:auto;position:relative;z-index:3;pointer-events:none}
+  .artifact .win{position:absolute;z-index:1;overflow:hidden}
+  .artifact video{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* measured off the artwork, then overlapped a little so no pale lip shows at the edge */
+  .sheet .win{left:38.6%;top:32.3%;width:22.3%;height:34.1%}
+  .mount .win{left:34.5%;top:34.9%;width:30.9%;height:26.8%}
+
+  /* the film is graded to sit in the paper rather than on it */
+  .vintage video{filter:sepia(.3) saturate(.8) contrast(1.05) brightness(1.02)}
+  .vintage .win::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    background-image:var(--grain);background-size:150px 150px;opacity:.3;mix-blend-mode:overlay;
+    animation:grain .55s steps(3) infinite}
+  /* the aperture's own shade: darker at the edges, as a real frame casts */
+  .vintage .win::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    box-shadow:inset 0 0 22px 6px rgba(56,38,18,.45), inset 0 2px 5px rgba(0,0,0,.35);
+    background:radial-gradient(130% 100% at 50% 45%, rgba(0,0,0,0) 52%, rgba(60,40,20,.3) 100%)}
+
+  /* warmer, heavier: the film reads as a print rather than a screen */
+  .deep video{filter:sepia(.42) saturate(.72) contrast(1.12) brightness(.98)}
+  .deep .win{mix-blend-mode:multiply;background:#efe7d8}
+  .deep .win::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    background-image:var(--grain);background-size:130px 130px;opacity:.38;mix-blend-mode:overlay;
+    animation:grain .5s steps(3) infinite}
+  .deep .win::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    box-shadow:inset 0 0 26px 8px rgba(50,34,14,.5);
+    background:radial-gradient(130% 100% at 50% 42%, rgba(0,0,0,0) 48%, rgba(52,34,14,.38) 100%)}
+
+  /* cool, closer to a real contact print */
+  .plain video{filter:grayscale(.15) contrast(1.06) brightness(1.01)}
+  .plain .win::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    background-image:var(--grain);background-size:170px 170px;opacity:.22;mix-blend-mode:overlay;
+    animation:grain .6s steps(3) infinite}
+  .plain .win::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    box-shadow:inset 0 0 18px 5px rgba(0,0,0,.35)}
+
+  @keyframes grain{0%{background-position:0 0}33%{background-position:-36px 26px}66%{background-position:28px -18px}}
+  :root{--grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='170' height='170' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+  @media (prefers-reduced-motion:reduce){ .win::after{animation:none} }
+
+  .dark{background:#111}
+  .dark h2{color:#999}
+</style>
+</head>
+<body>
+  <h1>Film frames</h1>
+  <p class="note">The two artifacts holding the process film, in three grades. The window is clipped to the
+  aperture and the card sits above it, so the film never laps onto the paper and no white shows at the edge.</p>
+
+  <div class="grid">
+    <div>
+      <h2>Contact sheet — vintage</h2>
+      <figure class="artifact sheet vintage">
+        <div class="win"><video src="../video/about-process.mp4" autoplay muted loop playsinline></video></div>
+        <img src="../img/pages/contact-sheet-cut.png" alt="">
+      </figure>
+    </div>
+    <div>
+      <h2>Slide mount — vintage</h2>
+      <figure class="artifact mount vintage">
+        <div class="win"><video src="../video/about-process.mp4" autoplay muted loop playsinline></video></div>
+        <img src="../img/pages/slide-mount-cut.png" alt="">
+      </figure>
+    </div>
+
+    <div>
+      <h2>Contact sheet — deep</h2>
+      <figure class="artifact sheet deep">
+        <div class="win"><video src="../video/about-process.mp4" autoplay muted loop playsinline></video></div>
+        <img src="../img/pages/contact-sheet-cut.png" alt="">
+      </figure>
+    </div>
+    <div>
+      <h2>Slide mount — deep</h2>
+      <figure class="artifact mount deep">
+        <div class="win"><video src="../video/about-process.mp4" autoplay muted loop playsinline></video></div>
+        <img src="../img/pages/slide-mount-cut.png" alt="">
+      </figure>
+    </div>
+
+    <div>
+      <h2>Contact sheet — plain</h2>
+      <figure class="artifact sheet plain">
+        <div class="win"><video src="../video/about-process.mp4" autoplay muted loop playsinline></video></div>
+        <img src="../img/pages/contact-sheet-cut.png" alt="">
+      </figure>
+    </div>
+    <div>
+      <h2>Slide mount — plain</h2>
+      <figure class="artifact mount plain">
+        <div class="win"><video src="../video/about-process.mp4" autoplay muted loop playsinline></video></div>
+        <img src="../img/pages/slide-mount-cut.png" alt="">
+      </figure>
+    </div>
+  </div>
+</body>
+</html>

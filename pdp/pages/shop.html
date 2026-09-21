@@ -468,8 +468,9 @@
       tile.imgs.forEach(function (im, i) {
         var f = tile.frames[i];
         im.style.filter = 'url(#' + id + ')';
-        im.style.transformOrigin = '50% 50%';
-        im.style.transform = 'translate(' + f.x + '%,' + f.y + '%) scale(' + f.z + ') rotate(' + f.r + 'deg)';
+        im.style.objectPosition = f.x + '% ' + f.y + '%';
+        im.style.transformOrigin = f.x + '% ' + f.y + '%';
+        im.style.transform = 'scale(' + f.z + ')' + (f.r ? ' rotate(' + f.r + 'deg)' : '');
       });
     }
 
@@ -477,8 +478,15 @@
     document.querySelectorAll('.piece[href]').forEach(function (a) {
       var imgs = [].slice.call(a.querySelectorAll('img')); if (!imgs.length) return;
       var b = baked(imgs[0].getAttribute('src'));
+      // seed from what the tile is actually set to: the grid already carries --z 1.12 and a
+      // per-piece --hz, so starting every slider at 1 made every number a hidden multiplier
+      var cs = getComputedStyle(a);
+      var num = function (k, d) { var v = parseFloat(cs.getPropertyValue(k)); return isNaN(v) ? d : v; };
       tiles.push({el: a, slug: a.getAttribute('href').replace('.html', ''), imgs: imgs, b: b, warm: b.warm, tint: b.tint,
-                  frames: imgs.map(function () { return {r: 0, z: 1, x: 0, y: 0}; })});
+                  frames: [{r: 0, z: num('--z', 1.12), x: num('--x', 50), y: num('--y', 50)},
+                           {r: 0, z: num('--z', 1.12) * num('--hz', 1), x: num('--hx', num('--x', 50)), y: num('--hy', num('--y', 50))}],
+                  frames0: [{r: 0, z: num('--z', 1.12), x: num('--x', 50), y: num('--y', 50)},
+                            {r: 0, z: num('--z', 1.12) * num('--hz', 1), x: num('--hx', num('--x', 50)), y: num('--hy', num('--y', 50))}]});
       a.removeAttribute('href');
     });
 
@@ -515,9 +523,9 @@
       '<h5>Showing</h5><div class="seg"><button type="button" data-l="0" class="dark">Default</button><button type="button" data-l="1">Hover</button><button type="button" data-l="2">Ghost</button></div>' +
       '<h5>Frame</h5>' +
       '<label>Rotate<input type="range" data-f="r" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
-      '<label>Zoom<input type="range" data-f="z" min="1" max="2.5" step="0.01" disabled><output>1</output></label>' +
-      '<label>Across<input type="range" data-f="x" min="-30" max="30" step="0.5" disabled><output>0</output></label>' +
-      '<label>Down<input type="range" data-f="y" min="-30" max="30" step="0.5" disabled><output>0</output></label>' +
+      '<label>Zoom<input type="range" data-f="z" min="1" max="2.2" step="0.01" disabled><output>1</output></label>' +
+      '<label>Across<input type="range" data-f="x" min="0" max="100" step="0.5" disabled><output>50</output></label>' +
+      '<label>Down<input type="range" data-f="y" min="0" max="100" step="0.5" disabled><output>50</output></label>' +
       '<div class="row"><button type="button" class="dark" id="tint-copy">Copy settings</button><button type="button" id="tint-reset">Reset piece</button></div>' +
       '<p class="hint">Arrow keys nudge the frame. Ghost shows the hover shot at 50% over the default.</p>';
     document.body.appendChild(box);
@@ -567,7 +575,7 @@
     box.querySelector('#tint-reset').onclick = function () {
       if (!cur) return;
       cur.warm = cur.b.warm; cur.tint = cur.b.tint;
-      cur.frames = cur.imgs.map(function () { return {r: 0, z: 1, x: 0, y: 0}; });
+      cur.frames = cur.frames0.map(function (f) { return {r: f.r, z: f.z, x: f.x, y: f.y}; });
       paint(cur); show();
     };
     box.querySelector('#tint-copy').onclick = function () {
@@ -575,7 +583,8 @@
         var bits = [];
         if (x.warm !== x.b.warm || x.tint !== x.b.tint) bits.push('warm ' + x.warm + ', tint ' + x.tint);
         x.frames.forEach(function (f, i) {
-          if (f.r || f.z !== 1 || f.x || f.y) bits.push((i ? 'hover' : 'default') + ': rotate ' + f.r + ', zoom ' + f.z + ', x ' + f.x + ', y ' + f.y);
+          var o = x.frames0[i];
+          if (f.r !== o.r || f.z !== o.z || f.x !== o.x || f.y !== o.y) bits.push((i ? 'hover' : 'default') + ': zoom ' + f.z.toFixed(3) + ', x ' + f.x + '%, y ' + f.y + '%' + (f.r ? ', rotate ' + f.r : ''));
         });
         return bits.length ? x.slug + ' — ' + bits.join('; ') : null;
       }).filter(Boolean).join('\n') || 'no changes';
