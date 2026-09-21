@@ -513,7 +513,7 @@ def print_sheet():
           <li><b>2</b><span>Wrap it around the base of your finger and feed the pointed end through the slot.</span></li>
           <li><b>3</b><span>Pull it snug, not tight, and read the size at the slot.</span></li>
         </ol>
-        <p class="ps-tip">Measure at the end of the day, when fingers are at their largest, and warm. A ring should pass the knuckle with a little resistance.</p>
+        <p class="ps-tip">Measure at the end of the day, when fingers are at their largest, and warm.<br>A ring should pass the knuckle with a little resistance.</p>
         <section class="ps-block ps-chart"><p class="ps-label">Or measure a ring you own, straight across the inside, in millimetres</p><div class="ps-tables">{tables}</div></section>
         <div class="ps-foot"><p>Still unsure? Write to hello@studiomacon.co and we will talk it through.</p><p>Artifacts of love, made to order in Santa Monica, California</p></div>
       </div>
