@@ -100,6 +100,7 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .acc-body p{margin:0 0 .9em}
 .acc-body p:last-child{margin:0}
 .acc-body a{text-decoration:underline;text-underline-offset:3px}
+.acc-body .linkish{font:inherit;padding:0;border:0;background:none;color:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .acc-body dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px}
 .acc-body dt{text-transform:uppercase;font-size:14px;padding-top:2px}
 .acc-body dd{margin:0}

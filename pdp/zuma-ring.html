@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Zuma Ring", "description": "Sterling silver carrying the shoulder line of the Zuma totem around the finger. Unearthed glyphs record rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand.", "image": ["https://studiomacon.co/img/zuma-ring/hero.jpg", "https://studiomacon.co/img/zuma-ring/hand-2.jpg", "https://studiomacon.co/img/zuma-ring/hires-1.jpg", "https://studiomacon.co/img/zuma-ring/plain-1.jpg", "https://studiomacon.co/img/zuma-ring/plain-2.jpg", "https://studiomacon.co/img/zuma-ring/composite.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "zuma-ring", "offers": [{"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}, {"@type": "Offer", "price": "320.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/zuma-ring.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789972368">
+<link rel="stylesheet" href="site.css?v=1789973906">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -74,6 +74,43 @@
   .desc-block{margin:44px 0 12px}
   .desc-block .label{margin:0 0 14px}
   .desc{margin:0;font-size:15px;line-height:1.55}          /* same size as the overline */
+
+  /* ── ring sizer: takes the column's place, rather than its own page ─ */
+  .sizer-panel{text-align:left}
+  .sizer-panel h2{font:400 22px/1.15 var(--serif);text-transform:uppercase;letter-spacing:.01em;margin:0 0 12px}
+  .sizer-panel h2 mark{background:#fff4c2;color:inherit;padding:1px 6px 2px;border-radius:2px}          /* the same yellow the emails use */
+  .sizer-panel .lede{font-size:16px;line-height:1.55;margin:0 0 30px}
+  .sizer-panel .step{margin:0 0 34px}
+  .sizer-panel .step p{margin:0 0 10px;font-size:15px;line-height:1.55}
+  .sizer-panel .printbtn{margin:0 0 32px}
+  .sizer-panel .printbtn button{font-family:inherit;font-size:calc((18px - 2pt) * .85);text-transform:uppercase;letter-spacing:.08em;
+    height:47px;width:100%;border:1px solid var(--ink);background:#000;color:#fff;cursor:pointer;transition:background .25s ease}
+  .sizer-panel .printbtn button:hover{background:#333}
+  /* the printed strip only works at 100%: this bar is exactly 100mm, so a scaled print is caught */
+  .sizer-panel .bar{width:100mm;max-width:100%;height:13px;border:1px solid var(--ink)}
+  .sizer-panel .cap{display:flex;justify-content:space-between;width:100mm;max-width:100%;margin-top:5px;
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .sizer-panel .sizer{margin:22px 0 0;width:74mm;max-width:100%;border:1px solid var(--ink);border-radius:2px;background:var(--field);padding:0 0 3mm}
+  .sizer-panel .slot{width:11mm;height:5mm;margin:4mm 0 5mm 4mm;border:1px solid var(--ink);border-radius:1px}
+  .sizer-panel .ticks{position:relative;height:17mm;margin:0 4mm}
+  .sizer-panel .t{position:absolute;top:0;width:1px;height:6mm;background:var(--ink)}
+  .sizer-panel .t.major{height:9mm}
+  .sizer-panel .n{position:absolute;top:9.6mm;transform:translateX(-50%);font-size:9px;font-weight:400}
+  .sizer-panel .edge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 4mm}
+  .sizer-panel .cut{font-size:13px;color:rgba(0,0,0,.55);margin:12px 0 0}
+  .sizer-panel table{border-collapse:collapse;font-size:14px;margin:12px 0 0;width:100%}
+  .sizer-panel th,.sizer-panel td{text-align:left;padding:6px 18px 6px 0;border-bottom:1px solid var(--rule)}
+  .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
+  .sizer-panel .helpnote{font-size:15px;line-height:1.55;margin:30px 0 0}
+  .sizing-open .info-main{display:none}
+  @media print{
+    body.sizing-open .gallery,body.sizing-open .head,body.sizing-open .ship-bar,body.sizing-open footer,
+    body.sizing-open .related,body.sizing-open .back,body.sizing-open .printbtn,body.sizing-open .dock{display:none !important}
+    body.sizing-open .sizer-panel .lede,body.sizing-open .sizer-panel .helpnote,
+    body.sizing-open .sizer-panel table{display:none}
+    body.sizing-open .product{display:block}
+    @page{margin:14mm}
+  }
   @media (min-width:768px){ .desc{font-size:16px} }
 
   /* ── closing: big stacked images, two centred chunks ─ */
@@ -407,6 +444,7 @@
 
     <div class="info">
       <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back</span></a>
+      <div class="info-main">
       <p class="eyebrow" data-edit="eyebrow">Sand Spirit, Distilled</p>
       <h1 data-edit="name">Zuma Ring</h1>
       <p class="price" data-edit="price">$320<span class="ship-free">Free shipping</span></p>
@@ -425,13 +463,43 @@
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Sizing</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="after-dl">Unsure of your size? <a href="ring-sizing.html">Print our ring sizer</a> or measure a ring you already wear. If it arrives and it is not right, we will resize or exchange it: write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a>.</p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="after-dl">Unsure of your size? <button type="button" class="linkish" data-open-sizer>Find your size</button> or measure a ring you already wear. If it arrives and it is not right, we will resize or exchange it: write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a>.</p></div></div></div>
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
           <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="keep-para">Each piece is made to order; please allow up to 10 business days before it ships. Standard shipping takes 3–7 business days, international 5–10. Shipping is free on all orders within the continental US. Every order ships in a special box, wrapped with care. International orders may be charged import duties and taxes on arrival. These are set by the destination country and are not included in the price.</p><p>Pieces in original condition (excluding custom work) may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size. <a href="mailto:hello@studiomacon.co?subject=Starting%20a%20return">Contact us</a> to begin.</p></div></div></div>
         </div>
       </div>
+      </div>
+      <div class="sizer-panel" id="sizer-panel" hidden>
+        <p class="eyebrow">Rings</p>
+        <h2><mark>Finding your size</mark></h2>
+        <p class="lede">Two ways to find it. Printing the sizer is the most accurate; measuring a ring you already wear is the easiest. If the piece arrives and it is not right, we resize or exchange it.</p>
+        <div class="printbtn"><button type="button" data-print-sizer>Print the sizer</button></div>
+        <div class="step">
+          <h2><mark>1. Check the print</mark></h2>
+          <p>Print at 100%, with page scaling and &#8220;fit to page&#8221; switched off. Then hold a ruler against the bar below. It must measure exactly 100&#160;mm. If it does not, the print was scaled and the sizer will be wrong.</p>
+          <div class="bar"></div>
+          <div class="cap"><span>0</span><span>50 mm</span><span>100 mm</span></div>
+        </div>
+        <div class="step">
+          <h2><mark>2. Cut and wrap</mark></h2>
+          <p>Cut out the strip and the slot in it. Wrap it around the base of your finger, pointed end first, and feed it through the slot.</p>
+          <div class="sizer">
+            <div class="slot"></div>
+            <div class="ticks" data-ticks></div>
+            <p class="edge">Pull to fit, then read the size</p>
+          </div>
+          <p class="cut">Measure at the end of the day, when fingers are at their largest, and warm. A ring should pass the knuckle with a little resistance.</p>
+        </div>
+        <div class="step">
+          <h2><mark>Or measure a ring you own</mark></h2>
+          <p>Measure straight across the inside of a ring that already fits, edge to edge, in millimetres.</p>
+          <table><thead><tr><th>US size</th><th>Inside diameter</th><th>Circumference</th></tr></thead><tbody data-sizes></tbody></table>
+        </div>
+        <p class="helpnote">Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through.</p>
+      </div>
+
     </div>
   </section>
 
@@ -1204,6 +1272,7 @@
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest('a[href]');
       if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
+      if (document.body.classList.contains('sizing-open')) return;          // Back closes the sizer rather than leaving
       if (a.hasAttribute('data-bag-drawer') && matchMedia('(min-width:768px)').matches) return;          // desktop Bag opens its drawer instead
       var href = a.getAttribute('href') || '';
       if (!href || href[0] === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return;
@@ -1260,6 +1329,7 @@
       var a = e.target.closest && e.target.closest('a[href]');
       if (!leaves(a)) return;
       if (document.body.classList.contains('ed-on')) return;          // never while editing
+      if (document.body.classList.contains('sizing-open')) return;     // Back closes the sizer first, it does not leave
       if (!ON || !home(a)) return;                                           // only the walk back from a piece to the shop
       e.preventDefault();
       var el = panel();
@@ -1311,6 +1381,50 @@
   }
   el.textContent = 'Ships by ' + d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
   el.hidden = false;
+})();
+
+// The ring sizer takes the product column's place rather than a page of its own,
+// so Back returns to the piece instead of leaving for the shop.
+(function () {
+  var panel = document.getElementById('sizer-panel');
+  if (!panel) return;
+  // on wide screens the Back link is moved into the nav row, so it is matched by class alone
+
+  function circ(n) { return 36.537 + 2.5535 * n; }          // the ISO relation, so strip and table agree
+
+  var ticks = panel.querySelector('[data-ticks]'), rows = panel.querySelector('[data-sizes]');
+  var lo = circ(4), span = circ(13) - lo;
+  for (var n = 4; n <= 13; n += 0.5) {
+    var x = (circ(n) - lo) / span * 100;
+    var t = document.createElement('i');
+    t.className = 't' + (n % 1 === 0 ? ' major' : '');
+    t.style.left = x + '%';
+    ticks.appendChild(t);
+    if (n % 1 === 0) {
+      var lab = document.createElement('b');
+      lab.className = 'n'; lab.style.left = x + '%'; lab.textContent = n;
+      ticks.appendChild(lab);
+    }
+    var c = circ(n), tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + (n % 1 === 0 ? n : n.toFixed(1)) + '</td><td>' +
+      (c / Math.PI).toFixed(2) + ' mm</td><td>' + c.toFixed(1) + ' mm</td>';
+    rows.appendChild(tr);
+  }
+
+  function open(on) {
+    document.body.classList.toggle('sizing-open', on);
+    panel.hidden = !on;
+    if (on) { window.scrollTo({top: 0, behavior: 'smooth'}); }
+  }
+
+  window.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); open(true); return; }
+    if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
+    if (e.target.closest('.back') && document.body.classList.contains('sizing-open')) {
+      e.preventDefault(); e.stopPropagation(); open(false);
+    }
+  }, true);
 })();
 </script>
 <script>

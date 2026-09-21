@@ -230,7 +230,7 @@ def accordions(slug, k, notes):
                 '<a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and '
                 "we'll look after it.")          # settled copy, not a placeholder
         if k == "ring":          # a ring that does not fit is the one real risk of buying online
-            note = ('Unsure of your size? <a href="ring-sizing.html">Print our ring sizer</a> '
+            note = ('Unsure of your size? <button type="button" class="linkish" data-open-sizer>Find your size</button> '
                     'or measure a ring you already wear. If it arrives and it is not right, '
                     'we will resize or exchange it: write to '
                     '<a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a>.')
@@ -276,6 +276,37 @@ def accordions(slug, k, notes):
 with open(os.path.join(OUT, "shopify", "variants.json")) as _f:
     SHOPIFY = json.load(_f)
 LIVE_PRICE = {v["id"].split("/")[-1]: v["price"] for d in SHOPIFY.values() for v in d.get("variants", [])}          # variant number -> current Shopify price
+
+
+SIZER = """      <div class="sizer-panel" id="sizer-panel" hidden>
+        <p class="eyebrow">Rings</p>
+        <h2><mark>Finding your size</mark></h2>
+        <p class="lede">Two ways to find it. Printing the sizer is the most accurate; measuring a ring you already wear is the easiest. If the piece arrives and it is not right, we resize or exchange it.</p>
+        <div class="printbtn"><button type="button" data-print-sizer>Print the sizer</button></div>
+        <div class="step">
+          <h2><mark>1. Check the print</mark></h2>
+          <p>Print at 100%, with page scaling and &#8220;fit to page&#8221; switched off. Then hold a ruler against the bar below. It must measure exactly 100&#160;mm. If it does not, the print was scaled and the sizer will be wrong.</p>
+          <div class="bar"></div>
+          <div class="cap"><span>0</span><span>50 mm</span><span>100 mm</span></div>
+        </div>
+        <div class="step">
+          <h2><mark>2. Cut and wrap</mark></h2>
+          <p>Cut out the strip and the slot in it. Wrap it around the base of your finger, pointed end first, and feed it through the slot.</p>
+          <div class="sizer">
+            <div class="slot"></div>
+            <div class="ticks" data-ticks></div>
+            <p class="edge">Pull to fit, then read the size</p>
+          </div>
+          <p class="cut">Measure at the end of the day, when fingers are at their largest, and warm. A ring should pass the knuckle with a little resistance.</p>
+        </div>
+        <div class="step">
+          <h2><mark>Or measure a ring you own</mark></h2>
+          <p>Measure straight across the inside of a ring that already fits, edge to edge, in millimetres.</p>
+          <table><thead><tr><th>US size</th><th>Inside diameter</th><th>Circumference</th></tr></thead><tbody data-sizes></tbody></table>
+        </div>
+        <p class="helpnote">Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through.</p>
+      </div>
+"""
 
 
 def page(p, template, related=""):
@@ -418,6 +449,7 @@ def page(p, template, related=""):
             .replace("{{HERO}}", hero)
             .replace("{{GALLERY}}", "\n      ".join(figs))
             .replace("{{ACCORDIONS}}", accordions(slug, k, notes))
+            .replace("{{SIZER}}", SIZER if k == "ring" else "")
             .replace("{{CLOSING}}", close)
             .replace("{{RELATED}}", related))
 
