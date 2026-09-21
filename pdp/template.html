@@ -119,10 +119,8 @@
   body.sizing-cross .info-main,body.sizing-cross .sizer-panel{position:absolute;inset:0 0 auto 0;display:block}
   body.sizing-cross{--cross:.52s cubic-bezier(.22,1,.36,1)}
 
-  body.sizing-back .info-main{animation:main-in .52s cubic-bezier(.22,1,.36,1) both}
   body.sizing-closing .sizer-panel{animation:panel-out var(--cross,.42s cubic-bezier(.4,0,.2,1)) both}          /* it leaves the way it came */
   body.sizing-closing .sizer-panel .st{animation:none}
-  body.sizing-back .info-main{animation:sizer-in .46s cubic-bezier(.16,1,.3,1) both}
   @keyframes sizer-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @keyframes sizer-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){

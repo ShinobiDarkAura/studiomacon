@@ -1,4 +1,7 @@
 <script>
+  // ?case shows the shop set in title case rather than capitals. Local look-see only.
+  if (/[?&]case\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () { document.body.classList.add('title-case'); });
+
   (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
   // A refresh always starts at the top of the page; Back and Forward still return to where you were
   (function () {
@@ -64,11 +67,8 @@
     try { gone = sessionStorage.getItem('macon-ship-hide') === '1'; } catch (e) {}
     if (gone) { bar.remove(); return; }
 
-    var hero = document.querySelector('.film, .gallery .hero, .opening .hand, .branch');
-    var past = function () {
-      var edge = hero ? hero.getBoundingClientRect().bottom : innerHeight * 0.7;
-      return edge <= 0;
-    };
+    // it arrives with the page rather than waiting for the first screen to pass
+    var past = function () { return true; };
     // Once it has arrived it stays: scrolling back up to the hero should not take it away again.
     var sync = function () {
       if (!past()) return;

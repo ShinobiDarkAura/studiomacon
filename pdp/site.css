@@ -2,6 +2,7 @@
    accordions and footer. Page-specific layout stays in each page. */
 
 /* Instrument Serif, SIL Open Font License — self-hosted so the page never waits on Google */
+@font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
 @font-face{font-family:"Morello Pencil";src:url(fonts/morellopencil.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
@@ -442,3 +443,16 @@ body.ship-on .head{transform:translateY(var(--ship-h,38px))}
 .buy.sold{display:block;text-align:center}
 .buy.sold .sold-note{margin:0 0 12px;font-size:15px;line-height:1.5;color:rgba(0,0,0,.62)}
 .buy.sold .cta{text-decoration:none}
+
+
+/* ── a look at the shop without the capitals (open any page with ?case) ──
+   Only the transform changes: same faces, same sizes, same spacing. The words are
+   already written in title case in the source, so this is what they really say. */
+body.title-case h1,body.title-case h2,body.title-case h3,
+body.title-case .eyebrow,body.title-case .menu-sheet a,body.title-case .acc-head,
+body.title-case .cta,body.title-case .buy-now,body.title-case .dock,
+body.title-case .rel-name,body.title-case .piece .name,body.title-case .line .nm,
+body.title-case footer .fine,body.title-case .label,body.title-case .sizer-panel h2,
+body.title-case .bd-head,body.title-case .size-label,body.title-case .edge,
+body.title-case .cap,body.title-case .ship-bar p{text-transform:none;letter-spacing:.005em}
+body.title-case .eyebrow,body.title-case .label,body.title-case .acc-head{letter-spacing:.04em}

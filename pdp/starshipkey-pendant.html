@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Starship Key", "description": "Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad. Its hull is polished meticulously by hand.", "image": ["https://studiomacon.co/img/starshipkey-pendant/hero.jpg", "https://studiomacon.co/img/starshipkey-pendant/plain-1.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "starshipkey-pendant", "offers": [{"@type": "Offer", "price": "460.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/starshipkey-pendant.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789981412">
+<link rel="stylesheet" href="site.css?v=1789984473">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}          /* the picture carries its own corners; a backing showed outside them */
@@ -130,10 +130,8 @@
   body.sizing-cross .info-main,body.sizing-cross .sizer-panel{position:absolute;inset:0 0 auto 0;display:block}
   body.sizing-cross{--cross:.52s cubic-bezier(.22,1,.36,1)}
 
-  body.sizing-back .info-main{animation:main-in .52s cubic-bezier(.22,1,.36,1) both}
   body.sizing-closing .sizer-panel{animation:panel-out var(--cross,.42s cubic-bezier(.4,0,.2,1)) both}          /* it leaves the way it came */
   body.sizing-closing .sizer-panel .st{animation:none}
-  body.sizing-back .info-main{animation:sizer-in .46s cubic-bezier(.16,1,.3,1) both}
   @keyframes sizer-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @keyframes sizer-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
   @media (prefers-reduced-motion:reduce){
@@ -592,6 +590,9 @@
 
 <script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581", "subscribeUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/subscribe"};</script>
 <script>
+  // ?case shows the shop set in title case rather than capitals. Local look-see only.
+  if (/[?&]case\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () { document.body.classList.add('title-case'); });
+
   (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
   // A refresh always starts at the top of the page; Back and Forward still return to where you were
   (function () {
@@ -657,11 +658,8 @@
     try { gone = sessionStorage.getItem('macon-ship-hide') === '1'; } catch (e) {}
     if (gone) { bar.remove(); return; }
 
-    var hero = document.querySelector('.film, .gallery .hero, .opening .hand, .branch');
-    var past = function () {
-      var edge = hero ? hero.getBoundingClientRect().bottom : innerHeight * 0.7;
-      return edge <= 0;
-    };
+    // it arrives with the page rather than waiting for the first screen to pass
+    var past = function () { return true; };
     // Once it has arrived it stays: scrolling back up to the hero should not take it away again.
     var sync = function () {
       if (!past()) return;
