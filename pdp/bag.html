@@ -1136,6 +1136,7 @@
   var lo = circ(4), span = circ(13) - lo;
   for (var n = 4; n <= 13; n += 0.5) {
     var x = (circ(n) - lo) / span * 100;
+    if (ticks) {          // the on-screen strip is gone; the printed sheet draws its own
     var t = document.createElement('i');
     t.className = 't' + (n % 1 === 0 ? ' major' : '');
     t.style.left = x + '%';
@@ -1144,6 +1145,7 @@
       var lab = document.createElement('b');
       lab.className = 'n'; lab.style.left = x + '%'; lab.textContent = n;
       ticks.appendChild(lab);
+    }
     }
     var c = circ(n), tr = document.createElement('tr');
     tr.innerHTML = '<td>' + (n % 1 === 0 ? n : n.toFixed(1)) + '</td><td>' +

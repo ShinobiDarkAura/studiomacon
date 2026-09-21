@@ -286,7 +286,7 @@ LIVE_PRICE = {v["id"].split("/")[-1]: v["price"] for d in SHOPIFY.values() for v
 SIZER = """      <div class="sizer-panel" id="sizer-panel" data-no-emerge hidden>
         <div class="intro-box">
         <h2 class="st">Finding your size</h2>
-        <p class="lede st">Two ways to find it: print the sizer below, which is the most accurate, or measure a ring you already wear. If the piece arrives and it is not right, we resize or exchange it. Print at 100%, with page scaling switched off, then hold a ruler against the bar: it must read exactly 100&#160;mm, or the print was scaled and the sizer will be wrong.</p>
+        <p class="lede st">Two ways to find it: print the sizer below, which is the most accurate, or measure a ring you already wear.</p>
         <div class="printbtn st"><button type="button" data-print-sizer>Print the sizer</button></div>
         </div>
         <div class="step st calib">
@@ -294,17 +294,7 @@ SIZER = """      <div class="sizer-panel" id="sizer-panel" data-no-emerge hidden
           <div class="cap"><span>0</span><span>50 mm</span><span>100 mm</span></div>
         </div>
         <div class="step st">
-          <h2><mark class="hl b">1.</mark> Cut and wrap</h2>
-          <p>Cut out the strip and the slot in it. Wrap it around the base of your finger, pointed end first, and feed it through the slot.</p>
-          <div class="sizer">
-            <div class="slot"></div>
-            <div class="ticks" data-ticks></div>
-            <p class="edge">Pull to fit, then read the size</p>
-          </div>
-          <p class="cut">Measure at the end of the day, when fingers are at their largest, and warm. A ring should pass the knuckle with a little resistance.</p>
-        </div>
-        <div class="step st">
-          <h2><mark class="hl c">2.</mark> Or measure a ring you own</h2>
+          <h2>Or measure a ring you own</h2>
           <p>Measure straight across the inside of a ring that already fits, edge to edge, in millimetres.</p>
           <div class="tablewrap"><div><table><thead><tr><th>US size</th><th>Inside diameter</th><th>Circumference</th></tr></thead><tbody data-sizes></tbody></table></div></div>
           <p class="more-rows linky"><button type="button" data-more-sizes aria-expanded="false">Show all sizes</button></p>
@@ -515,7 +505,7 @@ def print_sheet():
     head = "<thead><tr><th>Size</th><th>Diameter</th><th>Circumference</th></tr></thead>"
     tables = f'<table>{head}<tbody>{"".join(rows[:half])}</tbody></table><table>{head}<tbody>{"".join(rows[half:])}</tbody></table>'
     return f"""      <div class="print-sheet" aria-hidden="true">
-        <div class="ps-head"><img src="img/lockup-artifacts.svg" alt="Studio Maçon"><p class="ps-over">The ring sizer</p><h2>Finding your size</h2></div>
+        <div class="ps-head"><img src="img/eye-mark.png" alt="Studio Maçon"><p class="ps-over">The ring sizer</p><h2>Finding your size</h2></div>
         <section class="ps-block ps-calib"><p class="ps-label">Before you cut</p>{check}<p>This line measures exactly 100 mm. If a ruler says otherwise, print again at 100%, with scaling switched off.</p></section>
         <section class="ps-block ps-cut">{strip}</section>
         <ol class="ps-steps">
