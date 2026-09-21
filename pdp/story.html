@@ -59,7 +59,7 @@
   .steps img{margin:0 auto;width:323px;max-width:100%}
   .history{display:grid;gap:40px;padding:300px calc(var(--pad) + 24px) 0;margin-bottom:72px}          /* 35% more room under the process film */
   .history .intro{padding:0;text-align:left;justify-self:center;max-width:460px}
-  .history .intro p.lede{margin:0;max-width:360px}
+  .history .intro p.lede{margin:0;max-width:324px}          /* 10% narrower */
   .history .intro p.lede + p.lede{margin-top:1em}
   /* the two names link to their own Instagram: underlined quietly, never a different colour */
   .intro p.lede a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
@@ -68,12 +68,7 @@
   .readmore{margin:14px 0 0}
   .readmore button{font-family:inherit;font-weight:400;font-size:calc(1em - 2pt);line-height:1.4;padding:0;border:0;background:none;cursor:pointer;
     display:inline-flex;align-items:center;gap:7px;color:rgba(0,0,0,.55);text-decoration:none}
-  .readmore button::after{content:"";width:.62em;height:.62em;flex:none;background:currentColor;
-    -webkit-mask:var(--arr) center/contain no-repeat;mask:var(--arr) center/contain no-repeat;
-    transition:transform .3s var(--ease,ease)}
   .readmore button:hover{color:rgba(0,0,0,.8)}
-  .readmore button:hover::after{transform:translateX(3px)}
-  .readmore{--arr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 8h11M8.5 3.5L13 8l-4.5 4.5' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E")}
   .more[hidden]{display:none}
   .more p.lede:first-child{margin-top:1em}
   /* Drawn Together: the two childhood photographs as real Polaroids, off-white paper with a little grain,
@@ -98,10 +93,10 @@
     .steps{padding:0}
     /* photographs left, words right, in the same centre column as the opening (mirrored) */
     .history{grid-template-columns:minmax(0,600px) minmax(0,378px);justify-content:center;column-gap:clamp(32px,4.5vw,72px);align-items:center}          /* the photographs sit close to the words */
-    .history .intro{justify-self:start}
+    .history .intro{justify-self:start;transform:translateY(-26px)}          /* the photographs are bottom-heavy, so the words ride above their true centre */
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
     .history{align-items:center}          /* the words sit on the centre line of the photographs */
-    .childhood .strip img{transform:translate(327px,11px) rotate(-3.5deg)}
+    .childhood .strip img{transform:translate(351px,11px) rotate(-3.5deg)}
     .childhood{--k:.9;margin-left:-125px}          /* 10% smaller, and centred on what it actually contains rather than on its box */
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
@@ -113,7 +108,7 @@
     .opening,.prose,.history,.opening .intro,.history .intro{text-align:center}
     .opening .intro p.lede,.history .intro p.lede{margin-left:auto;margin-right:auto}
     .opening .intro p.lede{max-width:85%}          /* the opening line reads narrower than the page */
-    .history .intro p.lede{max-width:90vw}
+    .history .intro p.lede{max-width:83vw}          /* 8% narrower, so it never crowds either edge */
     /* phones: the process film follows the text, then the childhood photographs */
     .opening .hand{padding-bottom:48px}          /* room under the first film */
     .section .prose{padding-top:36px}          /* air above Our Practice */
@@ -336,7 +331,7 @@
         <p class="lede" data-edit="page:story.html:09dc22ca">She had grown up in a sylvan corner of rural Vermont, building fairy worlds from branches, leaves and stones. He had been drawing wherever he happened to be: at the table, in the car, in the margins of his school notes. When they finally found their way back to each other, they married in 2023.</p>
         <p class="lede" data-edit="page:story.html:2fef87eb">Through it all, they never stopped making things for one another. Little objects that kept them connected over many years and miles apart. That is how Maçon was born, out of the art they made for each other to express a feeling too vast for language.<br><i>Artifacts of love.</i></p>
       </div>
-      <p class="readmore" data-edit="page:story.html:44d11784"><button type="button" id="readmore" aria-expanded="false" aria-controls="more">Read Full Story</button></p>
+      <p class="readmore" data-edit="page:story.html:8bc18333"><button type="button" id="readmore" aria-expanded="false" aria-controls="more">Read Story</button></p>
     </div>
   </section>
 </main>
@@ -349,7 +344,7 @@
       var open = more.hasAttribute('hidden');
       if (open) { more.removeAttribute('hidden'); } else { more.setAttribute('hidden', ''); }
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      btn.textContent = open ? 'Close' : 'Read Full Story';
+      btn.textContent = open ? 'Close' : 'Read Story';
     });
   })();
 
