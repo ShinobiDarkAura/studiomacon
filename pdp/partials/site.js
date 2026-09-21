@@ -660,8 +660,8 @@
     var menu = document.querySelector('.menu-sheet'); if (!menu) return;          // written into the page (partials/nav.html), so it is whole from the first paint
     btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
     var keyboard = false;
-    function set(on) {
-      if (on) {          // Close sits exactly where Menu was
+    function set(on, keepX) {
+      if (on && !keepX) {          // Close sits exactly where Menu was
         var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
         var shift = document.querySelector('.head').getBoundingClientRect().left;          // how far the page is pushed aside right now
         c.style.left = (r.left - shift) + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
@@ -682,6 +682,12 @@
       if (on && keyboard) menu.querySelector('a').focus();
     }
     var open = false, savedY = 0;
+    // the next page draws the X where it stands now, from its first frame (see the head script),
+    // rather than measuring the Menu button again while fonts and layout are still settling
+    function rememberX() {
+      var c = menu.querySelector('.menu-close');
+      sessionStorage.setItem('macon-x', JSON.stringify({l: c.style.left, t: c.style.top, h: c.style.height}));
+    }
     // tapping the pushed-over page closes the menu
     document.addEventListener('click', function (e) { if (open && !menu.contains(e.target) && e.target !== btn) set(false); });
     btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
@@ -699,7 +705,7 @@
       if (to.pathname !== location.pathname && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
         // another page: the page behind the drawer dims to white, then the next one loads beneath the drawer
         e.preventDefault();
-        try { sessionStorage.setItem('macon-menu', '1'); sessionStorage.setItem('macon-fade', '1'); } catch (err) {}
+        try { sessionStorage.setItem('macon-menu', '1'); sessionStorage.setItem('macon-fade', '1'); rememberX(); } catch (err) {}
         var dim = document.createElement('div');
         dim.style.cssText = 'position:fixed;inset:0;z-index:59;background:#fff;pointer-events:none;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.6,1)';
         document.body.appendChild(dim);
@@ -718,14 +724,15 @@
         }, 620);
         return;
       }
-      try { sessionStorage.setItem('macon-menu', '1'); } catch (err) {}
+      try { sessionStorage.setItem('macon-menu', '1'); rememberX(); } catch (err) {}
     });
     // ...where it arrives already open, and slides closed once the page is ready
     var root = document.documentElement;
     if (root.classList.contains('menu-arriving')) {
       try { sessionStorage.removeItem('macon-menu'); } catch (err) {}
       menu.classList.add('instant');
-      set(true);
+      var kept = false; try { kept = !!JSON.parse(sessionStorage.getItem('macon-x') || 'null'); sessionStorage.removeItem('macon-x'); } catch (err) {}
+      set(true, kept);
       savedY = null;          // a page arriving goes where its link points (Shop lands on the grid), never back to where it started
       root.classList.remove('menu-arriving');
       var closed = false;

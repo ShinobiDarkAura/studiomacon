@@ -84,6 +84,7 @@
     transform:scale(var(--k,1));transform-origin:top center;margin-bottom:calc(780px * (var(--k,1) - 1))}
   .polaroid,.childhood .strip{position:absolute;left:50%;top:0;margin:0;transform:translate(-50%,0)}
   /* they land one at a time, in reading order: Alex, the strip, then Hannah below */
+  /* (data-no-emerge keeps the site-wide fade-in off them, or they arrived twice) */
   .childhood .polaroid,.childhood .strip{opacity:0}
   .childhood.is-seen .polaroid,.childhood.is-seen .strip{animation:photo-in .95s cubic-bezier(.16,1,.3,1) both}
   .childhood.is-seen .polaroid:nth-of-type(2){animation-delay:0ms}
@@ -192,9 +193,9 @@
 
   <section class="history">
     <div class="childhood">
-      <figure class="polaroid"><span class="card"><img src="img/pages/hannah-square.jpg" alt="Hannah as a child, drawing"></span></figure>
-      <figure class="polaroid"><span class="card"><img src="img/pages/alex-polaroid.jpg" alt="Alex as a child, drawing"></span></figure>
-      <figure class="strip"><img src="img/pages/photobooth.png" alt="Alex and Hannah in a photobooth"></figure>
+      <figure data-no-emerge class="polaroid"><span class="card"><img src="img/pages/hannah-square.jpg" alt="Hannah as a child, drawing"></span></figure>
+      <figure data-no-emerge class="polaroid"><span class="card"><img src="img/pages/alex-polaroid.jpg" alt="Alex as a child, drawing"></span></figure>
+      <figure data-no-emerge class="strip"><img src="img/pages/photobooth.png" alt="Alex and Hannah in a photobooth"></figure>
     </div>
     <div class="intro">
       <p class="eyebrow">Our Story</p>

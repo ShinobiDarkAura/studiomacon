@@ -24,6 +24,7 @@
   .scroll-cue{position:absolute;left:50%;bottom:64px;scale:1.2;transform-origin:bottom center;z-index:2;width:22px;height:38px;margin-left:-11px;
     border:1px solid rgba(255,255,255,.32);border-radius:6px;pointer-events:none;transition:opacity .5s ease}
   @media (max-width:767px){ .scroll-cue{bottom:auto;top:calc(100svh - 74px)} }
+  @media (min-width:768px){ .scroll-cue{border-radius:999px} }          /* a full pill on desktop */
   .scroll-cue i{position:absolute;left:50%;bottom:7px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#fff;
     animation:cue 2.8s cubic-bezier(.45,0,.25,1) infinite}
   /* the dot rises: a phone is scrolled by pushing the page up */

@@ -639,7 +639,11 @@ WIPE_HEAD = """<style>
 // or its first frame shows the dark film for an instant before the jump
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
-(function () { try { if (sessionStorage.getItem('macon-menu') === '1') document.documentElement.classList.add('menu-arriving'); } catch (e) {} })();
+(function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
+  document.documentElement.classList.add('menu-arriving');
+  var x = JSON.parse(sessionStorage.getItem('macon-x') || 'null');          // the X stays exactly where it was on the page just left
+  if (x && x.l) { var st = document.createElement('style'); st.textContent = 'html .menu-sheet .menu-close{left:' + x.l + ';top:' + x.t + ';height:' + x.h + '}'; document.head.appendChild(st); }
+} } catch (e) {} })();
 </script>
 """
 

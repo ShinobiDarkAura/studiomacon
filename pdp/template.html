@@ -210,8 +210,9 @@
     .thumbs img{width:100%;height:100%;object-fit:cover}
     /* load-in order: main image, then the thumbnails one by one, then the name, price and buttons */
     .thumbs button{animation:thumb-in .7s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 70ms + 350ms)}
-    .info > .dr-emerge{transition-delay:calc(var(--stagger,0ms) + 800ms)}
-    .info > .dr-emerge.is-seen{transition-delay:calc(var(--stagger,0ms) + 800ms)}
+    /* the 800ms wait belongs to the load sequence only: once the page has been scrolled, the words arrive at once */
+    html:not(.moved) .info > .dr-emerge{transition-delay:calc(var(--stagger,0ms) + 800ms)}
+    html:not(.moved) .info > .dr-emerge.is-seen{transition-delay:calc(var(--stagger,0ms) + 800ms)}
   }
   @keyframes thumb-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){ .thumbs button{animation:none} }
@@ -302,6 +303,7 @@
       {{GALLERY}}
     </div>
     <script>
+  addEventListener('scroll', function () { document.documentElement.classList.add('moved'); }, {once: true, passive: true});
   // built right here, before the page is first drawn, so adding it never shifts the page
   // Phones: a strip of thumbnails under the main image; tapping one shows that picture or film in its place
   (function () {
