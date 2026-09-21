@@ -269,7 +269,24 @@
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
   if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
   s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '501136812574699'); fbq('track', 'PageView');
+  // An email address, scrambled beyond recovery, lets Meta match an event to a person.
+  // Without it a visitor is only a cookie, which often fails: match quality sat at 4.4/10.
+  var PIXEL = '501136812574699';
+  window.maconIdentify = function (email) {
+    try {
+      email = String(email || '').trim().toLowerCase();
+      if (!email || !crypto.subtle) return;
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(email)).then(function (buf) {
+        var hex = [].map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+        try { localStorage.setItem('macon-em', hex); } catch (e) {}
+        fbq('init', PIXEL, {em: hex});          // from here on, every event carries it
+      }).catch(function () {});
+    } catch (e) {}
+  };
+  var known = null;
+  try { known = localStorage.getItem('macon-em'); } catch (e) {}
+  if (known) fbq('init', PIXEL, {em: known}); else fbq('init', PIXEL);
+  fbq('track', 'PageView');
   var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=G-B5GNGQ1WME'; document.head.appendChild(g);
   window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
   gtag('js', new Date()); gtag('config', 'G-B5GNGQ1WME'); gtag('config', 'AW-16466703173');
@@ -280,7 +297,7 @@
       var list = [].concat(x || []), ids = list.map(function (i) { return idOf(i.variant); });
       var value = list.reduce(function (n, i) { return n + (i.price || 0) * (i.qty || 1); }, 0);
       var g4 = list.map(function (i) { return {item_id: idOf(i.variant), item_name: i.name || i.slug, price: i.price, quantity: i.qty || 1}; });
-      if (kind === 'signup') return;
+      if (kind === 'signup') { if (window.maconIdentify) maconIdentify(x); return; }
       if (kind === 'view') { fbq('track', 'ViewContent', {content_ids: ids, content_type: 'product', content_name: list[0].name, value: value, currency: 'USD'});
                              gtag('event', 'view_item', {currency: 'USD', value: value, items: g4}); }
       if (kind === 'add') { fbq('track', 'AddToCart', {content_ids: ids, content_type: 'product', value: value, currency: 'USD'});
