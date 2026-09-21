@@ -446,7 +446,7 @@ body.ship-on .head{transform:translateY(var(--ship-h,38px))}
 .product.claimed .gallery .hero{position:relative}
 .product.claimed .gallery .hero::after{content:"Sold";position:absolute;z-index:5;top:32px;right:24px;
   transform:rotate(12deg);padding:.18em .5em .1em;border:3.3px solid currentColor;border-radius:6.5px;
-  color:#e96815;font:400 clamp(28px,6.56vw,52.5px)/1 var(--serif);letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;font:400 clamp(28px,6.56vw,52.5px)/1 var(--serif);letter-spacing:.06em;text-transform:uppercase;
   pointer-events:none}
 @media (min-width:1024px){ .product.claimed .gallery .hero::after{top:120px;right:56px} }
 
