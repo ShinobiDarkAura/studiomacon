@@ -90,9 +90,10 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
 .acc-item.open .acc-panel{grid-template-rows:1fr}
 .acc-inner{overflow:hidden}
-.acc-body{padding:0 0 20px;font-size:17px;line-height:1.55;opacity:0;transform:translateY(-6px);
+.acc-body{padding:0 0 20px;font-size:15px;line-height:1.55;opacity:0;transform:translateY(-6px);
   transition:opacity .35s ease,transform .5s var(--ease)}
 .acc-item.open .acc-body{opacity:1;transform:none;transition-delay:.08s}
+@media (min-width:768px){ .acc-body{font-size:16px} }          /* the same step Field Notes takes */
 .acc-body p{margin:0 0 .9em}
 .acc-body p:last-child{margin:0}
 .acc-body a{text-decoration:underline;text-underline-offset:3px}
