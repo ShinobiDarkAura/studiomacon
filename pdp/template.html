@@ -60,7 +60,7 @@
   .buy .cta:not([disabled]):hover::after{width:12px;margin-left:8px}
   .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
   .buy{margin:0}          /* buttons sit right under the price */
-  .desc-block{margin:44px 0 12px}
+  .desc-block{margin:44px 0 24px}          /* 12px more under Field Notes */
   .desc-block .label{margin:0 0 14px}
   .desc{margin:0;font-size:15px;line-height:1.55}          /* same size as the overline */
   .info > .dr-emerge{transform:translateY(66px)}
@@ -94,15 +94,17 @@
   .sizer-panel .t.major{height:9mm;opacity:1}
   .sizer-panel .n{position:absolute;top:9.6mm;transform:translateX(-50%);font-size:9px;font-weight:400}
   .sizer-panel .edge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 0 4mm}          /* flush with the ruler's first tick */
-  .sizer-panel .step p.cut{font-size:13px;color:rgba(0,0,0,.55);margin:40px 0 0}          /* 16px under the strip, and 12px more again */
+  .sizer-panel .step p.cut{font-size:13px;color:#000;margin:32px 0 0}          /* black, and 8px nearer the strip */          /* 16px under the strip, and 12px more again */
   .sizer-panel table{border-collapse:collapse;font-size:14px;margin:12px 0 0;width:100%}
   .sizer-panel th,.sizer-panel td{text-align:left;padding:6px 18px 6px 0;border-bottom:1px solid var(--rule)}
   .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
-  .sizer-panel .helpnote{font-size:15px;line-height:1.55;margin:30px 0 0}
+  .sizer-panel .helpnote{margin:30px 0 32px;padding:16px 18px;background:#f4f3f0;border-radius:12px;font-size:15px;line-height:1.55}
+  .sizer-panel .helpnote p{margin:0}
+  .sizer-panel .helpnote .note-label{text-transform:uppercase;font-size:13px;letter-spacing:.12em;margin:0 0 8px}
   /* The panel is an overlay over the details, not a second column sharing their box.
      The details never move, so the column never resizes and nothing can pile up. */
   .info{position:relative}
-  .sizer-panel{position:absolute;inset:0;z-index:4;background:#fff;
+  .sizer-panel{position:absolute;inset:0;z-index:4;background:#fff;padding-top:36px;
     opacity:0;visibility:hidden;transform:translateX(22px);
     transition:opacity .32s ease,transform .44s cubic-bezier(.22,1,.36,1),visibility 0s linear .44s}
   body.sizing-open .sizer-panel{opacity:1;visibility:visible;transform:none;
@@ -155,6 +157,11 @@
 
   /* ── phones: one 24px side margin for the whole page, left-aligned text, stacked buttons ── */
   @media (max-width:1023px){
+    /* the price centred under the name; free shipping and the date along its edges */
+    .price{display:grid;grid-template-columns:1fr auto;row-gap:10px;align-items:baseline}
+    .price .amt{grid-column:1/-1;text-align:center}
+    .price .ship-free{grid-column:1;margin:0;text-align:left}
+    .price .ship-by{grid-column:2;margin:0;text-align:right}
     .info,.product .info h1,.product .info .eyebrow{text-align:center}
     .info .desc-block{text-align:center}
     .info .desc{max-width:85%;margin:0 auto}          /* the note reads narrower than the buttons above it */
@@ -326,7 +333,7 @@
       <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back</span></a>
       <p class="eyebrow" data-edit="eyebrow">{{EYEBROW}}</p>
       <h1 data-edit="name">{{TITLE}}</h1>
-      <p class="price" data-edit="price">{{PRICE}}<span class="ship-free">Free shipping</span><span class="ship-by" data-ship-by hidden></span></p>
+      <p class="price" data-edit="price"><span class="amt">{{PRICE}}</span><span class="ship-free">Free shipping</span><span class="ship-by" data-ship-by hidden></span></p>
       {{SIZE}}
       {{BUY}}
       <div class="desc-block"><p class="label">Field Notes</p><p class="desc" data-edit="description">{{DESC}}</p></div>

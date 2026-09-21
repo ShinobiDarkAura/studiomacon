@@ -144,7 +144,8 @@
     .process-film video{--w:100%;--ar:24/23}
     .opening .hand,.steps{padding-left:24px;padding-right:24px}          /* 8px further in than the page gutter */
     .opening .hand video,.process-film video{--sh:1}          /* the films carry their shadow on a phone */          /* the second film takes the first one's frame */
-    .steps .process-film{max-width:100%}          /* --about-col counts the scrollbar into 100vw, so it fell 5px short */
+    .steps .process-film{max-width:100%}
+    .steps .process-film{padding-left:21.5px;padding-right:21.5px}          /* 24px inside the gutter, like the opening film */          /* --about-col counts the scrollbar into 100vw, so it fell 5px short */
     .steps{padding:8px 16px 24px}          /* the rest of the room under it comes from Our Story below */
     .history{margin-bottom:48px}
     /* Our Story reads like the sections above it: words first, then the photographs */
@@ -328,15 +329,7 @@
 </head>
 <body>
 
-<!-- Free shipping notice: slides down once the hero is behind you, and stays gone once dismissed. -->
-<aside class="ship-bar" role="status" aria-live="polite">
-  <p data-edit="page:story.html:3ddebb0d"><svg class="ship-truck" viewBox="0 0 34 18" aria-hidden="true" focusable="false">
-    <path class="speed s1" d="M1 6h7"/><path class="speed s2" d="M0 10h5"/><path class="speed s3" d="M3 14h6"/>
-    <path d="M12 3h11v9H12z"/><path d="M23 6h4.4l3.1 3.3V12H23z"/>
-    <circle cx="16" cy="14.4" r="2.1"/><circle cx="26.4" cy="14.4" r="2.1"/>
-  </svg>Free shipping on all US orders</p>
-  <button class="ship-x" type="button" aria-label="Dismiss">&#215;</button>
-</aside>
+
 <nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping<br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><a href="bag.html" style="--i:6">Bag</a></nav>
 <header class="head">
   <div class="left">
@@ -386,11 +379,11 @@
     <div class="intro">
       <p class="eyebrow" data-edit="page:story.html:c8927cf4">Our Story</p>
       <h1 data-edit="page:story.html:b9a5e0f1">Drawn<br>Together</h1>
-      <p class="lede" data-edit="page:story.html:f1d6bc77"><a href="https://www.instagram.com/hannahwcohen/" target="_blank" rel="noopener">Hannah Woodard</a> grew up in a wooded corner of Vermont, building tiny worlds from branches, leaves and stones from her forest. <a href="https://www.instagram.com/inchoate.light/" target="_blank" rel="noopener">Alex Cohen</a> grew up in New York, drawing constantly: at the dinner table, on road trips, in the margins of his school notes.</p>
+      <p class="lede" data-edit="page:story.html:9a2a3733"><a href="https://www.instagram.com/hannahwcohen/" target="_blank" rel="noopener">Hannah Woodard</a> grew up in a wooded corner of Vermont, building tiny worlds from branches, leaves and stones from her forest. <a href="https://www.instagram.com/inchoate.light/" target="_blank" rel="noopener">Alex Cohen</a> grew up in New York, drawing all the time. At the dinner table, on road trips, in the margins of his school notes.</p>
       <div class="more" id="more">
         <div>
-        <p class="lede" data-edit="page:story.html:15d07e3d">They met in a figure drawing class at RISD in 2008, two eager freshmen at neighboring easels, learning to make art together. They became close, but the journey was winding, and it led them apart for a decade.</p>
-        <p class="lede" data-edit="page:story.html:acc6a290">When they finally found their way back to each other, they married in 2023. Through it all they never stopped making things for one another: little objects that kept them connected over many years and miles apart. <span class="aol">Artifacts of love.</span> That is how Maçon was born.</p>
+        <p class="lede" data-edit="page:story.html:d1fa5a5c">They met in a figure drawing class at RISD in 2008, eager freshmen at neighboring easels learning to make art together. They became close, but their journey was winding and it led them apart for a decade.</p>
+        <p class="lede" data-edit="page:story.html:a4edeb77">When they finally found their way back to each other, they married in 2023. Through it all, they never stopped making things for each other. Little objects that kept them connected over many years apart. <span class="aol">Artifacts of love.</span> This is how Maçon was born.</p>
         </div>
       </div>
       <p class="readmore" data-edit="page:story.html:2c607376"><button type="button" id="readmore" aria-expanded="false" aria-controls="more">Full story</button></p>
