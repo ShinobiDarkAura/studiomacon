@@ -236,8 +236,9 @@
                              gtag('event', 'view_item', {currency: 'USD', value: value, items: g4}); }
       if (kind === 'add') { fbq('track', 'AddToCart', {content_ids: ids, content_type: 'product', value: value, currency: 'USD'});
                             gtag('event', 'add_to_cart', {currency: 'USD', value: value, items: g4}); }
-      if (kind === 'checkout') { fbq('track', 'InitiateCheckout', {content_ids: ids, content_type: 'product', num_items: list.length, value: value, currency: 'USD'});
-                                 gtag('event', 'begin_checkout', {currency: 'USD', value: value, items: g4}); }
+      // Shopify's own checkout fires InitiateCheckout with an id Meta can deduplicate against.
+      // Ours carried no id, so the two could never be matched and checkouts counted twice.
+      if (kind === 'checkout') { gtag('event', 'begin_checkout', {currency: 'USD', value: value, items: g4}); }
       if (kind === 'lead') { fbq('track', 'Contact'); gtag('event', 'generate_lead', {form: x}); }
     } catch (e) {}
   };
@@ -928,6 +929,8 @@
       var id = String(variant || '').split('/').pop();
       var shop = (window.MACON_SHOP || {}).shop;
       if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
+        var price = parseFloat((document.querySelector('.info .price') || {}).textContent || '') || 0;
+        if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
         location.href = 'https://' + shop + '/cart/' + id + ':1?payment=shop_pay';
         return;
       }

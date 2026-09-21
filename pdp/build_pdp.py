@@ -530,8 +530,9 @@ TRACKING = ("""<meta name="facebook-domain-verification" content="%s">
                              gtag('event', 'view_item', {currency: 'USD', value: value, items: g4}); }
       if (kind === 'add') { fbq('track', 'AddToCart', {content_ids: ids, content_type: 'product', value: value, currency: 'USD'});
                             gtag('event', 'add_to_cart', {currency: 'USD', value: value, items: g4}); }
-      if (kind === 'checkout') { fbq('track', 'InitiateCheckout', {content_ids: ids, content_type: 'product', num_items: list.length, value: value, currency: 'USD'});
-                                 gtag('event', 'begin_checkout', {currency: 'USD', value: value, items: g4}); }
+      // Shopify's own checkout fires InitiateCheckout with an id Meta can deduplicate against.
+      // Ours carried no id, so the two could never be matched and checkouts counted twice.
+      if (kind === 'checkout') { gtag('event', 'begin_checkout', {currency: 'USD', value: value, items: g4}); }
       if (kind === 'lead') { fbq('track', 'Contact'); gtag('event', 'generate_lead', {form: x}); }
     } catch (e) {}
   };
@@ -875,7 +876,10 @@ def main():
         doc = one_block(page(p, template, related_block(p, products)))
         first = (SHOP_IDS.get(p["slug"]) or [None])[0]
         if first:                                     # tell Meta and Google a piece was looked at
-            view = json.dumps({"variant": first["variant"], "name": p["name"], "slug": p["slug"], "price": first["price"],
+            # the price Shopify charges today, not the one cached in ids.json: seven pieces were
+            # telling Meta and Google the wrong value on every product view
+            view = json.dumps({"variant": first["variant"], "name": p["name"], "slug": p["slug"],
+                               "price": float(LIVE_PRICE.get(str(first["variant"]).split("/")[-1], first["price"])),
                                "image": f"{SITE}/img/email/wide-{p['slug']}.jpg"})
             doc = doc.replace("</body>", f"<script>maconTrack('view', {view});</script>\n</body>", 1)
         save(f"{p['slug']}.html", doc, product=p)

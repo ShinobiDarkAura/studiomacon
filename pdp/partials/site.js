@@ -588,6 +588,8 @@
       var id = String(variant || '').split('/').pop();
       var shop = (window.MACON_SHOP || {}).shop;
       if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
+        var price = parseFloat((document.querySelector('.info .price') || {}).textContent || '') || 0;
+        if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
         location.href = 'https://' + shop + '/cart/' + id + ':1?payment=shop_pay';
         return;
       }
