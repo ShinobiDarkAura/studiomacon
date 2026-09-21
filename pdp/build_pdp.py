@@ -119,12 +119,12 @@ HIDE_FROM_GALLERY = ({"img/ori/plain-2.jpg", "img/ori/hires-1.jpg", "img/zuma/pl
 TODO = '<span class="todo">{}</span>'
 
 
-def kind(slug, notes):
+def kind(slug, notes, name=""):
     if slug == "macon-cap":
         return "apparel"
     if "bronze" in " ".join(notes).lower():
         return "totem"
-    if slug.endswith("ring"):
+    if slug.endswith("ring") or name.strip().lower().endswith("ring"):          # "Sietch Ring" is a ring too
         return "ring"
     if "chain" in " ".join(notes).lower():
         return "pendant"
@@ -262,7 +262,7 @@ def accordions(slug, k, notes):
     items.append(("Shipping &amp; Returns",
                   f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
-                  '<p class="acc-more"><a href="shipping.html">Shipping and returns in full</a></p>'))
+                  '<p class="acc-more"><a href="shipping.html">Full Details</a></p>'))
     return "\n".join(
         f'''        <div class="acc-item">
           <button class="acc-head" aria-expanded="false">{t}</button>
@@ -296,8 +296,8 @@ SIZER = """      <div class="sizer-panel" id="sizer-panel" hidden>
         <div class="step st">
           <h2><mark class="hl c">2. Or measure a ring you own</mark></h2>
           <p>Measure straight across the inside of a ring that already fits, edge to edge, in millimetres.</p>
-          <table><thead><tr><th>US size</th><th>Inside diameter</th><th>Circumference</th></tr></thead><tbody data-sizes></tbody></table>
-          <p class="more-rows"><button type="button" data-more-sizes aria-expanded="false">Show all sizes</button></p>
+          <div class="tablewrap"><div><table><thead><tr><th>US size</th><th>Inside diameter</th><th>Circumference</th></tr></thead><tbody data-sizes></tbody></table></div></div>
+          <p class="more-rows linky"><button type="button" data-more-sizes aria-expanded="false">Show all sizes</button></p>
         </div>
         <p class="helpnote st">Still unsure? Write to <a href="mailto:hello@studiomacon.co?subject=Ring%20size">hello@studiomacon.co</a> with the finger and hand, and we will talk it through.</p>
       </div>
@@ -310,7 +310,7 @@ def page(p, template, related=""):
     price = _content.product(slug, "price", p["price"])
     desc, notes = read_port(slug)
     notes = _content.product(slug, "notes", notes)
-    k = kind(slug, notes)
+    k = kind(slug, notes, name)
     plain, hand, drawn = photos(slug, k)
 
     if plain or hand:
@@ -880,11 +880,19 @@ def rel_tile(x):
 def related_block(p, products):
     """Three other pieces from the same family (totems with totems, jewelry with jewelry)."""
     def family(x):
-        return "cap" if x["slug"] == "macon-cap" else ("totem" if kind(x["slug"], read_port(x["slug"])[1]) == "totem" else "jewelry")
+        if x["slug"] == "macon-cap":
+            return "cap"
+        k = kind(x["slug"], read_port(x["slug"])[1], x.get("name", ""))
+        return k if k in ("totem", "ring", "pendant") else "jewelry"
     mine = family(p)
     products = [x for x in products if x["slug"] not in HIDE_FROM_SHOP]
     same = [x for x in products if x["slug"] != p["slug"] and family(x) == mine]
-    rest = [x for x in products if x["slug"] != p["slug"] and family(x) != mine]
+    # only two pendants exist, so a pendant fills up from the other worn pieces rather than from totems
+    worn = {"ring", "pendant", "jewelry"}
+    near = [x for x in products if x["slug"] != p["slug"] and family(x) != mine
+            and ({family(x), mine} <= worn or {family(x), mine} <= {"totem", "cap"})]
+    far = [x for x in products if x["slug"] != p["slug"] and family(x) != mine and x not in near]
+    rest = near + far
     slugs = [x["slug"] for x in products]
     start = (slugs.index(p["slug"]) if p["slug"] in slugs else 0) % max(1, len(same))
     pick = (same[start:] + same[:start] + rest)[:3]           # three across; rotated so neighbours differ from page to page

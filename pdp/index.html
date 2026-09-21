@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Studio Maçon", "url": "https://studiomacon.co", "logo": "https://studiomacon.co/img/favicon.png", "email": "hello@studiomacon.co", "sameAs": ["https://www.instagram.com/studiomacon/"]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789979030">
+<link rel="stylesheet" href="site.css?v=1789979836">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -407,7 +407,7 @@
   <section class="section welcome">
     <div class="prose">
       <p class="eyebrow" data-edit="page:index.html:26c677bd">Studio Maçon</p>
-      <h1 class="stamped" data-edit="page:index.html:e1f1e364">Small Things,<br>Made to Last<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h1>
+      <h1 class="stamped" data-edit="page:index.html:9e3049b1">Small Things,<br>Held Close<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h1>
       <p data-edit="page:index.html:5a97ed3b">Maçon makes artifacts and jewelry to be carried, worn and handed down. Every piece is drawn on paper, carved by hand in wax and cast in bronze, silver or gold, then finished by hand in our studio.</p>
     </div>
   </section>
@@ -1356,14 +1356,28 @@
   }
 
   var timer;
+  function shutTable() {
+    var wrap = panel.querySelector('.tablewrap');
+    if (!wrap || panel.classList.contains('all-sizes')) return;
+    var r = panel.querySelectorAll('[data-sizes] tr'), th = panel.querySelector('thead');
+    if (r.length > 2) wrap.style.setProperty('--rows',
+      ((th ? th.getBoundingClientRect().height : 0) + (r[2].getBoundingClientRect().bottom - r[0].getBoundingClientRect().top)) + 'px');
+  }
+
   function open(on) {
     clearTimeout(timer);
     var body = document.body;
     if (on) {
       body.classList.remove('sizing-closing', 'sizing-back');
-      panel.hidden = false;
-      body.classList.add('sizing-open');
+      // the product column leaves to the left before the sizer arrives from the right
+      body.classList.add('sizing-leaving');
       window.scrollTo({top: 0, behavior: 'smooth'});
+      timer = setTimeout(function () {
+        body.classList.remove('sizing-leaving');
+        panel.hidden = false;
+        body.classList.add('sizing-open');
+        shutTable();
+      }, 300);
       return;
     }
     // let the panel leave before the product column comes back
@@ -1383,7 +1397,15 @@
     var more = e.target.closest('[data-more-sizes]');
     if (more) {
       e.preventDefault(); e.stopPropagation();
+      var wrap = panel.querySelector('.tablewrap');
+      var rows = panel.querySelectorAll('[data-sizes] tr');
+      var three = rows.length ? rows[2].getBoundingClientRect().bottom - rows[0].getBoundingClientRect().top : 0;
+      var head = panel.querySelector('thead');
+      var shut = (head ? head.getBoundingClientRect().height : 0) + three;
       var all = panel.classList.toggle('all-sizes');
+      // a fixed height for the three rows, then to the table's real height, so it can animate
+      var full = wrap.querySelector('table').getBoundingClientRect().height;
+      wrap.style.setProperty('--rows', (all ? full : shut) + 'px');
       more.setAttribute('aria-expanded', all ? 'true' : 'false');
       more.textContent = all ? 'Show fewer sizes' : 'Show all sizes';
       return;

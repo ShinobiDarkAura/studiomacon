@@ -869,14 +869,28 @@
   }
 
   var timer;
+  function shutTable() {
+    var wrap = panel.querySelector('.tablewrap');
+    if (!wrap || panel.classList.contains('all-sizes')) return;
+    var r = panel.querySelectorAll('[data-sizes] tr'), th = panel.querySelector('thead');
+    if (r.length > 2) wrap.style.setProperty('--rows',
+      ((th ? th.getBoundingClientRect().height : 0) + (r[2].getBoundingClientRect().bottom - r[0].getBoundingClientRect().top)) + 'px');
+  }
+
   function open(on) {
     clearTimeout(timer);
     var body = document.body;
     if (on) {
       body.classList.remove('sizing-closing', 'sizing-back');
-      panel.hidden = false;
-      body.classList.add('sizing-open');
+      // the product column leaves to the left before the sizer arrives from the right
+      body.classList.add('sizing-leaving');
       window.scrollTo({top: 0, behavior: 'smooth'});
+      timer = setTimeout(function () {
+        body.classList.remove('sizing-leaving');
+        panel.hidden = false;
+        body.classList.add('sizing-open');
+        shutTable();
+      }, 300);
       return;
     }
     // let the panel leave before the product column comes back
@@ -896,7 +910,15 @@
     var more = e.target.closest('[data-more-sizes]');
     if (more) {
       e.preventDefault(); e.stopPropagation();
+      var wrap = panel.querySelector('.tablewrap');
+      var rows = panel.querySelectorAll('[data-sizes] tr');
+      var three = rows.length ? rows[2].getBoundingClientRect().bottom - rows[0].getBoundingClientRect().top : 0;
+      var head = panel.querySelector('thead');
+      var shut = (head ? head.getBoundingClientRect().height : 0) + three;
       var all = panel.classList.toggle('all-sizes');
+      // a fixed height for the three rows, then to the table's real height, so it can animate
+      var full = wrap.querySelector('table').getBoundingClientRect().height;
+      wrap.style.setProperty('--rows', (all ? full : shut) + 'px');
       more.setAttribute('aria-expanded', all ? 'true' : 'false');
       more.textContent = all ? 'Show fewer sizes' : 'Show all sizes';
       return;

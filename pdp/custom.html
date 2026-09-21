@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789979030">
+<link rel="stylesheet" href="site.css?v=1789979836">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -373,7 +373,7 @@
     <figure class="cutout" data-name="20.png" style="--s:0.74;--x:0.0;--y:0.0"><img src="img/commissions-cut/20.png.webp" width="781" height="249" alt="Aaron&#x27;s Wedding Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Aaron&#x27;s Wedding Band</span></span></figure>
     <figure class="cutout" data-name="added-1789609019-custom-totem-01.png" style="--s:0.85;--x:0.0;--y:0.0"><img src="img/commissions-cut/added-1789609019-custom-totem-01.png.webp" width="728" height="825" alt="Border Collie" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie</span></span></figure>
     <figure class="cutout" data-name="added-1789609020-custom-totem-02.png" style="--s:0.88;--x:0.0;--y:0.0"><img src="img/commissions-cut/added-1789609020-custom-totem-02.png.webp" width="720" height="880" alt="Border Collie" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie</span></span></figure>
-    <figure class="cutout" data-name="added-1789609021-custom-totem-03.png" style="--s:0.89;--x:2.0;--y:-5.0"><img src="img/commissions-cut/added-1789609021-custom-totem-03.png.webp" width="445" height="774" alt="Grey Wolf" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Grey Wolf</span></span></figure>
+    <figure class="cutout" data-name="added-1789609021-custom-totem-03.png" style="--s:0.762;--x:2.0;--y:-16.4"><img src="img/commissions-cut/added-1789609021-custom-totem-03.png.webp" width="445" height="774" alt="Grey Wolf" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Grey Wolf</span></span></figure>
     <figure class="cutout" data-name="added-1789609021-custom-totem-04.png" style="--s:0.89;--x:2.0;--y:-5.0"><img src="img/commissions-cut/added-1789609021-custom-totem-04.png.webp" width="697" height="1039" alt="Red Fox, Seated" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Red Fox, Seated</span></span></figure>
     <figure class="cutout" data-name="added-1789609023-custom-totem-07.png" style="--s:0.74;--x:-4.0;--y:-3.0"><img src="img/commissions-cut/added-1789609023-custom-totem-07.png.webp" width="1080" height="757" alt="Prowling Fox" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Prowling Fox</span></span></figure>
     <figure class="cutout" data-name="added-1789609024-custom-totem-08.png" style="--s:0.75;--x:1.0;--y:-4.0"><img src="img/commissions-cut/added-1789609024-custom-totem-08.png.webp" width="1088" height="745" alt="Prowling Fox" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Prowling Fox</span></span></figure>
@@ -1455,14 +1455,28 @@
   }
 
   var timer;
+  function shutTable() {
+    var wrap = panel.querySelector('.tablewrap');
+    if (!wrap || panel.classList.contains('all-sizes')) return;
+    var r = panel.querySelectorAll('[data-sizes] tr'), th = panel.querySelector('thead');
+    if (r.length > 2) wrap.style.setProperty('--rows',
+      ((th ? th.getBoundingClientRect().height : 0) + (r[2].getBoundingClientRect().bottom - r[0].getBoundingClientRect().top)) + 'px');
+  }
+
   function open(on) {
     clearTimeout(timer);
     var body = document.body;
     if (on) {
       body.classList.remove('sizing-closing', 'sizing-back');
-      panel.hidden = false;
-      body.classList.add('sizing-open');
+      // the product column leaves to the left before the sizer arrives from the right
+      body.classList.add('sizing-leaving');
       window.scrollTo({top: 0, behavior: 'smooth'});
+      timer = setTimeout(function () {
+        body.classList.remove('sizing-leaving');
+        panel.hidden = false;
+        body.classList.add('sizing-open');
+        shutTable();
+      }, 300);
       return;
     }
     // let the panel leave before the product column comes back
@@ -1482,7 +1496,15 @@
     var more = e.target.closest('[data-more-sizes]');
     if (more) {
       e.preventDefault(); e.stopPropagation();
+      var wrap = panel.querySelector('.tablewrap');
+      var rows = panel.querySelectorAll('[data-sizes] tr');
+      var three = rows.length ? rows[2].getBoundingClientRect().bottom - rows[0].getBoundingClientRect().top : 0;
+      var head = panel.querySelector('thead');
+      var shut = (head ? head.getBoundingClientRect().height : 0) + three;
       var all = panel.classList.toggle('all-sizes');
+      // a fixed height for the three rows, then to the table's real height, so it can animate
+      var full = wrap.querySelector('table').getBoundingClientRect().height;
+      wrap.style.setProperty('--rows', (all ? full : shut) + 'px');
       more.setAttribute('aria-expanded', all ? 'true' : 'false');
       more.textContent = all ? 'Show fewer sizes' : 'Show all sizes';
       return;

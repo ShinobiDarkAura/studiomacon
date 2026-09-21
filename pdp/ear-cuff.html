@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Caldera Arc", "description": "A clean silver line that rests on the ear, no piercing required. Light breaks into odd colours across its mirrored edge. Shaped and polished by hand to hold securely.", "image": ["https://studiomacon.co/img/ear-cuff/hero.jpg", "https://studiomacon.co/img/ear-cuff/hires-1.jpg", "https://studiomacon.co/img/ear-cuff/hand-3.jpg", "https://studiomacon.co/img/ear-cuff/hires-3.jpg", "https://studiomacon.co/img/ear-cuff/composite.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ear-cuff", "offers": [{"@type": "Offer", "price": "260.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ear-cuff.html"}, {"@type": "Offer", "price": "490.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ear-cuff.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1789979030">
+<link rel="stylesheet" href="site.css?v=1789979836">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:var(--field);overflow:hidden}
@@ -96,22 +96,23 @@
   .sizer-panel .bar{width:100mm;max-width:100%;height:13px;border:1px solid var(--ink)}
   .sizer-panel .cap{display:flex;justify-content:space-between;width:100mm;max-width:100%;margin-top:5px;
     font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding-bottom:16px}
-  .sizer-panel .sizer{margin:22px 0 0;width:74mm;max-width:100%;border:0;border-radius:16px;background:var(--field);padding:0 0 3mm;overflow:hidden}
+  .sizer-panel .sizer{margin:22px 0 0;width:74mm;max-width:100%;border:0;border-radius:16px;background:var(--field);padding:12px 12px calc(3mm + 12px);overflow:hidden}
   .sizer-panel .slot{width:11mm;height:5mm;margin:4mm 0 5mm 4mm;border:1px solid var(--ink);border-radius:1px}
   .sizer-panel .ticks{position:relative;height:17mm;margin:0 4mm}
-  .sizer-panel .t{position:absolute;top:0;width:1px;height:6mm;background:var(--ink)}
-  .sizer-panel .t.major{height:9mm}
+  .sizer-panel .t{position:absolute;top:0;width:1px;height:6mm;background:var(--ink);opacity:.5}          /* the half sizes read quieter */
+  .sizer-panel .t.major{height:9mm;opacity:1}
   .sizer-panel .n{position:absolute;top:9.6mm;transform:translateX(-50%);font-size:9px;font-weight:400}
-  .sizer-panel .edge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 4mm}
-  .sizer-panel .cut{font-size:13px;color:rgba(0,0,0,.55);margin:28px 0 0}          /* 16px more air under the strip */
+  .sizer-panel .edge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 0 4mm}          /* flush with the ruler's first tick */
+  .sizer-panel .step p.cut{font-size:13px;color:rgba(0,0,0,.55);margin:40px 0 0}          /* 16px under the strip, and 12px more again */
   .sizer-panel table{border-collapse:collapse;font-size:14px;margin:12px 0 0;width:100%}
   .sizer-panel th,.sizer-panel td{text-align:left;padding:6px 18px 6px 0;border-bottom:1px solid var(--rule)}
   .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
   .sizer-panel .helpnote{font-size:15px;line-height:1.55;margin:30px 0 0}
   .sizing-open .info-main{display:none}
+  body.sizing-leaving .info-main{display:block;animation:main-out .34s cubic-bezier(.4,0,.2,1) both}
   .sizer-panel[hidden]{display:none}
   /* the panel and the product column trade places rather than blinking */
-  body.sizing-open .sizer-panel{animation:sizer-fade .3s ease both}
+  body.sizing-open .sizer-panel{animation:panel-in .52s cubic-bezier(.22,1,.36,1) both}
   body.sizing-open .sizer-panel .st{animation:sizer-in .62s cubic-bezier(.16,1,.3,1) both}
   body.sizing-open .sizer-panel .st:nth-child(1){animation-delay:40ms}
   body.sizing-open .sizer-panel .st:nth-child(2){animation-delay:140ms}
@@ -119,8 +120,14 @@
   body.sizing-open .sizer-panel .st:nth-child(4){animation-delay:340ms}
   body.sizing-open .sizer-panel .st:nth-child(5){animation-delay:440ms}
   body.sizing-open .sizer-panel .st:nth-child(6){animation-delay:540ms}
-  @keyframes sizer-fade{from{opacity:0}to{opacity:1}}
-  body.sizing-closing .sizer-panel{animation:sizer-out .26s ease both}          /* the whole panel leaves as one */
+  @keyframes panel-in{from{opacity:0;transform:translateX(42px)}to{opacity:1;transform:none}}
+  @keyframes panel-out{from{opacity:1;transform:none}to{opacity:0;transform:translateX(42px)}}
+  @keyframes main-out{from{opacity:1;transform:none}to{opacity:0;transform:translateX(-42px)}}
+  @keyframes main-in{from{opacity:0;transform:translateX(-42px)}to{opacity:1;transform:none}}
+  .info{overflow:hidden}          /* the columns slide past the edge, not across the page */
+  body.sizing-closing .info-main{display:block;animation:main-in .52s cubic-bezier(.22,1,.36,1) both;animation-delay:.12s}
+  body.sizing-back .info-main{animation:main-in .52s cubic-bezier(.22,1,.36,1) both}
+  body.sizing-closing .sizer-panel{animation:panel-out .42s cubic-bezier(.4,0,.2,1) both}          /* it leaves the way it came */
   body.sizing-closing .sizer-panel .st{animation:none}
   body.sizing-back .info-main{animation:sizer-in .46s cubic-bezier(.16,1,.3,1) both}
   @keyframes sizer-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -130,13 +137,14 @@
     body.sizing-closing .sizer-panel,body.sizing-back .info-main{animation:none}
   }
   /* the size table starts at three rows */
-  .sizer-panel tbody tr{display:none}
-  .sizer-panel tbody tr:nth-child(-n+3){display:table-row}
-  .sizer-panel.all-sizes tbody tr{display:table-row}
-  .sizer-panel .more-rows{margin:12px 0 0}
-  .sizer-panel .more-rows button{font-family:inherit;font-size:14px;padding:0;border:0;background:none;cursor:pointer;
-    color:rgba(0,0,0,.55);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(0,0,0,.25)}
-  .sizer-panel .more-rows button:hover{color:#000}
+  .sizer-panel .tablewrap{display:grid;grid-template-rows:var(--rows,1fr);
+    transition:grid-template-rows .55s cubic-bezier(.22,1,.36,1)}
+  .sizer-panel .tablewrap > div{overflow:hidden}
+  .sizer-panel tbody tr{opacity:0;transition:opacity .4s ease}
+  .sizer-panel tbody tr:nth-child(-n+3),.sizer-panel.all-sizes tbody tr{opacity:1}
+  @media (prefers-reduced-motion:reduce){ .sizer-panel .tablewrap,.sizer-panel tbody tr{transition:none} }
+  .sizer-panel .step p.more-rows{margin:28px 0 0}          /* 16px more air above it */
+
   @media print{
     body.sizing-open .gallery,body.sizing-open .head,body.sizing-open .ship-bar,body.sizing-open footer,
     body.sizing-open .related,body.sizing-open .back,body.sizing-open .printbtn,body.sizing-open .dock{display:none !important}
@@ -499,7 +507,7 @@
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="keep-para">Each piece is made to order; please allow up to 10 business days before it ships. Shipping is free on all orders within the continental US, and every order arrives in a special box, wrapped with care.</p><p>Pieces in original condition may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size.</p><p class="acc-more"><a href="shipping.html">Shipping and returns in full</a></p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="keep-para">Each piece is made to order; please allow up to 10 business days before it ships. Shipping is free on all orders within the continental US, and every order arrives in a special box, wrapped with care.</p><p>Pieces in original condition may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size.</p><p class="acc-more"><a href="shipping.html">Full Details</a></p></div></div></div>
         </div>
       </div>
       </div>
@@ -1416,14 +1424,28 @@
   }
 
   var timer;
+  function shutTable() {
+    var wrap = panel.querySelector('.tablewrap');
+    if (!wrap || panel.classList.contains('all-sizes')) return;
+    var r = panel.querySelectorAll('[data-sizes] tr'), th = panel.querySelector('thead');
+    if (r.length > 2) wrap.style.setProperty('--rows',
+      ((th ? th.getBoundingClientRect().height : 0) + (r[2].getBoundingClientRect().bottom - r[0].getBoundingClientRect().top)) + 'px');
+  }
+
   function open(on) {
     clearTimeout(timer);
     var body = document.body;
     if (on) {
       body.classList.remove('sizing-closing', 'sizing-back');
-      panel.hidden = false;
-      body.classList.add('sizing-open');
+      // the product column leaves to the left before the sizer arrives from the right
+      body.classList.add('sizing-leaving');
       window.scrollTo({top: 0, behavior: 'smooth'});
+      timer = setTimeout(function () {
+        body.classList.remove('sizing-leaving');
+        panel.hidden = false;
+        body.classList.add('sizing-open');
+        shutTable();
+      }, 300);
       return;
     }
     // let the panel leave before the product column comes back
@@ -1443,7 +1465,15 @@
     var more = e.target.closest('[data-more-sizes]');
     if (more) {
       e.preventDefault(); e.stopPropagation();
+      var wrap = panel.querySelector('.tablewrap');
+      var rows = panel.querySelectorAll('[data-sizes] tr');
+      var three = rows.length ? rows[2].getBoundingClientRect().bottom - rows[0].getBoundingClientRect().top : 0;
+      var head = panel.querySelector('thead');
+      var shut = (head ? head.getBoundingClientRect().height : 0) + three;
       var all = panel.classList.toggle('all-sizes');
+      // a fixed height for the three rows, then to the table's real height, so it can animate
+      var full = wrap.querySelector('table').getBoundingClientRect().height;
+      wrap.style.setProperty('--rows', (all ? full : shut) + 'px');
       more.setAttribute('aria-expanded', all ? 'true' : 'false');
       more.textContent = all ? 'Show fewer sizes' : 'Show all sizes';
       return;
