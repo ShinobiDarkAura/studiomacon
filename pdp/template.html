@@ -245,10 +245,7 @@
       <h1 data-edit="name">{{TITLE}}</h1>
       <p class="price" data-edit="price">{{PRICE}}</p>
       {{SIZE}}
-      <div class="buy" id="bag" data-variant="{{VARIANT}}">
-        <button class="cta">Add to Bag</button>
-        <button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">Buy with <span class="shop-word">shop</span></button>
-      </div>
+      {{BUY}}
       <div class="desc-block"><p class="label">Field Notes</p><p class="desc" data-edit="description">{{DESC}}</p></div>
       <div class="acc">
 {{ACCORDIONS}}
@@ -258,11 +255,11 @@
 
   {{RELATED}}
 
-  <!-- lore and making blocks, parked for now
+  <!-- The story, below the fold. Facts sit beside the buy button; this is for the reader
+       who has already decided and is now enjoying themselves. -->
   <section class="closing">
     {{CLOSING}}
   </section>
-  -->
 </main>
 
 {{FOOTER}}

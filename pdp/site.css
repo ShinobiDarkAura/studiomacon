@@ -416,3 +416,8 @@ body.ship-on .head{transform:translateY(var(--ship-h,38px))}
 
 .bag-page .ship-note{white-space:nowrap}
 .bag-page .ship-sub{opacity:.55}
+
+/* a piece that has sold: the buy row becomes a note and a way onward */
+.buy.sold{display:block;text-align:center}
+.buy.sold .sold-note{margin:0 0 12px;font-size:15px;line-height:1.5;color:rgba(0,0,0,.62)}
+.buy.sold .cta{text-decoration:none}

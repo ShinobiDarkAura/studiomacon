@@ -332,13 +332,27 @@ def page(p, template, related=""):
     check("made", made, voice, (lambda t: len(t.split()) >= 30, "shorter than 30 words"))
 
     ph = '<div class="big" role="presentation"></div>'
-    close = (f'{ph}\n    <p class="chunk" data-edit="lore">{html.escape(lore)}</p>\n    {ph}'
-             f'\n    <p class="chunk" data-edit="made">{html.escape(made)}</p>\n    {ph}')
+    # Words only for now: the three grey panels between them are placeholders with no photograph
+    # behind them, and an empty grey box reads worse than no box at all.
+    close = (f'<p class="chunk" data-edit="lore">{html.escape(lore)}</p>'
+             f'\n    <p class="chunk" data-edit="made">{html.escape(made)}</p>')
 
     # sizes and styles come from Shopify (shopify/variants.json, made by tools/shopify_sync.py)
     shop = SHOPIFY.get(slug, {})
     variants = shop.get("variants", [])
     size_select, buy_variant = "", ""
+    # A piece that has sold cannot be added to a bag. Every piece here is one of one, so this
+    # is the normal end of a product's life, not an error state.
+    in_stock = any(v.get("available", True) for v in variants) if variants else True
+    if in_stock:
+        buy_block = ('<div class="buy" id="bag" data-variant="{{VARIANT}}">'
+                     '<button class="cta">Add to Bag</button>'
+                     '<button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">'
+                     'Buy with <span class="shop-word">shop</span></button></div>')
+    else:
+        buy_block = ('<div class="buy sold" id="bag" data-variant="{{VARIANT}}">'
+                     '<p class="sold-note">This one has found its person.</p>'
+                     '<a class="cta" href="custom.html">Commission something like it</a></div>')
     if len(variants) > 1:
         label = "Size" if shop["option"].lower() == "size" else shop["option"]
         size_select = ('<div class="size" data-size>'
@@ -388,6 +402,7 @@ def page(p, template, related=""):
             .replace("{{EYEBROW}}", html.escape(eyebrow))
             .replace("{{PRICE}}", f"${price}")
             .replace("{{DESC}}", html.escape(blurb))
+            .replace("{{BUY}}", buy_block)
             .replace("{{SIZE}}", size_select)
             .replace("{{VARIANT}}", buy_variant)
             .replace("{{HEROSTYLE}}", hero_style)
