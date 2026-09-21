@@ -16,7 +16,7 @@
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790020351">
+<link rel="stylesheet" href="site.css?v=1790031070">
 <style>
   /* the poster floats whole in the middle of a black field, never cropped */
   .split .pics figure{margin:0;background:#000;display:grid;place-items:center;
@@ -201,7 +201,16 @@
   maconSend('PageView', {});
   var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=G-B5GNGQ1WME'; document.head.appendChild(g);
   window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
-  gtag('js', new Date()); gtag('config', 'G-B5GNGQ1WME'); gtag('config', 'AW-16466703173');
+  gtag('js', new Date());
+  try {          // the bag A/B test: which side this visitor is on, the same draw site.js makes
+    var bt = 'phone';          // phones always get the full bag page, so they stay out of the comparison
+    if (matchMedia('(min-width:768px)').matches) {
+      bt = localStorage.getItem('macon-bag-test');
+      if (bt !== 'drawer' && bt !== 'page') { bt = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', bt); }
+    }
+    gtag('set', 'user_properties', {bag_test: bt});
+  } catch (e) {}
+  gtag('config', 'G-B5GNGQ1WME'); gtag('config', 'AW-16466703173');
   var ITEMS = {"53985362870637":"shopify_US_15222550331757_53985362870637","53985363001709":"shopify_US_15222550462829_53985363001709","53985363067245":"shopify_US_15222550528365_53985363067245","53985363263853":"shopify_US_15222550659437_53985363263853","53985363329389":"shopify_US_15222550724973_53985363329389","53985363427693":"shopify_US_15222550823277_53985363427693","53985363525997":"shopify_US_15222550921581_53985363525997","53985363558765":"shopify_US_15222550921581_53985363558765","53985363591533":"shopify_US_15222550921581_53985363591533","53985363624301":"shopify_US_15222550921581_53985363624301","53985363657069":"shopify_US_15222550921581_53985363657069","53985363689837":"shopify_US_15222550921581_53985363689837","53985363722605":"shopify_US_15222550921581_53985363722605","53985363755373":"shopify_US_15222550921581_53985363755373","53985363788141":"shopify_US_15222550921581_53985363788141","53985363820909":"shopify_US_15222550921581_53985363820909","53985363853677":"shopify_US_15222550921581_53985363853677","53985363886445":"shopify_US_15222550921581_53985363886445","53985363984749":"shopify_US_15222550987117_53985363984749","53985364083053":"shopify_US_15222551118189_53985364083053","53985364115821":"shopify_US_15222551118189_53985364115821","53985364148589":"shopify_US_15222551118189_53985364148589","53985364181357":"shopify_US_15222551118189_53985364181357","53985364214125":"shopify_US_15222551118189_53985364214125","53985364246893":"shopify_US_15222551118189_53985364246893","53985364279661":"shopify_US_15222551118189_53985364279661","53985364312429":"shopify_US_15222551118189_53985364312429","53985364345197":"shopify_US_15222551118189_53985364345197","53985364377965":"shopify_US_15222551118189_53985364377965","53985364410733":"shopify_US_15222551118189_53985364410733","53985364443501":"shopify_US_15222551118189_53985364443501","53985364509037":"shopify_US_15222551183725_53985364509037","53985364541805":"shopify_US_15222551183725_53985364541805","53985364574573":"shopify_US_15222551183725_53985364574573","53985364607341":"shopify_US_15222551183725_53985364607341","53985364640109":"shopify_US_15222551183725_53985364640109","53985364672877":"shopify_US_15222551183725_53985364672877","53985364705645":"shopify_US_15222551183725_53985364705645","53985364738413":"shopify_US_15222551183725_53985364738413","53985365131629":"shopify_US_15222551249261_53985365131629","53985365164397":"shopify_US_15222551249261_53985365164397","53985365197165":"shopify_US_15222551249261_53985365197165","53985365229933":"shopify_US_15222551249261_53985365229933","53985365262701":"shopify_US_15222551249261_53985365262701","53985365295469":"shopify_US_15222551249261_53985365295469","53985365328237":"shopify_US_15222551249261_53985365328237","53985365361005":"shopify_US_15222551249261_53985365361005","53985365393773":"shopify_US_15222551249261_53985365393773","53985365426541":"shopify_US_15222551249261_53985365426541","53985365459309":"shopify_US_15222551249261_53985365459309","53985365492077":"shopify_US_15222551249261_53985365492077","53985365590381":"shopify_US_15222551347565_53985365590381","53985365655917":"shopify_US_15222551413101_53985365655917","53985365819757":"shopify_US_15222551576941_53985365819757","53985365885293":"shopify_US_15222551642477_53985365885293","53985365950829":"shopify_US_15222551708013_53985365950829","53985365983597":"shopify_US_15222551708013_53985365983597","53985366016365":"shopify_US_15222551708013_53985366016365","53985366049133":"shopify_US_15222551708013_53985366049133","53985366081901":"shopify_US_15222551708013_53985366081901","53985366114669":"shopify_US_15222551708013_53985366114669","53985366147437":"shopify_US_15222551708013_53985366147437","53985366180205":"shopify_US_15222551708013_53985366180205","53985366212973":"shopify_US_15222551708013_53985366212973","53985366245741":"shopify_US_15222551708013_53985366245741","53985366278509":"shopify_US_15222551708013_53985366278509","53985366311277":"shopify_US_15222551708013_53985366311277","53985366409581":"shopify_US_15222551806317_53985366409581","53985373192557":"shopify_US_15222557737325_53985373192557","53985373225325":"shopify_US_15222557737325_53985373225325"};                                     // Shopify variant id -> catalog id
   var idOf = function (v) { v = String(v || '').split('/').pop(); return ITEMS[v] || v; };
   window.maconTrack = function (kind, x) {
@@ -226,7 +235,7 @@
 <body class="white-right">
 
 
-<nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping<br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><a href="bag.html" style="--i:6">Bag</a></nav>
+<nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping <br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><p class="menu-legal" data-edit="page:contact.html:d221367e"><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/privacy-policy">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/terms-of-service">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/refund-policy">Refunds</a></p></nav>
 <header class="head">
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
@@ -287,7 +296,6 @@
       <input type="email" placeholder="Email address" aria-label="Email address" required>
       <button>Submit</button>
     </form>
-    <p class="legal" data-edit="page:contact.html:d221367e"><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/privacy-policy">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/terms-of-service">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/refund-policy">Refunds</a></p>
   </div>
 </footer>
 <script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581", "subscribeUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/subscribe"};</script>
@@ -817,7 +825,7 @@
       veil = document.createElement('div'); veil.className = 'bag-veil';
       drawer = document.createElement('aside'); drawer.className = 'bag-drawer'; drawer.setAttribute('aria-label', 'Your bag');
       drawer.setAttribute('role', 'dialog'); drawer.setAttribute('aria-modal', 'true'); drawer.inert = true;
-      drawer.innerHTML = '<div class="bd-head"><p class="bd-title" data-edit="page:contact.html:ef6155a5">Bag</p><button type="button" class="bd-close">Close</button></div>' +
+      drawer.innerHTML = '<div class="bd-head"><p class="bd-title" data-edit="page:contact.html:4a84232f">Your bag</p><button type="button" class="bd-close" aria-label="Close bag">Close</button></div>' +
         '<div class="bd-lines lines"></div>' +
         '<div class="bd-empty" hidden><p data-edit="page:contact.html:e000f14a">Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
@@ -852,6 +860,7 @@
     if (wide.matches && !/bag\.html$/.test(location.pathname)) (window.requestIdleCallback || setTimeout)(function () { if (!drawer) build(); });
     link.addEventListener('click', function (e) {
       if (!wide.matches || /bag\.html$/.test(location.pathname)) return;          // phones, and the Bag page itself, keep the page
+      if (maconBagTest() === 'page') return;          // the A/B test: this visitor goes to the full bag page instead of the drawer
       e.preventDefault(); set(true);
     });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) set(false); });
@@ -954,6 +963,16 @@
   addEventListener('beforeprint', function () { document.documentElement.classList.add('printing'); });
   addEventListener('afterprint', function () { setTimeout(function () { document.documentElement.classList.remove('printing'); }, 400); });
 
+  // A/B test (started 2026-09-21): half of desktop visitors open the bag as a drawer, half as the full page.
+  // Each visitor keeps their side for good; Google Analytics records it as the user property bag_test.
+  window.maconBagTest = function () {
+    try {
+      var v = localStorage.getItem('macon-bag-test');
+      if (v !== 'drawer' && v !== 'page') { v = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', v); }
+      return v;
+    } catch (e) { return 'drawer'; }
+  };
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
@@ -964,11 +983,17 @@
       if (on && !keepX) {          // Close sits exactly where Menu was
         var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
         var shift = document.querySelector('.head').getBoundingClientRect().left;          // how far the page is pushed aside right now
-        c.style.left = (r.left - shift) + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
+        c.style.left = (r.left + r.width / 2 - 22 - shift) + 'px'; c.style.top = (r.top + r.height / 2 - 22) + 'px'; c.style.height = '44px';          // the X's centre on the hamburger's centre
       }
       // phones can quietly jump the page to the top while scrolling is locked; keep where you were,
       // and let the home logotype settle back at once rather than easing in over most of a second
       if (on) savedY = scrollY;
+      if (!on && open && !menu.classList.contains('instant')) {          // closing plays the opening backwards, on every screen
+        var root = document.documentElement; root.classList.add('logo-hold'); clearTimeout(menu._logo);
+        menu._logo = setTimeout(function () { root.classList.remove('logo-hold'); }, 770);          // the logo finishes turning just as the menu has gone
+        menu.classList.add('leaving'); clearTimeout(menu._leave); menu._leave = setTimeout(function () { menu.classList.remove('leaving'); }, 1090);          // the moment the white has gone
+      }
+      if (on) { clearTimeout(menu._leave); menu.classList.remove('leaving'); clearTimeout(menu._logo); document.documentElement.classList.remove('logo-hold'); }
       menu.classList.toggle('open', on); menu.inert = !on; open = on;
       document.documentElement.classList.toggle('menu-open', on);
       [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; });
@@ -990,12 +1015,15 @@
     }
     // tapping the pushed-over page closes the menu
     document.addEventListener('click', function (e) { if (open && !menu.contains(e.target) && e.target !== btn) set(false); });
-    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
+    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });
+    // phones: open as the finger lifts. iPhone Safari treated the first tap as a hover (the logo starts blinking
+    // on the first touch) and swallowed the click, so the menu needed two taps
+    btn.addEventListener('touchend', function (e) { e.preventDefault(); keyboard = false; if (!open) set(true); }, {passive: false});          // focus the first link only for keyboard users, so a tap shows no outline
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
     // widened past the phone layout with the drawer open: the desktop nav takes over, so close it
     var wide = matchMedia('(min-width:768px)');
-    var toWide = function (e) { if (e.matches && open) set(false); };
+    var toWide = function () {};          // PREVIEW: the menu now works at every width
     if (wide.addEventListener) wide.addEventListener('change', toWide); else wide.addListener(toWide);
 
     // Choosing a page: the drawer stays put and the new page loads behind it

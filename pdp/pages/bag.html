@@ -19,7 +19,8 @@
   .summary .note{text-align:center;margin:14px 0 0;font-size:13px;color:rgba(0,0,0,.5);line-height:1.5}
   .empty{padding:40px 0 0;text-align:left}
   .empty p{margin:0 0 28px;font-size:17px}
-  .empty .cta{max-width:none;width:100%}          /* the same size as Checkout */
+  .empty .cta{max-width:none;width:100%}
+  @media (max-width:767px){ footer{display:none} .bag-page{padding-bottom:48px} }          /* phones: the page ends on the made-to-order note */          /* the same size as Checkout */
   /* nothing to check out: Checkout steps back to an outline */
   .empty .cta{background:none;color:#000;border:1px solid #000}          /* Checkout stays the black one */
   @media (min-width:900px){ .bag-grid{grid-template-columns:minmax(0,1fr) 340px;gap:64px} .summary{position:sticky;top:calc(var(--head) + 24px)} }

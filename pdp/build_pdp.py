@@ -269,13 +269,13 @@ def accordions(slug, k, notes):
     gift = ("Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we\u2019ll wrap it "
             "for free and write out your note by hand. Add their address at checkout and it goes straight to them. "
             "If it isn\u2019t quite right, they can return it within 30 days for store credit.")
-    items.append(("Giving It as a Gift", f'<p>{_content.shared("gift:1", gift)}</p>'))
+    items.append(("Gifting", f'<p>{_content.shared("gift:1", gift)}</p>'))
     items.append(("Shipping &amp; Returns",
                   f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
                   '<p class="acc-more"><a href="shipping.html">Full details</a></p>'))
     # the order on every piece: size first, then what it is, gifting, shipping, and care last
-    rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "Giving It as a Gift": 2, "Shipping &amp; Returns": 3, "Wear &amp; Care": 4, "Care": 4}
+    rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "Gifting": 2, "Shipping &amp; Returns": 3, "Wear &amp; Care": 4, "Care": 4}
     items.sort(key=lambda it: rank.get(it[0], 9))
     return "\n".join(
         f'''        <div class="acc-item">
@@ -434,6 +434,9 @@ def page(p, template, related=""):
         figs.insert(1, f'<figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/{slug}.jpg" aria-label="{html.escape(name)} in motion"><source src="video/pieces/{slug}.mp4" type="video/mp4"></video></figure>')
     if slug not in NO_COMPOSITE and os.path.exists(os.path.join(OUT, "img", slug, "composite.jpg")):
         figs.append(framed(f"img/{slug}/composite.jpg", ' loading="lazy"'))
+    # a longer film of the piece closes the stack (video/pieces/<slug>-end.mp4)
+    if os.path.exists(os.path.join(OUT, "video", "pieces", f"{slug}-end.mp4")):
+        figs.append(f'<figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/{slug}-end.jpg" aria-label="{html.escape(name)} turned in the hand"><source src="video/pieces/{slug}-end.mp4" type="video/mp4"></video></figure>')
     # pictures the studio has hidden leave the page but stay in the folder
     hidden = _content.product(slug, "hidden", []) or []
     if hidden:
@@ -471,19 +474,21 @@ def one_block(doc):
 def print_sheet():
     """The printed ring sizer: its own page, drawn in real millimetres so the strip measures true."""
     def circ(n): return 36.537 + 2.5535 * n          # the same ISO relation the on-screen table uses
+    def mark(n): return 46.686 + 2.5949 * (n - 3)          # the studio's tested strip (RingSizingSheet.ai): slot to mark, in mm; longer than the ISO figure to allow for the paper's own wrap
     # the strip: a wide tab holding the slot, then a narrower band that feeds through it,
     # the scale measured from the slot, a pointed tail to lead it in
     slot_x, top, tab, band = 12, 3, 18, 10          # mm
     mid = top + tab / 2
     bt, bb = mid - band / 2, mid + band / 2
-    end = slot_x + circ(13) + 10
+    end = slot_x + mark(13) + 10
     W, H = end + 16, top + tab + 9
     t = []
     n = 4.0
     while n <= 13:
-        x = slot_x + circ(n)
+        x = slot_x + mark(n)
         major = n % 1 == 0
-        t.append(f'<line x1="{x:.2f}" y1="{bt}" x2="{x:.2f}" y2="{bt + (3.4 if major else 2)}" stroke="#000" stroke-width="{0.28 if major else 0.18}"/>')
+        fade = '' if major else ' stroke-opacity="0.5"'          # half sizes at half strength
+        t.append(f'<line x1="{x:.2f}" y1="{bt}" x2="{x:.2f}" y2="{bt + (3.4 if major else 2)}" stroke="#000" stroke-width="{0.28 if major else 0.22}"{fade}/>')
         if major:
             y = bt + (5.9 if int(n) % 2 == 0 else 8.6)          # staggered: real sizes sit 2.5 mm apart
             t.append(f'<text x="{x:.2f}" y="{y}" font-size="2.3" text-anchor="middle">{int(n)}</text>')
@@ -495,6 +500,7 @@ def print_sheet():
              + "".join(t) +
              f'<text x="{slot_x + 8}" y="{mid + 0.8}" font-size="2.1" letter-spacing=".35">READ AT THE SLOT &#8594;</text>'
              f'<text x="{W - 1}" y="{H - 1}" font-size="2.8" text-anchor="end">&#9986; cut along the dashes</text>'
+             f'<text x="2" y="{H - 1}" font-size="2.8">Short marks are half sizes: read the mark nearest the slot.</text>'
              '</svg>')
     # a 100 mm check line with millimetre ticks
     ck = [f'<line x1="{2 + i}" y1="2" x2="{2 + i}" y2="{2 + (4 if i % 10 == 0 else 2.4 if i % 5 == 0 else 1.4)}" stroke="#000" stroke-width="{0.25 if i % 10 == 0 else 0.15}"/>' for i in range(101)]
@@ -517,7 +523,7 @@ def print_sheet():
         <ol class="ps-steps">
           <li><b>1</b><span>Cut out the strip along the dashes, and cut open the slot.</span></li>
           <li><b>2</b><span>Wrap it around the base of your finger and feed the pointed end through the slot.</span></li>
-          <li><b>3</b><span>Pull it snug, not tight, and read the size at the slot.</span></li>
+          <li><b>3</b><span>Pull it tight against the skin, not loose, and read the mark at the slot. Half sizes count.</span></li>
         </ol>
         <p class="ps-tip">Measure at the end of the day, when fingers are at their largest, and warm.<br>A ring should pass the knuckle with a little resistance.</p>
         <section class="ps-block ps-chart"><p class="ps-label">Or measure a ring you own, straight across the inside, in millimetres</p><div class="ps-tables">{tables}</div></section>
@@ -723,7 +729,16 @@ TRACKING = ("""<meta name="facebook-domain-verification" content="%s">
   maconSend('PageView', {});
   var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=%s'; document.head.appendChild(g);
   window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
-  gtag('js', new Date()); gtag('config', '%s'); gtag('config', '%s');
+  gtag('js', new Date());
+  try {          // the bag A/B test: which side this visitor is on, the same draw site.js makes
+    var bt = 'phone';          // phones always get the full bag page, so they stay out of the comparison
+    if (matchMedia('(min-width:768px)').matches) {
+      bt = localStorage.getItem('macon-bag-test');
+      if (bt !== 'drawer' && bt !== 'page') { bt = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', bt); }
+    }
+    gtag('set', 'user_properties', {bag_test: bt});
+  } catch (e) {}
+  gtag('config', '%s'); gtag('config', '%s');
   var ITEMS = %s;                                     // Shopify variant id -> catalog id
   var idOf = function (v) { v = String(v || '').split('/').pop(); return ITEMS[v] || v; };
   window.maconTrack = function (kind, x) {

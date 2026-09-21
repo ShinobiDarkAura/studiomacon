@@ -524,7 +524,7 @@
       veil = document.createElement('div'); veil.className = 'bag-veil';
       drawer = document.createElement('aside'); drawer.className = 'bag-drawer'; drawer.setAttribute('aria-label', 'Your bag');
       drawer.setAttribute('role', 'dialog'); drawer.setAttribute('aria-modal', 'true'); drawer.inert = true;
-      drawer.innerHTML = '<div class="bd-head"><p class="bd-title">Bag</p><button type="button" class="bd-close">Close</button></div>' +
+      drawer.innerHTML = '<div class="bd-head"><p class="bd-title">Your bag</p><button type="button" class="bd-close" aria-label="Close bag">Close</button></div>' +
         '<div class="bd-lines lines"></div>' +
         '<div class="bd-empty" hidden><p>Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
@@ -559,6 +559,7 @@
     if (wide.matches && !/bag\.html$/.test(location.pathname)) (window.requestIdleCallback || setTimeout)(function () { if (!drawer) build(); });
     link.addEventListener('click', function (e) {
       if (!wide.matches || /bag\.html$/.test(location.pathname)) return;          // phones, and the Bag page itself, keep the page
+      if (maconBagTest() === 'page') return;          // the A/B test: this visitor goes to the full bag page instead of the drawer
       e.preventDefault(); set(true);
     });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) set(false); });
@@ -661,6 +662,16 @@
   addEventListener('beforeprint', function () { document.documentElement.classList.add('printing'); });
   addEventListener('afterprint', function () { setTimeout(function () { document.documentElement.classList.remove('printing'); }, 400); });
 
+  // A/B test (started 2026-09-21): half of desktop visitors open the bag as a drawer, half as the full page.
+  // Each visitor keeps their side for good; Google Analytics records it as the user property bag_test.
+  window.maconBagTest = function () {
+    try {
+      var v = localStorage.getItem('macon-bag-test');
+      if (v !== 'drawer' && v !== 'page') { v = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', v); }
+      return v;
+    } catch (e) { return 'drawer'; }
+  };
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
@@ -671,11 +682,17 @@
       if (on && !keepX) {          // Close sits exactly where Menu was
         var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
         var shift = document.querySelector('.head').getBoundingClientRect().left;          // how far the page is pushed aside right now
-        c.style.left = (r.left - shift) + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
+        c.style.left = (r.left + r.width / 2 - 22 - shift) + 'px'; c.style.top = (r.top + r.height / 2 - 22) + 'px'; c.style.height = '44px';          // the X's centre on the hamburger's centre
       }
       // phones can quietly jump the page to the top while scrolling is locked; keep where you were,
       // and let the home logotype settle back at once rather than easing in over most of a second
       if (on) savedY = scrollY;
+      if (!on && open && !menu.classList.contains('instant')) {          // closing plays the opening backwards, on every screen
+        var root = document.documentElement; root.classList.add('logo-hold'); clearTimeout(menu._logo);
+        menu._logo = setTimeout(function () { root.classList.remove('logo-hold'); }, 770);          // the logo finishes turning just as the menu has gone
+        menu.classList.add('leaving'); clearTimeout(menu._leave); menu._leave = setTimeout(function () { menu.classList.remove('leaving'); }, 1090);          // the moment the white has gone
+      }
+      if (on) { clearTimeout(menu._leave); menu.classList.remove('leaving'); clearTimeout(menu._logo); document.documentElement.classList.remove('logo-hold'); }
       menu.classList.toggle('open', on); menu.inert = !on; open = on;
       document.documentElement.classList.toggle('menu-open', on);
       [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; });
@@ -697,12 +714,15 @@
     }
     // tapping the pushed-over page closes the menu
     document.addEventListener('click', function (e) { if (open && !menu.contains(e.target) && e.target !== btn) set(false); });
-    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
+    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });
+    // phones: open as the finger lifts. iPhone Safari treated the first tap as a hover (the logo starts blinking
+    // on the first touch) and swallowed the click, so the menu needed two taps
+    btn.addEventListener('touchend', function (e) { e.preventDefault(); keyboard = false; if (!open) set(true); }, {passive: false});          // focus the first link only for keyboard users, so a tap shows no outline
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
     // widened past the phone layout with the drawer open: the desktop nav takes over, so close it
     var wide = matchMedia('(min-width:768px)');
-    var toWide = function (e) { if (e.matches && open) set(false); };
+    var toWide = function () {};          // PREVIEW: the menu now works at every width
     if (wide.addEventListener) wide.addEventListener('change', toWide); else wide.addListener(toWide);
 
     // Choosing a page: the drawer stays put and the new page loads behind it

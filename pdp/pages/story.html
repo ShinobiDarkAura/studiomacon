@@ -61,7 +61,8 @@
   .readmore{margin:20px 0 0}
   .readmore button{font-family:inherit;font-weight:400;font-size:calc(1em - 3pt);line-height:1.4;padding:0;border:0;background:none;cursor:pointer;
     display:inline-flex;align-items:center;gap:4px;color:rgba(0,0,0,.5);text-decoration:none}
-  .readmore button::after{content:"";width:1em;height:1em;flex:none;background:currentColor;
+  .readmore button::after{content:"";width:1em;height:1em;flex:none;background:currentColor;position:relative;top:1px;          /* 1px lower, level with the words */
+    
     -webkit-mask:var(--arr) center/contain no-repeat;mask:var(--arr) center/contain no-repeat;
     transition:transform .3s ease,opacity .28s ease,width .28s ease,margin .28s ease}
   .readmore button[aria-expanded="true"]::after{opacity:0;width:0;margin-left:-4px}          /* gone while the story is open */
@@ -80,6 +81,7 @@
      laid slightly askew and overlapping, with a soft, layered shadow */
   /* The three photographs are placed by hand in pdp/_editor/photos.html, which writes the
      numbers below. They are positioned rather than flowed, so the arrangement holds exactly. */
+  @media (min-width:1024px){ main p:not(.eyebrow):not(.readmore){font-size:calc(17px - 1pt);line-height:1.63} }          /* desktop: the blurbs 1pt smaller */
   .childhood{position:relative;width:600px;height:780px;margin:-16px auto 0;padding:0;
     transform:scale(var(--k,1));transform-origin:top center;margin-bottom:calc(780px * (var(--k,1) - 1))}
   .polaroid,.childhood .strip{position:absolute;left:50%;top:0;margin:0;transform:translate(-50%,0)}
@@ -168,7 +170,7 @@
     <div class="intro">
       <p class="eyebrow">About Maçon</p>
       <h1>We Discover<br>by Holding</h1>
-      <p class="lede">In French, <i>maçon</i> means mason: one who works with their hands to make things. Every one of our pieces travels through many hands before it finds the ones it was made for.</p>
+      <p class="lede">In French, <i>maçon</i> means mason: one who builds by hand, one stone at a time. We work the same way, slowly and on purpose, until a piece is ready.</p>
     </div>
     <figure class="hand"><video autoplay muted loop playsinline preload="metadata" poster="video/poster-hold.jpg" aria-label="Maçon pieces held in the hand, one after another">
       <source src="video/hold-v7-720.mp4" type="video/mp4" media="(max-width:767px)">
@@ -231,6 +233,20 @@
       more.classList.toggle('open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
       btn.textContent = open ? 'Close' : 'Full story';
+      // desktop: the photographs and the words settle, as one block, in the middle of the screen as it opens,
+      // rather than running off the bottom edge. The opened size is measured first, so the scroll and the
+      // unfolding happen together.
+      if (open && matchMedia('(min-width:1024px)').matches) {
+        var sec = more.closest('section') || more.parentNode;
+        more.style.transition = 'none'; void more.offsetHeight;
+        var top = Infinity, bottom = -Infinity;
+        [].forEach.call(sec.children, function (c) { var r = c.getBoundingClientRect(); if (r.height) { top = Math.min(top, r.top); bottom = Math.max(bottom, r.bottom); } });
+        more.classList.remove('open'); void more.offsetHeight; more.style.transition = ''; void more.offsetHeight; more.classList.add('open');
+        var head = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--head')) || 0;
+        var room = innerHeight - head, tall = bottom - top;
+        var y = scrollY + top - head - (tall < room ? (room - tall) / 2 : 16);
+        scrollTo({top: Math.max(0, y), behavior: 'smooth'});
+      }
     });
   })();
 

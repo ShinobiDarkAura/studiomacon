@@ -22,7 +22,7 @@
 
   .info{padding:28px var(--pad) 0;text-align:center}
   .price{font-size:19px;margin:0 0 18px;display:flex;align-items:baseline;gap:10px}
-  .price .ship-free{margin-left:10px;font-size:14px;opacity:.5}
+  .price .ship-free{margin-left:4px;font-size:calc(14px - 1pt);opacity:.5}          /* 6px nearer the price */
   .ship-by{margin:0 0 0 auto;font-size:14px;color:rgba(0,0,0,.55)}          /* a date reads as a promise; a duration reads as a caveat */          /* now that every US order ships free, say so where the money is */
   .info h1{margin-bottom:12px}          /* h1 default is 22px; 10px tighter under the name */
   /* ring size: the whole bordered block is the control; sizes open beneath it */
@@ -48,22 +48,22 @@
   /* Shop Pay: a cart link with ?payment=shop_pay, so this really is Shop Pay and not a lookalike */
   .buy-now{display:flex;align-items:center;justify-content:center;gap:.34em;width:100%;height:47px;
     background:#5a31f4;color:#fff;border:1px solid #5a31f4;letter-spacing:.02em;cursor:pointer;
-    font:500 calc((18px - 2pt) * .85)/1 var(--sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);transition:background .25s ease,border-color .25s ease}
+    font:500 calc((18px - 2pt) * .85 - 1pt)/1 var(--sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);transition:background .25s ease,border-color .25s ease}
   .buy-now{text-transform:uppercase;letter-spacing:.08em}          /* set like Add to Bag */
   /* the real Shop wordmark, sized so its ascender reads a touch taller than the BUY WITH caps */
   .buy-now .shop-word{height:14px;width:auto;fill:currentColor;display:block;flex:0 0 auto;
     transform:translateX(3px)}
   .buy-now:hover{background:#4a27cc;border-color:#4a27cc}
   /* product buttons: 8px shorter than the site's other black buttons, type and arrow 15% smaller */
-  .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85)}
+  .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85 - 1pt)}
   .buy .cta::after{height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
   .buy .cta:not([disabled]):hover::after{width:12px;margin-left:8px}
   .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
   .buy{margin:0}          /* buttons sit right under the price */
   .desc-block{margin:44px 0 24px}          /* 12px more under Field Notes */
   .desc-block .label{margin:0 0 14px}
-  @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);margin-bottom:18px} }          /* desktop: 1pt smaller, 4px more air beneath */
-  .desc{margin:0;font-size:15px;line-height:1.55}          /* same size as the overline */
+  @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#9ca3af;margin-bottom:18px} }          /* the same title as on phones */          /* desktop: 1pt smaller, 4px more air beneath */
+  .desc{margin:0;font-size:var(--body-s);line-height:var(--body-s-lh)}          /* the same size as the About page's words */          /* same size as the overline */
   .info > .dr-emerge{transform:translateY(66px)}
   .info > .dr-emerge.is-seen{transform:none}
 
@@ -81,7 +81,7 @@
   .sizer-panel .step{margin:0 0 34px}
   .sizer-panel .step p{margin:0 0 10px;font-size:15px;line-height:1.55}
   .sizer-panel .printbtn{margin:0 0 32px}
-  .sizer-panel .printbtn button{font-family:inherit;font-size:calc((18px - 2pt) * .85);text-transform:uppercase;letter-spacing:.08em;
+  .sizer-panel .printbtn button{font-family:inherit;font-size:calc((18px - 2pt) * .85 - 1pt);text-transform:uppercase;letter-spacing:.08em;
     height:47px;width:100%;border:1px solid var(--ink);background:#000;color:#fff;cursor:pointer;transition:background .25s ease}
   .sizer-panel .printbtn button:hover{background:#333}
   /* the printed strip only works at 100%: this bar is exactly 100mm, so a scaled print is caught */
@@ -169,7 +169,7 @@
     .ps-foot p{margin:0}
     .ps-foot p:last-child{font-family:var(--serif);font-size:10pt;text-transform:uppercase}
   }
-  @media (min-width:768px){ .desc{font-size:16px} }
+  /* (was 16px on wider screens; now one size everywhere, matching About) */
 
   /* ── closing: big stacked images, two centred chunks ─ */
   .closing{padding:128px 0 0}
@@ -189,7 +189,7 @@
   /* ── phones: one 24px side margin for the whole page, left-aligned text, stacked buttons ── */
   @media (max-width:1023px){
     /* the price centred under the name; free shipping and the date along its edges */
-    .price{display:grid;grid-template-columns:1fr auto;row-gap:10px;align-items:baseline}
+    .price{display:grid;grid-template-columns:1fr auto;row-gap:4px;align-items:baseline}
     .price .amt{grid-column:1/-1;text-align:center}
     .price .ship-free{grid-column:1/-1;margin:0;text-align:center}          /* alone now the ship-by date has moved to the bag */
     .price .ship-by{grid-column:2;margin:0;text-align:right}

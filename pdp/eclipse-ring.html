@@ -16,7 +16,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Eclipse Ring", "description": "Two uneven ovals in sterling silver, set at the exact distance where they stop competing. The gap between them is said to hold questions only stars can answer; astronomers decline to comment. Balanced and polished by hand.", "image": ["https://studiomacon.co/img/eclipse-ring/hero.jpg", "https://studiomacon.co/img/eclipse-ring/hand-2.jpg", "https://studiomacon.co/img/eclipse-ring/hires-1.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "eclipse-ring", "offers": [{"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}, {"@type": "Offer", "price": "340.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eclipse-ring.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790020351">
+<link rel="stylesheet" href="site.css?v=1790031070">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}          /* the picture carries its own corners; a backing showed outside them */
@@ -33,7 +33,7 @@
 
   .info{padding:28px var(--pad) 0;text-align:center}
   .price{font-size:19px;margin:0 0 18px;display:flex;align-items:baseline;gap:10px}
-  .price .ship-free{margin-left:10px;font-size:14px;opacity:.5}
+  .price .ship-free{margin-left:4px;font-size:calc(14px - 1pt);opacity:.5}          /* 6px nearer the price */
   .ship-by{margin:0 0 0 auto;font-size:14px;color:rgba(0,0,0,.55)}          /* a date reads as a promise; a duration reads as a caveat */          /* now that every US order ships free, say so where the money is */
   .info h1{margin-bottom:12px}          /* h1 default is 22px; 10px tighter under the name */
   /* ring size: the whole bordered block is the control; sizes open beneath it */
@@ -59,22 +59,22 @@
   /* Shop Pay: a cart link with ?payment=shop_pay, so this really is Shop Pay and not a lookalike */
   .buy-now{display:flex;align-items:center;justify-content:center;gap:.34em;width:100%;height:47px;
     background:#5a31f4;color:#fff;border:1px solid #5a31f4;letter-spacing:.02em;cursor:pointer;
-    font:500 calc((18px - 2pt) * .85)/1 var(--sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);transition:background .25s ease,border-color .25s ease}
+    font:500 calc((18px - 2pt) * .85 - 1pt)/1 var(--sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);transition:background .25s ease,border-color .25s ease}
   .buy-now{text-transform:uppercase;letter-spacing:.08em}          /* set like Add to Bag */
   /* the real Shop wordmark, sized so its ascender reads a touch taller than the BUY WITH caps */
   .buy-now .shop-word{height:14px;width:auto;fill:currentColor;display:block;flex:0 0 auto;
     transform:translateX(3px)}
   .buy-now:hover{background:#4a27cc;border-color:#4a27cc}
   /* product buttons: 8px shorter than the site's other black buttons, type and arrow 15% smaller */
-  .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85)}
+  .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85 - 1pt)}
   .buy .cta::after{height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
   .buy .cta:not([disabled]):hover::after{width:12px;margin-left:8px}
   .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
   .buy{margin:0}          /* buttons sit right under the price */
   .desc-block{margin:44px 0 24px}          /* 12px more under Field Notes */
   .desc-block .label{margin:0 0 14px}
-  @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);margin-bottom:18px} }          /* desktop: 1pt smaller, 4px more air beneath */
-  .desc{margin:0;font-size:15px;line-height:1.55}          /* same size as the overline */
+  @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#9ca3af;margin-bottom:18px} }          /* the same title as on phones */          /* desktop: 1pt smaller, 4px more air beneath */
+  .desc{margin:0;font-size:var(--body-s);line-height:var(--body-s-lh)}          /* the same size as the About page's words */          /* same size as the overline */
   .info > .dr-emerge{transform:translateY(66px)}
   .info > .dr-emerge.is-seen{transform:none}
 
@@ -92,7 +92,7 @@
   .sizer-panel .step{margin:0 0 34px}
   .sizer-panel .step p{margin:0 0 10px;font-size:15px;line-height:1.55}
   .sizer-panel .printbtn{margin:0 0 32px}
-  .sizer-panel .printbtn button{font-family:inherit;font-size:calc((18px - 2pt) * .85);text-transform:uppercase;letter-spacing:.08em;
+  .sizer-panel .printbtn button{font-family:inherit;font-size:calc((18px - 2pt) * .85 - 1pt);text-transform:uppercase;letter-spacing:.08em;
     height:47px;width:100%;border:1px solid var(--ink);background:#000;color:#fff;cursor:pointer;transition:background .25s ease}
   .sizer-panel .printbtn button:hover{background:#333}
   /* the printed strip only works at 100%: this bar is exactly 100mm, so a scaled print is caught */
@@ -180,7 +180,7 @@
     .ps-foot p{margin:0}
     .ps-foot p:last-child{font-family:var(--serif);font-size:10pt;text-transform:uppercase}
   }
-  @media (min-width:768px){ .desc{font-size:16px} }
+  /* (was 16px on wider screens; now one size everywhere, matching About) */
 
   /* ── closing: big stacked images, two centred chunks ─ */
   .closing{padding:128px 0 0}
@@ -200,7 +200,7 @@
   /* ── phones: one 24px side margin for the whole page, left-aligned text, stacked buttons ── */
   @media (max-width:1023px){
     /* the price centred under the name; free shipping and the date along its edges */
-    .price{display:grid;grid-template-columns:1fr auto;row-gap:10px;align-items:baseline}
+    .price{display:grid;grid-template-columns:1fr auto;row-gap:4px;align-items:baseline}
     .price .amt{grid-column:1/-1;text-align:center}
     .price .ship-free{grid-column:1/-1;margin:0;text-align:center}          /* alone now the ship-by date has moved to the bag */
     .price .ship-by{grid-column:2;margin:0;text-align:right}
@@ -454,7 +454,16 @@
   maconSend('PageView', {});
   var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=G-B5GNGQ1WME'; document.head.appendChild(g);
   window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
-  gtag('js', new Date()); gtag('config', 'G-B5GNGQ1WME'); gtag('config', 'AW-16466703173');
+  gtag('js', new Date());
+  try {          // the bag A/B test: which side this visitor is on, the same draw site.js makes
+    var bt = 'phone';          // phones always get the full bag page, so they stay out of the comparison
+    if (matchMedia('(min-width:768px)').matches) {
+      bt = localStorage.getItem('macon-bag-test');
+      if (bt !== 'drawer' && bt !== 'page') { bt = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', bt); }
+    }
+    gtag('set', 'user_properties', {bag_test: bt});
+  } catch (e) {}
+  gtag('config', 'G-B5GNGQ1WME'); gtag('config', 'AW-16466703173');
   var ITEMS = {"53985362870637":"shopify_US_15222550331757_53985362870637","53985363001709":"shopify_US_15222550462829_53985363001709","53985363067245":"shopify_US_15222550528365_53985363067245","53985363263853":"shopify_US_15222550659437_53985363263853","53985363329389":"shopify_US_15222550724973_53985363329389","53985363427693":"shopify_US_15222550823277_53985363427693","53985363525997":"shopify_US_15222550921581_53985363525997","53985363558765":"shopify_US_15222550921581_53985363558765","53985363591533":"shopify_US_15222550921581_53985363591533","53985363624301":"shopify_US_15222550921581_53985363624301","53985363657069":"shopify_US_15222550921581_53985363657069","53985363689837":"shopify_US_15222550921581_53985363689837","53985363722605":"shopify_US_15222550921581_53985363722605","53985363755373":"shopify_US_15222550921581_53985363755373","53985363788141":"shopify_US_15222550921581_53985363788141","53985363820909":"shopify_US_15222550921581_53985363820909","53985363853677":"shopify_US_15222550921581_53985363853677","53985363886445":"shopify_US_15222550921581_53985363886445","53985363984749":"shopify_US_15222550987117_53985363984749","53985364083053":"shopify_US_15222551118189_53985364083053","53985364115821":"shopify_US_15222551118189_53985364115821","53985364148589":"shopify_US_15222551118189_53985364148589","53985364181357":"shopify_US_15222551118189_53985364181357","53985364214125":"shopify_US_15222551118189_53985364214125","53985364246893":"shopify_US_15222551118189_53985364246893","53985364279661":"shopify_US_15222551118189_53985364279661","53985364312429":"shopify_US_15222551118189_53985364312429","53985364345197":"shopify_US_15222551118189_53985364345197","53985364377965":"shopify_US_15222551118189_53985364377965","53985364410733":"shopify_US_15222551118189_53985364410733","53985364443501":"shopify_US_15222551118189_53985364443501","53985364509037":"shopify_US_15222551183725_53985364509037","53985364541805":"shopify_US_15222551183725_53985364541805","53985364574573":"shopify_US_15222551183725_53985364574573","53985364607341":"shopify_US_15222551183725_53985364607341","53985364640109":"shopify_US_15222551183725_53985364640109","53985364672877":"shopify_US_15222551183725_53985364672877","53985364705645":"shopify_US_15222551183725_53985364705645","53985364738413":"shopify_US_15222551183725_53985364738413","53985365131629":"shopify_US_15222551249261_53985365131629","53985365164397":"shopify_US_15222551249261_53985365164397","53985365197165":"shopify_US_15222551249261_53985365197165","53985365229933":"shopify_US_15222551249261_53985365229933","53985365262701":"shopify_US_15222551249261_53985365262701","53985365295469":"shopify_US_15222551249261_53985365295469","53985365328237":"shopify_US_15222551249261_53985365328237","53985365361005":"shopify_US_15222551249261_53985365361005","53985365393773":"shopify_US_15222551249261_53985365393773","53985365426541":"shopify_US_15222551249261_53985365426541","53985365459309":"shopify_US_15222551249261_53985365459309","53985365492077":"shopify_US_15222551249261_53985365492077","53985365590381":"shopify_US_15222551347565_53985365590381","53985365655917":"shopify_US_15222551413101_53985365655917","53985365819757":"shopify_US_15222551576941_53985365819757","53985365885293":"shopify_US_15222551642477_53985365885293","53985365950829":"shopify_US_15222551708013_53985365950829","53985365983597":"shopify_US_15222551708013_53985365983597","53985366016365":"shopify_US_15222551708013_53985366016365","53985366049133":"shopify_US_15222551708013_53985366049133","53985366081901":"shopify_US_15222551708013_53985366081901","53985366114669":"shopify_US_15222551708013_53985366114669","53985366147437":"shopify_US_15222551708013_53985366147437","53985366180205":"shopify_US_15222551708013_53985366180205","53985366212973":"shopify_US_15222551708013_53985366212973","53985366245741":"shopify_US_15222551708013_53985366245741","53985366278509":"shopify_US_15222551708013_53985366278509","53985366311277":"shopify_US_15222551708013_53985366311277","53985366409581":"shopify_US_15222551806317_53985366409581","53985373192557":"shopify_US_15222557737325_53985373192557","53985373225325":"shopify_US_15222557737325_53985373225325"};                                     // Shopify variant id -> catalog id
   var idOf = function (v) { v = String(v || '').split('/').pop(); return ITEMS[v] || v; };
   window.maconTrack = function (kind, x) {
@@ -479,7 +488,7 @@
 <body class="white-right" data-slug="eclipse-ring">
 
 
-<nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping<br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><a href="bag.html" style="--i:6">Bag</a></nav>
+<nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping <br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><p class="menu-legal"><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/privacy-policy">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/terms-of-service">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/refund-policy">Refunds</a></p></nav>
 <header class="head">
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
@@ -603,7 +612,7 @@
           <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>100% Sterling silver</p></div></div></div>
         </div>
         <div class="acc-item">
-          <button class="acc-head" aria-expanded="false">Giving It as a Gift</button>
+          <button class="acc-head" aria-expanded="false">Gifting</button>
           <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we’ll wrap it for free and write out your note by hand. Add their address at checkout and it goes straight to them. If it isn’t quite right, they can return it within 30 days for store credit.</p></div></div></div>
         </div>
         <div class="acc-item">
@@ -636,11 +645,11 @@
       <div class="print-sheet" aria-hidden="true" data-no-emerge>
         <div class="ps-head"><img width="135" height="120" src="img/eye-mark.png.webp" alt="Studio Maçon"><p class="ps-over">The ring sizer</p><h2>Finding your size</h2></div>
         <section class="ps-block ps-calib"><p class="ps-label">Before you cut</p><svg class="ps-check" width="104mm" height="12mm" viewBox="0 0 104 12" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue,Helvetica,Arial,sans-serif"><line x1="2" y1="2" x2="102" y2="2" stroke="#000" stroke-width="0.3"/><line x1="2" y1="2" x2="2" y2="6" stroke="#000" stroke-width="0.25"/><line x1="3" y1="2" x2="3" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="4" y1="2" x2="4" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="5" y1="2" x2="5" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="6" y1="2" x2="6" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="7" y1="2" x2="7" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="8" y1="2" x2="8" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="9" y1="2" x2="9" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="10" y1="2" x2="10" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="11" y1="2" x2="11" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="12" y1="2" x2="12" y2="6" stroke="#000" stroke-width="0.25"/><line x1="13" y1="2" x2="13" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="14" y1="2" x2="14" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="15" y1="2" x2="15" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="16" y1="2" x2="16" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="17" y1="2" x2="17" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="18" y1="2" x2="18" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="19" y1="2" x2="19" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="20" y1="2" x2="20" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="21" y1="2" x2="21" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="22" y1="2" x2="22" y2="6" stroke="#000" stroke-width="0.25"/><line x1="23" y1="2" x2="23" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="24" y1="2" x2="24" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="25" y1="2" x2="25" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="26" y1="2" x2="26" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="27" y1="2" x2="27" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="28" y1="2" x2="28" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="29" y1="2" x2="29" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="30" y1="2" x2="30" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="31" y1="2" x2="31" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="32" y1="2" x2="32" y2="6" stroke="#000" stroke-width="0.25"/><line x1="33" y1="2" x2="33" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="34" y1="2" x2="34" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="35" y1="2" x2="35" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="36" y1="2" x2="36" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="37" y1="2" x2="37" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="38" y1="2" x2="38" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="39" y1="2" x2="39" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="40" y1="2" x2="40" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="41" y1="2" x2="41" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="42" y1="2" x2="42" y2="6" stroke="#000" stroke-width="0.25"/><line x1="43" y1="2" x2="43" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="44" y1="2" x2="44" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="45" y1="2" x2="45" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="46" y1="2" x2="46" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="47" y1="2" x2="47" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="48" y1="2" x2="48" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="49" y1="2" x2="49" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="50" y1="2" x2="50" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="51" y1="2" x2="51" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="52" y1="2" x2="52" y2="6" stroke="#000" stroke-width="0.25"/><line x1="53" y1="2" x2="53" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="54" y1="2" x2="54" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="55" y1="2" x2="55" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="56" y1="2" x2="56" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="57" y1="2" x2="57" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="58" y1="2" x2="58" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="59" y1="2" x2="59" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="60" y1="2" x2="60" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="61" y1="2" x2="61" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="62" y1="2" x2="62" y2="6" stroke="#000" stroke-width="0.25"/><line x1="63" y1="2" x2="63" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="64" y1="2" x2="64" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="65" y1="2" x2="65" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="66" y1="2" x2="66" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="67" y1="2" x2="67" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="68" y1="2" x2="68" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="69" y1="2" x2="69" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="70" y1="2" x2="70" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="71" y1="2" x2="71" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="72" y1="2" x2="72" y2="6" stroke="#000" stroke-width="0.25"/><line x1="73" y1="2" x2="73" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="74" y1="2" x2="74" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="75" y1="2" x2="75" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="76" y1="2" x2="76" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="77" y1="2" x2="77" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="78" y1="2" x2="78" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="79" y1="2" x2="79" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="80" y1="2" x2="80" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="81" y1="2" x2="81" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="82" y1="2" x2="82" y2="6" stroke="#000" stroke-width="0.25"/><line x1="83" y1="2" x2="83" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="84" y1="2" x2="84" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="85" y1="2" x2="85" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="86" y1="2" x2="86" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="87" y1="2" x2="87" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="88" y1="2" x2="88" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="89" y1="2" x2="89" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="90" y1="2" x2="90" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="91" y1="2" x2="91" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="92" y1="2" x2="92" y2="6" stroke="#000" stroke-width="0.25"/><line x1="93" y1="2" x2="93" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="94" y1="2" x2="94" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="95" y1="2" x2="95" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="96" y1="2" x2="96" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="97" y1="2" x2="97" y2="4.4" stroke="#000" stroke-width="0.15"/><line x1="98" y1="2" x2="98" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="99" y1="2" x2="99" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="100" y1="2" x2="100" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="101" y1="2" x2="101" y2="3.4" stroke="#000" stroke-width="0.15"/><line x1="102" y1="2" x2="102" y2="6" stroke="#000" stroke-width="0.25"/><text x="2" y="10.5" font-size="2.6">0</text><text x="52" y="10.5" font-size="2.6" text-anchor="middle">50</text><text x="102" y="10.5" font-size="2.6" text-anchor="end">100 mm</text></svg><p>This line measures exactly 100 mm. If a ruler says otherwise, print again at 100%, with scaling switched off.</p></section>
-        <section class="ps-block ps-cut"><svg class="ps-strip" width="107.7mm" height="30mm" viewBox="0 0 107.7 30" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue,Helvetica,Arial,sans-serif"><path d="M2 3 H17 V7.0 H91.7325 L100.7325 12.0 L91.7325 17.0 H17 V21 H2 Z" fill="#f4f3f0" stroke="#000" stroke-width="0.25" stroke-dasharray="1.4 1"/><rect x="11.3" y="6.0" width="1.4" height="12" fill="#fff" stroke="#000" stroke-width="0.25"/><text x="6.6" y="12.0" font-size="2.2" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 6.6 12.0)" letter-spacing=".35">SLOT</text><line x1="58.75" y1="7.0" x2="58.75" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="58.75" y="12.9" font-size="2.3" text-anchor="middle">4</text><line x1="60.03" y1="7.0" x2="60.03" y2="9.0" stroke="#000" stroke-width="0.18"/><line x1="61.30" y1="7.0" x2="61.30" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="61.30" y="15.6" font-size="2.3" text-anchor="middle">5</text><line x1="62.58" y1="7.0" x2="62.58" y2="9.0" stroke="#000" stroke-width="0.18"/><line x1="63.86" y1="7.0" x2="63.86" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="63.86" y="12.9" font-size="2.3" text-anchor="middle">6</text><line x1="65.13" y1="7.0" x2="65.13" y2="9.0" stroke="#000" stroke-width="0.18"/><line x1="66.41" y1="7.0" x2="66.41" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="66.41" y="15.6" font-size="2.3" text-anchor="middle">7</text><line x1="67.69" y1="7.0" x2="67.69" y2="9.0" stroke="#000" stroke-width="0.18"/><line x1="68.97" y1="7.0" x2="68.97" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="68.97" y="12.9" font-size="2.3" text-anchor="middle">8</text><line x1="70.24" y1="7.0" x2="70.24" y2="9.0" stroke="#000" stroke-width="0.18"/><line x1="71.52" y1="7.0" x2="71.52" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="71.52" y="15.6" font-size="2.3" text-anchor="middle">9</text><line x1="72.80" y1="7.0" x2="72.80" y2="9.0" stroke="#000" stroke-width="0.18"/><line x1="74.07" y1="7.0" x2="74.07" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="74.07" y="12.9" font-size="2.3" text-anchor="middle">10</text><line x1="75.35" y1="7.0" x2="75.35" y2="9.0" stroke="#000" stroke-width="0.18"/><line x1="76.63" y1="7.0" x2="76.63" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="76.63" y="15.6" font-size="2.3" text-anchor="middle">11</text><line x1="77.90" y1="7.0" x2="77.90" y2="9.0" stroke="#000" stroke-width="0.18"/><line x1="79.18" y1="7.0" x2="79.18" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="79.18" y="12.9" font-size="2.3" text-anchor="middle">12</text><line x1="80.46" y1="7.0" x2="80.46" y2="9.0" stroke="#000" stroke-width="0.18"/><line x1="81.73" y1="7.0" x2="81.73" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="81.73" y="15.6" font-size="2.3" text-anchor="middle">13</text><text x="20" y="12.8" font-size="2.1" letter-spacing=".35">READ AT THE SLOT &#8594;</text><text x="106.7325" y="29" font-size="2.8" text-anchor="end">&#9986; cut along the dashes</text></svg></section>
+        <section class="ps-block ps-cut"><svg class="ps-strip" width="110.6mm" height="30mm" viewBox="0 0 110.6 30" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue,Helvetica,Arial,sans-serif"><path d="M2 3 H17 V7.0 H94.63499999999999 L103.63499999999999 12.0 L94.63499999999999 17.0 H17 V21 H2 Z" fill="#f4f3f0" stroke="#000" stroke-width="0.25" stroke-dasharray="1.4 1"/><rect x="11.3" y="6.0" width="1.4" height="12" fill="#fff" stroke="#000" stroke-width="0.25"/><text x="6.6" y="12.0" font-size="2.2" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 6.6 12.0)" letter-spacing=".35">SLOT</text><line x1="61.28" y1="7.0" x2="61.28" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="61.28" y="12.9" font-size="2.3" text-anchor="middle">4</text><line x1="62.58" y1="7.0" x2="62.58" y2="9.0" stroke="#000" stroke-width="0.22" stroke-opacity="0.5"/><line x1="63.88" y1="7.0" x2="63.88" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="63.88" y="15.6" font-size="2.3" text-anchor="middle">5</text><line x1="65.17" y1="7.0" x2="65.17" y2="9.0" stroke="#000" stroke-width="0.22" stroke-opacity="0.5"/><line x1="66.47" y1="7.0" x2="66.47" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="66.47" y="12.9" font-size="2.3" text-anchor="middle">6</text><line x1="67.77" y1="7.0" x2="67.77" y2="9.0" stroke="#000" stroke-width="0.22" stroke-opacity="0.5"/><line x1="69.07" y1="7.0" x2="69.07" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="69.07" y="15.6" font-size="2.3" text-anchor="middle">7</text><line x1="70.36" y1="7.0" x2="70.36" y2="9.0" stroke="#000" stroke-width="0.22" stroke-opacity="0.5"/><line x1="71.66" y1="7.0" x2="71.66" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="71.66" y="12.9" font-size="2.3" text-anchor="middle">8</text><line x1="72.96" y1="7.0" x2="72.96" y2="9.0" stroke="#000" stroke-width="0.22" stroke-opacity="0.5"/><line x1="74.26" y1="7.0" x2="74.26" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="74.26" y="15.6" font-size="2.3" text-anchor="middle">9</text><line x1="75.55" y1="7.0" x2="75.55" y2="9.0" stroke="#000" stroke-width="0.22" stroke-opacity="0.5"/><line x1="76.85" y1="7.0" x2="76.85" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="76.85" y="12.9" font-size="2.3" text-anchor="middle">10</text><line x1="78.15" y1="7.0" x2="78.15" y2="9.0" stroke="#000" stroke-width="0.22" stroke-opacity="0.5"/><line x1="79.45" y1="7.0" x2="79.45" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="79.45" y="15.6" font-size="2.3" text-anchor="middle">11</text><line x1="80.74" y1="7.0" x2="80.74" y2="9.0" stroke="#000" stroke-width="0.22" stroke-opacity="0.5"/><line x1="82.04" y1="7.0" x2="82.04" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="82.04" y="12.9" font-size="2.3" text-anchor="middle">12</text><line x1="83.34" y1="7.0" x2="83.34" y2="9.0" stroke="#000" stroke-width="0.22" stroke-opacity="0.5"/><line x1="84.63" y1="7.0" x2="84.63" y2="10.4" stroke="#000" stroke-width="0.28"/><text x="84.63" y="15.6" font-size="2.3" text-anchor="middle">13</text><text x="20" y="12.8" font-size="2.1" letter-spacing=".35">READ AT THE SLOT &#8594;</text><text x="109.63499999999999" y="29" font-size="2.8" text-anchor="end">&#9986; cut along the dashes</text><text x="2" y="29" font-size="2.8">Short marks are half sizes: read the mark nearest the slot.</text></svg></section>
         <ol class="ps-steps">
           <li><b>1</b><span>Cut out the strip along the dashes, and cut open the slot.</span></li>
           <li><b>2</b><span>Wrap it around the base of your finger and feed the pointed end through the slot.</span></li>
-          <li><b>3</b><span>Pull it snug, not tight, and read the size at the slot.</span></li>
+          <li><b>3</b><span>Pull it tight against the skin, not loose, and read the mark at the slot. Half sizes count.</span></li>
         </ol>
         <p class="ps-tip">Measure at the end of the day, when fingers are at their largest, and warm.<br>A ring should pass the knuckle with a little resistance.</p>
         <section class="ps-block ps-chart"><p class="ps-label">Or measure a ring you own, straight across the inside, in millimetres</p><div class="ps-tables"><table><thead><tr><th>Size</th><th>Diameter</th><th>Circumference</th></tr></thead><tbody><tr><td>4</td><td>14.9</td><td>46.8</td></tr><tr><td>4.5</td><td>15.3</td><td>48.0</td></tr><tr><td>5</td><td>15.7</td><td>49.3</td></tr><tr><td>5.5</td><td>16.1</td><td>50.6</td></tr><tr><td>6</td><td>16.5</td><td>51.9</td></tr><tr><td>6.5</td><td>16.9</td><td>53.1</td></tr><tr><td>7</td><td>17.3</td><td>54.4</td></tr><tr><td>7.5</td><td>17.7</td><td>55.7</td></tr><tr><td>8</td><td>18.1</td><td>57.0</td></tr><tr><td>8.5</td><td>18.5</td><td>58.2</td></tr></tbody></table><table><thead><tr><th>Size</th><th>Diameter</th><th>Circumference</th></tr></thead><tbody><tr><td>9</td><td>18.9</td><td>59.5</td></tr><tr><td>9.5</td><td>19.4</td><td>60.8</td></tr><tr><td>10</td><td>19.8</td><td>62.1</td></tr><tr><td>10.5</td><td>20.2</td><td>63.3</td></tr><tr><td>11</td><td>20.6</td><td>64.6</td></tr><tr><td>11.5</td><td>21.0</td><td>65.9</td></tr><tr><td>12</td><td>21.4</td><td>67.2</td></tr><tr><td>12.5</td><td>21.8</td><td>68.5</td></tr><tr><td>13</td><td>22.2</td><td>69.7</td></tr></tbody></table></div></section>
@@ -694,7 +703,6 @@
       <input type="email" placeholder="Email address" aria-label="Email address" required>
       <button>Submit</button>
     </form>
-    <p class="legal"><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/privacy-policy">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/terms-of-service">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/refund-policy">Refunds</a></p>
   </div>
 </footer>
 
@@ -1227,7 +1235,7 @@
       veil = document.createElement('div'); veil.className = 'bag-veil';
       drawer = document.createElement('aside'); drawer.className = 'bag-drawer'; drawer.setAttribute('aria-label', 'Your bag');
       drawer.setAttribute('role', 'dialog'); drawer.setAttribute('aria-modal', 'true'); drawer.inert = true;
-      drawer.innerHTML = '<div class="bd-head"><p class="bd-title">Bag</p><button type="button" class="bd-close">Close</button></div>' +
+      drawer.innerHTML = '<div class="bd-head"><p class="bd-title">Your bag</p><button type="button" class="bd-close" aria-label="Close bag">Close</button></div>' +
         '<div class="bd-lines lines"></div>' +
         '<div class="bd-empty" hidden><p>Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
@@ -1262,6 +1270,7 @@
     if (wide.matches && !/bag\.html$/.test(location.pathname)) (window.requestIdleCallback || setTimeout)(function () { if (!drawer) build(); });
     link.addEventListener('click', function (e) {
       if (!wide.matches || /bag\.html$/.test(location.pathname)) return;          // phones, and the Bag page itself, keep the page
+      if (maconBagTest() === 'page') return;          // the A/B test: this visitor goes to the full bag page instead of the drawer
       e.preventDefault(); set(true);
     });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) set(false); });
@@ -1364,6 +1373,16 @@
   addEventListener('beforeprint', function () { document.documentElement.classList.add('printing'); });
   addEventListener('afterprint', function () { setTimeout(function () { document.documentElement.classList.remove('printing'); }, 400); });
 
+  // A/B test (started 2026-09-21): half of desktop visitors open the bag as a drawer, half as the full page.
+  // Each visitor keeps their side for good; Google Analytics records it as the user property bag_test.
+  window.maconBagTest = function () {
+    try {
+      var v = localStorage.getItem('macon-bag-test');
+      if (v !== 'drawer' && v !== 'page') { v = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', v); }
+      return v;
+    } catch (e) { return 'drawer'; }
+  };
+
   // Mobile menu
   (function () {
     var btn = document.querySelector('.head .mob'); if (!btn) return;
@@ -1374,11 +1393,17 @@
       if (on && !keepX) {          // Close sits exactly where Menu was
         var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
         var shift = document.querySelector('.head').getBoundingClientRect().left;          // how far the page is pushed aside right now
-        c.style.left = (r.left - shift) + 'px'; c.style.top = r.top + 'px'; c.style.height = r.height + 'px';
+        c.style.left = (r.left + r.width / 2 - 22 - shift) + 'px'; c.style.top = (r.top + r.height / 2 - 22) + 'px'; c.style.height = '44px';          // the X's centre on the hamburger's centre
       }
       // phones can quietly jump the page to the top while scrolling is locked; keep where you were,
       // and let the home logotype settle back at once rather than easing in over most of a second
       if (on) savedY = scrollY;
+      if (!on && open && !menu.classList.contains('instant')) {          // closing plays the opening backwards, on every screen
+        var root = document.documentElement; root.classList.add('logo-hold'); clearTimeout(menu._logo);
+        menu._logo = setTimeout(function () { root.classList.remove('logo-hold'); }, 770);          // the logo finishes turning just as the menu has gone
+        menu.classList.add('leaving'); clearTimeout(menu._leave); menu._leave = setTimeout(function () { menu.classList.remove('leaving'); }, 1090);          // the moment the white has gone
+      }
+      if (on) { clearTimeout(menu._leave); menu.classList.remove('leaving'); clearTimeout(menu._logo); document.documentElement.classList.remove('logo-hold'); }
       menu.classList.toggle('open', on); menu.inert = !on; open = on;
       document.documentElement.classList.toggle('menu-open', on);
       [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; });
@@ -1400,12 +1425,15 @@
     }
     // tapping the pushed-over page closes the menu
     document.addEventListener('click', function (e) { if (open && !menu.contains(e.target) && e.target !== btn) set(false); });
-    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });          // focus the first link only for keyboard users, so a tap shows no outline
+    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });
+    // phones: open as the finger lifts. iPhone Safari treated the first tap as a hover (the logo starts blinking
+    // on the first touch) and swallowed the click, so the menu needed two taps
+    btn.addEventListener('touchend', function (e) { e.preventDefault(); keyboard = false; if (!open) set(true); }, {passive: false});          // focus the first link only for keyboard users, so a tap shows no outline
     menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
     addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
     // widened past the phone layout with the drawer open: the desktop nav takes over, so close it
     var wide = matchMedia('(min-width:768px)');
-    var toWide = function (e) { if (e.matches && open) set(false); };
+    var toWide = function () {};          // PREVIEW: the menu now works at every width
     if (wide.addEventListener) wide.addEventListener('change', toWide); else wide.addListener(toWide);
 
     // Choosing a page: the drawer stays put and the new page loads behind it
