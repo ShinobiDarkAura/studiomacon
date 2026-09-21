@@ -44,8 +44,8 @@
     "tint": 0.5
    },
    "gallery": [
-    "img/eclipse-ring/hires-1.jpg",
     "img/eclipse-ring/hero.jpg",
+    "img/eclipse-ring/hires-1.jpg",
     "img/eclipse-ring/hand-1.jpg"
    ],
    "hero": "img/eclipse-ring/hand-2.jpg",
@@ -73,6 +73,11 @@
      "x": 50,
      "y": 50,
      "z": 1
+    },
+    "img/eleph/hero-dm.jpg": {
+     "x": 50,
+     "y": 50,
+     "z": 1
     }
    },
    "tile": {
@@ -88,7 +93,7 @@
     "img/eleph/plain-2.jpg",
     "img/eleph/hires-3.jpg"
    ],
-   "hero": "img/eleph/hero.jpg",
+   "hero": "img/eleph/hero-dm.jpg",
    "hidden": [],
    "tile_image": "img/eleph/hires-1.jpg",
    "tile_hover": "img/eleph/hires-2.jpg",
@@ -104,6 +109,11 @@
      "x": 50,
      "y": 50,
      "z": 1
+    },
+    "img/ibi/hero-dm.jpg": {
+     "x": 50,
+     "y": 50,
+     "z": 1
     }
    },
    "tile": {
@@ -114,11 +124,11 @@
     "tint": 1.0
    },
    "gallery": [
-    "img/ibi/hires-2.jpg",
+    "img/ibi/hires-2-dm.jpg",
     "img/ibi/hand-2.jpg",
     "img/ibi/hires-4.jpg"
    ],
-   "hero": "img/ibi/hero.jpg",
+   "hero": "img/ibi/hero-dm.jpg",
    "hidden": [],
    "tile_image": "img/ibi/hires-2.jpg",
    "tile_hover": "img/ibi/hires-3.jpg",
@@ -164,7 +174,6 @@
    "hero": "img/lunar-canyon-ring/hero.jpg",
    "gallery": [
     "img/lunar-canyon-ring/hand-2.jpg",
-    "img/lunar-canyon-ring/plain-1.jpg",
     "img/lunar-canyon-ring/hand-1.jpg"
    ],
    "tile_hover": "img/lunar-canyon-ring/hand-1.jpg"
@@ -228,6 +237,11 @@
      "x": 50,
      "y": 50,
      "z": 1
+    },
+    "img/milo/hero-dm.jpg": {
+     "x": 50,
+     "y": 50,
+     "z": 1
     }
    },
    "tile": {
@@ -240,7 +254,7 @@
    "gallery": [
     "img/milo/hand-2.jpg"
    ],
-   "hero": "img/milo/hero.jpg",
+   "hero": "img/milo/hero-dm.jpg",
    "hidden": [],
    "tile_image": "img/milo/hires-2.jpg",
    "tile_hover": "img/milo/hires-1.jpg",
@@ -280,7 +294,6 @@
    },
    "hero": "img/ori/hero.jpg",
    "gallery": [
-    "img/ori/plain-1.jpg",
     "img/ori/plain-3.jpg",
     "img/ori/hand-2.jpg",
     "img/ori/hires-1.jpg",

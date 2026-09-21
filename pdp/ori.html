@@ -13,7 +13,7 @@
 <meta property="og:image" content="https://studiomacon.co/img/ori/hero.jpg">
 <meta property="og:type" content="product">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Ori", "description": "Broad, round-shouldered solid bronze that sits heavy and quiet in the palm. Each winter solstice it gives off a faint warmth; keepers report fewer drafts. Its wide planes are smoothed and patinated slowly by hand.", "image": ["https://studiomacon.co/img/ori/hero.jpg", "https://studiomacon.co/img/ori/plain-1.jpg", "https://studiomacon.co/img/ori/plain-3.jpg", "https://studiomacon.co/img/ori/hand-2.jpg", "https://studiomacon.co/img/ori/hires-2.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ori", "offers": [{"@type": "Offer", "price": "220.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ori.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Ori", "description": "Broad, round-shouldered solid bronze that sits heavy and quiet in the palm. Each winter solstice it gives off a faint warmth; keepers report fewer drafts. Its wide planes are smoothed and patinated slowly by hand.", "image": ["https://studiomacon.co/img/ori/hero.jpg", "https://studiomacon.co/img/ori/plain-3.jpg", "https://studiomacon.co/img/ori/hand-2.jpg", "https://studiomacon.co/img/ori/hires-2.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ori", "offers": [{"@type": "Offer", "price": "220.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ori.html"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="site.css?v=1790017076">
@@ -73,6 +73,7 @@
   .buy{margin:0}          /* buttons sit right under the price */
   .desc-block{margin:44px 0 24px}          /* 12px more under Field Notes */
   .desc-block .label{margin:0 0 14px}
+  @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);margin-bottom:18px} }          /* desktop: 1pt smaller, 4px more air beneath */
   .desc{margin:0;font-size:15px;line-height:1.55}          /* same size as the overline */
   .info > .dr-emerge{transform:translateY(66px)}
   .info > .dr-emerge.is-seen{transform:none}
@@ -493,7 +494,6 @@
   <section class="product">
     <div class="gallery" data-under-nav>
       <figure class="hero"><img width="1355" height="933" src="img/ori/hero.jpg.webp" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Ori" fetchpriority="high"></figure>
-      <figure><img width="2400" height="1625" src="img/ori/plain-1.jpg.webp" srcset="img/ori/plain-1--m.jpg.webp 1200w, img/ori/plain-1.jpg.webp 2400w" sizes="(max-width: 767px) 100vw, 60vw" alt="Ori, seen on its own" loading="lazy"></figure>
       <figure><img width="1355" height="933" src="img/ori/plain-3.jpg.webp" alt="Ori, seen on its own" loading="lazy"></figure>
       <figure><img width="1400" height="1019" src="img/ori/hand-2.jpg.webp" srcset="img/ori/hand-2--m.jpg.webp 1200w, img/ori/hand-2.jpg.webp 1400w" sizes="(max-width: 767px) 100vw, 60vw" alt="Ori, held in the hand" loading="lazy"></figure>
       <figure><img width="1355" height="933" src="img/ori/hires-2.jpg.webp" alt="Ori, close up" loading="lazy"></figure>
