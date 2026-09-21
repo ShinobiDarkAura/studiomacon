@@ -55,14 +55,14 @@
   .intro p.lede a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
   .intro p.lede a:hover{text-decoration-color:rgba(0,0,0,.35)}
   .history .intro h1{margin-bottom:38px}
-  .readmore{margin:14px 0 0}
+  .readmore{margin:20px 0 0}
   .readmore button{font-family:inherit;font-weight:400;font-size:calc(1em - 2pt);line-height:1.4;padding:0;border:0;background:none;cursor:pointer;
-    display:inline-flex;align-items:center;gap:7px;color:rgba(0,0,0,.55);text-decoration:none}
+    display:inline-flex;align-items:center;gap:4px;color:rgba(0,0,0,.85);text-decoration:none}
   .readmore button::after{content:"";width:1em;height:1em;flex:none;background:currentColor;
     -webkit-mask:var(--arr) center/contain no-repeat;mask:var(--arr) center/contain no-repeat;
     transition:transform .3s ease}
-  .readmore button:hover{color:rgba(0,0,0,.8)}
-  .readmore button:hover::after{transform:translateX(3px)}
+  .readmore button:hover{color:#000}
+  .readmore button:hover::after{transform:translateX(5px)}
   /* lucide arrow-right, drawn at the type's own size */
   .readmore{--arr:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E")}
   .more[hidden]{display:none}
@@ -75,12 +75,11 @@
     transform:scale(var(--k,1));transform-origin:top center;margin-bottom:calc(780px * (var(--k,1) - 1))}
   .polaroid,.childhood .strip{position:absolute;left:50%;top:0;margin:0;transform:translate(-50%,0)}
   .polaroid{width:auto}
-  .childhood .strip img{display:block;height:auto;
-    filter:drop-shadow(0 1px 0 rgba(0,0,0,.22)) drop-shadow(0 2px 2px rgba(0,0,0,.2)) drop-shadow(0 3px 5px rgba(0,0,0,.16))}
+  .childhood .strip img{display:block;height:auto}
   .polaroid .card{display:block;padding:7% 7% 26%;background:#f3efe6 url(img/pages/polaroid-paper.png) 0 0/256px;border-radius:2px;
     box-shadow:0 0 0 1px rgba(0,0,0,.04),0 1px 0 rgba(0,0,0,.22),0 2px 2px -1px rgba(0,0,0,.2),0 3px 5px -3px rgba(0,0,0,.16)}          /* hard and shallow: lying flat on the surface, not floating */
   .polaroid img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);filter:saturate(.92) contrast(1.02)}
-  .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-37px,335px) rotate(-6.5deg)}
+  .polaroid:first-child .card{width:300px;z-index:1;transform:translate(-69px,335px) rotate(-6.5deg)}
   .polaroid:last-child .card{width:300px;z-index:1;transform:translate(35px,-2px) rotate(6deg)}
   .childhood .strip img{width:308px;z-index:3;transform:translate(315px,-5px) rotate(-3.5deg)}
   /* The two columns need 600 + 420 + the gap, about 1100px. Below that they squeeze and the words
@@ -94,7 +93,7 @@
     /* the Polaroids span the text block: Alex's top meets the eyebrow, Hannah's bottom meets the last line */
     .history{align-items:center}          /* the words sit on the centre line of the photographs */
     .childhood .strip img{transform:translate(363px,-13px) rotate(-3.5deg)}
-    .childhood{--k:.765;margin-left:-141px}          /* 10% smaller, and centred on what it actually contains rather than on its box */
+    .childhood{--k:.765;margin-left:-117px}          /* 10% smaller, and centred on what it actually contains rather than on its box */
     /* opening fills the first screen: copy left, hand right, both centred on the viewport */
     /* text and film sit together as one group in the middle, rather than each centred in its own half */
     .opening{grid-template-columns:minmax(0,420px) minmax(0,600px);justify-content:center;column-gap:clamp(40px,6vw,96px);align-items:center;min-height:100vh;padding-top:var(--head);padding-bottom:var(--head)}
