@@ -15,8 +15,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Studio Maçon", "url": "https://studiomacon.co", "logo": "https://studiomacon.co/img/favicon.png", "email": "hello@studiomacon.co", "sameAs": ["https://www.instagram.com/studiomacon/"]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
-<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="img/eye-strip.png" fetchpriority="high">
 <style>/* Shared by every page in the preview: type, header, labels, buttons,
    accordions and footer. Page-specific layout stays in each page. */
 
@@ -636,7 +634,6 @@ footer .hover-line:not(.mob){padding-bottom:5px}          /* footer links: the u
 .intl-note{display:none}
 html.intl .intl-note{display:block}          /* shown only to visitors outside the US */
 </style>
-<link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
   /* the film fills the first screen; the nav sits over it in white */
@@ -1070,7 +1067,7 @@ html.intl .intl-note{display:block}          /* shown only to visitors outside t
          thing on the screen, so the browser records the page as loaded then. Without it the logotype
          docking into the nav at ~11s was being recorded as the page's largest paint, which is the
          number Google scores, even though the page is finished at 1s. -->
-    <img class="film-poster" src="video/poster-process.jpg" alt="" fetchpriority="high" decoding="async">
+    <img class="film-poster" src="video/poster-process.jpg" alt="" decoding="async">
     <video autoplay muted loop playsinline preload="metadata" poster="video/poster-process.jpg">
       <source src="video/hero-720-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' media="(max-width:700px)">          <!-- phones: 720p, a lighter file -->
       <source src="video/hero-720-h265.mp4" type='video/mp4; codecs="hvc1.1.6.L93.90"' media="(max-width:700px)">

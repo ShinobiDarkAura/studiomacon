@@ -1214,8 +1214,9 @@ def main():
     # logo (the largest thing in the intro) was only found once that stylesheet arrived.
     css = open(os.path.join(OUT, "site.css"), encoding="utf-8").read()
     shop = re.sub(r'<link rel="stylesheet" href="site\.css\?v=\d+">',
-                  lambda m: '<link rel="preload" as="image" href="img/eye-strip.png" fetchpriority="high">\n<style>' + css + '</style>',
+                  lambda m: '<style>' + css + '</style>',
                   shop, count=1)
+    shop = shop.replace('<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>\n', '', 1)          # no early hints on the home page: PageSpeed counts them against the first paint (tested: 76 to 79)
     save("index.html", editable(shop, "index.html"))
     sizer_page()
     feeds(products)

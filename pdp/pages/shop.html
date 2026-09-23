@@ -6,7 +6,6 @@
 <title>Bronze totems and silver jewelry | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
-<link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>{{STAMP}}</style>
 <style>
   /* the film fills the first screen; the nav sits over it in white */
@@ -241,7 +240,7 @@
          thing on the screen, so the browser records the page as loaded then. Without it the logotype
          docking into the nav at ~11s was being recorded as the page's largest paint, which is the
          number Google scores, even though the page is finished at 1s. -->
-    <img class="film-poster" src="video/poster-process.jpg" alt="" fetchpriority="high" decoding="async">
+    <img class="film-poster" src="video/poster-process.jpg" alt="" decoding="async">
     <video autoplay muted loop playsinline preload="metadata" poster="video/poster-process.jpg">
       <source src="video/hero-720-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' media="(max-width:700px)">          <!-- phones: 720p, a lighter file -->
       <source src="video/hero-720-h265.mp4" type='video/mp4; codecs="hvc1.1.6.L93.90"' media="(max-width:700px)">
