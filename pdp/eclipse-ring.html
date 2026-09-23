@@ -269,7 +269,7 @@
     /* phones: two pieces only, at the size and spacing of the shop grid, rather than three squeezed small */
     .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left}
     .rel-grid{width:100%}
-    .rel-piece:nth-child(3){display:none}
+    .rel-grid .rel-piece:nth-child(3){display:none}
     .rel-name{font-size:var(--tile-name) !important}
     .rel-piece{display:block;color:#000}
     .rel-frame{display:block;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--field)}
@@ -281,6 +281,15 @@
 
   @media (max-width:767px){
     .related{padding-left:var(--gutter);padding-right:var(--gutter)}
+  }
+  /* phones: the whole family in a row to swipe, closest in look first; desktop keeps its three */
+  .rel-swipe{display:none}
+  @media (max-width:767px){
+    .related .rel-grid{display:none}
+    .rel-swipe{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;text-align:left;
+      scrollbar-width:none;-webkit-overflow-scrolling:touch}          /* inside the page margins, so the next pair stays out of sight */
+    .rel-swipe::-webkit-scrollbar{display:none}
+    .rel-swipe .rel-piece{flex:0 0 calc((100% - 8px) / 2);scroll-snap-align:start}          /* two at a time, the size of the shop grid */
   }
 
   @media (min-width:1024px){
@@ -667,7 +676,7 @@
     </div>
   </section>
 
-  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-grid"><a class="rel-piece" href="zuma-ring.html"><span class="rel-frame"><img src="img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp" alt="Zuma Ring" loading="lazy"></span><span class="rel-name">Zuma Ring</span><span class="rel-cost">$320</span></a><a class="rel-piece" href="sietch-aperture.html"><span class="rel-frame"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" alt="Sietch Ring" loading="lazy"></span><span class="rel-name">Sietch Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a></div></section>
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-grid"><a class="rel-piece" href="zuma-ring.html"><span class="rel-frame"><img src="img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp" alt="Zuma Ring" loading="lazy"></span><span class="rel-name">Zuma Ring</span><span class="rel-cost">$320</span></a><a class="rel-piece" href="sietch-aperture.html"><span class="rel-frame"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" alt="Sietch Ring" loading="lazy"></span><span class="rel-name">Sietch Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a></div><div class="rel-swipe"><a class="rel-piece" href="meridian-egg-ring.html"><span class="rel-frame"><img src="img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp" alt="Meridian Egg" loading="lazy"></span><span class="rel-name">Meridian Egg</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="sietch-aperture.html"><span class="rel-frame"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" alt="Sietch Ring" loading="lazy"></span><span class="rel-name">Sietch Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a><a class="rel-piece" href="zuma-ring.html"><span class="rel-frame"><img src="img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp" alt="Zuma Ring" loading="lazy"></span><span class="rel-name">Zuma Ring</span><span class="rel-cost">$320</span></a></div></section>
   <script>
   // the stamp presses down once the heading it sits on is in view, as on the home page
   (function () {

@@ -1051,6 +1051,16 @@ def rel_tile(x):
     return tinted(x["slug"], tile_src(grid_still(x["slug"])))
 
 
+def _visual(products):
+    """How alike each pair of pieces looks (tools/visual_match.py), worked out from the grid photos."""
+    sys.path.insert(0, os.path.join(OUT, "tools"))
+    from visual_match import build
+    return build({x["slug"]: os.path.join(OUT, grid_still(x["slug"])) for x in products})
+
+
+VISUAL = {}
+
+
 def related_block(p, products):
     """Three other pieces from the same family (totems with totems, jewelry with jewelry)."""
     def family(x):
@@ -1073,14 +1083,22 @@ def related_block(p, products):
     if p["slug"] in PENDANTS:          # pendants suggest only the other pendant, then the Caldera Arc: never a ring
         by = {x["slug"]: x for x in products}
         pick = [by[s] for s in sorted(PENDANTS - {p["slug"]}) + ["ear-cuff"] if s in by]
-    tiles = "".join(
+    tile = lambda x: (
         f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-frame"><img src="{rel_tile(x)}" alt="{html.escape(x["name"])}" loading="lazy"></span>'
-        f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>'
-        for x in pick)
+        f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>')
+    tiles = "".join(tile(x) for x in pick)
+    # phones: every piece of the same family, up to six, the closest in look first, in a row to swipe
+    look = VISUAL.get(p["slug"], {})
+    kin = sorted(same if p["slug"] not in PENDANTS else [x for x in products if x["slug"] in (PENDANTS - {p["slug"]})],
+                 key=lambda x: -look.get(x["slug"], 0))[:6]
+    if len(kin) < 3:          # a family of one or two (the ear cuff, the pendants): fill from what desktop suggests
+        kin += sorted([x for x in pick if x not in kin], key=lambda x: -look.get(x["slug"], 0))[:3 - len(kin)]
+    swipe = "".join(tile(x) for x in kin)
     return ('<section class="related" aria-label="Other pieces">'
             '<p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img class="stamp" src="img/provenance-stamp.png" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2>'
             '<p class="rel-blurb">We’d like to introduce you to a few friends</p>'
-            f'<div class="rel-grid">{tiles}</div></section>')
+            f'<div class="rel-grid">{tiles}</div>'
+            + (f'<div class="rel-swipe">{swipe}</div>' if swipe else '') + '</section>')
 
 
 def main():
@@ -1097,6 +1115,7 @@ def main():
             x["price"] = int(low) if float(low).is_integer() else low
         x["price"] = _content.product(x["slug"], "price", x["price"])
     template = shared(open(os.path.join(OUT, "template.html"), encoding="utf-8").read())
+    VISUAL.update(_visual([x for x in products if x["slug"] not in HIDE_FROM_SHOP]))
     # info pages: story, custom, contact, shipping
     for f in sorted(x for x in os.listdir(os.path.join(OUT, "pages")) if x != "shop.html"):
         doc = shared(open(os.path.join(OUT, "pages", f), encoding="utf-8").read())
