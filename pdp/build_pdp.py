@@ -1193,6 +1193,13 @@ def main():
                                      f'--stamp-drop:{st["drop"]}%;--stamp-tilt:{st["tilt"]}deg}}')
     shop = (shop.replace("{{TOTEMCOUNT}}", f"{len(totems):02d}").replace("{{JEWELRYCOUNT}}", f"{len(products) - len(totems):02d}")
                 .replace("{{TOTEMGRID}}", "\n".join(tiles[:len(totems)])).replace("{{JEWELRYGRID}}", "\n".join(tiles[len(totems):])))
+    # The home page is where most visits land, on a phone, with nothing cached. Two things held back
+    # the first screen there: the stylesheet was a separate download the page waited for, and the eye
+    # logo (the largest thing in the intro) was only found once that stylesheet arrived.
+    css = open(os.path.join(OUT, "site.css"), encoding="utf-8").read()
+    shop = re.sub(r'<link rel="stylesheet" href="site\.css\?v=\d+">',
+                  lambda m: '<link rel="preload" as="image" href="img/eye-strip.png" fetchpriority="high">\n<style>' + css + '</style>',
+                  shop, count=1)
     save("index.html", editable(shop, "index.html"))
     sizer_page()
     feeds(products)

@@ -16,7 +16,626 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Studio Maçon", "url": "https://studiomacon.co", "logo": "https://studiomacon.co/img/favicon.png", "email": "hello@studiomacon.co", "sameAs": ["https://www.instagram.com/studiomacon/"]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790100768">
+<link rel="preload" as="image" href="img/eye-strip.png" fetchpriority="high">
+<style>/* Shared by every page in the preview: type, header, labels, buttons,
+   accordions and footer. Page-specific layout stays in each page. */
+
+/* Instrument Serif, SIL Open Font License — self-hosted so the page never waits on Google */
+@font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
+@font-face{font-family:"Morello Pencil";src:url(fonts/morellopencil.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Sans";src:url(fonts/instrument-sans.woff2) format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Sans";src:url(fonts/instrument-sans-italic.woff2) format("woff2");font-weight:400 700;font-style:italic;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
+:root{
+  --body-s:calc(17px - 2pt);          /* reading text in blurbs and accordions: Field Notes, every accordion panel */
+  --body-s-lh:1.63;
+  --ink:#000;
+  --field:#f7f7f7;
+  --rule:#e3e3e3;
+  --serif:"Instrument Serif", "Times New Roman", serif;
+  --sans:"Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;          /* Instrument Sans everywhere, Helvetica only while it loads */
+  --pad:24px;
+  --head:84px;
+  --ease:cubic-bezier(.22,.7,.2,1);
+  --tile-name:calc(18px + 4pt);          /* piece names under pictures: shop grid (phones) and Also Worth Keeping, always the same */
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.5 var(--sans);letter-spacing:.012em}          /* Instrument Sans, opened up a touch */
+/* no stranded last words: the browser balances headings and avoids a one-word last line in body copy */
+h1,h2,h3,.eyebrow,.menu-sheet a{text-wrap:balance}
+p,li,dd,figcaption,.lede,.desc,.acc-body,.blurb{text-wrap:pretty}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button,select,input,textarea{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+
+/* underline that appears 3px below a link on hover */
+.hover-line{text-decoration:underline;text-decoration-color:rgba(0,0,0,0);text-underline-offset:6px;
+  text-decoration-thickness:1px;transition:text-decoration-color .45s ease}
+.hover-line:hover{text-decoration-color:currentColor}
+.head .hover-line{text-underline-offset:9px}
+
+/* ── header: no background, ever ───────────────────── */
+.head{position:fixed;inset:12px 0 auto;z-index:20;height:var(--head);pointer-events:none;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 calc(var(--pad) + 24px);font-size:calc(14px - 1pt)}          /* the nav words: the size of Back and Free shipping */
+.head > *{pointer-events:auto}
+/* each part of the nav reads what is under it: black on white or very light, white on anything darker */
+.head .left,.head .logotype,.head .right{color:#000;transition:color .3s ease}
+.head .on-dark{color:#fff}
+/* pages with a white right-hand column (product, custom): Bag stays black over it */
+@media (min-width:768px){ body.white-right .head .right.on-dark{color:#000} }          /* phones have no white column, so Bag follows the rest of the nav */
+.head .left{justify-self:start;display:flex;gap:32px}
+.head .right{justify-self:end;white-space:nowrap;position:relative}
+/* added-to-bag toast, tucked under the Bag link */
+.bag-toast{position:absolute;top:calc(100% + 16px);right:0;width:max-content;max-width:calc(100vw - 2 * var(--gutter, 16px));border-radius:10px;display:flex;align-items:center;gap:14px;padding:12px 16px 12px 11px;
+  background:#fff;color:#000;border:1px solid var(--rule);box-shadow:0 14px 40px rgba(0,0,0,.12);font-size:14px;line-height:1.35;
+  white-space:nowrap;opacity:0;transform:translateX(26px);pointer-events:none;
+  transition:opacity .28s ease,transform .32s cubic-bezier(.4,0,.7,.4)}          /* it slides back out the way it came */
+.bag-toast.on{opacity:1;transform:none;transition:opacity .26s ease,transform .55s cubic-bezier(.2,.9,.25,1)}          /* slides in from the right */
+.bag-toast img{width:46px;height:58px;object-fit:cover;border-radius:7px}
+.bag-toast .price-note{color:rgba(0,0,0,.45);margin-left:7px}
+.bag-toast b{display:block;font-weight:500;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px}
+@media (prefers-reduced-motion:reduce){ .bag-toast,.bag-toast.on{transition:opacity .2s ease;transform:none} }
+.head .right a.bump{animation:bump .5s var(--ease)}
+@keyframes bump{0%{transform:none}35%{transform:scale(1.15)}100%{transform:none}}
+.head .right a{display:inline-block}
+.head .desk{display:none}
+.logotype{display:block;aspect-ratio:888/331;background:currentColor;
+  -webkit-mask:url(img/logotype.png) center/contain no-repeat;mask:url(img/logotype.png) center/contain no-repeat}
+.head .logotype{width:75px;position:relative;top:6px}
+
+/* ── type ──────────────────────────────────────────── */
+.eyebrow{font-size:15px;margin:0 0 10px}
+h1{font:400 46px/1 var(--serif);text-transform:uppercase;letter-spacing:-.005em;margin:0 0 22px}
+h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005em;margin:0 0 28px}
+.label{font-size:calc(17px - 3pt);letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.5)}
+.cta{display:flex;align-items:center;justify-content:center;width:100%;height:47px;          /* every black button is the product page's Add to Bag */
+  background:#000;color:#fff;font-size:calc((18px - 2pt) * .85 - 1pt);text-transform:uppercase;letter-spacing:.08em}
+.todo{background:#fff4c2;padding:0 3px}
+
+/* ── accordions: height eases open and shut ────────── */
+.acc{text-align:left}
+.acc-item{border-bottom:1px solid var(--rule);transition:border-color .3s ease}
+.acc-item:hover{border-bottom-color:#000}
+.acc-head{display:flex;width:100%;justify-content:space-between;align-items:center;
+  padding:13px 0;font-size:calc(17px - 4pt);letter-spacing:.08em;text-transform:uppercase;text-align:left;color:#000}          /* the size of the Field Notes title */
+.acc-head::after{content:"";width:10px;height:10px;flex:none;
+  background:linear-gradient(currentColor,currentColor) center/10px 1.5px no-repeat,
+             linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat;
+  color:#000;opacity:.35;transition:transform .45s var(--ease),opacity .45s ease}
+.acc-head:hover::after,.acc-item:hover .acc-head::after{opacity:1}
+/* hovering a row lifts its text along with the rule under it */
+.acc-head:hover,.acc-item:hover .acc-head{color:#000}
+.acc-head:hover .n,.acc-item:hover .acc-head .n{color:rgba(0,0,0,.65)}
+.acc-head{transition:padding-bottom .5s var(--ease),color .25s ease}
+.acc-head .n{transition:color .25s ease}
+.acc-item.open .acc-head{padding-bottom:21px}
+.acc-item.open .acc-head::after{transform:rotate(90deg);
+  background:linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat}
+.acc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.acc-item.open .acc-panel{grid-template-rows:1fr}
+.acc-inner{overflow:hidden}
+.acc-body{padding:0 0 20px;font-size:var(--body-s);line-height:var(--body-s-lh);opacity:0;transform:translateY(-6px);
+  transition:opacity .35s ease,transform .5s var(--ease)}
+.acc-item.open .acc-body{opacity:1;transform:none;transition-delay:.08s}
+/* (one size at every width now: --body-s) */
+.acc-body p{margin:0 0 .9em}
+.acc-body p:last-child{margin:0}
+.acc-body a{text-decoration:underline;text-underline-offset:3px}
+.acc-body .linkish{font:inherit;padding:0;border:0;background:none;color:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.acc-body dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px}
+.acc-body dt{text-transform:uppercase;font-size:14px;padding-top:2px}
+.acc-body dd{margin:0}
+.acc-body dl:has(> .lone){display:block}          /* a measurement with no label needs no two-column grid */
+.acc-body .after-dl{margin-top:18px}
+.acc-body p.acc-more:last-child{margin:26px 0 0}          /* 8px more air above it, then 4px again */
+.acc-body .acc-more a,.sizer-panel .more-rows button{display:inline-flex;align-items:center;gap:4px;
+  font-family:inherit;font-weight:400;font-size:calc(1em - 1pt);line-height:1.4;padding:0;border:0;background:none;cursor:pointer;
+  color:rgba(0,0,0,.5);text-decoration:none}
+.acc-body .acc-more a::after,.sizer-panel .more-rows button::after{content:"";width:1em;height:1em;flex:none;background:currentColor;
+  -webkit-mask:var(--arr-r) center/contain no-repeat;mask:var(--arr-r) center/contain no-repeat;transition:transform .3s ease}
+.acc-body .acc-more a:hover,.sizer-panel .more-rows button:hover{color:#000}
+.acc-body .acc-more a:hover::after,.sizer-panel .more-rows button:hover::after{transform:translateX(5px)}
+:root{--arr-r:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E")}
+/* our address stays clickable but stops shouting; Shop purple on hover */
+.acc-body a[href^="mailto:"]{text-decoration:none;color:inherit;transition:color .2s ease}
+.acc-body a[href^="mailto:"]:hover{color:#5a31f4}
+
+/* ── underlined fields (newsletter, contact form) ──── */
+.field{display:flex;border-bottom:1.5px solid rgba(0,0,0,.25);padding:0 0 10px 18px}
+.field input,.field textarea{flex:1;border:0;outline:0;font-size:18px;background:none;min-width:0;resize:none}
+.field input::placeholder,.field textarea::placeholder{color:#777}
+
+/* ── footer: brand left, links centre, newsletter right ─ */
+footer{display:grid;gap:56px;align-content:end;min-height:105vh;min-height:105svh;padding:96px calc(var(--pad) + 24px) 36px;--f-size:calc(17px - 2pt)}
+footer .brand{order:3}
+footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
+footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
+footer .fine{margin:0;font:400 calc((32px - 5pt) * 1.2)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
+footer .fine.where{margin:12px 0 0;font-family:"Morello Pencil","Instrument Serif",serif;font-size:21px;letter-spacing:.01em;text-transform:none;opacity:.6;
+  display:inline-block;transform:rotate(-3deg);transform-origin:left center}          /* where the studio is, in the studio's own hand */
+footer .links{display:flex;flex-wrap:wrap;gap:10px 31px;margin:0;font-size:calc(14px - 1pt)}          /* matches the top nav */
+footer .news{order:1;max-width:460px}
+footer .news p{margin:0 0 28px;font-size:calc(var(--f-size) - 1px);line-height:1.35}
+footer .field{padding-left:0;border-bottom:.5px solid rgba(0,0,0,.2)}
+footer .field input{opacity:.8}
+footer .field input::placeholder{color:rgba(0,0,0,.35)}
+footer .field input,footer .field button{font-size:var(--f-size)}
+footer .field button{padding:0 0 0 18px}
+
+@media (min-width:768px){
+  :root{--pad:40px;--head:110px}
+  .head .mob{display:none}
+  .head .desk{display:inline}
+  .head .logotype{width:125px;top:-2px}          /* 8px higher on desktop; 15% smaller than it was */
+  .eyebrow{font-size:16px}
+  h1{font-size:53px}
+  h2{font-size:42px}
+  footer{grid-template-columns:1fr auto 1fr;align-items:end;gap:40px;min-height:40vh;padding:96px calc(var(--pad) + 24px) 52px}
+  footer .middle{margin-bottom:16px}
+  footer .brand,footer .middle,footer .news{order:0}
+  footer .middle{justify-self:center;align-items:center}
+  footer .links{justify-content:center}
+  footer .news{justify-self:end;width:100%;max-width:274px}
+  /* the wordmark reads off the left edge, the sign-up off the right: each justified to its own side */
+  footer .brand{justify-self:start;text-align:left}
+  footer .news{text-align:left}
+  footer .news .field{text-align:left}          /* the field itself still reads left to right */
+}
+@media (min-width:1200px){
+  h1{font-size:60px}
+}
+
+/* ── info pages ────────────────────────────────────── */
+.intro{padding:calc(var(--head) + 64px) var(--pad) 0;text-align:center}
+.intro p.lede{margin:0 auto;max-width:620px;font-size:17px;line-height:1.55}
+.prose{margin:0 auto;max-width:620px;padding:0 var(--pad);text-align:center}
+.prose p{margin:0 0 1em;font-size:17px;line-height:1.55}
+.panel{margin:96px 0;background:var(--field)}
+.panel img{width:100%}
+.section{margin:96px 0}
+
+/* split: imagery flush to the left edge, content pinned on the right */
+.split{display:block}
+.split .pics figure{margin:0;background:var(--field)}
+.split .pics figure + figure{margin-top:12px}
+.split .pics img{width:100%}
+.split .pics figcaption{padding:14px var(--pad) 0;text-align:left;background:#fff}
+.split .copy{padding:40px var(--pad) 0}
+.split .copy .cta{margin:28px 0 0}
+.split .copy .acc{margin-top:42px;border-top:1px solid var(--rule)}
+
+@media (min-width:768px){
+  .intro{padding-top:calc(var(--head) + 110px)}
+  .panel,.section{margin:140px 0}
+  .split{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
+  .split .pics figcaption{padding-left:var(--pad)}
+  .split .copy{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;scrollbar-width:none;
+    overscroll-behavior:auto;padding:24px 0 48px;display:flex;flex-direction:column;justify-content:safe center}
+  .split .copy > *{flex:none}
+  .split .copy::-webkit-scrollbar{display:none}
+}
+
+/* ── emerge: blocks drift up and come into focus as they scroll in ── */
+.dr-emerge{opacity:0;filter:blur(16px);transform:translateY(66px) scale(.985);
+  transition:opacity 1.1s cubic-bezier(.16,1,.3,1),filter 1.1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1);
+  transition-delay:var(--stagger,0ms)}
+.dr-emerge.is-seen{opacity:1;filter:none;transform:none}
+/* accordions keep their smooth hover rule while they also scroll in */
+.acc-item.dr-emerge{transition:opacity 1.1s cubic-bezier(.16,1,.3,1),filter 1.1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1),border-color .45s ease;
+  transition-delay:var(--stagger,0ms),var(--stagger,0ms),var(--stagger,0ms),0ms}
+@media (prefers-reduced-motion:reduce){ .dr-emerge{transition:none} }
+
+/* ── mobile menu ───────────────────────────────────── */
+/* the drawer is most of a small phone, but never wider than 360px; the page is pushed by the same amount */
+:root{--drawer:min(84vw,360px)}
+.menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100dvh;width:var(--drawer);z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:24.8px;
+  padding:0 calc(var(--pad) + 24px);transform:translateX(-100%);visibility:hidden;
+  transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s linear .6s}
+.menu-sheet.open{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s}
+.menu-sheet a{font:400 34px/1.05 var(--serif);text-transform:uppercase;color:#000}
+.menu-sheet a.two-line{line-height:.98}          /* Shipping / & Returns: the two lines held close */
+/* the page slides right as the menu comes in from the left edge */
+body > :not(.menu-sheet):not(script):not(.dock):not(.bag-veil):not(.bag-drawer){transition:transform .6s cubic-bezier(.65,0,.25,1)}          /* the bag keeps its own timing */
+html.menu-open body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(var(--drawer))}
+html.menu-open .dock{visibility:hidden}
+html.menu-open{overflow:hidden}          /* lock the page on the root only: locking the body too made it a scrolling box of its own, which shifted the page 16px while the drawer was open */
+body{overflow-x:clip}
+/* opening the menu: items rise in one by one, top to bottom */
+.menu-sheet.open a{animation:menu-in .55s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 60ms + 220ms)}
+@keyframes menu-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){ .menu-sheet,.menu-sheet.open,body > *{transition:none} .menu-sheet.open a{animation:none} }
+/* arriving from the drawer: the new page loads behind it, already pushed aside, then the drawer closes */
+@media (max-width:767px){
+  html.menu-arriving body > :not(.menu-sheet):not(script):not(.dock){transform:translateX(var(--drawer));transition:none}
+  html.menu-arriving .menu-sheet{transform:none;visibility:visible;transition:none}
+  html.menu-arriving .menu-sheet a{animation:none}
+  html.menu-arriving,html.menu-arriving body{overflow:hidden}
+}
+.menu-sheet.instant,.menu-sheet.instant a{transition:none !important;animation:none !important}
+.menu-close{position:absolute;top:28px;left:calc(var(--pad) + 24px);font-size:calc(16px - 1pt);line-height:inherit}
+
+/* ── size picker nudge when Add to Bag is pressed without a size ── */
+[data-size].need{border-color:#c8321e !important;transition:border-color .2s}
+
+/* The details column used to slide in from the right as well as its blocks rising.
+   Two reveals of the same content at once read as a diagonal, so only the blocks move now. */
+
+/* ── pages short enough for one screen: content centred, footer in view ── */
+body.fit{display:flex;flex-direction:column;min-height:100vh;min-height:100svh}
+body.fit main{flex:1;display:flex;flex-direction:column;justify-content:center;width:100%}
+body.fit footer{min-height:0;padding-top:48px}
+
+/* light grey way back to the shop, at the top of a right-hand column */
+.back{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;margin:0 0 28px;font-size:calc(16px - 1pt);color:rgba(0,0,0,.4);transition:color .2s ease}
+.back:hover{color:#000}
+.back{transition:color .2s ease,opacity .35s ease}
+.back.gone{opacity:0;pointer-events:none}
+.back-icon{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;transition:transform .35s var(--ease)}
+.back:hover .back-icon{transform:translateX(-4px)}
+/* desktop: it moves up into the nav row, lined up with the left edge of its column and level with Bag */
+.head .back{position:absolute;top:50%;margin:0;transform:translateY(-50%)}
+
+/* lockup trials: add ?logo=artifacts or ?logo=objects to any page address (both have their own proportions) */
+.logo-artifacts .logotype,.logo-objects .logotype{aspect-ratio:294/112}
+.logo-artifacts .head .logotype,.logo-objects .head .logotype{width:90px;top:6px}
+@media (min-width:768px){ .logo-artifacts .head .logotype,.logo-objects .head .logotype{width:150px} }
+.logo-artifacts .logotype{-webkit-mask-image:url(img/lockup-artifacts.svg);mask-image:url(img/lockup-artifacts.svg)}
+.logo-objects .logotype{-webkit-mask-image:url(img/lockup-objects.svg);mask-image:url(img/lockup-objects.svg)}
+
+/* black buttons: an arrow slides out to the right of the words on hover */
+a.cta::after,button.cta::after,.next::after{content:"";width:0;height:12px;margin-left:0;opacity:0;background:currentColor;flex:none;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") left center/12px 12px no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E") left center/12px 12px no-repeat;
+  transition:width .35s var(--ease),margin-left .35s var(--ease),opacity .25s ease}
+.cta:not([disabled]):hover::after,.next:not([disabled]):hover::after{width:12px;margin-left:8px;opacity:1}
+
+/* phones: every title centred */
+@media (max-width:767px){
+  h1,h2,.eyebrow{text-align:center}
+  .wall-head{justify-content:center}
+}
+
+/* the header has no room for Back on phones, and it ran under the logo mark on tablets */
+@media (max-width:1099px){
+  .back{display:none}
+}
+/* phones: bigger logotype sitting a little higher; footer centred and shorter */
+@media (max-width:767px){
+  .head .logotype{width:92px;top:-4px}
+  .head{top:-2px}          /* 8px higher, centred in the white band above the main image */
+  footer{min-height:95vh;min-height:95svh;text-align:center}
+  footer .middle{align-items:center}
+  footer .links{justify-content:center}
+  footer .mark{margin-left:auto;margin-right:auto}
+  footer .news{justify-self:center;margin:0 auto;width:100%}
+  footer .field{text-align:left}
+}
+
+/* keyboard focus */
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.field:focus-within{border-bottom-color:#000}
+
+/* ── phones: one gutter ────────────────────────────── */
+/* text, buttons and picture grids all sit 16px from the screen edge on every page;
+   pictures that run edge to edge are left alone (they are not inside these) */
+@media (max-width:767px){
+  :root{--gutter:16px}
+  /* nothing may stick out past the screen's edge: if it does, a phone widens the whole page to fit it,
+     and the centred logotype and Bag slide off to the right (it happened for a few frames as the drawer closed) */
+  html,body{overflow-x:clip}
+  /* Menu and Bag sit 12px inside the page gutter; the drawer's Close and its links share that same line */
+  :root{--nav-inset:calc(var(--gutter) + 12px)}
+  .head{padding-left:var(--nav-inset) !important;padding-right:var(--nav-inset) !important}
+  /* Close sits exactly where Menu was: the header is lifted 14px on phones, so this follows it */
+  /* phones: a 1px X, centred exactly where the Menu label sat. The 40px box is the tap area. */
+  /* a 19px stroke turned 45deg is 13.4px of actual shape. The box is offset so the shape's left
+     edge meets the INK of the menu words, which itself starts 1.4px inside its own text box. */
+  .menu-close{left:calc(var(--nav-inset) - 11.9px);top:18px;width:44px;height:44px;padding:0;font-size:0;color:transparent;background:none;border:0}          /* the X's own left edge meets the menu items: 19px stroke at 45deg spans 13.44px */
+  .menu-close::before,.menu-close::after{content:"";position:absolute;left:50%;top:50%;width:19px;height:1px;
+    margin:-.5px 0 0 -9.5px;background:currentColor;color:#000}          /* centred in its box: the box is centred on the hamburger */          /* the drawn X, not its tap box, lines up with the menu words */
+  .menu-close::before{transform:rotate(45deg)}
+  .menu-close::after{transform:rotate(-45deg)}
+  .menu-sheet{padding-left:calc(var(--nav-inset) + 10px) !important;padding-right:var(--nav-inset) !important}
+  .wall-head,.shop-wall,.inspiration-wall,.gallery,.info,.related,.opening,.prose,.steps,.history,
+  .split .copy,.bag-page{padding-left:var(--gutter) !important;padding-right:var(--gutter) !important}
+  /* the opening blurb sits in from the grid, on the menu and bag's own inset */
+  .welcome .prose{padding-left:var(--nav-inset) !important;padding-right:var(--nav-inset) !important}
+}
+
+/* ── tablets (768–1099px): the text column keeps enough room for its titles and fields ── */
+/* Tablets below 1024 read as a tall phone: the two columns squeezed and cropped there. */
+@media (max-width:1023px){
+  body .split,body .product,body .commission{display:block;margin-right:0}
+  body .split .copy{position:static;height:auto;overflow:visible}
+}
+/* 1024-1099: an even split rather than the old 70/30 */
+@media (min-width:1024px) and (max-width:1099px){
+  body .split,body .product,body .commission{grid-template-columns:1fr 1fr;gap:0 32px}
+}
+
+/* ── touch screens: iPhone zooms into any field set smaller than 16px, so fields are 16px there ── */
+@media (hover:none) and (pointer:coarse){
+  input,textarea,select{font-size:16px !important}
+}
+
+/* ── bigger tap areas on phones, with no change to how anything looks ── */
+@media (pointer:coarse){
+  .head .mob,footer .field button{position:relative}
+  .head .mob::after{inset:-18px -14px !important}          /* the icon is small; the place to tap is not */
+  /* .menu-close must keep position:absolute: making it relative dropped it into the sheet's
+     centred column, where its top/left were ignored and it sat far below the Menu button */
+  .head .mob::after,footer .field button::after{content:"";position:absolute;inset:-12px -10px}
+  .menu-sheet a{padding-block:4px}
+}
+
+/* privacy, terms and refunds (Shopify hosts the policies): quiet, under the sign-up */
+footer .news .legal{margin:18px 0 0;font-size:12px;letter-spacing:.02em;color:rgba(0,0,0,.5)}
+footer .middle{position:relative;top:16px}          /* the links sit 16px nearer the bottom edge than the rest of the footer */
+footer .middle .legal{margin:22px 0 0;text-align:center;font-size:calc(12px - 2pt);letter-spacing:.02em;color:#9ca3af}          /* under the footer links, centred */
+footer .middle .legal span{padding:0 6px}          /* 4px more between the links */
+footer .news .legal a{text-underline-offset:4px}
+
+/* (no fade behind the header: the nav reads what is under it and changes colour instead; see Nav tone in site.js) */
+
+/* ── bag lines, shared by the Bag page and the desktop bag drawer ── */
+.line{display:grid;grid-template-columns:96px 1fr;gap:20px;align-items:center;padding:20px 0;border-bottom:1px solid var(--rule)}
+.line img{width:96px;height:132px;object-fit:cover;border-radius:6px;background:var(--field);
+  box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)}
+.line .nm{font:400 26px/1 var(--serif);text-transform:uppercase;margin:0 0 6px}
+.line .meta{margin:0;font-size:14px;color:rgba(0,0,0,.55)}
+.qty{display:inline-flex;align-items:center;gap:14px;margin-top:14px;font-size:15px}
+.qty button{width:28px;height:28px;border:1px solid var(--rule);border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;line-height:0;padding:0 0 8px}          /* the − and + sit 4px above centre */
+.qty button:hover{border-color:#000}
+/* the − and + are drawn, not typed: a font's glyphs sit high in the circle, lines sit dead centre */
+.qty button[data-d]{font-size:0;padding:0;background:linear-gradient(currentColor,currentColor) center/10px 1.3px no-repeat}
+.qty button[data-d="1"]{background:linear-gradient(currentColor,currentColor) center/10px 1.3px no-repeat,linear-gradient(currentColor,currentColor) center/1.3px 10px no-repeat}
+.qty button[data-d]{background-color:#f3f4f6;border:0}          /* grey 100 fill, no outline */
+.qty button[data-d]:hover{background-color:#e5e7eb}
+@media (pointer:coarse){ .qty button{position:relative} .qty button::after{content:"";position:absolute;inset:-9px} }          /* bigger tap area, same look */
+.qty .remove{width:auto;height:auto;border:0;display:inline;line-height:1;border-radius:0;margin-left:18px;padding:0;font-size:13px;color:rgba(0,0,0,.5);text-decoration:underline;text-underline-offset:3px}
+
+/* ── desktop bag drawer: slides in from the right over a soft veil ── */
+.bag-veil{position:fixed;inset:0;z-index:58;background:rgba(0,0,0,.18);opacity:0;visibility:hidden;transition:opacity .7s cubic-bezier(.32,.72,0,1),visibility 0s linear .7s}
+.bag-veil.open{opacity:1;visibility:visible;transition:opacity .7s cubic-bezier(.32,.72,0,1),visibility 0s}
+.bag-veil.bag-leaving{visibility:visible}          /* it fades out with the drawer instead of blinking off (not "closing": the product pages' photo section uses that name) */
+.bag-drawer{position:fixed;top:0;right:0;z-index:59;height:100vh;height:100svh;width:min(460px,92vw);background:#fff;
+  display:flex;flex-direction:column;padding:0 calc(var(--pad) + 24px);box-shadow:-24px 0 60px -30px rgba(0,0,0,.35);
+  transform:translateX(100%);visibility:hidden;transition:transform .7s cubic-bezier(.32,.72,0,1),visibility 0s linear .7s}
+.bag-drawer.open{transform:none;visibility:visible;transition:transform .7s cubic-bezier(.32,.72,0,1),visibility 0s}
+.bag-drawer.bag-leaving{visibility:visible}          /* stays on screen while it slides back out */
+.bag-drawer .bd-head{display:flex;justify-content:space-between;align-items:center;height:var(--head);margin-top:12px;flex:none;font-size:calc(16px - 1pt)}
+.bag-drawer .bd-title{margin:0}
+.bag-drawer .bd-lines{flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;border-top:1px solid var(--rule);scrollbar-width:none;padding-bottom:24px}
+.bag-drawer .bd-lines::-webkit-scrollbar{display:none}
+.bag-drawer .bd-foot{flex:none;padding:22px 0 calc(36px + env(safe-area-inset-bottom));border-top:1px solid var(--rule)}
+.bag-drawer .bd-foot dl{display:grid;grid-template-columns:1fr auto;margin:0 0 10px;font-size:15px;font-weight:500}
+.bag-drawer .bd-foot dd{margin:0}
+/* gift wrap: a tick in the bag, a note box opens beneath it */
+.gift{margin:0 0 18px;text-align:left}
+.gift-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.gift-count{font-size:12px;color:rgba(0,0,0,.45);font-variant-numeric:tabular-nums;opacity:0;transition:opacity .3s ease}
+.gift.on .gift-count{opacity:1}
+.gift-check{display:flex;align-items:baseline;gap:10px;font-size:14px;cursor:pointer}
+.gift-check input{width:15px;height:15px;margin:0;align-self:center;accent-color:#000;flex:none}
+.gift-check em{font-style:normal;color:rgba(0,0,0,.5);margin-left:6px;position:relative;top:1px}          /* reads as sitting on the line with the words before it */
+.gift-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.22,1,.36,1)}
+.gift.on .gift-more{grid-template-rows:1fr}
+.gift-more > div{overflow:hidden}
+.gift textarea{display:block;width:100%;margin:12px 0 0;padding:12px 14px;border:1px solid var(--rule);border-radius:0;font:inherit;font-size:14px;line-height:1.5;resize:vertical;background:#fff;height:112px}
+.gift textarea:focus{outline:none;border-color:#000}
+.bag-drawer .bd-note{margin:0;font-size:13px;line-height:1.5;color:rgba(0,0,0,.5)}          /* a second rule, the same distance below the note as the first sits above Subtotal */
+.bag-drawer .bd-foot .gift{margin-top:32px}
+.bag-drawer .cta{max-width:none;width:100%}
+.bag-drawer .bd-page{display:block;margin-top:14px;text-align:center;font-size:13px;color:rgba(0,0,0,.5);text-decoration:none}
+.bag-drawer .bd-empty{padding-top:28px;padding-bottom:calc(36px + env(safe-area-inset-bottom))}          /* the button never sits on the very edge */
+.bag-drawer .bd-empty p{margin:0 0 24px}
+.bag-drawer .bd-empty .cta{max-width:none;width:100%}
+html.bag-open{overflow:hidden}
+@media (prefers-reduced-motion:reduce){ .bag-drawer,.bag-drawer.open,.bag-veil,.bag-veil.open{transition:none} }
+
+/* ── the nav mark: the blinking eye, drawn in the nav's own colour (a mask over currentColor, so it turns
+   white over dark ground like the words beside it). It rests open, and every 5–10s, at random, blinks, or
+   now and then looks around (site.js). Frames live side by side in img/eye-strip.png ── */
+.head .logotype{width:auto;height:40px;aspect-ratio:135/120;-webkit-mask:url(img/eye-strip.png) no-repeat;mask:url(img/eye-strip.png) no-repeat;
+  -webkit-mask-size:3400% 100%;mask-size:3400% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;top:0}
+@media (max-width:767px){ .head .logotype{height:34px;top:0} }
+.head .logotype.eye-blink{animation:eye-blink 350ms step-end}
+.head .logotype.eye-look{animation:eye-look 4130ms step-end}
+@keyframes eye-blink{0.00%{-webkit-mask-position:66.6667% 0;mask-position:66.6667% 0}20.00%{-webkit-mask-position:63.6364% 0;mask-position:63.6364% 0}51.43%{-webkit-mask-position:66.6667% 0;mask-position:66.6667% 0}74.29%{-webkit-mask-position:69.6970% 0;mask-position:69.6970% 0}100%{-webkit-mask-position:100.0000% 0;mask-position:100.0000% 0}}
+@keyframes eye-look{0.00%{-webkit-mask-position:0.0000% 0;mask-position:0.0000% 0}2.91%{-webkit-mask-position:3.0303% 0;mask-position:3.0303% 0}5.81%{-webkit-mask-position:6.0606% 0;mask-position:6.0606% 0}8.47%{-webkit-mask-position:9.0909% 0;mask-position:9.0909% 0}11.38%{-webkit-mask-position:12.1212% 0;mask-position:12.1212% 0}14.29%{-webkit-mask-position:15.1515% 0;mask-position:15.1515% 0}17.19%{-webkit-mask-position:18.1818% 0;mask-position:18.1818% 0}20.10%{-webkit-mask-position:21.2121% 0;mask-position:21.2121% 0}22.76%{-webkit-mask-position:24.2424% 0;mask-position:24.2424% 0}25.67%{-webkit-mask-position:27.2727% 0;mask-position:27.2727% 0}28.57%{-webkit-mask-position:30.3030% 0;mask-position:30.3030% 0}31.48%{-webkit-mask-position:33.3333% 0;mask-position:33.3333% 0}34.38%{-webkit-mask-position:36.3636% 0;mask-position:36.3636% 0}37.05%{-webkit-mask-position:39.3939% 0;mask-position:39.3939% 0}39.95%{-webkit-mask-position:42.4242% 0;mask-position:42.4242% 0}42.86%{-webkit-mask-position:45.4545% 0;mask-position:45.4545% 0}45.76%{-webkit-mask-position:48.4848% 0;mask-position:48.4848% 0}51.33%{-webkit-mask-position:51.5152% 0;mask-position:51.5152% 0}54.24%{-webkit-mask-position:54.5455% 0;mask-position:54.5455% 0}57.14%{-webkit-mask-position:57.5758% 0;mask-position:57.5758% 0}60.05%{-webkit-mask-position:60.6061% 0;mask-position:60.6061% 0}62.71%{-webkit-mask-position:63.6364% 0;mask-position:63.6364% 0}65.62%{-webkit-mask-position:66.6667% 0;mask-position:66.6667% 0}68.52%{-webkit-mask-position:69.6970% 0;mask-position:69.6970% 0}71.43%{-webkit-mask-position:72.7273% 0;mask-position:72.7273% 0}74.33%{-webkit-mask-position:75.7576% 0;mask-position:75.7576% 0}77.00%{-webkit-mask-position:78.7879% 0;mask-position:78.7879% 0}79.90%{-webkit-mask-position:81.8182% 0;mask-position:81.8182% 0}82.81%{-webkit-mask-position:84.8485% 0;mask-position:84.8485% 0}85.71%{-webkit-mask-position:87.8788% 0;mask-position:87.8788% 0}88.62%{-webkit-mask-position:90.9091% 0;mask-position:90.9091% 0}91.28%{-webkit-mask-position:93.9394% 0;mask-position:93.9394% 0}94.19%{-webkit-mask-position:96.9697% 0;mask-position:96.9697% 0}97.09%{-webkit-mask-position:100.0000% 0;mask-position:100.0000% 0}100%{-webkit-mask-position:100.0000% 0;mask-position:100.0000% 0}}
+@media (prefers-reduced-motion:reduce){ .head .logotype.eye-blink,.head .logotype.eye-look{animation:none} }
+
+/* the drawer's contents drift in just behind it */
+.bag-drawer .bd-head,.bag-drawer .bd-lines,.bag-drawer .bd-foot,.bag-drawer .bd-empty{opacity:0;transform:translateX(24px);transition:opacity .4s ease,transform .6s cubic-bezier(.32,.72,0,1)}
+.bag-drawer.open .bd-head,.bag-drawer.open .bd-lines,.bag-drawer.open .bd-foot,.bag-drawer.open .bd-empty{opacity:1;transform:none;transition-delay:.12s}
+@media (prefers-reduced-motion:reduce){ .bag-drawer .bd-head,.bag-drawer .bd-lines,.bag-drawer .bd-foot,.bag-drawer .bd-empty{transition:none;transform:none;opacity:1} }
+
+/* ── free shipping notice ───────────────────────────────
+   A slim black bar that arrives once the hero is behind you, never over it, and stays
+   dismissed for the rest of the visit. The header slides down to make room rather than
+   sitting under it. */
+.ship-bar{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:center;gap:10px;
+  min-height:var(--ship-h,38px);padding:0 44px 0 16px;background:#000;color:#fff;
+  transform:translateY(-100%);transition:transform .5s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.ship-bar p{display:flex;align-items:center;gap:9px;margin:0;
+  font:400 calc(16px - 3pt)/1.3 var(--sans,'Helvetica Neue',Helvetica,Arial,sans-serif);letter-spacing:.01em}
+.ship-truck{width:27px;height:13px;flex:none;fill:none;stroke:#fff;stroke-width:.9;stroke-linecap:round;stroke-linejoin:round}
+.ship-truck .speed{opacity:.55}
+.ship-x{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:30px;height:30px;padding:0;
+  background:none;border:0;color:#fff;opacity:.6;font-size:19px;line-height:1;cursor:pointer}
+.ship-x:hover{opacity:1}
+body.ship-on .ship-bar{transform:none}
+body.ship-on .head{transform:translateY(var(--ship-h,38px))}
+.head{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+@media (max-width:767px){
+  :root{--ship-h:34px}
+  .ship-bar p{font-size:calc(16px - 4pt);gap:7px}
+  .ship-truck{width:23px;height:12px}
+  body.ship-on .head{transform:translateY(calc(var(--ship-h) + 8px))}          /* the header sits at -2px here, so it needs a little more room */
+}
+@media (prefers-reduced-motion:reduce){ .ship-bar,.head{transition:none} }
+
+.bag-page .ship-note{white-space:nowrap}
+.bag-page .ship-sub{opacity:.55}
+
+/* a piece that has sold: the buy row becomes a note and a way onward */
+.buy.sold{display:block;text-align:center}
+.buy.sold .cta{width:100%;background:#e7e5e1;color:rgba(0,0,0,.4);border-color:transparent;cursor:default;pointer-events:none}
+.buy.sold .sold-note{margin:16px 0 0;font-size:14px;line-height:1.5;color:rgba(0,0,0,.55)}
+.buy.sold .sold-note a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+/* the piece is gone: an ink stamp across its picture, pressed a little crooked like a real one */
+.product.claimed .ship-free,.product.claimed .ship-by{display:none !important}
+.product.claimed .gallery .hero{position:relative}
+.product.claimed .gallery .hero::after{content:"Sold";position:absolute;z-index:5;top:32px;left:24px;
+  transform:rotate(-12deg);padding:.18em .5em .1em;border:3.3px solid currentColor;border-radius:6.6px;
+  color:#fff;font:400 28.3px/1 var(--serif);letter-spacing:.06em;text-transform:uppercase;
+  pointer-events:none}
+@media (min-width:1024px){ .product.claimed .gallery .hero::after{top:144px;left:56px;font-size:37.8px;border-width:2.4px;border-radius:4.7px} }
+
+
+/* ── a look at the shop without the capitals (open any page with ?case) ──
+   Only the transform changes: same faces, same sizes, same spacing. The words are
+   already written in title case in the source, so this is what they really say. */
+body.title-case h1,body.title-case h2,body.title-case h3,
+body.title-case .eyebrow,body.title-case .menu-sheet a,body.title-case .acc-head,
+body.title-case .cta,body.title-case .buy-now,body.title-case .dock,
+body.title-case .rel-name,body.title-case .piece .name,body.title-case .line .nm,
+body.title-case footer .fine,body.title-case .label,body.title-case .sizer-panel h2,
+body.title-case .bd-head,body.title-case .size-label,body.title-case .edge,
+body.title-case .cap,body.title-case .ship-bar p{text-transform:none;letter-spacing:.005em}
+body.title-case .eyebrow,body.title-case .label,body.title-case .acc-head{letter-spacing:.04em}
+
+/* the print dialog is open: nothing on the page animates when it re-lays itself out for a new printer */
+html.printing *,html.printing *::before,html.printing *::after{transition:none !important}
+
+/* ── PREVIEW (local only): hamburger in place of the word Menu, and the menu as a full-screen overlay on desktop ── */
+.head .mob{font-size:0;width:16px;height:9px;display:inline-block;vertical-align:middle;text-decoration:none;          /* small and quiet: three 1px lines, 3px apart */
+  background:linear-gradient(currentColor,currentColor) 0 0/100% 1px no-repeat,linear-gradient(currentColor,currentColor) 0 4px/100% 1px no-repeat,linear-gradient(currentColor,currentColor) 0 8px/100% 1px no-repeat}
+@media (max-width:767px){ .head .mob{position:relative;top:-.9px} }          /* phones: level with the middle of Bag */
+.menu-sheet{padding-top:32px}          /* phones: the list starts 16px further below the X */
+@media (min-width:768px){
+  .head .mob{display:inline-block;margin-right:10px;position:relative;top:6.1px}          /* centred on the capitals of Shop, Custom, About */          /* beside Shop, Custom and About, which stay */
+  .menu-sheet{background:#fff;width:100vw;align-items:center;text-align:center;gap:42px;justify-content:safe center;overflow-y:auto;padding:87px 0 51px !important;          /* centred between the logo's foot and the top of Privacy · Terms · Refunds */transform:none;opacity:0;
+    transition:opacity .45s ease,visibility 0s linear .45s}
+  .menu-sheet.open{opacity:1;transition:opacity .45s ease,visibility 0s}
+  html.menu-open body > :not(.menu-sheet):not(script):not(.dock){transform:none}
+  .menu-sheet{counter-reset:menu;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}          /* the page behind goes soft */
+  .menu-sheet a{position:relative;display:inline-block;font-size:calc(clamp(43.2px,4.86vw,68.4px) - 10pt);line-height:1.02;counter-increment:menu;
+    background:linear-gradient(currentColor,currentColor) 0 100%/0 1.5px no-repeat;padding-bottom:6px;transition:background-size .5s cubic-bezier(.65,0,.25,1)}
+  .menu-sheet a:hover{background-size:100% 1.5px}          /* the underline draws in from the left */
+  /* a small count beside each, as the Totems and Jewelry titles carry */
+  .menu-sheet a::after{content:counter(menu,decimal-leading-zero);position:absolute;left:100%;bottom:calc(.18em + 11px);margin-left:10px;
+    font:400 13px/1 var(--sans);letter-spacing:0;text-transform:none;color:rgba(0,0,0,.45)}
+  /* the logo stays in view over the open menu; the rest of the nav steps back behind it */
+  html.menu-open .head{z-index:61;transform:none !important}
+  html.menu-open .head > :not(.logotype){visibility:hidden}
+  html.menu-open .head .logotype{color:#000}
+  .menu-sheet a.two-line br{display:none}
+  .menu-close{width:44px;height:44px;padding:0;font-size:0;color:transparent;background:none;border:0}
+  .menu-close::before,.menu-close::after{content:"";position:absolute;left:50%;top:50%;width:24px;height:1.5px;margin:-.75px 0 0 -12px;background:#000}
+  .menu-close::before{transform:rotate(45deg)}
+  .menu-close::after{transform:rotate(-45deg)}
+}
+
+/* the hamburger turns into the X: the close button starts as the same three 16px lines on the same spot,
+   then the middle one fades while the outer two swing into a cross (and back again on closing) */
+.menu-close{background:linear-gradient(#000,#000) center/16px 1px no-repeat !important;transition:background-size .3s ease}
+.menu-close::before,.menu-close::after{width:16px !important;height:1px !important;margin:-.5px 0 0 -8px !important;background:#000 !important;
+  transition:transform .5s cubic-bezier(.65,0,.25,1)}
+.menu-close::before{transform:translateY(-4px) rotate(0)}
+.menu-close::after{transform:translateY(4px) rotate(0)}
+.menu-sheet.open .menu-close{background-size:0 1px !important}
+.menu-sheet.open .menu-close::before{transform:translateY(0) rotate(45deg)}
+.menu-sheet.open .menu-close::after{transform:translateY(0) rotate(-45deg)}
+html.menu-arriving .menu-close::before{transform:rotate(45deg);transition:none}
+html.menu-arriving .menu-close::after{transform:rotate(-45deg);transition:none}
+html.menu-arriving .menu-close{background-size:0 1px !important;transition:none}
+
+/* closing plays the opening backwards: the links sink away bottom to top, and only once the last has gone does the white fade */
+.menu-sheet.leaving{visibility:visible;transition:opacity .45s cubic-bezier(.4,0,.2,1) .62s,visibility 0s linear 1.07s}          /* the white lifts the way a new page lifts out of white */
+.menu-sheet.leaving a{animation:menu-out .45s cubic-bezier(.45,0,.7,.4) both;animation-delay:calc((5 - var(--i,0)) * 55ms)}
+@keyframes menu-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(18px)}}
+@media (prefers-reduced-motion:reduce){ .menu-sheet.leaving a{animation:none} }
+
+/* nav and footer links: the underline draws in from the left, as in the menu (the hamburger is left out) */
+.hover-line:not(.mob),.head .right > a{text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;
+  padding-bottom:0;transition:background-size .45s cubic-bezier(.65,0,.25,1)}
+.head .hover-line:not(.mob),.head .right > a{padding-bottom:3px;margin-bottom:-3px}
+.hover-line:not(.mob):hover,.head .right > a:hover{background-size:100% 1px}
+@media (hover:none){ .hover-line:not(.mob):hover,.head .right > a:hover{background-size:0 1px} }          /* no lingering line after a tap */
+
+/* Phones: the menu is a full-screen sheet like desktop (centred, numbered, no push), chosen 2026-09-21.
+   The earlier slide-out drawer (see "mobile menu" above: the page pushed aside by --drawer) is retired, not
+   deleted: remove this block to bring it back. */
+@media (max-width:767px){
+  .menu-sheet{width:100vw;align-items:center;text-align:center;gap:26px;justify-content:safe center;overflow-y:auto;
+    padding:57px 0 51px !important;transform:none;opacity:0;counter-reset:menu;          /* centred between the logo and the legal links */
+    transition:opacity .4s ease,visibility 0s linear .4s}
+  .menu-sheet.open{opacity:1;transition:opacity .4s ease,visibility 0s}
+  html.menu-open body > :not(.menu-sheet):not(script):not(.dock),
+  html.menu-arriving body > :not(.menu-sheet):not(script):not(.dock){transform:none !important}
+  html.menu-arriving .menu-sheet{opacity:1}
+  .menu-sheet a{position:relative;display:inline-block;font-size:34px;counter-increment:menu}
+  .menu-sheet a.two-line br{display:none}
+  .menu-sheet a::after{content:counter(menu,decimal-leading-zero);position:absolute;left:100%;bottom:calc(.18em + 5px);margin-left:8px;
+    font:400 12px/1 var(--sans);letter-spacing:0;text-transform:none;color:rgba(0,0,0,.45)}
+  html.menu-open .head{z-index:61;transform:none !important}
+  html.menu-open .head > :not(.logotype){visibility:hidden}
+  html.menu-open .head .logotype{color:#000}
+}
+
+/* while the menu is closing, the logo stays black (and above the fading white) until the links have gone,
+   then eases back to whatever colour the page under it calls for */
+html.logo-hold .head{z-index:61;transform:none !important}
+html.logo-hold .head > :not(.logotype){visibility:hidden}
+html.logo-hold .head .logotype{color:#000}
+
+/* Back: the same size and grey as "Free shipping" beside the price */
+.back{font-size:calc(14px - 1pt);color:rgba(0,0,0,.5)}
+.back .back-icon{width:14px;height:14px}          /* the arrow alone, 2px larger */
+
+/* Privacy · Terms · Refunds live at the foot of the menu (moved out of the footer) */
+.menu-sheet .menu-legal{position:absolute;left:0;right:0;bottom:40px;margin:0;text-align:center;font:400 calc(12px - 1pt)/1 var(--sans);
+  letter-spacing:.02em;color:#9ca3af;text-transform:none}
+.menu-sheet .menu-legal a{all:unset;cursor:pointer;color:inherit;font:inherit;letter-spacing:inherit;
+  background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .45s cubic-bezier(.65,0,.25,1)}
+.menu-sheet .menu-legal a:hover{background-size:100% 1px}
+.menu-sheet .menu-legal a::after{content:none !important}
+.menu-sheet .menu-legal span{padding:0 6px}
+.menu-sheet.open .menu-legal{animation:menu-in .55s cubic-bezier(.16,1,.3,1) both;animation-delay:600ms}
+.menu-sheet.leaving .menu-legal{animation:menu-out .45s cubic-bezier(.45,0,.7,.4) both}
+
+/* the overlay stops catching clicks the moment the bag starts to close: while it faded out it swallowed
+   clicks on Bag and Back, which only closed the (already closing) drawer again */
+.bag-veil:not(.open){pointer-events:none}
+/* the bag's Close is a drawn X, as in the menu: two 16px lines, 1px, in a 44px place to tap */
+.bag-drawer .bd-close{position:relative;width:44px;height:44px;margin-right:-14px;padding:0;border:0;background:none;font-size:0;color:transparent;cursor:pointer}
+.bag-drawer .bd-close::before,.bag-drawer .bd-close::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:1px;margin:-.5px 0 0 -8px;background:#000}
+.bag-drawer .bd-close::before{transform:rotate(45deg)}
+.bag-drawer .bd-close::after{transform:rotate(-45deg)}
+footer .hover-line:not(.mob){padding-bottom:5px}          /* footer links: the underline sits 5px below the words */
+
+/* the gift checkbox: empty, a grey 500 outline with 4px corners; once checked, the browser's own black box and tick, as before */
+.gift-check input:not(:checked){-webkit-appearance:none;appearance:none;border:1px solid #d1d5db;border-radius:4px;background:#fff;cursor:pointer}
+.gift-check input:not(:checked):focus-visible{outline:2px solid #000;outline-offset:2px}
+
+/* Buy with Shop: the same arrow that slides in on the black buttons */
+.buy-now::after{content:"";width:0;height:12px;margin-left:0;opacity:0;background:currentColor;flex:none;
+  -webkit-mask:var(--arr-r) left center/12px 12px no-repeat;mask:var(--arr-r) left center/12px 12px no-repeat;
+  transition:width .35s var(--ease),margin-left .35s var(--ease),opacity .25s ease}
+.buy-now:not([disabled]):hover::after{width:12px;margin-left:8px;opacity:1}
+
+/* desktop: the details column scrolls on its own, which clipped the blur of text rising in at its edges;
+   40px of room either side, taken back with a matching negative margin, so nothing moves */
+@media (min-width:1024px){ .product .info{padding-left:40px;padding-right:40px;margin-left:-40px;margin-right:-40px} }
+
+.intl-note{display:none}
+html.intl .intl-note{display:block}          /* shown only to visitors outside the US */
+</style>
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
