@@ -1077,9 +1077,9 @@ def related_block(p, products):
             and ({family(x), mine} <= worn or {family(x), mine} <= {"totem", "cap"})]
     far = [x for x in products if x["slug"] != p["slug"] and family(x) != mine and x not in near]
     rest = near + far
-    slugs = [x["slug"] for x in products]
-    start = (slugs.index(p["slug"]) if p["slug"] in slugs else 0) % max(1, len(same))
-    pick = (same[start:] + same[:start] + rest)[:3]           # three across; rotated so neighbours differ from page to page
+    look = VISUAL.get(p["slug"], {})
+    near_look = lambda xs: sorted(xs, key=lambda x: -look.get(x["slug"], 0))
+    pick = (near_look(same) + near_look(near) + near_look(far))[:3]           # three across, the closest in look first
     if p["slug"] in PENDANTS:          # pendants suggest only the other pendant, then the Caldera Arc: never a ring
         by = {x["slug"]: x for x in products}
         pick = [by[s] for s in sorted(PENDANTS - {p["slug"]}) + ["ear-cuff"] if s in by]
@@ -1088,7 +1088,6 @@ def related_block(p, products):
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>')
     tiles = "".join(tile(x) for x in pick)
     # phones: every piece of the same family, up to six, the closest in look first, in a row to swipe
-    look = VISUAL.get(p["slug"], {})
     kin = sorted(same if p["slug"] not in PENDANTS else [x for x in products if x["slug"] in (PENDANTS - {p["slug"]})],
                  key=lambda x: -look.get(x["slug"], 0))[:6]
     if len(kin) < 3:          # a family of one or two (the ear cuff, the pendants): fill from what desktop suggests
