@@ -671,10 +671,19 @@ TRACKING = ("""<meta name="facebook-domain-verification" content="%s">
   // Meta's and Google's scripts (about 250 KB) wait until the page has finished loading, so on a slow
   // phone they don't compete with the film and the logo. Calls made before then queue up and are sent
   // when they arrive; Meta also hears every page view from our own server (worker /_e) regardless.
-  var later = function (fn) {
-    if (document.readyState === 'complete') setTimeout(fn, 0);
-    else addEventListener('load', function () { setTimeout(fn, 0); }, {once: true});
+  // On a slow phone even "after loading" is too soon: they would still run while the first screen is being
+  // drawn. So they wait for the visitor's first scroll, tap or key, or four seconds after loading, whichever
+  // comes first. Only a visit that leaves within those seconds, untouched, goes uncounted by Google.
+  var queued = [], started = false;
+  var start = function () {
+    if (started) return; started = true;
+    ['scroll', 'pointerdown', 'touchstart', 'keydown'].forEach(function (t) { removeEventListener(t, start, true); });
+    queued.forEach(function (fn) { fn(); });
   };
+  ['scroll', 'pointerdown', 'touchstart', 'keydown'].forEach(function (t) { addEventListener(t, start, {capture: true, passive: true}); });
+  var afterLoad = function () { setTimeout(start, 4000); };
+  if (document.readyState === 'complete') afterLoad(); else addEventListener('load', afterLoad, {once: true});
+  var later = function (fn) { if (started) fn(); else queued.push(fn); };
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
   if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
   s=b.getElementsByTagName(e)[0];later(function(){s.parentNode.insertBefore(t,s)})}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
