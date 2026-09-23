@@ -151,9 +151,16 @@
 (function () {
   window.maconTrack = function () {};
   if (!/(^|\.)studiomacon\.co$/.test(location.hostname)) return;          // the real site only
+  // Meta's and Google's scripts (about 250 KB) wait until the page has finished loading, so on a slow
+  // phone they don't compete with the film and the logo. Calls made before then queue up and are sent
+  // when they arrive; Meta also hears every page view from our own server (worker /_e) regardless.
+  var later = function (fn) {
+    if (document.readyState === 'complete') setTimeout(fn, 0);
+    else addEventListener('load', function () { setTimeout(fn, 0); }, {once: true});
+  };
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
   if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
-  s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  s=b.getElementsByTagName(e)[0];later(function(){s.parentNode.insertBefore(t,s)})}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
   // An email address, scrambled beyond recovery, lets Meta match an event to a person.
   // Without it a visitor is only a cookie, which often fails: match quality sat at 4.4/10.
   var PIXEL = '501136812574699';
@@ -204,7 +211,7 @@
   };
 
   maconSend('PageView', {});
-  var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=G-B5GNGQ1WME'; document.head.appendChild(g);
+  var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=G-B5GNGQ1WME'; later(function () { document.head.appendChild(g); });
   window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
   gtag('js', new Date());
   try {          // the bag A/B test: which side this visitor is on, the same draw site.js makes
