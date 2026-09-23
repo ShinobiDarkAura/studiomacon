@@ -69,7 +69,8 @@
     render(); document.addEventListener('bag:change', render);
   })();
   MaconGift.mount(document.getElementById('gift'));
-  var sn = document.querySelector('[data-ship-note]'); if (sn && window.maconShipBy) sn.textContent = 'Every piece is made to order and ships by ' + maconShipBy() + '.';
+  function shipNote() { var sn = document.querySelector('[data-ship-note]'); if (sn && window.maconShipNote) sn.textContent = maconShipNote(); }
+  shipNote(); document.addEventListener('bag:change', shipNote);
   document.getElementById('checkout').addEventListener('click', function () {
     MaconCheckout(MaconBag.read(), this).catch(function () {});
   });

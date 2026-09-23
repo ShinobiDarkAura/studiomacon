@@ -340,7 +340,7 @@
   },
   {
     "slug": "yael",
-    "name": "Ya\u00ebl",
+    "name": "Yael",
     "price": "220",
     "currency": "USD",
     "desc": "Inimitable poise suggests prophecy in metal. Mountaintop altar bells resonate in its presence. Each totem is made to order; please allow up to two weeks for us to make Yael for you.",
@@ -375,14 +375,14 @@
         "@type": "ImageObject",
         "height": "3512",
         "width": "6240",
-        "name": "Ya\u00ebl bronze totem, back view",
+        "name": "Yael bronze totem, back view",
         "contentUrl": "https://static.wixstatic.com/media/3ee986_f388ec4b38c64a9ba6ddf752ed12427a~mv2.jpg/v1/fit/w_500,h_500,q_90/file.jpg",
         "representativeOfPage": true,
         "thumbnail": {
           "@type": "ImageObject",
           "height": "50",
           "width": "50",
-          "name": "Ya\u00ebl bronze totem, back view",
+          "name": "Yael bronze totem, back view",
           "contentUrl": "https://static.wixstatic.com/media/3ee986_f388ec4b38c64a9ba6ddf752ed12427a~mv2.jpg/v1/fit/w_50,h_50,q_90/file.jpg"
         }
       }

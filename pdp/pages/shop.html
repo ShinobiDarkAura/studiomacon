@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Shop | Studio Maçon</title>
+<title>Bronze totems and silver jewelry | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <link rel="preload" as="image" href="video/poster-process.jpg" fetchpriority="high">          <!-- the first thing on screen: fetch it before anything else -->
@@ -149,10 +149,10 @@
   .placeholder-fill{position:absolute;inset:0;background:#e6e6e4}
   .placeholder{position:relative;aspect-ratio:4/5;background:#d9d9d9;overflow:hidden}
   .placeholder img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .wall-head h2{margin:0;font-size:57.5px}
+  .wall-head h2{margin:0;font-size:53.5px}
   .wall-head .count{font-size:13px;color:rgba(0,0,0,.45)}
-  @media (min-width:768px){ .wall-head h2{font-size:66.25px} }
-  @media (min-width:1200px){ .wall-head h2{font-size:75px} }
+  @media (min-width:768px){ .wall-head h2{font-size:62.25px} }
+  @media (min-width:1200px){ .wall-head h2{font-size:71px} }
 
   /* the grid sits further in than the rest of the page, so the pieces read smaller and calmer */
   .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 24px + 7.5vw)}
@@ -243,6 +243,8 @@
          number Google scores, even though the page is finished at 1s. -->
     <img class="film-poster" src="video/poster-process.jpg" alt="" fetchpriority="high" decoding="async">
     <video autoplay muted loop playsinline preload="metadata" poster="video/poster-process.jpg">
+      <source src="video/hero-720-av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' media="(max-width:700px)">          <!-- phones: 720p, a lighter file -->
+      <source src="video/hero-720-h265.mp4" type='video/mp4; codecs="hvc1.1.6.L93.90"' media="(max-width:700px)">
       <source src="video/hero-av1.mp4" type='video/mp4; codecs="av01.0.08M.08"'>
       <source src="video/hero-h265.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"'>
       <source src="video/film-process-480.mp4" type="video/mp4" media="(max-width:700px)">
@@ -264,7 +266,7 @@
   <!-- EPHEMERAL (one-of-one pieces) — parked until there are pieces to sell. To bring back, uncomment and move id="pieces" onto this set.
   <div class="set" >
   <header class="wall-head">
-    <h2 class="set-title">Ephemeral</h2><span class="count">3</span>
+    <h2 class="set-title">Ephemeral</h2>
   </header>
   <section class="wall shop-wall ephemeral">
     <figure><a class="piece" aria-disabled="true" tabindex="-1" onclick="return false"><span class="placeholder-fill"></span><span class="over"><span class="name">Bearer of Small Things</span><span class="cost">$240</span></span></a></figure>

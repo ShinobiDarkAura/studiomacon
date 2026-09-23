@@ -8,7 +8,26 @@ ROOT = Path(__file__).resolve().parent.parent / "img"
 SMALL = {"commissions-cut", "commissions", "inspiration"}
 
 PIECES = {d.name for d in ROOT.iterdir() if d.is_dir() and (ROOT.parent / "_originals" / d.name).is_dir()}          # folders of piece photographs
-TILE = 900          # the shop grid and the related row show pictures small; they get their own copy
+import io
+import numpy as np
+from skimage.metrics import structural_similarity
+
+TARGET = 0.995          # the lightest webp whose picture is indistinguishable from the original at that size
+
+
+def save_clean(im, out, floor=80):
+    """Save the lightest webp that still measures as the same picture as its source."""
+    ref = np.asarray(im.convert("L"), dtype=float)
+    for q in (floor, 84, 88, 91, 93, 95, 97):
+        buf = io.BytesIO()
+        im.save(buf, "WEBP", quality=q, method=6)
+        got = np.asarray(Image.open(io.BytesIO(buf.getvalue())).convert("L"), dtype=float)
+        if structural_similarity(ref, got, data_range=255) >= TARGET:
+            break
+    out.write_bytes(buf.getvalue())
+
+
+TILE = 1800          # the shop grid and the related row show pictures small; they get their own copy
 
 
 def make_tile(src):
@@ -24,7 +43,7 @@ def make_tile(src):
     im = ImageOps.exif_transpose(Image.open(source)).convert("RGB")
     if max(im.size) > TILE:
         im.thumbnail((TILE, TILE), Image.LANCZOS)
-    im.save(out, "WEBP", quality=80, method=6)
+    save_clean(im, out)
 
 
 PHONE = 1200          # a phone at 3x fills at most ~1200 px, so phones get this lighter copy (see srcset in build_pdp.save)
@@ -40,7 +59,7 @@ def make_phone(src):
         return
     im = im.convert("RGB")
     im.thumbnail((PHONE, PHONE * 3), Image.LANCZOS)
-    im.save(out, "WEBP", quality=78, method=6)
+    save_clean(im, out)
 
 
 def main():
@@ -58,14 +77,14 @@ def main():
             make_tile(src)
         out = src.with_name(src.name + ".webp")
         if not out.exists() or out.stat().st_mtime < src.stat().st_mtime:
-            limit = 1000 if top in SMALL else 2400          # retina-sharp on a large display
+            limit = 1000 if top in SMALL else 3200          # retina-sharp on a large display
             im = ImageOps.exif_transpose(Image.open(src))
             im.thumbnail((limit, limit), Image.LANCZOS)
             if src.suffix.lower() == ".png":
                 im = im.convert("RGBA") if im.mode in ("P", "LA", "RGBA") or "transparency" in im.info else im.convert("RGB")
                 im.save(out, "WEBP", lossless=False, quality=82, method=6, alpha_quality=90)
             else:
-                im.convert("RGB").save(out, "WEBP", quality=80, method=6)
+                save_clean(im.convert("RGB"), out)          # product photos: as light as they can be without losing anything
         before[top] += src.stat().st_size
         after[top] += out.stat().st_size
     for k in sorted(before):

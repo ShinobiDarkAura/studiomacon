@@ -286,7 +286,7 @@
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           if (alreadyThere(el)) return;                 // a picture waiting on the first screen
-          if (inLanding(el)) return;                    // on screen where the link lands
+          if (inLanding(el) && !el.closest('.wall')) return;          // on screen where the link lands (the grid's cards still play their entrance)
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
@@ -318,7 +318,7 @@
       (function sweep() {
         if (!landing) return;
         document.querySelectorAll('.dr-emerge').forEach(function (el) {
-          if (!onScreen(el) || getComputedStyle(el).opacity === '1') return;
+          if (!onScreen(el) || getComputedStyle(el).opacity === '1' || el.closest('.wall')) return;          // the cards keep their entrance
           el.style.setProperty('--stagger', '0ms');       // no cascade on a landing, either
           el.style.transition = 'none';
           el.classList.add('is-seen');
@@ -528,7 +528,7 @@
         '<div class="bd-lines lines"></div>' +
         '<div class="bd-empty" hidden><p>Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
-        '<p class="bd-note">Shipping is calculated at checkout. Every piece is made to order and ships by ' + maconShipBy() + '.</p>' +
+        '<p class="bd-note"></p>' +
         '<div class="bd-gift"></div>' +
         '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
       document.body.appendChild(veil); document.body.appendChild(drawer);
@@ -542,6 +542,7 @@
       if (!drawer) return;
       var sub = MaconBagLines(drawer.querySelector('.bd-lines')), empty = !MaconBag.count();
       drawer.querySelector('.bd-sub').textContent = MaconBagMoney(sub);
+      drawer.querySelector('.bd-note').textContent = 'Shipping is calculated at checkout. ' + maconShipNote();
       drawer.querySelector('.bd-empty').hidden = !empty;
       drawer.querySelector('.bd-foot').hidden = empty;
     }
@@ -630,6 +631,7 @@
       if (wide.matches) {
         if (link.parentElement !== head) head.appendChild(link);
         var x = 0; for (var el = home; el; el = el.offsetParent) x += el.offsetLeft;
+        x += parseFloat(getComputedStyle(home).paddingLeft) || 0;          // in line with the words, not the column's padded edge
         link.style.left = x + 'px';
       } else if (link.parentElement !== home) { home.insertBefore(link, next); link.style.left = ''; }
     }
@@ -865,6 +867,22 @@
 
 // Ships by: ten working days from today. Weekends and the federal holidays are skipped,
 // because those are the days the foundry and the post office are shut too.
+// "Your piece is" for one piece in the bag, "Your pieces are" for more
+// The international note (duties included at checkout) is only for visitors outside the US.
+// Cloudflare tells us the country at /_geo; anywhere that endpoint is missing, the note stays hidden.
+(function () {
+  if (/[?&]intl=1\b/.test(location.search)) return document.documentElement.classList.add('intl');
+  try {
+    fetch('/_geo', {cache: 'no-store'}).then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
+      if (g && g.country && g.country !== 'US') document.documentElement.classList.add('intl');
+    }).catch(function () {});
+  } catch (e) {}
+})();
+
+window.maconShipNote = function () {
+  var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
+  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and ' + (n > 1 ? 'ship' : 'ships') + ' by ' + maconShipBy() + '.';
+};
 // the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
 window.maconShipBy = (function () {
   function holidays(y) {
@@ -957,7 +975,9 @@ window.maconShipBy = (function () {
 
   window.addEventListener('click', function (e) {
     if (!e.target.closest) return;
-    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); open(true); return; }
+    // "Find your size" now goes to the printable sizer page (ring-sizing.html). The drawer below is kept, switched off:
+    // to bring it back, replace the line after this comment with:  e.preventDefault(); e.stopPropagation(); open(true); return;
+    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); location.href = 'ring-sizing.html'; return; }
     if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
     var more = e.target.closest('[data-more-sizes]');
     if (more) {

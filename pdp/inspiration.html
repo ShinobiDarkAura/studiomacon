@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Inspiration | Studio Maçon</title>
-<meta name="description" content="The images, objects and places behind Studio Maçon&#x27;s artifacts.">
+<meta name="description" content="The images, objects, places and old artifacts behind Studio Maçon&#x27;s bronze totems and silver jewelry, gathered over years of sketching, travel and looking.">
 <link rel="canonical" href="https://studiomacon.co/inspiration.html">
 <meta property="og:site_name" content="Studio Maçon">
 <meta property="og:title" content="Inspiration | Studio Maçon">
-<meta property="og:description" content="The images, objects and places behind Studio Maçon&#x27;s artifacts.">
+<meta property="og:description" content="The images, objects, places and old artifacts behind Studio Maçon&#x27;s bronze totems and silver jewelry, gathered over years of sketching, travel and looking.">
 <meta property="og:url" content="https://studiomacon.co/inspiration.html">
 <meta property="og:image" content="https://studiomacon.co/video/poster-process.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790031070">
+<link rel="stylesheet" href="site.css?v=1790100768">
 <style>
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
   .wall-head h1{margin:0;font-size:57.5px}
@@ -217,7 +217,7 @@
     <a href="custom.html" class="desk hover-line">Custom</a>
     <a href="story.html" class="desk hover-line">About</a>
   </div>
-  <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
+  <a class="logotype" href="index.html#pieces" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
 </header>
 
@@ -764,7 +764,7 @@
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           if (alreadyThere(el)) return;                 // a picture waiting on the first screen
-          if (inLanding(el)) return;                    // on screen where the link lands
+          if (inLanding(el) && !el.closest('.wall')) return;          // on screen where the link lands (the grid's cards still play their entrance)
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
@@ -796,7 +796,7 @@
       (function sweep() {
         if (!landing) return;
         document.querySelectorAll('.dr-emerge').forEach(function (el) {
-          if (!onScreen(el) || getComputedStyle(el).opacity === '1') return;
+          if (!onScreen(el) || getComputedStyle(el).opacity === '1' || el.closest('.wall')) return;          // the cards keep their entrance
           el.style.setProperty('--stagger', '0ms');       // no cascade on a landing, either
           el.style.transition = 'none';
           el.classList.add('is-seen');
@@ -1006,7 +1006,7 @@
         '<div class="bd-lines lines"></div>' +
         '<div class="bd-empty" hidden><p data-edit="page:inspiration.html:e000f14a">Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
-        '<p class="bd-note" data-edit="page:inspiration.html:dad0ea7c">Shipping is calculated at checkout. Every piece is made to order and ships by ' + maconShipBy() + '.</p>' +
+        '<p class="bd-note" data-edit="page:inspiration.html:da39a3ee"></p>' +
         '<div class="bd-gift"></div>' +
         '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
       document.body.appendChild(veil); document.body.appendChild(drawer);
@@ -1020,6 +1020,7 @@
       if (!drawer) return;
       var sub = MaconBagLines(drawer.querySelector('.bd-lines')), empty = !MaconBag.count();
       drawer.querySelector('.bd-sub').textContent = MaconBagMoney(sub);
+      drawer.querySelector('.bd-note').textContent = 'Shipping is calculated at checkout. ' + maconShipNote();
       drawer.querySelector('.bd-empty').hidden = !empty;
       drawer.querySelector('.bd-foot').hidden = empty;
     }
@@ -1108,6 +1109,7 @@
       if (wide.matches) {
         if (link.parentElement !== head) head.appendChild(link);
         var x = 0; for (var el = home; el; el = el.offsetParent) x += el.offsetLeft;
+        x += parseFloat(getComputedStyle(home).paddingLeft) || 0;          // in line with the words, not the column's padded edge
         link.style.left = x + 'px';
       } else if (link.parentElement !== home) { home.insertBefore(link, next); link.style.left = ''; }
     }
@@ -1343,6 +1345,22 @@
 
 // Ships by: ten working days from today. Weekends and the federal holidays are skipped,
 // because those are the days the foundry and the post office are shut too.
+// "Your piece is" for one piece in the bag, "Your pieces are" for more
+// The international note (duties included at checkout) is only for visitors outside the US.
+// Cloudflare tells us the country at /_geo; anywhere that endpoint is missing, the note stays hidden.
+(function () {
+  if (/[?&]intl=1\b/.test(location.search)) return document.documentElement.classList.add('intl');
+  try {
+    fetch('/_geo', {cache: 'no-store'}).then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
+      if (g && g.country && g.country !== 'US') document.documentElement.classList.add('intl');
+    }).catch(function () {});
+  } catch (e) {}
+})();
+
+window.maconShipNote = function () {
+  var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
+  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and ' + (n > 1 ? 'ship' : 'ships') + ' by ' + maconShipBy() + '.';
+};
 // the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
 window.maconShipBy = (function () {
   function holidays(y) {
@@ -1435,7 +1453,9 @@ window.maconShipBy = (function () {
 
   window.addEventListener('click', function (e) {
     if (!e.target.closest) return;
-    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); open(true); return; }
+    // "Find your size" now goes to the printable sizer page (ring-sizing.html). The drawer below is kept, switched off:
+    // to bring it back, replace the line after this comment with:  e.preventDefault(); e.stopPropagation(); open(true); return;
+    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); location.href = 'ring-sizing.html'; return; }
     if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
     var more = e.target.closest('[data-more-sizes]');
     if (more) {

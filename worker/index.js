@@ -69,6 +69,11 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/_e') return relay(request, env, ctx);
+    // Which country the visitor is in, so the pages can show the international note to them only.
+    if (url.pathname === '/_geo') {
+      return new Response(JSON.stringify({country: request.cf && request.cf.country || ''}),
+                          {headers: {'content-type': 'application/json', 'cache-control': 'no-store'}});
+    }
     // One permanent hop for anything that needs tidying: www to the bare domain, and old links shared as
     // /Product-Page/Pip/ or /story/ (Wix ignored case and a closing slash). Real files keep their case.
     const to = new URL(url);

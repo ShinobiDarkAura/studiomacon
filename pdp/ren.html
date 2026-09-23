@@ -4,19 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ren | Studio Maçon</title>
-<meta name="description" content="Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. Dawn light lingers on it longer than it should; hikers report arriving home early. The crest is polished by hand while the body is left to darken.">
+<meta name="description" content="Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. The crest is polished by hand and the body keeps its deeper tone. Dawn light lingers on it longer than it should; hikers report arriving home early.">
 <link rel="canonical" href="https://studiomacon.co/ren.html">
 <meta property="og:site_name" content="Studio Maçon">
 <meta property="og:title" content="Ren | Studio Maçon">
-<meta property="og:description" content="Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. Dawn light lingers on it longer than it should; hikers report arriving home early. The crest is polished by hand while the body is left to darken.">
+<meta property="og:description" content="Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. The crest is polished by hand and the body keeps its deeper tone. Dawn light lingers on it longer than it should; hikers report arriving home early.">
 <meta property="og:url" content="https://studiomacon.co/ren.html">
 <meta property="og:image" content="https://studiomacon.co/img/ren/hero.jpg">
 <meta property="og:type" content="product">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Ren", "description": "Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. Dawn light lingers on it longer than it should; hikers report arriving home early. The crest is polished by hand while the body is left to darken.", "image": ["https://studiomacon.co/img/ren/hero.jpg", "https://studiomacon.co/img/ren/plain-1.jpg", "https://studiomacon.co/img/ren/hand-2.jpg", "https://studiomacon.co/img/ren/plain-2.jpg", "https://studiomacon.co/img/ren/composite.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ren", "offers": [{"@type": "Offer", "price": "240.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ren.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Ren", "description": "Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. The crest is polished by hand and the body keeps its deeper tone. Dawn light lingers on it longer than it should; hikers report arriving home early.", "image": ["https://studiomacon.co/img/ren/hero.jpg", "https://studiomacon.co/img/ren/plain-1.jpg", "https://studiomacon.co/img/ren/hand-2.jpg", "https://studiomacon.co/img/ren/plain-2.jpg", "https://studiomacon.co/img/ren/composite.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "ren", "offers": [{"@type": "Offer", "price": "240.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/ren.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Studio Maçon", "item": "https://studiomacon.co"}, {"@type": "ListItem", "position": 2, "name": "Totems", "item": "https://studiomacon.co/index.html#pieces"}, {"@type": "ListItem", "position": 3, "name": "Ren"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790031070">
+<link rel="stylesheet" href="site.css?v=1790100768">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}          /* the picture carries its own corners; a backing showed outside them */
@@ -44,6 +45,10 @@
   .size.picked .size-value{font-weight:500}
   .chev{width:12px;height:8px;flex:none;transition:transform .35s var(--ease);
     background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.3'/%3E%3C/svg%3E") center/12px 8px no-repeat}
+  @media (min-width:768px){          /* desktop: the size field matches Add to Bag, 47px tall with the same type */
+    .size-toggle{height:45px}          /* + the 1px border above and below = 47px */
+    .size-label,.size-value{font-size:calc((18px - 2pt) * .85 - 1pt);letter-spacing:.08em}
+  }
   .size.open .chev{transform:rotate(180deg)}
   .size-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
   .size.open .size-panel{grid-template-rows:1fr}
@@ -55,7 +60,7 @@
     transition:border-color .2s ease,background .2s ease,color .2s ease}
   .size-list li:hover,.size-list li:focus{border-color:#000;outline:none}
   .size-list li[aria-selected="true"]{background:#000;color:#fff;border-color:#000}
-  .buy{display:grid;grid-template-columns:1fr;gap:8px}          /* Shop Pay sits under Add to Bag, not beside it */
+  .buy{display:grid;grid-template-columns:1fr 1fr;gap:12px}          /* Add to Bag and Shop Pay side by side, phones too */
   /* Shop Pay: a cart link with ?payment=shop_pay, so this really is Shop Pay and not a lookalike */
   .buy-now{display:flex;align-items:center;justify-content:center;gap:.34em;width:100%;height:47px;
     background:#5a31f4;color:#fff;border:1px solid #5a31f4;letter-spacing:.02em;cursor:pointer;
@@ -71,10 +76,11 @@
   .buy .cta:not([disabled]):hover::after{width:12px;margin-left:8px}
   .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
   .buy{margin:0}          /* buttons sit right under the price */
-  .desc-block{margin:44px 0 24px}          /* 12px more under Field Notes */
+  .desc-block{margin:44px 0 8px}          /* 16px less under Field Notes */
   .desc-block .label{margin:0 0 14px}
   @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#9ca3af;margin-bottom:18px} }          /* the same title as on phones */          /* desktop: 1pt smaller, 4px more air beneath */
-  .desc{margin:0;font-size:var(--body-s);line-height:var(--body-s-lh)}          /* the same size as the About page's words */          /* same size as the overline */
+  .desc a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+  .desc{margin:0;font-size:17px;letter-spacing:.02em;line-height:var(--body-s-lh)}          /* the same size as the About page's words */          /* same size as the overline */
   .info > .dr-emerge{transform:translateY(66px)}
   .info > .dr-emerge.is-seen{transform:none}
 
@@ -167,7 +173,8 @@
     .ps-calib{display:grid;grid-template-columns:104mm 1fr;gap:0 8mm;align-items:end}
     .ps-calib .ps-label{grid-column:1/-1}
     .ps-calib p:last-child{margin:0 0 2mm;font-size:8.5pt;line-height:1.45}
-    .ps-cut{padding:5mm 0 3mm;display:flex;justify-content:center;border-top:.5px solid #e5e7eb;border-bottom:.5px solid #e5e7eb}
+    .ps-cut{flex-direction:column;align-items:center;padding:5mm 0 3mm;display:flex;justify-content:center;border-top:.5px solid #e5e7eb;border-bottom:.5px solid #e5e7eb}
+    .ps-strip-notes{display:flex;justify-content:space-between;gap:8mm;width:100%;margin:2mm 0 0;font-size:8pt;color:#555}
     .ps-steps{list-style:none;margin:7mm 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6mm}
     .ps-steps li{display:flex;gap:3mm;font-size:9pt;line-height:1.45}
     .ps-steps b{flex:none;font:400 18pt/1 var(--serif);padding:0 1.6mm .4mm;background:#ffe94d;height:max-content}
@@ -235,16 +242,16 @@
   /* three across, held to the same margins as the shop grid on the home page */
   .related{padding:calc(180px + 10vh) calc(var(--pad) + 24px + 7.5vw) 0;text-align:center}
   .related h2{margin:0 0 20px;font:400 53px/1 var(--serif);text-transform:uppercase}
-  .related .rel-blurb{margin:0 auto 56px;max-width:480px;font-size:16px;line-height:1.55}
+  .related .rel-blurb{margin:0 auto 68px;max-width:480px;font-size:16px;line-height:1.55}
   /* the Bureau of Provenance stamp, pressed onto the end of "Worth" the way the home page presses it onto "Things," */
   .related h2.stamped{position:relative;display:inline-block;width:max-content;max-width:100%;align-self:center}          /* hugs its words, so the stamp lands on "Worth" on phones too */
   .related .stamp{position:absolute;z-index:3;width:2.43em;left:calc(100% - .85em);top:calc(.2em - .84em - 1.215em);          /* desktop: its left edge meets the H, so it sits over that letter only */
     transform:rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
   .related .stamp.on{opacity:1;transform:rotate(-14deg)}
   @media (max-width:767px){ .related .stamp{width:2.295em;left:calc(100% + .2em - 1.1475em);top:calc(.2em - .84em - 1.1475em)} }          /* phones: 15% smaller, on the end of Worth */
-  .rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:left}
-  .rel-grid{width:60%;margin:0 auto}          /* 40% smaller than the full width: a closer, quieter row */
-  @media (min-width:1100px){ .rel-grid:has(> :nth-child(2):last-child){grid-template-columns:repeat(2,1fr);width:40%} }          /* a pair (the pendants) stays the same size, centred */
+  .rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center}
+  .rel-grid{width:79.2%;margin:0 auto}          /* the old 60% row, 20% then 10% larger */
+  @media (min-width:1100px){ .rel-grid:has(> :nth-child(2):last-child){grid-template-columns:repeat(2,1fr);width:52.8%} }          /* a pair (the pendants) stays the same size, centred */
   .rel-name{font-size:calc(var(--tile-name) + 5pt) !important}          /* names scaled down with the pictures */
   .rel-piece{display:block;color:#000}
   .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--field)}
@@ -496,18 +503,18 @@
     <a href="custom.html" class="desk hover-line">Custom</a>
     <a href="story.html" class="desk hover-line">About</a>
   </div>
-  <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
+  <a class="logotype" href="index.html#pieces" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
 </header>
 
 <main>
   <section class="product">
     <div class="gallery" data-under-nav>
-      <figure class="hero"><img width="2400" height="1824" src="img/ren/hero.jpg.webp" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Ren" fetchpriority="high"></figure>
-      <figure><img width="3600" height="2736" src="img/ren/plain-1.jpg.webp" srcset="img/ren/plain-1--m.jpg.webp 1200w, img/ren/plain-1.jpg.webp 3600w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Ren, seen on its own" loading="lazy"></figure>
-      <figure><img width="2400" height="1771" src="img/ren/hand-2.jpg.webp" srcset="img/ren/hand-2--m.jpg.webp 1200w, img/ren/hand-2.jpg.webp 2400w" sizes="(max-width: 767px) 100vw, 60vw" alt="Ren, held in the hand" loading="lazy"></figure>
+      <figure class="hero"><img width="4576" height="3478" src="img/ren/hero.jpg.webp" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Ren" fetchpriority="high"></figure>
+      <figure><img width="4576" height="3478" src="img/ren/plain-1.jpg.webp" srcset="img/ren/plain-1--m.jpg.webp 1200w, img/ren/plain-1.jpg.webp 4576w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Ren, seen on its own" loading="lazy"></figure>
+      <figure><img width="2934" height="2165" src="img/ren/hand-2.jpg.webp" srcset="img/ren/hand-2--m.jpg.webp 1200w, img/ren/hand-2.jpg.webp 2934w" sizes="(max-width: 767px) 100vw, 60vw" alt="Ren, held in the hand" loading="lazy"></figure>
       <figure><img width="2780" height="2694" src="img/ren/plain-2.jpg.webp" srcset="img/ren/plain-2--m.jpg.webp 1200w, img/ren/plain-2.jpg.webp 2780w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Ren, seen on its own" loading="lazy"></figure>
-      <figure><img width="1493" height="2000" src="img/ren/composite.jpg.webp" srcset="img/ren/composite--m.jpg.webp 1200w, img/ren/composite.jpg.webp 1493w" sizes="(max-width: 767px) 100vw, 60vw" alt="Ren, at home on a shelf" loading="lazy"></figure>
+      <figure><img width="1792" height="2400" src="img/ren/composite.jpg.webp" srcset="img/ren/composite--m.jpg.webp 1200w, img/ren/composite.jpg.webp 1792w" sizes="(max-width: 767px) 100vw, 60vw" alt="Ren, at home on a shelf" loading="lazy"></figure>
     </div>
     <script>
   addEventListener('scroll', function () { document.documentElement.classList.add('moved'); }, {once: true, passive: true});
@@ -597,36 +604,40 @@
     </script>
 
     <div class="info">
-      <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Back</span></a>
+      <a class="back" href="index.html#pieces" data-no-emerge aria-label="Back"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg></a>
       <p class="eyebrow" data-edit="eyebrow">Steward of Forgotten Paths</p>
       <h1 data-edit="name">Ren</h1>
       <p class="price" data-edit="price"><span class="amt">$240</span><span class="ship-free">Free shipping</span></p>
       
       <div class="buy" id="bag" data-variant="gid://shopify/ProductVariant/53985363067245"><button class="cta">Add to Bag</button><button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">Buy with <svg class="shop-word" viewBox="0 0 101 42" aria-hidden="true" focusable="false"><path d="M12.0288 18.2598C7.97006 17.3793 6.16191 17.0348 6.16191 15.4708C6.16191 13.9997 7.38555 13.2669 9.83283 13.2669C11.9851 13.2669 13.5584 14.2075 14.7165 16.0504C14.8039 16.1926 14.9841 16.2418 15.1316 16.1653L19.6984 13.8575C19.8623 13.7755 19.9224 13.5677 19.8295 13.4091C17.934 10.1224 14.4324 8.32324 9.82191 8.32324C3.76379 8.32324 0 11.3091 0 16.0559C0 21.098 4.58319 22.3722 8.64743 23.2527C12.7117 24.1331 14.5253 24.4776 14.5253 26.0417C14.5253 27.6057 13.2033 28.344 10.5648 28.344C8.12848 28.344 6.32033 27.2284 5.22779 25.0628C5.14585 24.9042 4.95466 24.8386 4.79624 24.9206L0.240358 27.1791C0.0819403 27.2612 0.0163881 27.4526 0.0983284 27.6166C1.90648 31.2533 5.61564 33.2986 10.5703 33.2986C16.8797 33.2986 20.6927 30.3619 20.6927 25.4675C20.6927 20.573 16.0876 19.1512 12.0288 18.2707V18.2598Z"/><path d="M36.5018 8.32341C33.9125 8.32341 31.6236 9.24214 29.9794 10.8773C29.8756 10.9757 29.7062 10.9046 29.7062 10.7624V0.322772C29.7062 0.142307 29.5642 0.00012207 29.3839 0.00012207H23.67C23.4897 0.00012207 23.3477 0.142307 23.3477 0.322772V32.7245C23.3477 32.905 23.4897 33.0472 23.67 33.0472H29.3839C29.5642 33.0472 29.7062 32.905 29.7062 32.7245V18.5115C29.7062 15.7662 31.8094 13.6608 34.6445 13.6608C37.4796 13.6608 39.5336 15.7225 39.5336 18.5115V32.7245C39.5336 32.905 39.6756 33.0472 39.8559 33.0472H45.5699C45.7501 33.0472 45.8922 32.905 45.8922 32.7245V18.5115C45.8922 12.5397 41.9809 8.32887 36.5018 8.32887V8.32341Z"/><path d="M57.4962 7.39915C54.3934 7.39915 51.4764 8.34522 49.3896 9.71785C49.2476 9.81082 49.1984 10.0022 49.2858 10.1499L51.8041 14.4537C51.897 14.6068 52.0937 14.6615 52.2466 14.5685C53.8308 13.6115 55.6444 13.1139 57.4962 13.1248C62.4837 13.1248 66.1491 16.6466 66.1491 21.3005C66.1491 25.2652 63.2157 28.2019 59.4956 28.2019C56.4638 28.2019 54.3607 26.4355 54.3607 23.9418C54.3607 22.5145 54.967 21.3442 56.5457 20.5184C56.7096 20.4309 56.7697 20.2286 56.6714 20.07L54.2951 16.0451C54.2186 15.9138 54.0548 15.8537 53.9073 15.9084C50.7225 17.0896 48.4883 19.9333 48.4883 23.7504C48.4883 29.5253 53.0824 33.8346 59.4901 33.8346C66.974 33.8346 72.3548 28.6448 72.3548 21.202C72.3548 13.2233 66.0945 7.39368 57.4853 7.39368L57.4962 7.39915Z"/><path d="M89.0635 8.27964C86.1738 8.27964 83.5954 9.34603 81.7108 11.2272C81.607 11.3311 81.4376 11.2546 81.4376 11.1124V8.84838C81.4376 8.66791 81.2956 8.52573 81.1153 8.52573H75.5489C75.3686 8.52573 75.2266 8.66791 75.2266 8.84838V41.2009C75.2266 41.3814 75.3686 41.5236 75.5489 41.5236H81.2628C81.4431 41.5236 81.5851 41.3814 81.5851 41.2009V30.5917C81.5851 30.4495 81.7545 30.3784 81.8583 30.4714C83.7374 32.2214 86.2229 33.244 89.069 33.244C95.7717 33.244 101 27.8137 101 20.7591C101 13.7045 95.7663 8.27417 89.069 8.27417L89.0635 8.27964ZM87.9874 27.7644C84.1744 27.7644 81.2847 24.7293 81.2847 20.7153C81.2847 16.7014 84.169 13.6663 87.9874 13.6663C91.8058 13.6663 94.6846 16.6521 94.6846 20.7153C94.6846 24.7786 91.844 27.7644 87.9819 27.7644H87.9874Z"/></svg></button></div>
-      <div class="desc-block"><p class="label">Field Notes</p><p class="desc" data-edit="description">Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. Dawn light lingers on it longer than it should; hikers report arriving home early. The crest is polished by hand while the body is left to darken.</p></div>
+      <div class="desc-block"><p class="label">Field Notes</p><p class="desc" data-edit="description">Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. The crest is polished by hand and the body keeps its deeper tone. Dawn light lingers on it longer than it should; hikers report arriving home early.</p></div>
       <div class="acc">
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Dimensions</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><dl><dd class="lone">40h × 37w × 13d mm</dd></dl></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><dl><dd class="lone">40 × 37 × 13 mm</dd></dl></div></div></div>
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Materials</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Solid bronze; Ombré patina</p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Solid bronze</p></div></div></div>
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Gifting</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we’ll wrap it for free and write out your note by hand. Add their address at checkout and it goes straight to them. If it isn’t quite right, they can return it within 30 days for store credit.</p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we’ll wrap it up with an extra flourish, and write out your note by hand. Add the gift receiver’s address at checkout and it goes straight to them. If it isn’t quite right, they can return it within 30 days for store credit.</p></div></div></div>
         </div>
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
-          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="keep-para">Each piece is made to order; please allow up to 10 business days before it ships. Shipping is free on all orders within the continental US, and every order arrives in a special box, wrapped with care.</p><p>Pieces in original condition may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size.</p><p class="acc-more"><a href="shipping.html">Full details</a></p></div></div></div>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="keep-para">Each piece is made to order; please allow up to 10 business days before it ships. Shipping is free on all orders within the continental US, and every order arrives in a special box, wrapped with care.</p><p>Pieces in original condition may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size.</p><p class="intl-note">Shipping abroad: prices are shown in US dollars. Duties and import taxes are included at checkout, so nothing more is due on arrival.</p><p>If it arrives and is not quite right, we will gladly exchange it within 30 days: write to <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>.</p><p class="acc-more"><a href="shipping.html">Full details</a></p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Care</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Bronze changes with handling and the air it lives in, so no two age alike. Keep it dry, and there is nothing else it needs.</p></div></div></div>
         </div>
       </div>
 
     </div>
   </section>
 
-  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-grid"><a class="rel-piece" href="zuma.html"><span class="rel-frame"><img src="img/zuma/hero--tile--cm4.5p1.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Zuma</span><span class="rel-cost">$200</span></a><a class="rel-piece" href="ori.html"><span class="rel-frame"><img src="img/ori/hero--tile--cm6p0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Ori</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="yael.html"><span class="rel-frame"><img src="img/yael/hires-1--tile--cm5.5p0.5.jpg.webp" alt="" loading="lazy"></span><span class="rel-name">Yaël</span><span class="rel-cost">$180</span></a></div></section>
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-grid"><a class="rel-piece" href="zuma.html"><span class="rel-frame"><img src="img/zuma/hero--tile--cm4.5p1.jpg.webp" alt="Zuma" loading="lazy"></span><span class="rel-name">Zuma</span><span class="rel-cost">$200</span></a><a class="rel-piece" href="ori.html"><span class="rel-frame"><img src="img/ori/hero--tile--cm6p0.5.jpg.webp" alt="Ori" loading="lazy"></span><span class="rel-name">Ori</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="yael.html"><span class="rel-frame"><img src="img/yael/hires-1--tile--cm5.5p0.5.jpg.webp" alt="Yael" loading="lazy"></span><span class="rel-name">Yael</span><span class="rel-cost">$180</span></a></div></section>
   <script>
   // the stamp presses down once the heading it sits on is in view, as on the home page
   (function () {
@@ -964,7 +975,7 @@
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           if (alreadyThere(el)) return;                 // a picture waiting on the first screen
-          if (inLanding(el)) return;                    // on screen where the link lands
+          if (inLanding(el) && !el.closest('.wall')) return;          // on screen where the link lands (the grid's cards still play their entrance)
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
@@ -996,7 +1007,7 @@
       (function sweep() {
         if (!landing) return;
         document.querySelectorAll('.dr-emerge').forEach(function (el) {
-          if (!onScreen(el) || getComputedStyle(el).opacity === '1') return;
+          if (!onScreen(el) || getComputedStyle(el).opacity === '1' || el.closest('.wall')) return;          // the cards keep their entrance
           el.style.setProperty('--stagger', '0ms');       // no cascade on a landing, either
           el.style.transition = 'none';
           el.classList.add('is-seen');
@@ -1206,7 +1217,7 @@
         '<div class="bd-lines lines"></div>' +
         '<div class="bd-empty" hidden><p>Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
-        '<p class="bd-note">Shipping is calculated at checkout. Every piece is made to order and ships by ' + maconShipBy() + '.</p>' +
+        '<p class="bd-note"></p>' +
         '<div class="bd-gift"></div>' +
         '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
       document.body.appendChild(veil); document.body.appendChild(drawer);
@@ -1220,6 +1231,7 @@
       if (!drawer) return;
       var sub = MaconBagLines(drawer.querySelector('.bd-lines')), empty = !MaconBag.count();
       drawer.querySelector('.bd-sub').textContent = MaconBagMoney(sub);
+      drawer.querySelector('.bd-note').textContent = 'Shipping is calculated at checkout. ' + maconShipNote();
       drawer.querySelector('.bd-empty').hidden = !empty;
       drawer.querySelector('.bd-foot').hidden = empty;
     }
@@ -1308,6 +1320,7 @@
       if (wide.matches) {
         if (link.parentElement !== head) head.appendChild(link);
         var x = 0; for (var el = home; el; el = el.offsetParent) x += el.offsetLeft;
+        x += parseFloat(getComputedStyle(home).paddingLeft) || 0;          // in line with the words, not the column's padded edge
         link.style.left = x + 'px';
       } else if (link.parentElement !== home) { home.insertBefore(link, next); link.style.left = ''; }
     }
@@ -1543,6 +1556,22 @@
 
 // Ships by: ten working days from today. Weekends and the federal holidays are skipped,
 // because those are the days the foundry and the post office are shut too.
+// "Your piece is" for one piece in the bag, "Your pieces are" for more
+// The international note (duties included at checkout) is only for visitors outside the US.
+// Cloudflare tells us the country at /_geo; anywhere that endpoint is missing, the note stays hidden.
+(function () {
+  if (/[?&]intl=1\b/.test(location.search)) return document.documentElement.classList.add('intl');
+  try {
+    fetch('/_geo', {cache: 'no-store'}).then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
+      if (g && g.country && g.country !== 'US') document.documentElement.classList.add('intl');
+    }).catch(function () {});
+  } catch (e) {}
+})();
+
+window.maconShipNote = function () {
+  var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
+  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and ' + (n > 1 ? 'ship' : 'ships') + ' by ' + maconShipBy() + '.';
+};
 // the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
 window.maconShipBy = (function () {
   function holidays(y) {
@@ -1635,7 +1664,9 @@ window.maconShipBy = (function () {
 
   window.addEventListener('click', function (e) {
     if (!e.target.closest) return;
-    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); open(true); return; }
+    // "Find your size" now goes to the printable sizer page (ring-sizing.html). The drawer below is kept, switched off:
+    // to bring it back, replace the line after this comment with:  e.preventDefault(); e.stopPropagation(); open(true); return;
+    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); location.href = 'ring-sizing.html'; return; }
     if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
     var more = e.target.closest('[data-more-sizes]');
     if (more) {

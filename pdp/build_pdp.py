@@ -47,27 +47,27 @@ EYEBROW = {
 # The description under the price. Third person throughout, in the Kindred
 # Black manner: the object, its material and making, then its lore.
 DESC = {
-    "pip": "Solid bronze, small enough to vanish into a closed fist, with an ombré patina. Proximity induces unexpected calm; scholars remain blissfully baffled. The patina is built up slowly by hand and deepens wherever the thumb rests.",
-    "rebi": "Solid bronze with an ombré patina, and a different outline from every side of the room. Handling is known to sharpen the reflexes; owners report catching things before they fall. Each plane is refined by hand after casting.",
-    "ren": "Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. Dawn light lingers on it longer than it should; hikers report arriving home early. The crest is polished by hand while the body is left to darken.",
-    "zuma": "Pocket-sized solid bronze, drawn at the same table as its namesake ring. Ancient runes suggest the two belong together; kept apart, both grow restless. Its sun-worn surface is filed and patinated by hand.",
-    "ori": "Broad, round-shouldered solid bronze that sits heavy and quiet in the palm. Each winter solstice it gives off a faint warmth; keepers report fewer drafts. Its wide planes are smoothed and patinated slowly by hand.",
-    "yael": "Slender solid bronze, balanced on the narrowest of footings. Altar bells resonate in its presence; neighbors report faint chimes at dusk. Its fine upper curves are refined patiently by hand after casting.",
-    "zuma-ring": "Sterling silver carrying the shoulder line of the Zuma totem around the finger. Unearthed glyphs record rituals performed with its pair; wearers report an urge to walk barefoot. Each band is sized and polished by hand.",
-    "milo": "The first piece made to carry the Maçon mark, in solid bronze with an ombré patina. Its surface adapts to whoever holds it; the bond deepens every season. Each Milo is worked by hand until its surface turns quiet.",
-    "eclipse-ring": "Two uneven ovals in sterling silver, set at the exact distance where they stop competing. The gap between them is said to hold questions only stars can answer; astronomers decline to comment. Balanced and polished by hand.",
-    "sietch-aperture": "Sterling silver with a single opening, recovered from the wake of a passing comet. Through it appear landscapes found on no map; cartographers have stopped asking. The opening is polished by hand from the inside out.",
-    "lunar-canyon-ring": "Sterling silver folded like white stone after a long dry season. Social gatherings ebb and flow around the wearer; hosts plan accordingly. Every fold is brought to a soft polish by hand.",
-    "eleph": "Heavy and rounded, with an ombré patina, caught halfway through a long exhale. A low, distant call has been reported by independent observers, always just out of sight. Cast on request and finished entirely by hand.",
-    "wonderhorn-talisman": "A silver spiral on a thirty inch chain, after the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment hums along. Its inner curl is filed and polished by hand.",
-    "macon-cap": "A cotton cap with the Maçon mark stitched on the front. It offers a little shade on bright days; wearers report being asked where they found it. Each cap is checked by hand before it ships.",
-    "ibi": "Tall, still solid bronze with a long and patient posture. Attempts to photograph it end in lens fog; photographers blame the weather. Cast on request and patinated by hand.",
-    "ear-cuff": "A clean silver line that rests on the ear, no piercing required. Light breaks into odd colours across its mirrored edge. Shaped and polished by hand to hold securely.",
-    "starshipkey-pendant": "Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad. Its hull is polished meticulously by hand.",
-    "meridian-egg-ring": "Smooth sterling silver, far denser than it looks. Metaphysical analysis detects an abyss gazing back. Each ring is hand polished and sized to order.",
-    "ooak-vessel": "A small solid bronze vessel in fitted parts, the lid lifting away to reveal a hollow meant for a single small thing. Whatever is placed inside is said to keep better than expected; keepers report finding it exactly where they left it. Unique, carved and patinated by hand.",
-    "ooak-pendant": "A long silver head in profile, cut as if the wind had just passed through. Wearers report a pull toward open ground and early mornings. The only one of its kind, carved in wax and polished by hand.",
-    "ooak-pouch": "A small pouch of glass beads and soft leather, sized to carry a single totem against the chest. Those who wear it report steadier breathing on crowded days. The only one of its kind, beaded and stitched by hand."
+    "pip": "Solid bronze, small enough to vanish into a closed fist. Cast to order and finished by hand. Proximity induces unexpected calm; scholars remain blissfully baffled.",
+    "rebi": "Solid bronze with a different outline from every side of the room. Each plane is refined by hand after casting. Handling is known to sharpen the reflexes; owners report catching things before they fall.",
+    "ren": "Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. The crest is polished by hand and the body keeps its deeper tone. Dawn light lingers on it longer than it should; hikers report arriving home early.",
+    "zuma": "Pocket-sized solid bronze, drawn at the same table as its namesake ring. Its sun-worn surface is filed by hand. Ancient runes suggest the two belong together; kept apart, both grow restless.",
+    "ori": "Solid bronze with broad shoulders and a low, steady weight in the palm. Its wide planes are smoothed by hand. Each winter solstice it gives off a faint warmth; keepers report fewer drafts.",
+    "yael": "Slender solid bronze, balanced on the narrowest of footings. Its fine upper curves are refined by hand after casting. Altar bells resonate in its presence; neighbors report faint chimes at dusk.",
+    "zuma-ring": "Sterling silver carrying the shoulder line of the Zuma totem around the finger. Each band is sized and polished by hand. Unearthed glyphs record rituals performed with its pair; wearers report an urge to walk barefoot.",
+    "milo": "The first piece made to carry the Maçon mark, in solid bronze. Each Milo is filed and finished by hand. Its surface adapts to whoever holds it; the bond deepens every season.",
+    "eclipse-ring": "Two uneven ovals in sterling silver, set at the exact distance where they stop competing. Balanced and polished by hand. The gap between them is said to hold questions only stars can answer; astronomers decline to comment.",
+    "sietch-aperture": "Sterling silver with a single opening, recovered from the wake of a passing comet. The opening is polished by hand from the inside out. Through it appear landscapes found on no map; cartographers have stopped asking.",
+    "lunar-canyon-ring": "Sterling silver folded like white stone after a long dry season. Every fold is brought to a soft polish by hand. Social gatherings ebb and flow around the wearer; hosts plan accordingly.",
+    "eleph": "Heavy and rounded solid bronze, caught halfway through a long exhale. Cast to order and finished by hand. A low, distant call has been reported by independent observers, always just out of sight.",
+    "wonderhorn-talisman": "A silver spiral on a thirty inch chain, after the instrument Ida played until the goblins danced out the window. Its inner curl is filed and polished by hand. Nearby children develop perfect pitch; lab equipment hums along.",
+    "macon-cap": "A cotton cap with the Maçon mark stitched on the front. Each cap is checked by hand before it ships. It offers a little shade on bright days; wearers report being asked where they found it.",
+    "ibi": "Tall solid bronze with a long, patient posture. Carved, cast and finished by hand. Attempts to photograph it end in lens fog; photographers blame the weather.",
+    "ear-cuff": "A clean silver line that rests on the ear, no piercing required. Shaped and polished by hand to hold securely. Light breaks into odd colours across its mirrored edge.",
+    "starshipkey-pendant": "Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Its hull is polished meticulously by hand. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad.",
+    "meridian-egg-ring": "Smooth sterling silver, far denser than it looks. Each ring is polished by hand and sized to order. Metaphysical analysis detects an abyss gazing back.",
+    "ooak-vessel": "A small solid bronze vessel in fitted parts, the lid lifting away to reveal a hollow meant for a single small thing. Unique, carved and finished by hand. Whatever is placed inside is said to keep better than expected; keepers report finding it exactly where they left it.",
+    "ooak-pendant": "A long silver head in profile, cut as if the wind had just passed through. The only one of its kind, carved in wax and polished by hand. Wearers report a pull toward open ground and early mornings.",
+    "ooak-pouch": "A small pouch of glass beads and soft leather, sized to carry a single totem against the chest. The only one of its kind, beaded and stitched by hand. Those who wear it report steadier breathing on crowded days."
 }
 
 # The two centred blocks at the bottom of each page — at least 30 words each.
@@ -78,7 +78,7 @@ LORE = {
     "ren": "Ren knows the way through any wood, including the ones that no longer appear on maps. Its bright crest catches the first light of the day and holds it far longer than it should. Travellers who keep it close rarely take a wrong turn.",
     "zuma": "Zuma carries the stillness of the desert at noon, when even the wind stops to rest. Kept in a pocket, it warms slowly and holds that warmth well into the evening. Paired with its ring, it is said to remember the way home across the sand.",
     "ori": "Ori keeps a patient watch over forests, rivers and the households that take it in. It asks for very little beyond a windowsill and the occasional hand. In the depths of winter, keepers swear the room feels a degree or two warmer.",
-    "yael": "Yaël stands where the footing is narrowest and the air is thinnest, entirely unbothered by either. Those who keep it close tend to find their balance in unlikely places. At dusk, a faint ringing is sometimes heard, like bells from a very distant mountain.",
+    "yael": "Yael stands where the footing is narrowest and the air is thinnest, entirely unbothered by either. Those who keep it close tend to find their balance in unlikely places. At dusk, a faint ringing is sometimes heard, like bells from a very distant mountain.",
     "zuma-ring": "The Zuma Ring carries a small piece of the desert wherever it is worn. Unearthed glyphs suggest it was once exchanged between travellers crossing the same stretch of sand. Wearers report an unexpected fondness for long walks, wide horizons and very quiet afternoons.",
     "milo": "Milo has crossed a great deal of country to arrive here, and seems glad, in its quiet way, to finally stop moving. Its surface takes on the character of whoever holds it most. Over the years, the two tend to grow alike.",
     "eclipse-ring": "The Eclipse Ring holds two shapes that never quite match, and never quite need to. Between them sits a small, bright space that seems to change with the hour. Astronomers have been asked what it means, and each has politely declined to guess.",
@@ -209,14 +209,15 @@ def frame_one(keep, live):
 
 def accordions(slug, k, notes):
     mat = notes[0] if notes else TODO.format("materials to confirm")
+    mat = re.sub(r";\s*ombr[eé] patina", "", mat, flags=re.I)          # just "Solid bronze": the patina is not promised
     dims = next((n for n in notes if re.search(r"\d+\s*x\s*\d+", n)), None)
     chain = re.search(r'(\d+)"\s*chain', " ".join(notes), re.I)
 
     care = {
-        "totem": "",          # bronze care is not written anywhere on the site: a handwritten card goes in the parcel
-        "ring": "<p>Sterling silver darkens with time and air. Wear it often and it stays bright; bring back the shine with a soft polishing cloth.</p><p>Take it off to swim or clean, and store it on its own so it stays unscratched.</p>",
-        "pendant": "<p>Worn long, it rests just below the breastbone and turns with you as you move.</p><p>Sterling silver darkens with time and air. Wear it often and it stays bright, or bring back the shine with a soft polishing cloth. Take it off to swim.</p>",
-        "jewellery": "<p>Sterling silver darkens with time and air. Wear it often and it stays bright; bring back the shine with a soft polishing cloth. Take it off to swim.</p>",
+        "totem": "<p>Bronze changes with handling and the air it lives in, so no two age alike. Keep it dry, and there is nothing else it needs.</p>",
+        "ring": "<p>Sterling silver darkens with time and air. To bring back the shine, use a little silver polish on a cotton pad, then rinse in warm water.</p><p>Take it off to swim or clean, and store it on its own so it stays unscratched.</p>",
+        "pendant": "<p>Worn long, it rests just below the breastbone and turns with you as you move.</p><p>Sterling silver darkens with time and air. To bring back the shine, use a little silver polish on a cotton pad, then rinse in warm water. Take it off to swim.</p>",
+        "jewellery": "<p>Sterling silver darkens with time and air. To bring back the shine, use a little silver polish on a cotton pad, then rinse in warm water. Take it off to swim.</p>",
         "apparel": "<p>Hand wash cold and reshape while damp. Dry flat, out of direct sun.</p>",
     }[k]
 
@@ -256,7 +257,7 @@ def accordions(slug, k, notes):
             nums = re.findall(r"[\d.]+", dims)
             unit = (re.search(r"[a-zA-Z\"']+\s*$", dims.strip()) or [""])[0].strip()
             if len(nums) == 3:
-                shown = " \u00d7 ".join(n + L for n, L in zip(nums, "hwd")) + (" " + unit if unit else "")
+                shown = " \u00d7 ".join(nums) + (" " + unit if unit else "")          # numbers only: h, w and d did not always line up
             items.append(("Dimensions", '<dl><dd class="lone">' + shown + '</dd></dl>'))
     elif rows or k != "apparel":
         items.append(("Sizing", sizing))
@@ -264,16 +265,23 @@ def accordions(slug, k, notes):
     ship_a = ("Each piece is made to order; please allow up to 10 business days before it ships. "
               "Shipping is free on all orders within the continental US, and every order arrives "
               "in a special box, wrapped with care.")
+    INTL = ('Shipping abroad: prices are shown in US dollars. Duties and import taxes are included at checkout, '
+            'so nothing more is due on arrival.')
+    EXCHANGE = ('If it arrives and is not quite right, we will gladly exchange it within 30 days: write to '
+                '<a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>.')
     ship_b = ("Pieces in original condition may be returned within 30 days of delivery for store credit. "
               "If a piece doesn't fit, we'll gladly help you find the right size.")
-    gift = ("Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we\u2019ll wrap it "
-            "for free and write out your note by hand. Add their address at checkout and it goes straight to them. "
-            "If it isn\u2019t quite right, they can return it within 30 days for store credit.")
+    gift = ("Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we\u2019ll wrap it up "
+            "with an extra flourish, and write out your note by hand. Add the gift receiver\u2019s address at checkout and it goes "
+            "straight to them. If it isn\u2019t quite right, they can return it within 30 days for store credit.")
     items.append(("Gifting", f'<p>{_content.shared("gift:1", gift)}</p>'))
     items.append(("Shipping &amp; Returns",
                   f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
-                  '<p class="acc-more"><a href="shipping.html">Full details</a></p>'))
+                  f'<p class="intl-note">{_content.shared("shipping:intl", INTL)}</p>'
+                  + ('' if k in ("ring", "apparel") else          # rings say this under Sizing
+                     f'<p>{_content.shared("exchange:1", EXCHANGE)}</p>')
+                  + '<p class="acc-more"><a href="shipping.html">Full details</a></p>'))
     # the order on every piece: size first, then what it is, gifting, shipping, and care last
     rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "Gifting": 2, "Shipping &amp; Returns": 3, "Wear &amp; Care": 4, "Care": 4}
     items.sort(key=lambda it: rank.get(it[0], 9))
@@ -447,7 +455,7 @@ def page(p, template, related=""):
             .replace("{{SLUG}}", slug)
             .replace("{{EYEBROW}}", html.escape(eyebrow))
             .replace("{{PRICE}}", f"${price}")
-            .replace("{{DESC}}", html.escape(blurb))
+            .replace("{{DESC}}", html.escape(blurb).replace("namesake ring", 'namesake <a href="zuma-ring.html">ring</a>', 1) if slug == "zuma" else html.escape(blurb))
             .replace("{{BUY}}", buy_block)
             .replace('<section class="product">', '<section class="product' + ('' if in_stock else ' claimed') + '">')
             .replace("{{SIZE}}", size_select)
@@ -475,36 +483,21 @@ def print_sheet():
     """The printed ring sizer: its own page, drawn in real millimetres so the strip measures true."""
     def circ(n): return 36.537 + 2.5535 * n          # the same ISO relation the on-screen table uses
     def mark(n): return 46.686 + 2.5949 * (n - 3)          # the studio's tested strip (RingSizingSheet.ai): slot to mark, in mm; longer than the ISO figure to allow for the paper's own wrap
-    # the strip: a wide tab holding the slot, then a narrower band that feeds through it,
-    # the scale measured from the slot, a pointed tail to lead it in
-    slot_x, top, tab, band = 12, 3, 18, 10          # mm
-    mid = top + tab / 2
-    bt, bb = mid - band / 2, mid + band / 2
-    end = slot_x + mark(13) + 10
-    W, H = end + 16, top + tab + 9
-    t = []
-    n = 4.0
-    while n <= 13:
-        x = slot_x + mark(n)
-        major = n % 1 == 0
-        fade = '' if major else ' stroke-opacity="0.5"'          # half sizes at half strength
-        t.append(f'<line x1="{x:.2f}" y1="{bt}" x2="{x:.2f}" y2="{bt + (3.4 if major else 2)}" stroke="#000" stroke-width="{0.28 if major else 0.22}"{fade}/>')
-        if major:
-            y = bt + (5.9 if int(n) % 2 == 0 else 8.6)          # staggered: real sizes sit 2.5 mm apart
-            t.append(f'<text x="{x:.2f}" y="{y}" font-size="2.3" text-anchor="middle">{int(n)}</text>')
-        n += 0.5
-    strip = (f'<svg class="ps-strip" width="{W:.1f}mm" height="{H}mm" viewBox="0 0 {W:.1f} {H}" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue,Helvetica,Arial,sans-serif">'
-             f'<path d="M2 {top} H{slot_x + 5} V{bt} H{end} L{end + 9} {mid} L{end} {bb} H{slot_x + 5} V{top + tab} H2 Z" fill="#f4f3f0" stroke="#000" stroke-width="0.25" stroke-dasharray="1.4 1"/>'
-             f'<rect x="{slot_x - 0.7}" y="{mid - (band + 2) / 2}" width="1.4" height="{band + 2}" fill="#fff" stroke="#000" stroke-width="0.25"/>'
-             f'<text x="{slot_x - 5.4}" y="{mid}" font-size="2.2" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 {slot_x - 5.4} {mid})" letter-spacing=".35">SLOT</text>'
-             + "".join(t) +
-             f'<text x="{slot_x + 8}" y="{mid + 0.8}" font-size="2.1" letter-spacing=".35">READ AT THE SLOT &#8594;</text>'
-             f'<text x="{W - 1}" y="{H - 1}" font-size="2.8" text-anchor="end">&#9986; cut along the dashes</text>'
-             f'<text x="2" y="{H - 1}" font-size="2.8">Short marks are half sizes: read the mark nearest the slot.</text>'
-             '</svg>')
+    # the strip: the studio's tested sizer (tools/ring_strip.json, drawn from RingSizingSheet.ai), every line
+    # exactly as it was, turned on its side to lie across the sheet; only the numbers and CUT are re-set in Instrument Sans
+    geo = json.load(open(os.path.join(OUT, "tools", "ring_strip.json")))
+    x0, y0, x1, y1 = geo["bbox"]; m = 1.0
+    W, H = (y1 - y0) + 2 * m, (x1 - x0) + 2 * m
+    f = 'font-family="Instrument Sans,Helvetica Neue,Helvetica,Arial,sans-serif"'
+    nums = "".join(f'<text x="{l["x"]:.3f}" y="{l["yb"]:.3f}" font-size="{l["h"] / .72:.3f}" text-anchor="middle">{l["n"]}</text>' for l in geo["labels"])
+    c = geo["cut"]
+    cut = f'<text x="{c["x"]:.3f}" y="{c["y"]:.3f}" font-size="{c["size"]:.3f}" font-weight="500">{c["text"]}</text>'
+    strip = (f'<svg class="ps-strip" width="{W:.2f}mm" height="{H:.2f}mm" viewBox="0 0 {W:.3f} {H:.3f}" xmlns="http://www.w3.org/2000/svg" {f}>'
+             f'<g transform="matrix(0 1 -1 0 {y1 + m:.3f} {-(x0 - m):.3f})">' + "".join(geo["paths"]) + nums + cut + '</g></svg>'
+             f'<p class="ps-strip-notes"><span>Short marks are half sizes: read the mark nearest the slot.</span><span>&#9986; Cut along the outline, and cut the dashed line to open the slot.</span></p>')
     # a 100 mm check line with millimetre ticks
     ck = [f'<line x1="{2 + i}" y1="2" x2="{2 + i}" y2="{2 + (4 if i % 10 == 0 else 2.4 if i % 5 == 0 else 1.4)}" stroke="#000" stroke-width="{0.25 if i % 10 == 0 else 0.15}"/>' for i in range(101)]
-    check = ('<svg class="ps-check" width="104mm" height="12mm" viewBox="0 0 104 12" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue,Helvetica,Arial,sans-serif">'
+    check = ('<svg class="ps-check" width="104mm" height="12mm" viewBox="0 0 104 12" xmlns="http://www.w3.org/2000/svg" font-family="Instrument Sans,Helvetica Neue,Helvetica,Arial,sans-serif">'
              '<line x1="2" y1="2" x2="102" y2="2" stroke="#000" stroke-width="0.3"/>' + "".join(ck) +
              '<text x="2" y="10.5" font-size="2.6">0</text><text x="52" y="10.5" font-size="2.6" text-anchor="middle">50</text><text x="102" y="10.5" font-size="2.6" text-anchor="end">100 mm</text></svg>')
     rows = []
@@ -521,7 +514,7 @@ def print_sheet():
         <section class="ps-block ps-calib"><p class="ps-label">Before you cut</p>{check}<p>This line measures exactly 100 mm. If a ruler says otherwise, print again at 100%, with scaling switched off.</p></section>
         <section class="ps-block ps-cut">{strip}</section>
         <ol class="ps-steps">
-          <li><b>1</b><span>Cut out the strip along the dashes, and cut open the slot.</span></li>
+          <li><b>1</b><span>Cut out the strip along its outline, and cut the dashed line to open the slot.</span></li>
           <li><b>2</b><span>Wrap it around the base of your finger and feed the pointed end through the slot.</span></li>
           <li><b>3</b><span>Pull it tight against the skin, not loose, and read the mark at the slot. Half sizes count.</span></li>
         </ol>
@@ -556,7 +549,7 @@ def sizer_page():
   @media print{{ @page{{margin:0}} body{{background:#fff}} .bar{{display:none}} .paper{{width:auto;max-width:none;margin:0;box-shadow:none;overflow:visible}} .paper .print-sheet{{padding-bottom:0}} }}
 </style></head>
 <body>
-<div class="bar"><a href="index.html#pieces">&#8592; Studio Maçon</a><button type="button" onclick="window.print()">Print the sizer</button></div>
+<div class="bar"><a href="index.html#pieces" onclick="if (document.referrer.indexOf(location.host) > -1 &amp;&amp; history.length > 1) {{ history.back(); return false; }}">&#8592; Back</a><button type="button" onclick="window.print()">Print the sizer</button></div>
 <div class="paper">{print_sheet().replace(' aria-hidden="true"', '')}</div>
 </body></html>
 """
@@ -831,13 +824,13 @@ def light(doc):
 
 SITE = "https://studiomacon.co"
 PAGE_META = {          # search and share descriptions for the non-product pages
-    "index.html": "Handmade bronze totems and silver jewelry, sketched, carved in wax and cast by hand in Southern California. Made to order.",
-    "custom.html": "Commission a one-of-a-kind bronze totem or piece of jewelry, sketched for you, carved by hand in wax and cast at a local foundry.",
-    "story.html": "Studio Maçon was founded by Alex and Hannah, whose work is inspired by ancient artifacts and the objects they cared for as children.",
-    "contact.html": "Questions about a piece, an order or a commission. Write to Studio Maçon.",
-    "shipping.html": "Every piece is made to order. Delivery times, international shipping, sizing and returns.",
-    "inspiration.html": "The images, objects and places behind Studio Maçon's artifacts.",
-    "ring-sizing.html": "Find your ring size at home: print the Studio Maçon sizer, or measure a ring you already wear.",
+    "index.html": "Handmade bronze totems and sterling silver jewelry by Studio Maçon, sketched on paper, carved in wax and cast by hand in Southern California. Each made to order.",
+    "custom.html": "Commission a one-of-a-kind bronze totem or piece of jewelry from Studio Maçon: sketched for you, carved by hand in wax, cast at a local foundry and finished here.",
+    "story.html": "Studio Maçon was founded by Alex and Hannah, whose bronze totems and silver jewelry draw on ancient artifacts and the small objects they cared for as children.",
+    "contact.html": "Questions about a piece, an order, sizing or a commission? Write to Studio Maçon and the studio will answer personally, usually within a day or two.",
+    "shipping.html": "Every Studio Maçon piece is made to order. Here: making and delivery times, free US shipping, international orders with duties included, sizing and returns.",
+    "inspiration.html": "The images, objects, places and old artifacts behind Studio Maçon's bronze totems and silver jewelry, gathered over years of sketching, travel and looking.",
+    "ring-sizing.html": "Find your ring size at home: print the Studio Maçon ring sizer at true scale, or measure a ring you already wear. Half sizes included, with tips for a good fit.",
     "bag.html": "Your bag at Studio Maçon.",
 }
 NOINDEX = {"bag.html", "checkout.html", "confirmation.html", "404.html"} | {f"{x}.html" for x in ("ooak-vessel", "ooak-pendant", "ooak-pouch", "macon-cap")}
@@ -873,6 +866,21 @@ def seo(name, doc, product=None):
         tags.append('<meta name="robots" content="noindex">')
     else:
         SITEMAP.append(url)
+    if name == "shipping.html":
+        # the same answers already on the page, in the form Google can show under a search result
+        faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in (
+                ("How long until my piece ships?",
+                 "Every piece is made to order, so please allow up to 10 business days before it ships. Standard shipping then takes 3 to 7 business days within the US."),
+                ("Is shipping free?",
+                 "Shipping is free on all orders within the continental US. Every order ships in a special box, wrapped with care."),
+                ("Do I pay duties on an international order?",
+                 "No. Duties and import taxes are included at checkout, so nothing more is due on arrival."),
+                ("Can I return a piece?",
+                 "Pieces in original condition may be returned within 30 days of delivery for store credit."),
+                ("What if a ring doesn\u2019t fit?",
+                 "Write to hello@studiomacon.co and we will resize or exchange it."))]}
+        tags.append('<script type="application/ld+json">' + json.dumps(faq, ensure_ascii=False).replace("</", "<\\/") + '</script>')
     if name == "index.html":
         # who the studio is, and where else it lives: branded searches from the ads land on this
         org = {"@context": "https://schema.org", "@type": "Organization", "name": "Studio Ma\u00e7on",
@@ -890,6 +898,13 @@ def seo(name, doc, product=None):
         ld = {"@context": "https://schema.org", "@type": "Product", "name": product["name"], "description": DESC[product["slug"]],
               "image": _shots(doc, product["slug"], image), "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": product["slug"], "offers": offers}
         tags.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + '</script>')
+        # Studio Maçon > Totems > Zuma, so a search result shows the path instead of a bare address
+        family = "Totems" if kind(product["slug"], read_port(product["slug"])[1], product.get("name", "")) == "totem" else "Jewelry"
+        crumbs = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Studio Ma\u00e7on", "item": SITE},
+            {"@type": "ListItem", "position": 2, "name": family, "item": f"{SITE}/index.html#pieces"},
+            {"@type": "ListItem", "position": 3, "name": product["name"]}]}
+        tags.append('<script type="application/ld+json">' + json.dumps(crumbs, ensure_ascii=False).replace("</", "<\\/") + '</script>')
     return doc.replace("</title>", "</title>\n" + "\n".join(tags), 1)
 
 
@@ -1058,7 +1073,7 @@ def related_block(p, products):
         by = {x["slug"]: x for x in products}
         pick = [by[s] for s in sorted(PENDANTS - {p["slug"]}) + ["ear-cuff"] if s in by]
     tiles = "".join(
-        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-frame"><img src="{rel_tile(x)}" alt="" loading="lazy"></span>'
+        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-frame"><img src="{rel_tile(x)}" alt="{html.escape(x["name"])}" loading="lazy"></span>'
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>'
         for x in pick)
     return ('<section class="related" aria-label="Other pieces">'
@@ -1147,7 +1162,7 @@ def main():
             # the framing sits on the link, so the in-hand picture shown on hover zooms with the still
             f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
             f'<span class="pic"><img src="{still_src}" alt="{html.escape(p["name"])}" loading="{lazy}">'
-            + (f'<img class="held" src="{hover_src}" alt="" loading="lazy"{align_style(p["slug"])}>' if held else "")
+            + (f'<img class="held" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
             + f'</span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
@@ -1155,14 +1170,15 @@ def main():
     st.update({k: v for k, v in (_content.CONTENT.get("stamp") or {}).items() if isinstance(v, (int, float))})
     shop = shop.replace("{{STAMP}}", f':root{{--stamp-w:clamp(60px,{st["w"]}vw,40vw);--stamp-right:{st["right"]}vw;'
                                      f'--stamp-drop:{st["drop"]}%;--stamp-tilt:{st["tilt"]}deg}}')
-    shop = (shop.replace("{{TOTEMCOUNT}}", str(len(totems))).replace("{{JEWELRYCOUNT}}", str(len(products) - len(totems)))
+    shop = (shop.replace("{{TOTEMCOUNT}}", f"{len(totems):02d}").replace("{{JEWELRYCOUNT}}", f"{len(products) - len(totems):02d}")
                 .replace("{{TOTEMGRID}}", "\n".join(tiles[:len(totems)])).replace("{{JEWELRYGRID}}", "\n".join(tiles[len(totems):])))
     save("index.html", editable(shop, "index.html"))
     sizer_page()
     feeds(products)
+    _today = __import__("datetime").date.today().isoformat()
     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-                + "".join(f"  <url><loc>{u}</loc></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")
+                + "".join(f"  <url><loc>{u}</loc><lastmod>{_today}</lastmod></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")
     with open(os.path.join(OUT, "robots.txt"), "w") as f:
         f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nSitemap: {SITE}/sitemap.xml\n")
     print(f"{len(products)} pages")

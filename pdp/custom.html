@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Custom | Studio Maçon</title>
-<meta name="description" content="Commission a one-of-a-kind bronze totem or piece of jewelry, sketched for you, carved by hand in wax and cast at a local foundry.">
+<meta name="description" content="Commission a one-of-a-kind bronze totem or piece of jewelry from Studio Maçon: sketched for you, carved by hand in wax, cast at a local foundry and finished here.">
 <link rel="canonical" href="https://studiomacon.co/custom.html">
 <meta property="og:site_name" content="Studio Maçon">
 <meta property="og:title" content="Custom | Studio Maçon">
-<meta property="og:description" content="Commission a one-of-a-kind bronze totem or piece of jewelry, sketched for you, carved by hand in wax and cast at a local foundry.">
+<meta property="og:description" content="Commission a one-of-a-kind bronze totem or piece of jewelry from Studio Maçon: sketched for you, carved by hand in wax, cast at a local foundry and finished here.">
 <meta property="og:url" content="https://studiomacon.co/custom.html">
 <meta property="og:image" content="https://studiomacon.co/video/poster-process.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790031070">
+<link rel="stylesheet" href="site.css?v=1790100768">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -99,6 +99,8 @@
   .steps-acc > .acc-item:nth-child(3){--stagger:760ms !important}
   .steps-acc.started .step[data-step="1"]{border-bottom-color:#000}
   .choices.two{grid-template-columns:repeat(2,1fr)}
+  .choices.five{grid-template-columns:repeat(5,1fr)}
+  @media (max-width:767px){ .choices.five{grid-template-columns:repeat(3,1fr)} }
   .choices.three{grid-template-columns:repeat(3,1fr)}
   .branch{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .5s var(--ease),opacity .35s ease}
   .branch.on{grid-template-rows:1fr;opacity:1}
@@ -120,6 +122,7 @@
   .hint{margin:-6px 0 12px;font-size:14px;color:rgba(0,0,0,.55)}
   .label-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin:0 0 12px}
   .label-row .label{margin:0;color:#000}
+  .q .label{font-size:calc((18px - 2pt) * .85 - 1pt);letter-spacing:.08em}          /* the size and spacing of the Start a Commission button */
   .hint-side{font-size:13px;color:rgba(0,0,0,.5);text-align:right}
 
   .choices{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -396,7 +399,7 @@
     <a href="custom.html" class="desk hover-line">Custom</a>
     <a href="story.html" class="desk hover-line">About</a>
   </div>
-  <a class="logotype" href="index.html" aria-label="Studio Maçon"></a>
+  <a class="logotype" href="index.html#pieces" aria-label="Studio Maçon"></a>
   <div class="right"><a href="#">Bag (0)</a></div>
 </header>
 
@@ -439,7 +442,7 @@
     <div class="steps-acc" id="steps">
       <!-- 1 -->
       <div class="acc-item step locked" data-step="1">
-        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">01</span>Your Piece<span class="done" hidden>Done<svg class="tick" viewBox="0 0 12 10" aria-hidden="true"><path d="M1 5.2l3.3 3.3L11 1.5" fill="none" stroke="currentColor" stroke-width="1.4"/ data-edit="page:custom.html:bd7d7258"></svg></span></button>
+        <button class="acc-head" aria-expanded="false" aria-disabled="true"><span class="n">01</span>Your Piece<span class="done" hidden>Done<svg class="tick" viewBox="0 0 12 10" aria-hidden="true"><path d="M1 5.2l3.3 3.3L11 1.5" fill="none" stroke="currentColor" stroke-width="1.4"/ data-edit="page:custom.html:3855e60b"></svg></span></button>
         <div class="acc-panel"><div class="acc-inner"><div class="acc-body">
           <div class="q">
             <span class="label">What would you like made? <span class="req">*</span></span>
@@ -460,23 +463,23 @@
             <div class="q">
               <span class="label">Species <span class="req">*</span></span>
               <div class="choices" data-choice="species">
-                <button type="button" aria-pressed="false">Dog</button>
-                <button type="button" aria-pressed="false">Cat</button>
-                <button type="button" aria-pressed="false">Horse</button>
+                <button type="button" aria-pressed="false">Canine</button>
+                <button type="button" aria-pressed="false">Feline</button>
+                <button type="button" aria-pressed="false">Avian</button>
                 <button type="button" aria-pressed="false">Other</button>
               </div>
               <div class="other" aria-hidden="true"><div class="other-inner">
-                <span class="line"><input id="c-other" placeholder="What kind of animal?"></span>
+                <span class="line"><input id="c-other" placeholder="e.g. Tortoise"></span>
               </div></div>
             </div>
             <div class="pair">
               <div class="q">
                 <label class="label" for="c-name">Their Name</label>
-                <span class="line"><input id="c-name" placeholder="Their name"></span>
+                <span class="line"><input id="c-name" placeholder="e.g. Biscuit"></span>
               </div>
               <div class="q details-q">
                 <div class="label-row"><label class="label" for="c-breed">Details</label></div>
-                <span class="line"><input id="c-breed" placeholder="e.g. Whippet, brindle coat, one ear that flops, always sits leaning left"></span>
+                <span class="line"><input id="c-breed" placeholder="e.g. Whippet with one floppy ear"></span>
               </div>
             </div>
           </div></div>
@@ -491,42 +494,41 @@
                 <button type="button" aria-pressed="false">Other</button>
               </div>
               <div class="other" aria-hidden="true"><div class="other-inner">
-                <span class="line"><input id="c-piece-other" placeholder="What would you like made?"></span>
+                <span class="line"><input id="c-piece-other" placeholder="e.g. Cufflinks"></span>
               </div></div>
             </div>
             <div class="q">
               <span class="label">Metal</span>
-              <div class="choices three" data-choice="metal" data-optional>
+              <div class="choices two" data-choice="metal" data-optional>
                 <button type="button" aria-pressed="false">Silver</button>
-                <button type="button" aria-pressed="false">Bronze</button>
                 <button type="button" aria-pressed="false">Gold</button>
               </div>
             </div>
             <div class="pair">
               <div class="q">
                 <label class="label" for="c-size">Ring Size</label>
-                <span class="line"><input id="c-size" placeholder="If you know it"></span>
+                <span class="line"><input id="c-size" placeholder="e.g. 7.5"></span>
               </div>
               <div class="q details-q">
                 <div class="label-row"><label class="label" for="c-idea">The Idea</label></div>
-                <span class="line"><input id="c-idea" placeholder="e.g. a wedding band with a laurel leaf, for our tenth anniversary"></span>
+                <span class="line"><input id="c-idea" placeholder="e.g. A wedding band with a laurel leaf"></span>
               </div>
             </div>
           </div></div>
 
           <div class="q">
             <span class="label">Upload Photos <span class="req only-totem">*</span></span>
-            <p class="hint" data-hint-totem="Three are required: front, side and a close-up of the face. A fourth angle helps." data-hint-jewelry="Optional: anything that inspires the piece, or photos of a ring that fits well.">Three are required: front, side and a close-up of the face. A fourth angle helps.</p>
+            <p class="hint" data-hint-totem="A photo or two of them, from any angle you have. We can always ask for more later." data-hint-jewelry="Optional: anything that inspires the piece, or photos of a ring that fits well.">A photo or two of them, from any angle you have. We can always ask for more later.</p>
             <div class="uploads">
-              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Front" data-j="Photo">Front</span></span></label>
-              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Side" data-j="Photo">Side</span></span></label>
-              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Face" data-j="Photo">Face</span></span></label>
+              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Photo" data-j="Photo">Photo</span></span></label>
+              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Photo" data-j="Photo">Photo</span></span></label>
+              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Photo" data-j="Photo">Photo</span></span></label>
               <label class="tile optional"><input type="file" accept="image/*"><span><span class="plus">+</span>Optional</span></label>
             </div>
           </div>
           <div class="q notes-q">
             <label class="label" for="c-notes">Notes for Us</label>
-            <span class="line"><textarea rows="1" id="c-notes" placeholder="Anything else we should know"></textarea></span>
+            <span class="line"><textarea rows="1" id="c-notes" placeholder="e.g. It’s a surprise for her birthday"></textarea></span>
           </div>
           <button type="button" class="next" data-next disabled>Continue</button>
         </div></div></div>
@@ -908,7 +910,7 @@
         .forEach(function (el) {
           if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
           if (alreadyThere(el)) return;                 // a picture waiting on the first screen
-          if (inLanding(el)) return;                    // on screen where the link lands
+          if (inLanding(el) && !el.closest('.wall')) return;          // on screen where the link lands (the grid's cards still play their entrance)
           // hide instantly: the transition is for arriving, not for going away
           el.style.transition = 'none';
           el.classList.add('dr-emerge');
@@ -940,7 +942,7 @@
       (function sweep() {
         if (!landing) return;
         document.querySelectorAll('.dr-emerge').forEach(function (el) {
-          if (!onScreen(el) || getComputedStyle(el).opacity === '1') return;
+          if (!onScreen(el) || getComputedStyle(el).opacity === '1' || el.closest('.wall')) return;          // the cards keep their entrance
           el.style.setProperty('--stagger', '0ms');       // no cascade on a landing, either
           el.style.transition = 'none';
           el.classList.add('is-seen');
@@ -1150,7 +1152,7 @@
         '<div class="bd-lines lines"></div>' +
         '<div class="bd-empty" hidden><p data-edit="page:custom.html:e000f14a">Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
         '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
-        '<p class="bd-note" data-edit="page:custom.html:dad0ea7c">Shipping is calculated at checkout. Every piece is made to order and ships by ' + maconShipBy() + '.</p>' +
+        '<p class="bd-note" data-edit="page:custom.html:da39a3ee"></p>' +
         '<div class="bd-gift"></div>' +
         '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
       document.body.appendChild(veil); document.body.appendChild(drawer);
@@ -1164,6 +1166,7 @@
       if (!drawer) return;
       var sub = MaconBagLines(drawer.querySelector('.bd-lines')), empty = !MaconBag.count();
       drawer.querySelector('.bd-sub').textContent = MaconBagMoney(sub);
+      drawer.querySelector('.bd-note').textContent = 'Shipping is calculated at checkout. ' + maconShipNote();
       drawer.querySelector('.bd-empty').hidden = !empty;
       drawer.querySelector('.bd-foot').hidden = empty;
     }
@@ -1252,6 +1255,7 @@
       if (wide.matches) {
         if (link.parentElement !== head) head.appendChild(link);
         var x = 0; for (var el = home; el; el = el.offsetParent) x += el.offsetLeft;
+        x += parseFloat(getComputedStyle(home).paddingLeft) || 0;          // in line with the words, not the column's padded edge
         link.style.left = x + 'px';
       } else if (link.parentElement !== home) { home.insertBefore(link, next); link.style.left = ''; }
     }
@@ -1487,6 +1491,22 @@
 
 // Ships by: ten working days from today. Weekends and the federal holidays are skipped,
 // because those are the days the foundry and the post office are shut too.
+// "Your piece is" for one piece in the bag, "Your pieces are" for more
+// The international note (duties included at checkout) is only for visitors outside the US.
+// Cloudflare tells us the country at /_geo; anywhere that endpoint is missing, the note stays hidden.
+(function () {
+  if (/[?&]intl=1\b/.test(location.search)) return document.documentElement.classList.add('intl');
+  try {
+    fetch('/_geo', {cache: 'no-store'}).then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
+      if (g && g.country && g.country !== 'US') document.documentElement.classList.add('intl');
+    }).catch(function () {});
+  } catch (e) {}
+})();
+
+window.maconShipNote = function () {
+  var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
+  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and ' + (n > 1 ? 'ship' : 'ships') + ' by ' + maconShipBy() + '.';
+};
 // the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
 window.maconShipBy = (function () {
   function holidays(y) {
@@ -1579,7 +1599,9 @@ window.maconShipBy = (function () {
 
   window.addEventListener('click', function (e) {
     if (!e.target.closest) return;
-    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); open(true); return; }
+    // "Find your size" now goes to the printable sizer page (ring-sizing.html). The drawer below is kept, switched off:
+    // to bring it back, replace the line after this comment with:  e.preventDefault(); e.stopPropagation(); open(true); return;
+    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); location.href = 'ring-sizing.html'; return; }
     if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
     var more = e.target.closest('[data-more-sizes]');
     if (more) {
@@ -1672,7 +1694,7 @@ function maconClickQuery(extra) {
         if (!g.querySelector('[aria-pressed="true"]')) ok = false;
       });
       step.querySelectorAll('[data-required]').forEach(function (i) { if (!i.value.trim() || (i.type === 'email' && !/.+@.+\..+/.test(i.value))) ok = false; });
-      if (kind !== 'jewelry') step.querySelectorAll('[data-required-tile]').forEach(function (t) { if (!t.classList.contains('filled')) ok = false; });
+      if (kind !== 'jewelry' && !step.querySelector('.tile.filled')) ok = false;          // one photo is enough to begin; more can come later
       var btn = step.querySelector('[data-next]'); if (btn && !btn.hasAttribute('data-always')) btn.disabled = !ok;
     }
     steps.forEach(function (step) {

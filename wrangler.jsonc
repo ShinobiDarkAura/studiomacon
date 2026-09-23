@@ -8,6 +8,6 @@
     "binding": "ASSETS",
     "html_handling": "none",               // links point at pip.html: serve it as is, no redirect hop
     "not_found_handling": "404-page",      // the studio's own 404.html
-    "run_worker_first": ["/video/*", "/_e"]       // everything else goes straight to the files
+    "run_worker_first": ["/video/*", "/_e", "/_geo"]       // everything else goes straight to the files
   }
 }

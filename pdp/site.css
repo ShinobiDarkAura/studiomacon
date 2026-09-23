@@ -4,16 +4,18 @@
 /* Instrument Serif, SIL Open Font License — self-hosted so the page never waits on Google */
 @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
 @font-face{font-family:"Morello Pencil";src:url(fonts/morellopencil.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Sans";src:url(fonts/instrument-sans.woff2) format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Sans";src:url(fonts/instrument-sans-italic.woff2) format("woff2");font-weight:400 700;font-style:italic;font-display:swap}
 @font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
 :root{
-  --body-s:calc(17px - 1pt);          /* reading text in blurbs and accordions: Field Notes, every accordion panel */
+  --body-s:calc(17px - 2pt);          /* reading text in blurbs and accordions: Field Notes, every accordion panel */
   --body-s-lh:1.63;
   --ink:#000;
   --field:#f7f7f7;
   --rule:#e3e3e3;
   --serif:"Instrument Serif", "Times New Roman", serif;
-  --sans:"Helvetica Neue", Helvetica, Arial, sans-serif;
+  --sans:"Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;          /* Instrument Sans everywhere, Helvetica only while it loads */
   --pad:24px;
   --head:84px;
   --ease:cubic-bezier(.22,.7,.2,1);
@@ -21,7 +23,7 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.5 var(--sans);letter-spacing:-.005em}
+body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.5 var(--sans);letter-spacing:.012em}          /* Instrument Sans, opened up a touch */
 /* no stranded last words: the browser balances headings and avoids a one-word last line in body copy */
 h1,h2,h3,.eyebrow,.menu-sheet a{text-wrap:balance}
 p,li,dd,figcaption,.lede,.desc,.acc-body,.blurb{text-wrap:pretty}
@@ -137,7 +139,7 @@ footer .fine.where{margin:12px 0 0;font-family:"Morello Pencil","Instrument Seri
   display:inline-block;transform:rotate(-3deg);transform-origin:left center}          /* where the studio is, in the studio's own hand */
 footer .links{display:flex;flex-wrap:wrap;gap:10px 31px;margin:0;font-size:calc(14px - 1pt)}          /* matches the top nav */
 footer .news{order:1;max-width:460px}
-footer .news p{margin:0 0 28px;font-size:var(--f-size);line-height:1.5}
+footer .news p{margin:0 0 28px;font-size:calc(var(--f-size) - 1px);line-height:1.35}
 footer .field{padding-left:0;border-bottom:.5px solid rgba(0,0,0,.2)}
 footer .field input{opacity:.8}
 footer .field input::placeholder{color:rgba(0,0,0,.35)}
@@ -210,7 +212,7 @@ footer .field button{padding:0 0 0 18px}
 /* ── mobile menu ───────────────────────────────────── */
 /* the drawer is most of a small phone, but never wider than 360px; the page is pushed by the same amount */
 :root{--drawer:min(84vw,360px)}
-.menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100svh;width:var(--drawer);z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:24.8px;
+.menu-sheet{position:fixed;top:0;left:0;height:100vh;height:100dvh;width:var(--drawer);z-index:60;background:#fff;display:flex;flex-direction:column;justify-content:center;gap:24.8px;
   padding:0 calc(var(--pad) + 24px);transform:translateX(-100%);visibility:hidden;
   transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s linear .6s}
 .menu-sheet.open{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.65,0,.25,1),visibility 0s}
@@ -575,7 +577,7 @@ html.logo-hold .head .logotype{color:#000}
 
 /* Back: the same size and grey as "Free shipping" beside the price */
 .back{font-size:calc(14px - 1pt);color:rgba(0,0,0,.5)}
-.back .back-icon{width:12px;height:12px}
+.back .back-icon{width:14px;height:14px}          /* the arrow alone, 2px larger */
 
 /* Privacy · Terms · Refunds live at the foot of the menu (moved out of the footer) */
 .menu-sheet .menu-legal{position:absolute;left:0;right:0;bottom:40px;margin:0;text-align:center;font:400 calc(12px - 1pt)/1 var(--sans);
@@ -607,3 +609,10 @@ footer .hover-line:not(.mob){padding-bottom:5px}          /* footer links: the u
   -webkit-mask:var(--arr-r) left center/12px 12px no-repeat;mask:var(--arr-r) left center/12px 12px no-repeat;
   transition:width .35s var(--ease),margin-left .35s var(--ease),opacity .25s ease}
 .buy-now:not([disabled]):hover::after{width:12px;margin-left:8px;opacity:1}
+
+/* desktop: the details column scrolls on its own, which clipped the blur of text rising in at its edges;
+   40px of room either side, taken back with a matching negative margin, so nothing moves */
+@media (min-width:1024px){ .product .info{padding-left:40px;padding-right:40px;margin-left:-40px;margin-right:-40px} }
+
+.intl-note{display:none}
+html.intl .intl-note{display:block}          /* shown only to visitors outside the US */

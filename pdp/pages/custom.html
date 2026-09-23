@@ -89,6 +89,8 @@
   .steps-acc > .acc-item:nth-child(3){--stagger:760ms !important}
   .steps-acc.started .step[data-step="1"]{border-bottom-color:#000}
   .choices.two{grid-template-columns:repeat(2,1fr)}
+  .choices.five{grid-template-columns:repeat(5,1fr)}
+  @media (max-width:767px){ .choices.five{grid-template-columns:repeat(3,1fr)} }
   .choices.three{grid-template-columns:repeat(3,1fr)}
   .branch{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .5s var(--ease),opacity .35s ease}
   .branch.on{grid-template-rows:1fr;opacity:1}
@@ -110,6 +112,7 @@
   .hint{margin:-6px 0 12px;font-size:14px;color:rgba(0,0,0,.55)}
   .label-row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin:0 0 12px}
   .label-row .label{margin:0;color:#000}
+  .q .label{font-size:calc((18px - 2pt) * .85 - 1pt);letter-spacing:.08em}          /* the size and spacing of the Start a Commission button */
   .hint-side{font-size:13px;color:rgba(0,0,0,.5);text-align:right}
 
   .choices{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -245,23 +248,23 @@
             <div class="q">
               <span class="label">Species <span class="req">*</span></span>
               <div class="choices" data-choice="species">
-                <button type="button" aria-pressed="false">Dog</button>
-                <button type="button" aria-pressed="false">Cat</button>
-                <button type="button" aria-pressed="false">Horse</button>
+                <button type="button" aria-pressed="false">Canine</button>
+                <button type="button" aria-pressed="false">Feline</button>
+                <button type="button" aria-pressed="false">Avian</button>
                 <button type="button" aria-pressed="false">Other</button>
               </div>
               <div class="other" aria-hidden="true"><div class="other-inner">
-                <span class="line"><input id="c-other" placeholder="What kind of animal?"></span>
+                <span class="line"><input id="c-other" placeholder="e.g. Tortoise"></span>
               </div></div>
             </div>
             <div class="pair">
               <div class="q">
                 <label class="label" for="c-name">Their Name</label>
-                <span class="line"><input id="c-name" placeholder="Their name"></span>
+                <span class="line"><input id="c-name" placeholder="e.g. Biscuit"></span>
               </div>
               <div class="q details-q">
                 <div class="label-row"><label class="label" for="c-breed">Details</label></div>
-                <span class="line"><input id="c-breed" placeholder="e.g. Whippet, brindle coat, one ear that flops, always sits leaning left"></span>
+                <span class="line"><input id="c-breed" placeholder="e.g. Whippet with one floppy ear"></span>
               </div>
             </div>
           </div></div>
@@ -276,42 +279,41 @@
                 <button type="button" aria-pressed="false">Other</button>
               </div>
               <div class="other" aria-hidden="true"><div class="other-inner">
-                <span class="line"><input id="c-piece-other" placeholder="What would you like made?"></span>
+                <span class="line"><input id="c-piece-other" placeholder="e.g. Cufflinks"></span>
               </div></div>
             </div>
             <div class="q">
               <span class="label">Metal</span>
-              <div class="choices three" data-choice="metal" data-optional>
+              <div class="choices two" data-choice="metal" data-optional>
                 <button type="button" aria-pressed="false">Silver</button>
-                <button type="button" aria-pressed="false">Bronze</button>
                 <button type="button" aria-pressed="false">Gold</button>
               </div>
             </div>
             <div class="pair">
               <div class="q">
                 <label class="label" for="c-size">Ring Size</label>
-                <span class="line"><input id="c-size" placeholder="If you know it"></span>
+                <span class="line"><input id="c-size" placeholder="e.g. 7.5"></span>
               </div>
               <div class="q details-q">
                 <div class="label-row"><label class="label" for="c-idea">The Idea</label></div>
-                <span class="line"><input id="c-idea" placeholder="e.g. a wedding band with a laurel leaf, for our tenth anniversary"></span>
+                <span class="line"><input id="c-idea" placeholder="e.g. A wedding band with a laurel leaf"></span>
               </div>
             </div>
           </div></div>
 
           <div class="q">
             <span class="label">Upload Photos <span class="req only-totem">*</span></span>
-            <p class="hint" data-hint-totem="Three are required: front, side and a close-up of the face. A fourth angle helps." data-hint-jewelry="Optional: anything that inspires the piece, or photos of a ring that fits well.">Three are required: front, side and a close-up of the face. A fourth angle helps.</p>
+            <p class="hint" data-hint-totem="A photo or two of them, from any angle you have. We can always ask for more later." data-hint-jewelry="Optional: anything that inspires the piece, or photos of a ring that fits well.">A photo or two of them, from any angle you have. We can always ask for more later.</p>
             <div class="uploads">
-              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Front" data-j="Photo">Front</span></span></label>
-              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Side" data-j="Photo">Side</span></span></label>
-              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Face" data-j="Photo">Face</span></span></label>
+              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Photo" data-j="Photo">Photo</span></span></label>
+              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Photo" data-j="Photo">Photo</span></span></label>
+              <label class="tile" data-required-tile><input type="file" accept="image/*"><span><span class="plus">+</span><span data-t="Photo" data-j="Photo">Photo</span></span></label>
               <label class="tile optional"><input type="file" accept="image/*"><span><span class="plus">+</span>Optional</span></label>
             </div>
           </div>
           <div class="q notes-q">
             <label class="label" for="c-notes">Notes for Us</label>
-            <span class="line"><textarea rows="1" id="c-notes" placeholder="Anything else we should know"></textarea></span>
+            <span class="line"><textarea rows="1" id="c-notes" placeholder="e.g. It’s a surprise for her birthday"></textarea></span>
           </div>
           <button type="button" class="next" data-next disabled>Continue</button>
         </div></div></div>
@@ -440,7 +442,7 @@
         if (!g.querySelector('[aria-pressed="true"]')) ok = false;
       });
       step.querySelectorAll('[data-required]').forEach(function (i) { if (!i.value.trim() || (i.type === 'email' && !/.+@.+\..+/.test(i.value))) ok = false; });
-      if (kind !== 'jewelry') step.querySelectorAll('[data-required-tile]').forEach(function (t) { if (!t.classList.contains('filled')) ok = false; });
+      if (kind !== 'jewelry' && !step.querySelector('.tile.filled')) ok = false;          // one photo is enough to begin; more can come later
       var btn = step.querySelector('[data-next]'); if (btn && !btn.hasAttribute('data-always')) btn.disabled = !ok;
     }
     steps.forEach(function (step) {
