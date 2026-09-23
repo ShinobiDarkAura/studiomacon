@@ -107,6 +107,7 @@ MADE_LINE = {
 # pictures kept on disk (the shop hover may use them) but left off a product page's gallery
 # pieces whose page still builds but which are left off the shop and Also Worth Keeping for now
 HIDE_FROM_SHOP = {"macon-cap"}          # remove a slug here to bring it back
+RETIRED = {"macon-cap"}          # pieces with no page any more
 
 # Photographs that repeat one already in the gallery: same framing, sometimes only a higher-resolution
 # copy of it. Measured by comparing normalised thumbnails, then checked by eye.
@@ -1130,6 +1131,8 @@ def main():
         save(f, editable(one_block(doc), f))
         print("  ", f)
     for p in products:
+        if p["slug"] in RETIRED:          # no page at all; its old addresses go to the shop (see _redirects)
+            continue
         doc = one_block(page(p, template, related_block(p, products)))
         first = (SHOP_IDS.get(p["slug"]) or [None])[0]
         if first:                                     # tell Meta and Google a piece was looked at

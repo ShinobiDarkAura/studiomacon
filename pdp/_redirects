@@ -24,7 +24,7 @@
 /product-page/ear-cuff               /ear-cuff.html 301
 /product-page/starshipkey-pendant    /starshipkey-pendant.html 301
 /product-page/meridian-egg-ring      /meridian-egg-ring.html 301
-/product-page/macon-cap              /macon-cap.html 301
+/product-page/macon-cap              / 301
 
 # the old Wix policy pages, and any piece that has since been retired
 /privacy-policy                      https://w3nidi-ny.myshopify.com/policies/privacy-policy 301
@@ -46,7 +46,8 @@
 /eleph                               /eleph.html 301
 /ibi                                 /ibi.html 301
 /lunar-canyon-ring                   /lunar-canyon-ring.html 301
-/macon-cap                           /macon-cap.html 301
+/macon-cap                           / 301
+/macon-cap.html                      / 301
 /meridian-egg-ring                   /meridian-egg-ring.html 301
 /milo                                /milo.html 301
 /ori                                 /ori.html 301

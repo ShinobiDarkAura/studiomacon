@@ -60,6 +60,7 @@
   .buy-now:hover{background:#4a27cc;border-color:#4a27cc}
   /* product buttons: 8px shorter than the site's other black buttons, type and arrow 15% smaller */
   .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85 - 1pt)}
+  @media (max-width:767px){ .buy .cta,.buy-now{height:54px} }          /* phones: as tall as the size field above them (52 + its border) */
   .buy .cta::after{height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
   .buy .cta:not([disabled]):hover::after{width:12px;margin-left:8px}
   .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
