@@ -788,7 +788,8 @@ html.intl .intl-note{display:block}          /* shown only to visitors outside t
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
   .wall figure.dr-emerge.is-seen{transform:none}
   @media (min-width:600px){ .wall{grid-template-columns:repeat(2,1fr)} }
-  @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} body.labels-under .wall{grid-template-columns:repeat(4,1fr)} }
+  @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} }
+  @media (min-width:768px){ .wall,.wall-head{padding-left:10vw;padding-right:10vw} }
   /* phones: two across, 8px from the edges, 8px between */
   /* phones: the space between pieces matches the space to the edge of the page */
   @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 var(--gutter)} }
@@ -833,8 +834,8 @@ html.intl .intl-note{display:block}          /* shown only to visitors outside t
     body.labels-under .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:14px}
     body.labels-under .piece .held{opacity:0}
     body.labels-under .piece:hover .held,body.labels-under .piece:focus-visible .held{opacity:1}
-    body.labels-under .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}
-    body.labels-under .piece .name{font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
+    body.labels-under .piece .over{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:4px;padding:29px 0 28px}
+    body.labels-under .piece .name{font:400 calc(var(--tile-name) + 5pt)/1 var(--serif);text-transform:uppercase}
     body.labels-under .piece .cost{font-size:14px;color:rgba(0,0,0,.55)}
   }
 
@@ -1045,7 +1046,7 @@ html.intl .intl-note{display:block}          /* shown only to visitors outside t
 })();
 </script>
 </head>
-<body class="logo-hero">
+<body class="logo-hero labels-under">
 
 
 <nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping <br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><p class="menu-legal" data-edit="page:index.html:d221367e"><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/privacy-policy">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/terms-of-service">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="https://w3nidi-ny.myshopify.com/policies/refund-policy">Refunds</a></p></nav>

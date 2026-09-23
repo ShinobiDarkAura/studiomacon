@@ -160,7 +160,8 @@
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
   .wall figure.dr-emerge.is-seen{transform:none}
   @media (min-width:600px){ .wall{grid-template-columns:repeat(2,1fr)} }
-  @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} body.labels-under .wall{grid-template-columns:repeat(4,1fr)} }
+  @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} }
+  @media (min-width:768px){ .wall,.wall-head{padding-left:10vw;padding-right:10vw} }
   /* phones: two across, 8px from the edges, 8px between */
   /* phones: the space between pieces matches the space to the edge of the page */
   @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 var(--gutter)} }
@@ -205,8 +206,8 @@
     body.labels-under .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:14px}
     body.labels-under .piece .held{opacity:0}
     body.labels-under .piece:hover .held,body.labels-under .piece:focus-visible .held{opacity:1}
-    body.labels-under .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}
-    body.labels-under .piece .name{font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
+    body.labels-under .piece .over{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:4px;padding:29px 0 28px}
+    body.labels-under .piece .name{font:400 calc(var(--tile-name) + 5pt)/1 var(--serif);text-transform:uppercase}
     body.labels-under .piece .cost{font-size:14px;color:rgba(0,0,0,.55)}
   }
 
@@ -229,7 +230,7 @@
   @media (min-width:768px) and (hover:none){ body:not(.labels-under) .piece .over{opacity:1;transform:none} }
 </style>
 </head>
-<body class="logo-hero">
+<body class="logo-hero labels-under">
 
 {{NAV}}
 
