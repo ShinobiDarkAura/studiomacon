@@ -23,7 +23,7 @@ def used_media():
     out = set()
     for f in glob.glob(os.path.join(HERE, "*.html")):
         doc = open(f, encoding="utf-8").read()
-        for m in re.findall(r'(?:src|poster)="(video/[^"]+)"', doc):
+        for m in re.findall(r'(?:src|poster)="(video/[^"?]+)[?"]', doc):
             out.add(os.path.normpath(m))
     return out
 
