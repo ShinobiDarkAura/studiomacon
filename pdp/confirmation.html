@@ -16,7 +16,7 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790100768">
+<link rel="stylesheet" href="site.css?v=1790231970">
 <style>
   .done-page{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;padding:calc(var(--head) + 36px) calc(var(--pad) + 24px) 36px}
   .done-page p.lede{margin:0 0 32px;font-size:17px;line-height:1.55}
@@ -28,8 +28,6 @@
 .wipe.cover{transform:translate3d(0,0,0);transition:transform 420ms cubic-bezier(.5,0,.25,1)}
 .wipe.gone{transform:translate3d(0,100%,0);transition:transform 500ms cubic-bezier(.5,0,.25,1)}
 </style>
-<link rel="preconnect" href="https://connect.facebook.net" crossorigin>
-<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 <script>
 (function () {
   try { if (sessionStorage.getItem('macon-wipe') !== '1') return; sessionStorage.removeItem('macon-wipe'); } catch (e) { return; }
@@ -258,6 +256,7 @@
 </footer>
 <script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581", "subscribeUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/subscribe"};</script>
 <script>
+addEventListener('load', function () { document.documentElement.classList.add('late-font'); });          // the footer's pencil font, after first paint
   // ?case shows the shop set in title case rather than capitals. Local look-see only.
   if (/[?&]case\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () { document.body.classList.add('title-case'); });
 

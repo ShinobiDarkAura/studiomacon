@@ -575,8 +575,6 @@ WIPE_HEAD = """<style>
 .wipe.cover{transform:translate3d(0,0,0);transition:transform 420ms cubic-bezier(.5,0,.25,1)}
 .wipe.gone{transform:translate3d(0,100%,0);transition:transform 500ms cubic-bezier(.5,0,.25,1)}
 </style>
-<link rel="preconnect" href="https://connect.facebook.net" crossorigin>
-<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 <script>
 (function () {
   try { if (sessionStorage.getItem('macon-wipe') !== '1') return; sessionStorage.removeItem('macon-wipe'); } catch (e) { return; }
@@ -817,6 +815,28 @@ def tinted(slug, src):
         a = np.asarray(im, float) * np.array(tint_gains(warm, tint))
         Image.fromarray(np.uint8(np.clip(a, 0, 255))).save(path, "WEBP", quality=82, method=6)
     return out
+
+
+def grid_srcset(src):
+    """Smaller copies of a grid picture (480 and 800 px wide): tiles show at a third of the page or less,
+    so the full-size file was up to ten times more than a phone or laptop needs."""
+    from PIL import Image
+    path = os.path.join(OUT, src)
+    if not src.endswith(".jpg.webp") or not os.path.exists(path):
+        return ""
+    with Image.open(path) as im:
+        w = im.width
+        parts = []
+        for tw in (480, 800):
+            if tw >= w:
+                continue
+            out = src[:-len(".jpg.webp")] + f"--g{tw}.jpg.webp"
+            if not os.path.exists(os.path.join(OUT, out)):
+                im.convert("RGB").resize((tw, round(im.height * tw / w)), Image.LANCZOS).save(os.path.join(OUT, out), "WEBP", quality=80, method=6)
+            parts.append(f"{out} {tw}w")
+    if not parts:
+        return ""
+    return f' srcset="{", ".join(parts)}, {src} {w}w" sizes="(max-width: 767px) 50vw, 27vw"'
 
 
 def light(doc):
@@ -1198,7 +1218,7 @@ def main():
         tiles.append(
             # the framing sits on the link, so the in-hand picture shown on hover zooms with the still
             f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
-            f'<span class="pic"><img src="{still_src}" alt="{html.escape(p["name"])}" loading="{lazy}">'
+            f'<span class="pic"><img src="{still_src}"{grid_srcset(still_src)} alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
             + f'</span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')

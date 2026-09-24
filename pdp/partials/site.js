@@ -1,4 +1,5 @@
 <script>
+addEventListener('load', function () { document.documentElement.classList.add('late-font'); });          // the footer's pencil font, after first paint
   // ?case shows the shop set in title case rather than capitals. Local look-see only.
   if (/[?&]case\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () { document.body.classList.add('title-case'); });
 

@@ -3,6 +3,8 @@
 
 /* Instrument Serif, SIL Open Font License — self-hosted so the page never waits on Google */
 @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
+/* the pencil hand is only in the footer: it loads after the page has painted (html.late-font, set in site.js) */
+html.late-font footer .fine.where{font-family:"Morello Pencil","Instrument Serif",serif}
 @font-face{font-family:"Morello Pencil";src:url(fonts/morellopencil.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"Instrument Sans";src:url(fonts/instrument-sans.woff2) format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
 @font-face{font-family:"Instrument Sans";src:url(fonts/instrument-sans-italic.woff2) format("woff2");font-weight:400 700;font-style:italic;font-display:swap}
@@ -135,7 +137,7 @@ footer .brand{order:3}
 footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
 footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
 footer .fine{margin:0;font:400 calc((32px - 5pt) * 1.2)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
-footer .fine.where{margin:12px 0 0;font-family:"Morello Pencil","Instrument Serif",serif;font-size:21px;letter-spacing:.01em;text-transform:none;opacity:.6;
+footer .fine.where{margin:12px 0 0;font-family:"Instrument Serif",serif;font-size:21px;letter-spacing:.01em;text-transform:none;opacity:.6;
   display:inline-block;transform:rotate(-3deg);transform-origin:left center}          /* where the studio is, in the studio's own hand */
 footer .links{display:flex;flex-wrap:wrap;gap:10px 31px;margin:0;font-size:calc(14px - 1pt)}          /* matches the top nav */
 footer .news{order:1;max-width:460px}
