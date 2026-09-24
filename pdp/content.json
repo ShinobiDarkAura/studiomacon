@@ -520,7 +520,7 @@
     "y": 50,
     "z": 1,
     "warm": -3.0,
-    "tint": -1.5
+    "tint": 3.5
    },
    "tile_before_hires": {
     "x": 48.2,
