@@ -12,7 +12,7 @@
   "ren": 0.4119,
   "sietch-aperture": 0.2782,
   "starshipkey-pendant": 0.1115,
-  "wonderhorn-talisman": 0.4377,
+  "wonderhorn-talisman": 0.3543,
   "yael": 0.4041,
   "zuma": 0.7003,
   "zuma-ring": 0.3746
@@ -30,7 +30,7 @@
   "ren": 0.607,
   "sietch-aperture": 0.7205,
   "starshipkey-pendant": 0.145,
-  "wonderhorn-talisman": 0.4904,
+  "wonderhorn-talisman": 0.5367,
   "yael": 0.3323,
   "zuma": 0.3751,
   "zuma-ring": 0.4602
@@ -48,7 +48,7 @@
   "ren": 0.4531,
   "sietch-aperture": 0.2668,
   "starshipkey-pendant": 0.2745,
-  "wonderhorn-talisman": 0.525,
+  "wonderhorn-talisman": 0.6175,
   "yael": 0.6852,
   "zuma": 0.6801,
   "zuma-ring": 0.6752
@@ -66,7 +66,7 @@
   "ren": 0.6918,
   "sietch-aperture": 0.3367,
   "starshipkey-pendant": 0.3095,
-  "wonderhorn-talisman": 0.4361,
+  "wonderhorn-talisman": 0.5917,
   "yael": 0.5922,
   "zuma": 0.601,
   "zuma-ring": 0.5322
@@ -84,7 +84,7 @@
   "ren": 0.4822,
   "sietch-aperture": 0.5296,
   "starshipkey-pendant": 0.3994,
-  "wonderhorn-talisman": 0.7529,
+  "wonderhorn-talisman": 0.6422,
   "yael": 0.3846,
   "zuma": 0.4472,
   "zuma-ring": 0.4576
@@ -102,7 +102,7 @@
   "ren": 0.5884,
   "sietch-aperture": 0.6522,
   "starshipkey-pendant": 0.1881,
-  "wonderhorn-talisman": 0.4753,
+  "wonderhorn-talisman": 0.5208,
   "yael": 0.3937,
   "zuma": 0.4228,
   "zuma-ring": 0.4557
@@ -120,7 +120,7 @@
   "ren": 0.6662,
   "sietch-aperture": 0.3831,
   "starshipkey-pendant": 0.3484,
-  "wonderhorn-talisman": 0.46,
+  "wonderhorn-talisman": 0.5655,
   "yael": 0.5798,
   "zuma": 0.6083,
   "zuma-ring": 0.4948
@@ -138,7 +138,7 @@
   "ren": 0.4334,
   "sietch-aperture": 0.3489,
   "starshipkey-pendant": 0.2538,
-  "wonderhorn-talisman": 0.6048,
+  "wonderhorn-talisman": 0.403,
   "yael": 0.4491,
   "zuma": 0.7551,
   "zuma-ring": 0.3976
@@ -156,7 +156,7 @@
   "ren": 0.3595,
   "sietch-aperture": 0.2236,
   "starshipkey-pendant": 0.3906,
-  "wonderhorn-talisman": 0.4256,
+  "wonderhorn-talisman": 0.4504,
   "yael": 0.5659,
   "zuma": 0.5541,
   "zuma-ring": 0.409
@@ -174,7 +174,7 @@
   "ren": 0.4224,
   "sietch-aperture": 0.1917,
   "starshipkey-pendant": 0.19,
-  "wonderhorn-talisman": 0.4467,
+  "wonderhorn-talisman": 0.3589,
   "yael": 0.6669,
   "zuma": 0.6518,
   "zuma-ring": 0.5784
@@ -192,7 +192,7 @@
   "rebi": 0.4224,
   "sietch-aperture": 0.4587,
   "starshipkey-pendant": 0.1904,
-  "wonderhorn-talisman": 0.3239,
+  "wonderhorn-talisman": 0.4221,
   "yael": 0.4774,
   "zuma": 0.4795,
   "zuma-ring": 0.42
@@ -210,7 +210,7 @@
   "rebi": 0.1917,
   "ren": 0.4587,
   "starshipkey-pendant": 0.1306,
-  "wonderhorn-talisman": 0.3694,
+  "wonderhorn-talisman": 0.3653,
   "yael": 0.2138,
   "zuma": 0.2398,
   "zuma-ring": 0.313
@@ -228,28 +228,28 @@
   "rebi": 0.19,
   "ren": 0.1904,
   "sietch-aperture": 0.1306,
-  "wonderhorn-talisman": 0.392,
+  "wonderhorn-talisman": 0.2922,
   "yael": 0.2761,
   "zuma": 0.3059,
   "zuma-ring": 0.1341
  },
  "wonderhorn-talisman": {
-  "ear-cuff": 0.4377,
-  "eclipse-ring": 0.4904,
-  "eleph": 0.525,
-  "ibi": 0.4361,
-  "lunar-canyon-ring": 0.7529,
-  "meridian-egg-ring": 0.4753,
-  "milo": 0.46,
-  "ori": 0.6048,
-  "pip": 0.4256,
-  "rebi": 0.4467,
-  "ren": 0.3239,
-  "sietch-aperture": 0.3694,
-  "starshipkey-pendant": 0.392,
-  "yael": 0.3286,
-  "zuma": 0.5764,
-  "zuma-ring": 0.4575
+  "ear-cuff": 0.3543,
+  "eclipse-ring": 0.5367,
+  "eleph": 0.6175,
+  "ibi": 0.5917,
+  "lunar-canyon-ring": 0.6422,
+  "meridian-egg-ring": 0.5208,
+  "milo": 0.5655,
+  "ori": 0.403,
+  "pip": 0.4504,
+  "rebi": 0.3589,
+  "ren": 0.4221,
+  "sietch-aperture": 0.3653,
+  "starshipkey-pendant": 0.2922,
+  "yael": 0.4243,
+  "zuma": 0.4968,
+  "zuma-ring": 0.6024
  },
  "yael": {
   "ear-cuff": 0.4041,
@@ -265,7 +265,7 @@
   "ren": 0.4774,
   "sietch-aperture": 0.2138,
   "starshipkey-pendant": 0.2761,
-  "wonderhorn-talisman": 0.3286,
+  "wonderhorn-talisman": 0.4243,
   "zuma": 0.61,
   "zuma-ring": 0.7303
  },
@@ -283,7 +283,7 @@
   "ren": 0.4795,
   "sietch-aperture": 0.2398,
   "starshipkey-pendant": 0.3059,
-  "wonderhorn-talisman": 0.5764,
+  "wonderhorn-talisman": 0.4968,
   "yael": 0.61,
   "zuma-ring": 0.4942
  },
@@ -301,7 +301,7 @@
   "ren": 0.42,
   "sietch-aperture": 0.313,
   "starshipkey-pendant": 0.1341,
-  "wonderhorn-talisman": 0.4575,
+  "wonderhorn-talisman": 0.6024,
   "yael": 0.7303,
   "zuma": 0.4942
  }

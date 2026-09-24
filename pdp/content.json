@@ -124,11 +124,10 @@
     "tint": 1.0
    },
    "gallery": [
-    "img/ibi/hires-2-dm.jpg",
     "img/ibi/hand-2.jpg",
     "img/ibi/hires-4.jpg"
    ],
-   "hero": "img/ibi/hero.jpg",
+   "hero": "img/ibi/hires-2-dm.jpg",
    "hidden": [],
    "tile_image": "img/ibi/hires-2.jpg",
    "tile_hover": "img/ibi/hires-3.jpg",
@@ -532,7 +531,8 @@
     "img/wonderhorn-talisman/plain-2.jpg",
     "img/wonderhorn-talisman/plain-3.jpg",
     "img/wonderhorn-talisman/hand-1.jpg"
-   ]
+   ],
+   "tile_image": "img/wonderhorn-talisman/plain-1.jpg"
   },
   "yael": {
    "frames": {
@@ -588,8 +588,8 @@
     "x": 50,
     "y": 50,
     "z": 1,
-    "warm": -4.5,
-    "tint": 1.0
+    "warm": 0,
+    "tint": 0
    },
    "tile_before_hires": {
     "x": 50,
