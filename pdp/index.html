@@ -796,7 +796,7 @@ html.intl .intl-note{display:block}          /* shown only to visitors outside t
   @media (min-width:768px){ .wall-head{padding-left:24px;padding-right:24px} .wall{padding-left:0;padding-right:0} }          /* desktop: the pictures run to the screen edges */
   /* phones: two across, 8px from the edges, 8px between */
   /* phones: the space between pieces matches the space to the edge of the page */
-  @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px 1px;padding:0} .piece .over{padding-left:16px !important} }          /* phones: edge to edge too; names kept 16px off the edge */
+  @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px 1px;padding:0 16px} }          /* phones: 16px in from the edges, as the product photos; hairlines between */          /* phones: edge to edge too; names kept 16px off the edge */
   @media (max-width:767px){ .piece .over{padding-right:14px !important;box-sizing:border-box} }          /* long names wrap before they reach the next tile */
   @media (hover:none){ .piece .held{display:none} }
   /* the in-hand picture is framed on its own (--hx/--hy/--hz, measured by tools/align_hover.py)

@@ -189,14 +189,13 @@
     .order::-webkit-scrollbar{display:none}
   }
   @media (max-width:1023px){
-    body .commission{display:grid;grid-template-columns:1fr 1fr;gap:1px;padding:0}          /* the pictures edge to edge, hairlines between */
+    body .commission{display:grid;grid-template-columns:1fr 1fr;gap:1px;padding:0 16px}          /* 16px in from the edges, as the product photos; hairlines between */
     .commission > .examples{display:contents}
     .commission .examples .lead{grid-column:1/-1;order:-2;margin:0;aspect-ratio:auto;height:70vh;height:70svh}
-    .commission > .order{grid-column:1/-1;order:-1;padding:32px var(--gutter) 48px !important}
+    .commission > .order{grid-column:1/-1;order:-1;padding:32px 0 48px !important}
     .order > .eyebrow,.order h1,.order .body,.order .price{text-align:center;margin-left:auto;margin-right:auto}
     .order .body{max-width:90%}          /* the opening line reads a touch narrower than the page */
     .commission > .order{padding-bottom:0 !important}
-    .past-head{padding-left:var(--gutter) !important;padding-right:var(--gutter) !important}
 
     /* Past Work: the shop grid's heading, 48px under the last step */
     .past-head{grid-column:1/-1;display:flex;justify-content:center;align-items:baseline;gap:10px;margin:40px 0 16px;padding:0 !important}          /* 40 + the grid gap of 8 = 48 */
