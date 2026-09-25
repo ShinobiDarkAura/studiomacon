@@ -399,7 +399,14 @@
     function early() {}          // scrolling no longer cuts the intro short: it fades with the film instead (see cue)
     if (skip) { finish(); window.MaconHeroQuiet(); return; }
     document.body.classList.add('logo-anim');
-    addEventListener('scroll', early, {passive: true});
+    if (document.documentElement.classList.contains('intro-wait')) {          // arriving from the menu: begin once it has slid away
+      addEventListener('macon:intro', run, {once: true}); return;
+    }
+    run();
+  })();
+  function run() {
+    var build = document.querySelector('.logo-build'), tag = document.querySelector('.film .tagline'), chars = [].slice.call(tag.querySelectorAll('.ch'));
+    var timers = []; function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
     [].forEach.call(build.querySelectorAll('.ll'), function (l, i) {
       l.classList.add('in');
       l.style.animationDelay = (i * 95) + 'ms';                                         // M, then A, then the C, and so on
@@ -414,7 +421,7 @@
     later(function () { build.classList.remove('fall'); }, t + 1000);
     chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
     window.MaconHeroQuiet();
-  })();
+  }
   // on the home page the eye is hoverable; a click takes you back to the top instead of reloading the page
   document.querySelector('.head .logotype').addEventListener('click', function (e) { e.preventDefault(); scrollTo({top: 0, behavior: 'smooth'}); }, true);
   function cue() {

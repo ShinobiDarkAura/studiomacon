@@ -618,3 +618,6 @@ footer .hover-line:not(.mob){padding-bottom:5px}          /* footer links: the u
 
 .intl-note{display:none}
 html.intl .intl-note{display:block}          /* shown only to visitors outside the US */
+
+/* arriving from the menu: every scroll-in waits, held in its starting pose, until the drawer has gone */
+html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;transform:translateY(66px) scale(.985) !important;transition:none !important}

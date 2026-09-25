@@ -635,6 +635,9 @@ footer .hover-line:not(.mob){padding-bottom:5px}          /* footer links: the u
 
 .intl-note{display:none}
 html.intl .intl-note{display:block}          /* shown only to visitors outside the US */
+
+/* arriving from the menu: every scroll-in waits, held in its starting pose, until the drawer has gone */
+html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;transform:translateY(66px) scale(.985) !important;transition:none !important}
 </style>
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}</style>
 <style>
@@ -941,6 +944,7 @@ html.intl .intl-note{display:block}          /* shown only to visitors outside t
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
   document.documentElement.classList.add('menu-arriving');
+  document.documentElement.classList.add('intro-wait');          // the page's own intro waits until the drawer has gone (site.js lifts this)
   var x = JSON.parse(sessionStorage.getItem('macon-x') || 'null');          // the X stays exactly where it was on the page just left
   if (x && x.l) { var st = document.createElement('style'); st.textContent = 'html .menu-sheet .menu-close{left:' + x.l + ';top:' + x.t + ';height:' + x.h + '}'; document.head.appendChild(st); }
 } } catch (e) {} })();
@@ -1940,6 +1944,8 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         // in one frame: were it closed a frame after "instant" came off, the still-open drawer
         // would restart its words' rise-in for that frame and they would blink out
         requestAnimationFrame(function () { menu.classList.remove('instant'); set(false); });
+        // once the drawer has fully slid away, the page's own intro plays
+        setTimeout(function () { root.classList.remove('intro-wait'); dispatchEvent(new Event('macon:intro')); }, 1100);
       };
       if (document.readyState === 'complete') setTimeout(close, 150);
       else addEventListener('load', function () { setTimeout(close, 150); });
@@ -2278,7 +2284,14 @@ function maconClickQuery(extra) {
     function early() {}          // scrolling no longer cuts the intro short: it fades with the film instead (see cue)
     if (skip) { finish(); window.MaconHeroQuiet(); return; }
     document.body.classList.add('logo-anim');
-    addEventListener('scroll', early, {passive: true});
+    if (document.documentElement.classList.contains('intro-wait')) {          // arriving from the menu: begin once it has slid away
+      addEventListener('macon:intro', run, {once: true}); return;
+    }
+    run();
+  })();
+  function run() {
+    var build = document.querySelector('.logo-build'), tag = document.querySelector('.film .tagline'), chars = [].slice.call(tag.querySelectorAll('.ch'));
+    var timers = []; function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
     [].forEach.call(build.querySelectorAll('.ll'), function (l, i) {
       l.classList.add('in');
       l.style.animationDelay = (i * 95) + 'ms';                                         // M, then A, then the C, and so on
@@ -2293,7 +2306,7 @@ function maconClickQuery(extra) {
     later(function () { build.classList.remove('fall'); }, t + 1000);
     chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, t + 150 + i * 55); });
     window.MaconHeroQuiet();
-  })();
+  }
   // on the home page the eye is hoverable; a click takes you back to the top instead of reloading the page
   document.querySelector('.head .logotype').addEventListener('click', function (e) { e.preventDefault(); scrollTo({top: 0, behavior: 'smooth'}); }, true);
   function cue() {

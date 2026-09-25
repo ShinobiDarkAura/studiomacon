@@ -770,6 +770,8 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         // in one frame: were it closed a frame after "instant" came off, the still-open drawer
         // would restart its words' rise-in for that frame and they would blink out
         requestAnimationFrame(function () { menu.classList.remove('instant'); set(false); });
+        // once the drawer has fully slid away, the page's own intro plays
+        setTimeout(function () { root.classList.remove('intro-wait'); dispatchEvent(new Event('macon:intro')); }, 1100);
       };
       if (document.readyState === 'complete') setTimeout(close, 150);
       else addEventListener('load', function () { setTimeout(close, 150); });

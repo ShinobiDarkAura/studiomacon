@@ -16,7 +16,7 @@
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790321987">
+<link rel="stylesheet" href="site.css?v=1790324875">
 <style>
   /* centred at every width: the title, the line under it and the button all sit on one axis */
   .lost{max-width:620px;margin:0 auto;display:flex;flex-direction:column;justify-content:center;align-items:center;
@@ -101,6 +101,7 @@
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
   document.documentElement.classList.add('menu-arriving');
+  document.documentElement.classList.add('intro-wait');          // the page's own intro waits until the drawer has gone (site.js lifts this)
   var x = JSON.parse(sessionStorage.getItem('macon-x') || 'null');          // the X stays exactly where it was on the page just left
   if (x && x.l) { var st = document.createElement('style'); st.textContent = 'html .menu-sheet .menu-close{left:' + x.l + ';top:' + x.t + ';height:' + x.h + '}'; document.head.appendChild(st); }
 } } catch (e) {} })();
@@ -1030,6 +1031,8 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         // in one frame: were it closed a frame after "instant" came off, the still-open drawer
         // would restart its words' rise-in for that frame and they would blink out
         requestAnimationFrame(function () { menu.classList.remove('instant'); set(false); });
+        // once the drawer has fully slid away, the page's own intro plays
+        setTimeout(function () { root.classList.remove('intro-wait'); dispatchEvent(new Event('macon:intro')); }, 1100);
       };
       if (document.readyState === 'complete') setTimeout(close, 150);
       else addEventListener('load', function () { setTimeout(close, 150); });
