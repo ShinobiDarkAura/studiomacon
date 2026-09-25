@@ -31,7 +31,7 @@ EYEBROW = {
     "milo": "Ancient Wanderer",
     "eclipse-ring": "Ellipses in Patient Equilibrium",
     "sietch-aperture": "Shelter Cut Into Rock",
-    "lunar-canyon-ring": "Folded Lunar Stone",
+    "lunar-canyon-ring": "Carved by the Aegean",
     "eleph": "Breath Suspended",
     "wonderhorn-talisman": "Horn for Undiscovered Chords",
     "macon-cap": "Modicum of Solar Protection",
@@ -57,7 +57,7 @@ DESC = {
     "milo": "The first piece made to carry the Maçon mark, in solid bronze. Each Milo is filed and finished by hand. Its surface adapts to whoever holds it; the bond deepens every season.",
     "eclipse-ring": "Two uneven ovals in sterling silver, one leaning into the other. Balanced and polished by hand. The meeting point between them is said to hold questions only stars can answer; astronomers decline to comment.",
     "sietch-aperture": "Sterling silver with a single opening, recovered from the wake of a passing comet. Through it appear landscapes found on no map; cartographers have stopped asking.",
-    "lunar-canyon-ring": "Sundered artifact forged from the core of a distant moon. Every fold is brought to a soft polish by hand. Social gatherings reportedly ebb and flow in time with the wearer's presence.",
+    "lunar-canyon-ring": "Sundered artifact forged from the core of a distant moon. Every curve is brought to a soft polish by hand. Social gatherings reportedly ebb and flow in time with the wearer's presence.",
     "eleph": "Rounded solid bronze, trunk raised for a gentle trumpet. Cast to order and finished by hand. A low, distant call has been reported by independent observers, always just out of sight.",
     "wonderhorn-talisman": "A silver spiral on a thirty inch chain, after the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment hums along.",
     "macon-cap": "A cotton cap with the Maçon mark stitched on the front. Each cap is checked by hand before it ships. It offers a little shade on bright days; wearers report being asked where they found it.",
@@ -377,7 +377,7 @@ def page(p, template, related=""):
             else:
                 raise AssertionError((slug, field, why))
 
-    small = {"of", "in", "for", "from", "a", "the", "and", "to", "than", "it", "into", "looks"}
+    small = {"of", "in", "for", "from", "a", "the", "and", "to", "than", "it", "into", "looks", "by"}
     echo = {w for w in re.findall(r"[a-z]+", eyebrow.lower()) if w not in small} & set(re.findall(r"[a-z]+", blurb.lower()))
     voice = (lambda t: not re.search(r"\b(we|i|our|us|sells?|sold|stock)\b", t, re.I), "first person or sales talk")
     check("description", blurb, voice, (lambda t: not echo, f"repeats the overline ({', '.join(sorted(echo))})"))
