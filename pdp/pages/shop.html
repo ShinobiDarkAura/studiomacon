@@ -210,10 +210,6 @@
     body.labels-under .piece .held{opacity:0;transition:none}
     .pic-hit{display:block}
     /* hover: the picture stays put and its grey frame grows 8px upward */
-    /* the picture runs 8px higher than it shows; hover reveals that strip, so the frame (and whatever
-       photo is in it, the in-hand one too) grows 8px upward while the picture itself stays put */
-    body.labels-under .piece .pic{margin-top:-8px;padding-top:8px;box-sizing:content-box;clip-path:inset(8px 0 0 0);transition:clip-path .35s cubic-bezier(.2,.7,.2,1)}
-    body.labels-under .piece .pic-hit:hover .pic{clip-path:inset(0 0 0 0)}          /* the hover picture swaps in at once, no cross-fade */
     body.labels-under .piece .pic-hit:hover .held,body.labels-under .piece:focus-visible .held{opacity:1}          /* the picture only, not the name under it */
     body.labels-under .piece .over{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:4px;padding:29px 0 28px}
     @media (min-width:768px){ body.labels-under .piece .over{padding-left:0;padding-right:0} }          /* names line up with their pictures */          /* the pictures meet the screen edge; the names keep 16px off it */
