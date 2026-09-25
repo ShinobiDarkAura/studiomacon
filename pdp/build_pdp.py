@@ -49,7 +49,7 @@ EYEBROW = {
 DESC = {
     "pip": "Solid bronze, small enough to vanish into a closed fist. Cast to order and finished by hand. Proximity induces unexpected calm; scholars remain blissfully baffled.",
     "rebi": "Solid bronze with a different outline from every side of the room. Each plane is refined by hand after casting. Handling is known to sharpen the reflexes; owners report catching things before they fall.",
-    "ren": "Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. The crest is polished by hand and the body keeps its deeper tone. Dawn light lingers on it longer than it should; hikers report arriving home early.",
+    "ren": "Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. The crest is polished by hand and the body keeps its deeper tone. Dawn light lingers on it longer than it should; hikers report arriving home early when carrying it.",
     "zuma": "Pocket-sized solid bronze, drawn at the same table as its namesake ring. Its sun-worn surface is filed by hand. Ancient runes suggest the two belong together; kept apart, both grow restless.",
     "ori": "Solid bronze with a comforting, stone-like weight in the palm. Its wide planes are smoothed by hand. Each winter solstice it gives off a faint warmth; keepers report fewer drafts.",
     "yael": "Slender solid bronze, balanced on the narrowest of footings. Its fine upper curves are refined by hand after casting. Altar bells resonate in its presence; neighbors report faint chimes at dusk.",
