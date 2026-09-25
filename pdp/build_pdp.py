@@ -1157,7 +1157,8 @@ def related_block(p, products):
     return ('<section class="related" aria-label="Other pieces">'
             '<p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img class="stamp" src="img/provenance-stamp.png" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2>'
             '<p class="rel-blurb">We’d like to introduce you to a few friends</p>'
-            f'<div class="rel-loop" data-centre="{len(left) + 1}"><div class="rel-track">{loop}</div></div></section>')
+            f'<div class="rel-three">{"".join(tile(x) for x in pick)}</div>'
+            f'<div class="rel-loop" data-centre="{len(left) + 1}"><div class="rel-track">{loop}</div></div></section>')          # desktop: the three; phones: the carousel
 
 
 def main():
