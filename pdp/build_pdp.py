@@ -675,6 +675,15 @@ TRACKING = ("""<meta name="facebook-domain-verification" content="%s">
 <script>
 (function () {
   window.maconTrack = function () {};
+  // the home grid photo test (desktop only): linen (as now), grey or clay. The same draw the grid makes.
+  window.MACON_CLAY_READY = false;          // flip to true once every piece has a clay photo in img/ab-clay
+  window.maconPhotoTest = function () {
+    if (!matchMedia('(min-width:768px)').matches) return 'phone';
+    var sides = ['linen', 'grey'].concat(window.MACON_CLAY_READY ? ['clay'] : []);
+    var v = null; try { v = localStorage.getItem('macon-photo-test'); } catch (e) {}
+    if (sides.indexOf(v) < 0) { v = sides[Math.floor(Math.random() * sides.length)]; try { localStorage.setItem('macon-photo-test', v); } catch (e) {} }
+    return v;
+  };
   if (!/(^|\\.)studiomacon\\.co$/.test(location.hostname)) return;          // the real site only
   // Meta's and Google's scripts (about 250 KB) wait until the page has finished loading, so on a slow
   // phone they don't compete with the film and the logo. Calls made before then queue up and are sent
@@ -754,7 +763,7 @@ TRACKING = ("""<meta name="facebook-domain-verification" content="%s">
       bt = localStorage.getItem('macon-bag-test');
       if (bt !== 'drawer' && bt !== 'page') { bt = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', bt); }
     }
-    gtag('set', 'user_properties', {bag_test: bt});
+    gtag('set', 'user_properties', {bag_test: bt, photo_test: maconPhotoTest()});
   } catch (e) {}
   gtag('config', '%s'); gtag('config', '%s');
   var ITEMS = %s;                                     // Shopify variant id -> catalog id
@@ -851,6 +860,15 @@ def grid_srcset(src):
     if not parts:
         return ""
     return f' srcset="{", ".join(parts)}, {src} {w}w" sizes="(max-width: 767px) 50vw, 27vw"'
+
+
+def ab_attrs(slug):
+    """The home grid photo test: the other versions of a tile's still, when they exist."""
+    out = ""
+    for style in ("grey", "clay"):
+        if os.path.exists(os.path.join(OUT, "img", f"ab-{style}", f"{slug}.webp")):
+            out += f' data-{style}="img/ab-{style}/{slug}.webp"'
+    return out
 
 
 def light(doc):
@@ -1252,7 +1270,7 @@ def main():
         tiles.append(
             # the framing sits on the link, so the in-hand picture shown on hover zooms with the still
             f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
-            f'<span class="pic-hit"><span class="pic"><img src="{still_src}"{grid_srcset(still_src)} alt="{html.escape(p["name"])}" loading="{lazy}">'
+            f'<span class="pic-hit"><span class="pic"><img src="{still_src}"{grid_srcset(still_src)}{ab_attrs(p["slug"])} alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
             + f'</span></span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')

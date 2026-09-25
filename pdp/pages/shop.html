@@ -6,7 +6,10 @@
 <title>Bronze totems and silver jewelry | Studio Maçon</title>
 <link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
-<style>{{STAMP}}</style>
+<style>{{STAMP}}
+  /* home grid photo test: the grey and clay stills are framed in the picture itself */
+  html.photo-grey .piece .pic img:not(.held),html.photo-clay .piece .pic img:not(.held){object-position:50% 50% !important;transform:none !important}
+</style>
 <style>
   /* the film fills the first screen; the nav sits over it in white */
   .film{position:relative;height:100vh;height:100svh;overflow:hidden;background:#111}
@@ -615,6 +618,17 @@
         .then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy settings'; }, 1500); },
               function () { prompt('Copy these settings:', out); });
     };
+  })();
+</script>
+<script>
+  // home grid photo test, desktop only: this visitor sees linen (as always), grey or clay stills
+  (function () {
+    var side = window.maconPhotoTest ? maconPhotoTest() : 'linen';
+    if (side !== 'grey' && side !== 'clay') return;
+    var imgs = document.querySelectorAll('.wall .piece .pic img:not(.held)');
+    if (![].every.call(imgs, function (i) { return i.getAttribute('data-' + side); })) return;          // a style is only shown whole
+    document.documentElement.classList.add('photo-' + side);
+    [].forEach.call(imgs, function (i) { var s = i.getAttribute('data-' + side); i.removeAttribute('srcset'); i.src = s; });
   })();
 </script>
 </body>
