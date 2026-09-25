@@ -163,7 +163,7 @@
   @media (min-width:600px){ .wall{grid-template-columns:repeat(2,1fr)} }
   @media (min-width:900px){ .wall{grid-template-columns:repeat(4,1fr)} }
   @media (min-width:768px){ body:not(.labels-under) .wall{row-gap:1px} }          /* stacked: a hairline between rows as between columns */
-  @media (min-width:768px){ .wall-head{padding-left:24px;padding-right:24px} .wall{padding-left:0;padding-right:0} }          /* desktop: the pictures run to the screen edges */
+  @media (min-width:768px){ .wall-head{padding-left:24px;padding-right:24px} .wall{padding-left:32px;padding-right:32px} }          /* desktop: the pictures run to the screen edges */
   /* phones: two across, 8px from the edges, 8px between */
   /* phones: the space between pieces matches the space to the edge of the page */
   @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px 1px;padding:0 16px} }          /* phones: 16px in from the edges, as the product photos; hairlines between */          /* phones: edge to edge too; names kept 16px off the edge */
@@ -216,7 +216,7 @@
     body.labels-under .piece .pic-hit:hover .pic{clip-path:inset(0 0 0 0)}          /* the hover picture swaps in at once, no cross-fade */
     body.labels-under .piece .pic-hit:hover .held,body.labels-under .piece:focus-visible .held{opacity:1}          /* the picture only, not the name under it */
     body.labels-under .piece .over{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:4px;padding:29px 0 28px}
-    @media (min-width:768px){ body.labels-under .piece .over{padding-left:16px;padding-right:16px} }          /* the pictures meet the screen edge; the names keep 16px off it */
+    @media (min-width:768px){ body.labels-under .piece .over{padding-left:0;padding-right:0} }          /* names line up with their pictures */          /* the pictures meet the screen edge; the names keep 16px off it */
     body.labels-under .piece .name{font:400 calc(var(--tile-name) + 5pt)/1 var(--serif);text-transform:uppercase}
     body.labels-under .piece .cost{font-size:14px;color:rgba(0,0,0,.55)}
   }
@@ -240,7 +240,7 @@
   @media (min-width:768px) and (hover:none){ body:not(.labels-under) .piece .over{opacity:1;transform:none} }
 </style>
 </head>
-<body class="logo-hero">
+<body class="logo-hero labels-under">
 
 {{NAV}}
 
