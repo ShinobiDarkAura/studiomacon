@@ -110,7 +110,7 @@
   // the home grid photo test (desktop only): linen (as now), grey or clay. The same draw the grid makes.
   window.MACON_CLAY_READY = false;          // flip to true once every piece has a clay photo in img/ab-clay
   window.maconPhotoTest = function () {
-    if (!matchMedia('(min-width:768px)').matches) return 'phone';
+    if (!matchMedia('(min-width:1024px) and (hover:hover) and (pointer:fine)').matches) return 'not-desktop';          // desktops only: no phones, no tablets
     var sides = ['linen', 'grey'].concat(window.MACON_CLAY_READY ? ['clay'] : []);
     var v = null; try { v = localStorage.getItem('macon-photo-test'); } catch (e) {}
     if (sides.indexOf(v) < 0) { v = sides[Math.floor(Math.random() * sides.length)]; try { localStorage.setItem('macon-photo-test', v); } catch (e) {} }
