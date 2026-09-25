@@ -55,7 +55,7 @@ DESC = {
     "yael": "Slender solid bronze, balanced on the narrowest of footings. Its fine upper curves are sharpened by hand at the bench. Altar bells resonate in its presence; neighbors swear they hear chimes at dusk.",
     "zuma-ring": "Sterling silver carrying the shoulder line of the Zuma totem around the finger. Each band is sized and polished by hand. Unearthed glyphs record rituals performed with its pair; wearers feel a sudden urge to walk barefoot.",
     "milo": "The first piece made to carry the Maçon mark, in solid bronze. Each Milo is filed and burnished by hand. Its surface adapts to whoever holds it; the bond deepens every season.",
-    "eclipse-ring": "Two uneven ovals in sterling silver, one leaning into the other. Balanced and smoothed by hand. The meeting point between them is said to hold questions only stars can answer; astronomers decline to comment.",
+    "eclipse-ring": "Two uneven ovals in sterling silver, one leaning into the other. Balanced and worked by hand. The meeting point between them is said to hold questions only stars can answer; astronomers decline to comment.",
     "sietch-aperture": "Sterling silver with a single opening, recovered from the wake of a passing comet. Through it appear landscapes found on no map; cartographers have stopped asking.",
     "lunar-canyon-ring": "Sundered artifact forged from the core of a distant moon. Every curve is brought to a soft polish by hand. Social gatherings seem to ebb and flow in time with the wearer's presence.",
     "eleph": "Rounded solid bronze, trunk raised for a gentle trumpet. Made to order, shaped by hand. A low call has been heard by independent observers, always just out of sight.",
