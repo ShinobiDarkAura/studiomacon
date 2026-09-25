@@ -15,6 +15,7 @@
   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
+  @media (min-width:1024px){ .examples figure[data-name="hannah-patsy-2-warm--centred.jpg"]{display:none !important} }          /* desktop: off for now so the grid comes out even */
   .examples figure:not(.lead) .over{display:none !important}          /* no name or year on hover */
   .examples .dr-emerge,.examples figure.dr-emerge{opacity:1 !important;filter:none !important;transform:none !important;transition:none !important}          /* the Past Work grid is simply there: no scroll-in */
   .examples figure.cutout{background:#E8E6E1;display:grid;place-items:center}
