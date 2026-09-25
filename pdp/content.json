@@ -656,7 +656,10 @@
     "x": 46.1,
     "y": 46.6,
     "z": 1.36
-   }
+   },
+   "hidden": [
+    "img/zuma-ring/composite.jpg"
+   ]
   }
  },
  "pages": {},
