@@ -7,20 +7,20 @@
 <link rel="icon" href="img/favicon.png">
 <link rel="stylesheet" href="site.css?v={{CSSV}}">
 <style>
-  .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px) 24px}
+  .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh 24px 24px}          /* 24px from the screen edge, as on the home page */
   .wall-head h1{margin:0;font-size:57.5px}
   @media (min-width:768px){ .wall-head h1{font-size:66.25px} }
   @media (min-width:1200px){ .wall-head h1{font-size:75px} }
   .wall-head .count{font-size:13px;color:rgba(0,0,0,.45)}
   /* masonry: columns fill top to bottom, each picture keeps its own proportions */
-  .wall{columns:2;column-gap:10px;padding:0 calc(var(--pad) + 24px)}
-  .wall figure{margin:0 0 10px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
+  .wall{columns:2;column-gap:1px;padding:0}          /* edge to edge, hairlines between */
+  .wall figure{margin:0 0 1px;break-inside:avoid;border-radius:0;overflow:hidden;background:var(--field)}
   .wall img{width:100%;height:auto}
   /* pieces slide up and settle, like dropping into place */
   .wall figure.dr-emerge{filter:none;transform:translateY(90px);
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
   .wall figure.dr-emerge.is-seen{transform:none}
-  @media (min-width:768px){ .wall{columns:4;column-gap:12px} .wall figure{margin-bottom:12px} }
+  @media (min-width:768px){ .wall{columns:4;column-gap:1px} .wall figure{margin-bottom:1px} }
   @media (min-width:1600px){ .wall{columns:5} }
 </style>
 </head>

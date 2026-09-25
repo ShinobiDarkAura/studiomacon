@@ -9,13 +9,15 @@
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
-  .examples{columns:2;column-gap:10px;padding:calc(var(--head) + 24px) calc(var(--pad) + 24px) 0}
-  .examples figure{margin:0 0 10px;break-inside:avoid;border-radius:6px;overflow:hidden;background:var(--field)}
+  .examples{columns:2;column-gap:1px;padding:calc(var(--head) + 24px) calc(var(--pad) + 24px) 0}
+  .examples figure{margin:0 0 1px;break-inside:avoid;border-radius:0;overflow:hidden;background:var(--field)}
   .examples img{display:block;width:100%;height:auto}
   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
-  .examples figure.cutout{background:#eeeeec;display:grid;place-items:center}
+  .examples figure:not(.lead) .over{display:none !important}          /* no name or year on hover */
+  .examples .dr-emerge,.examples figure.dr-emerge{opacity:1 !important;filter:none !important;transform:none !important;transition:none !important}          /* the Past Work grid is simply there: no scroll-in */
+  .examples figure.cutout{background:#E8E6E1;display:grid;place-items:center}
   /* --s scales a piece inside its frame, --x/--y nudge it (in % of the frame); set by hand in edit mode */
   .examples figure.cutout img{width:70%;height:58%;object-fit:contain;
     transform:translate(calc(var(--x,0) * 1%),calc(var(--y,0) * 1%)) scale(var(--s,1))}
@@ -163,8 +165,12 @@
   @media (min-width:1024px){
     .commission{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;align-items:start;
       padding-right:calc(var(--pad) + 24px)}
-    .examples{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;padding:0}
+    .examples{display:grid;grid-template-columns:1fr 1fr;gap:1px;align-content:start;padding:0}
     .examples .lead{grid-column:1/-1;aspect-ratio:auto;height:100vh;border-radius:0}
+    .commission .examples figure.wide{grid-column:1/-1;aspect-ratio:auto;height:100vh}          /* the closing picture: the full width and height, like the lead */
+    .commission .examples figure.wide::before{display:none}
+    .commission .examples figure.wide img{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;object-fit:cover}
+    .commission .examples figure.wide .over{position:absolute;left:0;right:0;bottom:0}
     .examples figure{margin:0}
     /* pinned beside the wall, and scrolls on its own as steps open */
     .order{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;overscroll-behavior:contain;
@@ -188,16 +194,16 @@
 
     /* each piece as on the shop grid: a rounded 4:5 frame, its name and year set underneath */
     .commission .examples figure:not(.lead){aspect-ratio:auto;overflow:visible;background:none;border-radius:0;margin:0;display:block;place-items:normal}
-    .commission .examples figure:not(.lead)::before{content:"";display:block;width:100%;height:0;padding-top:125%;border-radius:6px;background:var(--field)}          /* a 4:5 frame */
-    .commission .examples figure.cutout::before{background:#eeeeec}
-    .commission .examples figure:not(.lead) img{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:4/5;border-radius:6px}
+    .commission .examples figure:not(.lead)::before{content:"";display:block;width:100%;height:0;padding-top:125%;border-radius:0;background:var(--field)}          /* a 4:5 frame */
+    .commission .examples figure.cutout::before{background:#E8E6E1}
+    .commission .examples figure:not(.lead) img{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:4/5;border-radius:0}
     .commission .examples figure.cutout img{object-fit:contain;padding:21% 15%;box-sizing:border-box}
     /* a piece set larger than its frame is cut at the frame's edge, as on desktop. The clip is drawn
        before the piece is scaled and nudged, so it is the frame worked backwards through that move */
     .commission .examples figure.cutout img{--k:calc(50% * (1 - 1 / var(--s,1)));
       clip-path:inset(calc(var(--k) - var(--y,0) * 1% / var(--s,1)) calc(var(--k) + var(--x,0) * 1% / var(--s,1))
-                      calc(var(--k) + var(--y,0) * 1% / var(--s,1)) calc(var(--k) - var(--x,0) * 1% / var(--s,1)) round calc(6px / var(--s,1)))}
-    .commission .examples figure.photo img{clip-path:inset(calc(50% * (1 - 1 / var(--s,1))) round calc(6px / var(--s,1)))}
+                      calc(var(--k) + var(--y,0) * 1% / var(--s,1)) calc(var(--k) - var(--x,0) * 1% / var(--s,1)) round 0)}
+    .commission .examples figure.photo img{clip-path:inset(calc(50% * (1 - 1 / var(--s,1))) round 0)}
     .commission .examples figure:not(.lead) .over{position:static;opacity:1;transform:none;background:none;color:#000;
       display:flex;flex-direction:column;gap:2px;padding:10px 0 14px;font-size:13px;pointer-events:auto}
     .commission .examples figure:not(.lead) .over .name{order:-1;font:400 var(--tile-name)/1 var(--serif);text-transform:uppercase;letter-spacing:0}

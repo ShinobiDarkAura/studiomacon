@@ -120,6 +120,9 @@ HIDE_FROM_GALLERY = ({"img/ori/plain-2.jpg", "img/ori/hires-1.jpg", "img/zuma/pl
 TODO = '<span class="todo">{}</span>'
 
 
+GREY_OBJECTS = set(json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "grey_objects.json")))) if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "grey_objects.json")) else set()          # photographs of a piece alone on #E4E3E1
+
+
 def kind(slug, notes, name=""):
     if slug == "macon-cap":
         return "apparel"
@@ -143,7 +146,7 @@ OOAK = [
      "notes": ["Glass beads and vegetable-tanned leather", "Worn on a long cord, close to the chest", "One of one"]},
 ]
 OOAK_SLUGS = {x["slug"] for x in OOAK}
-NO_FILM = {"eclipse-ring"}
+NO_FILM = {"eclipse-ring", "ear-cuff"}          # ear-cuff: its "in motion" film is off the page
 NO_COMPOSITE = {"ear-cuff"}
 PENDANTS = {"wonderhorn-talisman", "starshipkey-pendant"}          # pieces whose gallery ends without the lifestyle composite          # pieces whose product page shows photographs only, though a film exists
 HIDE_FROM_SHOP |= OOAK_SLUGS          # one-of-ones stay off the shop until Ephemeral returns
@@ -420,25 +423,31 @@ def page(p, template, related=""):
     gallery = [g for g in gallery if g not in HIDE_FROM_GALLERY]
     def framed(src, extra=""):
         """A picture with however the studio has set it inside its frame."""
-        f = (_content.product(slug, "frames", {}) or {}).get(src)
+        f = dict((_content.product(slug, "frames", {}) or {}).get(src) or {})
         style = ""
+        grey = src in GREY_OBJECTS
+        if grey:          # pieces on the backdrop sit about 28% smaller in their frame (15%, then 15% again); the frame is the same grey
+            f["z"] = f.get("z", 1) * 0.7586
         if f:
             style = (f' style="object-position:{f.get("x", 50):g}% {f.get("y", 50):g}%'
                      f';transform-origin:{f.get("x", 50):g}% {f.get("y", 50):g}%'
-                     f';transform:scale({f.get("z", 1):g})"')
+                     f';transform:translate({f.get("dx", 0):g}%,{f.get("dy", 0):g}%) scale({f.get("z", 1):g})"')          # dx/dy: moved by hand in the reframe tool
         # a real description, not an empty alt: these photographs are how the piece is found in image search
         shot = src.rsplit("/", 1)[-1].split(".")[0].replace("--m", "").rstrip("-0123456789").strip("-")
         how = {"hand": "held in the hand", "plain": "seen on its own", "hires": "close up",
                "hero": "", "composite": "at home on a shelf"}.get(shot, "")
         alt = f'{name}, {how}' if how else name
-        return f'<figure><img src="{src}"{style} alt="{html.escape(alt)}"{extra}></figure>'
+        cls = ' class="on-grey"' if grey else ""
+        return f'<figure{cls}><img src="{src}"{style} alt="{html.escape(alt)}"{extra}></figure>'
 
     figs = [framed(g, ' loading="lazy"') for g in gallery]
-    hf = (_content.product(slug, "frames", {}) or {}).get(hero)
+    hf = dict((_content.product(slug, "frames", {}) or {}).get(hero) or {})
+    if hero in GREY_OBJECTS:          # same as the gallery: 15% smaller on the grey
+        hf["z"] = hf.get("z", 1) * 0.7586
     hero_style = ("" if not hf else
                   f' style="object-position:{hf.get("x", 50):g}% {hf.get("y", 50):g}%'
                   f';transform-origin:{hf.get("x", 50):g}% {hf.get("y", 50):g}%'
-                  f';transform:scale({hf.get("z", 1):g})"')
+                  f';transform:translate({hf.get("dx", 0):g}%,{hf.get("dy", 0):g}%) scale({hf.get("z", 1):g})"')
     if slug not in NO_FILM and os.path.exists(os.path.join(OUT, "video", "pieces", f"{slug}.mp4")):
         figs.insert(1, f'<figure class="film-still"><video autoplay muted loop playsinline preload="metadata" poster="video/pieces/{slug}.jpg" aria-label="{html.escape(name)} in motion"><source src="video/pieces/{slug}.mp4" type="video/mp4"></video></figure>')
     if slug not in NO_COMPOSITE and os.path.exists(os.path.join(OUT, "img", slug, "composite.jpg")):
@@ -788,9 +797,13 @@ _sizes = {}
 
 
 def tile_src(src):
-    """The light copy of a picture, when one has been made for the grids."""
-    light_copy = src.rsplit(".", 1)[0] + "--tile.jpg.webp"
-    return light_copy if os.path.exists(os.path.join(OUT, light_copy)) else src
+    """The light copy of a picture, when one has been made for the grids. A --grey copy (the piece
+    re-shot on the flat grey backdrop, same framing) wins over the linen one."""
+    for suffix in ("--grey.jpg.webp", "--tile.jpg.webp"):
+        light_copy = src.rsplit(".", 1)[0] + suffix
+        if os.path.exists(os.path.join(OUT, light_copy)):
+            return light_copy
+    return src
 
 
 def tint_gains(warm, tint):
@@ -803,7 +816,7 @@ def tinted(slug, src):
     """The grid picture with the piece's colour balance baked in (a separate copy; the original is untouched)."""
     t = _content.product(slug, "tile", None) or {}
     warm, tint = round(float(t.get("warm", 0)), 1), round(float(t.get("tint", 0)), 1)
-    if not (warm or tint) or not src.endswith(".webp"):
+    if not (warm or tint) or not src.endswith(".webp") or "--grey" in src:          # the grey backdrops are already matched
         return src
     fmt = lambda v: ("p" if v >= 0 else "m") + f"{abs(v):g}"
     out = src[:-len(".jpg.webp")] + f"--c{fmt(warm)}{fmt(tint)}.jpg.webp"          # e.g. hero--tile--cm1.5p0.5.jpg.webp
@@ -1120,7 +1133,7 @@ def related_block(p, products):
         by = {x["slug"]: x for x in products}
         pick = [by[s] for s in sorted(PENDANTS - {p["slug"]}) + ["ear-cuff"] if s in by]
     tile = lambda x: (
-        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-frame"><img src="{rel_tile(x)}" alt="{html.escape(x["name"])}" loading="lazy"></span>'
+        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-hit"><span class="rel-frame"><img src="{rel_tile(x)}" alt="{html.escape(x["name"])}" loading="lazy"></span></span>'
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>')
     tiles = "".join(tile(x) for x in pick)
     # phones: every piece of the same family, up to six, the closest in look first, in a row to swipe
@@ -1129,11 +1142,22 @@ def related_block(p, products):
     if len(kin) < 3:          # a family of one or two (the ear cuff, the pendants): fill from what desktop suggests
         kin += sorted([x for x in pick if x not in kin], key=lambda x: -look.get(x["slug"], 0))[:3 - len(kin)]
     swipe = "".join(tile(x) for x in kin)
+    # one endless carousel for every screen: the three closest in look sit in the middle (the closest at
+    # the very centre), everything else spreads out from them, less alike the further out it goes
+    # only its own kind: totems with totems, jewelry with jewelry
+    kind_of = lambda x: "totem" if family(x) in ("totem", "cap") else "jewelry"
+    mykind = kind_of(p)
+    kin_all = [x for x in near_look(same) + near_look(near) + near_look(far) if kind_of(x) == mykind]
+    pick = [x for x in kin_all if x in pick] + [x for x in kin_all if x not in pick]
+    pick = pick[:3]
+    others = [x for x in kin_all if x not in pick]
+    left, right = others[1::2][::-1], others[0::2]
+    ring = left + [pick[1], pick[0], pick[2]][:len(pick)] + right if len(pick) == 3 else left + pick + right
+    loop = "".join(tile(x) for x in ring)
     return ('<section class="related" aria-label="Other pieces">'
             '<p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img class="stamp" src="img/provenance-stamp.png" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2>'
             '<p class="rel-blurb">We’d like to introduce you to a few friends</p>'
-            f'<div class="rel-grid">{tiles}</div>'
-            + (f'<div class="rel-swipe">{swipe}</div>' if swipe else '') + '</section>')
+            f'<div class="rel-loop" data-centre="{len(left) + 1}"><div class="rel-track">{loop}</div></div></section>')
 
 
 def main():
@@ -1167,7 +1191,7 @@ def main():
             for i, (n, w, h, cut) in enumerate(imgs):
                 t = tweaks.get(n, {})
                 figs.append(
-                    f'    <figure class="{"cutout" if cut else "photo"}" data-name="{html.escape(n)}" '
+                    f'    <figure class="{"cutout" if cut else "photo"}{" wide" if t.get("wide") else ""}" data-name="{html.escape(n)}" '
                     f'style="--s:{t.get("s", 1)};--x:{t.get("x", 0)};--y:{t.get("y", 0)}">'
                     f'<img src="img/commissions-cut/{html.escape(n)}" width="{w}" height="{h}" alt="{html.escape(t.get("name", ""))}" loading="{"eager" if i < 4 else "lazy"}" draggable="false">'
                     f'<span class="over"><span class="date">{html.escape(t.get("date", ""))}</span>'
@@ -1214,13 +1238,16 @@ def main():
         held = os.path.exists(os.path.join(OUT, hover))
         still_src = tinted(p["slug"], tile_src(grid_still(p["slug"])))          # the grid shows them small, colour-matched
         hover_src = tile_src(hover)
+        lift = hover.rsplit(".", 1)[0] + "--lift.jpg.webp"          # the totem brightened a touch; the original stays beside it
+        if os.path.exists(os.path.join(OUT, lift)):
+            hover_src = lift
         lazy = "eager" if i < 3 else "lazy"
         tiles.append(
             # the framing sits on the link, so the in-hand picture shown on hover zooms with the still
             f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
-            f'<span class="pic"><img src="{still_src}"{grid_srcset(still_src)} alt="{html.escape(p["name"])}" loading="{lazy}">'
+            f'<span class="pic-hit"><span class="pic"><img src="{still_src}"{grid_srcset(still_src)} alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
-            + f'</span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
+            + f'</span></span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
     st = {"w": 13, "right": 11.4, "drop": 98.3, "tilt": -14}

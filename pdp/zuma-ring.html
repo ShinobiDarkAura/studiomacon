@@ -20,15 +20,18 @@
 <link rel="stylesheet" href="site.css?v=1790231970">
 <style>
   /* ── product ───────────────────────────────────────── */
-  .gallery figure{margin:0;background:none;overflow:hidden}          /* the picture carries its own corners; a backing showed outside them */
+  .gallery figure{margin:0;background:none;overflow:hidden}
+  .gallery .dr-emerge,.gallery figure.dr-emerge{opacity:1 !important;filter:none !important;transform:none !important;transition:none !important}          /* the photo stack is simply there: no scroll-in */
+  .gallery figure.on-grey,.gallery .on-grey img{background:#E5E3DF}          /* pdp-field */
+  .gallery .hero,.gallery .hero .shot,.gallery .hero img,.gallery figure.on-grey{background:#E5E3DF !important}          /* pdp-field: the product photos' backdrop exactly as the browser decodes it */          /* the room around a smaller piece is the same grey */          /* the picture carries its own corners; a backing showed outside them */
   .gallery figure:not(.hero){display:none}          /* mobile: hero only up top */
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
   /* the hero is a track of pictures that slides; nothing is created or destroyed on a tap */
-  .gallery .hero{overflow:hidden;border-radius:14px}
+  .gallery .hero{overflow:hidden;border-radius:0}
   /* above the carousel, each photograph is its own object again */
-  @media (min-width:1024px){ .gallery figure img,.gallery figure video,.gallery .hero img,.gallery .hero video{border-radius:30px} .gallery .hero{border-radius:0}}
+  @media (min-width:1024px){ .gallery figure img,.gallery figure video,.gallery .hero img,.gallery .hero video{border-radius:0} .gallery .hero{border-radius:0}}
   .gallery .hero .shots{display:flex;width:100%;transition:transform .5s cubic-bezier(.2,.7,.2,1);will-change:transform}
-  .gallery .hero .shot{flex:0 0 100%;min-width:100%;background:var(--field)}          /* never white behind a picture */
+  .gallery .hero .shot{flex:0 0 100%;min-width:100%;background:var(--field);overflow:hidden;position:relative}          /* each slide clips its own picture, so a zoomed neighbour never spills in */          /* never white behind a picture */
   @media (prefers-reduced-motion:reduce){ .gallery .hero .shots{transition:none} }
   .gallery video{display:block;width:100%;height:100vh;height:100svh;object-fit:cover;background:var(--field)}
 
@@ -225,7 +228,7 @@
     /* thumbnails of every picture and film, under the main image */
     .thumbs{display:flex;gap:8px;margin:10px 0 0}
     .thumbs::-webkit-scrollbar{display:none}
-    .thumbs button{flex:1 1 0;min-width:0;aspect-ratio:4/5;padding:0;border-radius:10px;overflow:hidden}          /* however many there are, they share the full width */
+    .thumbs button{flex:1 1 0;min-width:0;aspect-ratio:4/5;padding:0;border-radius:0;overflow:hidden}          /* however many there are, they share the full width */
     .thumbs button.on{opacity:1}
     .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#000}
     .thumbs img{width:100%;height:100%;object-fit:cover}
@@ -255,10 +258,11 @@
   @media (min-width:1100px){ .rel-grid:has(> :nth-child(2):last-child){grid-template-columns:repeat(2,1fr);width:52.8%} }          /* a pair (the pendants) stays the same size, centred */
   .rel-name{font-size:calc(var(--tile-name) + 5pt) !important}          /* names scaled down with the pictures */
   .rel-piece{display:block;color:#000}
-  .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--field)}
+  .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:0;overflow:hidden;background:var(--field)}
   .rel-frame img{width:100%;height:100%;object-fit:cover}
   .rel-frame{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
-  .rel-piece:hover .rel-frame{transform:translateY(-8px)}          /* the picture lifts, the label stays put */
+  .rel-hit{display:block}
+  .rel-hit:hover .rel-frame{transform:translateY(-8px)}          /* only the picture's own spot lifts it, never the label */
   .rel-name{display:block;margin:20px 0 4px;font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
   .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
   @media (max-width:1099px){
@@ -272,7 +276,7 @@
     .rel-grid .rel-piece:nth-child(3){display:none}
     .rel-name{font-size:var(--tile-name) !important}
     .rel-piece{display:block;color:#000}
-    .rel-frame{display:block;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:var(--field)}
+    .rel-frame{display:block;aspect-ratio:4/5;border-radius:0;overflow:hidden;background:var(--field)}
     .rel-frame img{width:100%;height:100%;object-fit:cover}
     .rel-name{margin:10px 0 2px;font-size:var(--tile-name)}
     .rel-cost{display:block;font-size:13px;color:rgba(0,0,0,.55)}
@@ -297,17 +301,17 @@
       margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
     .gallery figure:not(.hero){display:block;margin-top:0}
     /* 12px inset on the left, and 12px under each picture */
-    .gallery{padding:16px 0 16px 16px;transition:padding-top .5s cubic-bezier(.22,1,.36,1)}          /* 16px clear of the banner, and the same inset left and below */
+    .gallery{padding:0;transition:padding-top .5s cubic-bezier(.22,1,.36,1)}          /* the pictures run to the screen's edges */          /* 16px clear of the banner, and the same inset left and below */
     /* the notice makes room for itself rather than covering the picture */
-    body.ship-on .gallery{padding-top:calc(16px + var(--ship-h,38px))}
-    .gallery figure{margin-bottom:12px}
+    body.ship-on .gallery{padding-top:var(--ship-h,38px)}
+    .gallery figure{margin-bottom:1px}          /* a hairline between stacked pictures */
     .gallery figure img{width:100%}
     /* every gallery photograph fills one full screen height */
-    .gallery figure img,.gallery .hero img{height:calc(100vh - 28px);height:calc(100svh - 28px);aspect-ratio:auto;object-fit:cover}
+    .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
     body.ship-on .gallery figure img,body.ship-on .gallery .hero img,
     body.ship-on .gallery .hero .shots,body.ship-on .gallery .hero .shot{
       height:calc(100svh - 28px - var(--ship-h,38px));transition:height .5s cubic-bezier(.22,1,.36,1)}
-    .gallery .hero .shots,.gallery .hero .shot{height:calc(100vh - 28px);height:calc(100svh - 28px)}
+    .gallery .hero .shots,.gallery .hero .shot{height:100vh;height:100svh}
     .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
     /* Tablets: the photo column is only ~320px wide, so a full screen of height turns each
        photograph into a 1:3 sliver and the page into 9,700px. Keep them in proportion instead. */
@@ -328,6 +332,18 @@
     .chunk{margin:188px auto;max-width:620px;padding:0}
     .dock{display:none}
   }
+
+  /* Also Worth Keeping: an endless carousel, full width, its edges fading out */
+  .rel-grid,.rel-swipe{display:none !important}
+  .rel-loop{position:relative;width:100vw;margin-left:calc(50% - 50vw);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;
+}
+  .rel-loop::-webkit-scrollbar{display:none}
+  .rel-track{display:flex;gap:16px;width:max-content;text-align:left}
+  .rel-loop .rel-piece{flex:0 0 22vw;scroll-snap-align:center}
+  .rel-loop .dr-emerge,.rel-loop .rel-piece{opacity:1 !important;filter:none !important;transform:none !important;transition:opacity .45s ease !important}          /* dims and brightens gently as pieces cross the edge of the middle three */
+  .rel-loop .rel-piece.side{opacity:1 !important}          /* the two beside the centre */
+  .rel-loop .rel-piece.edge{opacity:.15 !important}          /* everything further out */          /* no scroll-in animation here: the looped copies would never be revealed */
+  @media (max-width:767px){ .rel-track{gap:8px} .rel-loop .rel-piece{flex-basis:56vw} }
 </style>
 <style>
 .wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;
@@ -536,9 +552,9 @@
     <div class="gallery" data-under-nav>
       <figure class="hero"><img width="1776" height="1184" src="img/zuma-ring/hand-2.jpg.webp" alt="Zuma Ring" fetchpriority="high"></figure>
       <figure><img width="5825" height="3934" src="img/zuma-ring/hires-1.jpg.webp" srcset="img/zuma-ring/hires-1--m.jpg.webp 1200w, img/zuma-ring/hires-1.jpg.webp 5825w" sizes="(max-width: 767px) 100vw, 60vw" alt="Zuma Ring, close up" loading="lazy"></figure>
-      <figure><img width="6025" height="4160" src="img/zuma-ring/plain-1.jpg.webp" srcset="img/zuma-ring/plain-1--m.jpg.webp 1200w, img/zuma-ring/plain-1.jpg.webp 6025w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Zuma Ring, seen on its own" loading="lazy"></figure>
-      <figure><img width="2500" height="1543" src="img/zuma-ring/plain-2.jpg.webp" srcset="img/zuma-ring/plain-2--m.jpg.webp 1200w, img/zuma-ring/plain-2.jpg.webp 2500w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Zuma Ring, seen on its own" loading="lazy"></figure>
-      <figure><img width="1856" height="2304" src="img/zuma-ring/hero.jpg.webp" srcset="img/zuma-ring/hero--m.jpg.webp 1200w, img/zuma-ring/hero.jpg.webp 1856w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1)" alt="Zuma Ring" loading="lazy"></figure>
+      <figure><img width="6025" height="4160" src="img/zuma-ring/plain-1.jpg.webp" srcset="img/zuma-ring/plain-1--m.jpg.webp 1200w, img/zuma-ring/plain-1.jpg.webp 6025w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:translate(0%,0%) scale(1)" alt="Zuma Ring, seen on its own" loading="lazy"></figure>
+      <figure><img width="2500" height="1543" src="img/zuma-ring/plain-2.jpg.webp" srcset="img/zuma-ring/plain-2--m.jpg.webp 1200w, img/zuma-ring/plain-2.jpg.webp 2500w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:translate(0%,0%) scale(1)" alt="Zuma Ring, seen on its own" loading="lazy"></figure>
+      <figure><img width="1856" height="2304" src="img/zuma-ring/hero.jpg.webp" srcset="img/zuma-ring/hero--m.jpg.webp 1200w, img/zuma-ring/hero.jpg.webp 1856w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:translate(0%,0%) scale(1)" alt="Zuma Ring" loading="lazy"></figure>
       <figure><img width="1792" height="2400" src="img/zuma-ring/composite.jpg.webp" srcset="img/zuma-ring/composite--m.jpg.webp 1200w, img/zuma-ring/composite.jpg.webp 1792w" sizes="(max-width: 767px) 100vw, 60vw" alt="Zuma Ring, at home on a shelf" loading="lazy"></figure>
     </div>
     <script>
@@ -693,7 +709,7 @@
     </div>
   </section>
 
-  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-grid"><a class="rel-piece" href="eclipse-ring.html"><span class="rel-frame"><img src="img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp" alt="Eclipse Ring" loading="lazy"></span><span class="rel-name">Eclipse Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a><a class="rel-piece" href="meridian-egg-ring.html"><span class="rel-frame"><img src="img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp" alt="Meridian Egg" loading="lazy"></span><span class="rel-name">Meridian Egg</span><span class="rel-cost">$390</span></a></div><div class="rel-swipe"><a class="rel-piece" href="eclipse-ring.html"><span class="rel-frame"><img src="img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp" alt="Eclipse Ring" loading="lazy"></span><span class="rel-name">Eclipse Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a><a class="rel-piece" href="meridian-egg-ring.html"><span class="rel-frame"><img src="img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp" alt="Meridian Egg" loading="lazy"></span><span class="rel-name">Meridian Egg</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="sietch-aperture.html"><span class="rel-frame"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" alt="Sietch Ring" loading="lazy"></span><span class="rel-name">Sietch Ring</span><span class="rel-cost">$340</span></a></div></section>
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-loop" data-centre="3"><div class="rel-track"><a class="rel-piece" href="starshipkey-pendant.html"><span class="rel-hit"><span class="rel-frame"><img src="img/starshipkey-pendant/hero--tile.jpg.webp" alt="Starship Key" loading="lazy"></span></span><span class="rel-name">Starship Key</span><span class="rel-cost">$460</span></a><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-hit"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"></span></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a><a class="rel-piece" href="eclipse-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp" alt="Eclipse Ring" loading="lazy"></span></span><span class="rel-name">Eclipse Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="meridian-egg-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp" alt="Meridian Egg" loading="lazy"></span></span><span class="rel-name">Meridian Egg</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="sietch-aperture.html"><span class="rel-hit"><span class="rel-frame"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" alt="Sietch Ring" loading="lazy"></span></span><span class="rel-name">Sietch Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" alt="Caldera Arc" loading="lazy"></span></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a></div></div></section>
   <script>
   // the stamp presses down once the heading it sits on is in view, as on the home page
   (function () {
@@ -883,7 +899,6 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         var el = stack[i];
         if (el.closest('.head')) continue;
         if (el.tagName === 'VIDEO') return 0;
-        if (/^(IMG|VIDEO)$/.test(el.tagName) && el.closest('.product .gallery')) return 0;          // product photos: the nav is always white over them
         if (el.tagName === 'IMG') {
           var m = map(el); if (!m) return bgLuma(el);
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
@@ -1800,6 +1815,39 @@ function maconClickQuery(extra) {
       .observe(document.getElementById('bag'));
     new IntersectionObserver(function (e) { foot = e[0].isIntersecting; sync(); }, {rootMargin: '0px 0px -40% 0px'})
       .observe(document.querySelector('footer .news'));
+  })();
+</script>
+<script>
+  // Also Worth Keeping loops: five copies side by side; once scrolling comes to rest near an outer copy it
+  // quietly moves back to the middle one (never mid-flight, which is what flickered on fast scrolls)
+  (function () {
+    var box = document.querySelector('.rel-loop'); if (!box) return;
+    var track = box.querySelector('.rel-track'), one = [].slice.call(track.children), n = one.length; if (!n) return;
+    [].forEach.call(track.querySelectorAll('img'), function (i) { i.loading = 'eager'; });
+    for (var c = 0; c < 2; c++) {
+      one.forEach(function (el) { track.appendChild(el.cloneNode(true)); });
+      var first = track.firstChild; one.forEach(function (el) { track.insertBefore(el.cloneNode(true), first); });
+    }
+    var all = track.children, span = function () { return all[n].offsetLeft - all[0].offsetLeft; };
+    function centreOn(el) { box.scrollLeft = el.offsetLeft + el.offsetWidth / 2 - box.clientWidth / 2; }
+    centreOn(all[2 * n + (+box.dataset.centre || 0)]);
+    var queued = false;
+    function dim() {          // the three nearest the centre at full strength, the rest at 35%, once per frame
+      queued = false;
+      var mid = box.getBoundingClientRect().left + box.clientWidth / 2, w = all[0].offsetWidth + 8;
+      for (var i = 0; i < all.length; i++) { var r = all[i].getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - mid); all[i].classList.toggle('side', d > w * .5 && d <= w * 1.5); all[i].classList.toggle('edge', d > w * 1.5); }
+    }
+    var rest = null;
+    function settle() {          // back to the middle copy, by exactly one copy's width: nothing on screen changes
+      var s = span();
+      if (box.scrollLeft < s * 1.5) box.scrollLeft += s * Math.round((2 * s - box.scrollLeft) / s);
+      else if (box.scrollLeft > s * 2.5) box.scrollLeft -= s * Math.round((box.scrollLeft - 2 * s) / s);
+    }
+    box.addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(dim); }
+      clearTimeout(rest); rest = setTimeout(settle, 180);
+    }, {passive: true});
+    dim(); addEventListener('resize', function () { centreOn(all[2 * n + (+box.dataset.centre || 0)]); dim(); });
   })();
 </script>
 <script>maconTrack('view', {"variant": "53985363525997", "name": "Zuma Ring", "slug": "zuma-ring", "price": 320.0, "image": "https://studiomacon.co/img/email/wide-zuma-ring.jpg"});</script>

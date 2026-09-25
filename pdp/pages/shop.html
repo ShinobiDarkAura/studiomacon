@@ -21,7 +21,7 @@
   /* scroll cue: a mouse outline with a dot that drifts down and fades, on a slow loop */
   /* the outline is a phone, not a mouse: taller, with a phone's softer corner */
   .scroll-cue{position:absolute;left:50%;bottom:64px;scale:1.2;transform-origin:bottom center;z-index:2;width:22px;height:38px;margin-left:-11px;
-    border:1px solid rgba(255,255,255,.32);border-radius:6px;pointer-events:none;transition:opacity .5s ease}
+    border:1px solid rgba(255,255,255,.1);border-radius:6px;pointer-events:none;transition:opacity .5s ease}
   @media (max-width:767px){ .scroll-cue{bottom:auto;top:calc(100svh - 74px)} }
   @media (min-width:768px){ .scroll-cue{border-radius:999px} }          /* a full pill on desktop */
   .scroll-cue i{position:absolute;left:50%;bottom:7px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#fff;
@@ -154,17 +154,19 @@
   @media (min-width:1200px){ .wall-head h2{font-size:71px} }
 
   /* the grid sits further in than the rest of the page, so the pieces read smaller and calmer */
-  .wall{display:grid;grid-template-columns:1fr;gap:12px;padding:0 calc(var(--pad) + 24px + 7.5vw)}
-  .wall figure{margin:0;border-radius:14px;overflow:hidden;background:var(--field)}
+  .wall{display:grid;grid-template-columns:1fr;gap:12px 1px;padding:0 calc(var(--pad) + 24px + 7.5vw)}
+  .wall figure{margin:0;border-radius:0;overflow:hidden;background:#E5E3E0}
   .wall figure.dr-emerge{filter:none;transform:translateY(90px);
     transition:opacity .7s ease,transform .9s cubic-bezier(.2,1.25,.35,1);transition-delay:var(--stagger,0ms)}
   .wall figure.dr-emerge.is-seen{transform:none}
+  .wall figure.dr-emerge{opacity:1;filter:none;transform:none;transition:none}          /* the grid is simply there: no slide-up */
   @media (min-width:600px){ .wall{grid-template-columns:repeat(2,1fr)} }
-  @media (min-width:900px){ .wall{grid-template-columns:repeat(3,1fr)} }
-  @media (min-width:768px){ .wall,.wall-head{padding-left:10vw;padding-right:10vw} }
+  @media (min-width:900px){ .wall{grid-template-columns:repeat(4,1fr)} }
+  @media (min-width:768px){ body:not(.labels-under) .wall{row-gap:1px} }          /* stacked: a hairline between rows as between columns */
+  @media (min-width:768px){ .wall-head{padding-left:24px;padding-right:24px} .wall{padding-left:0;padding-right:0} }          /* desktop: the pictures run to the screen edges */
   /* phones: two across, 8px from the edges, 8px between */
   /* phones: the space between pieces matches the space to the edge of the page */
-  @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 var(--gutter)} }
+  @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px 1px;padding:0 var(--gutter)} }
   @media (hover:none){ .piece .held{display:none} }
   /* the in-hand picture is framed on its own (--hx/--hy/--hz, measured by tools/align_hover.py)
      so the piece lands where the still's piece lands, and hovering does not make it jump */
@@ -188,10 +190,10 @@
   @media (max-width:767px){
      .wall figure{overflow:visible;background:none;border-radius:0}
      .piece{position:relative;display:block;color:#000}
-     .piece .pic{border-radius:14px}
-     .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:14px}
+     .piece .pic{border-radius:0}
+     .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:0}
      .piece .held{opacity:0}
-     .piece:hover .held, .piece:focus-visible .held{opacity:1}
+     .piece .pic-hit:hover .held, .piece:focus-visible .held{opacity:1}
      .piece .over{display:flex;flex-direction:column;gap:4px;padding:20px 0 28px}
      .piece .name{font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
      .piece .cost{font-size:14px;color:rgba(0,0,0,.55)}
@@ -202,11 +204,18 @@
   @media (min-width:768px){
     body.labels-under .wall figure{overflow:visible;background:none;border-radius:0}
     body.labels-under .piece{position:relative;display:block;color:#000}
-    body.labels-under .piece .pic{border-radius:14px}
-    body.labels-under .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:14px}
-    body.labels-under .piece .held{opacity:0}
-    body.labels-under .piece:hover .held,body.labels-under .piece:focus-visible .held{opacity:1}
+    body.labels-under .piece .pic{border-radius:0}
+    body.labels-under .piece .placeholder-fill{position:relative;display:block;aspect-ratio:4/5;border-radius:0}
+    body.labels-under .piece .held{opacity:0;transition:none}
+    .pic-hit{display:block}
+    /* hover: the picture stays put and its grey frame grows 8px upward */
+    /* the picture runs 8px higher than it shows; hover reveals that strip, so the frame (and whatever
+       photo is in it, the in-hand one too) grows 8px upward while the picture itself stays put */
+    body.labels-under .piece .pic{margin-top:-8px;padding-top:8px;box-sizing:content-box;clip-path:inset(8px 0 0 0);transition:clip-path .35s cubic-bezier(.2,.7,.2,1)}
+    body.labels-under .piece .pic-hit:hover .pic{clip-path:inset(0 0 0 0)}          /* the hover picture swaps in at once, no cross-fade */
+    body.labels-under .piece .pic-hit:hover .held,body.labels-under .piece:focus-visible .held{opacity:1}          /* the picture only, not the name under it */
     body.labels-under .piece .over{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:4px;padding:29px 0 28px}
+    @media (min-width:768px){ body.labels-under .piece .over{padding-left:16px;padding-right:16px} }          /* the pictures meet the screen edge; the names keep 16px off it */
     body.labels-under .piece .name{font:400 calc(var(--tile-name) + 5pt)/1 var(--serif);text-transform:uppercase}
     body.labels-under .piece .cost{font-size:14px;color:rgba(0,0,0,.55)}
   }
@@ -216,7 +225,7 @@
     body:not(.labels-under) .piece{position:relative;display:block;color:#fff;aspect-ratio:4/5;overflow:hidden}
 
     body:not(.labels-under) .piece .placeholder-fill{position:absolute;inset:0}
-    body:not(.labels-under) .piece .held{opacity:0;transition:opacity .5s ease}
+    body:not(.labels-under) .piece .held{opacity:0;transition:none}          /* no cross-fade */
     body:not(.labels-under) .piece:hover .held,body:not(.labels-under) .piece:focus-visible .held{opacity:1}
     body:not(.labels-under) .piece .over{position:absolute;inset:auto 0 0 0;z-index:1;display:flex;flex-direction:column;align-items:flex-start;gap:8px;
       padding:48px 18px 16px;font-size:15px;background:linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,0));
@@ -230,7 +239,7 @@
   @media (min-width:768px) and (hover:none){ body:not(.labels-under) .piece .over{opacity:1;transform:none} }
 </style>
 </head>
-<body class="logo-hero labels-under">
+<body class="logo-hero">
 
 {{NAV}}
 
@@ -241,14 +250,14 @@
          thing on the screen, so the browser records the page as loaded then. Without it the logotype
          docking into the nav at ~11s was being recorded as the page's largest paint, which is the
          number Google scores, even though the page is finished at 1s. -->
-    <img class="film-poster" src="video/poster-process.jpg?v=7" alt="" decoding="async">
-    <video autoplay muted loop playsinline preload="metadata" poster="video/poster-process.jpg?v=7">
-      <source src="video/hero-720-av1.mp4?v=7" type='video/mp4; codecs="av01.0.05M.08"' media="(max-width:700px)">          <!-- phones: 720p, a lighter file -->
-      <source src="video/hero-720-h265.mp4?v=7" type='video/mp4; codecs="hvc1.1.6.L93.90"' media="(max-width:700px)">
-      <source src="video/hero-av1.mp4?v=7" type='video/mp4; codecs="av01.0.08M.08"'>
-      <source src="video/hero-h265.mp4?v=7" type='video/mp4; codecs="hvc1.1.6.L120.90"'>
-      <source src="video/film-process-480.mp4?v=7" type="video/mp4" media="(max-width:700px)">
-      <source src="video/film-process-1080.mp4?v=7" type="video/mp4">
+    <img class="film-poster" src="video/poster-process.jpg?v=8" alt="" decoding="async">
+    <video autoplay muted loop playsinline preload="metadata" poster="video/poster-process.jpg?v=8">
+      <source src="video/hero-720-av1.mp4?v=8" type='video/mp4; codecs="av01.0.05M.08"' media="(max-width:700px)">          <!-- phones: 720p, a lighter file -->
+      <source src="video/hero-720-h265.mp4?v=8" type='video/mp4; codecs="hvc1.1.6.L93.90"' media="(max-width:700px)">
+      <source src="video/hero-av1.mp4?v=8" type='video/mp4; codecs="av01.0.08M.08"'>
+      <source src="video/hero-h265.mp4?v=8" type='video/mp4; codecs="hvc1.1.6.L120.90"'>
+      <source src="video/film-process-480.mp4?v=8" type="video/mp4" media="(max-width:700px)">
+      <source src="video/film-process-1080.mp4?v=8" type="video/mp4">
     </video>
     <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:154;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:172;--g:17"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:123;--g:-10"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:240;--g:20"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:123;--g:20"><i class="ll-glyph"></i></span></div>
     <p class="tagline">Artifacts of Love</p>
@@ -397,6 +406,7 @@
     [].forEach.call(build.querySelectorAll('.ll'), function (l, i) {
       l.classList.add('in');
       l.style.animationDelay = (i * 95) + 'ms';                                         // M, then A, then the C, and so on
+                                              // M, then A, then the C, and so on
     });
     build.classList.add('fall');
     var t = 1650;          // the word lands, then a half-second of stillness before the cedilla rises
