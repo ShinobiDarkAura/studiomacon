@@ -341,8 +341,8 @@
   .rel-track{display:flex;gap:1px;width:max-content;text-align:left}          /* a hairline between pieces */
   .rel-loop .rel-piece{flex:0 0 calc((100vw - 2px) / 3);scroll-snap-align:center}          /* desktop: three across the screen */
   .rel-loop .rel-name,.rel-loop .rel-cost{padding-left:16px;padding-right:16px}          /* names kept off the edge, as on the home grid */
-  /* desktop: the three closest pieces, still, inset 25vw from each screen edge */
-  .rel-three{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;width:50vw;margin-left:calc(50% - 25vw);text-align:left}
+  /* desktop: the three closest pieces, still, inset 20vw from each screen edge */
+  .rel-three{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;width:60vw;margin-left:calc(50% - 30vw);text-align:left}
   .rel-three .dr-emerge{opacity:1 !important;filter:none !important;transform:none !important}
   @media (min-width:768px){ .rel-loop{display:none} }
   @media (max-width:767px){ .rel-three{display:none} }
