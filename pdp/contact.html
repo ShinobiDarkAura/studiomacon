@@ -1348,7 +1348,9 @@ function maconClickQuery(extra) {
   addEventListener('DOMContentLoaded', function () {
     var img = document.querySelector('.split .pics img');
     var go = function () { requestAnimationFrame(function () { requestAnimationFrame(function () { img.classList.add('up'); }); }); };
-    if (img.decode) img.decode().then(go, go); else if (img.complete) go(); else img.addEventListener('load', go);
+    var ready = function () { if (img.decode) img.decode().then(go, go); else if (img.complete) go(); else img.addEventListener('load', go); };
+    // arriving from the menu, it rises once the drawer has slid away
+    if (document.documentElement.classList.contains('intro-wait')) addEventListener('macon:intro', ready, {once: true}); else ready();
   });
 </script>
 </body>
