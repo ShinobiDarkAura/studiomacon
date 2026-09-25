@@ -58,7 +58,7 @@ DESC = {
     "eclipse-ring": "Two uneven ovals in sterling silver, one leaning into the other. Balanced and smoothed by hand. The meeting point between them is said to hold questions only stars can answer; astronomers decline to comment.",
     "sietch-aperture": "Sterling silver with a single opening, recovered from the wake of a passing comet. Through it appear landscapes found on no map; cartographers have stopped asking.",
     "lunar-canyon-ring": "Sundered artifact forged from the core of a distant moon. Every curve is brought to a soft polish by hand. Social gatherings seem to ebb and flow in time with the wearer's presence.",
-    "eleph": "Rounded solid bronze, trunk raised for a gentle trumpet. Cast only when someone asks, then worked by hand. A low call has been heard by independent observers, always just out of sight.",
+    "eleph": "Rounded solid bronze, trunk raised for a gentle trumpet. Made to order, shaped by hand. A low call has been heard by independent observers, always just out of sight.",
     "wonderhorn-talisman": "A silver spiral on a thirty inch chain, after the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment hums along.",
     "macon-cap": "A cotton cap with the Maçon mark stitched on the front. Each cap is checked by hand before it ships. It offers a little shade on bright days; wearers report being asked where they found it.",
     "ibi": "Solid bronze with a long and patient posture. Carved, cast and finished by hand. Attempts to photograph it end in lens fog; photographers blame the weather.",
