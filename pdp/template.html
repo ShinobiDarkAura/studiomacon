@@ -322,7 +322,7 @@
   }
 
   /* Also Worth Keeping: an endless carousel, full width, its edges fading out */
-  .rel-grid,.rel-swipe{display:none !important}
+  .rel-grid{display:none !important}
   .rel-loop{position:relative;width:100vw;margin-left:calc(50% - 50vw);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;
 }
   .rel-loop::-webkit-scrollbar{display:none}
@@ -333,7 +333,8 @@
   .rel-three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:79.2%;margin:0 auto;text-align:left}          /* the original size and spacing */
   .rel-three .rel-frame{border-radius:14px}
   .rel-three .dr-emerge{opacity:1 !important;filter:none !important;transform:none !important}
-  @media (min-width:768px){ .rel-loop{display:none} }
+  .rel-loop{display:none !important}          /* the carousel is retired: desktop shows the three, phones the original swipe row */
+  @media (max-width:767px){ .rel-swipe .rel-frame{border-radius:14px} }
   @media (max-width:767px){ .rel-three{display:none} }
   .rel-loop .dr-emerge,.rel-loop .rel-piece{opacity:1 !important;filter:none !important;transform:none !important;transition:opacity .45s ease !important}          /* dims and brightens gently as pieces cross the edge of the middle three */
   .rel-loop .rel-piece.side{opacity:1 !important}          /* the two beside the centre */
