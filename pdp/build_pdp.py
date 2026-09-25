@@ -58,7 +58,7 @@ DESC = {
     "eclipse-ring": "Two uneven ovals in sterling silver, one leaning into the other. It came into being the day the whole world looked up as one. The meeting point between them is said to hold questions only stars can answer; astronomers decline to comment.",
     "sietch-aperture": "Sterling silver with a single opening, recovered from the wake of a passing comet. It is said to have arisen from the sands of a desert world. Through it appear landscapes found on no map; cartographers have stopped asking.",
     "lunar-canyon-ring": "Sundered artifact forged from the core of a distant moon. It was first dreamt on white island shores, beneath a burning sky. Social gatherings seem to ebb and flow in time with the wearer's presence.",
-    "eleph": "Rounded solid bronze, trunk raised for a gentle trumpet. It was found frozen in triumph, perennially exhuberating. A low call has been heard by independent observers, always just out of sight.",
+    "eleph": "Rounded solid bronze, trunk raised for a gentle trumpet. It was found frozen in triumph, perennially exuberating. A low call has been heard by independent observers, always just out of sight.",
     "wonderhorn-talisman": "A silver spiral on a thirty inch chain, after the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment hums along.",
     "macon-cap": "A cotton cap with the Maçon mark stitched on the front. Each cap is checked by hand before it ships. It offers a little shade on bright days; wearers report being asked where they found it.",
     "ibi": "Solid bronze with a long and patient posture. It was born of the rising dawn, when all was new. Attempts to photograph it end in lens fog; photographers blame the weather.",
