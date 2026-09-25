@@ -31,10 +31,8 @@
   .opening .hand{margin:0}
   /* the films on this page are framed like the ones in the emails: 16px corners and a soft drop shadow */
   .opening .hand video,.process-film video{display:block;background:#111;object-fit:cover;margin:0 auto}
-  .opening .hand{perspective:1600px}
-  .opening .hand video{transform:rotateY(-14deg);transform-origin:50% 50%}          /* tilted back in space: the left edge recedes, the right comes forward */
-  .opening .hand video{--w:100%;--ar:24/23;--r:0;--sh:0;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
-  .process-film video{--w:86%;--ar:16/9;--r:0;--sh:0;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
+  .opening .hand video{--w:100%;--ar:24/23;--r:24px;--sh:0;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
+  .process-film video{--w:86%;--ar:16/9;--r:24px;--sh:0;width:var(--w);aspect-ratio:var(--ar);border-radius:var(--r)}
   /* the email drop shadow, scaled by --sh (0 = none, 1 = as in the emails, 2 = twice as deep) */
   .opening .hand video,.process-film video{box-shadow:0 calc(22px * var(--sh)) calc(48px * var(--sh)) calc(-16px * var(--sh)) rgba(0,0,0,calc(.26 * min(var(--sh), 1.4))),
     0 calc(3px * var(--sh)) calc(12px * var(--sh)) calc(-4px * var(--sh)) rgba(0,0,0,calc(.12 * min(var(--sh), 1.4)))}
