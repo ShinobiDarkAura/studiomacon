@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790321658">
+<link rel="stylesheet" href="site.css?v=1790321987">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -189,13 +189,14 @@
     .order::-webkit-scrollbar{display:none}
   }
   @media (max-width:1023px){
-    body .commission{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 var(--gutter)}
+    body .commission{display:grid;grid-template-columns:1fr 1fr;gap:1px;padding:0}          /* the pictures edge to edge, hairlines between */
     .commission > .examples{display:contents}
-    .commission .examples .lead{grid-column:1/-1;order:-2;margin:0 calc(-1 * var(--gutter));aspect-ratio:auto;height:70vh;height:70svh}
-    .commission > .order{grid-column:1/-1;order:-1;padding:32px 0 48px !important}
+    .commission .examples .lead{grid-column:1/-1;order:-2;margin:0;aspect-ratio:auto;height:70vh;height:70svh}
+    .commission > .order{grid-column:1/-1;order:-1;padding:32px var(--gutter) 48px !important}
     .order > .eyebrow,.order h1,.order .body,.order .price{text-align:center;margin-left:auto;margin-right:auto}
     .order .body{max-width:90%}          /* the opening line reads a touch narrower than the page */
     .commission > .order{padding-bottom:0 !important}
+    .past-head{padding-left:var(--gutter) !important;padding-right:var(--gutter) !important}
 
     /* Past Work: the shop grid's heading, 48px under the last step */
     .past-head{grid-column:1/-1;display:flex;justify-content:center;align-items:baseline;gap:10px;margin:40px 0 16px;padding:0 !important}          /* 40 + the grid gap of 8 = 48 */
@@ -208,6 +209,10 @@
     .commission .examples figure.cutout::before{background:#E8E6E1}
     .commission .examples figure:not(.lead) img{position:absolute;top:0;left:0;width:100%;height:auto;aspect-ratio:4/5;border-radius:0}
     .commission .examples figure.cutout img{object-fit:contain;padding:21% 15%;box-sizing:border-box}
+    .commission .examples figure[data-name="04.png"]{--s:0.856 !important}          /* phones: the faceted band 15% larger */
+    .commission .examples figure.wide{grid-column:1/-1;height:100vh;height:100svh}          /* the closing picture, full height as on desktop */
+    .commission .examples figure.wide::before{display:none}
+    .commission .examples figure.wide img{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;object-fit:cover}
     /* a piece set larger than its frame is cut at the frame's edge, as on desktop. The clip is drawn
        before the piece is scaled and nudged, so it is the frame worked backwards through that move */
     .commission .examples figure.cutout img{--k:calc(50% * (1 - 1 / var(--s,1)));
@@ -433,7 +438,7 @@
     <figure class="photo" data-name="hannah-macon-custom-double-1-edited.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-macon-custom-double-1-edited.jpg.webp" width="1793" height="1169" alt="ORGANIC TWO FINGER RING" loading="eager" draggable="false"><span class="over"><span class="date">2023</span><span class="name">ORGANIC TWO FINGER RING</span></span></figure>
     <figure class="cutout" data-name="added-1789609019-custom-totem-01.png" style="--s:1.054;--x:0;--y:0"><img src="img/commissions-cut/added-1789609019-custom-totem-01.png.webp" width="903" height="1023" alt="Border Collie, FRONT" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie, FRONT</span></span></figure>
     <figure class="cutout" data-name="added-1789609020-custom-totem-02.png" style="--s:1.091;--x:0;--y:0"><img src="img/commissions-cut/added-1789609020-custom-totem-02.png.webp" width="893" height="1091" alt="Border Collie, BACK" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie, BACK</span></span></figure>
-    <figure class="cutout" data-name="added-1789609021-custom-totem-03.png" style="--s:0.94;--x:-0.4;--y:-15.6"><img src="img/commissions-cut/added-1789609021-custom-totem-03.png.webp" width="552" height="960" alt="RETRIEVER, FRONT" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">RETRIEVER, FRONT</span></span></figure>
+    <figure class="cutout" data-name="added-1789609021-custom-totem-03.png" style="--s:1.167;--x:0;--y:0"><img src="img/commissions-cut/added-1789609021-custom-totem-03.png.webp" width="552" height="960" alt="RETRIEVER, FRONT" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">RETRIEVER, FRONT</span></span></figure>
     <figure class="cutout" data-name="added-1789609021-custom-totem-04.png" style="--s:1.104;--x:2;--y:-5"><img src="img/commissions-cut/added-1789609021-custom-totem-04.png.webp" width="864" height="1288" alt="RETRIEVER, SIDE" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">RETRIEVER, SIDE</span></span></figure>
     <figure class="cutout" data-name="added-1789609023-custom-totem-07.png" style="--s:1.08;--x:-3.9;--y:1.9"><img src="img/commissions-cut/added-1789609023-custom-totem-07.png.webp" width="1339" height="939" alt="FOX, FRONT" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">FOX, FRONT</span></span></figure>
     <figure class="cutout" data-name="added-1789609024-custom-totem-08.png" style="--s:1.08;--x:5.8;--y:3.6"><img src="img/commissions-cut/added-1789609024-custom-totem-08.png.webp" width="1349" height="924" alt="FOX, BACK" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">FOX, BACK</span></span></figure>
