@@ -978,6 +978,10 @@ def editable(doc, page):
 def save(name, doc, product=None):
     doc = seo(name, doc, product)
     doc = light(doc)
+    # Custom page pictures keep their names when they are replaced, so each carries its file's date:
+    # a browser holding an older copy fetches the new one
+    doc = re.sub(r'(img/commissions-cut/[^"?]+\.webp)"', lambda m: m.group(1) + "?v=" + str(int(os.path.getmtime(os.path.join(OUT, m.group(1))))) + '"'
+                 if os.path.exists(os.path.join(OUT, m.group(1))) else m.group(0), doc)
     # home-screen icon for iPhones, and the two Search Console tags the Wix site carried (keeps those
     # URL-prefix properties verified after the switch)
     doc = doc.replace('<link rel="icon" href="img/favicon.png">',
