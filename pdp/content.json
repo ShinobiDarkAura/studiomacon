@@ -217,11 +217,9 @@
    },
    "gallery": [
     "img/meridian-egg-ring/hand-2.jpg",
-    "img/meridian-egg-ring/plain-1.jpg",
-    "img/meridian-egg-ring/hero.jpg",
-    "img/meridian-egg-ring/hand-1.jpg"
+    "img/meridian-egg-ring/plain-1.jpg"
    ],
-   "hero": "img/meridian-egg-ring/hires-1.jpg",
+   "hero": "img/meridian-egg-ring/hero.jpg",
    "tile_image": "img/meridian-egg-ring/hires-1.jpg",
    "tile_hover": "img/meridian-egg-ring/hand-2.jpg",
    "tile_before_hires": {
