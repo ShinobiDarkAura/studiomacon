@@ -167,6 +167,7 @@
   /* phones: two across, 8px from the edges, 8px between */
   /* phones: the space between pieces matches the space to the edge of the page */
   @media (max-width:767px){ .wall{grid-template-columns:repeat(2,1fr);gap:8px 1px;padding:0 var(--gutter)} }
+  @media (max-width:767px){ .piece .over{padding-right:14px !important;box-sizing:border-box} }          /* long names wrap before they reach the next tile */
   @media (hover:none){ .piece .held{display:none} }
   /* the in-hand picture is framed on its own (--hx/--hy/--hz, measured by tools/align_hover.py)
      so the piece lands where the still's piece lands, and hovering does not make it jump */
