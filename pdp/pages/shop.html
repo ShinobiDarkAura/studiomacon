@@ -367,7 +367,7 @@
     io.observe(stamp.closest('h1'));
   })();
 
-  // The logotype rests in the middle of the film for 5.75 seconds, then fades and hands
+  // The logotype rests in the middle of the film for 3.75 seconds, then fades and hands
   // over to the scroll cue. Scrolling away cancels it; coming back starts the eight over.
   var quiet;
   window.MaconHeroQuiet = function () {
@@ -378,7 +378,7 @@
       document.body.classList.add('hero-quiet');                        // the big logotype fades where it is...
       setTimeout(function () { document.body.classList.add('logo-docked'); },
                  matchMedia('(max-width:767px)').matches ? 2470 : 2950);   // ...then reappears in the nav, once the fade has finished
-    }, 5750);
+    }, 3750);
   };
 
   // The big logotype sits exactly in the middle of the first screen
