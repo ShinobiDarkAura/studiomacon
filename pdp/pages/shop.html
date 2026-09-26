@@ -493,7 +493,7 @@
       });
       var mask = document.createElement('canvas'); mask.width = W; mask.height = H; var mx = mask.getContext('2d');
       mx.lineCap = 'round'; mx.strokeStyle = '#000';
-      var N = strokes.length, t0 = performance.now(), D = 1800, drawn = 0;
+      var N = strokes.length, t0 = performance.now(), D = 2124, drawn = 0;
       (function frame(now) {
         var p = Math.min(1, (now - t0) / D), upto = Math.ceil(N * p);
         for (; drawn < upto; drawn++) { var st = strokes[drawn]; mx.lineWidth = st[4]; mx.beginPath(); mx.moveTo(st[0], st[1]); mx.lineTo(st[2], st[3]); mx.stroke(); }

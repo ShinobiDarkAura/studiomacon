@@ -1286,7 +1286,7 @@ def main():
         if os.path.exists(os.path.join(OUT, clay)):
             still_src = clay
         hover_src = tile_src(hover)
-        if p["slug"] == "milo":          # the grid only: turned to face the same way as its terracotta photo
+        if p["slug"] in ("milo", "ibi", "eleph"):          # the grid only: turned to face the same way as its terracotta photo
             hover_src = hover_src.replace("--tile.jpg.webp", "--tile--flip.jpg.webp")
         lift = hover.rsplit(".", 1)[0] + "--lift.jpg.webp"          # the totem brightened a touch; the original stays beside it
         if os.path.exists(os.path.join(OUT, lift)):
