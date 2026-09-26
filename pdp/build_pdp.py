@@ -33,7 +33,7 @@ EYEBROW = {
     "sietch-aperture": "Gaze of the Worm God",
     "lunar-canyon-ring": "Moonrisen Memory",
     "eleph": "The Great Unbowed",
-    "wonderhorn-talisman": "Instrument of Undiscovered Chords",
+    "wonderhorn-talisman": "Goblinbane",
     "macon-cap": "Modicum of Solar Protection",
     "ibi": "Daybreak Apparition",
     "ear-cuff": "Duskwalker's Blessing",
