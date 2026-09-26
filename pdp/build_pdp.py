@@ -32,7 +32,7 @@ EYEBROW = {
     "eclipse-ring": "Ellipses in Patient Equilibrium",
     "sietch-aperture": "Shelter Cut Into Rock",
     "lunar-canyon-ring": "Moonrisen",
-    "eleph": "Breath Suspended",
+    "eleph": "The Great Unbowed",
     "wonderhorn-talisman": "Spiral Echo",
     "macon-cap": "Modicum of Solar Protection",
     "ibi": "Eternal Watcher",
