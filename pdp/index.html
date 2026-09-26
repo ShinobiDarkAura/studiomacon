@@ -770,6 +770,9 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
     100%{transform:translateY(0);opacity:1}}
   /* the letters slide in from both sides to meet in the middle: M and A from the left, O and N from the right, the Ç last, from just below; about 1.25s in all */
   .logo-build.fall .ll{animation:ll-side .9s cubic-bezier(.2,.8,.2,1) both !important}
+  /* while the pencil hatches the word in, the letters themselves wait, already in place */
+  .logo-build.sketch .ll,.logo-build.sketched .ll{animation:none !important;opacity:1}
+  .logo-build.sketch .ll i{visibility:hidden}
   .logo-build.fall .ll-m{--sx:-120%;animation-delay:0ms !important}
   .logo-build.fall .ll-n{--sx:120%;animation-delay:60ms !important}
   .logo-build.fall .ll-a{--sx:-90%;animation-delay:150ms !important}
@@ -2359,6 +2362,58 @@ function maconClickQuery(extra) {
     }
     run();
   })();
+  // the letters are all in place and are hatched in by pencil, as the pieces are on the collection page
+  function sketchLogo(build) {
+    if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    var glyphs = [].slice.call(build.querySelectorAll('.ll-glyph, .ll-ced')), box = build.getBoundingClientRect();
+    if (!box.width) return;
+    build.classList.add('sketch');
+    var dpr = Math.min(2, devicePixelRatio || 1), W = Math.round(box.width * dpr), H = Math.round(box.height * dpr);
+    var art = document.createElement('canvas'); art.width = W; art.height = H; var ax = art.getContext('2d');
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    cv.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none';
+    build.appendChild(cv); var ctx = cv.getContext('2d');
+    var left = glyphs.length;
+    glyphs.forEach(function (g) {          // each letter drawn white into one picture of the word
+      var url = getComputedStyle(g).getPropertyValue('--img').trim().replace(/^url\(["']?|["']?\)$/g, '');
+      var r = g.getBoundingClientRect(), im = new Image();
+      im.onload = im.onerror = function () {
+        if (im.naturalWidth) ax.drawImage(im, (r.left - box.left) * dpr, (r.top - box.top) * dpr, r.width * dpr, r.height * dpr);
+        if (!--left) go();
+      };
+      im.src = url;
+    });
+    function go() {
+      ax.globalCompositeOperation = 'source-in'; ax.fillStyle = '#fff'; ax.fillRect(0, 0, W, H);
+      var G = 110, gc = document.createElement('canvas'); gc.width = G; gc.height = Math.round(G * H / W); var gx = gc.getContext('2d');
+      gx.drawImage(art, 0, 0, gc.width, gc.height);
+      var px = gx.getImageData(0, 0, gc.width, gc.height).data, todo = [], GH = gc.height;
+      for (var y = 0; y < GH; y++) for (var x = 0; x < G; x++) if (px[(y * G + x) * 4 + 3] > 40) todo.push([x, y, x - y + (Math.random() - .5) * G * .25]);
+      todo.sort(function (a, b) { return a[2] - b[2]; });
+      var cw = W / G, ch = H / GH, covered = new Uint8Array(G * GH), strokes = [];
+      todo.forEach(function (t) {
+        if (covered[t[1] * G + t[0]]) return;
+        var len = 5 + Math.random() * 7, ang = -.7 + (Math.random() - .5) * .4, w = 1.4 + Math.random() * 1.2, ca = Math.cos(ang), sa = Math.sin(ang);
+        for (var u = -len / 2; u <= len / 2; u += .5) for (var v = -w / 2; v <= w / 2; v += .5) {
+          var cx = Math.round(t[0] + ca * u - sa * v), cy = Math.round(t[1] + sa * u + ca * v);
+          if (cx >= 0 && cy >= 0 && cx < G && cy < GH) covered[cy * G + cx] = 1;
+        }
+        var x0 = (t[0] + .5) * cw, y0 = (t[1] + .5) * ch, L = len * cw / 2;
+        strokes.push([x0 - ca * L, y0 - sa * L, x0 + ca * L, y0 + sa * L, (w + 1) * cw]);
+      });
+      var mask = document.createElement('canvas'); mask.width = W; mask.height = H; var mx = mask.getContext('2d');
+      mx.lineCap = 'round'; mx.strokeStyle = '#000';
+      var N = strokes.length, t0 = performance.now(), D = 1800, drawn = 0;
+      (function frame(now) {
+        var p = Math.min(1, (now - t0) / D), upto = Math.ceil(N * p);
+        for (; drawn < upto; drawn++) { var st = strokes[drawn]; mx.lineWidth = st[4]; mx.beginPath(); mx.moveTo(st[0], st[1]); mx.lineTo(st[2], st[3]); mx.stroke(); }
+        ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, W, H); ctx.drawImage(mask, 0, 0);
+        ctx.globalCompositeOperation = 'source-in'; ctx.drawImage(art, 0, 0);
+        if (p < 1) requestAnimationFrame(frame);
+        else { build.classList.add('sketched'); build.classList.remove('sketch'); setTimeout(function () { cv.remove(); }, 80); }
+      })(t0);
+    }
+  }
   function run() {
     var build = document.querySelector('.logo-build'), tag = document.querySelector('.film .tagline'), chars = [].slice.call(tag.querySelectorAll('.ch'));
     var timers = []; function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
@@ -2368,6 +2423,7 @@ function maconClickQuery(extra) {
                                               // M, then A, then the C, and so on
     });
     build.classList.add('fall');
+    sketchLogo(build);
     var t = 1650;          // the word lands, then a half-second of stillness before the cedilla rises
     later(function () { build.querySelector('.ll-c').classList.add('lift'); }, t);
     t += 1050;
