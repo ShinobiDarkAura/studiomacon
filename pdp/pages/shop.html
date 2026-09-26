@@ -125,12 +125,6 @@
   /* every letter holds its final place from the start, so the only movement is downward */
   .logo-build.fall .ll-glyph{opacity:1;transition:none;transform:none}
   .logo-build.fall .ll-c .ll-glyph{transform:translateY(calc(var(--lh) * 56 / 331))}   /* the C waits low until the cedilla lifts it */
-  /* the script logotype arrives all at once: it fades in and comes into focus, no letters dropping */
-  .logo-build .ll{width:calc(var(--lh) * var(--w) / 331) !important;margin-left:calc(var(--lh) * var(--g) / 331) !important;animation:none !important;transition:none !important}
-  .logo-build .ll-glyph,.logo-build .ll-ced{opacity:1 !important;transform:none !important;transition:none !important}
-  .logo-build{animation:logo-in 1.6s cubic-bezier(.2,.6,.3,1) .2s backwards}
-  @keyframes logo-in{from{opacity:0;filter:blur(18px)}to{opacity:1;filter:blur(0)}}
-  @media (prefers-reduced-motion:reduce){ .logo-build{animation:none} }
   /* the script ç arrives whole: it only drops in with the others, no lift */
   .logo-build .ll-c .ll-glyph,.logo-build .ll-c .ll-ced{opacity:0;transform:translateX(calc(var(--lh) * .5));transition:opacity .5s ease .1s,transform .8s cubic-bezier(.16,1,.3,1)}
   .logo-build .ll-c.in .ll-glyph,.logo-build .ll-c.in .ll-ced,.logo-build.fall .ll-c .ll-glyph,.logo-build.fall .ll-c .ll-ced{opacity:1;transform:none;transition:none}
