@@ -135,6 +135,14 @@
     45%{opacity:1}
     88%{transform:translateY(2.5%)}                                                     /* the small settle of something landing */
     100%{transform:translateY(0);opacity:1}}
+  /* the letters slide in from both sides to meet in the middle: M and A from the left, O and N from the right, the Ç last, from just below; about 1.25s in all */
+  .logo-build.fall .ll{animation:ll-side .9s cubic-bezier(.2,.8,.2,1) both !important}
+  .logo-build.fall .ll-m{--sx:-120%;animation-delay:0ms !important}
+  .logo-build.fall .ll-n{--sx:120%;animation-delay:60ms !important}
+  .logo-build.fall .ll-a{--sx:-90%;animation-delay:150ms !important}
+  .logo-build.fall .ll-o{--sx:90%;animation-delay:210ms !important}
+  .logo-build.fall .ll-c{--sx:0%;--sy:18%;animation-delay:340ms !important}
+  @keyframes ll-side{0%{transform:translate(var(--sx,0),var(--sy,0));opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
   body.logo-anim .head .logotype{opacity:.004}
   .tagline .ch{opacity:0}
   .tagline .ch.on{opacity:1}
