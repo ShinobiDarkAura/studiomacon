@@ -27,7 +27,7 @@ EYEBROW = {
     "zuma": "Spirit of Fevered Shores",
     "ori": "Guardian of Lost Souls",
     "yael": "Prophecy in Metal",
-    "zuma-ring": "Sand Spirit, Distilled",
+    "zuma-ring": "Twin Band",
     "milo": "Firstborn of the Forge",
     "eclipse-ring": "Shade of the Long Noon",
     "sietch-aperture": "Gaze of the Worm God",
