@@ -84,13 +84,10 @@
   .desc-block .label{margin:0 0 14px}
   @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#9ca3af;margin-bottom:18px} }          /* the same title as on phones */          /* desktop: 1pt smaller, 4px more air beneath */
   .desc a{color:inherit;text-decoration:underline;text-underline-offset:3px}
-  /* the description surfaces word by word, like ink soaking into old paper */
-  .desc.ink .w{opacity:0;filter:blur(3px);transition:opacity .5s ease,filter .6s ease}
-  .desc.ink.inked .w{opacity:1;filter:none}
   /* Ibi's first photograph clears out of the morning mist */
   body[data-slug="ibi"] .gallery .hero .shot:first-child img{animation:ibi-mist 1.6s cubic-bezier(.3,.6,.3,1) .15s both}
   @keyframes ibi-mist{from{filter:blur(14px) brightness(1.18) contrast(.7);opacity:.55}to{filter:none;opacity:1}}
-  @media (prefers-reduced-motion:reduce){ .desc.ink .w{opacity:1;filter:none;transition:none} body[data-slug="ibi"] .gallery .hero .shot:first-child img{animation:none} }
+  @media (prefers-reduced-motion:reduce){ body[data-slug="ibi"] .gallery .hero .shot:first-child img{animation:none} }
   .desc{margin:0;font-size:17px;letter-spacing:.02em;line-height:var(--body-s-lh)}          /* the same size as the About page's words */          /* same size as the overline */
   .info > .dr-emerge{transform:translateY(66px)}
   .info > .dr-emerge.is-seen{transform:none}
@@ -252,7 +249,7 @@
   /* desktop: four across under the product, title centred above */
   /* three across, held to the same margins as the shop grid on the home page */
   .related{padding:calc(180px + 10vh) calc(var(--pad) + 24px + 7.5vw) 0;text-align:center}
-  .related h2{margin:0 0 48px;font:400 53px/1 var(--serif);text-transform:uppercase}
+  .related h2{margin:0 0 88px;font:400 53px/1 var(--serif);text-transform:uppercase}
   .related .rel-blurb{margin:0 auto 68px;max-width:480px;font-size:16px;line-height:1.55}
   /* the Bureau of Provenance stamp, pressed onto the end of "Worth" the way the home page presses it onto "Things," */
   .related h2.stamped{position:relative;display:inline-block;width:max-content;max-width:100%;align-self:center}          /* hugs its words, so the stamp lands on "Worth" on phones too */
@@ -355,7 +352,7 @@
   .rel-loop{display:none !important}          /* the carousel is retired: desktop shows the three, phones the original swipe row */
   @media (max-width:767px){ .rel-swipe .rel-frame{border-radius:0} }          /* square, as the home grid on phones */
   @media (max-width:767px){ .rel-three{display:none} }
-  @media (min-width:768px) and (max-width:1099px){ .related h2{margin-bottom:46px} }          /* desktop: 12px more under the title at every width */
+  @media (min-width:768px) and (max-width:1099px){ .related h2{margin-bottom:86px} }          /* desktop: 12px more under the title at every width */
   .rel-loop .dr-emerge,.rel-loop .rel-piece{opacity:1 !important;filter:none !important;transform:none !important;transition:opacity .45s ease !important}          /* dims and brightens gently as pieces cross the edge of the middle three */
   .rel-loop .rel-piece.side{opacity:1 !important}          /* the two beside the centre */
   .rel-loop .rel-piece.edge{opacity:.35 !important}          /* everything further out */          /* no scroll-in animation here: the looped copies would never be revealed */
@@ -1860,35 +1857,6 @@ function maconClickQuery(extra) {
       clearTimeout(rest); rest = setTimeout(settle, 180);
     }, {passive: true});
     dim(); addEventListener('resize', function () { centreOn(all[2 * n + (+box.dataset.centre || 0)]); dim(); });
-  })();
-</script>
-<script>
-  // the description inks in word by word once it is on screen and the page's arrival has finished (about a second in all)
-  (function () {
-    var d = document.querySelector('.desc'); if (!d || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
-    var words = [], walk = function (n) {
-      [].slice.call(n.childNodes).forEach(function (c) {
-        if (c.nodeType === 3) {
-          var f = document.createDocumentFragment();
-          c.textContent.split(/(\s+)/).forEach(function (t) {
-            if (!t) return;
-            if (/^\s+$/.test(t)) { f.appendChild(document.createTextNode(t)); return; }
-            var w = document.createElement('span'); w.className = 'w'; w.textContent = t; f.appendChild(w); words.push(w);
-          });
-          c.parentNode.replaceChild(f, c);
-        } else if (c.nodeType === 1) walk(c);
-      });
-    };
-    walk(d); d.classList.add('ink');
-    var step = Math.min(45, 900 / Math.max(words.length, 1));
-    words.forEach(function (w, i) { w.style.transitionDelay = (i * step) + 'ms'; });
-    var go = function () { d.classList.add('inked'); };
-    var ready = function () {
-      if (!('IntersectionObserver' in window)) return go();
-      var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); setTimeout(go, 250); } });
-      io.observe(d);
-    };
-    if (document.documentElement.classList.contains('intro-wait')) addEventListener('macon:intro', ready, {once: true}); else ready();
   })();
 </script>
 <script>maconTrack('view', {"variant": "53985365590381", "name": "Eleph", "slug": "eleph", "price": 200.0, "image": "https://studiomacon.co/img/email/wide-eleph.jpg"});</script>
