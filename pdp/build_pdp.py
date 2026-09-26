@@ -352,6 +352,8 @@ def page(p, template, related=""):
     chosen = _content.product(slug, "gallery", None)
     if chosen:                                   # the studio's own order and selection
         gallery = [g for g in chosen if g != hero]
+    if os.path.exists(os.path.join(OUT, "img", slug, "terracotta.jpg")):          # the terracotta shoot leads, where the piece has one
+        hero = f"img/{slug}/terracotta.jpg"
 
     hands = [g for g in gallery if "/hand-" in g]
     plains = [g for g in gallery if "/plain-" in g]
