@@ -708,7 +708,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
   /* the timed fade sets its own duration: while resting at the top the body still carries
      .logo-scrub, whose .2s transition was making this fade in a blink */
   body.hero-quiet .logo-build{opacity:0;transition:opacity 2.8s ease}
-  @media (min-width:768px){ .logo-build,.film .tagline{filter:blur(0)} body.hero-quiet .logo-build,body.hero-quiet .film .tagline{filter:blur(18px);transition:opacity 2.8s ease,filter 2.8s cubic-bezier(.4,0,.6,1)} }          /* desktop: it and its tagline blur away as they fade */
+  @media (min-width:768px){ .logo-build,.film .tagline{filter:blur(0);transition:opacity 1.56s ease,filter 1.56s ease} body.hero-quiet .logo-build,body.hero-quiet .film .tagline{filter:blur(18px);transition:opacity 2.8s ease,filter 2.8s cubic-bezier(.4,0,.6,1)} }          /* desktop: it and its tagline blur away as they fade */
   @media (max-width:767px){ body.hero-quiet .logo-build,body.hero-quiet .film .tagline{transition-duration:2.32s} }
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
      and stays there: it never flies back down, even at the top of the page */
@@ -771,10 +771,10 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
   body.logo-anim .head .logotype{opacity:.004}
   .tagline .ch{opacity:0}
   .tagline .ch.on{opacity:1}
-  @media (max-width:767px){ .film{--lh:calc(94px * 2.8125 * 331 / 888 * 1.1)} }          /* 13% smaller than it was */
+  @media (max-width:767px){ .film{--lh:calc(94px * 2.8125 * 331 / 888 * 1.21)} }          /* 13% smaller than it was */
   /* phones: the lockup sits 3.5% high of centre, so the browser bar does not crowd it */
   @media (max-width:767px){ .logo-build,.film .tagline{top:46.5svh;margin-top:0} }
-  @media (min-width:768px){ .film{--lh:calc(147px * 2.8125 * 331 / 888 * 1.1)} }
+  @media (min-width:768px){ .film{--lh:calc(147px * 2.8125 * 331 / 888 * 1.21)} }
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
   .welcome .prose h1{margin-bottom:44px}
@@ -2277,7 +2277,7 @@ function maconClickQuery(extra) {
     io.observe(stamp.closest('h1'));
   })();
 
-  // The logotype rests in the middle of the film for 6.75 seconds, then fades and hands
+  // The logotype rests in the middle of the film for 5.75 seconds, then fades and hands
   // over to the scroll cue. Scrolling away cancels it; coming back starts the eight over.
   var quiet;
   window.MaconHeroQuiet = function () {
@@ -2288,7 +2288,7 @@ function maconClickQuery(extra) {
       document.body.classList.add('hero-quiet');                        // the big logotype fades where it is...
       setTimeout(function () { document.body.classList.add('logo-docked'); },
                  matchMedia('(max-width:767px)').matches ? 2470 : 2950);   // ...then reappears in the nav, once the fade has finished
-    }, 6750);
+    }, 5750);
   };
 
   // The big logotype sits exactly in the middle of the first screen
@@ -2370,9 +2370,15 @@ function maconClickQuery(extra) {
   }
   // on the home page the eye is hoverable; a click takes you back to the top instead of reloading the page
   document.querySelector('.head .logotype').addEventListener('click', function (e) { e.preventDefault(); scrollTo({top: 0, behavior: 'smooth'}); }, true);
+  var away = false;          // scrolled off the film since the logotype last showed
   function cue() {
     if (document.documentElement.classList.contains('menu-open')) return;          // frozen while the drawer is open
     var on = scrollY > 40;
+    if (on) away = true;
+    else if (away) {          // back up at the top: the big logotype fades back in, and its rest starts over
+      away = false; clearTimeout(quiet); quiet = null;
+      document.body.classList.remove('logo-docked', 'hero-quiet');
+    }
     document.body.classList.toggle('past-film', document.querySelector('.film').getBoundingClientRect().bottom <= 100);
     var build = document.querySelector('.logo-build');          // the intro's MAÇON fades as the film scrolls away
     if (build) build.style.setProperty('--scroll-fade', String(Math.max(0, 1 - scrollY / 140)));          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
