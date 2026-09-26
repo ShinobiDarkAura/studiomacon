@@ -1123,6 +1123,9 @@ def grid_still(slug):
     return _content.product(slug, "tile_image", None) or f'img/{slug}/{"plain-3.jpg" if slug == "wonderhorn-talisman" else "hero.jpg"}'
 
 
+BACK_IN_STOCK = ("pip", "rebi", "ren")          # a small chip on these home grid tiles
+
+
 # the terracotta photos as framed on the home grid: zoom, then where the crop sits (%)
 CLAY_FRAME = {"pip": (1.374, 41.7, 54.8), "rebi": (1.152, 55.1, 20.7), "ren": (1.344, 49.5, 50.1), "zuma": (1.180, 33.9, 66.6),
               "ori": (1.056, 57.9, 0), "yael": (1.413, 42, 56.8), "milo": (1.139, 60.2, 53.7), "ibi": (1.271, 50, 42.3), "eleph": (1.427, 50, 50)}
@@ -1286,8 +1289,8 @@ def main():
         if os.path.exists(os.path.join(OUT, clay)):
             still_src = clay
         hover_src = tile_src(hover)
-        if p["slug"] == "rebi":          # full size: the hover fills a tall tile from a wide photo, and the small copy went soft
-            hover_src = hover_src.replace("--tile.jpg.webp", ".jpg.webp")
+        if p["slug"] == "rebi":
+            hover_src = "img/rebi/hand-tall.jpg.webp"          # the in-hand photo, extended above and below so it sits smaller in the tile
         if p["slug"] in ("milo", "ibi", "eleph"):          # the grid only: turned to face the same way as its terracotta photo
             hover_src = hover_src.replace("--tile.jpg.webp", "--tile--flip.jpg.webp")
         lift = hover.rsplit(".", 1)[0] + "--lift.jpg.webp"          # the totem brightened a touch; the original stays beside it
@@ -1299,6 +1302,7 @@ def main():
             f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
             f'<span class="pic-hit"><span class="pic"><img src="{still_src}"' + ('' if 'ab-clay' in still_src else grid_srcset(still_src) + ab_attrs(p["slug"])) + (' class="ab"' if 'ab-clay' in still_src else '') + f' alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
+            + ('<span class="chip">Back in stock</span>' if p["slug"] in BACK_IN_STOCK else '')
             + f'</span></span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span>'
             + (f'<span class="ovl" aria-hidden="true">{html.escape(EYEBROW[p["slug"]])}</span>' if p["slug"] in EYEBROW else "")          # desktop hover: the overline takes the price's place
             + '</span>'
