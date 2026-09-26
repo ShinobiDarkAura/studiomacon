@@ -1123,8 +1123,25 @@ def grid_still(slug):
     return _content.product(slug, "tile_image", None) or f'img/{slug}/{"plain-3.jpg" if slug == "wonderhorn-talisman" else "hero.jpg"}'
 
 
+# the terracotta photos as framed on the home grid: zoom, then where the crop sits (%)
+CLAY_FRAME = {"pip": (1.374, 41.7, 54.8), "rebi": (1.152, 55.1, 20.7), "ren": (1.344, 49.5, 50.1), "zuma": (1.180, 33.9, 66.6),
+              "ori": (1.056, 57.9, 0), "yael": (1.413, 42, 56.8), "milo": (1.139, 60.2, 53.7), "ibi": (1.271, 50, 42.3), "eleph": (1.427, 50, 50)}
+
+
 def rel_tile(x):
+    clay = f"img/ab-clay/{x['slug']}--tile.webp"
+    if x["slug"] in CLAY_FRAME and os.path.exists(os.path.join(OUT, clay)):
+        return clay
     return tinted(x["slug"], tile_src(grid_still(x["slug"])))
+
+
+def rel_style(x):
+    """The same crop the home grid gives the terracotta photo."""
+    f = CLAY_FRAME.get(x["slug"])
+    if not f or "ab-clay" not in rel_tile(x):
+        return ""
+    z, px, py = f
+    return f' style="object-position:{px}% {py}%;transform-origin:{px}% {py}%;transform:scale({z})"'
 
 
 def _visual(products):
@@ -1160,7 +1177,7 @@ def related_block(p, products):
         by = {x["slug"]: x for x in products}
         pick = [by[s] for s in sorted(PENDANTS - {p["slug"]}) + ["ear-cuff"] if s in by]
     tile = lambda x: (
-        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-hit"><span class="rel-frame"><img src="{rel_tile(x)}" alt="{html.escape(x["name"])}" loading="lazy"></span></span>'
+        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-hit"><span class="rel-frame"><img src="{rel_tile(x)}"{rel_style(x)} alt="{html.escape(x["name"])}" loading="lazy"></span></span>'
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>')
     tiles = "".join(tile(x) for x in pick)
     # phones: every piece of the same family, up to six, the closest in look first, in a row to swipe

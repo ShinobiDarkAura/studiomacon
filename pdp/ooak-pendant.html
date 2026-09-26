@@ -253,7 +253,7 @@
   /* desktop: four across under the product, title centred above */
   /* three across, held to the same margins as the shop grid on the home page */
   .related{padding:calc(180px + 10vh) calc(var(--pad) + 24px + 7.5vw) 0;text-align:center}
-  .related h2{margin:0 0 20px;font:400 53px/1 var(--serif);text-transform:uppercase}
+  .related h2{margin:0 0 32px;font:400 53px/1 var(--serif);text-transform:uppercase}
   .related .rel-blurb{margin:0 auto 68px;max-width:480px;font-size:16px;line-height:1.55}
   /* the Bureau of Provenance stamp, pressed onto the end of "Worth" the way the home page presses it onto "Things," */
   .related h2.stamped{position:relative;display:inline-block;width:max-content;max-width:100%;align-self:center}          /* hugs its words, so the stamp lands on "Worth" on phones too */
@@ -276,7 +276,7 @@
   @media (max-width:1099px){
     .related{display:flex;flex-direction:column;justify-content:center;min-height:0;
       padding:72px calc(var(--pad) + 24px) 24px;text-align:center}          /* the same inset as the pieces above it */
-    .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
+    .related h2{margin:0 0 30px;font:400 42px/1 var(--serif);text-transform:uppercase}
     .related .rel-blurb{margin:0 auto 32px;max-width:300px;font-size:15px;line-height:1.55}
     /* phones: two pieces only, at the size and spacing of the shop grid, rather than three squeezed small */
     .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left}
@@ -351,10 +351,10 @@
   .rel-loop .rel-name,.rel-loop .rel-cost{padding-left:16px;padding-right:16px}          /* names kept off the edge, as on the home grid */
   /* desktop: the three closest pieces, still, inset 20vw from each screen edge */
   .rel-three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:79.2%;margin:0 auto;text-align:left}          /* the original size and spacing */
-  .rel-three .rel-frame{border-radius:14px}
+  .rel-three .rel-frame{border-radius:2px}          /* the home grid's corners */
   .rel-three .dr-emerge{opacity:1 !important;filter:none !important;transform:none !important}
   .rel-loop{display:none !important}          /* the carousel is retired: desktop shows the three, phones the original swipe row */
-  @media (max-width:767px){ .rel-swipe .rel-frame{border-radius:14px} }
+  @media (max-width:767px){ .rel-swipe .rel-frame{border-radius:0} }          /* square, as the home grid on phones */
   @media (max-width:767px){ .rel-three{display:none} }
   .rel-loop .dr-emerge,.rel-loop .rel-piece{opacity:1 !important;filter:none !important;transform:none !important;transition:opacity .45s ease !important}          /* dims and brightens gently as pieces cross the edge of the middle three */
   .rel-loop .rel-piece.side{opacity:1 !important}          /* the two beside the centre */
