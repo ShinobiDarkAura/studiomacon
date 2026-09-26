@@ -74,7 +74,7 @@
   /* the timed fade sets its own duration: while resting at the top the body still carries
      .logo-scrub, whose .2s transition was making this fade in a blink */
   body.hero-quiet .logo-build{opacity:0;transition:opacity 2.8s ease}
-  @media (min-width:768px){ .logo-build{filter:blur(0)} body.hero-quiet .logo-build{filter:blur(18px);transition:opacity 2.8s ease,filter 2.8s cubic-bezier(.4,0,.6,1)} }          /* desktop: it blurs away as it fades */
+  @media (min-width:768px){ .logo-build,.film .tagline{filter:blur(0)} body.hero-quiet .logo-build,body.hero-quiet .film .tagline{filter:blur(18px);transition:opacity 2.8s ease,filter 2.8s cubic-bezier(.4,0,.6,1)} }          /* desktop: it and its tagline blur away as they fade */
   @media (max-width:767px){ body.hero-quiet .logo-build,body.hero-quiet .film .tagline{transition-duration:2.32s} }
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
      and stays there: it never flies back down, even at the top of the page */
@@ -124,6 +124,9 @@
   /* every letter holds its final place from the start, so the only movement is downward */
   .logo-build.fall .ll-glyph{opacity:1;transition:none;transform:none}
   .logo-build.fall .ll-c .ll-glyph{transform:translateY(calc(var(--lh) * 56 / 331))}   /* the C waits low until the cedilla lifts it */
+  /* the script ç arrives whole: it only drops in with the others, no lift */
+  .logo-build .ll-c .ll-glyph,.logo-build .ll-c .ll-ced{opacity:0;transform:translateX(calc(var(--lh) * .5));transition:opacity .5s ease .1s,transform .8s cubic-bezier(.16,1,.3,1)}
+  .logo-build .ll-c.in .ll-glyph,.logo-build .ll-c.in .ll-ced,.logo-build.fall .ll-c .ll-glyph,.logo-build.fall .ll-c .ll-ced{opacity:1;transform:none;transition:none}
   /* the cedilla's lift must still win while the fall rules are on the element */
   .logo-build.fall .ll-c.lift .ll-glyph{transform:none;transition:transform .9s cubic-bezier(.34,1.25,.5,1)}
   @keyframes ll-fall{
