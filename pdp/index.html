@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="photo-clay">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -641,7 +641,24 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
 </style>
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}
   /* home grid photo test: the grey and clay stills are framed in the picture itself */
-  html.photo-grey .piece .pic img:not(.held),html.photo-clay .piece .pic img:not(.held){object-position:50% 50% !important;transform:none !important}
+  html.photo-grey .piece .pic img:not(.held),html.photo-clay .piece .pic img.ab:not(.held){object-position:50% 50% !important;transform:none !important}
+  html.photo-clay .piece .pic img.ab:not(.held){transform:scale(1.6) !important;transform-origin:50% 50% !important}          /* the terracotta photos carry spare suede all round, for reframing */
+  /* the terracotta set, as framed in the editor (2026-09-25) */
+  html.photo-clay .piece[href="pip.html"] .pic img.ab:not(.held){object-position:41.7% 54.8% !important;transform-origin:41.7% 54.8% !important;transform:scale(1.374) !important}
+  html.photo-clay .piece[href="rebi.html"] .pic img.ab:not(.held){object-position:55.1% 20.7% !important;transform-origin:55.1% 20.7% !important;transform:scale(1.152) !important}
+  html.photo-clay .piece[href="ren.html"] .pic img.ab:not(.held){object-position:49.5% 50.1% !important;transform-origin:49.5% 50.1% !important;transform:scale(1.344) !important}
+  html.photo-clay .piece[href="zuma.html"] .pic img.ab:not(.held){object-position:33.9% 66.6% !important;transform-origin:33.9% 66.6% !important;transform:scale(1.18) !important}
+  html.photo-clay .piece[href="ori.html"] .pic img.ab:not(.held){object-position:57.9% 0% !important;transform-origin:57.9% 0% !important;transform:scale(1.056) !important}
+  html.photo-clay .piece[href="yael.html"] .pic img.ab:not(.held){object-position:42% 56.8% !important;transform-origin:42% 56.8% !important;transform:scale(1.413) !important}
+  html.photo-clay .piece[href="milo.html"] .pic img.ab:not(.held){object-position:60.2% 53.7% !important;transform-origin:60.2% 53.7% !important;transform:scale(1.139) !important}
+  html.photo-clay .piece[href="ibi.html"] .pic img.ab:not(.held){object-position:50% 42.3% !important;transform-origin:50% 42.3% !important;transform:scale(1.271) !important}
+  html.photo-clay .piece[href="eleph.html"] .pic img.ab:not(.held){object-position:50% 50% !important;transform-origin:50% 50% !important;transform:scale(1.427) !important}
+  @media (min-width:1024px){ html.photo-clay .wall{column-gap:5px !important;row-gap:65px !important;padding-left:59px !important;padding-right:59px !important} }
+  @media (min-width:1024px){ html.photo-clay .wall .piece .pic{border-radius:2px !important;overflow:hidden !important} }
+  @media (min-width:1024px){ html.photo-clay .wall .piece .over{padding-top:15px !important} }
+  @media (min-width:1024px){ html.photo-clay .wall .piece .name{font-size:30px !important} }
+  @media (min-width:1024px){ html.photo-clay .wall .piece .cost{font-size:13px !important} }
+  @media (min-width:1024px){ html.photo-clay .wall-head{padding-left:57px !important;padding-top:2px !important} }
 </style>
 <style>
   /* the film fills the first screen; the nav sits over it in white */
@@ -690,6 +707,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
   /* the timed fade sets its own duration: while resting at the top the body still carries
      .logo-scrub, whose .2s transition was making this fade in a blink */
   body.hero-quiet .logo-build{opacity:0;transition:opacity 2.8s ease}
+  @media (min-width:768px){ .logo-build{filter:blur(0)} body.hero-quiet .logo-build{filter:blur(18px);transition:opacity 2.8s ease,filter 2.8s cubic-bezier(.4,0,.6,1)} }          /* desktop: it blurs away as it fades */
   @media (max-width:767px){ body.hero-quiet .logo-build,body.hero-quiet .film .tagline{transition-duration:2.32s} }
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
      and stays there: it never flies back down, even at the top of the page */
@@ -726,7 +744,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
   .ll-c .ll-glyph{--img:url(img/logo-letters/c.png)}
   .ll-o .ll-glyph{--img:url(img/logo-letters/o.png)}
   .ll-n .ll-glyph{--img:url(img/logo-letters/n.png)}
-  .ll-c .ll-ced{--img:url(img/logo-letters/ced.png);clip-path:inset(0 0 calc(100% * (331 - 312) / 331) 0)}
+  .ll-c .ll-ced{--img:url(img/logo-letters/ced.png)}          /* the script ç's cedilla hangs its full length */
   /* the C starts sitting on the baseline, its cedilla tucked below out of sight */
   .ll-c .ll-glyph{transform:translate(calc(var(--lh) * .5), calc(var(--lh) * 56 / 331))}
   .ll-c.in .ll-glyph{transform:translateY(calc(var(--lh) * 56 / 331))}
@@ -852,6 +870,17 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
     body.labels-under .piece .name{font:400 calc(var(--tile-name) + 5pt)/1 var(--serif);text-transform:uppercase}
     body.labels-under .piece .cost{font-size:14px;color:rgba(0,0,0,.55)}
   }
+  /* desktop: hovering a tile swaps its price for its overline, in the same spot */
+  .piece .ovl{display:none}
+  @media (min-width:1024px) and (hover:hover){
+    body.labels-under .piece .over{position:relative}
+    body.labels-under .piece .ovl{display:block;position:absolute;left:0;bottom:28px;font-size:14px;color:#000;white-space:nowrap;
+      opacity:0;transform:translateY(6px);transition:opacity .35s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
+    body.labels-under .piece .cost{transition:opacity .25s ease,transform .35s ease}
+    body.labels-under .piece:hover .ovl,body.labels-under .piece:focus-visible .ovl{opacity:1;transform:none}
+    body.labels-under .piece:hover .cost,body.labels-under .piece:focus-visible .cost{opacity:0;transform:translateY(-6px)}
+  }
+  @media (prefers-reduced-motion:reduce){ .piece .ovl,.piece .cost{transition:none !important} }
 
   /* desktop default: three across, name and price rising in over the picture on hover */
   @media (min-width:768px){
@@ -1101,7 +1130,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
       <source src="video/film-process-480.mp4?v=8" type="video/mp4" media="(max-width:700px)">
       <source src="video/film-process-1080.mp4?v=8" type="video/mp4">
     </video>
-    <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:154;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:172;--g:17"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:123;--g:-10"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:240;--g:20"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:123;--g:20"><i class="ll-glyph"></i></span></div>
+    <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:210;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:163;--g:7"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:153;--g:6"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:178;--g:6"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:132;--g:4"><i class="ll-glyph"></i></span></div>
     <p class="tagline" data-edit="page:index.html:6c4aaa35">Artifacts of Love</p>
     <span class="scroll-cue" aria-hidden="true"><i></i></span>
   </section>
@@ -1133,15 +1162,15 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
     <h2 class="set-title" data-edit="page:index.html:67c268a1">Totems</h2><span class="count">09</span>
   </header>
   <section class="wall shop-wall">
-    <figure><a class="piece" href="pip.html" style="--x:50%;--y:50%;--z:1;--fhz:1.29;--fhx:-4.5%;--fhy:4.5%;--fhr:0deg"><span class="pic-hit"><span class="pic"><img src="img/pip/hero--tile--cm6.5p0.jpg.webp" srcset="img/pip/hero--tile--cm6.5p0--g480.jpg.webp 480w, img/pip/hero--tile--cm6.5p0--g800.jpg.webp 800w, img/pip/hero--tile--cm6.5p0.jpg.webp 1370w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/pip.webp" alt="Pip" loading="eager"><img class="held" src="img/pip/hand-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:46.53%;--hy:12.87%;--hz:1.1867"></span></span><span class="over"><span class="name">Pip</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="rebi.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/rebi/hero--tile--cm5.5p0.5.jpg.webp" srcset="img/rebi/hero--tile--cm5.5p0.5--g480.jpg.webp 480w, img/rebi/hero--tile--cm5.5p0.5--g800.jpg.webp 800w, img/rebi/hero--tile--cm5.5p0.5.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/rebi.webp" alt="Rebi" loading="eager"><img class="held" src="img/rebi/hires-2-mirrored--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:60.61%;--hy:100%;--hz:1.0473"></span></span><span class="over"><span class="name">Rebi</span><span class="cost">$200</span></span></a></figure>
-    <figure><a class="piece" href="ren.html" style="--x:50%;--y:50%;--z:1;--fdz:1.11;--fdx:0%;--fdy:0%;--fdr:0deg;--fhz:1.11;--fhx:-5.5%;--fhy:-5%;--fhr:-1deg"><span class="pic-hit"><span class="pic"><img src="img/ren/hero--tile--cm6p0.jpg.webp" srcset="img/ren/hero--tile--cm6p0--g480.jpg.webp 480w, img/ren/hero--tile--cm6p0--g800.jpg.webp 800w, img/ren/hero--tile--cm6p0.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/ren.webp" alt="Ren" loading="eager"><img class="held" src="img/ren/hires-1-mirrored--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:44.55%;--hy:50%;--hz:1"></span></span><span class="over"><span class="name">Ren</span><span class="cost">$240</span></span></a></figure>
-    <figure><a class="piece" href="zuma.html" style="--x:50%;--y:50%;--z:1;--fdz:1.01;--fdx:0%;--fdy:0%;--fdr:0deg;--fhz:1.1;--fhx:3.5%;--fhy:-3%;--fhr:1.5deg"><span class="pic-hit"><span class="pic"><img src="img/zuma/hero--tile.jpg.webp" srcset="img/zuma/hero--tile--g480.jpg.webp 480w, img/zuma/hero--tile--g800.jpg.webp 800w, img/zuma/hero--tile.jpg.webp 1353w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/zuma.webp" alt="Zuma" loading="lazy"><img class="held" src="img/zuma/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:55.62%;--hy:50%;--hz:1"></span></span><span class="over"><span class="name">Zuma</span><span class="cost">$200</span></span></a></figure>
-    <figure><a class="piece" href="ori.html" style="--x:50%;--y:50%;--z:1;--hz:1.15;--fhz:1.27;--fhx:-3.5%;--fhy:1%;--fhr:1deg"><span class="pic-hit"><span class="pic"><img src="img/ori/hero--tile--cm6p0.5.jpg.webp" srcset="img/ori/hero--tile--cm6p0.5--g480.jpg.webp 480w, img/ori/hero--tile--cm6p0.5--g800.jpg.webp 800w, img/ori/hero--tile--cm6p0.5.jpg.webp 1355w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/ori.webp" alt="Ori" loading="lazy"><img class="held" src="img/ori/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:54.21%;--hy:0%;--hz:1.054"></span></span><span class="over"><span class="name">Ori</span><span class="cost">$220</span></span></a></figure>
-    <figure><a class="piece" href="yael.html" style="--x:50%;--y:50%;--z:1;--fdz:1.03;--fdx:0%;--fdy:0%;--fdr:0deg"><span class="pic-hit"><span class="pic"><img src="img/yael/hires-1--tile--cm5.5p0.5.jpg.webp" srcset="img/yael/hires-1--tile--cm5.5p0.5--g480.jpg.webp 480w, img/yael/hires-1--tile--cm5.5p0.5--g800.jpg.webp 800w, img/yael/hires-1--tile--cm5.5p0.5.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/yael.webp" alt="Yael" loading="lazy"><img class="held" src="img/yael/hand-2-mirrored--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:54.16%;--hy:0%;--hz:1.0023"></span></span><span class="over"><span class="name">Yael</span><span class="cost">$180</span></span></a></figure>
-    <figure><a class="piece" href="milo.html" style="--x:50%;--y:50%;--z:1;--fhz:1.07;--fhx:0%;--fhy:2.5%;--fhr:0deg"><span class="pic-hit"><span class="pic"><img src="img/milo/hires-2--tile--cm5p0.5.jpg.webp" srcset="img/milo/hires-2--tile--cm5p0.5--g480.jpg.webp 480w, img/milo/hires-2--tile--cm5p0.5--g800.jpg.webp 800w, img/milo/hires-2--tile--cm5p0.5.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/milo.webp" alt="Milo" loading="lazy"><img class="held" src="img/milo/hires-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:53.74%;--hy:0%;--hz:1.1507"></span></span><span class="over"><span class="name">Milo</span><span class="cost">$180</span></span></a></figure>
-    <figure><a class="piece" href="ibi.html" style="--x:50%;--y:50%;--z:1;--fhz:1.06;--fhx:2.5%;--fhy:0%;--fhr:-1deg"><span class="pic-hit"><span class="pic"><img src="img/ibi/hires-2--tile--cm7p1.jpg.webp" srcset="img/ibi/hires-2--tile--cm7p1--g480.jpg.webp 480w, img/ibi/hires-2--tile--cm7p1--g800.jpg.webp 800w, img/ibi/hires-2--tile--cm7p1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/ibi.webp" alt="Ibi" loading="lazy"><img class="held" src="img/ibi/hires-3--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:61.78%;--hy:50%;--hz:1"></span></span><span class="over"><span class="name">Ibi</span><span class="cost">$180</span></span></a></figure>
-    <figure><a class="piece" href="eleph.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/eleph/hires-1--tile--cm1m0.5.jpg.webp" srcset="img/eleph/hires-1--tile--cm1m0.5--g480.jpg.webp 480w, img/eleph/hires-1--tile--cm1m0.5--g800.jpg.webp 800w, img/eleph/hires-1--tile--cm1m0.5.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/eleph.webp" alt="Eleph" loading="lazy"><img class="held" src="img/eleph/hires-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:48.94%;--hy:48.5%;--hz:1.1035"></span></span><span class="over"><span class="name">Eleph</span><span class="cost">$200</span></span></a></figure>
+    <figure><a class="piece" href="pip.html" style="--x:50%;--y:50%;--z:1;--fhz:1.29;--fhx:-4.5%;--fhy:4.5%;--fhr:0deg"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/pip--tile.webp" class="ab" alt="Pip" loading="eager"><img class="held" src="img/pip/hand-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:46.53%;--hy:12.87%;--hz:1.1867"></span></span><span class="over"><span class="name">Pip</span><span class="cost">$220</span><span class="ovl" aria-hidden="true">Tiny Keeper of Tenderness</span></span></a></figure>
+    <figure><a class="piece" href="rebi.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/rebi--tile.webp" class="ab" alt="Rebi" loading="eager"><img class="held" src="img/rebi/hires-2-mirrored--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:60.61%;--hy:100%;--hz:1.0473"></span></span><span class="over"><span class="name">Rebi</span><span class="cost">$200</span><span class="ovl" aria-hidden="true">Silhouette in Flux</span></span></a></figure>
+    <figure><a class="piece" href="ren.html" style="--x:50%;--y:50%;--z:1;--fdz:1.11;--fdx:0%;--fdy:0%;--fdr:0deg;--fhz:1.11;--fhx:-5.5%;--fhy:-5%;--fhr:-1deg"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/ren--tile.webp" class="ab" alt="Ren" loading="eager"><img class="held" src="img/ren/hires-1-mirrored--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:44.55%;--hy:50%;--hz:1"></span></span><span class="over"><span class="name">Ren</span><span class="cost">$240</span><span class="ovl" aria-hidden="true">Steward of Forgotten Paths</span></span></a></figure>
+    <figure><a class="piece" href="zuma.html" style="--x:50%;--y:50%;--z:1;--fdz:1.01;--fdx:0%;--fdy:0%;--fdr:0deg;--fhz:1.1;--fhx:3.5%;--fhy:-3%;--fhr:1.5deg"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/zuma--tile.webp" class="ab" alt="Zuma" loading="lazy"><img class="held" src="img/zuma/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:55.62%;--hy:50%;--hz:1"></span></span><span class="over"><span class="name">Zuma</span><span class="cost">$200</span><span class="ovl" aria-hidden="true">Spirit of the Sunbaked Shore</span></span></a></figure>
+    <figure><a class="piece" href="ori.html" style="--x:50%;--y:50%;--z:1;--hz:1.15;--fhz:1.27;--fhx:-3.5%;--fhy:1%;--fhr:1deg"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/ori--tile.webp" class="ab" alt="Ori" loading="lazy"><img class="held" src="img/ori/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:54.21%;--hy:0%;--hz:1.054"></span></span><span class="over"><span class="name">Ori</span><span class="cost">$220</span><span class="ovl" aria-hidden="true">Guardian of Lost Souls</span></span></a></figure>
+    <figure><a class="piece" href="yael.html" style="--x:50%;--y:50%;--z:1;--fdz:1.03;--fdx:0%;--fdy:0%;--fdr:0deg"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/yael--tile.webp" class="ab" alt="Yael" loading="lazy"><img class="held" src="img/yael/hand-2-mirrored--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:54.16%;--hy:0%;--hz:1.0023"></span></span><span class="over"><span class="name">Yael</span><span class="cost">$180</span><span class="ovl" aria-hidden="true">Prophecy in Metal</span></span></a></figure>
+    <figure><a class="piece" href="milo.html" style="--x:50%;--y:50%;--z:1;--fhz:1.07;--fhx:0%;--fhy:2.5%;--fhr:0deg"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/milo--tile.webp" class="ab" alt="Milo" loading="lazy"><img class="held" src="img/milo/hires-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:53.74%;--hy:0%;--hz:1.1507"></span></span><span class="over"><span class="name">Milo</span><span class="cost">$180</span><span class="ovl" aria-hidden="true">Ancient Wanderer</span></span></a></figure>
+    <figure><a class="piece" href="ibi.html" style="--x:50%;--y:50%;--z:1;--fhz:1.06;--fhx:2.5%;--fhy:0%;--fhr:-1deg"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/ibi--tile.webp" class="ab" alt="Ibi" loading="lazy"><img class="held" src="img/ibi/hires-3--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:61.78%;--hy:50%;--hz:1"></span></span><span class="over"><span class="name">Ibi</span><span class="cost">$180</span><span class="ovl" aria-hidden="true">Daybreak Apparition</span></span></a></figure>
+    <figure><a class="piece" href="eleph.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/eleph--tile.webp" class="ab" alt="Eleph" loading="lazy"><img class="held" src="img/eleph/hires-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:48.94%;--hy:48.5%;--hz:1.1035"></span></span><span class="over"><span class="name">Eleph</span><span class="cost">$200</span><span class="ovl" aria-hidden="true">Breath Suspended</span></span></a></figure>
   </section>
   </div>
 
@@ -1150,14 +1179,14 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
     <h2 class="set-title" data-edit="page:index.html:1fd8cfa3">Jewelry</h2><span class="count">08</span>
   </header>
   <section class="wall shop-wall">
-    <figure><a class="piece" href="zuma-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp" srcset="img/zuma-ring/hires-1--tile--cp0.5m1--g480.jpg.webp 480w, img/zuma-ring/hires-1--tile--cp0.5m1--g800.jpg.webp 800w, img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/zuma-ring.webp" alt="Zuma Ring" loading="lazy"><img class="held" src="img/zuma-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:28.95%;--hy:0%;--hz:1.0135"></span></span><span class="over"><span class="name">Zuma Ring</span><span class="cost">$320</span></span></a></figure>
-    <figure><a class="piece" href="eclipse-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp" srcset="img/eclipse-ring/hires-1--tile--cm0.5p0.5--g480.jpg.webp 480w, img/eclipse-ring/hires-1--tile--cm0.5p0.5--g800.jpg.webp 800w, img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp 1389w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/eclipse-ring.webp" alt="Eclipse Ring" loading="lazy"><img class="held" src="img/eclipse-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:45.69%;--hy:0%;--hz:1.306"></span></span><span class="over"><span class="name">Eclipse Ring</span><span class="cost">$340</span></span></a></figure>
-    <figure><a class="piece" href="sietch-aperture.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" srcset="img/sietch-aperture/hero--tile--cm2.5m1--g480.jpg.webp 480w, img/sietch-aperture/hero--tile--cm2.5m1--g800.jpg.webp 800w, img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/sietch-aperture.webp" alt="Sietch Ring" loading="lazy"><img class="held" src="img/sietch-aperture/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:83.16%;--hy:32.78%;--hz:1.2408"></span></span><span class="over"><span class="name">Sietch Ring</span><span class="cost">$340</span></span></a></figure>
-    <figure><a class="piece" href="lunar-canyon-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" srcset="img/lunar-canyon-ring/hero--tile--cm2.5m1--g480.jpg.webp 480w, img/lunar-canyon-ring/hero--tile--cm2.5m1--g800.jpg.webp 800w, img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/lunar-canyon-ring.webp" alt="Lunar Canyon" loading="lazy"><img class="held" src="img/lunar-canyon-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:67.75%;--hy:30.73%;--hz:1.4365"></span></span><span class="over"><span class="name">Lunar Canyon</span><span class="cost">$370</span></span></a></figure>
-    <figure><a class="piece" href="ear-cuff.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" srcset="img/ear-cuff/hires-1--tile--cm3.5m2--g480.jpg.webp 480w, img/ear-cuff/hires-1--tile--cm3.5m2--g800.jpg.webp 800w, img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/ear-cuff.webp" alt="Caldera Arc" loading="lazy"><img class="held" src="img/ear-cuff/hand-3--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:56.57%;--hy:100%;--hz:1.3645"></span></span><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260</span></span></a></figure>
-    <figure><a class="piece" href="meridian-egg-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp" srcset="img/meridian-egg-ring/hires-1--tile--cm2.5p0--g480.jpg.webp 480w, img/meridian-egg-ring/hires-1--tile--cm2.5p0--g800.jpg.webp 800w, img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/meridian-egg-ring.webp" alt="Meridian Egg" loading="lazy"><img class="held" src="img/meridian-egg-ring/hand-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:85.37%;--hy:66.34%;--hz:1.0697"></span></span><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390</span></span></a></figure>
-    <figure><a class="piece" href="wonderhorn-talisman.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" srcset="img/wonderhorn-talisman/plain-1--tile--cm3m0.5--g480.jpg.webp 480w, img/wonderhorn-talisman/plain-1--tile--cm3m0.5--g800.jpg.webp 800w, img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/wonderhorn-talisman.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"><img class="held" src="img/wonderhorn-talisman/plain-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy"></span></span><span class="over"><span class="name">Ida&#x27;s Wonder Horn</span><span class="cost">$390</span></span></a></figure>
-    <figure><a class="piece" href="starshipkey-pendant.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/starshipkey-pendant/hero--tile.jpg.webp" srcset="img/starshipkey-pendant/hero--tile--g480.jpg.webp 480w, img/starshipkey-pendant/hero--tile--g800.jpg.webp 800w, img/starshipkey-pendant/hero--tile.jpg.webp 1400w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/starshipkey-pendant.webp" alt="Starship Key" loading="lazy"><img class="held" src="img/starshipkey-pendant/plain-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy"></span></span><span class="over"><span class="name">Starship Key</span><span class="cost">$460</span></span></a></figure>
+    <figure><a class="piece" href="zuma-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp" srcset="img/zuma-ring/hires-1--tile--cp0.5m1--g480.jpg.webp 480w, img/zuma-ring/hires-1--tile--cp0.5m1--g800.jpg.webp 800w, img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/zuma-ring.webp" alt="Zuma Ring" loading="lazy"><img class="held" src="img/zuma-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:28.95%;--hy:0%;--hz:1.0135"></span></span><span class="over"><span class="name">Zuma Ring</span><span class="cost">$320</span><span class="ovl" aria-hidden="true">Sand Spirit, Distilled</span></span></a></figure>
+    <figure><a class="piece" href="eclipse-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp" srcset="img/eclipse-ring/hires-1--tile--cm0.5p0.5--g480.jpg.webp 480w, img/eclipse-ring/hires-1--tile--cm0.5p0.5--g800.jpg.webp 800w, img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp 1389w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/eclipse-ring.webp" alt="Eclipse Ring" loading="lazy"><img class="held" src="img/eclipse-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:45.69%;--hy:0%;--hz:1.306"></span></span><span class="over"><span class="name">Eclipse Ring</span><span class="cost">$340</span><span class="ovl" aria-hidden="true">Ellipses in Patient Equilibrium</span></span></a></figure>
+    <figure><a class="piece" href="sietch-aperture.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" srcset="img/sietch-aperture/hero--tile--cm2.5m1--g480.jpg.webp 480w, img/sietch-aperture/hero--tile--cm2.5m1--g800.jpg.webp 800w, img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/sietch-aperture.webp" alt="Sietch Ring" loading="lazy"><img class="held" src="img/sietch-aperture/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:83.16%;--hy:32.78%;--hz:1.2408"></span></span><span class="over"><span class="name">Sietch Ring</span><span class="cost">$340</span><span class="ovl" aria-hidden="true">Shelter Cut Into Rock</span></span></a></figure>
+    <figure><a class="piece" href="lunar-canyon-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" srcset="img/lunar-canyon-ring/hero--tile--cm2.5m1--g480.jpg.webp 480w, img/lunar-canyon-ring/hero--tile--cm2.5m1--g800.jpg.webp 800w, img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/lunar-canyon-ring.webp" alt="Lunar Canyon" loading="lazy"><img class="held" src="img/lunar-canyon-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:67.75%;--hy:30.73%;--hz:1.4365"></span></span><span class="over"><span class="name">Lunar Canyon</span><span class="cost">$370</span><span class="ovl" aria-hidden="true">Moonrisen Memory</span></span></a></figure>
+    <figure><a class="piece" href="ear-cuff.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" srcset="img/ear-cuff/hires-1--tile--cm3.5m2--g480.jpg.webp 480w, img/ear-cuff/hires-1--tile--cm3.5m2--g800.jpg.webp 800w, img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/ear-cuff.webp" alt="Caldera Arc" loading="lazy"><img class="held" src="img/ear-cuff/hand-3--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:56.57%;--hy:100%;--hz:1.3645"></span></span><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260</span><span class="ovl" aria-hidden="true">Perfect Geometries</span></span></a></figure>
+    <figure><a class="piece" href="meridian-egg-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp" srcset="img/meridian-egg-ring/hires-1--tile--cm2.5p0--g480.jpg.webp 480w, img/meridian-egg-ring/hires-1--tile--cm2.5p0--g800.jpg.webp 800w, img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/meridian-egg-ring.webp" alt="Meridian Egg" loading="lazy"><img class="held" src="img/meridian-egg-ring/hand-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:85.37%;--hy:66.34%;--hz:1.0697"></span></span><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390</span><span class="ovl" aria-hidden="true">Heavier Than It Looks</span></span></a></figure>
+    <figure><a class="piece" href="wonderhorn-talisman.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" srcset="img/wonderhorn-talisman/plain-1--tile--cm3m0.5--g480.jpg.webp 480w, img/wonderhorn-talisman/plain-1--tile--cm3m0.5--g800.jpg.webp 800w, img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/wonderhorn-talisman.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"><img class="held" src="img/wonderhorn-talisman/plain-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy"></span></span><span class="over"><span class="name">Ida&#x27;s Wonder Horn</span><span class="cost">$390</span><span class="ovl" aria-hidden="true">Horn of Undiscovered Chords</span></span></a></figure>
+    <figure><a class="piece" href="starshipkey-pendant.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/starshipkey-pendant/hero--tile.jpg.webp" srcset="img/starshipkey-pendant/hero--tile--g480.jpg.webp 480w, img/starshipkey-pendant/hero--tile--g800.jpg.webp 800w, img/starshipkey-pendant/hero--tile.jpg.webp 1400w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/starshipkey-pendant.webp" alt="Starship Key" loading="lazy"><img class="held" src="img/starshipkey-pendant/plain-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy"></span></span><span class="over"><span class="name">Starship Key</span><span class="cost">$460</span><span class="ovl" aria-hidden="true">Relic of the Outer Dark</span></span></a></figure>
   </section>
   </div>
 </main>
@@ -1793,6 +1822,20 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
         toast.appendChild(tx);
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
+        // the Bureau of Provenance presses its seal onto the button: the claim is recorded
+        if (!matchMedia('(prefers-reduced-motion:reduce)').matches && document.body.animate) {
+          var r = b.getBoundingClientRect(), st = document.createElement('img'), sz = Math.min(104, r.height * 2.1);
+          st.src = 'img/claim-stamp.png'; st.alt = ''; st.setAttribute('aria-hidden', 'true');
+          st.style.cssText = 'position:fixed;z-index:60;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;left:' + (r.right - sz - 6) + 'px;top:' + (r.top + r.height / 2 - sz / 2) + 'px';
+          document.body.appendChild(st);
+          st.animate([
+            {transform: 'scale(1.9) rotate(-24deg)', opacity: 0},
+            {transform: 'scale(.94) rotate(-11deg)', opacity: .95, offset: .16},
+            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .24},
+            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .8},
+            {transform: 'scale(1) rotate(-12deg)', opacity: 0}
+          ], {duration: 1500, easing: 'cubic-bezier(.3,.7,.3,1)'}).onfinish = function () { st.remove(); };
+        }
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
       });
@@ -2230,7 +2273,7 @@ function maconClickQuery(extra) {
     io.observe(stamp.closest('h1'));
   })();
 
-  // The logotype rests in the middle of the film for eight seconds, then fades and hands
+  // The logotype rests in the middle of the film for 6.75 seconds, then fades and hands
   // over to the scroll cue. Scrolling away cancels it; coming back starts the eight over.
   var quiet;
   window.MaconHeroQuiet = function () {
@@ -2241,7 +2284,7 @@ function maconClickQuery(extra) {
       document.body.classList.add('hero-quiet');                        // the big logotype fades where it is...
       setTimeout(function () { document.body.classList.add('logo-docked'); },
                  matchMedia('(max-width:767px)').matches ? 2470 : 2950);   // ...then reappears in the nav, once the fade has finished
-    }, 8000);
+    }, 6750);
   };
 
   // The big logotype sits exactly in the middle of the first screen
@@ -2366,165 +2409,439 @@ function maconClickQuery(extra) {
 
 
 <script>
-  // Grid editor, local only: open the home page with ?tint. Click a piece to select it, then set
-  // colour, rotation and zoom for the default and hover shots. Ghost lays the hover over the
-  // default at half opacity so the two can be matched. Nothing here changes the site; Copy
-  // settings puts the numbers on the clipboard to paste back.
-  (function () {
-    if (!/[?&]tint\b/.test(location.search)) return;
-    function baked(src) {                                     // the balance already baked into the file name
+  // Grid editor, local only: open the home page with ?edit (or ?tint). Nothing shows until the pointer
+  // finds something that can change, and then only a hairline where it can be grabbed:
+  //   picture        drag or two-finger scroll to reframe, pinch to zoom, Option-scroll to rotate, hold still to balance colour,
+  //                  double-click to switch to the hover shot (Option shows it ghosted over the default)
+  //   (a picture reframes only once it has been clicked; click elsewhere or Esc to let it go)
+  //   section titles    drag to move sideways or up and down; drag the line under them for the space above the grid
+  //   top-left corner    drag in or out for rounder or squarer corners
+  //   bottom-right corner    drag to make the pictures bigger or smaller: the grid re-counts its columns
+  //   gap between pictures    drag for more or less space between columns
+  //   gap between rows    drag for more or less space between rows
+  //   left or right margin    drag the line at the grid's edge to bring the pictures in from, or out to, the screen's sides
+  //   labels         drag sideways to set left, centre or right; drag down or up for their distance from the picture
+  //   a name or price    click it for a small − / + box that sizes that line of type everywhere
+  // Cmd-Z undoes, Shift-Cmd-Z redoes, ? shows this list. Changes stay put across reloads until Reset; Copy puts
+  // the numbers on the clipboard to paste back. Nothing here changes the site itself.
+  addEventListener('load', function () { setTimeout(function () {
+    if (!/[?&](tint|edit)\b/.test(location.search)) return;
+    var walls = [].slice.call(document.querySelectorAll('.wall')); if (!walls.length) return;
+    var root = document.documentElement; root.classList.add('ge');
+    var clay = root.classList.contains('photo-clay'), grey = root.classList.contains('photo-grey');
+    var KEY = 'macon-grid-edit-' + (clay ? 'clay' : grey ? 'grey' : 'linen');
+    var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+    var r1 = function (v) { return Math.round(v * 10) / 10; };
+
+    /* ── the grid as it is now ─────────────────────────────────────────── */
+    var w0 = walls[0], gcs = getComputedStyle(w0), p0 = w0.querySelector('.piece');
+    var fs = function (sel, prop) { var el = p0.querySelector(sel); return el ? parseFloat(getComputedStyle(el)[prop]) || 0 : 0; };
+    var G0 = {cols: gcs.gridTemplateColumns.split(' ').length, colGap: parseFloat(gcs.columnGap) || 0, rowGap: parseFloat(gcs.rowGap) || 0,
+              side: parseFloat(gcs.paddingLeft) || 0, radius: 0, align: 'left', labelTop: fs('.over', 'paddingTop'), name: fs('.name', 'fontSize'), cost: fs('.cost', 'fontSize')};
+    var heads = [].slice.call(document.querySelectorAll('.wall-head'));          // the section titles, each keeps its own spacing
+    G0.heads = heads.map(function (h) { var c = getComputedStyle(h); return {l: parseFloat(c.paddingLeft) || 0, t: parseFloat(c.paddingTop) || 0, b: parseFloat(c.paddingBottom) || 0}; });
+    var G = JSON.parse(JSON.stringify(G0));
+
+    /* ── the pictures ──────────────────────────────────────────────────── */
+    function baked(src) {
       var m = /--c([mp])([\d.]+)([mp])([\d.]+)\./.exec(src || '');
       return m ? {warm: (m[1] === 'm' ? -1 : 1) * parseFloat(m[2]), tint: (m[3] === 'm' ? -1 : 1) * parseFloat(m[4])} : {warm: 0, tint: 0};
     }
     var gains = function (w, t) { return [1 + w * .01 - t * .005, 1 + t * .01, 1 - w * .01 - t * .005]; };
     var defs = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     defs.setAttribute('width', 0); defs.setAttribute('height', 0); defs.style.position = 'absolute'; document.body.appendChild(defs);
-
-    function paint(tile) {
-      var id = 'tn-' + tile.slug, fl = defs.querySelector('#' + id);
-      if (!fl) { fl = document.createElementNS('http://www.w3.org/2000/svg', 'filter'); fl.id = id;
-        fl.setAttribute('color-interpolation-filters', 'sRGB'); fl.innerHTML = '<feColorMatrix type="matrix"/>'; defs.appendChild(fl); }
-      var want = gains(tile.warm, tile.tint), has = gains(tile.b.warm, tile.b.tint);
-      fl.firstChild.setAttribute('values', (want[0]/has[0]) + ' 0 0 0 0  0 ' + (want[1]/has[1]) + ' 0 0 0  0 0 ' + (want[2]/has[2]) + ' 0 0  0 0 0 1 0');
-      tile.imgs.forEach(function (im, i) {
-        var f = tile.frames[i];
-        im.style.filter = 'url(#' + id + ')';
-        im.style.objectPosition = f.x + '% ' + f.y + '%';
-        im.style.transformOrigin = f.x + '% ' + f.y + '%';
-        im.style.transform = 'scale(' + f.z + ')' + (f.r ? ' rotate(' + f.r + 'deg)' : '');
-      });
-    }
-
-    var tiles = [], cur = null, layer = 0;                    // 0 default, 1 hover, 2 ghost
-    document.querySelectorAll('.piece[href]').forEach(function (a) {
-      var imgs = [].slice.call(a.querySelectorAll('img')); if (!imgs.length) return;
-      var b = baked(imgs[0].getAttribute('src'));
-      // seed from what the tile is actually set to: the grid already carries --z 1.12 and a
-      // per-piece --hz, so starting every slider at 1 made every number a hidden multiplier
-      var cs = getComputedStyle(a);
-      var num = function (k, d) { var v = parseFloat(cs.getPropertyValue(k)); return isNaN(v) ? d : v; };
-      tiles.push({el: a, slug: a.getAttribute('href').replace('.html', ''), imgs: imgs, b: b, warm: b.warm, tint: b.tint,
-                  frames: [{r: 0, z: num('--z', 1.12), x: num('--x', 50), y: num('--y', 50)},
-                           {r: 0, z: num('--z', 1.12) * num('--hz', 1), x: num('--hx', num('--x', 50)), y: num('--hy', num('--y', 50))}],
-                  frames0: [{r: 0, z: num('--z', 1.12), x: num('--x', 50), y: num('--y', 50)},
-                            {r: 0, z: num('--z', 1.12) * num('--hz', 1), x: num('--hx', num('--x', 50)), y: num('--hy', num('--y', 50))}]});
+    var tiles = [];
+    document.querySelectorAll('.wall .piece[href]').forEach(function (a) {
+      var still = a.querySelector('.pic img:not(.held)'), held = a.querySelector('.pic img.held'); if (!still) return;
+      var cs = getComputedStyle(a), num = function (k, d) { var v = parseFloat(cs.getPropertyValue(k)); return isNaN(v) ? d : v; };
+      var swapped = still.classList.contains('ab');          // a test photo: centred, unzoomed, whatever the linen framing says
+      var f0 = swapped ? {r: 0, z: clay ? 1.6 : 1, x: 50, y: 50} : {r: 0, z: num('--z', 1.12), x: num('--x', 50), y: num('--y', 50)};
+      var f1 = {r: 0, z: num('--z', 1.12) * num('--hz', 1), x: num('--hx', num('--x', 50)), y: num('--hy', num('--y', 50))};
+      var b = swapped ? {warm: 0, tint: 0} : baked(still.getAttribute('src'));
+      tiles.push({el: a, pic: a.querySelector('.pic'), slug: a.getAttribute('href').replace('.html', ''), imgs: [still, held], b: b,
+                  warm: b.warm, tint: b.tint, frames: [f0, f1], base: {warm: b.warm, tint: b.tint, frames: [Object.assign({}, f0), Object.assign({}, f1)]}, layer: 0});
       a.removeAttribute('href');
     });
+    function paint(t) {
+      var id = 'ge-' + t.slug, fl = defs.querySelector('#' + id);
+      if (!fl) { fl = document.createElementNS('http://www.w3.org/2000/svg', 'filter'); fl.id = id;
+        fl.setAttribute('color-interpolation-filters', 'sRGB'); fl.innerHTML = '<feColorMatrix type="matrix"/>'; defs.appendChild(fl); }
+      var want = gains(t.warm, t.tint), has = gains(t.b.warm, t.b.tint);
+      fl.firstChild.setAttribute('values', (want[0] / has[0]) + ' 0 0 0 0  0 ' + (want[1] / has[1]) + ' 0 0 0  0 0 ' + (want[2] / has[2]) + ' 0 0  0 0 0 1 0');
+      t.imgs.forEach(function (im, i) {
+        if (!im) return; var f = t.frames[i], s = im.style;
+        if (t.warm !== t.b.warm || t.tint !== t.b.tint) s.setProperty('filter', 'url(#' + id + ')', 'important'); else s.removeProperty('filter');
+        s.setProperty('object-position', f.x + '% ' + f.y + '%', 'important');
+        s.setProperty('transform-origin', f.x + '% ' + f.y + '%', 'important');
+        s.setProperty('transform', 'scale(' + f.z + ')' + (f.r ? ' rotate(' + f.r + 'deg)' : ''), 'important');
+      });
+      t.el.classList.toggle('ge-hover', t.layer === 1);
+    }
 
+    /* ── the grid rules, written only for what has moved ───────────────── */
+    var live = document.createElement('style'); document.head.appendChild(live);
+    function applyGrid() {
+      var c = '';
+      if (G.cols !== G0.cols) c += 'html.ge .wall{grid-template-columns:repeat(' + G.cols + ',1fr)!important}';
+      if (G.colGap !== G0.colGap) c += 'html.ge .wall{column-gap:' + G.colGap + 'px!important}';
+      if (G.rowGap !== G0.rowGap) c += 'html.ge .wall{row-gap:' + G.rowGap + 'px!important}';
+      if (G.side !== G0.side) c += 'html.ge .wall{padding-left:' + G.side + 'px!important;padding-right:' + G.side + 'px!important}';
+      if (G.radius) c += 'html.ge .wall .piece .pic,html.ge .wall .piece .placeholder-fill{border-radius:' + G.radius + 'px!important;overflow:hidden!important}';
+      if (G.align !== 'left') c += 'html.ge .wall .piece .over{align-items:' + (G.align === 'center' ? 'center' : 'flex-end') + '!important;text-align:' + G.align + '!important}';
+      if (G.labelTop !== G0.labelTop) c += 'html.ge .wall .piece .over{padding-top:' + G.labelTop + 'px!important}';
+      heads.forEach(function (h, i) {
+        var v = G.heads[i], o = G0.heads[i];
+        [['l', 'padding-left'], ['t', 'padding-top'], ['b', 'padding-bottom']].forEach(function (q) {
+          if (v[q[0]] !== o[q[0]]) h.style.setProperty(q[1], v[q[0]] + 'px', 'important'); else h.style.removeProperty(q[1]); });
+      });
+      if (G.name !== G0.name) c += 'html.ge .wall .piece .name{font-size:' + G.name + 'px!important}';
+      if (G.cost !== G0.cost) c += 'html.ge .wall .piece .cost{font-size:' + G.cost + 'px!important}';
+      live.textContent = c;
+    }
+
+    /* ── memory, undo ──────────────────────────────────────────────────── */
+    var snap = function () { return JSON.stringify({G: G, t: tiles.map(function (t) { return {w: t.warm, n: t.tint, f: t.frames}; })}); };
+    function restore(s) {
+      var o = JSON.parse(s); G = o.G;
+      Object.keys(G0).forEach(function (k) { if (G[k] === undefined) G[k] = JSON.parse(JSON.stringify(G0[k])); });          // settings saved before a control existed
+      var moved = G.heads.filter(function (v, i) { var o = G0.heads[i]; return v.l !== o.l || v.t !== o.t || v.b !== o.b; })[0];
+      if (moved) G.heads = G.heads.map(function () { return Object.assign({}, moved); });          // the titles move as one: the one already set leads
+      o.t.forEach(function (x, i) { var t = tiles[i]; if (!t) return; t.warm = x.w; t.tint = x.n; t.frames = x.f; });
+      applyGrid(); tiles.forEach(paint); tally();
+    }
+    var undo = [], redo = [];
+    function mark() { undo.push(snap()); if (undo.length > 200) undo.shift(); redo = []; }
+    function save() { try { localStorage.setItem(KEY, snap()); } catch (e) {} tally(); }
+    try { var kept = localStorage.getItem(KEY); if (kept) restore(kept); } catch (e) {}
+
+    /* ── the quiet layer: handles, readout, the little pill ────────────── */
     var css = document.createElement('style');
     css.textContent =
-      '.tint{position:fixed;right:16px;bottom:16px;z-index:9999;width:292px;background:#fff;border:1px solid #ddd;border-radius:12px;box-shadow:0 12px 40px -12px rgba(0,0,0,.35);padding:14px 16px;font:12px/1.4 -apple-system,system-ui,sans-serif;color:#000;max-height:88vh;overflow:auto}' +
-      '.tint h4{margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}' +
-      '.tint h5{margin:14px 0 4px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#888}' +
-      '.tint label{display:grid;grid-template-columns:70px 1fr 40px;gap:8px;align-items:center;margin:6px 0}' +
-      '.tint output{text-align:right;font-variant-numeric:tabular-nums}.tint .row{display:flex;gap:8px;margin-top:12px}.tint .hint{color:#777;margin:8px 0 0}' +
-      '.tint button{flex:1;padding:7px;border:1px solid #000;border-radius:6px;background:#fff;cursor:pointer;font:inherit}.tint button.dark{background:#000;color:#fff}' +
-      '.tint .seg{display:flex;gap:0;margin:2px 0 4px}.tint .seg button{border-radius:0;flex:1}.tint .seg button:first-child{border-radius:6px 0 0 6px}.tint .seg button:last-child{border-radius:0 6px 6px 0}' +
-      '.piece.tint-on{outline:2px solid #000;outline-offset:3px}' +
-      /* the hover shot laid over the default, so sizes can be matched directly */
-      '.piece.ghost img:last-child{opacity:.5 !important;transition:none !important}' +
-      '.piece.ghost img:first-child{opacity:1 !important}' +
-      '.piece.show-hover img:last-child{opacity:1 !important}' +
-      /* thirds and centre lines over the selected piece */
-      '.piece.tint-on .pic::after,.piece.tint-on .placeholder-fill::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;' +
-      'background-image:linear-gradient(to right,transparent calc(33.333% - .5px),rgba(0,140,255,.5) calc(33.333% - .5px),rgba(0,140,255,.5) calc(33.333% + .5px),transparent calc(33.333% + .5px)),' +
-      'linear-gradient(to right,transparent calc(66.666% - .5px),rgba(0,140,255,.5) calc(66.666% - .5px),rgba(0,140,255,.5) calc(66.666% + .5px),transparent calc(66.666% + .5px)),' +
-      'linear-gradient(to bottom,transparent calc(33.333% - .5px),rgba(0,140,255,.5) calc(33.333% - .5px),rgba(0,140,255,.5) calc(33.333% + .5px),transparent calc(33.333% + .5px)),' +
-      'linear-gradient(to bottom,transparent calc(66.666% - .5px),rgba(0,140,255,.5) calc(66.666% - .5px),rgba(0,140,255,.5) calc(66.666% + .5px),transparent calc(66.666% + .5px)),' +
-      'linear-gradient(to right,transparent calc(50% - .5px),rgba(255,0,110,.7) calc(50% - .5px),rgba(255,0,110,.7) calc(50% + .5px),transparent calc(50% + .5px)),' +
-      'linear-gradient(to bottom,transparent calc(50% - .5px),rgba(255,0,110,.7) calc(50% - .5px),rgba(255,0,110,.7) calc(50% + .5px),transparent calc(50% + .5px))}' +
-      '.piece.tint-on .pic,.piece.tint-on .placeholder-fill{position:relative}';
+      'html.ge .wall .piece img,html.ge .wall .piece .pic{transition:none!important;will-change:transform}' +
+      'html.ge .piece.ge-sel .pic{outline:1px solid rgba(0,0,0,.5);outline-offset:4px}' +
+      'html.ge .piece .held{opacity:0!important;transition:none!important}' +
+      'html.ge .piece.ge-hover .held{opacity:1!important}html.ge.ge-alt .piece.ge-hover .held{opacity:.5!important}' +
+      'html.ge .piece .ovl{opacity:0!important}html.ge .piece .cost{opacity:1!important;transform:none!important}' +
+      'html.ge .wall .piece .ovl{left:0;right:0}' +
+      '#ge{position:fixed;inset:0;z-index:2147483000;pointer-events:none;font:500 11px/1 -apple-system,system-ui,sans-serif;letter-spacing:.01em}' +
+      '#ge .h{position:fixed;opacity:0;transition:opacity .16s ease;mix-blend-mode:difference}' +
+      '#ge .h.on{opacity:1}' +
+      '#ge .vline{width:1px;background:#fff}#ge .vline i{position:absolute;left:-2px;top:50%;width:5px;height:22px;margin-top:-11px;border-radius:3px;background:#fff}' +
+      '#ge .hline{height:1px;background:#fff}#ge .hline i{position:absolute;top:-2px;left:50%;height:5px;width:22px;margin-left:-11px;border-radius:3px;background:#fff}' +
+      '#ge .arc{width:18px;height:18px;border:1.5px solid #fff;border-right:0;border-bottom:0;border-top-left-radius:18px}' +
+      '#ge .grip{width:14px;height:14px;background:linear-gradient(135deg,transparent 45%,#fff 45%,#fff 55%,transparent 55%,transparent 70%,#fff 70%,#fff 80%,transparent 80%)}' +
+      '#ge .nub{width:7px;height:7px;border-radius:50%;border:1.5px solid #fff}' +
+      '#ge .ghost{border:1px dashed #fff;border-radius:2px}' +
+      '#ge .tick{width:1px;height:9px;background:#fff}' +
+      '#ge .thirds{background-image:linear-gradient(90deg,transparent calc(33.33% - .5px),#fff calc(33.33% - .5px),#fff calc(33.33% + .5px),transparent calc(33.33% + .5px),transparent calc(66.66% - .5px),#fff calc(66.66% - .5px),#fff calc(66.66% + .5px),transparent calc(66.66% + .5px)),linear-gradient(180deg,transparent calc(33.33% - .5px),#fff calc(33.33% - .5px),#fff calc(33.33% + .5px),transparent calc(33.33% + .5px),transparent calc(66.66% - .5px),#fff calc(66.66% - .5px),#fff calc(66.66% + .5px),transparent calc(66.66% + .5px));opacity:0}' +
+      '#ge .thirds.on{opacity:.45}' +
+      '#ge .tag{position:fixed;padding:5px 8px;border-radius:999px;background:rgba(20,20,20,.82);color:#fff;white-space:nowrap;opacity:0;transition:opacity .2s ease;font-variant-numeric:tabular-nums;backdrop-filter:blur(6px)}' +
+      '#ge .tag.on{opacity:1}' +
+      '#ge .sizer{position:fixed;display:flex;align-items:center;gap:2px;padding:3px;border-radius:999px;background:rgba(255,255,255,.92);box-shadow:0 0 0 1px rgba(0,0,0,.1),0 8px 24px -10px rgba(0,0,0,.35);backdrop-filter:blur(8px);color:#111;opacity:0;pointer-events:none;transition:opacity .15s ease}' +
+      '#ge .sizer.on{opacity:1;pointer-events:auto}#ge .sizer button{all:unset;cursor:pointer;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:15px}#ge .sizer button:hover{background:rgba(0,0,0,.07)}#ge .sizer span{min-width:34px;text-align:center;font-variant-numeric:tabular-nums}' +
+      '#ge .pad{position:fixed;width:132px;height:132px;margin:-66px 0 0 -66px;border-radius:50%;opacity:0;transform:scale(.85);transition:opacity .18s ease,transform .22s cubic-bezier(.2,.8,.2,1);' +
+        'background:radial-gradient(circle,rgba(255,255,255,.0) 0 30%,rgba(255,255,255,.12) 31%,transparent 70%),linear-gradient(90deg,rgba(90,150,255,.55),rgba(255,255,255,.1),rgba(255,160,60,.6)),linear-gradient(0deg,rgba(80,220,120,.55),rgba(255,255,255,0),rgba(255,70,200,.55));' +
+        'box-shadow:0 0 0 1px rgba(255,255,255,.7) inset,0 8px 30px rgba(0,0,0,.25);backdrop-filter:blur(8px) saturate(1.3)}' +
+      '#ge .pad.on{opacity:1;transform:none}#ge .pad i{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.5);left:50%;top:50%}' +
+      '#ge .pill{position:fixed;left:50%;bottom:18px;transform:translate(-50%,12px);display:flex;gap:2px;align-items:center;padding:4px;border-radius:999px;background:rgba(255,255,255,.86);' +
+        'box-shadow:0 0 0 1px rgba(0,0,0,.08),0 10px 30px -10px rgba(0,0,0,.3);backdrop-filter:blur(10px) saturate(1.4);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .3s cubic-bezier(.2,.8,.2,1);color:#111}' +
+      '#ge .pill.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}' +
+      '#ge .pill span{padding:6px 10px;color:#777}#ge .pill button{all:unset;cursor:pointer;padding:6px 11px;border-radius:999px}#ge .pill button:hover{background:rgba(0,0,0,.06)}#ge .pill button.k{background:#111;color:#fff}' +
+      '#ge .help{position:fixed;right:18px;top:18px;width:300px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 0 0 1px rgba(0,0,0,.08),0 18px 40px -16px rgba(0,0,0,.35);' +
+        'backdrop-filter:blur(12px);color:#111;font-weight:400;line-height:1.55;opacity:0;transform:translateY(-6px);transition:opacity .2s ease,transform .25s ease}' +
+      '#ge .help.on{opacity:1;transform:none}#ge .help b{font-weight:600}' +
+      '#ge .hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);color:#999;opacity:0;transition:opacity .6s ease;mix-blend-mode:normal}#ge .hint.on{opacity:1}';
     document.head.appendChild(css);
-
-    var box = document.createElement('div'); box.className = 'tint';
-    box.innerHTML = '<h4>Grid editor</h4><p class="hint" id="tint-who" data-edit="page:index.html:55ca21c5">Click a piece to start.</p>' +
-      '<h5>Colour</h5>' +
-      '<label>Cool ↔ Warm<input type="range" data-c="warm" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
-      '<label>Mag ↔ Green<input type="range" data-c="tint" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
-      '<h5>Showing</h5><div class="seg"><button type="button" data-l="0" class="dark">Default</button><button type="button" data-l="1">Hover</button><button type="button" data-l="2">Ghost</button></div>' +
-      '<h5>Frame</h5>' +
-      '<label>Rotate<input type="range" data-f="r" min="-20" max="20" step="0.5" disabled><output>0</output></label>' +
-      '<label>Zoom<input type="range" data-f="z" min="1" max="2.2" step="0.01" disabled><output>1</output></label>' +
-      '<label>Across<input type="range" data-f="x" min="0" max="100" step="0.5" disabled><output>50</output></label>' +
-      '<label>Down<input type="range" data-f="y" min="0" max="100" step="0.5" disabled><output>50</output></label>' +
-      '<div class="row"><button type="button" class="dark" id="tint-copy">Copy settings</button><button type="button" id="tint-reset">Reset piece</button></div>' +
-      '<p class="hint" data-edit="page:index.html:9dc19553">Arrow keys nudge the frame. Ghost shows the hover shot at 50% over the default.</p>';
-    document.body.appendChild(box);
-
-    var who = box.querySelector('#tint-who');
-    var cs = [].slice.call(box.querySelectorAll('[data-c]')), fs = [].slice.call(box.querySelectorAll('[data-f]'));
-    function frame() { return cur ? cur.frames[Math.min(layer, 1)] : null; }
-    function show() {
-      cs.forEach(function (r) { r.disabled = !cur; if (cur) { r.value = cur[r.dataset.c]; r.nextElementSibling.textContent = cur[r.dataset.c]; } });
-      var f = frame();
-      fs.forEach(function (r) { r.disabled = !cur; if (f) { r.value = f[r.dataset.f]; r.nextElementSibling.textContent = f[r.dataset.f]; } });
-      who.textContent = cur ? cur.slug + ' — baked in: warm ' + cur.b.warm + ', tint ' + cur.b.tint : 'Click a piece to start.';
-      tiles.forEach(function (t) {
-        t.el.classList.toggle('ghost', t === cur && layer === 2);
-        t.el.classList.toggle('show-hover', t === cur && layer === 1);
-      });
+    var ov = document.createElement('div'); ov.id = 'ge'; document.body.appendChild(ov);
+    var mk = function (cls, html) { var d = document.createElement('div'); d.className = cls; if (html) d.innerHTML = html; ov.appendChild(d); return d; };
+    var H = {vline: mk('h vline', '<i></i>'), hline: mk('h hline', '<i></i>'), arc: mk('h arc'), grip: mk('h grip'), nub: mk('h nub'), ghost: mk('h ghost'), thirds: mk('h thirds'),
+             ticks: [mk('h tick'), mk('h tick'), mk('h tick')]};
+    var sz = mk('sizer'), szKey = null;
+    function sizer(key, r) {
+      szKey = key; place(sz, r.right + 10, r.top + r.height / 2 - 15);
+      sz.innerHTML = '<button data-s="-1">−</button><span>' + G[key] + '</span><button data-s="1">+</button>'; show(sz, 1);
     }
-    document.addEventListener('click', function (e) {
-      if (e.target.closest && e.target.closest('.tint')) return;
-      var a = e.target.closest && e.target.closest('.piece'); if (!a || !tiles.some(function (t) { return t.el === a; })) return;
-      e.preventDefault(); e.stopPropagation();
-      tiles.forEach(function (t) { t.el.classList.toggle('tint-on', t.el === a); if (t.el === a) cur = t; });
-      show();
+    sz.addEventListener('click', function (e) {
+      var st = e.target.dataset && e.target.dataset.s; if (!st || !szKey) return;
+      mark(); G[szKey] = r1(clamp(G[szKey] + (+st), 8, 120)); applyGrid(); save(); sz.querySelector('span').textContent = G[szKey];
+    });
+    var tag = mk('tag'), pad = mk('pad', '<i></i>'), pill = mk('pill'), help = mk('help'), hint = mk('hint');
+    help.innerHTML = '<b>Picture</b> click to choose it, then drag to reframe · pinch to zoom · two fingers to move · ⌥ scroll to rotate · hold still for colour · double-click for the hover shot<br>' +
+      '<b>Top-left corner</b> roundness · <b>bottom-right corner</b> picture size and columns<br><b>Gaps</b> drag the space between columns or rows · <b>edges</b> drag the margin at either side<br>' +
+      '<b>Labels</b> drag sideways to align, up or down for distance<br><b>Names, prices</b> click for a − / + size box<br>⌘Z undo · ⇧⌘Z redo · Esc hides · ? this';
+    hint.textContent = 'Editing. Hover anything, press ? for gestures.'; hint.classList.add('on'); setTimeout(function () { hint.classList.remove('on'); }, 3200);
+    var place = function (el, x, y, w, h) { el.style.left = x + 'px'; el.style.top = y + 'px'; if (w != null) el.style.width = w + 'px'; if (h != null) el.style.height = h + 'px'; };
+    var show = function (el, on) { el.classList.toggle('on', !!on); };
+    var tagTimer = null;
+    function say(txt, x, y) { tag.textContent = txt; place(tag, x + 16, y + 18); show(tag, 1); clearTimeout(tagTimer); tagTimer = setTimeout(function () { show(tag, 0); }, 1100); }
+
+    function changes() {
+      var n = 0; Object.keys(G0).forEach(function (k) { if (k !== 'heads' && G[k] !== G0[k]) n++; });
+      G.heads.forEach(function (v, i) { var o = G0.heads[i]; if (v.l !== o.l || v.t !== o.t || v.b !== o.b) n++; });
+      tiles.forEach(function (t) { if (t.warm !== t.base.warm || t.tint !== t.base.tint) n++;
+        t.frames.forEach(function (f, i) { var o = t.base.frames[i]; if (f.x !== o.x || f.y !== o.y || f.z !== o.z || f.r !== o.r) n++; }); });
+      return n;
+    }
+    function tally() {
+      var n = changes();
+      pill.innerHTML = '<span>' + n + ' change' + (n === 1 ? '' : 's') + '</span><button data-a="undo">Undo</button><button data-a="reset">Reset</button><button class="k" data-a="copy">Copy</button>';
+      show(pill, n > 0);
+    }
+    tally();
+
+    /* ── where the pointer is ──────────────────────────────────────────── */
+    function geo() {
+      var pics = tiles.map(function (t) { return {t: t, r: t.pic.getBoundingClientRect(), f: t.el.closest('figure').getBoundingClientRect(),
+        name: t.el.querySelector('.name'), cost: t.el.querySelector('.cost'), over: t.el.querySelector('.over')}; });
+      return pics.filter(function (p) { return p.r.width > 0 && p.r.bottom > 0 && p.r.top < innerHeight; });
+    }
+    function zoneAt(x, y) {
+      var P = geo(), C = 22;
+      for (var hi2 = 0; hi2 < heads.length; hi2++) {          // a section title, and the space under it
+        var hd = heads[hi2], kids = [].slice.call(hd.children).map(function (k) { return k.getBoundingClientRect(); }).filter(function (q) { return q.width; });
+        if (!kids.length) continue;
+        var tr = {left: Math.min.apply(null, kids.map(function (q) { return q.left; })), top: Math.min.apply(null, kids.map(function (q) { return q.top; })),
+                  right: Math.max.apply(null, kids.map(function (q) { return q.right; })), bottom: Math.max.apply(null, kids.map(function (q) { return q.bottom; }))};
+        tr.width = tr.right - tr.left; tr.height = tr.bottom - tr.top;
+        if (x >= tr.left - 6 && x <= tr.right + 6 && y >= tr.top - 4 && y <= tr.bottom + 4) return {k: 'head', i: hi2, r: tr};
+        var wl = hd.parentElement && hd.parentElement.querySelector('.wall'), fp = wl && wl.querySelector('.pic');
+        if (fp) { var pr = fp.getBoundingClientRect(), wr2 = wl.getBoundingClientRect();
+          if (y > tr.bottom + 4 && y < pr.top - 2 && x >= wr2.left && x <= wr2.right) return {k: 'headGap', i: hi2, y: (tr.bottom + pr.top) / 2, left: wr2.left, w: wr2.width}; }
+      }
+      for (var i = 0; i < P.length; i++) {
+        var p = P[i], r = p.r;
+        if (x >= r.left && x <= r.left + C && y >= r.top && y <= r.top + C) return {k: 'radius', p: p};
+        if (x <= r.right && x >= r.right - C && y <= r.bottom && y >= r.bottom - C) return {k: 'cols', p: p};
+      }
+      for (i = 0; i < walls.length; i++) {          // the margin between the screen's edge and the pictures
+        var wr = walls[i].getBoundingClientRect(), inW = P.filter(function (q) { return q.t.el.closest('.wall') === walls[i]; });
+        if (!inW.length || y < wr.top || y > wr.bottom) continue;
+        var lo = Math.min.apply(null, inW.map(function (q) { return q.r.left; })), hi = Math.max.apply(null, inW.map(function (q) { return q.r.right; }));
+        var grab = 10;          // even at no margin at all, a 10px strip along the screen's edge still takes hold
+        if (x < Math.max(lo - 1, wr.left + grab) && x >= wr.left - 4) return {k: 'side', x: Math.max(lo, wr.left + 1), top: wr.top, h: wr.height, dir: 1};
+        if (x > Math.min(hi + 1, wr.right - grab) && x <= wr.right + 4) return {k: 'side', x: Math.min(hi, wr.right - 2), top: wr.top, h: wr.height, dir: -1};
+      }
+      for (i = 0; i < P.length; i++) {          // the space between two pictures side by side
+        var a = P[i], nb = null;
+        P.forEach(function (q) { if (q !== a && Math.abs(q.r.top - a.r.top) < 3 && q.r.left >= a.r.right - 1 && (!nb || q.r.left < nb.r.left)) nb = q; });
+        if (!nb) continue;
+        var cx = (a.r.right + nb.r.left) / 2, half = Math.max(6, (nb.r.left - a.r.right) / 2);
+        if (Math.abs(x - cx) <= half && y >= a.r.top && y <= a.r.bottom) return {k: 'colGap', x: cx, top: a.r.top, h: a.r.height};
+      }
+      var rows = [];          // the space between one row's labels and the next row's pictures
+      P.forEach(function (p) { var row = rows.filter(function (w) { return Math.abs(w.top - p.r.top) < 3; })[0];
+        if (!row) rows.push(row = {top: p.r.top, bottom: 0, left: 1e9, right: 0, wall: p.t.el.closest('.wall')});
+        row.bottom = Math.max(row.bottom, p.f.bottom); row.left = Math.min(row.left, p.r.left); row.right = Math.max(row.right, p.r.right); });
+      rows.sort(function (a, b) { return a.top - b.top; });
+      for (i = 0; i < rows.length - 1; i++) {
+        var A = rows[i], B = rows[i + 1]; if (A.wall !== B.wall) continue;
+        var mid = (A.bottom + B.top) / 2, span = Math.max(7, (B.top - A.bottom) / 2);
+        if (Math.abs(y - mid) <= span && x >= A.left && x <= A.right) return {k: 'rowGap', y: mid, left: A.left, w: A.right - A.left};
+      }
+      for (i = 0; i < P.length; i++) {
+        p = P[i];
+        var hit = function (el) { if (!el) return null; var q = el.getBoundingClientRect(); return (x >= q.left - 2 && x <= q.right + 12 && y >= q.top - 2 && y <= q.bottom + 4) ? q : null; };
+        var qn = hit(p.name), qc = hit(p.cost);
+        if (qn) return {k: 'name', q: qn, p: p};
+        if (qc) return {k: 'cost', q: qc, p: p};
+        var o = p.over && p.over.getBoundingClientRect();
+        if (o && x >= p.r.left && x <= p.r.right && y >= o.top && y <= o.bottom) return {k: 'label', p: p, o: o};
+        if (x >= p.r.left && x <= p.r.right && y >= p.r.top && y <= p.r.bottom) return {k: 'frame', p: p};
+      }
+      return null;
+    }
+    var sel = null;          // a picture only reframes once it has been clicked
+    function select(t) { sel = t; tiles.forEach(function (x) { x.el.classList.toggle('ge-sel', x === t); }); }
+    var cursors = {head: 'move', headGap: 'row-resize', side: 'col-resize', radius: 'nwse-resize', cols: 'nwse-resize', colGap: 'col-resize', rowGap: 'row-resize', label: 'grab', frame: 'grab', name: 'text', cost: 'text'};
+    function hover(z, x, y) {
+      ['vline', 'hline', 'arc', 'grip', 'nub', 'ghost', 'thirds'].forEach(function (k) { show(H[k], 0); });
+      H.ticks.forEach(function (t) { show(t, 0); });
+      root.style.cursor = z ? (z.nub ? 'nwse-resize' : z.k === 'frame' && z.p.t !== sel ? 'pointer' : cursors[z.k]) : '';
+      if (z && z.k === 'head') { place(H.ghost, z.r.left - 6, z.r.top - 4, z.r.width + 12, z.r.height + 8); show(H.ghost, 1); }
+      if (z && z.k === 'headGap') { place(H.hline, z.left, z.y, z.w, null); show(H.hline, 1); }
+      if (!z) return;
+      if (z.k === 'side') { place(H.vline, z.x - .5, Math.max(z.top, 0), null, Math.min(z.h, innerHeight)); show(H.vline, 1); }
+      if (z.k === 'colGap') { place(H.vline, z.x - .5, z.top, null, z.h); show(H.vline, 1); }
+      if (z.k === 'rowGap') { place(H.hline, z.left, z.y, z.w, null); show(H.hline, 1); }
+      if (z.k === 'radius') { place(H.arc, z.p.r.left + 5, z.p.r.top + 5); show(H.arc, 1); }
+      if (z.k === 'cols') { place(H.grip, z.p.r.right - 19, z.p.r.bottom - 19); show(H.grip, 1); }
+    }
+
+    function panBy(t, r2, f, fx, fy, dx, dy) {          // move the picture with the pointer or the fingers, pixel for pixel
+      var im = t.imgs[t.layer], nw = im.naturalWidth, nh = im.naturalHeight, sc = Math.max(r2.width / nw, r2.height / nh);
+      var sx = ((f.z - 1) * r2.width + (nw * sc - r2.width) * f.z) / 100, sy = ((f.z - 1) * r2.height + (nh * sc - r2.height) * f.z) / 100;
+      if (sx > .01) f.x = r1(clamp(fx - dx / sx, 0, 100));
+      if (sy > .01) f.y = r1(clamp(fy - dy / sy, 0, 100));
+      return sx > .01 || sy > .01;
+    }
+    var queued = {}, frameReq = 0;
+    function later(t) { queued[t.slug] = t; if (!frameReq) frameReq = requestAnimationFrame(function () { frameReq = 0; for (var k in queued) paint(queued[k]); queued = {}; }); }
+
+    /* ── gestures ──────────────────────────────────────────────────────── */
+    var drag = null, lastZone = null;
+    addEventListener('pointermove', function (e) {
+      if (drag) return move(e);
+      var z = zoneAt(e.clientX, e.clientY); lastZone = z; hover(z, e.clientX, e.clientY);
     }, true);
-    box.addEventListener('input', function (e) {
-      if (!cur) return;
-      if (e.target.dataset.c) { cur[e.target.dataset.c] = +e.target.value; }
-      else if (e.target.dataset.f) { frame()[e.target.dataset.f] = +e.target.value; }
-      else return;
-      e.target.nextElementSibling.textContent = e.target.value; paint(cur);
-    });
-    box.addEventListener('click', function (e) {
-      var l = e.target.dataset && e.target.dataset.l;
-      if (l === undefined || l === null) return;
-      layer = +l;
-      box.querySelectorAll('[data-l]').forEach(function (b) { b.classList.toggle('dark', b.dataset.l === l); });
-      show();
-    });
-    window.addEventListener('keydown', function (e) {
-      if (!cur || /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+    addEventListener('keydown', function (e) {
+      if (e.key === 'Alt') root.classList.add('ge-alt');
+      if (e.key === '?') { help.classList.toggle('on'); return; }
+      if (e.key === 'Escape') { show(help, 0); show(sz, 0); hover(null); select(null); return; }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        if (e.shiftKey) { if (redo.length) { undo.push(snap()); restore(redo.pop()); save(); } }
+        else if (undo.length) { redo.push(snap()); restore(undo.pop()); save(); }
+        return;
+      }
       var k = {ArrowLeft: ['x', -1], ArrowRight: ['x', 1], ArrowUp: ['y', -1], ArrowDown: ['y', 1]}[e.key];
-      if (!k) return;
-      e.preventDefault();
-      frame()[k[0]] = Math.round((frame()[k[0]] + k[1] * (e.shiftKey ? 5 : .5)) * 10) / 10;
-      paint(cur); show();
+      if (k && sel) {
+        e.preventDefault(); var t = sel, f = t.frames[t.layer]; mark();
+        f[k[0]] = clamp(r1(f[k[0]] + k[1] * (e.shiftKey ? 5 : .5)), 0, 100); paint(t); save();
+      }
     });
-    box.querySelector('#tint-reset').onclick = function () {
-      if (!cur) return;
-      cur.warm = cur.b.warm; cur.tint = cur.b.tint;
-      cur.frames = cur.frames0.map(function (f) { return {r: f.r, z: f.z, x: f.x, y: f.y}; });
-      paint(cur); show();
-    };
-    box.querySelector('#tint-copy').onclick = function () {
-      var out = tiles.map(function (x) {
-        var bits = [];
-        if (x.warm !== x.b.warm || x.tint !== x.b.tint) bits.push('warm ' + x.warm + ', tint ' + x.tint);
-        x.frames.forEach(function (f, i) {
-          var o = x.frames0[i];
-          if (f.r !== o.r || f.z !== o.z || f.x !== o.x || f.y !== o.y) bits.push((i ? 'hover' : 'default') + ': zoom ' + f.z.toFixed(3) + ', x ' + f.x + '%, y ' + f.y + '%' + (f.r ? ', rotate ' + f.r : ''));
+    addEventListener('keyup', function (e) { if (e.key === 'Alt') root.classList.remove('ge-alt'); });
+    addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.wall .piece')) { e.preventDefault(); e.stopPropagation(); } }, true);
+    addEventListener('dblclick', function (e) {
+      var z = zoneAt(e.clientX, e.clientY); if (!z || z.k !== 'frame' || z.p.t !== sel || !z.p.t.imgs[1]) return;
+      var t = z.p.t; t.layer = t.layer ? 0 : 1; paint(t); say(t.layer ? 'Hover shot · ⌥ to ghost' : 'Default shot', e.clientX, e.clientY);
+    }, true);
+
+    var gesture = null;
+    addEventListener('wheel', function (e) {
+      var z = gesture && Date.now() - gesture.at < 250 ? gesture.z : zoneAt(e.clientX, e.clientY); if (!z) return;
+      if (z.k === 'frame') {
+        if (z.p.t !== sel) return;          // not chosen yet: the page just scrolls
+        e.preventDefault(); var t = z.p.t, f = t.frames[t.layer];
+        if (!gesture || gesture.z.p.t !== t || Date.now() - gesture.at >= 250) { mark(); gesture = {z: z}; }
+        gesture.at = Date.now();
+        var px = e.deltaMode === 1 ? 16 : 1, dX = e.deltaX * px, dY = e.deltaY * px;
+        if (e.ctrlKey) { f.z = Math.round(clamp(f.z * Math.exp(-dY * .012), 1, 4) * 1000) / 1000; say(Math.round(f.z * 100) + '%', e.clientX, e.clientY); }          // pinch
+        else if (e.altKey) { f.r = r1(clamp(f.r + (dY || dX) * .08, -30, 30)); say('rotate ' + f.r + '°', e.clientX, e.clientY); }
+        else { var moved = panBy(t, z.p.r, f, f.x, f.y, -dX, -dY); say(moved ? f.x + ' / ' + f.y : 'pinch to zoom in first', e.clientX, e.clientY); }          // two fingers
+        later(t); show(H.thirds, 1); place(H.thirds, z.p.r.left, z.p.r.top, z.p.r.width, z.p.r.height);
+        clearTimeout(wheelEnd); wheelEnd = setTimeout(function () { show(H.thirds, 0); gesture = null; save(); }, 400);
+      }
+    }, {passive: false, capture: true});
+    var wheelEnd = null;
+
+    addEventListener('pointerdown', function (e) {
+      if (e.button !== 0 || (e.target.closest && e.target.closest('#ge .pill, #ge .sizer'))) return;
+      show(sz, 0); szKey = null;
+      var z = zoneAt(e.clientX, e.clientY); if (!z) { select(null); return; }
+      if (z.k === 'frame' && z.p.t !== sel) { e.preventDefault(); e.stopPropagation(); drag = {k: 'pick', t: z.p.t, x0: e.clientX, y0: e.clientY, moved: false}; return; }
+      e.preventDefault(); e.stopPropagation(); mark(); hover(null);
+      var textKey = (z.k === 'name' || z.k === 'cost') ? z.k : null, textRect = z.q;
+      if (textKey) z = {k: 'label', p: z.p, o: z.p.over.getBoundingClientRect()};          // dragging the words still moves the label          // grabbing the words moves the label
+      drag = {k: z.k, textKey: textKey, textRect: textRect, z: z, x0: e.clientX, y0: e.clientY, G: JSON.parse(JSON.stringify(G)), moved: false};
+      if (z.k === 'frame') {
+        var t = z.p.t; drag.t = t; drag.f = Object.assign({}, t.frames[t.layer]); drag.c = {warm: t.warm, tint: t.tint};
+        root.style.cursor = 'grabbing'; place(H.thirds, z.p.r.left, z.p.r.top, z.p.r.width, z.p.r.height); show(H.thirds, 1);
+        drag.hold = setTimeout(function () {          // held still: the colour pad opens under the finger
+          if (!drag || drag.moved) return; drag.k = 'colour'; place(pad, e.clientX, e.clientY); show(pad, 1); show(H.thirds, 0);
+        }, 380);
+      }
+      if (z.k === 'label') { root.style.cursor = 'grabbing'; drag.overs = [].slice.call(document.querySelectorAll('.wall .piece .over')); }
+    }, true);
+
+    function move(e) {
+      var d = drag, dx = e.clientX - d.x0, dy = e.clientY - d.y0, x = e.clientX, y = e.clientY;
+      if (Math.abs(dx) + Math.abs(dy) > 3) d.moved = true;
+      if (d.k === 'head') { var hv = G.heads[d.z.i], h0 = d.G.heads[d.z.i];
+        hv.l = Math.round(clamp(h0.l + dx, 0, innerWidth / 2)); hv.t = Math.round(clamp(h0.t + dy, 0, innerHeight * 1.5));
+        G.heads = G.heads.map(function (v) { return Object.assign({}, v, {l: hv.l, t: hv.t, b: G.heads[d.z.i].b}); }); applyGrid();
+        say(hv.l + ' px in · ' + hv.t + ' px above', x, y); }
+      if (d.k === 'headGap') { var hg = G.heads[d.z.i]; hg.b = Math.round(clamp(d.G.heads[d.z.i].b + dy, 0, 400));
+        G.heads = G.heads.map(function () { return Object.assign({}, hg); }); applyGrid(); say(hg.b + ' px under the title', x, y); }
+      if (d.k === 'side') { G.side = Math.round(clamp(d.G.side + dx * d.z.dir, 0, innerWidth / 3)); applyGrid(); say('edges ' + G.side + ' px', x, y); }
+      if (d.k === 'colGap') { G.colGap = Math.round(clamp(d.G.colGap + dx, 0, 160)); applyGrid(); say('column gap ' + G.colGap + ' px', x, y); hover(zoneAt(x, y)); }
+      if (d.k === 'rowGap') { G.rowGap = Math.round(clamp(d.G.rowGap + dy, 0, 240)); applyGrid(); say('row gap ' + G.rowGap + ' px', x, y); }
+      if (d.k === 'radius') { G.radius = Math.round(clamp(d.G.radius + (dx + dy) / 2, 0, 80)); applyGrid(); say('corners ' + G.radius + ' px', x, y); }
+      if (d.k === 'cols') {
+        var wall = d.z.p.t.el.closest('.wall'), ws = getComputedStyle(wall);
+        var inner = wall.clientWidth - parseFloat(ws.paddingLeft) - parseFloat(ws.paddingRight), gap = G.colGap;
+        var now = d.z.p.t.pic.getBoundingClientRect(), want = clamp(x - now.left, 60, inner);          // the corner follows the pointer
+        var n = clamp(Math.round((inner + gap) / (want + gap)), 1, 8);
+        place(H.ghost, now.left, now.top, want, want * now.height / now.width); show(H.ghost, 1);
+        if (n !== G.cols) { G.cols = n; applyGrid(); }
+        say(n + ' across', x, y);
+      }
+      if (d.k === 'label') {
+        d.overs.forEach(function (o) { o.style.transform = 'translateX(' + dx + 'px)'; });
+        G.labelTop = Math.round(clamp(d.G.labelTop + dy, 0, 120)); applyGrid();
+        var r = d.z.p.r; [r.left, r.left + r.width / 2, r.right].forEach(function (tx, i) { place(H.ticks[i], tx, d.z.o.bottom + 6); show(H.ticks[i], 1); });
+        var rel = (x - r.left) / r.width; d.align = rel < 1 / 3 ? 'left' : rel > 2 / 3 ? 'right' : 'center';
+        say(d.align + ' · ' + G.labelTop + ' px below', x, y);
+      }
+      if (d.k === 'frame' && d.moved) {
+        clearTimeout(d.hold);
+        var t = d.t, f = t.frames[t.layer];
+        var ok = panBy(t, d.z.p.r, f, d.f.x, d.f.y, dx, dy);
+        later(t); say(ok ? f.x + ' / ' + f.y : 'pinch to zoom in first', x, y);
+      }
+      if (d.k === 'colour') {
+        var t2 = d.t; t2.warm = r1(clamp(d.c.warm + dx / 3, -20, 20)); t2.tint = r1(clamp(d.c.tint - dy / 3, -20, 20)); paint(t2);
+        var dot = pad.firstChild; dot.style.left = clamp(50 + dx / 1.3, 6, 94) + '%'; dot.style.top = clamp(50 + dy / 1.3, 6, 94) + '%';
+        say((t2.warm >= 0 ? 'warm +' : 'cool ') + t2.warm + ' · ' + (t2.tint >= 0 ? 'green +' : 'magenta ') + t2.tint, x, y);
+      }
+    }
+    addEventListener('pointerup', function (e) {
+      var d = drag; if (!d) return; drag = null; clearTimeout(d.hold);
+      if (d.k === 'pick') { if (!d.moved) { select(d.t); say('Selected · drag, pinch or two fingers to reframe', e.clientX, e.clientY); } hover(zoneAt(e.clientX, e.clientY), e.clientX, e.clientY); return; }
+      if (d.k === 'label') { d.overs.forEach(function (o) { o.style.transform = ''; }); if (d.align) G.align = d.align; applyGrid(); }
+      if (d.k === 'label' && !d.moved) { undo.pop(); if (d.textKey) sizer(d.textKey, d.textRect); }
+      show(pad, 0); pad.firstChild.style.left = pad.firstChild.style.top = '50%';
+      show(H.ghost, 0); show(H.thirds, 0); H.ticks.forEach(function (t) { show(t, 0); });
+      if (d.k === 'frame' && !d.moved) undo.pop();          // a plain click changed nothing
+      save(); hover(zoneAt(e.clientX, e.clientY), e.clientX, e.clientY);
+    }, true);
+
+    /* ── the pill ──────────────────────────────────────────────────────── */
+    pill.addEventListener('click', function (e) {
+      var a = e.target.dataset && e.target.dataset.a; if (!a) return;
+      if (a === 'undo' && undo.length) { redo.push(snap()); restore(undo.pop()); save(); }
+      if (a === 'reset') { mark(); G = JSON.parse(JSON.stringify(G0)); tiles.forEach(function (t) { t.warm = t.base.warm; t.tint = t.base.tint;
+        t.frames = t.base.frames.map(function (f) { return Object.assign({}, f); }); t.layer = 0; paint(t); }); applyGrid(); save(); }
+      if (a === 'copy') {
+        var out = ['Photos: ' + (clay ? 'terracotta (clay)' : grey ? 'grey' : 'linen')], g = [];
+        if (G.cols !== G0.cols) g.push(G.cols + ' across');
+        if (G.colGap !== G0.colGap) g.push('column gap ' + G.colGap + 'px');
+        if (G.rowGap !== G0.rowGap) g.push('row gap ' + G.rowGap + 'px');
+        if (G.side !== G0.side) g.push('edges ' + G.side + 'px');
+        if (G.radius !== G0.radius) g.push('corners ' + G.radius + 'px');
+        if (G.align !== G0.align) g.push('labels ' + G.align);
+        if (G.labelTop !== G0.labelTop) g.push('labels ' + G.labelTop + 'px under the picture');
+        if (G.name !== G0.name) g.push('names ' + G.name + 'px');
+        if (G.cost !== G0.cost) g.push('prices ' + G.cost + 'px');
+        if (g.length) out.push('Grid: ' + g.join(', '));
+        G.heads.forEach(function (v, i) { var o = G0.heads[i], h2 = heads[i].querySelector('h1,h2'), bits2 = [];
+          if (v.l !== o.l) bits2.push(v.l + 'px from the left'); if (v.t !== o.t) bits2.push(v.t + 'px above'); if (v.b !== o.b) bits2.push(v.b + 'px below');
+          if (bits2.length) out.push('Title "' + (h2 ? h2.textContent.trim() : i + 1) + '": ' + bits2.join(', ')); });
+        tiles.forEach(function (t) {
+          var bits = [];
+          if (t.warm !== t.base.warm || t.tint !== t.base.tint) bits.push('warm ' + t.warm + ', tint ' + t.tint);
+          t.frames.forEach(function (f, i) { var o = t.base.frames[i];
+            if (f.x !== o.x || f.y !== o.y || f.z !== o.z || f.r !== o.r) bits.push((i ? 'hover' : 'default') + ': zoom ' + f.z.toFixed(3) + ', x ' + f.x + '%, y ' + f.y + '%' + (f.r ? ', rotate ' + f.r : '')); });
+          if (bits.length) out.push(t.slug + ': ' + bits.join('; '));
         });
-        return bits.length ? x.slug + ' — ' + bits.join('; ') : null;
-      }).filter(Boolean).join('\n') || 'no changes';
-      var b = this;
-      (navigator.clipboard ? navigator.clipboard.writeText(out) : Promise.reject())
-        .then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy settings'; }, 1500); },
-              function () { prompt('Copy these settings:', out); });
-    };
-  })();
+        var txt = out.join('\n'), b = e.target;
+        (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject())
+          .then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1400); }, function () { prompt('Copy these settings:', txt); });
+      }
+    });
+    applyGrid(); tiles.forEach(paint);
+  }, 60); });
 </script>
 <script>
   // home grid photo test, desktop only: this visitor sees linen (as always), grey or clay stills
   (function () {
     var side = window.maconPhotoTest ? maconPhotoTest() : 'linen';
+    var peek = (location.search.match(/[?&]photos=(grey|clay)\b/) || [])[1];          // ?photos=clay previews a set, even a partial one
+    if (peek) side = peek;
     if (side !== 'grey' && side !== 'clay') return;
-    var imgs = document.querySelectorAll('.wall .piece .pic img:not(.held)');
+    var imgs = [].filter.call(document.querySelectorAll('.wall .piece .pic img:not(.held)'), function (i) { return !peek || i.getAttribute('data-' + side); });
     if (![].every.call(imgs, function (i) { return i.getAttribute('data-' + side); })) return;          // a style is only shown whole
     document.documentElement.classList.add('photo-' + side);
-    [].forEach.call(imgs, function (i) { var s = i.getAttribute('data-' + side); i.removeAttribute('srcset'); i.src = s; });
+    [].forEach.call(imgs, function (i) { var s = i.getAttribute('data-' + side); i.removeAttribute('srcset'); i.src = s; i.classList.add('ab'); });
   })();
 </script>
 </body>

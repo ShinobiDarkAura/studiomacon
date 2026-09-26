@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Starship Key | Studio Maçon</title>
-<meta name="description" content="Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Some say it descends from the silver ship of a young queen. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad.">
+<meta name="description" content="Salvaged from the silver mirrored vessel of stellar origin. All those who wear it are seized by an insatiable wanderlust.">
 <link rel="canonical" href="https://studiomacon.co/starshipkey-pendant.html">
 <meta property="og:site_name" content="Studio Maçon">
 <meta property="og:title" content="Starship Key | Studio Maçon">
-<meta property="og:description" content="Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Some say it descends from the silver ship of a young queen. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad.">
+<meta property="og:description" content="Salvaged from the silver mirrored vessel of stellar origin. All those who wear it are seized by an insatiable wanderlust.">
 <meta property="og:url" content="https://studiomacon.co/starshipkey-pendant.html">
 <meta property="og:image" content="https://studiomacon.co/img/starshipkey-pendant/hero.jpg">
 <meta property="og:type" content="product">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Starship Key", "description": "Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Some say it descends from the silver ship of a young queen. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad.", "image": ["https://studiomacon.co/img/starshipkey-pendant/hero.jpg", "https://studiomacon.co/img/starshipkey-pendant/plain-1.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "starshipkey-pendant", "offers": [{"@type": "Offer", "price": "460.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/starshipkey-pendant.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Starship Key", "description": "Salvaged from the silver mirrored vessel of stellar origin. All those who wear it are seized by an insatiable wanderlust.", "image": ["https://studiomacon.co/img/starshipkey-pendant/hero.jpg", "https://studiomacon.co/img/starshipkey-pendant/plain-1.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "starshipkey-pendant", "offers": [{"@type": "Offer", "price": "460.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/starshipkey-pendant.html"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Studio Maçon", "item": "https://studiomacon.co"}, {"@type": "ListItem", "position": 2, "name": "Jewelry", "item": "https://studiomacon.co/index.html#pieces"}, {"@type": "ListItem", "position": 3, "name": "Starship Key"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
@@ -84,6 +84,13 @@
   .desc-block .label{margin:0 0 14px}
   @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#9ca3af;margin-bottom:18px} }          /* the same title as on phones */          /* desktop: 1pt smaller, 4px more air beneath */
   .desc a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+  /* the description surfaces word by word, like ink soaking into old paper */
+  .desc.ink .w{opacity:0;filter:blur(3px);transition:opacity .5s ease,filter .6s ease}
+  .desc.ink.inked .w{opacity:1;filter:none}
+  /* Ibi's first photograph clears out of the morning mist */
+  body[data-slug="ibi"] .gallery .hero .shot:first-child img{animation:ibi-mist 1.6s cubic-bezier(.3,.6,.3,1) .15s both}
+  @keyframes ibi-mist{from{filter:blur(14px) brightness(1.18) contrast(.7);opacity:.55}to{filter:none;opacity:1}}
+  @media (prefers-reduced-motion:reduce){ .desc.ink .w{opacity:1;filter:none;transition:none} body[data-slug="ibi"] .gallery .hero .shot:first-child img{animation:none} }
   .desc{margin:0;font-size:17px;letter-spacing:.02em;line-height:var(--body-s-lh)}          /* the same size as the About page's words */          /* same size as the overline */
   .info > .dr-emerge{transform:translateY(66px)}
   .info > .dr-emerge.is-seen{transform:none}
@@ -662,12 +669,12 @@
 
     <div class="info">
       <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>
-      <p class="eyebrow" data-edit="eyebrow">Device of Stellar Origin</p>
+      <p class="eyebrow" data-edit="eyebrow">Relic of the Outer Dark</p>
       <h1 data-edit="name">Starship Key</h1>
       <p class="price" data-edit="price"><span class="amt">$460</span><span class="ship-free">Free shipping</span></p>
       
       <div class="buy" id="bag" data-variant="gid://shopify/ProductVariant/53985365885293"><button class="cta">Add to Bag</button><button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">Buy with <svg class="shop-word" viewBox="0 0 101 42" aria-hidden="true" focusable="false"><path d="M12.0288 18.2598C7.97006 17.3793 6.16191 17.0348 6.16191 15.4708C6.16191 13.9997 7.38555 13.2669 9.83283 13.2669C11.9851 13.2669 13.5584 14.2075 14.7165 16.0504C14.8039 16.1926 14.9841 16.2418 15.1316 16.1653L19.6984 13.8575C19.8623 13.7755 19.9224 13.5677 19.8295 13.4091C17.934 10.1224 14.4324 8.32324 9.82191 8.32324C3.76379 8.32324 0 11.3091 0 16.0559C0 21.098 4.58319 22.3722 8.64743 23.2527C12.7117 24.1331 14.5253 24.4776 14.5253 26.0417C14.5253 27.6057 13.2033 28.344 10.5648 28.344C8.12848 28.344 6.32033 27.2284 5.22779 25.0628C5.14585 24.9042 4.95466 24.8386 4.79624 24.9206L0.240358 27.1791C0.0819403 27.2612 0.0163881 27.4526 0.0983284 27.6166C1.90648 31.2533 5.61564 33.2986 10.5703 33.2986C16.8797 33.2986 20.6927 30.3619 20.6927 25.4675C20.6927 20.573 16.0876 19.1512 12.0288 18.2707V18.2598Z"/><path d="M36.5018 8.32341C33.9125 8.32341 31.6236 9.24214 29.9794 10.8773C29.8756 10.9757 29.7062 10.9046 29.7062 10.7624V0.322772C29.7062 0.142307 29.5642 0.00012207 29.3839 0.00012207H23.67C23.4897 0.00012207 23.3477 0.142307 23.3477 0.322772V32.7245C23.3477 32.905 23.4897 33.0472 23.67 33.0472H29.3839C29.5642 33.0472 29.7062 32.905 29.7062 32.7245V18.5115C29.7062 15.7662 31.8094 13.6608 34.6445 13.6608C37.4796 13.6608 39.5336 15.7225 39.5336 18.5115V32.7245C39.5336 32.905 39.6756 33.0472 39.8559 33.0472H45.5699C45.7501 33.0472 45.8922 32.905 45.8922 32.7245V18.5115C45.8922 12.5397 41.9809 8.32887 36.5018 8.32887V8.32341Z"/><path d="M57.4962 7.39915C54.3934 7.39915 51.4764 8.34522 49.3896 9.71785C49.2476 9.81082 49.1984 10.0022 49.2858 10.1499L51.8041 14.4537C51.897 14.6068 52.0937 14.6615 52.2466 14.5685C53.8308 13.6115 55.6444 13.1139 57.4962 13.1248C62.4837 13.1248 66.1491 16.6466 66.1491 21.3005C66.1491 25.2652 63.2157 28.2019 59.4956 28.2019C56.4638 28.2019 54.3607 26.4355 54.3607 23.9418C54.3607 22.5145 54.967 21.3442 56.5457 20.5184C56.7096 20.4309 56.7697 20.2286 56.6714 20.07L54.2951 16.0451C54.2186 15.9138 54.0548 15.8537 53.9073 15.9084C50.7225 17.0896 48.4883 19.9333 48.4883 23.7504C48.4883 29.5253 53.0824 33.8346 59.4901 33.8346C66.974 33.8346 72.3548 28.6448 72.3548 21.202C72.3548 13.2233 66.0945 7.39368 57.4853 7.39368L57.4962 7.39915Z"/><path d="M89.0635 8.27964C86.1738 8.27964 83.5954 9.34603 81.7108 11.2272C81.607 11.3311 81.4376 11.2546 81.4376 11.1124V8.84838C81.4376 8.66791 81.2956 8.52573 81.1153 8.52573H75.5489C75.3686 8.52573 75.2266 8.66791 75.2266 8.84838V41.2009C75.2266 41.3814 75.3686 41.5236 75.5489 41.5236H81.2628C81.4431 41.5236 81.5851 41.3814 81.5851 41.2009V30.5917C81.5851 30.4495 81.7545 30.3784 81.8583 30.4714C83.7374 32.2214 86.2229 33.244 89.069 33.244C95.7717 33.244 101 27.8137 101 20.7591C101 13.7045 95.7663 8.27417 89.069 8.27417L89.0635 8.27964ZM87.9874 27.7644C84.1744 27.7644 81.2847 24.7293 81.2847 20.7153C81.2847 16.7014 84.169 13.6663 87.9874 13.6663C91.8058 13.6663 94.6846 16.6521 94.6846 20.7153C94.6846 24.7786 91.844 27.7644 87.9819 27.7644H87.9874Z"/></svg></button></div>
-      <div class="desc-block"><p class="label">Field Notes</p><p class="desc" data-edit="description">Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Some say it descends from the silver ship of a young queen. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad.</p></div>
+      <div class="desc-block"><p class="desc" data-edit="description">Salvaged from the silver mirrored vessel of stellar origin. All those who wear it are seized by an insatiable wanderlust.</p></div>
       <div class="acc">
         <div class="acc-item">
           <button class="acc-head" aria-expanded="false">Sizing</button>
@@ -694,7 +701,7 @@
     </div>
   </section>
 
-  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><p class="rel-blurb">We’d like to introduce you to a few friends</p><div class="rel-three"><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-hit"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"></span></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" alt="Caldera Arc" loading="lazy"></span></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a></div><div class="rel-swipe"><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-hit"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"></span></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" alt="Caldera Arc" loading="lazy"></span></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a></div><div class="rel-loop" data-centre="3"><div class="rel-track"><a class="rel-piece" href="sietch-aperture.html"><span class="rel-hit"><span class="rel-frame"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" alt="Sietch Ring" loading="lazy"></span></span><span class="rel-name">Sietch Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="eclipse-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp" alt="Eclipse Ring" loading="lazy"></span></span><span class="rel-name">Eclipse Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" alt="Caldera Arc" loading="lazy"></span></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-hit"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"></span></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a><a class="rel-piece" href="meridian-egg-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp" alt="Meridian Egg" loading="lazy"></span></span><span class="rel-name">Meridian Egg</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="zuma-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp" alt="Zuma Ring" loading="lazy"></span></span><span class="rel-name">Zuma Ring</span><span class="rel-cost">$320</span></a></div></div></section>
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><div class="rel-three"><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-hit"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"></span></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" alt="Caldera Arc" loading="lazy"></span></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a></div><div class="rel-swipe"><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-hit"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"></span></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" alt="Caldera Arc" loading="lazy"></span></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a></div><div class="rel-loop" data-centre="3"><div class="rel-track"><a class="rel-piece" href="sietch-aperture.html"><span class="rel-hit"><span class="rel-frame"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" alt="Sietch Ring" loading="lazy"></span></span><span class="rel-name">Sietch Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="eclipse-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp" alt="Eclipse Ring" loading="lazy"></span></span><span class="rel-name">Eclipse Ring</span><span class="rel-cost">$340</span></a><a class="rel-piece" href="ear-cuff.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" alt="Caldera Arc" loading="lazy"></span></span><span class="rel-name">Caldera Arc</span><span class="rel-cost">$260</span></a><a class="rel-piece" href="wonderhorn-talisman.html"><span class="rel-hit"><span class="rel-frame"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" alt="Ida&#x27;s Wonder Horn" loading="lazy"></span></span><span class="rel-name">Ida&#x27;s Wonder Horn</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="lunar-canyon-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" alt="Lunar Canyon" loading="lazy"></span></span><span class="rel-name">Lunar Canyon</span><span class="rel-cost">$370</span></a><a class="rel-piece" href="meridian-egg-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp" alt="Meridian Egg" loading="lazy"></span></span><span class="rel-name">Meridian Egg</span><span class="rel-cost">$390</span></a><a class="rel-piece" href="zuma-ring.html"><span class="rel-hit"><span class="rel-frame"><img src="img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp" alt="Zuma Ring" loading="lazy"></span></span><span class="rel-name">Zuma Ring</span><span class="rel-cost">$320</span></a></div></div></section>
   <script>
   // the stamp presses down once the heading it sits on is in view, as on the home page
   (function () {
@@ -711,7 +718,7 @@
 
   <!-- lore and making blocks, parked for now
   <section class="closing">
-    <p class="chunk" data-edit="lore">The Starship Key opens nothing that can be found on earth, which has never stopped anyone from trying. Worn close, it seems to hum faintly whenever the night sky is especially clear. Researchers who study it are rarely seen at their desks for long.</p>
+    <p class="chunk" data-edit="lore">This key opens nothing that can be found on earth, which has never stopped anyone from trying. Worn close, it seems to hum faintly whenever the night sky is especially clear. Researchers who study it are rarely seen at their desks for long.</p>
     <p class="chunk" data-edit="made">Each piece is made to order. It begins as a sketch on paper, is carved by hand in wax, and passes through a local foundry before being refined and polished at the bench. Allow up to two weeks for yours to take shape.</p>
   </section>
   -->
@@ -1351,6 +1358,20 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
         toast.appendChild(tx);
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
+        // the Bureau of Provenance presses its seal onto the button: the claim is recorded
+        if (!matchMedia('(prefers-reduced-motion:reduce)').matches && document.body.animate) {
+          var r = b.getBoundingClientRect(), st = document.createElement('img'), sz = Math.min(104, r.height * 2.1);
+          st.src = 'img/claim-stamp.png'; st.alt = ''; st.setAttribute('aria-hidden', 'true');
+          st.style.cssText = 'position:fixed;z-index:60;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;left:' + (r.right - sz - 6) + 'px;top:' + (r.top + r.height / 2 - sz / 2) + 'px';
+          document.body.appendChild(st);
+          st.animate([
+            {transform: 'scale(1.9) rotate(-24deg)', opacity: 0},
+            {transform: 'scale(.94) rotate(-11deg)', opacity: .95, offset: .16},
+            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .24},
+            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .8},
+            {transform: 'scale(1) rotate(-12deg)', opacity: 0}
+          ], {duration: 1500, easing: 'cubic-bezier(.3,.7,.3,1)'}).onfinish = function () { st.remove(); };
+        }
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
       });
@@ -1835,6 +1856,35 @@ function maconClickQuery(extra) {
       clearTimeout(rest); rest = setTimeout(settle, 180);
     }, {passive: true});
     dim(); addEventListener('resize', function () { centreOn(all[2 * n + (+box.dataset.centre || 0)]); dim(); });
+  })();
+</script>
+<script>
+  // the description inks in word by word once it is on screen and the page's arrival has finished (about a second in all)
+  (function () {
+    var d = document.querySelector('.desc'); if (!d || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    var words = [], walk = function (n) {
+      [].slice.call(n.childNodes).forEach(function (c) {
+        if (c.nodeType === 3) {
+          var f = document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach(function (t) {
+            if (!t) return;
+            if (/^\s+$/.test(t)) { f.appendChild(document.createTextNode(t)); return; }
+            var w = document.createElement('span'); w.className = 'w'; w.textContent = t; f.appendChild(w); words.push(w);
+          });
+          c.parentNode.replaceChild(f, c);
+        } else if (c.nodeType === 1) walk(c);
+      });
+    };
+    walk(d); d.classList.add('ink');
+    var step = Math.min(45, 900 / Math.max(words.length, 1));
+    words.forEach(function (w, i) { w.style.transitionDelay = (i * step) + 'ms'; });
+    var go = function () { d.classList.add('inked'); };
+    var ready = function () {
+      if (!('IntersectionObserver' in window)) return go();
+      var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); setTimeout(go, 250); } });
+      io.observe(d);
+    };
+    if (document.documentElement.classList.contains('intro-wait')) addEventListener('macon:intro', ready, {once: true}); else ready();
   })();
 </script>
 <script>maconTrack('view', {"variant": "53985365885293", "name": "Starship Key", "slug": "starshipkey-pendant", "price": 460.0, "image": "https://studiomacon.co/img/email/wide-starshipkey-pendant.jpg"});</script>

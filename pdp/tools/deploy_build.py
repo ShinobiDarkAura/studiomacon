@@ -51,8 +51,16 @@ def referenced():
 
 
 def main():
+    mock, parked = os.path.join(OUT, "_mock"), OUT + "-mock-parked"          # local mockups live only in dist: carry them across the wipe
+    if os.path.exists(mock):
+        shutil.rmtree(parked, ignore_errors=True); shutil.move(mock, parked)
     if os.path.exists(OUT):
         shutil.rmtree(OUT)
+    os.makedirs(OUT, exist_ok=True)
+    if os.path.exists(parked):
+        shutil.move(parked, mock)
+    with open(os.path.join(OUT, ".assetsignore"), "w") as fh:          # Cloudflare never uploads the local mockups
+        fh.write("_mock\n")
     keep_jpg = wanted_jpgs()
     used = used_media()
     named = referenced()
@@ -83,6 +91,8 @@ def main():
                 take = True
             if rel.startswith(os.path.join("img", "email") + os.sep):   # pictures the welcome emails load
                 take = True
+            if rel.startswith(os.path.join("img", "collection") + os.sep):   # My Collection is parked (pdp/parked): its drawings stay home
+                take = False
             if not take:
                 continue
             dst = os.path.join(OUT, rel)

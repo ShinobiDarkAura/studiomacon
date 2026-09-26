@@ -24,20 +24,20 @@ EYEBROW = {
     "pip": "Tiny Keeper of Tenderness",
     "rebi": "Silhouette in Flux",
     "ren": "Steward of Forgotten Paths",
-    "zuma": "Desert Spirit",
-    "ori": "Guardian of Forests and Rivers",
+    "zuma": "Spirit of the Sunbaked Shore",
+    "ori": "Guardian of Lost Souls",
     "yael": "Prophecy in Metal",
     "zuma-ring": "Sand Spirit, Distilled",
     "milo": "Ancient Wanderer",
     "eclipse-ring": "Ellipses in Patient Equilibrium",
     "sietch-aperture": "Shelter Cut Into Rock",
-    "lunar-canyon-ring": "Carved by the Aegean",
+    "lunar-canyon-ring": "Moonrisen Memory",
     "eleph": "Breath Suspended",
-    "wonderhorn-talisman": "Horn for Undiscovered Chords",
+    "wonderhorn-talisman": "Horn of Undiscovered Chords",
     "macon-cap": "Modicum of Solar Protection",
-    "ibi": "Eternal Watcher",
+    "ibi": "Daybreak Apparition",
     "ear-cuff": "Perfect Geometries",
-    "starshipkey-pendant": "Device of Stellar Origin",
+    "starshipkey-pendant": "Relic of the Outer Dark",
     "meridian-egg-ring": "Heavier Than It Looks",
     "ooak-vessel": "Halves Hiding a Secret",
     "ooak-pendant": "Mane Caught Mid-Stride",
@@ -47,24 +47,24 @@ EYEBROW = {
 # The description under the price. Third person throughout, in the Kindred
 # Black manner: the object, its material and making, then its lore.
 DESC = {
-    "pip": "Solid bronze, small enough to vanish into a closed fist. It was born at an elder's hearth, in a house of long memory. Proximity induces unexpected calm; scholars remain blissfully baffled.",
-    "rebi": "Solid bronze with a different outline from every side of the room. Some say it rose from the smoke of an oracle's dream. Handling is known to sharpen the reflexes; owners find themselves catching things before they fall.",
-    "ren": "Solid bronze with a bright crest, drawn from a painted toy on a Swedish shelf. Dawn light lingers on it longer than it should; hikers report arriving home early when carrying it.",
-    "zuma": "Pocket-sized solid bronze, drawn at the same table as its namesake ring. It was discovered on a distant shoreline. Ancient runes suggest the two belong together; kept apart, both grow restless.",
-    "ori": "Solid bronze with a comforting, stone-like weight in the palm. It was first cast as a vow to keep someone safe. Each winter solstice it gives off a faint warmth; rooms that hold it lose their drafts.",
-    "yael": "Slender solid bronze, balanced on the narrowest of footings. It bears a name taken up in devotion. Altar bells resonate in its presence; neighbors swear they hear chimes at dusk.",
-    "zuma-ring": "Sterling silver carrying the shoulder line of the Zuma totem around the finger. It was discovered on a distant shoreline, alongside its namesake totem. Unearthed glyphs record rituals performed with its pair; wearers feel a sudden urge to walk barefoot.",
-    "milo": "The first piece made to carry the Maçon mark, in solid bronze. It stood among the first three born of the forge. Its surface adapts to whoever holds it; the bond deepens every season.",
-    "eclipse-ring": "Two uneven ovals in sterling silver, one leaning into the other. It came into being the day the whole world looked up as one. The meeting point between them is said to hold questions only stars can answer; astronomers decline to comment.",
-    "sietch-aperture": "Sterling silver with a single opening, recovered from the wake of a passing comet. It is said to have arisen from the sands of a desert world. Through it appear landscapes found on no map; cartographers have stopped asking.",
-    "lunar-canyon-ring": "Sundered artifact forged from the core of a distant moon. It was first dreamt on white island shores, beneath a burning sky. Social gatherings seem to ebb and flow in time with the wearer's presence.",
-    "eleph": "Rounded solid bronze, trunk raised for a gentle trumpet. It was found frozen in triumph, perennially exuberating. A low call has been heard by independent observers, always just out of sight.",
-    "wonderhorn-talisman": "A silver spiral on a thirty inch chain, after the instrument Ida played until the goblins danced out the window. Nearby children develop perfect pitch; lab equipment hums along.",
+    "pip": "Found resting for a millennium by an abandoned hearth. Whoever keeps it is visited by the sleepy warmth of that old fire.",
+    "rebi": "Some say it rose from the smoke of an oracle's dream. The lucky few that touch it inherit a fragment of that oracle's sight.",
+    "ren": "It was drawn from a painted toy kept beneath the northern lights. Those who carry it arrive home safely from long journeys.",
+    "zuma": "Washed ashore on a distant coast, baked solid by the sun. The runes foretold that its namesake band were always found together.",
+    "ori": "Sworn into being during a vow of fidelity. The covenant holds to this day, and each winter it lends its protection to the house that shelters it.",
+    "yael": "Its name was drawn from an act of unadulterated devotion. Once held, it draws its bearer toward safety on even the most treacherous journeys.",
+    "zuma-ring": "The tide surrendered it beside its namesake totem. Those who wear it are said to long to cast off their vestments and walk barefoot.",
+    "milo": "Hammered from the first fire, eldest of three brothers. Wherever it is set down, the younger two are never far behind.",
+    "eclipse-ring": "It was said that it fell from the sky when the world looked up as one. Where the two crescents meet, some can still glimpse the shadow that fell that day.",
+    "sietch-aperture": "Sifted from the sands of a spice-addled world. Held to the eye it reveals the bright star near where it was first found.",
+    "lunar-canyon-ring": "Quarried from a stark white island surrounded by a fevered sea. Gatherings ebb and flow around the one who wears it.",
+    "eleph": "It was unearthed mid-stride, perennially frozen in triumph. A deep, heavy rumbling can still be felt at the place it was discovered.",
+    "wonderhorn-talisman": "Played by a girl until the goblins who stole her sister danced themselves into a stream. Those near it find perfect pitch, and silent things begin to hum.",
     "macon-cap": "A cotton cap with the Maçon mark stitched on the front. Each cap is checked by hand before it ships. It offers a little shade on bright days; wearers report being asked where they found it.",
-    "ibi": "Solid bronze with a long and patient posture. It was born of the rising dawn, when all was new. Attempts to photograph it end in lens fog; photographers blame the weather.",
-    "ear-cuff": "A clean silver line that rests on the ear, no piercing required. It was first encountered on a ridge above the sea, walked each evening at dusk. Light breaks into intriguing colours across its mirrored edge.",
-    "starshipkey-pendant": "Chrome-bright sterling silver on a thirty inch chain, shaped like a key to something far above. Some say it descends from the silver ship of a young queen. Prolonged exposure causes wanderlust; researchers take long sabbaticals abroad.",
-    "meridian-egg-ring": "Smooth sterling silver, far denser than it looks. It began as a paradox and has never resolved it. Metaphysical analysis detects an abyss gazing back.",
+    "ibi": "First sighted suspended above the dawn horizon, when all was new and fresh. Elegant and fleeting, every likeness of it seems to dissolve into the morning mist.",
+    "ear-cuff": "It was plucked from a curving ridge, walked each evening at dusk. Its edge still reflects the colours of that sky on the anniversary of its discovery.",
+    "starshipkey-pendant": "Salvaged from the silver mirrored vessel of stellar origin. All those who wear it are seized by an insatiable wanderlust.",
+    "meridian-egg-ring": "It was wrought as a paradox to taunt the gods. Gaze into it for long enough and the abyss gazes back.",
     "ooak-vessel": "A small solid bronze vessel in fitted parts, the lid lifting away to reveal a hollow meant for a single small thing. Unique, carved and finished by hand. Whatever is placed inside is said to keep better than expected; keepers report finding it exactly where they left it.",
     "ooak-pendant": "A long silver head in profile, cut as if the wind had just passed through. The only one of its kind, carved in wax and polished by hand. Wearers report a pull toward open ground and early mornings.",
     "ooak-pouch": "A small pouch of glass beads and soft leather, sized to carry a single totem against the chest. The only one of its kind, beaded and stitched by hand. Those who wear it report steadier breathing on crowded days."
@@ -73,24 +73,24 @@ DESC = {
 # The two centred blocks at the bottom of each page — at least 30 words each.
 # First: the lore, grown from the Wix line. Second: how it comes to you.
 LORE = {
-    "pip": "Pip spent its early years on a windowsill, keeping watch over whoever needed it most. Visitors tend to pick it up without asking and put it down reluctantly. Those who carry it report calmer mornings, and a curious habit of checking their pockets.",
-    "rebi": "Rebi has never looked the same way twice in the same light. Some see one thing, some another, and a few insist it is something with no name at all. Each is right, and Rebi seems quietly pleased by the disagreement.",
-    "ren": "Ren knows the way through any wood, including the ones that no longer appear on maps. Its bright crest catches the first light of the day and holds it far longer than it should. Travellers who keep it close rarely take a wrong turn.",
-    "zuma": "Zuma carries the stillness of the desert at noon, when even the wind stops to rest. Kept in a pocket, it warms slowly and holds that warmth well into the evening. Paired with its ring, it is said to remember the way home across the sand.",
-    "ori": "Ori keeps a patient watch over forests, rivers and the households that take it in. It asks for very little beyond a windowsill and the occasional hand. In the depths of winter, keepers swear the room feels a degree or two warmer.",
-    "yael": "Yael stands where the footing is narrowest and the air is thinnest, entirely unbothered by either. Those who keep it close tend to find their balance in unlikely places. At dusk, a faint ringing is sometimes heard, like bells from a very distant mountain.",
-    "zuma-ring": "The Zuma Ring carries a small piece of the desert wherever it is worn. Unearthed glyphs suggest it was once exchanged between travellers crossing the same stretch of sand. Wearers report an unexpected fondness for long walks, wide horizons and very quiet afternoons.",
-    "milo": "Milo has crossed a great deal of country to arrive here, and seems glad, in its quiet way, to finally stop moving. Its surface takes on the character of whoever holds it most. Over the years, the two tend to grow alike.",
-    "eclipse-ring": "The Eclipse Ring holds two shapes that never quite match, and never quite need to. Between them sits a small, bright space that seems to change with the hour. Astronomers have been asked what it means, and each has politely declined to guess.",
-    "sietch-aperture": "The Sietch Ring was found where a comet had passed, still faintly warm to the touch. Held up to the eye, its aperture frames places that do not appear on any map. Those who look through it too long start keeping their own secrets.",
-    "lunar-canyon-ring": "Lunar Canyon was shaped from a place that looks more like the moon than anywhere on earth should. Its folds stay cool until they are worn, then warm slowly, the way moonlight seems to. Rooms tend to rearrange themselves around whoever wears it.",
-    "eleph": "Eleph remembers everything, and forgives most of it. It is cast only when someone asks, which suits its patient and unhurried nature perfectly. Late at night, independent observers still report a low, distant call, always from just beyond the edge of the room.",
-    "wonderhorn-talisman": "In the old story, Ida plays her wonder horn so sweetly that the goblins cannot help but dance. They dance faster and faster, until they tumble clean out of the window and away. The horn has kept a little of that music ever since.",
+    "pip": "It spent its early years on a windowsill, keeping watch over whoever needed it most. Visitors tend to pick it up without asking and put it down reluctantly. Those who carry it report calmer mornings, and a curious habit of checking their pockets.",
+    "rebi": "It has never looked the same way twice in the same light. Some see one thing, some another, and a few insist it is something with no name at all. Each is right, and it seems quietly pleased by the disagreement.",
+    "ren": "It knows the way through any wood, including the ones that no longer appear on maps. Its bright crest catches the first light of the day and holds it far longer than it should. Travellers who keep it close rarely take a wrong turn.",
+    "zuma": "It carries the stillness of the desert at noon, when even the wind stops to rest. Kept in a pocket, it warms slowly and holds that warmth well into the evening. Paired with its ring, it is said to remember the way home across the sand.",
+    "ori": "It keeps a patient watch over forests, rivers and the households that take it in. It asks for very little beyond a windowsill and the occasional hand. In the depths of winter, keepers swear the room feels a degree or two warmer.",
+    "yael": "It stands where the footing is narrowest and the air is thinnest, entirely unbothered by either. Those who keep it close tend to find their balance in unlikely places. At dusk, a faint ringing is sometimes heard, like bells from a very distant mountain.",
+    "zuma-ring": "This ring carries a small piece of the desert wherever it is worn. Unearthed glyphs suggest it was once exchanged between travellers crossing the same stretch of sand. Wearers report an unexpected fondness for long walks, wide horizons and very quiet afternoons.",
+    "milo": "It has crossed a great deal of country to arrive here, and seems glad, in its quiet way, to finally stop moving. Its surface takes on the character of whoever holds it most. Over the years, the two tend to grow alike.",
+    "eclipse-ring": "This ring holds two shapes that never quite match, and never quite need to. Between them sits a small, bright space that seems to change with the hour. Astronomers have been asked what it means, and each has politely declined to guess.",
+    "sietch-aperture": "This ring was found where a comet had passed, still faintly warm to the touch. Held up to the eye, its aperture frames places that do not appear on any map. Those who look through it too long start keeping their own secrets.",
+    "lunar-canyon-ring": "It was shaped from a place that looks more like the moon than anywhere on earth should. Its folds stay cool until they are worn, then warm slowly, the way moonlight seems to. Rooms tend to rearrange themselves around whoever wears it.",
+    "eleph": "It remembers everything, and forgives most of it. It is cast only when someone asks, which suits its patient and unhurried nature perfectly. Late at night, independent observers still report a low, distant call, always from just beyond the edge of the room.",
+    "wonderhorn-talisman": "In the old story, a girl plays her wonder horn so sweetly that the goblins cannot help but dance. They dance faster and faster, until they tumble clean out of the window and away. The horn has kept a little of that music ever since.",
     "macon-cap": "The Maçon Cap was made for long days outside, somewhere between the studio and the sun. Its mystic symbol is small enough to miss and strange enough to notice. Wearers report being stopped in the street and asked, very politely, where it came from.",
-    "ibi": "Ibi has kept its long watch for longer than anyone can say. It guards its secrets closely, including, it seems, its own likeness. Every attempt to photograph it has ended in fog, and those who hold it agree no picture comes close.",
-    "ear-cuff": "The Caldera Arc follows the rim of a volcano, a long drop on one side the whole way round. It needs no piercing, only a gentle press, and soon disappears from notice entirely. In certain light, its edge scatters colours not found anywhere else.",
-    "starshipkey-pendant": "The Starship Key opens nothing that can be found on earth, which has never stopped anyone from trying. Worn close, it seems to hum faintly whenever the night sky is especially clear. Researchers who study it are rarely seen at their desks for long.",
-    "meridian-egg-ring": "Everyone who picks up the Meridian Egg says the same thing about its weight, and then declines to put it down. Its smooth surface gives nothing away. Those who stare into it for too long report the distinct feeling of being studied in return.",
+    "ibi": "It has kept its long watch for longer than anyone can say. It guards its secrets closely, including, it seems, its own likeness. Every attempt to photograph it has ended in fog, and those who hold it agree no picture comes close.",
+    "ear-cuff": "It follows the rim of a volcano, a long drop on one side the whole way round. It needs no piercing, only a gentle press, and soon disappears from notice entirely. In certain light, its edge scatters colours not found anywhere else.",
+    "starshipkey-pendant": "This key opens nothing that can be found on earth, which has never stopped anyone from trying. Worn close, it seems to hum faintly whenever the night sky is especially clear. Researchers who study it are rarely seen at their desks for long.",
+    "meridian-egg-ring": "Everyone who picks it up says the same thing about its weight, and then declines to put it down. Its smooth surface gives nothing away. Those who stare into it for too long report the distinct feeling of being studied in return.",
     "ooak-vessel": "Hollow Keeper was made to hold exactly one thing, and to keep quiet about what it is. Its lid settles back with a low, satisfying weight. Those who own it tend to check inside more often than they need to, just to be sure.",
     "ooak-pendant": "Long Gallop was drawn in a single line and carved before the line could change its mind. It rests against the chest as though it has only stopped for breath. Wearers say it is hard to sit still for long while it is on.",
     "ooak-pouch": "Heartward Pouch was made for travellers who would rather not leave their keepers at home. Each bead was chosen and set by hand, row after patient row. Whatever rides inside is said to feel the heartbeat, and to find it steadying."
@@ -465,7 +465,7 @@ def page(p, template, related=""):
             .replace("{{SLUG}}", slug)
             .replace("{{EYEBROW}}", html.escape(eyebrow))
             .replace("{{PRICE}}", f"${price}")
-            .replace("{{DESC}}", html.escape(blurb).replace("namesake ring", 'namesake <a href="zuma-ring.html">ring</a>', 1) if slug == "zuma" else html.escape(blurb))
+            .replace("{{DESC}}", html.escape(blurb).replace("namesake band", '<a href="zuma-ring.html">namesake band</a>', 1) if slug == "zuma" else html.escape(blurb))
             .replace("{{BUY}}", buy_block)
             .replace('<section class="product">', '<section class="product' + ('' if in_stock else ' claimed') + '">')
             .replace("{{SIZE}}", size_select)
@@ -1181,7 +1181,6 @@ def related_block(p, products):
     loop = "".join(tile(x) for x in ring)
     return ('<section class="related" aria-label="Other pieces">'
             '<p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img class="stamp" src="img/provenance-stamp.png" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2>'
-            '<p class="rel-blurb">We’d like to introduce you to a few friends</p>'
             f'<div class="rel-three">{"".join(tile(x) for x in pick)}</div>'
             + (f'<div class="rel-swipe">{swipe}</div>' if swipe else '')          # phones: the original swipe row
             + f'<div class="rel-loop" data-centre="{len(left) + 1}"><div class="rel-track">{loop}</div></div></section>')          # desktop: the three; phones: the carousel
@@ -1264,6 +1263,9 @@ def main():
             f'img/{p["slug"]}/' + {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(p["slug"], "hand-1.jpg")
         held = os.path.exists(os.path.join(OUT, hover))
         still_src = tinted(p["slug"], tile_src(grid_still(p["slug"])))          # the grid shows them small, colour-matched
+        clay = f"img/ab-clay/{p['slug']}--tile.webp"          # the terracotta shoot is the grid's picture, where a piece has one
+        if os.path.exists(os.path.join(OUT, clay)):
+            still_src = clay
         hover_src = tile_src(hover)
         lift = hover.rsplit(".", 1)[0] + "--lift.jpg.webp"          # the totem brightened a touch; the original stays beside it
         if os.path.exists(os.path.join(OUT, lift)):
@@ -1272,9 +1274,11 @@ def main():
         tiles.append(
             # the framing sits on the link, so the in-hand picture shown on hover zooms with the still
             f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
-            f'<span class="pic-hit"><span class="pic"><img src="{still_src}"{grid_srcset(still_src)}{ab_attrs(p["slug"])} alt="{html.escape(p["name"])}" loading="{lazy}">'
+            f'<span class="pic-hit"><span class="pic"><img src="{still_src}"' + ('' if 'ab-clay' in still_src else grid_srcset(still_src) + ab_attrs(p["slug"])) + (' class="ab"' if 'ab-clay' in still_src else '') + f' alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
-            + f'</span></span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span></span>'
+            + f'</span></span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span>'
+            + (f'<span class="ovl" aria-hidden="true">{html.escape(EYEBROW[p["slug"]])}</span>' if p["slug"] in EYEBROW else "")          # desktop hover: the overline takes the price's place
+            + '</span>'
             f'</a></figure>')
     shop = shared(open(os.path.join(OUT, "pages", "shop.html"), encoding="utf-8").read())
     st = {"w": 13, "right": 11.4, "drop": 98.3, "tilt": -14}

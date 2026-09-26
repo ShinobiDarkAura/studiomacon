@@ -910,6 +910,20 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
         toast.appendChild(tx);
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
+        // the Bureau of Provenance presses its seal onto the button: the claim is recorded
+        if (!matchMedia('(prefers-reduced-motion:reduce)').matches && document.body.animate) {
+          var r = b.getBoundingClientRect(), st = document.createElement('img'), sz = Math.min(104, r.height * 2.1);
+          st.src = 'img/claim-stamp.png'; st.alt = ''; st.setAttribute('aria-hidden', 'true');
+          st.style.cssText = 'position:fixed;z-index:60;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;left:' + (r.right - sz - 6) + 'px;top:' + (r.top + r.height / 2 - sz / 2) + 'px';
+          document.body.appendChild(st);
+          st.animate([
+            {transform: 'scale(1.9) rotate(-24deg)', opacity: 0},
+            {transform: 'scale(.94) rotate(-11deg)', opacity: .95, offset: .16},
+            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .24},
+            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .8},
+            {transform: 'scale(1) rotate(-12deg)', opacity: 0}
+          ], {duration: 1500, easing: 'cubic-bezier(.3,.7,.3,1)'}).onfinish = function () { st.remove(); };
+        }
         toast.classList.add('on'); clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
       });

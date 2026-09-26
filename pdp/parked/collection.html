@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Collection | Studio Maçon</title>
+<link rel="icon" href="img/favicon.png">
+<link rel="stylesheet" href="site.css?v={{CSSV}}">
+<style>
+  /* the title, set as the other wall pages' */
+  .cx-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px 24px;flex-wrap:wrap;padding:calc(90px + clamp(40px,10vh,120px)) 24px 24px}
+  @media (min-width:768px){ .cx-head{padding-left:64px} }          /* the title lines up with the menu button */
+  .cx-head h1{margin:0;font-size:57.5px}
+  @media (min-width:768px){ .cx-head h1{font-size:66.25px} }
+  @media (min-width:1200px){ .cx-head h1{font-size:75px} }
+  .cx-tally{min-width:200px}
+  .cx-count{margin:0;font-size:13px;color:rgba(0,0,0,.45)}.cx-count b{font-weight:400;color:#111}
+  .cx-bar{height:1px;background:rgba(0,0,0,.06);margin-top:10px;position:relative}
+  .cx-bar i{position:absolute;left:0;top:-1px;height:3px;background:#111;width:0;transition:width .9s cubic-bezier(.3,.7,.2,1)}
+  /* the drawer: screen edge to screen edge, hairlines between the compartments */
+  .cx-drawer{--cols:6;border-top:1px solid rgba(0,0,0,.06);display:grid;grid-template-columns:repeat(var(--cols),1fr);background:#fff}
+  .cx-cell{position:relative;border-right:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column;cursor:pointer;
+    opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+  .cx-cell.got{cursor:default}
+  .cx-drawer.open .cx-cell{opacity:1;transform:none}
+  .cx-art{position:relative;aspect-ratio:4/5}
+  .cx-art img,.cx-art canvas{position:absolute;inset:6% 8%;width:84%;height:88%;object-fit:contain;mix-blend-mode:multiply;pointer-events:none;border-radius:0}
+  /* not yet claimed: a faint, smaller pencil sketch; on hover its outer edge firms up */
+  .cx-sketch,.cx-edge{transform:scale(.85);transition:opacity .35s ease}
+  .cx-sketch{opacity:.4}
+  .cx-edge{opacity:0}
+  .cx-cell:not(.got):hover .cx-edge{opacity:.85}
+  .cx-cell:not(.got):hover .cx-sketch{opacity:.5}
+  .cx-drawn{opacity:0}
+  .got .cx-drawn{opacity:1}
+  .got .cx-sketch,.got .cx-edge,.cx-cell.sketching .cx-sketch,.cx-cell.sketching .cx-edge{opacity:0 !important;transition:none !important}
+  .cx-no{position:absolute;top:clamp(12px,1.2vw,20px);right:clamp(12px,1.2vw,20px);font-size:13px;letter-spacing:.04em;color:rgba(0,0,0,.45);font-variant-numeric:tabular-nums;z-index:1}
+  /* labels as on the home grid; greyed until gathered */
+  .cx-lab{padding:0 clamp(12px,1.2vw,20px) clamp(12px,1.2vw,20px);display:flex;flex-direction:column;gap:4px;transition:opacity .3s ease}
+  .cx-cell:not(.got) .cx-lab{opacity:.32}
+  .cx-cell:not(.got):hover .cx-lab{opacity:.55}
+  .cx-nm{font:400 calc(18px + 9pt)/1 var(--serif);text-transform:uppercase}
+  .cx-ov{font-size:14px;color:rgba(0,0,0,.55)}
+  /* the Bureau's seal, tucked into the top-right corner */
+  .cx-seal{position:absolute;width:clamp(59px,5.82vw,112px);z-index:5;opacity:0;mix-blend-mode:multiply;pointer-events:none;transform:rotate(var(--a))}
+  .got .cx-seal{opacity:.72}
+  .stamping .cx-seal{animation:cx-seal 1.1s cubic-bezier(.3,.7,.3,1) both}
+  @keyframes cx-seal{0%{opacity:0;transform:scale(1.9) rotate(calc(var(--a) - 12deg))}40%{opacity:.8;transform:scale(.94) rotate(var(--a))}100%{opacity:.72;transform:rotate(var(--a))}}
+  .cx-cell:nth-child(6n){border-right:0}
+  @media (max-width:1100px){ .cx-drawer{--cols:4} .cx-cell:nth-child(6n){border-right:1px solid rgba(0,0,0,.06)} .cx-cell:nth-child(4n){border-right:0} }
+  @media (max-width:700px){ .cx-drawer{--cols:2} .cx-cell:nth-child(4n){border-right:1px solid rgba(0,0,0,.06)} .cx-cell:nth-child(2n){border-right:0} .cx-head{padding-left:16px;padding-right:16px}
+    .cx-nm{font-size:calc(18px + 4pt)} .cx-ov{font-size:12px} }
+  @media (prefers-reduced-motion:reduce){ .cx-cell{transition:none} .stamping .cx-seal{animation:none} }
+</style>
+</head>
+<body>
+
+{{NAV}}
+
+<main>
+  <header class="cx-head">
+    <h1>My Collection</h1>
+    <div class="cx-tally"><p class="cx-count"><b id="cx-got">0 of 17</b> gathered</p><div class="cx-bar"><i id="cx-bar"></i></div></div>
+  </header>
+  <section class="cx-drawer" id="cx-drawer">
+    <div class="cx-cell" data-slug="pip" style="transition-delay:0ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/pip--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/pip--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/pip--drawn.webp" alt="Pip" loading="lazy"></div><span class="cx-no">01</span><div class="cx-lab"><span class="cx-nm">Pip</span><span class="cx-ov">Tiny Keeper of Tenderness</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="rebi" style="transition-delay:40ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/rebi--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/rebi--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/rebi--drawn.webp" alt="Rebi" loading="lazy"></div><span class="cx-no">02</span><div class="cx-lab"><span class="cx-nm">Rebi</span><span class="cx-ov">Silhouette in Flux</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="ren" style="transition-delay:80ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ren--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ren--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ren--drawn.webp" alt="Ren" loading="lazy"></div><span class="cx-no">03</span><div class="cx-lab"><span class="cx-nm">Ren</span><span class="cx-ov">Steward of Forgotten Paths</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="zuma" style="transition-delay:120ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/zuma--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/zuma--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/zuma--drawn.webp" alt="Zuma" loading="lazy"></div><span class="cx-no">04</span><div class="cx-lab"><span class="cx-nm">Zuma</span><span class="cx-ov">Spirit of the Sunbaked Shore</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="ori" style="transition-delay:160ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ori--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ori--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ori--drawn.webp" alt="Ori" loading="lazy"></div><span class="cx-no">05</span><div class="cx-lab"><span class="cx-nm">Ori</span><span class="cx-ov">Guardian of Lost Souls</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="yael" style="transition-delay:200ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/yael--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/yael--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/yael--drawn.webp" alt="Yael" loading="lazy"></div><span class="cx-no">06</span><div class="cx-lab"><span class="cx-nm">Yael</span><span class="cx-ov">Prophecy in Metal</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="milo" style="transition-delay:240ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/milo--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/milo--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/milo--drawn.webp" alt="Milo" loading="lazy"></div><span class="cx-no">07</span><div class="cx-lab"><span class="cx-nm">Milo</span><span class="cx-ov">Ancient Wanderer</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="ibi" style="transition-delay:280ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ibi--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ibi--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ibi--drawn.webp" alt="Ibi" loading="lazy"></div><span class="cx-no">08</span><div class="cx-lab"><span class="cx-nm">Ibi</span><span class="cx-ov">Daybreak Apparition</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="eleph" style="transition-delay:320ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/eleph--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/eleph--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/eleph--drawn.webp" alt="Eleph" loading="lazy"></div><span class="cx-no">09</span><div class="cx-lab"><span class="cx-nm">Eleph</span><span class="cx-ov">Breath Suspended</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="zuma-ring" style="transition-delay:360ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/zuma-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/zuma-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/zuma-ring--drawn.webp" alt="Zuma Ring" loading="lazy"></div><span class="cx-no">10</span><div class="cx-lab"><span class="cx-nm">Zuma Ring</span><span class="cx-ov">Sand Spirit, Distilled</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="eclipse-ring" style="transition-delay:400ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/eclipse-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/eclipse-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/eclipse-ring--drawn.webp" alt="Eclipse Ring" loading="lazy"></div><span class="cx-no">11</span><div class="cx-lab"><span class="cx-nm">Eclipse Ring</span><span class="cx-ov">Ellipses in Patient Equilibrium</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="sietch-aperture" style="transition-delay:440ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/sietch-aperture--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/sietch-aperture--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/sietch-aperture--drawn.webp" alt="Sietch Ring" loading="lazy"></div><span class="cx-no">12</span><div class="cx-lab"><span class="cx-nm">Sietch Ring</span><span class="cx-ov">Shelter Cut Into Rock</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="lunar-canyon-ring" style="transition-delay:480ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/lunar-canyon-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/lunar-canyon-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/lunar-canyon-ring--drawn.webp" alt="Lunar Canyon" loading="lazy"></div><span class="cx-no">13</span><div class="cx-lab"><span class="cx-nm">Lunar Canyon</span><span class="cx-ov">Moonrisen Memory</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="ear-cuff" style="transition-delay:520ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ear-cuff--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ear-cuff--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ear-cuff--drawn.webp" alt="Caldera Arc" loading="lazy"></div><span class="cx-no">14</span><div class="cx-lab"><span class="cx-nm">Caldera Arc</span><span class="cx-ov">Perfect Geometries</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="meridian-egg-ring" style="transition-delay:560ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/meridian-egg-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/meridian-egg-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/meridian-egg-ring--drawn.webp" alt="Meridian Egg" loading="lazy"></div><span class="cx-no">15</span><div class="cx-lab"><span class="cx-nm">Meridian Egg</span><span class="cx-ov">Heavier Than It Looks</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="wonderhorn-talisman" style="transition-delay:600ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/wonderhorn-talisman--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/wonderhorn-talisman--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/wonderhorn-talisman--drawn.webp" alt="Wonder Horn" loading="lazy"></div><span class="cx-no">16</span><div class="cx-lab"><span class="cx-nm">Wonder Horn</span><span class="cx-ov">Horn of Undiscovered Chords</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+    <div class="cx-cell" data-slug="starshipkey-pendant" style="transition-delay:640ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/starshipkey-pendant--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/starshipkey-pendant--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/starshipkey-pendant--drawn.webp" alt="Starship Key" loading="lazy"></div><span class="cx-no">17</span><div class="cx-lab"><span class="cx-nm">Starship Key</span><span class="cx-ov">Relic of the Outer Dark</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
+  </section>
+</main>
+
+{{FOOTER}}
+{{SITEJS}}
+<script>
+  // a concept for now: clicking a piece gathers it; nothing is remembered
+  (function () {
+  // the seal lands over the top-right of the drawing itself, a little differently each time
+  function placeSeal(c, drawnSel, sealSel) {
+    var img = c.querySelector(drawnSel), seal = c.querySelector(sealSel); if (!img || !seal || !img.naturalWidth) return;
+    if (!img._ink) {          // where the ink is, found once per drawing
+      var G = 120, cv = document.createElement('canvas'); cv.width = cv.height = G; var g = cv.getContext('2d');
+      g.fillStyle = '#fff'; g.fillRect(0, 0, G, G); g.drawImage(img, 0, 0, G, G);
+      var d = g.getImageData(0, 0, G, G).data, x0 = G, y0 = G, x1 = 0, y1 = 0;
+      for (var y = 0; y < G; y++) for (var x = 0; x < G; x++) { var q = (y * G + x) * 4; if (d[q] + d[q + 1] + d[q + 2] < 720) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } }
+      img._ink = [x0 / G, y0 / G, x1 / G, y1 / G];
+    }
+    var cr = c.getBoundingClientRect(), ir = img.getBoundingClientRect(), k = Math.min(ir.width / img.naturalWidth, ir.height / img.naturalHeight);
+    var dw = img.naturalWidth * k, dh = img.naturalHeight * k, ox = ir.left - cr.left + (ir.width - dw) / 2, oy = ir.top - cr.top + (ir.height - dh) / 2;
+    var i = [].indexOf.call(c.parentNode.children, c), r = function (n) { var v = Math.sin((i + 1) * 12.9898 + n * 78.233) * 43758.5453; return v - Math.floor(v); };
+    var S = seal.offsetWidth, tx = ox + img._ink[2] * dw, ty = oy + img._ink[1] * dh;
+    seal.style.right = 'auto'; seal.style.left = (tx - S * (.62 + r(2) * .2)) + 'px'; seal.style.top = (ty - S * (.38 + r(1) * .2)) + 'px';
+    seal.style.setProperty('--a', Math.round(-30 + r(3) * 60) + 'deg');
+  }
+
+    var box = document.getElementById('cx-drawer'), cells = [].slice.call(box.querySelectorAll('.cx-cell'));
+    cells.forEach(function (c, i) {          // each seal in the top-right corner, never quite in the same spot or at the same angle
+      var r = function (k) { var x = Math.sin((i + 1) * 12.9898 + k * 78.233) * 43758.5453; return x - Math.floor(x); };
+      var s = c.querySelector('.cx-seal'); s.style.setProperty('--a', Math.round(-30 + r(3) * 60) + 'deg');
+      s.style.top = (3 + r(1) * 5).toFixed(1) + '%'; s.style.right = (2 + r(2) * 6).toFixed(1) + '%';
+    });
+    var n = 0, bar = document.getElementById('cx-bar'), label = document.getElementById('cx-got');
+    function tally() { label.textContent = n + ' of ' + cells.length; bar.style.width = (n / cells.length * 100) + '%'; }
+    new IntersectionObserver(function (e, o) { if (e[0].isIntersecting) { o.disconnect(); box.classList.add('open'); } }, {threshold: .02}).observe(box);
+    function sketchIn(c, done) {          // the drawing is hatched in, stroke by stroke, until every part of it is covered
+      var art = c.querySelector('.cx-art'), img = c.querySelector('.cx-drawn'), dpr = Math.min(2, devicePixelRatio || 1);
+      var W = Math.round(img.clientWidth * dpr), H = Math.round(img.clientHeight * dpr);
+      if (!img.complete || !img.naturalWidth || matchMedia('(prefers-reduced-motion:reduce)').matches) return done();
+      var cv = document.createElement('canvas'); cv.width = W; cv.height = H; art.appendChild(cv);
+      var ctx = cv.getContext('2d'), mask = document.createElement('canvas'); mask.width = W; mask.height = H; var mx = mask.getContext('2d');
+      var k = Math.min(W / img.naturalWidth, H / img.naturalHeight), dw = img.naturalWidth * k, dh = img.naturalHeight * k, ox = (W - dw) / 2, oy = (H - dh) / 2;
+      var G = 72, gc = document.createElement('canvas'); gc.width = gc.height = G; var gx = gc.getContext('2d');
+      gx.fillStyle = '#fff'; gx.fillRect(0, 0, G, G); gx.drawImage(img, 0, 0, G, G);
+      var px = gx.getImageData(0, 0, G, G).data, todo = [];
+      for (var y = 0; y < G; y++) for (var x = 0; x < G; x++) { var q = (y * G + x) * 4; if (px[q] + px[q + 1] + px[q + 2] < 735) todo.push([x, y]); }
+      var cw = dw / G, ch = dh / G, covered = new Uint8Array(G * G), strokes = [];
+      todo.forEach(function (t) { t.push(t[0] - t[1] + (Math.random() - .5) * G * .35); });
+      todo.sort(function (a, b) { return a[2] - b[2]; });
+      todo.forEach(function (t) {
+        if (covered[t[1] * G + t[0]]) return;
+        var len = 6 + Math.random() * 9, ang = -.7 + (Math.random() - .5) * .4, w = 1.6 + Math.random() * 1.4, ca = Math.cos(ang), sa = Math.sin(ang);
+        for (var u = -len / 2; u <= len / 2; u += .5) for (var v = -w / 2; v <= w / 2; v += .5) {
+          var cx = Math.round(t[0] + ca * u - sa * v), cy = Math.round(t[1] + sa * u + ca * v);
+          if (cx >= 0 && cy >= 0 && cx < G && cy < G) covered[cy * G + cx] = 1;
+        }
+        var x0 = ox + (t[0] + .5) * cw, y0 = oy + (t[1] + .5) * ch, L = len * cw / 2;
+        strokes.push([x0 - ca * L, y0 - sa * L, x0 + ca * L, y0 + sa * L, (w + 1) * cw]);
+      });
+      var N = strokes.length, t0 = performance.now(), D = 3200, drawn = 0;
+      mx.lineCap = 'round'; mx.strokeStyle = '#000';
+      (function frame(now) {
+        var p = Math.min(1, (now - t0) / D), upto = Math.ceil(N * p);
+        for (; drawn < upto; drawn++) { var s = strokes[drawn]; mx.lineWidth = s[4]; mx.beginPath(); mx.moveTo(s[0], s[1]); mx.lineTo(s[2], s[3]); mx.stroke(); }
+        ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, W, H); ctx.drawImage(mask, 0, 0);
+        ctx.globalCompositeOperation = 'source-in'; ctx.drawImage(img, ox, oy, dw, dh);
+        if (p < 1) requestAnimationFrame(frame); else setTimeout(function () { cv.remove(); done(); }, 60);
+      })(t0);
+    }
+    addEventListener('resize', function () { box.querySelectorAll('.cx-cell.got').forEach(function (c) { placeSeal(c, '.cx-drawn', '.cx-seal'); }); });
+    box.addEventListener('click', function (e) {
+      var c = e.target.closest('.cx-cell'); if (!c || c.classList.contains('got') || c.classList.contains('sketching')) return;
+      c.style.transitionDelay = '0ms'; c.classList.add('sketching');
+      sketchIn(c, function () { c.classList.remove('sketching'); c.classList.add('got', 'stamping'); placeSeal(c, '.cx-drawn', '.cx-seal'); n++; tally(); });
+    });
+  })();
+</script>
+</body>
+</html>
