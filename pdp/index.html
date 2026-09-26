@@ -695,6 +695,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
     font:italic 400 15pt/1.2 "Henry",var(--serif);transition:opacity .5s ease}
   @media (max-width:767px){ .film .tagline{transform:translateY(calc(var(--lh) / 2 + 12px))} }
   .film.scrolled .tagline{opacity:0}
+  .film .tagline{display:none !important}          /* the logotype stands alone for now */
   .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden;transition-delay:0s}
   /* the cue waits 5s before fading in */
   /* after a while on the film: the centred logotype and tagline fade away, the scroll cue fades in */
@@ -770,10 +771,10 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
   body.logo-anim .head .logotype{opacity:.004}
   .tagline .ch{opacity:0}
   .tagline .ch.on{opacity:1}
-  @media (max-width:767px){ .film{--lh:calc(94px * 2.8125 * 331 / 888)} }          /* 13% smaller than it was */
+  @media (max-width:767px){ .film{--lh:calc(94px * 2.8125 * 331 / 888 * 1.1)} }          /* 13% smaller than it was */
   /* phones: the lockup sits 3.5% high of centre, so the browser bar does not crowd it */
   @media (max-width:767px){ .logo-build,.film .tagline{top:46.5svh;margin-top:0} }
-  @media (min-width:768px){ .film{--lh:calc(147px * 2.8125 * 331 / 888)} }
+  @media (min-width:768px){ .film{--lh:calc(147px * 2.8125 * 331 / 888 * 1.1)} }
   @media (prefers-reduced-motion:reduce){ .scroll-cue i{animation:none} }
   .welcome{margin:0;height:90vh;height:90svh;display:flex;align-items:center;justify-content:center}
   .welcome .prose h1{margin-bottom:44px}
@@ -1133,7 +1134,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
       <source src="video/film-process-480.mp4?v=8" type="video/mp4" media="(max-width:700px)">
       <source src="video/film-process-1080.mp4?v=8" type="video/mp4">
     </video>
-    <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:210;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:163;--g:7"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:153;--g:6"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:178;--g:6"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:132;--g:4"><i class="ll-glyph"></i></span></div>
+    <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:211;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:165;--g:9"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:157;--g:0"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:179;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:133;--g:5"><i class="ll-glyph"></i></span></div>
     <p class="tagline" data-edit="page:index.html:6c4aaa35">Artifacts of Love</p>
     <span class="scroll-cue" aria-hidden="true"><i></i></span>
   </section>
