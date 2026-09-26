@@ -23,7 +23,7 @@ MASTER = os.path.expanduser(os.environ.get("MACON_PIECES", "~/Downloads/Maçon/P
 EYEBROW = {
     "pip": "Emberkeeper",
     "rebi": "Silhouette in Flux",
-    "ren": "Aurora-Born",
+    "ren": "Aurora-born",
     "zuma": "Spirit of Fevered Shores",
     "ori": "Guardian of Lost Souls",
     "yael": "Prophecy in Metal",
