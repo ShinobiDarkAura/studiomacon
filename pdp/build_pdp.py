@@ -61,7 +61,7 @@ DESC = {
     "eleph": "It was unearthed mid-stride, perennially frozen in triumph. A deep, heavy rumbling can still be felt at the place it was discovered.",
     "wonderhorn-talisman": "Played by a girl until the goblins who stole her sister danced themselves into a stream. Those near it find perfect pitch, and silent things begin to hum.",
     "macon-cap": "A cotton cap with the Maçon mark stitched on the front. Each cap is checked by hand before it ships. It offers a little shade on bright days; wearers report being asked where they found it.",
-    "ibi": "First sighted suspended above the dawn horizon, when all was new and fresh. Elegant and fleeting, every likeness of it seems to dissolve into the morning mist.",
+    "ibi": "First sighted suspended above the dawn horizon, when all was new. Elegant and fleeting, every likeness of it seems to dissolve into the morning mist.",
     "ear-cuff": "It was plucked from a curving ridge, walked each evening at dusk. Its edge still reflects the colours of that sky on the anniversary of its discovery.",
     "starshipkey-pendant": "Salvaged from the silver mirrored vessel of stellar origin. All those who wear it are seized by an insatiable wanderlust.",
     "meridian-egg-ring": "It was wrought as a paradox to taunt the gods. Gaze into it for long enough and the abyss gazes back.",
