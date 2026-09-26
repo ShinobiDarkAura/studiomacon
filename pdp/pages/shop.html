@@ -74,9 +74,9 @@
   body.logo-scrub .logo-build{transition:opacity .2s linear}          /* while scrolling it follows the scroll, not the slow idle fade */
   /* the timed fade sets its own duration: while resting at the top the body still carries
      .logo-scrub, whose .2s transition was making this fade in a blink */
-  body.hero-quiet .logo-build{opacity:0;transition:opacity 2.8s ease}
-  @media (min-width:768px){ .logo-build,.film .tagline{filter:blur(0);transition:opacity 1.56s ease,filter 1.56s ease} body.hero-quiet .logo-build,body.hero-quiet .film .tagline{filter:blur(18px);transition:opacity 2.8s ease,filter 2.8s cubic-bezier(.4,0,.6,1)} }          /* desktop: it and its tagline blur away as they fade */
-  @media (max-width:767px){ body.hero-quiet .logo-build,body.hero-quiet .film .tagline{transition-duration:2.32s} }
+  body.hero-quiet .logo-build{opacity:0;transition:opacity 1.8s ease}
+  @media (min-width:768px){ .logo-build,.film .tagline{filter:blur(0);transition:opacity 1.56s ease,filter 1.56s ease} body.hero-quiet .logo-build,body.hero-quiet .film .tagline{filter:blur(18px);transition:opacity 1.8s ease,filter 1.8s cubic-bezier(.4,0,.6,1)} }          /* desktop: it and its tagline blur away as they fade */
+  @media (max-width:767px){ body.hero-quiet .logo-build,body.hero-quiet .film .tagline{transition-duration:1.5s} }
   /* once the big one has faded in place, the logotype fades back in where it lives, in the nav,
      and stays there: it never flies back down, even at the top of the page */
   body.logo-docked .head .logotype{transform:none !important;opacity:1 !important;transition:opacity .8s ease,color .3s ease !important}
@@ -377,7 +377,7 @@
       if (scrollY > 40) return;
       document.body.classList.add('hero-quiet');                        // the big logotype fades where it is...
       setTimeout(function () { document.body.classList.add('logo-docked'); },
-                 matchMedia('(max-width:767px)').matches ? 2470 : 2950);   // ...then reappears in the nav, once the fade has finished
+                 matchMedia('(max-width:767px)').matches ? 1650 : 1950);   // ...then reappears in the nav, once the fade has finished
     }, 3750);
   };
 
