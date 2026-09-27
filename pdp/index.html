@@ -692,11 +692,9 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
   @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
   /* sits under the logotype, measured off the logo itself. It used to be fixed at 50vh while the logo is
      centred in 100svh, so on an iPhone the browser's bottom bar pushed the line ~25-40px further down. */
-  .film .tagline{position:absolute;left:0;right:0;top:50%;transform:translateY(calc(var(--lh) / 2 + 44px));pointer-events:none;z-index:2;margin:0;text-align:center;color:#fff;
+  .film .tagline{position:absolute;left:0;right:0;top:50%;transform:translateY(calc(var(--lh) / 2 + 44px + var(--par,0px)));pointer-events:none;z-index:2;margin:0;text-align:center;color:#fff;
     font:italic 400 15pt/1.2 "Henry",var(--serif);transition:opacity .5s ease}
-  @media (max-width:767px){ .film .tagline{transform:translateY(calc(var(--lh) / 2 + 12px))} }
-  .film.scrolled .tagline{opacity:0}
-  .film .tagline{display:none !important}          /* the logotype stands alone for now */
+  @media (max-width:767px){ .film .tagline{transform:translateY(calc(var(--lh) / 2 + 12px + var(--par,0px)))} }
   .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden;transition-delay:0s}
   /* the cue waits 5s before fading in */
   /* after a while on the film: the centred logotype and tagline fade away, the scroll cue fades in */
@@ -1154,7 +1152,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
       <source src="video/film-process-1080.mp4?v=8" type="video/mp4">
     </video>
     <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:211;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:165;--g:9"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:157;--g:0"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:179;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:133;--g:5"><i class="ll-glyph"></i></span></div>
-    <p class="tagline" data-edit="page:index.html:6c4aaa35">Artifacts of Love</p>
+    <p class="tagline" data-edit="page:index.html:5b23bd71">Studio</p>
     <span class="scroll-cue" aria-hidden="true"><i></i></span>
   </section>
   </div>
@@ -2458,7 +2456,7 @@ function maconClickQuery(extra) {
     document.body.classList.toggle('past-film', document.querySelector('.film').getBoundingClientRect().bottom <= 100);
     var build = document.querySelector('.logo-build');          // the intro's MAÇON fades as the film scrolls away
     if (build) build.style.setProperty('--scroll-fade', '1');
-    if (build && !matchMedia('(prefers-reduced-motion:reduce)').matches) build.style.setProperty('--par', Math.round(Math.min(scrollY, innerHeight * 1.2) * .35) + 'px');          // a gentle parallax: the film scrolls past it          // the logotype no longer fades: it simply scrolls away with the film          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
+    if (build && !matchMedia('(prefers-reduced-motion:reduce)').matches) document.querySelector('.film').style.setProperty('--par', Math.round(Math.min(scrollY, innerHeight * 1.2) * .35) + 'px');          // a gentle parallax: the film scrolls past it          // the logotype no longer fades: it simply scrolls away with the film          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
     document.querySelector('.film').classList.toggle('scrolled', on);
     var flying = scrollY < (window.MaconScrubSpan ? window.MaconScrubSpan() : 400);
     var past = document.body.classList.contains('past-film');
