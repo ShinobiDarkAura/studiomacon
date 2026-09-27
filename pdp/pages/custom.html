@@ -80,6 +80,8 @@
 
   /* steps: accordions that unlock in order */
   .order .price{font-size:19px;margin:0 0 22px}
+  .order .price .ship-free{margin-left:10px;font-size:calc(14px - 1pt);opacity:.5}          /* as beside a product's price */
+  @media (max-width:767px){ .order .price .ship-free{display:block;margin:6px 0 0} }          /* phones: the prices keep one line, shipping sits under them */
   .start{margin:4px 0 34px}
   /* the top rule belongs to the first row, so it arrives with that row */
   .step[data-step="1"]{border-top:1px solid var(--rule)}
@@ -235,7 +237,7 @@
     <p class="eyebrow">Custom</p>
     <h1 class="kept">Artifact<br>of Your Own</h1>
     <p class="body">One of a kind. Sketched, carved and cast at our local foundry: a bronze totem of your favorite animal, or the ring, pendant or cuff you’ve always imagined.</p>
-    <p class="price">$925 Totems / $1,200+ Jewelry</p>
+    <p class="price">$925 Totems / $1,200+ Jewelry<span class="ship-free">Free shipping</span></p>
     <button type="button" class="next start" id="start">Start a Commission</button>
 
     <div class="steps-acc" id="steps">
