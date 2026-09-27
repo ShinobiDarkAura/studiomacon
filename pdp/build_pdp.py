@@ -1124,7 +1124,7 @@ def grid_still(slug):
 
 
 # small studio notes on home grid tiles: placeholders for now, a word or two each
-CHIPS = {"pip": "Grandpa's Bank", "rebi": "First Redesign", "ren": "Well Travelled"}
+CHIPS = {"pip": "Most Gifted", "rebi": "Best Seller", "ren": "Studio Favourite"}          # placeholders: swap for what is true
 
 
 # the terracotta photos as framed on the home grid: zoom, then where the crop sits (%)
