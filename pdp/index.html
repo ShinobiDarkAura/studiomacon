@@ -733,7 +733,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
   body.logo-hero .head .logotype{transform:translateY(var(--logo-dy,0px)) scale(3.3088)}
 
   /* ── load-in: MAÇON arrives letter by letter, kept centred; the cedilla rises last and lifts the C; then the tagline types out ── */
-  .logo-build{position:absolute;left:50%;top:50%;z-index:3;display:flex;height:var(--lh);transform:translate(-50%,-50%);pointer-events:none;color:#fff}
+  .logo-build{position:absolute;left:50%;top:50%;z-index:3;display:flex;height:var(--lh);transform:translate3d(-50%,calc(-50% + var(--par,0px)),0);pointer-events:none;color:#fff;will-change:transform}          /* --par: it drifts a little slower than the film as you scroll */
   .ll{position:relative;flex:none;height:100%;width:0;margin-left:0;overflow:visible;
     transition:width .7s cubic-bezier(.65,0,.25,1),margin-left .7s cubic-bezier(.65,0,.25,1)}
   .ll.in{width:calc(var(--lh) * var(--w) / 331);margin-left:calc(var(--lh) * var(--g) / 331)}
@@ -2454,7 +2454,8 @@ function maconClickQuery(extra) {
     }
     document.body.classList.toggle('past-film', document.querySelector('.film').getBoundingClientRect().bottom <= 100);
     var build = document.querySelector('.logo-build');          // the intro's MAÇON fades as the film scrolls away
-    if (build) build.style.setProperty('--scroll-fade', '1');          // the logotype no longer fades: it simply scrolls away with the film          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
+    if (build) build.style.setProperty('--scroll-fade', '1');
+    if (build && !matchMedia('(prefers-reduced-motion:reduce)').matches) build.style.setProperty('--par', Math.round(Math.min(scrollY, innerHeight * 1.2) * .35) + 'px');          // a gentle parallax: the film scrolls past it          // the logotype no longer fades: it simply scrolls away with the film          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
     document.querySelector('.film').classList.toggle('scrolled', on);
     var flying = scrollY < (window.MaconScrubSpan ? window.MaconScrubSpan() : 400);
     var past = document.body.classList.contains('past-film');
