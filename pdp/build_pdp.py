@@ -1132,6 +1132,38 @@ CLAY_FRAME = {"pip": (1.374, 41.7, 54.8), "rebi": (1.152, 55.1, 20.7), "ren": (1
               "ori": (1.056, 57.9, 0), "yael": (1.413, 42, 56.8), "milo": (1.139, 60.2, 53.7), "ibi": (1.271, 50, 42.3), "eleph": (1.427, 50, 50)}
 
 
+VIEWS = ("front", "back", "side", "top", "detail", "in hand", "on the rocks")          # the part of a name that says which view it is
+
+
+def view_name(name):
+    """A past-work title with its view in italics: "Border Collie, <em>Front</em>", "Retriever <em>in Hand</em>"."""
+    if ", " in name:
+        head, tail = name.rsplit(", ", 1)
+        return f"{html.escape(head)}, <em>{html.escape(tail)}</em>"
+    low = name.lower()
+    for v in VIEWS:
+        if low.endswith(" " + v):
+            return f"{html.escape(name[:-len(v)])}<em>{html.escape(name[-len(v):])}</em>"
+    return html.escape(name)
+
+
+_corner = {}
+
+
+def busy_corner(path):
+    """True when a photograph is dark in its bottom-left corner, where the label sits (a hand, a board, a
+    table): the label turns white there. Cut-outs always sit on the flat grey, so they keep dark labels."""
+    if path not in _corner:
+        try:
+            im = Image.open(path).convert("L"); w, h = im.size
+            box = im.crop((0, int(h * .78), int(w * .5), h)).resize((80, 40))
+            px = list(box.getdata()); mean = sum(px) / len(px); sd = (sum((p - mean) ** 2 for p in px) / len(px)) ** .5
+            _corner[path] = mean < 180          # darker than the studio grey: a hand, a board, a table
+        except Exception:
+            _corner[path] = False
+    return _corner[path]
+
+
 def piece_type(slug):
     """What the piece is, after its price on the grid: " • Bronze Totem"."""
     t = {"ear-cuff": "Silver Ear Cuff", "wonderhorn-talisman": "Silver Pendant", "starshipkey-pendant": "Silver Pendant"}.get(slug)
@@ -1271,11 +1303,11 @@ def main():
             for i, (n, w, h, cut) in enumerate(imgs):
                 t = tweaks.get(n, {})
                 figs.append(
-                    f'    <figure class="{"cutout" if cut else "photo"}{" wide" if t.get("wide") else ""}" data-name="{html.escape(n)}" '
+                    f'    <figure class="{"cutout" if cut else "photo"}{" wide" if t.get("wide") else ""}{" label-light" if not cut and busy_corner(os.path.join(base, n)) else ""}" data-name="{html.escape(n)}" '
                     f'style="--s:{t.get("s", 1)};--x:{t.get("x", 0)};--y:{t.get("y", 0)}">'
                     f'<img src="img/commissions-cut/{html.escape(n)}" width="{w}" height="{h}" alt="{html.escape(t.get("name", ""))}" loading="{"eager" if i < 4 else "lazy"}" draggable="false">'
                     f'<span class="over"><span class="date">{html.escape(t.get("date", ""))}</span>'
-                    f'<span class="name">{html.escape(t.get("name", ""))}</span></span></figure>')
+                    f'<span class="name">{view_name(t.get("name", ""))}</span></span></figure>')
             figs.insert(0, '    <figure class="lead" data-lead><img src="img/commissions-cut/hero-band.jpg" alt="A gold band carved with a spiral, a custom commission" fetchpriority="high"></figure>')
             doc = (doc.replace("{{EXAMPLES}}", "\n".join(figs)).replace("{{FRAME}}", lay.get("frame", "3/4"))
                       .replace("{{PASTCOUNT}}", str(len(imgs)))

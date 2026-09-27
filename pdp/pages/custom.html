@@ -21,7 +21,10 @@
     .examples figure:not(.lead) .over{position:absolute;inset:auto auto 28px 28px;padding:0;background:none;color:#000;opacity:0;transform:translateY(6px);gap:0;font-size:14px}
     .examples figure:not(.lead):hover .over{opacity:1;transform:none}          /* shown only on hover */
     .examples figure:not(.lead) .over .name{font:400 14px/1.2 var(--sans,'Instrument Sans'),sans-serif;text-transform:none;letter-spacing:.012em;color:#262626}          /* plain sans, the year's size, grey 800 */
-    .examples figure:not(.lead) .over .date{color:#737373;font-size:12px}          /* grey 500, 2px under the name */
+    .examples figure:not(.lead) .over .date{color:#737373}          /* grey 500 */
+    .examples figure:not(.lead) .over .name em{font-style:italic}          /* the view: front, side, in hand */
+    .examples figure.label-light:not(.lead) .over .name{color:#fff}          /* the picture reaches the label's corner: white reads there */
+    .examples figure.label-light:not(.lead) .over .date{color:rgba(255,255,255,.75)}
   }
   .examples .dr-emerge,.examples figure.dr-emerge{opacity:1 !important;filter:none !important;transform:none !important;transition:none !important}          /* the Past Work grid is simply there: no scroll-in */
   .examples figure.cutout{background:#E8E6E1;display:grid;place-items:center}
