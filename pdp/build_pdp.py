@@ -1123,7 +1123,8 @@ def grid_still(slug):
     return _content.product(slug, "tile_image", None) or f'img/{slug}/{"plain-3.jpg" if slug == "wonderhorn-talisman" else "hero.jpg"}'
 
 
-BACK_IN_STOCK = ("pip", "rebi", "ren")          # a small chip on these home grid tiles
+# small studio notes on home grid tiles: placeholders for now, a word or two each
+CHIPS = {"pip": "Grandpa's Bank", "rebi": "First Redesign", "ren": "Well Travelled"}
 
 
 # the terracotta photos as framed on the home grid: zoom, then where the crop sits (%)
@@ -1302,7 +1303,7 @@ def main():
             f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
             f'<span class="pic-hit"><span class="pic"><img src="{still_src}"' + ('' if 'ab-clay' in still_src else grid_srcset(still_src) + ab_attrs(p["slug"])) + (' class="ab"' if 'ab-clay' in still_src else '') + f' alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
-            + ('<span class="chip">Back in stock</span>' if p["slug"] in BACK_IN_STOCK else '')
+            + (f'<span class="chip">{html.escape(CHIPS[p["slug"]])}</span>' if p["slug"] in CHIPS else '')
             + f'</span></span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span>'
             + (f'<span class="ovl" aria-hidden="true">{html.escape(EYEBROW[p["slug"]])}</span>' if p["slug"] in EYEBROW else "")          # desktop hover: the overline takes the price's place
             + '</span>'
