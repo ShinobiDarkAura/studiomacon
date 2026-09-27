@@ -8,7 +8,7 @@ export (the mythic lore line), and the port's notes (materials, dimensions).
 Photographs come from Pieces Master in ~/Downloads and are copied into
 pdp/img/<slug>/ so the preview never reaches outside the repo.
 """
-import html, json, os, re
+import glob, html, json, os, re
 from PIL import Image
 
 import hashlib
@@ -1292,6 +1292,9 @@ def main():
         if p["slug"] in RETIRED:          # no page at all; its old addresses go to the shop (see _redirects)
             continue
         doc = one_block(page(p, template, related_block(p, products)))
+        for wide in glob.glob(os.path.join(OUT, "img", p["slug"], "*-wide.jpg.webp")):          # in-hand photos, 10% further out, on the product page only
+            base = os.path.basename(wide)[:-len("-wide.jpg.webp")]
+            doc = re.sub(rf'img/{re.escape(p["slug"])}/{re.escape(base)}(\.jpg|--m\.jpg)', lambda m: f'img/{p["slug"]}/{base}-wide{m.group(1)}', doc)
         first = (SHOP_IDS.get(p["slug"]) or [None])[0]
         if first:                                     # tell Meta and Google a piece was looked at
             # the price Shopify charges today, not the one cached in ids.json: seven pieces were
