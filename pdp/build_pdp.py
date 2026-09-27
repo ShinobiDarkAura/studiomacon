@@ -1132,6 +1132,24 @@ CLAY_FRAME = {"pip": (1.374, 41.7, 54.8), "rebi": (1.152, 55.1, 20.7), "ren": (1
               "ori": (1.056, 57.9, 0), "yael": (1.413, 42, 56.8), "milo": (1.139, 60.2, 53.7), "ibi": (1.271, 50, 42.3), "eleph": (1.427, 50, 50)}
 
 
+def grid_hover(slug):
+    """The in-hand (or worn) picture a tile turns to on hover, as the home grid shows it."""
+    # the Wonder Horn's hero is a pale cut-out; its linen photograph sits with the others
+    # pendants show the photograph of the piece being worn; everything else, in the hand
+    hover = _content.product(slug, "tile_hover", None) or \
+        f'img/{slug}/' + {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(slug, "hand-1.jpg")
+    held = os.path.exists(os.path.join(OUT, hover))
+    src = tile_src(hover)
+    if slug == "rebi":
+        src = "img/rebi/hand-tall.jpg.webp"          # the in-hand photo, extended above and below so it sits smaller in the tile
+    if slug in ("milo", "ibi", "eleph"):          # turned to face the same way as its terracotta photo
+        src = src.replace("--tile.jpg.webp", "--tile--flip.jpg.webp")
+    lift = hover.rsplit(".", 1)[0] + "--lift.jpg.webp"          # the totem brightened a touch; the original stays beside it
+    if os.path.exists(os.path.join(OUT, lift)):
+        src = lift
+    return src, held
+
+
 def rel_tile(x):
     clay = f"img/ab-clay/{x['slug']}--tile.webp"
     if x["slug"] in CLAY_FRAME and os.path.exists(os.path.join(OUT, clay)):
@@ -1181,7 +1199,9 @@ def related_block(p, products):
         by = {x["slug"]: x for x in products}
         pick = [by[s] for s in sorted(PENDANTS - {p["slug"]}) + ["ear-cuff"] if s in by]
     tile = lambda x: (
-        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-hit"><span class="rel-frame"><img src="{rel_tile(x)}"{rel_style(x)} alt="{html.escape(x["name"])}" loading="lazy"></span></span>'
+        f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-hit"><span class="rel-frame"><img src="{rel_tile(x)}"{rel_style(x)} alt="{html.escape(x["name"])}" loading="lazy">'
+        + (lambda h: f'<img class="held" src="{h[0]}" alt="" aria-hidden="true" loading="lazy"{align_style(x["slug"])}>' if h[1] else '')(grid_hover(x["slug"]))
+        + '</span></span>'
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>')
     tiles = "".join(tile(x) for x in pick)
     # phones: every piece of the same family, up to six, the closest in look first, in a row to swipe
@@ -1282,21 +1302,11 @@ def main():
     for i, p in enumerate(products):
         # the Wonder Horn's hero is a pale cut-out; its linen photograph sits with the others
         # pendants show the photograph of the piece being worn; everything else, in the hand
-        hover = _content.product(p["slug"], "tile_hover", None) or \
-            f'img/{p["slug"]}/' + {"wonderhorn-talisman": "plain-2.jpg", "starshipkey-pendant": "plain-1.jpg"}.get(p["slug"], "hand-1.jpg")
-        held = os.path.exists(os.path.join(OUT, hover))
+        hover_src, held = grid_hover(p["slug"])
         still_src = tinted(p["slug"], tile_src(grid_still(p["slug"])))          # the grid shows them small, colour-matched
         clay = f"img/ab-clay/{p['slug']}--tile.webp"          # the terracotta shoot is the grid's picture, where a piece has one
         if os.path.exists(os.path.join(OUT, clay)):
             still_src = clay
-        hover_src = tile_src(hover)
-        if p["slug"] == "rebi":
-            hover_src = "img/rebi/hand-tall.jpg.webp"          # the in-hand photo, extended above and below so it sits smaller in the tile
-        if p["slug"] in ("milo", "ibi", "eleph"):          # the grid only: turned to face the same way as its terracotta photo
-            hover_src = hover_src.replace("--tile.jpg.webp", "--tile--flip.jpg.webp")
-        lift = hover.rsplit(".", 1)[0] + "--lift.jpg.webp"          # the totem brightened a touch; the original stays beside it
-        if os.path.exists(os.path.join(OUT, lift)):
-            hover_src = lift
         lazy = "eager" if i < 3 else "lazy"
         tiles.append(
             # the framing sits on the link, so the in-hand picture shown on hover zooms with the still

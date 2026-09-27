@@ -254,7 +254,8 @@
   .rel-frame img{width:100%;height:100%;object-fit:cover}
   .rel-frame{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
   .rel-hit{display:block}
-  .rel-hit:hover .rel-frame{transform:translateY(-8px)}          /* only the picture's own spot lifts it, never the label */
+  .rel-frame img.held{position:absolute;inset:0;opacity:0;object-position:var(--hx,50%) var(--hy,50%);transform-origin:var(--hx,50%) var(--hy,50%);transform:scale(var(--hz,1))}
+  @media (hover:hover){ .rel-hit:hover .rel-frame img.held{opacity:1} }          /* on hover the piece turns to its in-hand picture, as on the home grid */          /* only the picture's own spot lifts it, never the label */
   .rel-name{display:block;margin:20px 0 4px;font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
   .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
   @media (max-width:1099px){
