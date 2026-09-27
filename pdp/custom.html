@@ -83,6 +83,7 @@
   @media (min-width:768px){ .kept{font-size:53px} }
   @media (min-width:1200px){ .kept{font-size:60px} }
   .order .body{margin:0 0 30px;font-size:17px;line-height:1.55;max-width:460px}
+  @media (min-width:768px){ .order .body{width:min(112%, 100% + 32px, 515px);max-width:none} }          /* 12% wider, never closer than 32px to the page's right margin */
   .terms{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:0 0 34px;font-size:15px}
   .terms dt{font-size:calc(17px - 4pt);letter-spacing:.14em;text-transform:uppercase;padding-top:3px;color:rgba(0,0,0,.5)}
   .terms dd{margin:0}
