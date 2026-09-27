@@ -386,8 +386,10 @@
   // The logotype rests in the middle of the film for 3.75 seconds, then fades and hands
   // over to the scroll cue. Scrolling away cancels it; coming back starts the eight over.
   var quiet;
+  var LOGO_WAITS_FOR_SCROLL = true;          // the logotype stays until the visitor scrolls; false brings back the timed fade
   window.MaconHeroQuiet = function () {
     clearTimeout(quiet);
+    if (LOGO_WAITS_FOR_SCROLL) { document.body.classList.remove('hero-quiet'); return; }
     if (scrollY > 40) { document.body.classList.remove('hero-quiet'); return; }
     quiet = setTimeout(function () {
       if (scrollY > 40) return;
