@@ -689,11 +689,12 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
     100%{transform:translateY(-13px);opacity:0}
   }
   /* the line under the big logotype on the film */
+  @font-face{font-family:"Gabriele";src:url(fonts/gabriele-dark.woff2) format("woff2");font-weight:700;font-display:swap}
   @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
   /* sits under the logotype, measured off the logo itself. It used to be fixed at 50vh while the logo is
      centred in 100svh, so on an iPhone the browser's bottom bar pushed the line ~25-40px further down. */
   .film .tagline{position:absolute;left:0;right:0;top:50%;transform:translateY(calc(var(--lh) / -2 - 1.2em + 8px + var(--par,0px)));pointer-events:none;z-index:2;margin:0;text-align:center;color:#fff;
-    font:italic 400 15pt/1.2 "Henry",var(--serif);transition:opacity .5s ease}
+    font:700 10px/1.2 "Gabriele",ui-monospace,monospace;letter-spacing:.6em;text-indent:.6em;transition:opacity .5s ease}          /* a typewriter, small and spaced wide */
   @media (max-width:767px){ .film .tagline{transform:translateY(calc(var(--lh) / -2 - 1.2em + 20px + var(--par,0px)))} }
   .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden;transition-delay:0s}
   /* the cue waits 5s before fading in */
@@ -1152,7 +1153,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
       <source src="video/film-process-1080.mp4?v=8" type="video/mp4">
     </video>
     <div class="logo-build" aria-hidden="true"><span class="ll ll-m" style="--w:211;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-a" style="--w:165;--g:9"><i class="ll-glyph"></i></span><span class="ll ll-c" style="--w:157;--g:0"><i class="ll-ced"></i><i class="ll-glyph"></i></span><span class="ll ll-o" style="--w:179;--g:0"><i class="ll-glyph"></i></span><span class="ll ll-n" style="--w:133;--g:5"><i class="ll-glyph"></i></span></div>
-    <p class="tagline" data-edit="page:index.html:5b23bd71">Studio</p>
+    <p class="tagline" data-edit="page:index.html:a3bda3d4">STUDIO</p>
     <span class="scroll-cue" aria-hidden="true"><i></i></span>
   </section>
   </div>
@@ -2432,8 +2433,8 @@ function maconClickQuery(extra) {
                                               // M, then A, then the C, and so on
     });
     build.classList.add('fall', 'sketch');          // the word waits, hidden, while "Studio" types itself first
-    chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, 150 + i * 70); });
-    var lead = 150 + chars.length * 70 + 250;
+    chars.forEach(function (c, i) { later(function () { c.classList.add('on'); }, 300 + i * 220); });          // one key at a time, slowly
+    var lead = 300 + chars.length * 220 + 300;
     later(function () { sketchLogo(build); }, lead);
     var t = lead + 1650;          // the word lands, then a half-second of stillness before the cedilla rises
     later(function () { build.querySelector('.ll-c').classList.add('lift'); }, t);
