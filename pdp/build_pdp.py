@@ -37,7 +37,7 @@ EYEBROW = {
     "macon-cap": "Modicum of Solar Protection",
     "ibi": "Eternal Watcher",
     "ear-cuff": "Perfect Geometries",
-    "starshipkey-pendant": "Relic of the Outer Reach",
+    "starshipkey-pendant": "Relic of the Outer Rim",
     "meridian-egg-ring": "Heaven's Folly",
     "ooak-vessel": "Halves Hiding a Secret",
     "ooak-pendant": "Mane Caught Mid-Stride",
