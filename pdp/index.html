@@ -2542,6 +2542,7 @@ function maconClickQuery(extra) {
       var swapped = still.classList.contains('ab');          // a test photo: centred, unzoomed, whatever the linen framing says
       var f0 = swapped ? {r: 0, z: clay ? 1.6 : 1, x: 50, y: 50} : {r: 0, z: num('--z', 1.12), x: num('--x', 50), y: num('--y', 50)};
       var f1 = {r: 0, z: num('--z', 1.12) * num('--hz', 1), x: num('--hx', num('--x', 50)), y: num('--hy', num('--y', 50))};
+      if (held && held.classList.contains('matched')) f1 = {r: 0, z: 1, x: 50, y: 50};          // already framed to match: starts plain
       var b = swapped ? {warm: 0, tint: 0} : baked(still.getAttribute('src'));
       tiles.push({el: a, pic: a.querySelector('.pic'), slug: a.getAttribute('href').replace('.html', ''), imgs: [still, held], b: b,
                   warm: b.warm, tint: b.tint, frames: [f0, f1], base: {warm: b.warm, tint: b.tint, frames: [Object.assign({}, f0), Object.assign({}, f1)]}, layer: 0});
