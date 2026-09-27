@@ -2397,7 +2397,7 @@ function maconClickQuery(extra) {
       var cw = W / G, ch = H / GH, covered = new Uint8Array(G * GH), strokes = [];
       todo.forEach(function (t) {
         if (covered[t[1] * G + t[0]]) return;
-        var len = 5 + Math.random() * 7, ang = -.7 + (Math.random() - .5) * .4, w = 1.4 + Math.random() * 1.2, ca = Math.cos(ang), sa = Math.sin(ang);
+        var len = 7 + Math.random() * 8, ang = -.7 + (Math.random() - .5) * .4, w = 3 + Math.random() * 2, ca = Math.cos(ang), sa = Math.sin(ang);
         for (var u = -len / 2; u <= len / 2; u += .5) for (var v = -w / 2; v <= w / 2; v += .5) {
           var cx = Math.round(t[0] + ca * u - sa * v), cy = Math.round(t[1] + sa * u + ca * v);
           if (cx >= 0 && cy >= 0 && cx < G && cy < GH) covered[cy * G + cx] = 1;
