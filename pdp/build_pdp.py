@@ -1133,10 +1133,10 @@ CLAY_FRAME = {"pip": (1.374, 41.7, 54.8), "rebi": (1.152, 55.1, 20.7), "ren": (1
 
 
 def piece_type(slug):
-    """What the piece is, after its price on the grid: " • Bronze Totem"."""
-    t = {"ear-cuff": "Silver Ear Cuff", "wonderhorn-talisman": "Silver Pendant", "starshipkey-pendant": "Silver Pendant"}.get(slug)
+    """What the piece is, after its price on the grid: " • Totem"."""
+    t = {"ear-cuff": "Ear Cuff", "wonderhorn-talisman": "Pendant", "starshipkey-pendant": "Pendant"}.get(slug)
     if not t:
-        t = "Silver Ring" if slug.endswith("ring") or slug == "sietch-aperture" else "Bronze Totem" if slug in CLAY_FRAME else ""
+        t = "Ring" if slug.endswith("ring") or slug == "sietch-aperture" else "Totem" if slug in CLAY_FRAME else ""
     return f' <span class="type">&bull; {t}</span>' if t else ""
 
 
