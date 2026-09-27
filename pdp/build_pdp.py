@@ -31,7 +31,7 @@ EYEBROW = {
     "milo": "Ancient Wanderer",
     "eclipse-ring": "Ellipses in Patient Equilibrium",
     "sietch-aperture": "Shelter Cut Into Rock",
-    "lunar-canyon-ring": "Moonrisen",
+    "lunar-canyon-ring": "Moonrisen Memory",
     "eleph": "The Great Unbowed",
     "wonderhorn-talisman": "Spiral Echo",
     "macon-cap": "Modicum of Solar Protection",
