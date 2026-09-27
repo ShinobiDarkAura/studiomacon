@@ -779,6 +779,7 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
   .logo-build.fall .ll-a{--sx:-90%;animation-delay:150ms !important}
   .logo-build.fall .ll-o{--sx:90%;animation-delay:210ms !important}
   .logo-build.fall .ll-c{--sx:0%;--sy:18%;animation-delay:340ms !important}
+  @media (prefers-reduced-motion:reduce){ .logo-build .ll,.logo-build .ll-glyph,.logo-build .ll-ced{animation:none !important;transform:none !important;opacity:1 !important;transition:none !important} }          /* reduced motion: the whole word simply fades in */
   @keyframes ll-side{0%{transform:translate(var(--sx,0),var(--sy,0));opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
   body.logo-anim .head .logotype{opacity:.004}
   .tagline .ch{opacity:0}
@@ -2349,7 +2350,7 @@ function maconClickQuery(extra) {
     // a refresh always goes back to the top (site.js), so the old scroll position it briefly
     // restores on the way is not a reason to skip, or to cut the logotype short
     var reload = !!(nav && nav.type === 'reload');
-    var skip = matchMedia('(prefers-reduced-motion: reduce)').matches || (nav && nav.type === 'back_forward') || (!reload && scrollY > 40);
+    var skip = (nav && nav.type === 'back_forward') || (!reload && scrollY > 40);          // reduced motion still gets the logotype, faded in (sketchLogo)
     var settled = !reload;
     if (reload) addEventListener('load', function () { requestAnimationFrame(function () { requestAnimationFrame(function () { settled = true; }); }); });
     var text = tag.textContent; tag.textContent = '';
