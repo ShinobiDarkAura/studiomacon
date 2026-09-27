@@ -16,7 +16,11 @@
   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
   @media (min-width:1024px){ .examples figure[data-name="hannah-patsy-2-warm--centred.jpg"]{display:none !important} }          /* desktop: off for now so the grid comes out even */
-  .examples figure:not(.lead) .over{display:none !important}          /* no name or year on hover */
+  /* name and year sit on the grey, bottom left, in black: always shown, no dark gradient */
+  @media (min-width:768px){
+    .examples figure:not(.lead) .over{position:absolute;inset:auto auto 16px 16px;padding:0;background:none;color:#000;opacity:1;transform:none;gap:6px;font-size:12px}
+    .examples figure:not(.lead) .over .name{font-size:calc((49.5px - 8pt) * .8)}
+  }
   .examples .dr-emerge,.examples figure.dr-emerge{opacity:1 !important;filter:none !important;transform:none !important;transition:none !important}          /* the Past Work grid is simply there: no scroll-in */
   .examples figure.cutout{background:#E8E6E1;display:grid;place-items:center}
   /* --s scales a piece inside its frame, --x/--y nudge it (in % of the frame); set by hand in edit mode */
@@ -73,7 +77,7 @@
   @media (min-width:768px){ .kept{font-size:53px} }
   @media (min-width:1200px){ .kept{font-size:60px} }
   .order .body{margin:0 0 30px;font-size:17px;line-height:1.55;max-width:460px}
-  @media (min-width:768px){ .order .body{width:min(112%, 100% + 32px, 515px);max-width:none} }          /* 12% wider, never closer than 32px to the page's right margin */
+  @media (min-width:768px){ .order .body{width:515px;max-width:100%} }          /* 12% wider where the column has room; never past its edge (the column clips) */
   .terms{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:0 0 34px;font-size:15px}
   .terms dt{font-size:calc(17px - 4pt);letter-spacing:.14em;text-transform:uppercase;padding-top:3px;color:rgba(0,0,0,.5)}
   .terms dd{margin:0}
