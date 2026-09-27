@@ -26,10 +26,11 @@
   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
   @media (min-width:1024px){ .examples figure[data-name="hannah-patsy-2-warm--centred.jpg"]{display:none !important} }          /* desktop: off for now so the grid comes out even */
-  /* name and year sit on the grey, bottom left, in black: always shown, no dark gradient */
+  /* name and year sit on the grey, bottom left, in black, on hover; no dark gradient */
   @media (min-width:768px){
-    .examples figure:not(.lead) .over{position:absolute;inset:auto auto 16px 16px;padding:0;background:none;color:#000;opacity:1;transform:none;gap:6px;font-size:12px}
-    .examples figure:not(.lead) .over .name{font-size:calc((49.5px - 8pt) * .8)}
+    .examples figure:not(.lead) .over{position:absolute;inset:auto auto 16px 16px;padding:0;background:none;color:#000;opacity:0;transform:translateY(6px);gap:6px;font-size:12px}
+    .examples figure:not(.lead):hover .over{opacity:1;transform:none}          /* shown only on hover */
+    .examples figure:not(.lead) .over .name{font-size:calc((49.5px - 8pt) * .8 - 3px)}
   }
   .examples .dr-emerge,.examples figure.dr-emerge{opacity:1 !important;filter:none !important;transform:none !important;transition:none !important}          /* the Past Work grid is simply there: no scroll-in */
   .examples figure.cutout{background:#E8E6E1;display:grid;place-items:center}
