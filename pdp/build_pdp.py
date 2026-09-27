@@ -1147,6 +1147,9 @@ def grid_hover(slug):
     lift = hover.rsplit(".", 1)[0] + "--lift.jpg.webp"          # the totem brightened a touch; the original stays beside it
     if os.path.exists(os.path.join(OUT, lift)):
         src = lift
+    matched = f"img/{slug}/hand-match.jpg.webp"          # outpainted and framed so the piece sits exactly where it does in its still
+    if os.path.exists(os.path.join(OUT, matched)):
+        return matched, True
     return src, held
 
 
@@ -1200,7 +1203,7 @@ def related_block(p, products):
         pick = [by[s] for s in sorted(PENDANTS - {p["slug"]}) + ["ear-cuff"] if s in by]
     tile = lambda x: (
         f'<a class="rel-piece" href="{x["slug"]}.html"><span class="rel-hit"><span class="rel-frame"><img src="{rel_tile(x)}"{rel_style(x)} alt="{html.escape(x["name"])}" loading="lazy">'
-        + (lambda h: f'<img class="held" src="{h[0]}" alt="" aria-hidden="true" loading="lazy"{align_style(x["slug"])}>' if h[1] else '')(grid_hover(x["slug"]))
+        + (lambda h: f'<img class="held" src="{h[0]}" alt="" aria-hidden="true" loading="lazy"{"" if "hand-match" in h[0] else align_style(x["slug"])}>' if h[1] else '')(grid_hover(x["slug"]))
         + '</span></span>'
         f'<span class="rel-name">{html.escape(x["name"])}</span><span class="rel-cost">${x["price"]}</span></a>')
     tiles = "".join(tile(x) for x in pick)
@@ -1312,7 +1315,7 @@ def main():
             # the framing sits on the link, so the in-hand picture shown on hover zooms with the still
             f'    <figure><a class="piece" href="{p["slug"]}.html"{tile_style(p["slug"])}>'
             f'<span class="pic-hit"><span class="pic"><img src="{still_src}"' + ('' if 'ab-clay' in still_src else grid_srcset(still_src) + ab_attrs(p["slug"])) + (' class="ab"' if 'ab-clay' in still_src else '') + f' alt="{html.escape(p["name"])}" loading="{lazy}">'
-            + (f'<img class="held" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
+            + (f'<img class="held{" matched" if "hand-match" in hover_src else ""}" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{"" if "hand-match" in hover_src else align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
             + (f'<span class="chip">{html.escape(CHIPS[p["slug"]])}</span>' if p["slug"] in CHIPS else '')
             + f'</span></span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span>'
             + (f'<span class="ovl" aria-hidden="true">{html.escape(EYEBROW[p["slug"]])}</span>' if p["slug"] in EYEBROW else "")          # desktop hover: the overline takes the price's place
