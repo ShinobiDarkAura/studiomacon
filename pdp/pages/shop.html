@@ -58,9 +58,9 @@
   @font-face{font-family:"Henry";src:url(fonts/henry-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
   /* sits under the logotype, measured off the logo itself. It used to be fixed at 50vh while the logo is
      centred in 100svh, so on an iPhone the browser's bottom bar pushed the line ~25-40px further down. */
-  .film .tagline{position:absolute;left:0;right:0;top:50%;transform:translateY(calc(var(--lh) / -2 - 1.2em - 16px + var(--par,0px)));pointer-events:none;z-index:2;margin:0;text-align:center;color:#fff;
+  .film .tagline{position:absolute;left:0;right:0;top:50%;transform:translateY(calc(var(--lh) / -2 - 1.2em + 8px + var(--par,0px)));pointer-events:none;z-index:2;margin:0;text-align:center;color:#fff;
     font:italic 400 15pt/1.2 "Henry",var(--serif);transition:opacity .5s ease}
-  @media (max-width:767px){ .film .tagline{transform:translateY(calc(var(--lh) / -2 - 1.2em - 4px + var(--par,0px)))} }
+  @media (max-width:767px){ .film .tagline{transform:translateY(calc(var(--lh) / -2 - 1.2em + 20px + var(--par,0px)))} }
   .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden;transition-delay:0s}
   /* the cue waits 5s before fading in */
   /* after a while on the film: the centred logotype and tagline fade away, the scroll cue fades in */
