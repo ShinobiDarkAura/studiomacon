@@ -60,7 +60,7 @@
   /* sits under the logotype, measured off the logo itself. It used to be fixed at 50vh while the logo is
      centred in 100svh, so on an iPhone the browser's bottom bar pushed the line ~25-40px further down. */
   .film .tagline{position:absolute;left:0;right:0;top:50%;transform:translateY(calc(var(--lh) / -2 - 1.2em + 2px + var(--par,0px)));pointer-events:none;z-index:2;margin:0;text-align:center;color:#fff;
-    font:700 17px/1.2 "Gabriele",ui-monospace,monospace;letter-spacing:.6em;text-indent:.6em;transition:opacity .5s ease}          /* a typewriter, small and spaced wide */
+    font:700 15px/1.2 "Gabriele",ui-monospace,monospace;letter-spacing:.42em;text-indent:.42em;transition:opacity .5s ease}          /* a typewriter, small and spaced wide */
   @media (max-width:767px){ .film .tagline{transform:translateY(calc(var(--lh) / -2 - 1.2em + 14px + var(--par,0px)))} }
   .film.scrolled .scroll-cue{opacity:0 !important;visibility:hidden;transition-delay:0s}
   /* the cue waits 5s before fading in */
@@ -151,7 +151,7 @@
   .tagline .ch.on{opacity:1}
   /* each key strikes: the type slams in hard, a little too dark and a hair oversized, then settles as the ink sits */
   .tagline .ch{display:inline-block;transform:translate(0,var(--jy,0)) rotate(var(--jr,0deg))}
-  .tagline .ch.on{animation:strike .26s cubic-bezier(.2,1.6,.4,1) both}
+  .tagline .ch.on{animation:strike .32s cubic-bezier(.2,1.6,.4,1) both}
   @keyframes strike{
     0%{opacity:0;transform:translate(0,calc(var(--jy,0px) - 3px)) scale(1.35) rotate(var(--jr,0deg));filter:blur(1.5px)}
     35%{opacity:1;transform:translate(0,calc(var(--jy,0px) + 1px)) scale(.94) rotate(var(--jr,0deg));filter:none;text-shadow:0 0 1px #fff,0 0 3px rgba(255,255,255,.7)}
@@ -534,9 +534,9 @@
     build.classList.add('fall', 'sketch');          // the word waits, hidden, while "Studio" types itself first
     chars.forEach(function (c, i) {          // one key at a time, slowly, each landing a hair off true like real type
       c.style.setProperty('--jy', ((Math.random() - .5) * 1.2).toFixed(2) + 'px'); c.style.setProperty('--jr', ((Math.random() - .5) * 2.4).toFixed(2) + 'deg');
-      later(function () { c.classList.add('on'); tag.classList.remove('struck'); void tag.offsetWidth; tag.classList.add('struck'); }, 300 + i * 220);
+      later(function () { c.classList.add('on'); tag.classList.remove('struck'); void tag.offsetWidth; tag.classList.add('struck'); }, 300 + i * 280);
     });
-    var lead = 300 + chars.length * 220 + 300;
+    var lead = 300 + chars.length * 280 + 300;
     later(function () { sketchLogo(build); }, lead);
     var t = lead + 1650;          // the word lands, then a half-second of stillness before the cedilla rises
     later(function () { build.querySelector('.ll-c').classList.add('lift'); }, t);
