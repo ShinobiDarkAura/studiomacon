@@ -542,10 +542,11 @@
     }
     document.body.classList.toggle('past-film', document.querySelector('.film').getBoundingClientRect().bottom <= 100);
     var build = document.querySelector('.logo-build');          // the intro's MAÇON fades as the film scrolls away
-    if (build) build.style.setProperty('--scroll-fade', String(Math.max(0, 1 - scrollY / 140)));          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
+    if (build) build.style.setProperty('--scroll-fade', '1');          // the logotype no longer fades: it simply scrolls away with the film          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
     document.querySelector('.film').classList.toggle('scrolled', on);
     var flying = scrollY < (window.MaconScrubSpan ? window.MaconScrubSpan() : 400);
-    if (!flying && scrollY > 0) document.body.classList.add('logo-docked');          // scrolled all the way into the nav: it stays there
+    var past = document.body.classList.contains('past-film');
+    document.body.classList.toggle('logo-docked', past);          // the nav's mark appears once the white page below the film arrives
     if (document.body.classList.contains('logo-docked')) flying = false;
     document.body.classList.toggle('logo-scrub', flying);
     document.body.classList.toggle('logo-hero', !on);
