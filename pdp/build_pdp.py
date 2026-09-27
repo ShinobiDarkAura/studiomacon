@@ -1149,7 +1149,7 @@ def grid_hover(slug):
         src = lift
     matched = f"img/{slug}/hand-match.jpg.webp"          # outpainted and framed so the piece sits exactly where it does in its still
     if os.path.exists(os.path.join(OUT, matched)):
-        return matched, True
+        return f"{matched}?v={int(os.path.getmtime(os.path.join(OUT, matched)))}", True          # a re-render always reaches the browser
     return src, held
 
 
