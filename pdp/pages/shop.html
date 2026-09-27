@@ -461,7 +461,9 @@
   })();
   // the letters are all in place and are hatched in by pencil, as the pieces are on the collection page
   function sketchLogo(build) {
-    if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    if (matchMedia('(prefers-reduced-motion:reduce)').matches) {          // less motion asked for: a quiet fade instead of the hatching
+      build.animate && build.animate([{opacity: 0}, {opacity: 1}], {duration: 900, easing: 'ease-out'}); return;
+    }
     var glyphs = [].slice.call(build.querySelectorAll('.ll-glyph, .ll-ced')), box = build.getBoundingClientRect();
     if (!box.width) return;
     build.classList.add('sketch');
