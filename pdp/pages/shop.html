@@ -602,6 +602,7 @@
     if (!/[?&](tint|edit)\b/.test(location.search)) return;
     var walls = [].slice.call(document.querySelectorAll('.wall')); if (!walls.length) return;
     var root = document.documentElement; root.classList.add('ge');
+    document.querySelectorAll('.wall .piece img').forEach(function (im) { im.loading = 'eager'; });          // every picture ready to compare, not only the ones scrolled near
     var clay = root.classList.contains('photo-clay'), grey = root.classList.contains('photo-grey');
     var KEY = 'macon-grid-edit-' + (clay ? 'clay' : grey ? 'grey' : 'linen');
     var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
