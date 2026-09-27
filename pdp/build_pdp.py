@@ -1132,6 +1132,14 @@ CLAY_FRAME = {"pip": (1.374, 41.7, 54.8), "rebi": (1.152, 55.1, 20.7), "ren": (1
               "ori": (1.056, 57.9, 0), "yael": (1.413, 42, 56.8), "milo": (1.139, 60.2, 53.7), "ibi": (1.271, 50, 42.3), "eleph": (1.427, 50, 50)}
 
 
+def piece_type(slug):
+    """What the piece is, after its price on the grid: " • Bronze Totem"."""
+    t = {"ear-cuff": "Silver Ear Cuff", "wonderhorn-talisman": "Silver Pendant", "starshipkey-pendant": "Silver Pendant"}.get(slug)
+    if not t:
+        t = "Silver Ring" if slug.endswith("ring") or slug == "sietch-aperture" else "Bronze Totem" if slug in CLAY_FRAME else ""
+    return f' <span class="type">&bull; {t}</span>' if t else ""
+
+
 def grid_hover(slug):
     """The in-hand (or worn) picture a tile turns to on hover, as the home grid shows it."""
     # the Wonder Horn's hero is a pale cut-out; its linen photograph sits with the others
@@ -1317,7 +1325,7 @@ def main():
             f'<span class="pic-hit"><span class="pic"><img src="{still_src}"' + ('' if 'ab-clay' in still_src else grid_srcset(still_src) + ab_attrs(p["slug"])) + (' class="ab"' if 'ab-clay' in still_src else '') + f' alt="{html.escape(p["name"])}" loading="{lazy}">'
             + (f'<img class="held{" matched" if "hand-match" in hover_src else ""}" src="{hover_src}" alt="" aria-hidden="true" loading="lazy"{"" if "hand-match" in hover_src else align_style(p["slug"])}>' if held else "")          # the same piece again on hover: a second alt would only repeat
             + (f'<span class="chip">{html.escape(CHIPS[p["slug"]])}</span>' if p["slug"] in CHIPS else '')
-            + f'</span></span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}</span>'
+            + f'</span></span><span class="over"><span class="name">{html.escape(p["name"])}</span><span class="cost">${p["price"]}{piece_type(p["slug"])}</span>'
             + (f'<span class="ovl" aria-hidden="true">{html.escape(EYEBROW[p["slug"]])}</span>' if p["slug"] in EYEBROW else "")          # desktop hover: the overline takes the price's place
             + '</span>'
             f'</a></figure>')
