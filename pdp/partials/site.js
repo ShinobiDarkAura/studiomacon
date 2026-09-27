@@ -39,7 +39,8 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     if (!home) setTimeout(look, 600);
     else new MutationObserver(function (m, o) { if (document.body.classList.contains('logo-docked')) { o.disconnect(); setTimeout(look, 700); } })
       .observe(document.body, {attributes: true, attributeFilter: ['class']});
-    eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
+    if (matchMedia('(hover:hover)').matches)          // a mouse only: on touch, a look on first tap swallowed the tap itself
+      eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
     // The blink repaints the logotype's sprite, and a browser counts that as the page's largest paint
     // arriving 10s in - the number Google scores the page on - even though everything is on screen in
     // one second. That measurement is sealed at the visitor's first touch, so the eye waits for it.

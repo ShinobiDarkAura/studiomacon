@@ -17,7 +17,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Studio Maçon", "item": "https://studiomacon.co"}, {"@type": "ListItem", "position": 2, "name": "Totems", "item": "https://studiomacon.co/index.html#pieces"}, {"@type": "ListItem", "position": 3, "name": "Milo"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790324875">
+<link rel="stylesheet" href="site.css?v=1790467827">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}
@@ -790,7 +790,8 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     if (!home) setTimeout(look, 600);
     else new MutationObserver(function (m, o) { if (document.body.classList.contains('logo-docked')) { o.disconnect(); setTimeout(look, 700); } })
       .observe(document.body, {attributes: true, attributeFilter: ['class']});
-    eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
+    if (matchMedia('(hover:hover)').matches)          // a mouse only: on touch, a look on first tap swallowed the tap itself
+      eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
     // The blink repaints the logotype's sprite, and a browser counts that as the page's largest paint
     // arriving 10s in - the number Google scores the page on - even though everything is on screen in
     // one second. That measurement is sealed at the visitor's first touch, so the eye waits for it.

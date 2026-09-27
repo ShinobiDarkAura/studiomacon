@@ -504,7 +504,7 @@
         ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, W, H); ctx.drawImage(mask, 0, 0);
         ctx.globalCompositeOperation = 'source-in'; ctx.drawImage(art, 0, 0);
         if (p < 1) requestAnimationFrame(frame);
-        else { build.classList.add('sketched'); build.classList.remove('sketch'); setTimeout(function () { cv.remove(); }, 80); }
+        else requestAnimationFrame(function () { cv.remove(); build.classList.add('sketched'); build.classList.remove('sketch'); });          // swap in one frame: no double image
       })(t0);
     }
   }

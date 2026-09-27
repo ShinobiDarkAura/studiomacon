@@ -15,7 +15,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Studio Maçon", "url": "https://studiomacon.co", "logo": "https://studiomacon.co/img/favicon.png", "email": "hello@studiomacon.co", "sameAs": ["https://www.instagram.com/studiomacon/"]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
-<style>/* Shared by every page in the preview: type, header, labels, buttons,
+<style>html{-webkit-tap-highlight-color:transparent}          /* no grey box flashed on tap */
+/* Shared by every page in the preview: type, header, labels, buttons,
    accordions and footer. Page-specific layout stays in each page. */
 
 /* Instrument Serif, SIL Open Font License — self-hosted so the page never waits on Google */
@@ -98,17 +99,17 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 /* ── accordions: height eases open and shut ────────── */
 .acc{text-align:left}
 .acc-item{border-bottom:1px solid var(--rule);transition:border-color .3s ease}
-.acc-item:hover{border-bottom-color:#000}
+@media (hover:hover){ .acc-item:hover{border-bottom-color:#000} }          /* touch: no hover state, so the first tap acts */
 .acc-head{display:flex;width:100%;justify-content:space-between;align-items:center;
   padding:13px 0;font-size:calc(17px - 4pt);letter-spacing:.08em;text-transform:uppercase;text-align:left;color:#000}          /* the size of the Field Notes title */
 .acc-head::after{content:"";width:10px;height:10px;flex:none;
   background:linear-gradient(currentColor,currentColor) center/10px 1.5px no-repeat,
              linear-gradient(currentColor,currentColor) center/1.5px 10px no-repeat;
   color:#000;opacity:.35;transition:transform .45s var(--ease),opacity .45s ease}
-.acc-head:hover::after,.acc-item:hover .acc-head::after{opacity:1}
+@media (hover:hover){ .acc-head:hover::after,.acc-item:hover .acc-head::after{opacity:1} }          /* touch: no hover state, so the first tap acts */
 /* hovering a row lifts its text along with the rule under it */
-.acc-head:hover,.acc-item:hover .acc-head{color:#000}
-.acc-head:hover .n,.acc-item:hover .acc-head .n{color:rgba(0,0,0,.65)}
+@media (hover:hover){ .acc-head:hover,.acc-item:hover .acc-head{color:#000} }          /* touch: no hover state, so the first tap acts */
+@media (hover:hover){ .acc-head:hover .n,.acc-item:hover .acc-head .n{color:rgba(0,0,0,.65)} }          /* touch: no hover state, so the first tap acts */
 .acc-head{transition:padding-bottom .5s var(--ease),color .25s ease}
 .acc-head .n{transition:color .25s ease}
 .acc-item.open .acc-head{padding-bottom:21px}
@@ -1276,7 +1277,8 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     if (!home) setTimeout(look, 600);
     else new MutationObserver(function (m, o) { if (document.body.classList.contains('logo-docked')) { o.disconnect(); setTimeout(look, 700); } })
       .observe(document.body, {attributes: true, attributeFilter: ['class']});
-    eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
+    if (matchMedia('(hover:hover)').matches)          // a mouse only: on touch, a look on first tap swallowed the tap itself
+      eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
     // The blink repaints the logotype's sprite, and a browser counts that as the page's largest paint
     // arriving 10s in - the number Google scores the page on - even though everything is on screen in
     // one second. That measurement is sealed at the visitor's first touch, so the eye waits for it.
@@ -2414,7 +2416,7 @@ function maconClickQuery(extra) {
         ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, W, H); ctx.drawImage(mask, 0, 0);
         ctx.globalCompositeOperation = 'source-in'; ctx.drawImage(art, 0, 0);
         if (p < 1) requestAnimationFrame(frame);
-        else { build.classList.add('sketched'); build.classList.remove('sketch'); setTimeout(function () { cv.remove(); }, 80); }
+        else requestAnimationFrame(function () { cv.remove(); build.classList.add('sketched'); build.classList.remove('sketch'); });          // swap in one frame: no double image
       })(t0);
     }
   }
