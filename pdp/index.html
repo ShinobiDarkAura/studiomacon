@@ -2451,7 +2451,7 @@ function maconClickQuery(extra) {
         if (p < 1) requestAnimationFrame(frame);
         else {          // hand over to the real letters under the drawing, and only lift the drawing off once they have painted: no blank frame
           build.classList.add('sketched'); build.classList.remove('sketch');
-          requestAnimationFrame(function () { requestAnimationFrame(function () { cv.style.opacity = 0; setTimeout(function () { cv.remove(); }, 1150); drawn(); }); });          // a slow crossfade: the drawing's grain melts into the real letters' rather than switching
+          requestAnimationFrame(function () { requestAnimationFrame(function () { cv.style.opacity = 0; setTimeout(function () { cv.remove(); drawn(); }, 1150); }); });          // a slow crossfade: the drawing's grain melts into the real letters' rather than switching
         }
       })(last);
     }
