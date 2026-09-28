@@ -2492,7 +2492,7 @@ function maconClickQuery(extra) {
     document.body.classList.toggle('past-film', document.querySelector('.film').getBoundingClientRect().bottom <= 100);
     var build = document.querySelector('.logo-build');          // the intro's MAÇON fades as the film scrolls away
     if (build) build.style.setProperty('--scroll-fade', '1');
-    if (build && !matchMedia('(prefers-reduced-motion:reduce)').matches) document.querySelector('.film').style.setProperty('--par', Math.round(Math.min(scrollY, innerHeight * 1.2) * .35) + 'px');          // a gentle parallax: the film scrolls past it          // the logotype no longer fades: it simply scrolls away with the film          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
+    if (false && build && !matchMedia('(prefers-reduced-motion:reduce)').matches) document.querySelector('.film').style.setProperty('--par', Math.round(Math.min(scrollY, innerHeight * 1.2) * .35) + 'px');          // a gentle parallax: the film scrolls past it          // the logotype no longer fades: it simply scrolls away with the film          // gone within the first touch of scroll          // a variable, not opacity itself, so the timed fade (hero-quiet) still works
     document.querySelector('.film').classList.toggle('scrolled', on);
     var flying = scrollY < (window.MaconScrubSpan ? window.MaconScrubSpan() : 400);
     var past = document.body.classList.contains('past-film');
