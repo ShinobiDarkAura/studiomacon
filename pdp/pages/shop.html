@@ -527,7 +527,10 @@
       var G = 110, gc = document.createElement('canvas'); gc.width = G; gc.height = Math.round(G * H / W); var gx = gc.getContext('2d');
       gx.drawImage(art, 0, 0, gc.width, gc.height);
       var px = gx.getImageData(0, 0, gc.width, gc.height).data, todo = [], GH = gc.height;
-      for (var y = 0; y < GH; y++) for (var x = 0; x < G; x++) if (px[(y * G + x) * 4 + 3] > 40) todo.push([x, y, x - y + (Math.random() - .5) * G * .25]);
+      var tc = document.createElement('canvas').getContext('2d'); tc.fillStyle = '#fff'; tc.fillRect(0, 0, 1, 1);
+      var blind = tc.getImageData(0, 0, 1, 1).data[3] !== 255;          // Safari's privacy protection blanks what a page reads back from a canvas: then hatch the whole box (strokes still only show inside the letters)
+      IDBG('readback ' + (blind ? 'blocked' : 'ok'));
+      for (var y = 0; y < GH; y++) for (var x = 0; x < G; x++) if (blind || px[(y * G + x) * 4 + 3] > 40) todo.push([x, y, x - y + (Math.random() - .5) * G * .25]);
       todo.sort(function (a, b) { return a[2] - b[2]; });
       var cw = W / G, ch = H / GH, covered = new Uint8Array(G * GH), strokes = [];
       todo.forEach(function (t) {
