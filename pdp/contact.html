@@ -16,7 +16,7 @@
 <meta name="color-scheme" content="dark light">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790467827">
+<link rel="stylesheet" href="site.css?v=1790578160">
 <style>
   /* the poster floats whole in the middle of a black field, never cropped */
   .split .pics figure{margin:0;background:#000;display:grid;place-items:center;
@@ -131,6 +131,10 @@
 })();
 // arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
 // or its first frame shows the dark film for an instant before the jump
+// a refresh starts at the top, decided here in the head so Safari never paints the old scroll spot (or a #pieces jump) first
+(function () { try { var n = performance.getEntriesByType('navigation')[0];
+  if (n && n.type === 'reload') { history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
+} catch (e) {} })();
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') {

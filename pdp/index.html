@@ -150,7 +150,8 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 .field input::placeholder,.field textarea::placeholder{color:#777}
 
 /* ── footer: brand left, links centre, newsletter right ─ */
-footer{display:grid;gap:56px;align-content:end;min-height:105vh;min-height:105svh;padding:96px calc(var(--pad) + 24px) 36px;--f-size:calc(17px - 2pt)}
+/* the footer's pieces rise in from 66px below; clipped, so they never make the page taller and snap it back at the bottom */
+footer{overflow:hidden;overflow:clip;display:grid;gap:56px;align-content:end;min-height:105vh;min-height:105svh;padding:96px calc(var(--pad) + 24px) 36px;--f-size:calc(17px - 2pt)}
 footer .brand{order:3}
 footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
 footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
@@ -639,6 +640,7 @@ html.intl .intl-note{display:block}          /* shown only to visitors outside t
 
 /* arriving from the menu: every scroll-in waits, held in its starting pose, until the drawer has gone */
 html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;transform:translateY(66px) scale(.985) !important;transition:none !important}
+@media (max-width:767px){ .menu-sheet{height:100vh;height:100lvh;padding-bottom:calc(51px + 100lvh - 100svh) !important} .menu-sheet .menu-legal{bottom:calc(40px + 100lvh - 100svh)} }          /* phones: the list is centred in the screen with Safari's bars showing, and stays put when they grow or shrink */
 </style>
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}
   /* home grid photo test: the grey and clay stills are framed in the picture itself */
@@ -1008,6 +1010,10 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
 })();
 // arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
 // or its first frame shows the dark film for an instant before the jump
+// a refresh starts at the top, decided here in the head so Safari never paints the old scroll spot (or a #pieces jump) first
+(function () { try { var n = performance.getEntriesByType('navigation')[0];
+  if (n && n.type === 'reload') { history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
+} catch (e) {} })();
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') {

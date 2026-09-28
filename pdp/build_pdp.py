@@ -652,6 +652,10 @@ WIPE_HEAD = """<style>
 })();
 // arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
 // or its first frame shows the dark film for an instant before the jump
+// a refresh starts at the top, decided here in the head so Safari never paints the old scroll spot (or a #pieces jump) first
+(function () { try { var n = performance.getEntriesByType('navigation')[0];
+  if (n && n.type === 'reload') { history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
+} catch (e) {} })();
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
