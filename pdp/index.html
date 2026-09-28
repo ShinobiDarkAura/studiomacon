@@ -640,6 +640,10 @@ html.intl .intl-note{display:block}          /* shown only to visitors outside t
 
 /* arriving from the menu: every scroll-in waits, held in its starting pose, until the drawer has gone */
 html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;transform:translateY(66px) scale(.985) !important;transition:none !important}
+/* a page reached from the phone menu: the logo sits above the drawer from its very first frame, black and still, so it never flickers while the page loads beneath */
+html.menu-arriving .head{z-index:61;transform:none !important}
+html.menu-arriving .head > :not(.logotype){visibility:hidden}
+html.menu-arriving .head .logotype,html.menu-arriving .head .logotype *{color:#000;transition:none !important}
 </style>
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}
   /* home grid photo test: the grey and clay stills are framed in the picture itself */
