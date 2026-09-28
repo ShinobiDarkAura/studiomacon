@@ -1022,6 +1022,12 @@ def save(name, doc, product=None):
     def phone(m):
         tag, src, w = m.group(0), m.group(1), m.group(2)
         small = src.replace(".jpg.webp", "--m.jpg.webp")
+        # the top picture: phones keep every pixel (it fills the screen height, cropped); desktop, where it
+        # never shows wider than 60% of the window, takes an 1800 px copy and loads in a third of the time
+        desk = src.replace(".jpg.webp", "--d.jpg.webp")
+        if 'fetchpriority="high"' in tag and "srcset" not in tag and os.path.exists(os.path.join(OUT, desk)):
+            return tag.replace(f'src="{src}"', f'src="{src}" srcset="{desk} 1800w, {src} {w}w" '
+                                                f'sizes="(max-width: 767px) {w}px, 60vw"', 1)
         # not the top picture: on phones it fills the whole screen height, cropped, and needs every pixel
         if "srcset" in tag or 'fetchpriority="high"' in tag or int(w) <= 1380 or not os.path.exists(os.path.join(OUT, small)):
             return tag
