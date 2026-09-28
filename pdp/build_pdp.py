@@ -1270,7 +1270,7 @@ def related_block(p, products):
     ring = left + [pick[1], pick[0], pick[2]][:len(pick)] + right if len(pick) == 3 else left + pick + right
     loop = "".join(tile(x) for x in ring)
     return ('<section class="related" aria-label="Other pieces">'
-            '<p class="eyebrow">Kindred</p><h2 class="stamped">Also Worth<br>Keeping<img class="stamp" src="img/provenance-stamp.png" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2>'
+            '<p class="eyebrow">Found Together</p><h2 class="stamped">Kindred<br>Spirits<img class="stamp" src="img/provenance-stamp.png" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2>'
             f'<div class="rel-three">{"".join(tile(x) for x in pick)}</div>'
             + (f'<div class="rel-swipe">{swipe}</div>' if swipe else '')          # phones: the original swipe row
             + f'<div class="rel-loop" data-centre="{len(left) + 1}"><div class="rel-track">{loop}</div></div></section>')          # desktop: the three; phones: the carousel
