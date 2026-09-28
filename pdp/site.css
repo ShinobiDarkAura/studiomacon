@@ -623,4 +623,4 @@ html.intl .intl-note{display:block}          /* shown only to visitors outside t
 
 /* arriving from the menu: every scroll-in waits, held in its starting pose, until the drawer has gone */
 html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;transform:translateY(66px) scale(.985) !important;transition:none !important}
-@media (max-width:767px){ .menu-sheet{height:100vh;height:100lvh;padding-bottom:calc(51px + 100lvh - 100svh) !important} .menu-sheet .menu-legal{bottom:calc(40px + 100lvh - 100svh)} }          /* phones: the list is centred in the screen with Safari's bars showing, and stays put when they grow or shrink */
+@media (max-width:767px){ .menu-sheet{height:100vh;height:100lvh;padding-bottom:calc(51px + 100lvh - 100svh) !important;box-shadow:0 50vh 0 #fff} .menu-sheet .menu-legal{bottom:calc(40px + 100lvh - 100svh)} }          /* phones: the list is centred in the screen with Safari's bars showing, and stays put when they grow or shrink */
