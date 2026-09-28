@@ -369,6 +369,27 @@
 {{FOOTER}}
 {{SITEJS}}
 <script>
+  // ?introdebug on the address: a readout of what the intro did on this device (visitors never see it)
+  window.IDBG = function () {};
+  if (/introdebug/.test(location.search)) (function () {
+    var t0 = performance.now(), lines = [], box;
+    function ms() { return Math.round(performance.now()) + 'ms'; }
+    window.IDBG = function (m) { lines.push(ms() + ' ' + m); draw(); };
+    function draw() { if (!box && document.body) { box = document.createElement('pre'); box.style.cssText = 'position:fixed;left:8px;right:8px;bottom:90px;z-index:99999;max-height:55vh;overflow:auto;margin:0;padding:8px;background:rgba(0,0,0,.8);color:#7f7;font:10px/1.3 monospace;white-space:pre-wrap'; document.body.appendChild(box); } if (box) box.textContent = lines.join('\n'); }
+    IDBG('start ready=' + document.readyState + ' rm=' + matchMedia('(prefers-reduced-motion:reduce)').matches + ' dpr=' + devicePixelRatio + ' w=' + innerWidth + ' ua=' + navigator.userAgent.replace(/.*(iPhone OS [\d_]+|Android [\d.]+).*/, '$1'));
+    addEventListener('DOMContentLoaded', function () { IDBG('DOMContentLoaded'); });
+    addEventListener('load', function () { IDBG('load'); });
+    document.addEventListener('visibilitychange', function () { IDBG('visibility ' + document.visibilityState); });
+    var last = '', n = 0, iv = setInterval(function () {
+      var b = document.querySelector('.logo-build'), g = b && b.querySelector('.ll-glyph');
+      if (!b) { IDBG('logo-build gone'); return clearInterval(iv); }
+      var cs = getComputedStyle(b), st = 'op=' + (+cs.opacity).toFixed(2) + ' vis=' + (g ? getComputedStyle(g).visibility : '-') + ' canvas=' + !!b.querySelector('canvas') + ' cls=' + b.className + ' body=' + document.body.className + ' y=' + Math.round(scrollY);
+      if (st !== last) { IDBG(st); last = st; }
+      if (++n > 100) clearInterval(iv);
+    }, 50);
+  })();
+</script>
+<script>
   // arrived for the grid: once the page has moved down to it, the film may show again
   (function () {
     var root = document.documentElement; if (!root.classList.contains('to-pieces')) return;
@@ -463,7 +484,7 @@
       chars.forEach(function (c) { c.classList.add('on'); });
     }
     function early() {}          // scrolling no longer cuts the intro short: it fades with the film instead (see cue)
-    if (skip) { finish(); window.MaconHeroQuiet(); return; }
+    IDBG('intro skip=' + skip + ' nav=' + (nav && nav.type)); if (skip) { finish(); window.MaconHeroQuiet(); return; }
     document.body.classList.add('logo-anim');
     if (document.documentElement.classList.contains('intro-wait')) {          // arriving from the menu: begin once it has slid away
       addEventListener('macon:intro', run, {once: true}); return;
@@ -472,6 +493,7 @@
   })();
   // the letters are all in place and are hatched in by pencil, as the pieces are on the collection page
   function sketchLogo(build) {
+    IDBG('sketchLogo ready=' + document.readyState);
     if (document.readyState !== 'complete' && !build.dataset.waited) {          // phones: let the page finish loading first, so the hatching isn't drawn while nobody can see it
       build.dataset.waited = 1; build.classList.add('sketch');
       var go1 = function () { clearTimeout(cap); removeEventListener('load', go1); requestAnimationFrame(function () { sketchLogo(build); }); }, cap = setTimeout(go1, 3000);
@@ -481,6 +503,7 @@
       build.classList.remove('sketch'); build.animate && build.animate([{opacity: 0}, {opacity: 1}], {duration: 900, easing: 'ease-out'}); return;
     }
     var glyphs = [].slice.call(build.querySelectorAll('.ll-glyph, .ll-ced')), box = build.getBoundingClientRect();
+    IDBG('box ' + Math.round(box.width) + 'x' + Math.round(box.height));
     if (!box.width) return;
     build.classList.add('sketch');
     var dpr = Math.min(2, devicePixelRatio || 1), W = Math.round(box.width * dpr), H = Math.round(box.height * dpr);
@@ -499,6 +522,7 @@
       im.src = url;
     });
     function go() {
+      IDBG('images ready');
       ax.globalCompositeOperation = 'source-in'; ax.fillStyle = '#fff'; ax.fillRect(0, 0, W, H);
       var G = 110, gc = document.createElement('canvas'); gc.width = G; gc.height = Math.round(G * H / W); var gx = gc.getContext('2d');
       gx.drawImage(art, 0, 0, gc.width, gc.height);
@@ -518,19 +542,21 @@
       });
       var mask = document.createElement('canvas'); mask.width = W; mask.height = H; var mx = mask.getContext('2d');
       mx.lineCap = 'round'; mx.strokeStyle = '#000';
-      var N = strokes.length, last = performance.now(), el = 0, D = 1800, drawn = 0;
+      var N = strokes.length, last = performance.now(), el = 0, D = 1800, drawn = 0, fr = 0, gap = 0;
+      IDBG('strokes ' + N + ', pencil starts');
       (function frame(now) {
-        el += Math.min(34, Math.max(0, now - last)); last = now;          // a busy phone pauses the pencil instead of skipping to the end
+        fr++; gap = Math.max(gap, now - last); el += Math.min(34, Math.max(0, now - last)); last = now;          // a busy phone pauses the pencil instead of skipping to the end
         var p = Math.min(1, el / D), upto = Math.ceil(N * p);
         for (; drawn < upto; drawn++) { var st = strokes[drawn]; mx.lineWidth = st[4]; mx.beginPath(); mx.moveTo(st[0], st[1]); mx.lineTo(st[2], st[3]); mx.stroke(); }
         ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, W, H); ctx.drawImage(mask, 0, 0);
         ctx.globalCompositeOperation = 'source-in'; ctx.drawImage(art, 0, 0);
         if (p < 1) requestAnimationFrame(frame);
-        else requestAnimationFrame(function () { cv.remove(); build.classList.add('sketched'); build.classList.remove('sketch'); });          // swap in one frame: no double image
+        else requestAnimationFrame(function () { IDBG('pencil done, frames=' + fr + ' longest gap=' + Math.round(gap) + 'ms'); cv.remove(); build.classList.add('sketched'); build.classList.remove('sketch'); });          // swap in one frame: no double image
       })(last);
     }
   }
   function run() {
+    IDBG('run');
     var build = document.querySelector('.logo-build'), tag = document.querySelector('.film .tagline'), chars = [].slice.call(tag.querySelectorAll('.ch'));
     var timers = []; function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
     [].forEach.call(build.querySelectorAll('.ll'), function (l, i) {
