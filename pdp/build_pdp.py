@@ -909,6 +909,9 @@ PAGE_META = {          # search and share descriptions for the non-product pages
     "inspiration.html": "The images, objects, places and old artifacts behind Studio Maçon's bronze totems and silver jewelry, gathered over years of sketching, travel and looking.",
     "ring-sizing.html": "Find your ring size at home: print the Studio Maçon ring sizer at true scale, or measure a ring you already wear. Half sizes included, with tips for a good fit.",
     "bag.html": "Your bag at Studio Maçon.",
+    "privacy.html": "How Studio Maçon collects, uses and protects your personal information when you visit the site or order a piece.",
+    "terms.html": "The terms of service for shopping with Studio Maçon.",
+    "refunds.html": "Returns, store credit, exchanges and damaged pieces at Studio Maçon, where every piece is made to order by hand.",
 }
 NOINDEX = {"bag.html", "checkout.html", "confirmation.html", "404.html"} | {f"{x}.html" for x in ("ooak-vessel", "ooak-pendant", "ooak-pouch", "macon-cap")}
 SITEMAP = []
