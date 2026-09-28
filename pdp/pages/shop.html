@@ -493,6 +493,7 @@
   })();
   // the letters are all in place and are hatched in by pencil, as the pieces are on the collection page
   function sketchLogo(build) {
+    function drawn() { build.dispatchEvent(new Event('macon:drawn')); }
     IDBG('sketchLogo ready=' + document.readyState);
     if (document.readyState !== 'complete' && !build.dataset.waited) {          // phones: let the page finish loading first, so the hatching isn't drawn while nobody can see it
       build.dataset.waited = 1; build.classList.add('sketch');
@@ -500,11 +501,11 @@
       addEventListener('load', go1); return;
     }
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) {          // less motion asked for: a quiet fade instead of the hatching
-      build.classList.remove('sketch'); build.animate && build.animate([{opacity: 0}, {opacity: 1}], {duration: 900, easing: 'ease-out'}); return;
+      build.classList.remove('sketch'); build.animate && build.animate([{opacity: 0}, {opacity: 1}], {duration: 900, easing: 'ease-out'}); drawn(); return;
     }
     var glyphs = [].slice.call(build.querySelectorAll('.ll-glyph, .ll-ced')), box = build.getBoundingClientRect();
     IDBG('box ' + Math.round(box.width) + 'x' + Math.round(box.height));
-    if (!box.width) return;
+    if (!box.width) { build.classList.remove('sketch'); drawn(); return; }
     build.classList.add('sketch');
     var dpr = Math.min(2, devicePixelRatio || 1), W = Math.round(box.width * dpr), H = Math.round(box.height * dpr);
     var art = document.createElement('canvas'); art.width = W; art.height = H; var ax = art.getContext('2d');
@@ -551,7 +552,11 @@
         ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, W, H); ctx.drawImage(mask, 0, 0);
         ctx.globalCompositeOperation = 'source-in'; ctx.drawImage(art, 0, 0);
         if (p < 1) requestAnimationFrame(frame);
-        else requestAnimationFrame(function () { IDBG('pencil done, frames=' + fr + ' longest gap=' + Math.round(gap) + 'ms'); cv.remove(); build.classList.add('sketched'); build.classList.remove('sketch'); });          // swap in one frame: no double image
+        else {          // hand over to the real letters under the drawing, and only lift the drawing off once they have painted: no blank frame
+          IDBG('pencil done, frames=' + fr + ' longest gap=' + Math.round(gap) + 'ms');
+          build.classList.add('sketched'); build.classList.remove('sketch');
+          requestAnimationFrame(function () { requestAnimationFrame(function () { setTimeout(function () { cv.remove(); drawn(); }, 120); }); });
+        }
       })(last);
     }
   }
@@ -572,12 +577,13 @@
     var TAGLINE = false;          // STUDIO above the logotype: parked for now (true brings it back, typed first)
     var lead = TAGLINE ? 300 + chars.length * 280 + 300 : 0;
     later(function () { sketchLogo(build); }, lead);
-    var t = lead + 1650;          // the word lands, then a half-second of stillness before the cedilla rises
-    later(function () { build.querySelector('.ll-c').classList.add('lift'); }, t);
-    t += 1050;
+    // the cedilla rises once the pencil has finished (it may start late, after the page loads), so the drawn Ç never jumps
+    build.addEventListener('macon:drawn', function () {
+      build.querySelector('.ll-c').classList.add('lift');
+      later(function () { build.classList.remove('fall'); }, 2050);
+    }, {once: true});
     // the stand-in stays on screen (the real, scaled-up logotype renders its grain slightly differently);
     // it only hands over once you scroll, when the logotype is already moving
-    later(function () { build.classList.remove('fall'); }, t + 1000);
     window.MaconHeroQuiet();
   }
   // on the home page the eye is hoverable; a click takes you back to the top instead of reloading the page
