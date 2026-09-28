@@ -48,7 +48,7 @@ EYEBROW = {
 # Black manner: the object, its material and making, then its lore.
 DESC = {
     "pip": "Found resting for a millennium by an abandoned hearth. Whoever keeps it is visited by the sleepy warmth of that old fire.",
-    "rebi": "Some say it rose from the smoke of an oracle's dream. The lucky few that touch it inherit a fragment of that oracle's sight.",
+    "rebi": "Some say it rose from the smoke of an oracle's dream. The lucky few who touch it inherit a fragment of that oracle's sight.",
     "ren": "Summoned by a fabled mare beneath the northern lights. Those carrying it arrive home safely from long journeys.",
     "zuma": "Washed ashore on a distant coast, baked solid by the sun. The runes foretold that its namesake band were always found together.",
     "ori": "Sworn into being during a vow of fidelity. The covenant holds to this day, and each winter it lends its protection to the house that shelters it.",
