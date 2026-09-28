@@ -513,7 +513,7 @@
     build.appendChild(cv); var ctx = cv.getContext('2d');
     var left = glyphs.length;
     glyphs.forEach(function (g) {          // each letter drawn white into one picture of the word
-      var url = getComputedStyle(g).getPropertyValue('--img').trim().replace(/^url\(["']?|["']?\)$/g, '');
+      var url = 'img/logo-letters/' + (g.classList.contains('ll-ced') ? 'ced' : g.parentNode.className.match(/ll-([a-z])\b/)[1]) + '.png';          // named directly: some iPhones report the CSS address with a stray backslash (m\.png), which never loads
       var r = g.getBoundingClientRect(), im = new Image();
       im.onload = im.onerror = function (e) {
         IDBG('glyph ' + e.type + ' ' + im.naturalWidth + 'px ' + url.split('/').pop());
