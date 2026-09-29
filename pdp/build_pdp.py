@@ -1013,6 +1013,11 @@ def save(name, doc, product=None):
     doc = light(doc)
     # Custom page pictures keep their names when they are replaced, so each carries its file's date:
     # a browser holding an older copy fetches the new one
+    # the grid's terracotta and moss tiles too: re-cut often, so a browser holding an older copy fetches the new one
+    doc = re.sub(r'(img/[a-z-]+/terracotta(?:--[a-z])?\.jpg\.webp)(?=[" ])', lambda m: m.group(1) + "?v=" + str(int(os.path.getmtime(os.path.join(OUT, m.group(1)))))
+                 if os.path.exists(os.path.join(OUT, m.group(1))) else m.group(0), doc)          # the product pages' first picture, the same way
+    doc = re.sub(r'(img/ab-clay/[^"?]+\.webp)"', lambda m: m.group(1) + "?v=" + str(int(os.path.getmtime(os.path.join(OUT, m.group(1))))) + '"'
+                 if os.path.exists(os.path.join(OUT, m.group(1))) else m.group(0), doc)
     doc = re.sub(r'(img/commissions-cut/[^"?]+\.webp)"', lambda m: m.group(1) + "?v=" + str(int(os.path.getmtime(os.path.join(OUT, m.group(1))))) + '"'
                  if os.path.exists(os.path.join(OUT, m.group(1))) else m.group(0), doc)
     # home-screen icon for iPhones, and the two Search Console tags the Wix site carried (keeps those
