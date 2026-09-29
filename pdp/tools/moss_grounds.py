@@ -13,14 +13,17 @@ IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "img")
 OUT = os.path.join(IMG, "ab-clay-grounds", "moss")
 SHOOT = os.path.expanduser("~/Downloads/Teracotta photoshoot/Jewelry/")
 SUEDE = np.array([42.6, 4.1, 31.9])          # the real moss suede, Lab, averaged over its three photographs
-SILVER_AB = np.array([-2.3, 7.3])            # and the silver as it reads on it
+SILVER_MEAN = np.array([72.7, -2.2, 7.0])   # the silver in those three, Lab
+SILVER_SD = np.array([15.7, 1.2, 2.8])
 REAL = {"ear-cuff": ("Caldera Moss Suede.jpg", .30, 0, 0), "eclipse-ring": ("Eclipse Ring Moss Suede.jpg", .30, 0, 76),
         "wonderhorn-talisman": ("Ida Horn Moss Suede.jpg", .19, 450, 0)}          # file, size in frame, chain cut-off, nudge
 RECOLOUR = ["zuma-ring", "sietch-aperture", "lunar-canyon-ring", "meridian-egg-ring"]
 
 
 def save(slug, im):
+    """Full size as the product page's first picture, and the grid's two sizes (terracotta kept as terracotta-orange.jpg)."""
     os.makedirs(OUT, exist_ok=True)
+    im.save(os.path.join(IMG, slug, "terracotta.jpg"), quality=92)
     big = im.resize((1600, 2000), Image.LANCZOS); big.save(os.path.join(OUT, slug + ".webp"), quality=86)
     big.resize((960, 1200), Image.LANCZOS).save(os.path.join(OUT, slug + "--tile.webp"), quality=84)
 
@@ -59,15 +62,18 @@ def real(slug, name, frac, cut, dx):
 
 
 def recolour(slug):
-    im = Image.open(os.path.join(IMG, "ab-clay", slug + ".webp")).convert("RGB"); a = np.asarray(im).astype(float) / 255
+    im = Image.open(os.path.join(IMG, slug, "terracotta-orange.jpg")).convert("RGB"); a = np.asarray(im).astype(float) / 255          # full size
     lab = lab_of(im); w = suede_weight(a)[..., None]
     bg = lab[w[..., 0] > .95]; m = bg.mean(0)
     new = lab.copy()
     new[..., 0] = (lab[..., 0] - m[0]) * .95 + SUEDE[0]          # the suede's own light and grain, moved to moss
     new[..., 1:] = (lab[..., 1:] - m[1:]) * .35 + SUEDE[1:]
-    sil = (w[..., 0] < .1) & (lab[..., 0] > 55)          # the silver's highlights and body: warmed or cooled to read as on moss
-    d = SILVER_AB - lab[sil][:, 1:].mean(0)
-    silver = lab.copy(); silver[..., 1:] += d
+    # the silver matched to how it reads in the three real moss photographs (Caldera, Eclipse, Wonder Horn):
+    # a touch darker and warmer than it is against terracotta, with the same spread of light
+    sil = (w[..., 0] < .1) & (lab[..., 0] > 35); m_s, s_s = lab[sil].mean(0), lab[sil].std(0)
+    k = np.clip(SILVER_SD / (s_s + 1e-6), .6, 1.2)
+    silver = lab.copy(); silver = (lab - m_s) * k + SILVER_MEAN
+    silver = lab + (silver - lab) * (1 - w)          # only where it isn't suede
     out = silver * (1 - w) + new * w
     save(slug, to_img(out))
 
