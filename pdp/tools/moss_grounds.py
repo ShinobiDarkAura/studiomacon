@@ -15,10 +15,10 @@ SHOOT = os.path.expanduser("~/Downloads/Teracotta photoshoot/Jewelry/")
 SUEDE = np.array([42.6, 4.1, 31.9])          # the real moss suede, Lab, averaged over its three photographs
 SILVER_MEAN = np.array([72.7, -1.2, 7.5])   # the silver in those three, Lab
 SILVER_SD = np.array([15.7, 1.2, 2.8])
-REAL = {"ear-cuff": ("Caldera Moss Suede.jpg", .27, 0, 0), "eclipse-ring": ("Eclipse Ring Moss Suede.jpg", .27, 0, 90),
+REAL = {          # only the Wonder Horn still comes from here; the rest are Hannah's edits
         "wonderhorn-talisman": ("Ida Horn Moss Suede.jpg", .17, 450, 0)}          # file, size in frame, chain cut-off, nudge
 LIFT = {"ear-cuff": 85, "eclipse-ring": 70}          # moss shots taken a touch lower than the terracotta ones: their pieces raised onto the centre, px
-RECOLOUR = ["zuma-ring", "sietch-aperture", "meridian-egg-ring"]          # lunar-canyon-ring: its own photograph, as shot (see AS_SHOT in place_terracotta.py)
+RECOLOUR = []          # 2026-09-29: Hannah's own moss edits (~/Downloads/MOSSY AF) replaced these; never regenerate over them          # lunar-canyon-ring: its own photograph, as shot (see AS_SHOT in place_terracotta.py)
 
 
 def save(slug, im):
