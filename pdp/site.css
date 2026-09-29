@@ -586,7 +586,7 @@ html.logo-hold .head .logotype{color:#000}
   transition:width .35s var(--ease),margin-right .35s var(--ease),opacity .3s ease}
 .back:hover .back-icon,.back:focus-visible .back-icon{width:14px;margin-right:4px;opacity:1;transform:none}
 /* a product on the wall: Back (the previous piece) then Next, walking the shop's order round and round */
-.piece-nav{align-self:flex-start;display:inline-flex;align-items:center;gap:12px;margin:0 0 28px;transition:opacity .35s ease}          /* Next just after Back: the column's far edge is Bag's, in the nav row */
+.piece-nav{align-self:flex-start;display:inline-flex;align-items:center;gap:15px;margin:0 0 28px;transition:opacity .35s ease}          /* Next just after Back: the column's far edge is Bag's, in the nav row */
 .head .piece-nav{position:absolute;top:50%;margin:0;transform:translateY(-50%)}
 .head .piece-nav .back{position:static;transform:none}
 .piece-nav.gone{opacity:0;pointer-events:none}

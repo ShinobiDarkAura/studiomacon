@@ -18,13 +18,14 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Studio Maçon", "item": "https://studiomacon.co"}, {"@type": "ListItem", "position": 2, "name": "Jewelry", "item": "https://studiomacon.co/index.html#pieces"}, {"@type": "ListItem", "position": 3, "name": "Eclipsis"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790709940">
+<link rel="stylesheet" href="site.css?v=1790710557">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}
   .gallery .dr-emerge,.gallery figure.dr-emerge{opacity:1 !important;filter:none !important;transform:none !important;transition:none !important}          /* the photo stack is simply there: no scroll-in */
   .gallery figure.on-grey,.gallery .on-grey img{background:#E5E3DF}          /* pdp-field */
-  .gallery .hero,.gallery .hero .shot,.gallery .hero img,.gallery figure.on-grey{background:#E5E3DF !important}          /* pdp-field: the product photos' backdrop exactly as the browser decodes it */          /* the room around a smaller piece is the same grey */          /* the picture carries its own corners; a backing showed outside them */
+  .gallery .hero,.gallery .hero .shot,.gallery .hero img,.gallery figure.on-grey{background:#E5E3DF !important}
+  .gallery .hero,.gallery .hero img{background:var(--hero-bg,#E5E3DF) !important}          /* the first photograph's own average colour (build_pdp.hero_tone) */          /* pdp-field: the product photos' backdrop exactly as the browser decodes it */          /* the room around a smaller piece is the same grey */          /* the picture carries its own corners; a backing showed outside them */
   .gallery figure:not(.hero){display:none}          /* mobile: hero only up top */
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
   /* the hero is a track of pictures that slides; nothing is created or destroyed on a tap */
@@ -598,7 +599,7 @@ addEventListener('pagereveal', function (e) { if (!e.viewTransition) return;
 <main>
   <section class="product">
     <div class="gallery" data-under-nav>
-      <figure class="hero"><img width="3328" height="4160" src="img/eclipse-ring/terracotta.jpg.webp?v=1790709913" srcset="img/eclipse-ring/terracotta--d.jpg.webp?v=1790709913 1800w, img/eclipse-ring/terracotta.jpg.webp?v=1790709913 3328w" sizes="(max-width: 767px) 3328px, 60vw" alt="Eclipsis" fetchpriority="high"></figure>
+      <figure class="hero" style="--hero-bg:#7c6331"><img width="3328" height="4160" src="img/eclipse-ring/terracotta.jpg.webp?v=1790709913" srcset="img/eclipse-ring/terracotta--d.jpg.webp?v=1790709913 1800w, img/eclipse-ring/terracotta.jpg.webp?v=1790709913 3328w" sizes="(max-width: 767px) 3328px, 60vw" alt="Eclipsis" fetchpriority="high" decoding="sync"></figure>
       <figure><img width="1856" height="2304" src="img/eclipse-ring/hero.jpg.webp" srcset="img/eclipse-ring/hero--m.jpg.webp 1200w, img/eclipse-ring/hero.jpg.webp 1856w" sizes="(max-width: 767px) 100vw, 60vw" style="object-position:50% 50%;transform-origin:50% 50%;transform:translate(0%,0%) scale(1)" alt="Eclipsis" loading="lazy"></figure>
       <figure><img width="1389" height="967" src="img/eclipse-ring/hires-1.jpg.webp" srcset="img/eclipse-ring/hires-1--m.jpg.webp 1200w, img/eclipse-ring/hires-1.jpg.webp 1389w" sizes="(max-width: 767px) 100vw, 60vw" alt="Eclipsis, close up" loading="lazy"></figure>
     </div>
@@ -690,7 +691,7 @@ addEventListener('pagereveal', function (e) { if (!e.viewTransition) return;
     </script>
 
     <div class="info">
-      <nav class="piece-nav" aria-label="Other pieces" data-no-emerge><a class="back" href="zuma-ring.html" aria-label="Previous piece: Zuma Crest"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a><a class="piece-next" href="sietch-aperture.html" aria-label="Next piece: Sietch"><span>Next</span><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 7 7-7 7"/></svg></a></nav>
+      <nav class="piece-nav" aria-label="Other pieces" data-no-emerge><a class="back" href="zuma-ring.html" aria-label="Previous piece: Zuma Crest"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Zuma Crest</span></a><a class="piece-next" href="sietch-aperture.html" aria-label="Next piece: Sietch"><span>Sietch</span><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 7 7-7 7"/></svg></a></nav>
       <p class="eyebrow" data-edit="eyebrow">Ellipses in Patient Equilibrium</p>
       <h1 data-edit="name">Eclipsis</h1>
       <p class="price" data-edit="price"><span class="amt">$340</span><span class="ship-free">Free shipping</span></p>
@@ -1673,6 +1674,22 @@ addEventListener('load', function () { document.documentElement.classList.add('l
       var a = e.target.closest && e.target.closest('.piece-nav a'); if (!a) return;
       try { sessionStorage.setItem('macon-piece', a.classList.contains('back') ? 'prev' : 'next'); } catch (err) {}
     }, true);
+    // the neighbours' first photographs, fetched once this page is idle at the size this screen will use,
+    // so the one sliding in is already here (without it the new photograph could slide in blank, a white flash)
+    var near = document.querySelectorAll('.piece-nav a');
+    function warm() {
+      [].forEach.call(near, function (a) {
+        fetch(a.href, {credentials: 'same-origin'}).then(function (r) { return r.text(); }).then(function (t) {
+          var img = new DOMParser().parseFromString(t, 'text/html').querySelector('.gallery .hero img'); if (!img) return;
+          var pre = new Image();
+          if (img.getAttribute('sizes')) pre.sizes = img.getAttribute('sizes');
+          if (img.getAttribute('srcset')) pre.srcset = img.getAttribute('srcset');
+          pre.src = img.getAttribute('src');
+          if (pre.decode) pre.decode().catch(function () {});
+        }).catch(function () {});
+      });
+    }
+    if (near.length) addEventListener('load', function () { (window.requestIdleCallback || setTimeout)(warm, 600); });
     addEventListener('pageswap', function (e) {
       if (!e.viewTransition) return;
       var dir = null; try { dir = sessionStorage.getItem('macon-piece'); } catch (err) {}

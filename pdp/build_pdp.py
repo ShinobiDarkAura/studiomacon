@@ -126,6 +126,17 @@ TODO = '<span class="todo">{}</span>'
 GREY_OBJECTS = set(json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "grey_objects.json")))) if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "grey_objects.json")) else set()          # photographs of a piece alone on #E4E3E1
 
 
+def hero_tone(src):
+    """The first photograph's average colour, as its frame's backdrop: a picture still arriving as Back/Next
+    swaps shows as its own suede for a moment instead of a pale flash. The grey studio backdrop if unreadable."""
+    try:
+        with Image.open(os.path.join(OUT, src.split("?")[0])) as im:
+            r, g, b = im.convert("RGB").resize((1, 1), Image.BOX).getpixel((0, 0))
+        return f"#{r:02x}{g:02x}{b:02x}"
+    except Exception:
+        return "#E5E3DF"
+
+
 def kind(slug, notes, name=""):
     if slug == "macon-cap":
         return "apparel"
@@ -477,6 +488,7 @@ def page(p, template, related=""):
             .replace("{{VARIANT}}", buy_variant)
             .replace("{{HEROSTYLE}}", hero_style)
             .replace("{{HERO}}", hero)
+            .replace('<figure class="hero">', f'<figure class="hero" style="--hero-bg:{hero_tone(hero)}">', 1)
             .replace("{{GALLERY}}", "\n      ".join(figs))
             .replace("{{ACCORDIONS}}", accordions(slug, k, notes))
             .replace("{{SIZER}}", (SIZER + print_sheet()) if k == "ring" else "")
@@ -1418,8 +1430,8 @@ def main():
             doc = doc.replace(
                 '<a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>',
                 f'<nav class="piece-nav" aria-label="Other pieces" data-no-emerge>'
-                f'<a class="back" href="{prev["slug"]}.html" aria-label="Previous piece: {html.escape(prev["name"])}"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>'
-                f'<a class="piece-next" href="{nxt["slug"]}.html" aria-label="Next piece: {html.escape(nxt["name"])}"><span>Next</span><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 7 7-7 7"/></svg></a>'
+                f'<a class="back" href="{prev["slug"]}.html" aria-label="Previous piece: {html.escape(prev["name"])}"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>{html.escape(prev["name"])}</span></a>'
+                f'<a class="piece-next" href="{nxt["slug"]}.html" aria-label="Next piece: {html.escape(nxt["name"])}"><span>{html.escape(nxt["name"])}</span><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 7 7-7 7"/></svg></a>'
                 f'</nav>', 1)
         for wide in glob.glob(os.path.join(OUT, "img", p["slug"], "*-wide.jpg.webp")):          # in-hand photos, 10% further out, on the product page only
             base = os.path.basename(wide)[:-len("-wide.jpg.webp")]

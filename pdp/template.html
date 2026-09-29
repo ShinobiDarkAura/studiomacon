@@ -11,7 +11,8 @@
   .gallery figure{margin:0;background:none;overflow:hidden}
   .gallery .dr-emerge,.gallery figure.dr-emerge{opacity:1 !important;filter:none !important;transform:none !important;transition:none !important}          /* the photo stack is simply there: no scroll-in */
   .gallery figure.on-grey,.gallery .on-grey img{background:#E5E3DF}          /* pdp-field */
-  .gallery .hero,.gallery .hero .shot,.gallery .hero img,.gallery figure.on-grey{background:#E5E3DF !important}          /* pdp-field: the product photos' backdrop exactly as the browser decodes it */          /* the room around a smaller piece is the same grey */          /* the picture carries its own corners; a backing showed outside them */
+  .gallery .hero,.gallery .hero .shot,.gallery .hero img,.gallery figure.on-grey{background:#E5E3DF !important}
+  .gallery .hero,.gallery .hero img{background:var(--hero-bg,#E5E3DF) !important}          /* the first photograph's own average colour (build_pdp.hero_tone) */          /* pdp-field: the product photos' backdrop exactly as the browser decodes it */          /* the room around a smaller piece is the same grey */          /* the picture carries its own corners; a backing showed outside them */
   .gallery figure:not(.hero){display:none}          /* mobile: hero only up top */
   .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
   /* the hero is a track of pictures that slides; nothing is created or destroyed on a tap */
@@ -356,7 +357,7 @@
 <main>
   <section class="product">
     <div class="gallery" data-under-nav>
-      <figure class="hero"><img src="{{HERO}}"{{HEROSTYLE}} alt="{{TITLE}}" fetchpriority="high"></figure>
+      <figure class="hero"><img src="{{HERO}}"{{HEROSTYLE}} alt="{{TITLE}}" fetchpriority="high" decoding="sync"></figure>
       {{GALLERY}}
     </div>
     <script>

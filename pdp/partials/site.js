@@ -868,6 +868,22 @@ addEventListener('load', function () { document.documentElement.classList.add('l
       var a = e.target.closest && e.target.closest('.piece-nav a'); if (!a) return;
       try { sessionStorage.setItem('macon-piece', a.classList.contains('back') ? 'prev' : 'next'); } catch (err) {}
     }, true);
+    // the neighbours' first photographs, fetched once this page is idle at the size this screen will use,
+    // so the one sliding in is already here (without it the new photograph could slide in blank, a white flash)
+    var near = document.querySelectorAll('.piece-nav a');
+    function warm() {
+      [].forEach.call(near, function (a) {
+        fetch(a.href, {credentials: 'same-origin'}).then(function (r) { return r.text(); }).then(function (t) {
+          var img = new DOMParser().parseFromString(t, 'text/html').querySelector('.gallery .hero img'); if (!img) return;
+          var pre = new Image();
+          if (img.getAttribute('sizes')) pre.sizes = img.getAttribute('sizes');
+          if (img.getAttribute('srcset')) pre.srcset = img.getAttribute('srcset');
+          pre.src = img.getAttribute('src');
+          if (pre.decode) pre.decode().catch(function () {});
+        }).catch(function () {});
+      });
+    }
+    if (near.length) addEventListener('load', function () { (window.requestIdleCallback || setTimeout)(warm, 600); });
     addEventListener('pageswap', function (e) {
       if (!e.viewTransition) return;
       var dir = null; try { dir = sessionStorage.getItem('macon-piece'); } catch (err) {}

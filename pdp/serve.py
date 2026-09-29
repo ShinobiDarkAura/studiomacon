@@ -158,7 +158,11 @@ class BadRequest(Exception):
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
-        self.send_header("Cache-Control", "no-store")
+        # everything is fetched fresh so an edit shows at once, except files carrying a version stamp (?v=):
+        # the stamp changes whenever the file does, so those may be kept, as the live site keeps them
+        # (and Back/Next's photographs, fetched ahead, are there when the swap starts)
+        stamped = re.search(r"[?&]v=", self.path)
+        self.send_header("Cache-Control", "public, max-age=86400" if stamped else "no-store")
         super().end_headers()
 
     def do_GET(self):
