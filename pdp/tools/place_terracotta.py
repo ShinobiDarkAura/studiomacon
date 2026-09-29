@@ -36,7 +36,7 @@ def tone(im, tgt):
     return Image.fromarray((np.clip(out, 0, 1) * 255 + .5).astype("uint8"))
 
 
-def frame(im, box, frac, cy=.51):
+def frame(im, box, frac, cy=.51, report=None):
     """A 4:5 crop with the piece's centre at the middle (a touch low, as the totems sit), the piece
     filling `frac` of the frame's height, or its width when it is a wide piece."""
     x0, y0, x1, y1 = box; W, H = im.size
@@ -48,6 +48,13 @@ def frame(im, box, frac, cy=.51):
     return im.crop((round(left), round(top), round(left + w), round(top + h)))
 
 
+def pad_bottom(im, px):
+    """More of the soft foreground suede below the photograph, mirrored from its own bottom strip, so a
+    piece shot low in the frame can still sit on the frame's centre."""
+    a = np.asarray(im); strip = a[-px:][::-1]
+    return Image.fromarray(np.concatenate([a, strip], 0))
+
+
 def find_box(im):
     k = 1000 / im.width; sm = np.asarray(im.resize((1000, round(im.height * k)))).astype(float) / 255
     m = piece_mask(sm); lab, n = ndimage.label(m)
@@ -57,11 +64,12 @@ def find_box(im):
     return [v / k for v in (xs.min(), ys.min(), xs.max(), ys.max())]
 
 
-def place(slug, src, frac=.30, box=None):
+def place(slug, src, frac=.30, box=None, cy=.51):
     im = ImageOps.exif_transpose(Image.open(src)).convert("RGB")
     im = tone(im, TARGET)
+    if PAD.get(slug): im = pad_bottom(im, PAD[slug])
     box = box or find_box(im)
-    out = frame(im, box, frac)
+    out = frame(im, box, frac, cy)
     d = os.path.join(ROOT, "img", slug); os.makedirs(d, exist_ok=True)
     out.save(os.path.join(d, "terracotta.jpg"), quality=92)
     big = out.resize((1600, 2000), Image.LANCZOS); big.save(os.path.join(ROOT, "img", "ab-clay", slug + ".webp"), quality=86)
@@ -70,6 +78,7 @@ def place(slug, src, frac=.30, box=None):
 
 
 TARGET = None
+PAD = {"wonderhorn-talisman": 700}          # pieces shot low: extra foreground, in px
 if __name__ == "__main__":
     TARGET = target_stats()
     for slug, src, frac, box in json.load(open(sys.argv[1])):

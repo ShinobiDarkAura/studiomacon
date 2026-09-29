@@ -15,8 +15,9 @@ SHOOT = os.path.expanduser("~/Downloads/Teracotta photoshoot/Jewelry/")
 SUEDE = np.array([42.6, 4.1, 31.9])          # the real moss suede, Lab, averaged over its three photographs
 SILVER_MEAN = np.array([72.7, -1.2, 7.5])   # the silver in those three, Lab
 SILVER_SD = np.array([15.7, 1.2, 2.8])
-REAL = {"ear-cuff": ("Caldera Moss Suede.jpg", .255, 0, 0), "eclipse-ring": ("Eclipse Ring Moss Suede.jpg", .255, 0, 90),
-        "wonderhorn-talisman": ("Ida Horn Moss Suede.jpg", .16, 450, 0)}          # file, size in frame, chain cut-off, nudge
+REAL = {"ear-cuff": ("Caldera Moss Suede.jpg", .27, 0, 0), "eclipse-ring": ("Eclipse Ring Moss Suede.jpg", .27, 0, 90),
+        "wonderhorn-talisman": ("Ida Horn Moss Suede.jpg", .17, 450, 0)}          # file, size in frame, chain cut-off, nudge
+LIFT = {"ear-cuff": 85, "eclipse-ring": 70}          # moss shots taken a touch lower than the terracotta ones: their pieces raised onto the centre, px
 RECOLOUR = ["zuma-ring", "sietch-aperture", "lunar-canyon-ring", "meridian-egg-ring"]
 
 
@@ -54,8 +55,9 @@ def real(slug, name, frac, cut, dx):
     else:
         t = ImageOps.exif_transpose(Image.open(SHOOT + TERRA[slug])).convert("RGB")
         box = P.find_box(t)
-    box = [box[0] + dx, box[1], box[2] + dx, box[3]]
-    out = P.frame(im, box, frac)
+    dy = LIFT.get(slug, 0); box = [box[0] + dx, box[1] + dy, box[2] + dx, box[3] + dy]
+    if P.PAD.get(slug): im = P.pad_bottom(im, P.PAD[slug])
+    out = P.frame(im, box, frac, cy=.5)          # every piece on the frame's vertical centre
     lab = lab_of(out); w = suede_weight(np.asarray(out).astype(float) / 255)[..., None]
     shift = SUEDE - lab[w[..., 0] > .9].mean(0)          # nudge this photo's suede onto the three's average
     save(slug, to_img(lab + shift * w))
