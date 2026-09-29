@@ -109,7 +109,7 @@ MADE_LINE = {
 
 # pictures kept on disk (the shop hover may use them) but left off a product page's gallery
 # pieces whose page still builds but which are left off the shop and Also Worth Keeping for now
-HIDE_FROM_SHOP = {"macon-cap", "starshipkey-pendant"}          # remove a slug here to bring it back
+HIDE_FROM_SHOP = {"macon-cap", "starshipkey-pendant", "chrysalis"}          # remove a slug here to bring it back
 RETIRED = {"macon-cap"}          # pieces with no page any more
 
 # Photographs that repeat one already in the gallery: same framing, sometimes only a higher-resolution
