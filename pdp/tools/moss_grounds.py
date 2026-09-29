@@ -63,15 +63,18 @@ def real(slug, name, frac, cut, dx):
 
 def recolour(slug):
     im = Image.open(os.path.join(IMG, slug, "terracotta-orange.jpg")).convert("RGB"); a = np.asarray(im).astype(float) / 255          # full size
-    lab = lab_of(im); w = suede_weight(a)[..., None]
+    warm = np.clip(((a[..., 0] - a[..., 2]) - .06) / .10, 0, 1)          # suede in the terracotta shot is always orange: a cool blue or green pixel is the silver
+    lab = lab_of(im)
+    warm = np.maximum(warm, np.clip((32 - lab[..., 0]) / 8, 0, 1))          # shadows on the suede are dark, not orange: still suede, never silver
+    w = (suede_weight(a) * warm)[..., None]
     bg = lab[w[..., 0] > .95]; m = bg.mean(0)
     new = lab.copy()
     new[..., 0] = (lab[..., 0] - m[0]) * .95 + SUEDE[0]          # the suede's own light and grain, moved to moss
     new[..., 1:] = (lab[..., 1:] - m[1:]) * .35 + SUEDE[1:]
     # the silver matched to how it reads in the three real moss photographs (Caldera, Eclipse, Wonder Horn):
     # a touch darker and warmer than it is against terracotta, with the same spread of light
-    sil = (w[..., 0] < .1) & (lab[..., 0] > 35); m_s, s_s = lab[sil].mean(0), lab[sil].std(0)
-    k = np.clip(SILVER_SD / (s_s + 1e-6), .6, 1.2); k[1:] = .3          # colour swing pulled in hard: reflected greens and blues go, the silver reads neutral-warm
+    sil = (w[..., 0] < .1) & (lab[..., 0] > 20); m_s, s_s = lab[sil].mean(0), lab[sil].std(0)
+    k = np.clip(SILVER_SD / (s_s + 1e-6), .6, 1.2); k[1:] = .15          # colour swing pulled in hard: reflected greens and blues go, the silver reads neutral-warm
     silver = lab.copy(); silver = (lab - m_s) * k + SILVER_MEAN
     silver = lab + (silver - lab) * (1 - w)          # only where it isn't suede
     out = silver * (1 - w) + new * w
