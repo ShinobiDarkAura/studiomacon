@@ -25,6 +25,7 @@ EYEBROW = {
     "rebi": "Silhouette in Flux",
     "ren": "Steward of Forgotten Paths",
     "zuma": "Desert Spirit",
+    "chrysalis": "Keeper of Becoming",
     "ori": "Guardian of Forests and Rivers",
     "yael": "Prophecy in Metal",
     "zuma-ring": "Twin Band",
@@ -50,6 +51,7 @@ DESC = {
     "pip": "Found resting for a millennium by an abandoned hearth. Whoever keeps it is visited by the sleepy warmth of that old fire.",
     "rebi": "Some say it rose from the smoke of an oracle's dream. The lucky few who touch it inherit a fragment of that oracle's sight.",
     "ren": "Summoned by a fabled mare beneath the northern lights. Those carrying it arrive home safely from long journeys.",
+    "chrysalis": "Carved as the emblem of In Her Own Right, a book giving women artists the light history kept from them. Its wings stay folded, holding the quiet moment before a change.",
     "zuma": "Washed ashore on a distant coast, baked solid by the sun. The runes foretold that its namesake band were always found together.",
     "ori": "Sworn into being during a vow of fidelity. The covenant holds to this day, and each winter it lends its protection to the house that shelters it.",
     "yael": "Its name was drawn from an act of unclouded devotion. Once held, it draws its bearer toward safety on even the most treacherous paths.",
@@ -76,6 +78,7 @@ LORE = {
     "pip": "It spent its early years on a windowsill, keeping watch over whoever needed it most. Visitors tend to pick it up without asking and put it down reluctantly. Those who carry it report calmer mornings, and a curious habit of checking their pockets.",
     "rebi": "It has never looked the same way twice in the same light. Some see one thing, some another, and a few insist it is something with no name at all. Each is right, and it seems quietly pleased by the disagreement.",
     "ren": "It knows the way through any wood, including the ones that no longer appear on maps. Its bright crest catches the first light of the day and holds it far longer than it should. Travellers who keep it close rarely take a wrong turn.",
+    "chrysalis": "It began on the cover of In Her Own Right, a book about women painters, sculptors and makers written back into the record after centuries in the margins. The folded wings were the book's promise: that what looks still is often only waiting. Those who keep one on a desk say it is good company for unfinished work.",
     "zuma": "It carries the stillness of the desert at noon, when even the wind stops to rest. Kept in a pocket, it warms slowly and holds that warmth well into the evening. Paired with its ring, it is said to remember the way home across the sand.",
     "ori": "It keeps a patient watch over forests, rivers and the households that take it in. It asks for very little beyond a windowsill and the occasional hand. In the depths of winter, keepers swear the room feels a degree or two warmer.",
     "yael": "It stands where the footing is narrowest and the air is thinnest, entirely unbothered by either. Those who keep it close tend to find their balance in unlikely places. At dusk, a faint ringing is sometimes heard, like bells from a very distant mountain.",
@@ -1141,7 +1144,7 @@ CHIPS = {}          # e.g. {"pip": "Pocket-Sized"}: none for now
 
 
 # the terracotta photos as framed on the home grid: zoom, then where the crop sits (%)
-CLAY_FRAME = {"pip": (1.374, 41.7, 54.8), "rebi": (1.152, 55.1, 20.7), "ren": (1.344, 49.5, 50.1), "zuma": (1.180, 33.9, 66.6),
+CLAY_FRAME = {"chrysalis": (1, 50, 50), "pip": (1.374, 41.7, 54.8), "rebi": (1.152, 55.1, 20.7), "ren": (1.344, 49.5, 50.1), "zuma": (1.180, 33.9, 66.6),
               "ori": (1.056, 57.9, 0), "yael": (1.413, 42, 56.8), "milo": (1.139, 60.2, 53.7), "ibi": (1.271, 50, 42.3), "eleph": (1.427, 50, 50)}
 
 

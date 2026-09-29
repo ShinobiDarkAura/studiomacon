@@ -1,0 +1,1866 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chrysalis | Studio Maçon</title>
+<meta name="description" content="Carved as the emblem of In Her Own Right, a book giving women artists the light history kept from them. Its wings stay folded, holding the quiet moment before a change.">
+<link rel="canonical" href="https://studiomacon.co/chrysalis.html">
+<meta property="og:site_name" content="Studio Maçon">
+<meta property="og:title" content="Chrysalis | Studio Maçon">
+<meta property="og:description" content="Carved as the emblem of In Her Own Right, a book giving women artists the light history kept from them. Its wings stay folded, holding the quiet moment before a change.">
+<meta property="og:url" content="https://studiomacon.co/chrysalis.html">
+<meta property="og:image" content="https://studiomacon.co/img/chrysalis/hero.jpg">
+<meta property="og:type" content="product">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Chrysalis", "description": "Carved as the emblem of In Her Own Right, a book giving women artists the light history kept from them. Its wings stay folded, holding the quiet moment before a change.", "image": ["https://studiomacon.co/img/chrysalis/hero.jpg", "https://studiomacon.co/img/chrysalis/terracotta.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "chrysalis", "offers": [{"@type": "Offer", "price": "220.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/chrysalis.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Studio Maçon", "item": "https://studiomacon.co"}, {"@type": "ListItem", "position": 2, "name": "Totems", "item": "https://studiomacon.co/index.html#pieces"}, {"@type": "ListItem", "position": 3, "name": "Chrysalis"}]}</script>
+<link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
+<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css?v=1790613754">
+<style>
+  /* ── product ───────────────────────────────────────── */
+  .gallery figure{margin:0;background:none;overflow:hidden}
+  .gallery .dr-emerge,.gallery figure.dr-emerge{opacity:1 !important;filter:none !important;transform:none !important;transition:none !important}          /* the photo stack is simply there: no scroll-in */
+  .gallery figure.on-grey,.gallery .on-grey img{background:#E5E3DF}          /* pdp-field */
+  .gallery .hero,.gallery .hero .shot,.gallery .hero img,.gallery figure.on-grey{background:#E5E3DF !important}          /* pdp-field: the product photos' backdrop exactly as the browser decodes it */          /* the room around a smaller piece is the same grey */          /* the picture carries its own corners; a backing showed outside them */
+  .gallery figure:not(.hero){display:none}          /* mobile: hero only up top */
+  .gallery .hero img{width:100%;height:100vh;height:100svh;object-fit:cover}          /* full screen on phones too */
+  /* the hero is a track of pictures that slides; nothing is created or destroyed on a tap */
+  .gallery .hero{overflow:hidden;border-radius:0}
+  /* above the carousel, each photograph is its own object again */
+  @media (min-width:1024px){ .gallery figure img,.gallery figure video,.gallery .hero img,.gallery .hero video{border-radius:0} .gallery .hero{border-radius:0}}
+  .gallery .hero .shots{display:flex;width:100%;transition:transform .5s cubic-bezier(.2,.7,.2,1);will-change:transform}
+  .gallery .hero .shot{flex:0 0 100%;min-width:100%;background:var(--field);overflow:hidden;position:relative}          /* each slide clips its own picture, so a zoomed neighbour never spills in */          /* never white behind a picture */
+  @media (prefers-reduced-motion:reduce){ .gallery .hero .shots{transition:none} }
+  .gallery video{display:block;width:100%;height:100vh;height:100svh;object-fit:cover;background:var(--field)}
+
+  .info{padding:28px var(--pad) 0;text-align:center}
+  .price{font-size:19px;margin:0 0 18px;display:flex;align-items:baseline;gap:10px}
+  .price .ship-free{margin-left:4px;font-size:calc(14px - 1pt);opacity:.5}          /* 6px nearer the price */
+  .ship-by{margin:0 0 0 auto;font-size:14px;color:rgba(0,0,0,.55)}          /* a date reads as a promise; a duration reads as a caveat */          /* now that every US order ships free, say so where the money is */
+  .info h1{margin-bottom:12px}          /* h1 default is 22px; 10px tighter under the name */
+  /* ring size: the whole bordered block is the control; sizes open beneath it */
+  .size{position:relative;margin:0 0 12px;border:1px solid var(--rule);text-align:left}
+  .size-toggle{display:flex;align-items:center;gap:16px;width:100%;height:52px;padding:0 20px 0 16px;cursor:pointer}
+  .size-label{font-size:15px;text-transform:uppercase;margin-right:auto}
+  .size-value{font-size:16px}
+  .size.picked .size-value{font-weight:500}
+  .chev{width:12px;height:8px;flex:none;transition:transform .35s var(--ease);
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23000' stroke-width='1.3'/%3E%3C/svg%3E") center/12px 8px no-repeat}
+  @media (min-width:768px){          /* desktop: the size field matches Add to Bag, 47px tall with the same type */
+    .size-toggle{height:45px}          /* + the 1px border above and below = 47px */
+    .size-label,.size-value{font-size:calc((18px - 2pt) * .85 - 1pt);letter-spacing:.08em}
+  }
+  .size.open .chev{transform:rotate(180deg)}
+  .size-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+  .size.open .size-panel{grid-template-rows:1fr}
+  .size-inner{overflow:hidden}
+  .size-list{list-style:none;margin:0;padding:4px 16px 16px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+    border-top:1px solid var(--rule);padding-top:16px;opacity:0;transition:opacity .3s ease}
+  .size.open .size-list{opacity:1;transition-delay:.08s}
+  .size-list li{display:grid;place-items:center;height:40px;border:1px solid var(--rule);font-size:15px;cursor:pointer;
+    transition:border-color .2s ease,background .2s ease,color .2s ease}
+  .size-list li:hover,.size-list li:focus{border-color:#000;outline:none}
+  .size-list li[aria-selected="true"]{background:#000;color:#fff;border-color:#000}
+  .buy{display:grid;grid-template-columns:1fr 1fr;gap:12px}          /* Add to Bag and Shop Pay side by side on desktop */
+  @media (max-width:767px){ .buy{grid-template-columns:1fr;gap:8px} }          /* phones: Shop Pay stacked under Add to Bag */
+  /* Shop Pay: a cart link with ?payment=shop_pay, so this really is Shop Pay and not a lookalike */
+  .buy-now{display:flex;align-items:center;justify-content:center;gap:.34em;width:100%;height:47px;
+    background:#5a31f4;color:#fff;border:1px solid #5a31f4;letter-spacing:.02em;cursor:pointer;
+    font:500 calc((18px - 2pt) * .85 - 1pt)/1 var(--sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);transition:background .25s ease,border-color .25s ease}
+  .buy-now{text-transform:uppercase;letter-spacing:.08em}          /* set like Add to Bag */
+  /* the real Shop wordmark, sized so its ascender reads a touch taller than the BUY WITH caps */
+  .buy-now .shop-word{height:14px;width:auto;fill:currentColor;display:block;flex:0 0 auto;
+    transform:translateX(3px)}
+  .buy-now:hover{background:#4a27cc;border-color:#4a27cc}
+  /* product buttons: 8px shorter than the site's other black buttons, type and arrow 15% smaller */
+  .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85 - 1pt)}
+  @media (max-width:767px){ .buy .cta,.buy-now{height:54px} }          /* phones: as tall as the size field above them (52 + its border) */
+  .buy .cta::after{height:12px;-webkit-mask-size:12px 12px;mask-size:12px 12px}
+  .buy .cta:not([disabled]):hover::after{width:12px;margin-left:8px}
+  .desc-block{text-align:left;margin:30px 0 0;padding:0 0 30px}
+  .buy{margin:0}          /* buttons sit right under the price */
+  .desc-block{margin:44px 0 8px}          /* 16px less under Field Notes */
+  .desc-block .label{margin:0 0 14px}
+  @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#9ca3af;margin-bottom:18px} }          /* the same title as on phones */          /* desktop: 1pt smaller, 4px more air beneath */
+  .desc a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+  /* Ibi's first photograph clears out of the morning mist */
+  body[data-slug="ibi"] .gallery .hero .shot:first-child img{animation:ibi-mist 1.6s cubic-bezier(.3,.6,.3,1) .15s both}
+  @keyframes ibi-mist{from{filter:blur(14px) brightness(1.18) contrast(.7);opacity:.55}to{filter:none;opacity:1}}
+  @media (prefers-reduced-motion:reduce){ body[data-slug="ibi"] .gallery .hero .shot:first-child img{animation:none} }
+  .desc{margin:0;font-size:17px;letter-spacing:.02em;line-height:var(--body-s-lh)}          /* the same size as the About page's words */          /* same size as the overline */
+  .info > .dr-emerge{transform:translateY(66px)}
+  .info > .dr-emerge.is-seen{transform:none}
+
+  /* ── ring sizer: takes the column's place, rather than its own page ─ */
+  .sizer-panel{text-align:left}
+  .sizer-panel h2{font:400 28px/1.12 var(--serif);text-transform:uppercase;letter-spacing:.01em;margin:0 0 14px}
+  /* highlighter, not a rectangle: each stroke is its own shape and none of them line up */
+  .sizer-panel h2 mark{background:none;color:inherit;padding:2px 9px 3px;position:relative;isolation:isolate}
+  .sizer-panel h2 mark::before{content:"";position:absolute;inset:0;z-index:-1;background:#ffe94d;
+    mix-blend-mode:multiply;opacity:.92}
+  .sizer-panel h2 mark.a::before{clip-path:polygon(1% 14%,99% 6%,100% 82%,99.4% 96%,2% 91%,0.4% 40%);transform:rotate(-.5deg) scaleY(1.04)}
+  .sizer-panel h2 mark.b::before{clip-path:polygon(2% 8%,98% 15%,99.6% 88%,96% 97%,1% 90%,0% 34%);transform:rotate(.7deg) scaleY(.98)}
+  .sizer-panel h2 mark.c::before{clip-path:polygon(0.5% 18%,97% 4%,100% 74%,98% 94%,3% 96%,1.5% 52%);transform:rotate(-.9deg) scaleY(1.06)}
+  .sizer-panel .lede{font-size:16px;line-height:1.55;margin:0 0 30px}
+  .sizer-panel .step{margin:0 0 34px}
+  .sizer-panel .step p{margin:0 0 10px;font-size:15px;line-height:1.55}
+  .sizer-panel .printbtn{margin:0 0 32px}
+  .sizer-panel .printbtn button{font-family:inherit;font-size:calc((18px - 2pt) * .85 - 1pt);text-transform:uppercase;letter-spacing:.08em;
+    height:47px;width:100%;border:1px solid var(--ink);background:#000;color:#fff;cursor:pointer;transition:background .25s ease}
+  .sizer-panel .printbtn button:hover{background:#333}
+  /* the printed strip only works at 100%: this bar is exactly 100mm, so a scaled print is caught */
+  .sizer-panel .bar{width:100mm;max-width:100%;height:13px;border:1px solid var(--ink)}
+  .sizer-panel .cap{display:flex;justify-content:space-between;width:100mm;max-width:100%;margin-top:5px;
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding-bottom:16px}
+  .sizer-panel .sizer{margin:22px 0 0;width:74mm;max-width:100%;border:0;border-radius:16px;background:var(--field);padding:12px 12px calc(3mm + 12px);overflow:hidden}
+  .sizer-panel .slot{width:11mm;height:5mm;margin:4mm 0 5mm 4mm;border:1px solid var(--ink);border-radius:1px}
+  .sizer-panel .ticks{position:relative;height:17mm;margin:0 4mm}
+  .sizer-panel .t{position:absolute;top:0;width:1px;height:6mm;background:var(--ink);opacity:.5}          /* the half sizes read quieter */
+  .sizer-panel .t.major{height:9mm;opacity:1}
+  .sizer-panel .n{position:absolute;top:9.6mm;transform:translateX(-50%);font-size:9px;font-weight:400}
+  .sizer-panel .step p.edge{font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 0 12px}          /* 12px in from the strip's edge */          /* flush with the ruler's first tick */
+  .sizer-panel .step p.cut{font-size:13px;color:#000;margin:32px 0 0}          /* black, and 8px nearer the strip */          /* 16px under the strip, and 12px more again */
+  .sizer-panel table{border-collapse:collapse;font-size:14px;margin:12px 0 0;width:100%}
+  .sizer-panel th,.sizer-panel td{text-align:left;padding:6px 18px 6px 0;border-bottom:1px solid var(--rule)}
+  .sizer-panel th{text-transform:uppercase;font-size:12px;letter-spacing:.08em;font-weight:400;color:rgba(0,0,0,.6)}
+  .sizer-panel .helpnote{margin:30px 0 32px;padding:16px 18px;background:#f4f3f0;border-radius:12px;font-size:15px;line-height:1.55}
+  .sizer-panel .helpnote p{margin:0}
+  .sizer-panel .intro-box{margin:0 0 34px;padding:20px 18px 18px;background:#f4f3f0;border-radius:12px}
+  .sizer-panel .intro-box .printbtn{margin:0}
+  .sizer-panel h2.with-icon{display:flex;align-items:center;gap:10px}
+  .sizer-panel .h-icon{width:24px;height:24px;flex:none;color:#9ca3af;transform:rotate(45deg);margin-left:-4px}          /* Lucide's ruler stood upright */
+  @media screen{ .sizer-panel .calib{display:none} }          /* the 100 mm check bar is for the printout only */
+  .sizer-panel .helpnote .note-label{text-transform:uppercase;font-size:calc(13px - 3pt);font-weight:600;letter-spacing:.12em;opacity:.5;margin:0 0 8px}
+  .sizer-panel::after{content:"";display:block;height:64px}          /* room to scroll past the maker's note */
+  /* The panel is an overlay over the details, not a second column sharing their box.
+     The details never move, so the column never resizes and nothing can pile up. */
+  .info{position:relative}
+  .sizer-panel{position:absolute;inset:0;z-index:4;background:#fff;padding-top:36px;
+    opacity:0;visibility:hidden;transform:translateX(22px);
+    transition:opacity .32s ease,transform .44s cubic-bezier(.22,1,.36,1),visibility 0s linear .44s}
+  body.sizing-open .sizer-panel{opacity:1;visibility:visible;transform:none;
+    transition:opacity .32s ease,transform .44s cubic-bezier(.22,1,.36,1),visibility 0s}
+  body.sizing-open .info > :not(.back):not(.sizer-panel){visibility:hidden}
+  body.sizing-open .sizer-panel .st{animation:sizer-in .62s cubic-bezier(.16,1,.3,1) both}
+  body.sizing-open .sizer-panel.settled .st{animation:none}          /* once it has arrived, nothing is left to replay (the print dialog rebuilt its preview and restarted it) */
+  body.sizing-open .sizer-panel .st:nth-child(1){animation-delay:120ms}
+  body.sizing-open .sizer-panel .st:nth-child(2){animation-delay:210ms}
+  body.sizing-open .sizer-panel .st:nth-child(3){animation-delay:300ms}
+  body.sizing-open .sizer-panel .st:nth-child(4){animation-delay:390ms}
+  body.sizing-open .sizer-panel .st:nth-child(5){animation-delay:480ms}
+  body.sizing-open .sizer-panel .st:nth-child(6){animation-delay:570ms}
+
+  @keyframes sizer-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes sizer-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(8px)}}
+  @media (prefers-reduced-motion:reduce){ .sizer-panel{transition:none} body.sizing-open .sizer-panel .st{animation:none} }
+  /* the size table starts at three rows */
+  .sizer-panel .tablewrap{display:grid;grid-template-rows:var(--rows,1fr);
+    transition:grid-template-rows .55s cubic-bezier(.22,1,.36,1)}
+  .sizer-panel .tablewrap > div{overflow:hidden}
+  .sizer-panel tbody tr{opacity:0;transition:opacity .4s ease}
+  .sizer-panel tbody tr:nth-child(-n+3),.sizer-panel.all-sizes tbody tr{opacity:1}
+  @media (prefers-reduced-motion:reduce){ .sizer-panel .tablewrap,.sizer-panel tbody tr{transition:none} }
+  .sizer-panel .step p.more-rows{margin:28px 0 0}          /* 16px more air above it */
+
+  /* ── the printed sizer: a page of its own, nothing else from the site ── */
+  .print-sheet{display:none}
+  @media print{
+    @page{margin:0}          /* no browser date, title or address round the edge */
+    body > *:not(main),main > *:not(.product),.product > *:not(.info),.info > *:not(.print-sheet){display:none !important}
+    html,body,main,.product,.info{display:block !important;margin:0 !important;padding:0 !important;background:#fff !important;
+      position:static !important;overflow:visible !important;height:auto !important;animation:none !important;transform:none !important}
+    .print-sheet{opacity:1 !important;visibility:visible !important;transform:none !important;filter:none !important;display:block !important;width:176mm;margin:0 auto;padding:11mm 0 0;color:#000;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;font:400 10pt/1.5 var(--sans);text-align:left}
+    .ps-head{text-align:center;padding-bottom:6mm;border-bottom:.5px solid #e5e7eb}
+    .ps-head img{width:11mm;height:auto;margin:0 auto 5mm;display:block}
+    .ps-over{margin:0 0 2mm;font-size:7.5pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.5}
+    .ps-head h2{margin:0;font:400 30pt/1 var(--serif);text-transform:uppercase}
+    .ps-block{margin:6mm 0 0}
+    .ps-label{margin:0 0 3mm;font-size:7.5pt;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.5}
+    .ps-calib{display:grid;grid-template-columns:104mm 1fr;gap:0 8mm;align-items:end}
+    .ps-calib .ps-label{grid-column:1/-1}
+    .ps-calib p:last-child{margin:0 0 2mm;font-size:8.5pt;line-height:1.45}
+    .ps-cut{flex-direction:column;align-items:center;padding:5mm 0 3mm;display:flex;justify-content:center;border-top:.5px solid #e5e7eb;border-bottom:.5px solid #e5e7eb}
+    .ps-strip-notes{display:flex;justify-content:space-between;gap:8mm;width:100%;margin:2mm 0 0;font-size:8pt;color:#555}
+    .ps-steps{list-style:none;margin:7mm 0 0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6mm}
+    .ps-steps li{display:flex;gap:3mm;font-size:9pt;line-height:1.45}
+    .ps-steps b{flex:none;font:400 18pt/1 var(--serif);padding:0 1.6mm .4mm;background:#ffe94d;height:max-content}
+    .ps-tip{text-align:center;margin:6mm 0 0;padding:4mm 5mm;background:#f4f3f0;border-radius:3mm;font-size:9pt}
+    .ps-tables{display:grid;grid-template-columns:1fr 1fr;gap:0 10mm;align-items:start}
+    .ps-chart table{width:100%;border-collapse:collapse;font-size:8.5pt;font-variant-numeric:tabular-nums}
+    .ps-chart th{width:33%;text-align:left;font-size:6.5pt;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.5;padding:0 0 1.5mm;border-bottom:.5px solid #e5e7eb}
+    .ps-chart td{text-align:left;padding:.8mm 0;border-bottom:.5px solid #e5e7eb}
+    .ps-foot{margin:6mm 0 0;align-items:baseline;padding-top:4mm;border-top:.5px solid #e5e7eb;display:flex;justify-content:space-between;font-size:8pt}
+    .ps-foot p{margin:0}
+    .ps-foot p:last-child{font-family:var(--serif);font-size:10pt;text-transform:uppercase}
+  }
+  /* (was 16px on wider screens; now one size everywhere, matching About) */
+
+  /* ── closing: big stacked images, two centred chunks ─ */
+  .closing{padding:128px 0 0}
+  .big{--w:min(calc((100% - 2 * var(--pad)) * 1.1), 100%);width:var(--w);margin-left:calc((100% - var(--w)) / 2);
+    aspect-ratio:2.2917/1;background:#d9d9d9;border-radius:6px}          /* 3:1 made 10% wider, then 20% taller twice */
+  .chunk{margin:120px auto;padding:0 calc(var(--pad) + 16px);max-width:620px;
+    text-align:center;font-size:17px;line-height:1.55}
+
+  /* ── sticky bag bar (mobile) ───────────────────────── */
+  .dock{position:fixed;left:var(--pad);right:var(--pad);bottom:24px;z-index:15;
+    display:flex;align-items:center;justify-content:center;gap:26px;height:68px;
+    background:#fff;border:1.5px solid var(--ink);font-size:calc(18px - 3pt);letter-spacing:.08em;text-transform:uppercase;
+    transform:translateY(140%);transition:transform .35s var(--ease)}
+  .dock.on{transform:none}
+  .dock span:last-child{text-transform:none}
+
+  /* ── phones: one 24px side margin for the whole page, left-aligned text, stacked buttons ── */
+  @media (max-width:1023px){
+    /* the price centred under the name; free shipping and the date along its edges */
+    .price{display:grid;grid-template-columns:1fr auto;row-gap:4px;align-items:baseline}
+    .price .amt{grid-column:1/-1;text-align:center}
+    .price .ship-free{grid-column:1/-1;margin:0;text-align:center}          /* alone now the ship-by date has moved to the bag */
+    .price .ship-by{grid-column:2;margin:0;text-align:right}
+    .info,.product .info h1,.product .info .eyebrow{text-align:center}
+    .info .desc-block{text-align:center}
+    .info .desc{max-width:85%;margin:0 auto}          /* the note reads narrower than the buttons above it */
+    .info .acc,.info form{text-align:left}
+    .gallery{padding:calc(var(--head) - 6px) 8px 0}          /* the main image starts 8px below the logotype, 8px from the sides */
+    .info{padding-left:8px;padding-right:8px}
+    .gallery .hero img,.gallery .hero video{height:auto;aspect-ratio:4/5;border-radius:0}
+    .closing{padding:96px 8px 0}
+    .big{--w:100%;width:100%;margin-left:0;aspect-ratio:auto;height:50vh;height:50svh}
+    .chunk{padding:0}
+    /* thumbnails of every picture and film, under the main image */
+    .thumbs{display:flex;gap:8px;margin:10px 0 0}
+    .thumbs::-webkit-scrollbar{display:none}
+    .thumbs button{flex:1 1 0;min-width:0;aspect-ratio:4/5;padding:0;border-radius:0;overflow:hidden}          /* however many there are, they share the full width */
+    .thumbs button.on{opacity:1}
+    .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#000}
+    .thumbs img{width:100%;height:100%;object-fit:cover}
+    /* load-in order: main image, then the thumbnails one by one, then the name, price and buttons */
+    .thumbs button{animation:thumb-in .7s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0) * 70ms + 350ms)}
+    /* the 800ms wait belongs to the load sequence only: once the page has been scrolled, the words arrive at once */
+    html:not(.moved) .info > .dr-emerge{transition-delay:calc(var(--stagger,0ms) + 800ms)}
+    html:not(.moved) .info > .dr-emerge.is-seen{transition-delay:calc(var(--stagger,0ms) + 800ms)}
+  }
+  @keyframes thumb-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){ .thumbs button{animation:none} }
+  @media (min-width:1024px){ .thumbs{display:none} }
+  /* phones: other pieces, one full screen, 2 × 2 */
+  /* desktop: four across under the product, title centred above */
+  /* three across, held to the same margins as the shop grid on the home page */
+  .related{padding:calc(180px + 10vh) calc(var(--pad) + 24px + 7.5vw) 0;text-align:center}
+  .related h2{margin:0 0 64px;font:400 53px/1 var(--serif);text-transform:uppercase}
+  .related .rel-blurb{margin:0 auto 68px;max-width:480px;font-size:16px;line-height:1.55}
+  /* the Bureau of Provenance stamp, pressed onto the end of "Worth" the way the home page presses it onto "Things," */
+  .related h2.stamped{position:relative;display:inline-block;width:max-content;max-width:100%;align-self:center}          /* hugs its words, so the stamp lands on "Worth" on phones too */
+  .related .stamp{position:absolute;z-index:3;width:2.43em;left:calc(100% - .85em);top:calc(.2em - .84em - 1.215em);          /* desktop: its left edge meets the H, so it sits over that letter only */
+    transform:rotate(-14deg) scale(1.35);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .45s cubic-bezier(.3,1.4,.5,1)}
+  .related .stamp.on{opacity:1;transform:rotate(-14deg)}
+  @media (max-width:767px){ .related .stamp{width:2.295em;left:calc(100% + .2em - 1.1475em);top:calc(.2em - .84em - 1.1475em)} }          /* phones: 15% smaller, on the end of Worth */
+  .rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center}
+  .rel-grid{width:79.2%;margin:0 auto}          /* the old 60% row, 20% then 10% larger */
+  @media (min-width:1100px){ .rel-grid:has(> :nth-child(2):last-child){grid-template-columns:repeat(2,1fr);width:52.8%} }          /* a pair (the pendants) stays the same size, centred */
+  .rel-name{font-size:calc(var(--tile-name) + 5pt) !important}          /* names scaled down with the pictures */
+  .rel-piece{display:block;color:#000}
+  .rel-frame{position:relative;display:block;aspect-ratio:4/5;border-radius:0;overflow:hidden;background:var(--field)}
+  .rel-frame img{width:100%;height:100%;object-fit:cover}
+  .rel-frame{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .rel-hit{display:block}
+  .rel-frame img.held{position:absolute;inset:0;opacity:0;object-position:var(--hx,50%) var(--hy,50%);transform-origin:var(--hx,50%) var(--hy,50%);transform:scale(var(--hz,1))}
+  @media (hover:hover){ .rel-hit:hover .rel-frame img.held{opacity:1} }          /* on hover the piece turns to its in-hand picture, as on the home grid */          /* only the picture's own spot lifts it, never the label */
+  .rel-name{display:block;margin:20px 0 4px;font:400 calc(var(--tile-name) + 12pt)/1 var(--serif);text-transform:uppercase}
+  .rel-cost{display:block;font-size:14px;color:rgba(0,0,0,.55)}
+  @media (max-width:1099px){
+    .related{display:flex;flex-direction:column;justify-content:center;min-height:0;
+      padding:72px calc(var(--pad) + 24px) 24px;text-align:center}          /* the same inset as the pieces above it */
+    .related h2{margin:0 0 18px;font:400 42px/1 var(--serif);text-transform:uppercase}
+    .related .rel-blurb{margin:0 auto 32px;max-width:300px;font-size:15px;line-height:1.55}
+    /* phones: two pieces only, at the size and spacing of the shop grid, rather than three squeezed small */
+    .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left}
+    .rel-grid{width:100%}
+    .rel-grid .rel-piece:nth-child(3){display:none}
+    .rel-name{font-size:var(--tile-name) !important}
+    .rel-piece{display:block;color:#000}
+    .rel-frame{display:block;aspect-ratio:4/5;border-radius:0;overflow:hidden;background:var(--field)}
+    .rel-frame img{width:100%;height:100%;object-fit:cover}
+    .rel-name{margin:10px 0 2px;font-size:var(--tile-name)}
+    .rel-cost{display:block;font-size:13px;color:rgba(0,0,0,.55)}
+    .related + .closing{padding-top:24px}
+  }  @media (max-width:767px){ .related{padding-top:104px} }          /* phones: 32px more air above Also Worth Keeping */
+
+  @media (max-width:767px){
+    .related{padding-left:var(--gutter);padding-right:var(--gutter)}
+  }
+  /* phones: the whole family in a row to swipe, closest in look first; desktop keeps its three */
+  .rel-swipe{display:none}
+  @media (max-width:767px){
+    .related .rel-grid{display:none}
+    .rel-swipe{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;text-align:left;
+      scrollbar-width:none;-webkit-overflow-scrolling:touch}          /* inside the page margins, so the next pair stays out of sight */
+    .rel-swipe::-webkit-scrollbar{display:none}
+    .rel-swipe .rel-piece{flex:0 0 calc((100% - 8px) / 2);scroll-snap-align:start}          /* two at a time, the size of the shop grid */
+  }
+
+  @media (min-width:1024px){
+    .product{display:grid;grid-template-columns:minmax(0,70fr) minmax(0,30fr);gap:0 48px;
+      margin:0 calc(var(--pad) + 24px) 0 0;align-items:start}
+    .gallery figure:not(.hero){display:block;margin-top:0}
+    /* 12px inset on the left, and 12px under each picture */
+    .gallery{padding:0;transition:padding-top .5s cubic-bezier(.22,1,.36,1)}          /* the pictures run to the screen's edges */          /* 16px clear of the banner, and the same inset left and below */
+    /* the notice makes room for itself rather than covering the picture */
+    body.ship-on .gallery{padding-top:var(--ship-h,38px)}
+    .gallery figure{margin-bottom:1px}          /* a hairline between stacked pictures */
+    .gallery figure img{width:100%}
+    /* every gallery photograph fills one full screen height */
+    .gallery figure img,.gallery .hero img{height:100vh;height:100svh;aspect-ratio:auto;object-fit:cover}
+    body.ship-on .gallery figure img,body.ship-on .gallery .hero img,
+    body.ship-on .gallery .hero .shots,body.ship-on .gallery .hero .shot{
+      height:calc(100svh - 28px - var(--ship-h,38px));transition:height .5s cubic-bezier(.22,1,.36,1)}
+    .gallery .hero .shots,.gallery .hero .shot{height:100vh;height:100svh}
+    .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:120vh;height:120svh}          /* the pictures under the hero run 20% taller, same width */
+    /* Tablets: the photo column is only ~320px wide, so a full screen of height turns each
+       photograph into a 1:3 sliver and the page into 9,700px. Keep them in proportion instead. */
+    @media (max-width:1099px){
+      .gallery figure img,.gallery .hero img,.gallery figure video,.gallery .hero video{height:auto;aspect-ratio:4/5}
+      .gallery figure:not(.hero) img,.gallery figure:not(.hero) video{height:auto;aspect-ratio:4/5}
+    }
+
+    /* transparent, pinned, and scrolls on its own when every accordion is open */
+    .info{position:sticky;top:var(--head);height:calc(100vh - var(--head));overflow-y:auto;
+      overscroll-behavior:auto;scrollbar-width:none;text-align:left;padding:24px 0 48px;          /* at its end the wheel carries on down the page */
+      display:flex;flex-direction:column;justify-content:safe center}
+    .info > *{flex:none}
+    .info::-webkit-scrollbar{display:none}
+
+    .closing{max-width:1100px;margin:0 auto;padding:204px var(--pad) 0}
+    .big{--w:110%}
+    .chunk{margin:188px auto;max-width:620px;padding:0}
+    .dock{display:none}
+  }
+
+  /* Also Worth Keeping: an endless carousel, full width, its edges fading out */
+  .rel-grid{display:none !important}
+  .rel-loop{position:relative;width:100vw;margin-left:calc(50% - 50vw);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;
+}
+  .rel-loop::-webkit-scrollbar{display:none}
+  .rel-track{display:flex;gap:1px;width:max-content;text-align:left}          /* a hairline between pieces */
+  .rel-loop .rel-piece{flex:0 0 calc((100vw - 2px) / 3);scroll-snap-align:center}          /* desktop: three across the screen */
+  .rel-loop .rel-name,.rel-loop .rel-cost{padding-left:16px;padding-right:16px}          /* names kept off the edge, as on the home grid */
+  /* desktop: the three closest pieces, still, inset 20vw from each screen edge */
+  .rel-three{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:79.2%;margin:0 auto;text-align:left}          /* the original size and spacing */
+  .rel-three .rel-frame{border-radius:0}
+  .rel-three .dr-emerge{opacity:1 !important;filter:none !important;transform:none !important}
+  .rel-loop{display:none !important}          /* the carousel is retired: desktop shows the three, phones the original swipe row */
+  @media (max-width:767px){ .rel-swipe .rel-frame{border-radius:0} }          /* square, as the home grid on phones */
+  @media (max-width:767px){ .rel-three{display:none} }
+  @media (min-width:768px) and (max-width:1099px){ .related h2{margin-bottom:62px} }          /* desktop: 12px more under the title at every width */
+  .rel-loop .dr-emerge,.rel-loop .rel-piece{opacity:1 !important;filter:none !important;transform:none !important;transition:opacity .45s ease !important}          /* dims and brightens gently as pieces cross the edge of the middle three */
+  .rel-loop .rel-piece.side{opacity:1 !important}          /* the two beside the centre */
+  .rel-loop .rel-piece.edge{opacity:.35 !important}          /* everything further out */          /* no scroll-in animation here: the looped copies would never be revealed */
+  @media (max-width:767px){ .rel-track{gap:1px} .rel-loop .rel-piece{flex-basis:56vw} }
+</style>
+<style>
+.wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;
+  transform:translate3d(0,-100%,0);background:#000}
+.wipe.cover{transform:translate3d(0,0,0);transition:transform 420ms cubic-bezier(.5,0,.25,1)}
+.wipe.gone{transform:translate3d(0,100%,0);transition:transform 500ms cubic-bezier(.5,0,.25,1)}
+</style>
+<script>
+(function () {
+  try { if (sessionStorage.getItem('macon-wipe') !== '1') return; sessionStorage.removeItem('macon-wipe'); } catch (e) { return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var el = document.createElement('div');
+  el.className = 'wipe';
+  el.style.transform = 'translate3d(0,0,0)';
+  var put = function () { (document.body || document.documentElement).appendChild(el); };
+  put();
+  requestAnimationFrame(function () { requestAnimationFrame(function () {
+    if (!el.isConnected) put();
+    el.style.transform = '';
+    el.classList.add('gone');
+    // Wait for the slide to actually finish. On a timer the tail gets clipped
+    // whenever the animation starts a frame or two late, and the panel appears
+    // to vanish instead of leaving.
+    var done = false;
+    var off = function () { if (done) return; done = true; el.remove(); };
+    el.addEventListener('transitionend', function (e) { if (e.propertyName === 'transform') off(); });
+    setTimeout(off, 1400);          // only a backstop, never the usual path
+  }); });
+})();
+// the soft fade between pages: arriving, the page starts under a white veil that lifts
+(function () {
+  var fromDrawer = false;
+  try {
+    if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade');
+    fromDrawer = sessionStorage.getItem('macon-menu') === '1';
+  } catch (e) { return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var st = document.createElement('style');
+  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1}';
+  document.head.appendChild(st);
+  var v = document.createElement('div'); v.className = 'veil';
+  if (fromDrawer) v.style.zIndex = '59';               // beneath the drawer, over the page
+  var put = function () { (document.body || document.documentElement).appendChild(v); }; put();
+  var gone = function () { v.remove(); };
+  // animated directly rather than by a style change: a style change this close to the page's first frame
+  // is sometimes skipped by the browser, and the veil vanished instead of lifting
+  var lift = function () {
+    if (!v.isConnected) put();
+    if (!v.animate) { gone(); return; }
+    var a = v.animate([{opacity: 1}, {opacity: 0}], {duration: 450, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards'});
+    a.onfinish = gone;
+  };
+  setTimeout(gone, 2600);                            // never left over the page
+  // lift once the pictures on the first screen are ready to show, so the page fades in whole rather than
+  // the veil lifting off a blank page and the photographs popping in after (never waits more than 0.7s)
+  var ready = function () {
+    var imgs = [].filter.call(document.images, function (i) { var r = i.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight && r.width > 40; });
+    var done = false, go = function () { if (!done) { done = true; lift(); } };
+    // the browser keeps the old page on screen until the new one first draws real content; start lifting
+    // only after that, or the fade runs where no one can see it
+    var drawn = new Promise(function (res) {
+      try {
+        if (performance.getEntriesByName('first-contentful-paint').length) return res();
+        new PerformanceObserver(function (l) { if (l.getEntriesByName('first-contentful-paint').length) res(); }).observe({type: 'paint', buffered: true});
+      } catch (e) { res(); }
+    });
+    Promise.all([drawn].concat(imgs.map(function (i) { return (i.decode ? i.decode() : Promise.resolve()).catch(function () {}); }))).then(go);
+    setTimeout(go, 900);
+  };
+  if (document.readyState !== 'loading') ready(); else document.addEventListener('DOMContentLoaded', ready);
+})();
+// arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
+// or its first frame shows the dark film for an instant before the jump
+// a refresh starts at the top, decided here in the head so Safari never paints the old scroll spot (or a #pieces jump) first
+(function () { try { var n = performance.getEntriesByType('navigation')[0];
+  if (n && n.type === 'reload') { history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
+} catch (e) {} })();
+(function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
+// reached from the mobile drawer: open already pushed aside, with the drawer over the page
+(function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
+  document.documentElement.classList.add('menu-arriving');
+  document.documentElement.classList.add('intro-wait');          // the page's own intro waits until the drawer has gone (site.js lifts this)
+  var x = JSON.parse(sessionStorage.getItem('macon-x') || 'null');          // the X stays exactly where it was on the page just left
+  if (x && x.l) { var st = document.createElement('style'); st.textContent = 'html .menu-sheet .menu-close{left:' + x.l + ';top:' + x.t + ';height:' + x.h + '}'; document.head.appendChild(st); }
+} } catch (e) {} })();
+</script>
+<meta name="facebook-domain-verification" content="ae0yp3uhbruy2um27iahgcmha7bnph">
+<script>
+(function () {
+  window.maconTrack = function () {};
+  // the home grid photo test (desktop only): linen (as now), grey or clay. The same draw the grid makes.
+  window.MACON_PHOTO_TEST_ON = false;          // the whole test is off until clay is ready; flip to true to start it
+  window.MACON_CLAY_READY = false;          // flip to true once every piece has a clay photo in img/ab-clay
+  window.maconPhotoTest = function () {
+    if (!window.MACON_PHOTO_TEST_ON) return 'off';
+    if (!matchMedia('(min-width:1024px) and (hover:hover) and (pointer:fine)').matches) return 'not-desktop';          // desktops only: no phones, no tablets
+    var sides = ['linen', 'grey'].concat(window.MACON_CLAY_READY ? ['clay'] : []);
+    var v = null; try { v = localStorage.getItem('macon-photo-test'); } catch (e) {}
+    if (sides.indexOf(v) < 0) { v = sides[Math.floor(Math.random() * sides.length)]; try { localStorage.setItem('macon-photo-test', v); } catch (e) {} }
+    return v;
+  };
+  if (!/(^|\.)studiomacon\.co$/.test(location.hostname)) return;          // the real site only
+  // Meta's and Google's scripts (about 250 KB) wait until the page has finished loading, so on a slow
+  // phone they don't compete with the film and the logo. Calls made before then queue up and are sent
+  // when they arrive; Meta also hears every page view from our own server (worker /_e) regardless.
+  // On a slow phone even "after loading" is too soon: they would still run while the first screen is being
+  // drawn. So they wait for the visitor's first scroll, tap or key, or four seconds after loading, whichever
+  // comes first. Only a visit that leaves within those seconds, untouched, goes uncounted by Google.
+  var queued = [], started = false;
+  var start = function () {
+    if (started) return; started = true;
+    ['scroll', 'pointerdown', 'touchstart', 'keydown'].forEach(function (t) { removeEventListener(t, start, true); });
+    queued.forEach(function (fn) { fn(); });
+  };
+  ['scroll', 'pointerdown', 'touchstart', 'keydown'].forEach(function (t) { addEventListener(t, start, {capture: true, passive: true}); });
+  var afterLoad = function () { setTimeout(start, 4000); };
+  if (document.readyState === 'complete') afterLoad(); else addEventListener('load', afterLoad, {once: true});
+  var later = function (fn) { if (started) fn(); else queued.push(fn); };
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
+  s=b.getElementsByTagName(e)[0];later(function(){s.parentNode.insertBefore(t,s)})}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  // An email address, scrambled beyond recovery, lets Meta match an event to a person.
+  // Without it a visitor is only a cookie, which often fails: match quality sat at 4.4/10.
+  var PIXEL = '501136812574699';
+  window.maconIdentify = function (email) {
+    try {
+      email = String(email || '').trim().toLowerCase();
+      if (!email || !crypto.subtle) return;
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(email)).then(function (buf) {
+        var hex = [].map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+        try { localStorage.setItem('macon-em', hex); } catch (e) {}
+        fbq('init', PIXEL, {em: hex});          // from here on, every event carries it
+      }).catch(function () {});
+    } catch (e) {}
+  };
+  var known = null;
+  try { known = localStorage.getItem('macon-em'); } catch (e) {}
+  if (known) fbq('init', PIXEL, {em: known}); else fbq('init', PIXEL);
+
+  // A click id only reaches Shopify if we carry it there ourselves: the cookie it becomes
+  // belongs to this domain, and checkout happens on another.
+  try {
+    var q = new URLSearchParams(location.search), keep = {};
+    if (q.get('fbclid')) keep.fbclid = q.get('fbclid');
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function (k) { if (q.get(k)) keep[k] = q.get(k); });
+    if (Object.keys(keep).length) sessionStorage.setItem('macon-click', JSON.stringify(keep));
+  } catch (e) {}
+
+  // The same event, twice: once from the browser, once from our own server, sharing an id
+  // so Meta counts it once. Browser events alone are lost to blockers and ITP; that gap is
+  // what Meta reports as event coverage.
+  var eid = function () {
+    try { if (crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  };
+  var relay = function (name, id, custom) {
+    try {
+      fetch('/_e', {
+        method: 'POST', keepalive: true, credentials: 'same-origin',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ev: name, id: id, url: location.href, em: known || null, custom: custom || {}})
+      }).catch(function () {});
+    } catch (e) {}
+  };
+  window.maconSend = function (name, params, custom) {
+    var id = eid();
+    fbq('track', name, params || {}, {eventID: id});          // eventID, not event_id: the browser key
+    relay(name, id, custom || params || {});
+  };
+
+  maconSend('PageView', {});
+  var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=G-B5GNGQ1WME'; later(function () { document.head.appendChild(g); });
+  window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
+  gtag('js', new Date());
+  try {          // the bag A/B test: which side this visitor is on, the same draw site.js makes
+    var bt = 'phone';          // phones always get the full bag page, so they stay out of the comparison
+    if (matchMedia('(min-width:768px)').matches) {
+      bt = localStorage.getItem('macon-bag-test');
+      if (bt !== 'drawer' && bt !== 'page') { bt = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', bt); }
+    }
+    gtag('set', 'user_properties', {bag_test: bt, photo_test: maconPhotoTest()});
+  } catch (e) {}
+  gtag('config', 'G-B5GNGQ1WME'); gtag('config', 'AW-16466703173');
+  var ITEMS = {"53985362870637":"shopify_US_15222550331757_53985362870637","53985363001709":"shopify_US_15222550462829_53985363001709","53985363067245":"shopify_US_15222550528365_53985363067245","53985363263853":"shopify_US_15222550659437_53985363263853","53985363329389":"shopify_US_15222550724973_53985363329389","53985363427693":"shopify_US_15222550823277_53985363427693","53985363525997":"shopify_US_15222550921581_53985363525997","53985363558765":"shopify_US_15222550921581_53985363558765","53985363591533":"shopify_US_15222550921581_53985363591533","53985363624301":"shopify_US_15222550921581_53985363624301","53985363657069":"shopify_US_15222550921581_53985363657069","53985363689837":"shopify_US_15222550921581_53985363689837","53985363722605":"shopify_US_15222550921581_53985363722605","53985363755373":"shopify_US_15222550921581_53985363755373","53985363788141":"shopify_US_15222550921581_53985363788141","53985363820909":"shopify_US_15222550921581_53985363820909","53985363853677":"shopify_US_15222550921581_53985363853677","53985363886445":"shopify_US_15222550921581_53985363886445","53985363984749":"shopify_US_15222550987117_53985363984749","53985364083053":"shopify_US_15222551118189_53985364083053","53985364115821":"shopify_US_15222551118189_53985364115821","53985364148589":"shopify_US_15222551118189_53985364148589","53985364181357":"shopify_US_15222551118189_53985364181357","53985364214125":"shopify_US_15222551118189_53985364214125","53985364246893":"shopify_US_15222551118189_53985364246893","53985364279661":"shopify_US_15222551118189_53985364279661","53985364312429":"shopify_US_15222551118189_53985364312429","53985364345197":"shopify_US_15222551118189_53985364345197","53985364377965":"shopify_US_15222551118189_53985364377965","53985364410733":"shopify_US_15222551118189_53985364410733","53985364443501":"shopify_US_15222551118189_53985364443501","53985364509037":"shopify_US_15222551183725_53985364509037","53985364541805":"shopify_US_15222551183725_53985364541805","53985364574573":"shopify_US_15222551183725_53985364574573","53985364607341":"shopify_US_15222551183725_53985364607341","53985364640109":"shopify_US_15222551183725_53985364640109","53985364672877":"shopify_US_15222551183725_53985364672877","53985364705645":"shopify_US_15222551183725_53985364705645","53985364738413":"shopify_US_15222551183725_53985364738413","53985365131629":"shopify_US_15222551249261_53985365131629","53985365164397":"shopify_US_15222551249261_53985365164397","53985365197165":"shopify_US_15222551249261_53985365197165","53985365229933":"shopify_US_15222551249261_53985365229933","53985365262701":"shopify_US_15222551249261_53985365262701","53985365295469":"shopify_US_15222551249261_53985365295469","53985365328237":"shopify_US_15222551249261_53985365328237","53985365361005":"shopify_US_15222551249261_53985365361005","53985365393773":"shopify_US_15222551249261_53985365393773","53985365426541":"shopify_US_15222551249261_53985365426541","53985365459309":"shopify_US_15222551249261_53985365459309","53985365492077":"shopify_US_15222551249261_53985365492077","53985365590381":"shopify_US_15222551347565_53985365590381","53985365655917":"shopify_US_15222551413101_53985365655917","53985365819757":"shopify_US_15222551576941_53985365819757","53985365885293":"shopify_US_15222551642477_53985365885293","53985365950829":"shopify_US_15222551708013_53985365950829","53985365983597":"shopify_US_15222551708013_53985365983597","53985366016365":"shopify_US_15222551708013_53985366016365","53985366049133":"shopify_US_15222551708013_53985366049133","53985366081901":"shopify_US_15222551708013_53985366081901","53985366114669":"shopify_US_15222551708013_53985366114669","53985366147437":"shopify_US_15222551708013_53985366147437","53985366180205":"shopify_US_15222551708013_53985366180205","53985366212973":"shopify_US_15222551708013_53985366212973","53985366245741":"shopify_US_15222551708013_53985366245741","53985366278509":"shopify_US_15222551708013_53985366278509","53985366311277":"shopify_US_15222551708013_53985366311277","53985366409581":"shopify_US_15222551806317_53985366409581","53985373192557":"shopify_US_15222557737325_53985373192557","53985373225325":"shopify_US_15222557737325_53985373225325"};                                     // Shopify variant id -> catalog id
+  var idOf = function (v) { v = String(v || '').split('/').pop(); return ITEMS[v] || v; };
+  window.maconTrack = function (kind, x) {
+    try {
+      var list = [].concat(x || []), ids = list.map(function (i) { return idOf(i.variant); });
+      var value = list.reduce(function (n, i) { return n + (i.price || 0) * (i.qty || 1); }, 0);
+      var g4 = list.map(function (i) { return {item_id: idOf(i.variant), item_name: i.name || i.slug, price: i.price, quantity: i.qty || 1}; });
+      if (kind === 'signup') { if (window.maconIdentify) maconIdentify(x); return; }
+      if (kind === 'view') { maconSend('ViewContent', {content_ids: ids, content_type: 'product', content_name: list[0].name, value: value, currency: 'USD'});
+                             gtag('event', 'view_item', {currency: 'USD', value: value, items: g4}); }
+      if (kind === 'add') { maconSend('AddToCart', {content_ids: ids, content_type: 'product', value: value, currency: 'USD'});
+                            gtag('event', 'add_to_cart', {currency: 'USD', value: value, items: g4}); }
+      // Shopify's own checkout fires InitiateCheckout with an id Meta can deduplicate against.
+      // Ours carried no id, so the two could never be matched and checkouts counted twice.
+      if (kind === 'checkout') { gtag('event', 'begin_checkout', {currency: 'USD', value: value, items: g4}); }
+      if (kind === 'lead') { maconSend('Contact', {}); gtag('event', 'generate_lead', {form: x}); }
+    } catch (e) {}
+  };
+})();
+</script>
+</head>
+<body class="white-right" data-slug="chrysalis">
+
+
+<nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping <br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><p class="menu-legal"><a class="hover-line" href="privacy.html">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="terms.html">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="refunds.html">Refunds</a></p></nav>
+<header class="head">
+  <div class="left">
+    <a href="#" class="mob hover-line">Menu</a>
+    <a href="index.html#pieces" class="desk hover-line">Shop</a>
+    <a href="custom.html" class="desk hover-line">Custom</a>
+    <a href="story.html" class="desk hover-line">About</a>
+  </div>
+  <a class="logotype" href="index.html#pieces" aria-label="Studio Maçon"></a>
+  <div class="right"><a href="#">Bag (0)</a></div>
+</header>
+
+<main>
+  <section class="product">
+    <div class="gallery" data-under-nav>
+      <figure class="hero"><img width="3328" height="4160" src="img/chrysalis/terracotta.jpg.webp" alt="Chrysalis" fetchpriority="high"></figure>
+      
+    </div>
+    <script>
+  addEventListener('scroll', function () { document.documentElement.classList.add('moved'); }, {once: true, passive: true});
+  // built right here, before the page is first drawn, so adding it never shifts the page
+  // Phones: a strip of thumbnails under the main image; tapping one shows that picture or film in its place
+  (function () {
+    var gallery = document.querySelector('.gallery'), hero = gallery.querySelector('.hero');
+    var figs = [].slice.call(gallery.querySelectorAll('figure'));
+    if (figs.length > 5) figs = figs.slice(0, -2);          // long galleries: the last two pictures stay off the strip
+    if (figs.length < 2) return;
+    // every picture lives in one track that slides sideways: swapping the hero's contents
+    // meant the old picture vanished for a frame before the new one painted, which read as a flash
+    var track = document.createElement('div');
+    track.className = 'shots';
+    figs.forEach(function (f, i) {
+      var media = f.querySelector('img, video'); if (!media) return;
+      var slide = document.createElement('div'); slide.className = 'shot';
+      var copy = media.cloneNode(true);
+      if (copy.tagName === 'IMG') {
+        copy.loading = 'eager';          // a slide sitting off to the side still counts as hidden, so a lazy
+        copy.decoding = 'async';         // picture only began loading as it arrived: that was the white flash
+        if (i) copy.setAttribute('fetchpriority', 'low');
+      }
+      slide.appendChild(copy);
+      track.appendChild(slide);
+    });
+    hero.innerHTML = ''; hero.appendChild(track);
+    // loading a picture is not the same as being ready to paint it: without this the first
+    // slide in each direction decoded as it arrived, which is the flash that only happens once
+    [].forEach.call(track.querySelectorAll('img'), function (im) {
+      if (im.decode) im.decode().catch(function () {});
+    });
+
+    var at = 0;
+    var strip = document.createElement('div');
+    strip.className = 'thumbs'; strip.setAttribute('aria-label', 'More pictures');
+    figs.forEach(function (f, i) {
+      var media = f.querySelector('img, video'); if (!media) return;
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Picture ' + (i + 1));
+      var t = document.createElement('img'); t.alt = ''; t.loading = 'lazy';
+      t.src = media.tagName === 'VIDEO' ? media.getAttribute('poster') : media.getAttribute('src').replace(/\.(jpe?g|png)\.webp$/, '--tile.$1.webp');          // the light grid copy
+      t.onerror = function () { t.onerror = null; t.src = media.getAttribute('src'); };
+      b.appendChild(t); b.style.setProperty('--i', i); if (i === 0) b.classList.add('on');
+      b.addEventListener('click', function () { go(i); });
+      strip.appendChild(b);
+    });
+    hero.after(strip);
+
+    function go(i) {
+      i = Math.max(0, Math.min(track.children.length - 1, i));
+      if (track.style.transition) { track.style.transition = ''; void track.offsetWidth; }          // after a swipe: the slide is registered before it moves, or Safari skips a frame (the flicker)
+      track.style.transform = 'translate3d(' + (-i * 100) + '%,0,0)';
+      if (i === at) return;
+      at = i;
+      [].forEach.call(track.children, function (sl, n) {          // only the picture on screen plays
+        var v = sl.querySelector('video'); if (!v) return;
+        if (n === i) { v.muted = true; v.play().catch(function () {}); } else { v.pause(); }
+      });
+      [].forEach.call(strip.children, function (x, n) { x.classList.toggle('on', n === i); });
+    }
+
+    // a thumb drags the pictures sideways; let go past a fifth of the width, or flick, to turn
+    var x0, y0, t0, dx, sideways;
+    hero.addEventListener('touchstart', function (e) {
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; t0 = Date.now(); dx = 0; sideways = null;
+    }, { passive: true });
+    hero.addEventListener('touchmove', function (e) {
+      if (x0 == null) return;
+      dx = e.touches[0].clientX - x0;
+      var dy = e.touches[0].clientY - y0;
+      if (sideways === null && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) sideways = Math.abs(dx) > Math.abs(dy);
+      if (!sideways) return;
+      e.preventDefault();          // a sideways drag moves the pictures, not the page
+      var edge = (at === 0 && dx > 0) || (at === track.children.length - 1 && dx < 0);
+      track.style.transition = 'none';
+      track.style.transform = 'translate3d(calc(' + (-at * 100) + '% + ' + (edge ? dx / 3 : dx) + 'px),0,0)';
+    }, { passive: false });
+    hero.addEventListener('touchend', function () {
+      if (sideways) {
+        var w = hero.offsetWidth, fast = Math.abs(dx) > 30 && Date.now() - t0 < 250;
+        go(Math.abs(dx) > w / 5 || fast ? at + (dx < 0 ? 1 : -1) : at);
+      }
+      x0 = null;
+    });
+    hero.style.touchAction = 'pan-y';
+  })();
+    </script>
+
+    <div class="info">
+      <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>
+      <p class="eyebrow" data-edit="eyebrow">Keeper of Becoming</p>
+      <h1 data-edit="name">Chrysalis</h1>
+      <p class="price" data-edit="price"><span class="amt">$220</span><span class="ship-free">Free shipping</span></p>
+      
+      <div class="buy" id="bag" data-variant=""><button class="cta">Add to Bag</button><button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">Buy with <svg class="shop-word" viewBox="0 0 101 42" aria-hidden="true" focusable="false"><path d="M12.0288 18.2598C7.97006 17.3793 6.16191 17.0348 6.16191 15.4708C6.16191 13.9997 7.38555 13.2669 9.83283 13.2669C11.9851 13.2669 13.5584 14.2075 14.7165 16.0504C14.8039 16.1926 14.9841 16.2418 15.1316 16.1653L19.6984 13.8575C19.8623 13.7755 19.9224 13.5677 19.8295 13.4091C17.934 10.1224 14.4324 8.32324 9.82191 8.32324C3.76379 8.32324 0 11.3091 0 16.0559C0 21.098 4.58319 22.3722 8.64743 23.2527C12.7117 24.1331 14.5253 24.4776 14.5253 26.0417C14.5253 27.6057 13.2033 28.344 10.5648 28.344C8.12848 28.344 6.32033 27.2284 5.22779 25.0628C5.14585 24.9042 4.95466 24.8386 4.79624 24.9206L0.240358 27.1791C0.0819403 27.2612 0.0163881 27.4526 0.0983284 27.6166C1.90648 31.2533 5.61564 33.2986 10.5703 33.2986C16.8797 33.2986 20.6927 30.3619 20.6927 25.4675C20.6927 20.573 16.0876 19.1512 12.0288 18.2707V18.2598Z"/><path d="M36.5018 8.32341C33.9125 8.32341 31.6236 9.24214 29.9794 10.8773C29.8756 10.9757 29.7062 10.9046 29.7062 10.7624V0.322772C29.7062 0.142307 29.5642 0.00012207 29.3839 0.00012207H23.67C23.4897 0.00012207 23.3477 0.142307 23.3477 0.322772V32.7245C23.3477 32.905 23.4897 33.0472 23.67 33.0472H29.3839C29.5642 33.0472 29.7062 32.905 29.7062 32.7245V18.5115C29.7062 15.7662 31.8094 13.6608 34.6445 13.6608C37.4796 13.6608 39.5336 15.7225 39.5336 18.5115V32.7245C39.5336 32.905 39.6756 33.0472 39.8559 33.0472H45.5699C45.7501 33.0472 45.8922 32.905 45.8922 32.7245V18.5115C45.8922 12.5397 41.9809 8.32887 36.5018 8.32887V8.32341Z"/><path d="M57.4962 7.39915C54.3934 7.39915 51.4764 8.34522 49.3896 9.71785C49.2476 9.81082 49.1984 10.0022 49.2858 10.1499L51.8041 14.4537C51.897 14.6068 52.0937 14.6615 52.2466 14.5685C53.8308 13.6115 55.6444 13.1139 57.4962 13.1248C62.4837 13.1248 66.1491 16.6466 66.1491 21.3005C66.1491 25.2652 63.2157 28.2019 59.4956 28.2019C56.4638 28.2019 54.3607 26.4355 54.3607 23.9418C54.3607 22.5145 54.967 21.3442 56.5457 20.5184C56.7096 20.4309 56.7697 20.2286 56.6714 20.07L54.2951 16.0451C54.2186 15.9138 54.0548 15.8537 53.9073 15.9084C50.7225 17.0896 48.4883 19.9333 48.4883 23.7504C48.4883 29.5253 53.0824 33.8346 59.4901 33.8346C66.974 33.8346 72.3548 28.6448 72.3548 21.202C72.3548 13.2233 66.0945 7.39368 57.4853 7.39368L57.4962 7.39915Z"/><path d="M89.0635 8.27964C86.1738 8.27964 83.5954 9.34603 81.7108 11.2272C81.607 11.3311 81.4376 11.2546 81.4376 11.1124V8.84838C81.4376 8.66791 81.2956 8.52573 81.1153 8.52573H75.5489C75.3686 8.52573 75.2266 8.66791 75.2266 8.84838V41.2009C75.2266 41.3814 75.3686 41.5236 75.5489 41.5236H81.2628C81.4431 41.5236 81.5851 41.3814 81.5851 41.2009V30.5917C81.5851 30.4495 81.7545 30.3784 81.8583 30.4714C83.7374 32.2214 86.2229 33.244 89.069 33.244C95.7717 33.244 101 27.8137 101 20.7591C101 13.7045 95.7663 8.27417 89.069 8.27417L89.0635 8.27964ZM87.9874 27.7644C84.1744 27.7644 81.2847 24.7293 81.2847 20.7153C81.2847 16.7014 84.169 13.6663 87.9874 13.6663C91.8058 13.6663 94.6846 16.6521 94.6846 20.7153C94.6846 24.7786 91.844 27.7644 87.9819 27.7644H87.9874Z"/></svg></button></div>
+      <div class="desc-block"><p class="desc" data-edit="description">Carved as the emblem of In Her Own Right, a book giving women artists the light history kept from them. Its wings stay folded, holding the quiet moment before a change.</p></div>
+      <div class="acc">
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Dimensions</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><dl><dd class="lone">44 × 20 × 16 mm</dd></dl></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Materials</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Solid bronze</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Gifting</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Check <em>Add gift wrapping</em> in your bag and we’ll wrap it up with an extra flourish, and write out your note by hand. Add the gift receiver’s address at checkout and it goes straight to them. If it isn’t quite right, they can return it within 30 days for store credit.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Shipping &amp; Returns</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p class="keep-para">Each piece is made to order; please allow up to 10 business days before it ships. Shipping is free on all orders within the continental US, and every order arrives in a special box, wrapped with care.</p><p>Pieces in original condition may be returned within 30 days of delivery for store credit. If a piece doesn't fit, we'll gladly help you find the right size.</p><p class="intl-note">Shipping abroad: prices are shown in US dollars. Duties and import taxes are included at checkout, so nothing more is due on arrival.</p><p>If it arrives and is not quite right, we will gladly exchange it within 30 days: write to <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>.</p><p class="acc-more"><a href="shipping.html">Full details</a></p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Care</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Bronze changes with handling and the air it lives in, so no two age alike. To brighten the golden head, rub it gently with a soft cloth and a little metal polish, keeping clear of the darker body.</p></div></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="related" aria-label="Other pieces"><p class="eyebrow">Found Together</p><h2 class="stamped">Kindred<br>Spirits<img width="520" height="520" class="stamp" src="img/provenance-stamp.png.webp" alt="" aria-hidden="true" loading="lazy" data-no-emerge></h2><div class="rel-three"><a class="rel-piece" href="pip.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/pip--tile.webp" style="object-position:41.7% 54.8%;transform-origin:41.7% 54.8%;transform:scale(1.374)" alt="Pip" loading="lazy"><img class="held" src="img/pip/hand-match.jpg.webp?v=1790471328" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Pip</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="rebi.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/rebi--tile.webp" style="object-position:55.1% 20.7%;transform-origin:55.1% 20.7%;transform:scale(1.152)" alt="Rebi" loading="lazy"><img class="held" src="img/rebi/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Rebi</span><span class="rel-cost">$200</span></a><a class="rel-piece" href="ren.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/ren--tile.webp" style="object-position:49.5% 50.1%;transform-origin:49.5% 50.1%;transform:scale(1.344)" alt="Ren" loading="lazy"><img class="held" src="img/ren/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Ren</span><span class="rel-cost">$240</span></a></div><div class="rel-swipe"><a class="rel-piece" href="pip.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/pip--tile.webp" style="object-position:41.7% 54.8%;transform-origin:41.7% 54.8%;transform:scale(1.374)" alt="Pip" loading="lazy"><img class="held" src="img/pip/hand-match.jpg.webp?v=1790471328" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Pip</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="rebi.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/rebi--tile.webp" style="object-position:55.1% 20.7%;transform-origin:55.1% 20.7%;transform:scale(1.152)" alt="Rebi" loading="lazy"><img class="held" src="img/rebi/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Rebi</span><span class="rel-cost">$200</span></a><a class="rel-piece" href="ren.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/ren--tile.webp" style="object-position:49.5% 50.1%;transform-origin:49.5% 50.1%;transform:scale(1.344)" alt="Ren" loading="lazy"><img class="held" src="img/ren/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Ren</span><span class="rel-cost">$240</span></a><a class="rel-piece" href="zuma.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/zuma--tile.webp" style="object-position:33.9% 66.6%;transform-origin:33.9% 66.6%;transform:scale(1.18)" alt="Zuma" loading="lazy"><img class="held" src="img/zuma/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Zuma</span><span class="rel-cost">$200</span></a><a class="rel-piece" href="ori.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/ori--tile.webp" style="object-position:57.9% 0%;transform-origin:57.9% 0%;transform:scale(1.056)" alt="Ori" loading="lazy"><img class="held" src="img/ori/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Ori</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="yael.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/yael--tile.webp" style="object-position:42% 56.8%;transform-origin:42% 56.8%;transform:scale(1.413)" alt="Yael" loading="lazy"><img class="held" src="img/yael/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Yael</span><span class="rel-cost">$180</span></a></div><div class="rel-loop" data-centre="4"><div class="rel-track"><a class="rel-piece" href="ibi.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/ibi--tile.webp" style="object-position:50% 42.3%;transform-origin:50% 42.3%;transform:scale(1.271)" alt="Ibi" loading="lazy"><img class="held" src="img/ibi/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Ibi</span><span class="rel-cost">$180</span></a><a class="rel-piece" href="milo.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/milo--tile.webp" style="object-position:60.2% 53.7%;transform-origin:60.2% 53.7%;transform:scale(1.139)" alt="Milo" loading="lazy"><img class="held" src="img/milo/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Milo</span><span class="rel-cost">$180</span></a><a class="rel-piece" href="ori.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/ori--tile.webp" style="object-position:57.9% 0%;transform-origin:57.9% 0%;transform:scale(1.056)" alt="Ori" loading="lazy"><img class="held" src="img/ori/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Ori</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="rebi.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/rebi--tile.webp" style="object-position:55.1% 20.7%;transform-origin:55.1% 20.7%;transform:scale(1.152)" alt="Rebi" loading="lazy"><img class="held" src="img/rebi/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Rebi</span><span class="rel-cost">$200</span></a><a class="rel-piece" href="pip.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/pip--tile.webp" style="object-position:41.7% 54.8%;transform-origin:41.7% 54.8%;transform:scale(1.374)" alt="Pip" loading="lazy"><img class="held" src="img/pip/hand-match.jpg.webp?v=1790471328" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Pip</span><span class="rel-cost">$220</span></a><a class="rel-piece" href="ren.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/ren--tile.webp" style="object-position:49.5% 50.1%;transform-origin:49.5% 50.1%;transform:scale(1.344)" alt="Ren" loading="lazy"><img class="held" src="img/ren/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Ren</span><span class="rel-cost">$240</span></a><a class="rel-piece" href="zuma.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/zuma--tile.webp" style="object-position:33.9% 66.6%;transform-origin:33.9% 66.6%;transform:scale(1.18)" alt="Zuma" loading="lazy"><img class="held" src="img/zuma/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Zuma</span><span class="rel-cost">$200</span></a><a class="rel-piece" href="yael.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/yael--tile.webp" style="object-position:42% 56.8%;transform-origin:42% 56.8%;transform:scale(1.413)" alt="Yael" loading="lazy"><img class="held" src="img/yael/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Yael</span><span class="rel-cost">$180</span></a><a class="rel-piece" href="eleph.html"><span class="rel-hit"><span class="rel-frame"><img src="img/ab-clay/eleph--tile.webp" style="object-position:50% 50%;transform-origin:50% 50%;transform:scale(1.427)" alt="Eleph" loading="lazy"><img class="held" src="img/eleph/hand-match.jpg.webp?v=1790471329" alt="" aria-hidden="true" loading="lazy"></span></span><span class="rel-name">Eleph</span><span class="rel-cost">$200</span></a></div></div></section>
+  <script>
+  // the stamp presses down once the heading it sits on is in view, as on the home page
+  (function () {
+    var stamp = document.querySelector('.related .stamp'); if (!stamp) return;
+    var press = function () { stamp.classList.add('on'); };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return press();
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      io.disconnect(); setTimeout(press, 500);
+    }, {threshold: 0.9});
+    io.observe(stamp.closest('h2'));
+  })();
+  </script>
+
+  <!-- lore and making blocks, parked for now
+  <section class="closing">
+    <p class="chunk" data-edit="lore">It began on the cover of In Her Own Right, a book about women painters, sculptors and makers written back into the record after centuries in the margins. The folded wings were the book&#x27;s promise: that what looks still is often only waiting. Those who keep one on a desk say it is good company for unfinished work.</p>
+    <p class="chunk" data-edit="made">Each piece is made to order. It begins as a sketch on paper, is carved by hand in wax, and passes through a local foundry before being refined and polished at the bench. Allow up to two weeks for yours to take shape.</p>
+  </section>
+  -->
+</main>
+
+<footer>
+  <div class="brand">
+    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
+    <p class="fine">Artifacts of Love,<br>Made to Order</p>
+  </div>
+  <div class="middle">
+  <nav class="links">
+    <a class="hover-line" href="story.html">About</a>
+    <a class="hover-line" href="custom.html">Custom</a>
+    <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
+    <a class="hover-line" href="inspiration.html">Inspiration</a>
+    <a class="hover-line" href="contact.html">Contact</a>
+  </nav>
+  </div>
+  <div class="news">
+    <p>Subscribe to hear about new pieces before anyone else.</p>
+    <form class="field" data-newsletter>
+      <input type="email" placeholder="Email address" aria-label="Email address" required>
+      <button>Submit</button>
+    </form>
+  </div>
+</footer>
+
+<button class="dock" id="dock" aria-label="Add to Bag, $220"><span>Add to Bag</span><span>$220</span></button>
+
+<script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581", "subscribeUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/subscribe"};</script>
+<script>
+addEventListener('load', function () { document.documentElement.classList.add('late-font'); });          // the footer's pencil font, after first paint
+  // ?case shows the shop set in title case rather than capitals. Local look-see only.
+  if (/[?&]case\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () { document.body.classList.add('title-case'); });
+
+  (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
+  // A refresh always starts at the top of the page; Back and Forward still return to where you were
+  (function () {
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    if (nav && nav.type === 'reload') {
+      history.scrollRestoration = 'manual';
+      scrollTo(0, 0);
+      addEventListener('load', function () { scrollTo(0, 0); });
+    }
+    addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
+  })();
+
+  // Once the page has moved, a white fade sits behind the header and the nav turns black (site.css, .head::before)
+  (function () {
+    var root = document.documentElement, on = false;
+    // on the home page it waits until the film has scrolled away: over the film the nav stays white, with no fade
+    var film = document.querySelector('.film');
+    function check() {
+      var now = film ? film.getBoundingClientRect().bottom - 90 <= 0 : scrollY > 24;
+      if (now !== on) { on = now; root.classList.toggle('past-top', on); }
+    }
+    addEventListener('scroll', check, {passive: true}); check();
+  })();
+
+  // The eye in the nav blinks now and then: every 5-10s at random, mostly a blink, sometimes a look around.
+  // (On the home page the same element is the big logotype until it has faded; the CSS keeps it still then.)
+  (function () {
+    var eye = document.querySelector('.head .logotype');
+    if (!eye || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    eye.addEventListener('animationend', function () { eye.classList.remove('eye-blink', 'eye-look'); });
+    function look() { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add('eye-look'); }
+    // it looks around once when it first appears (on the home page, once the intro has faded), and whenever it is hovered
+    var home = document.querySelector('.film');
+    if (!home) setTimeout(look, 600);
+    else new MutationObserver(function (m, o) { if (document.body.classList.contains('logo-docked')) { o.disconnect(); setTimeout(look, 700); } })
+      .observe(document.body, {attributes: true, attributeFilter: ['class']});
+    if (matchMedia('(hover:hover)').matches)          // a mouse only: on touch, a look on first tap swallowed the tap itself
+      eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
+    // The blink repaints the logotype's sprite, and a browser counts that as the page's largest paint
+    // arriving 10s in - the number Google scores the page on - even though everything is on screen in
+    // one second. That measurement is sealed at the visitor's first touch, so the eye waits for it.
+    var blinking = false;
+    function startBlinking() {
+      if (blinking) return;
+      blinking = true;
+      (function next() {
+        setTimeout(function () {
+          if (!document.hidden) { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add(Math.random() < 0.25 ? 'eye-look' : 'eye-blink'); }
+          next();
+        }, 5000 + Math.random() * 5000);
+      })();
+    }
+    ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
+      addEventListener(ev, startBlinking, {once: true, passive: true});
+    });
+  })();
+
+  // Free shipping notice: shows once the first screen is behind you, so it never covers the
+  // film or a product's opening photograph. Dismissing it keeps it away for the rest of the visit.
+  (function () {
+    var bar = document.querySelector('.ship-bar');
+    if (!bar) return;
+    var gone = false;
+    try { gone = sessionStorage.getItem('macon-ship-hide') === '1'; } catch (e) {}
+    if (gone) { bar.remove(); return; }
+
+    // it arrives with the page rather than waiting for the first screen to pass
+    var past = function () { return true; };
+    // Once it has arrived it stays: scrolling back up to the hero should not take it away again.
+    var sync = function () {
+      if (!past()) return;
+      document.body.classList.add('ship-on');
+      removeEventListener('scroll', sync);
+      removeEventListener('resize', sync);
+    };
+    addEventListener('scroll', sync, {passive: true});
+    addEventListener('resize', sync, {passive: true});
+    sync();
+
+    bar.querySelector('.ship-x').addEventListener('click', function () {
+      document.body.classList.remove('ship-on');
+      try { sessionStorage.setItem('macon-ship-hide', '1'); } catch (e) {}
+      setTimeout(function () { bar.remove(); }, 520);
+      removeEventListener('scroll', sync);
+    });
+  })();
+
+  // Accordions: the height eases through a grid-row transition, so nothing is
+  // measured in script and a panel of any length opens at the same pace.
+  document.querySelectorAll('.acc-head').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var item = b.parentElement, open = !item.classList.contains('open');
+      item.classList.toggle('open', open);
+      b.setAttribute('aria-expanded', open);
+    });
+  });
+
+  // Nav tone: each part of the nav (links, logotype, bag) looks at what is
+  // actually beneath it. Over an image it reads the pixels there; over anything
+  // else, the background colour. Only very light ground keeps the nav black.
+  (function () {
+    var LIGHT = 0.82;                      // "super light": white, pale grey, paper
+    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .logotype, .head .right'));
+    var maps = new WeakMap();
+
+    function lumaOf(r, g, b) { return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }
+
+    function map(img) {                    // a small luminance copy of each image, made once
+      if (maps.has(img)) return maps.get(img);
+      if (!img.complete || !img.naturalWidth) return null;
+      var w = 64, h = Math.max(1, Math.round(64 * img.naturalHeight / img.naturalWidth));
+      var c = document.createElement('canvas'); c.width = w; c.height = h;
+      var x = c.getContext('2d', {willReadFrequently: true});
+      try { x.drawImage(img, 0, 0, w, h); var d = x.getImageData(0, 0, w, h).data; } catch (e) { return null; }
+      var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
+    }
+
+    var lumas = new WeakMap();
+    function bgLuma(el) {                  // first painted background up the tree, else the white page
+      if (el && lumas.has(el)) return lumas.get(el);
+      var v = paintedLuma(el); if (el) lumas.set(el, v); return v;
+    }
+    function paintedLuma(el) {
+      for (; el && el !== document.documentElement; el = el.parentElement) {
+        var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
+        if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
+      }
+      return 1;
+    }
+
+    function lumaAt(px, py) {
+      var stack = document.elementsFromPoint(px, py);
+      for (var i = 0; i < stack.length; i++) {
+        var el = stack[i];
+        if (el.closest('.head')) continue;
+        if (el.tagName === 'VIDEO') return 0;
+        if (el.tagName === 'IMG') {
+          var m = map(el); if (!m) return bgLuma(el);
+          var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
+          var sx = r.width / el.naturalWidth, sy = r.height / el.naturalHeight;
+          if (fit === 'cover') sx = sy = Math.max(sx, sy);
+          else if (fit === 'contain') sx = sy = Math.min(sx, sy);
+          var ox = (r.width - el.naturalWidth * sx) / 2, oy = (r.height - el.naturalHeight * sy) / 2;
+          var u = (px - r.left - ox) / (el.naturalWidth * sx), v = (py - r.top - oy) / (el.naturalHeight * sy);
+          if (u < 0 || u > 1 || v < 0 || v > 1) return bgLuma(el);
+          var tx = Math.min(m.w - 1, Math.floor(u * m.w)), ty = Math.min(m.h - 1, Math.floor(v * m.h));
+          var sum = 0, n = 0, alpha = 0;
+          for (var dy = -1; dy <= 1; dy++) for (var dx = -2; dx <= 2; dx++) {
+            var X = Math.max(0, Math.min(m.w - 1, tx + dx)), Y = Math.max(0, Math.min(m.h - 1, ty + dy)), k = (Y * m.w + X) * 4;
+            sum += lumaOf(m.d[k], m.d[k + 1], m.d[k + 2]) * m.d[k + 3] / 255; alpha += m.d[k + 3] / 255; n++;
+          }
+          // transparent pixels show whatever is behind the picture
+          var under = bgLuma(el.parentElement);
+          return (sum + under * (n - alpha)) / n;
+        }
+        // a gap between pictures in an image grid: hold the current colour until the grid is left
+        if (el.closest('.wall, .examples')) return null;
+        return bgLuma(el);
+      }
+      return 1;
+    }
+
+    var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
+    function tone(force) {
+      queued = false;
+      if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
+      lastY = scrollY;
+      // the whole nav is one unit: read under each part, then colour every part the same
+      var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
+      var grid = null;
+      document.elementsFromPoint(innerWidth / 2, mid).some(function (el) {
+        if (el.closest('.head')) return false;
+        grid = el.closest('.wall, .examples'); return true;
+      });
+      if (grid && held === grid) return;          // over an image grid: keep the colour until the grid has passed
+      held = grid;
+      var dark = 0, counted = 0;
+      parts.forEach(function (p) {
+        var r = p.getBoundingClientRect(); if (!r.width) return;
+        var y = r.top + r.height / 2, l = 1, seen = false;
+        [0.15, 0.5, 0.85].forEach(function (f) {
+          var v = lumaAt(r.left + r.width * f, y);
+          if (v === null) return;
+          seen = true; l = Math.min(l, v);
+        });
+        if (!seen) return;
+        counted++; if (l < LIGHT) dark++;
+      });
+      if (!counted) return;
+      var onDark = dark * 2 > counted;              // most of the nav sits over something dark
+      parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
+    }
+    function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
+    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
+    function fresh() { held = null; lastY = -99; soon(); }
+    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
+    addEventListener('load', fresh);
+    addEventListener('pageshow', fresh);
+    // The first reading can land before the page has settled — the picture under the
+    // nav may not be laid out or decoded yet — and then nothing would look again.
+    // A few more reads over the first half second cost nothing and settle it.
+    [0, 120, 400, 900].forEach(function (ms) { setTimeout(fresh, ms); });
+    // A product page opens on a photograph, so the nav starts white rather than
+    // flicking from black once the picture has decoded.
+    if (document.querySelector('.product .gallery img, .product .gallery video')) {
+      parts.forEach(function (p) { p.classList.add('on-dark'); });
+    }
+    document.querySelectorAll('.product .gallery img').forEach(function (i) {
+      if (i.decode) i.decode().then(fresh).catch(function () {});
+    });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fresh);
+    tone(true);
+  })();
+
+  // Emerge: every image and text block starts hidden and settles into place the
+  // first time about 16% of it is on screen. It never fades back out (toggling
+  // flickered), and anything added later is picked up too.
+  (function () {
+    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
+                 '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
+                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *, .related > :not(.rel-grid), .rel-piece';
+    // side-by-side groups cascade instead of arriving at once
+    var GROUPS = ['.related', '.rel-grid', '.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
+    // coming back (Back button or history) the page simply reappears as it was, with no entrance
+    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
+    var phone = matchMedia('(max-width:767px)').matches;
+    var io = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        io.unobserve(e.target);
+      });
+    }, phone ? {threshold: 0, rootMargin: '0px 0px 18% 0px'}          // phones: start a block just BEFORE it reaches the screen, so
+             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});      // it is already arriving rather than blank when you get there
+    // the footer sits against the page's bottom edge, where the main trigger line
+    // can never be crossed, so it reveals as soon as any of it is on screen
+    var edge = still ? null : new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-seen');
+        edge.unobserve(e.target);
+      });
+    }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
+
+    // photographs on the first screen are simply there when the page arrives: only
+    // words rise in. The two staged illustrations (the box, the hand) keep their entrance.
+    var PICS = '.gallery figure, .split .pics figure, .wall figure, .rel-piece, .steps figure, .childhood figure';
+    var fresh = true;
+    addEventListener('load', function () { setTimeout(function () { fresh = false; }, 0); });
+    // arriving part-way down the page (the Shop link lands on #pieces, or the browser
+    // restores where you were): the window stays open until the first scroll, so blocks
+    // armed a few frames late are caught too
+    var landing = false;
+    addEventListener('load', function () { landing = !!(location.hash || scrollY); });
+    addEventListener('scroll', function () { landing = false; }, {passive: true, once: true});
+    setTimeout(function () { landing = false; }, 2000);
+    function onScreen(el) {
+      var r = el.getBoundingClientRect();
+      return r.top < innerHeight && r.bottom > 0;
+    }
+
+    function alreadyThere(el) {
+      if (!fresh || !el.matches || !el.matches(PICS)) return false;
+      var r = el.getBoundingClientRect();
+      return r.top < innerHeight && r.bottom > 0;
+    }
+
+    // arriving by a link to a spot on the page (Shop lands on #pieces): whatever sits in the screenful
+    // it lands on is never hidden to begin with. Deciding this only after every picture had loaded
+    // left the grid invisible on white for a moment (the flash), then nudged it into place.
+    var anchor = null;
+    try { anchor = location.hash && location.hash.length > 1 ? document.querySelector(location.hash) : null; } catch (err) {}
+    function inLanding(el) {
+      if (!anchor) return false;
+      var top = anchor.getBoundingClientRect().top + scrollY, r = el.getBoundingClientRect(), y = r.top + scrollY;
+      return y < top + innerHeight && y + r.height > top - 40;
+    }
+
+    function arm(root) {
+      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
+        .forEach(function (el) {
+          if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
+          if (alreadyThere(el)) return;                 // a picture waiting on the first screen
+          if (inLanding(el) && !el.closest('.wall')) return;          // on screen where the link lands (the grid's cards still play their entrance)
+          // hide instantly: the transition is for arriving, not for going away
+          el.style.transition = 'none';
+          el.classList.add('dr-emerge');
+          void el.offsetWidth;
+          el.style.transition = '';
+          if (still) { el.classList.add('is-seen'); return; }
+          // the inspiration wall's first screen plays in full on load, even the
+          // pieces only partly in view, so no part of the screen is left empty
+          if (el.closest('.wall, .wall-head') && el.getBoundingClientRect().top < innerHeight) {
+            requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-seen'); }); });
+            return;
+          }
+          // let the hidden state paint first, or blocks already on screen at load
+          // would jump straight to their resting place without animating
+          // (and wait for the stylesheet: until the hidden state has actually taken
+          // effect there is nothing to animate from)
+          var tries = 0;
+          (function ready() {
+            if (getComputedStyle(el).opacity !== '0' && tries++ < 120) return requestAnimationFrame(ready);
+            requestAnimationFrame(function () { (el.closest('footer') ? edge : io).observe(el); });
+          })();
+        });
+    }
+    // arriving part-way down the page (the Shop link lands on #pieces, or the browser
+    // restores where you were): whatever is already on screen is simply there, and the
+    // entrance picks up again only once you scroll on
+    if (!still) addEventListener('load', function () {
+      if (!location.hash && !scrollY) return;
+      (function sweep() {
+        if (!landing) return;
+        document.querySelectorAll('.dr-emerge').forEach(function (el) {
+          if (!onScreen(el) || getComputedStyle(el).opacity === '1' || el.closest('.wall')) return;          // the cards keep their entrance
+          el.style.setProperty('--stagger', '0ms');       // no cascade on a landing, either
+          el.style.transition = 'none';
+          el.classList.add('is-seen');
+          requestAnimationFrame(function () { el.style.transition = ''; });
+        });
+        requestAnimationFrame(sweep);
+      })();
+    });
+
+    // wall pieces cascade by their position in the row, so each row settles left to right
+    // pieces already on screen at load arrive top to bottom, the rest by column
+    document.querySelectorAll('.wall figure').forEach(function (f) {
+      var r = f.getBoundingClientRect();
+      var d = r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 + r.left / innerWidth * 120
+                                  : Math.round(r.left / innerWidth * 4) * 80;
+      f.style.setProperty('--stagger', Math.round(d) + 'ms');
+    });
+    document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
+    GROUPS.forEach(function (g) {
+      document.querySelectorAll(g).forEach(function (group) {
+        // on a phone the whole details column is on screen at once, so a long cascade just
+        // reads as the lower blocks (Field Notes especially) being late
+        var quick = phone && (g === '.info' || g === '.acc');          // accordions too: each row is reached by scrolling, so a long cascade only adds lag
+        var cap = quick ? 2 : 6, step = quick ? 45 : 90;
+        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
+      });
+    });
+    // Also Worth Keeping reads as one block, so the heading, the line under it and
+    // the three pieces arrive in a single run rather than two separate flurries.
+    document.querySelectorAll('.related').forEach(function (rel) {
+      var n = 0;
+      [].slice.call(rel.children).forEach(function (el) {
+        if (el.classList.contains('rel-grid')) {
+          [].slice.call(el.children).forEach(function (tile) { tile.style.setProperty('--stagger', (n++) * 90 + 'ms'); });
+        } else {
+          el.style.setProperty('--stagger', (n++) * 90 + 'ms');
+        }
+      });
+    });
+    addEventListener('scroll', function () { document.documentElement.classList.add('moved'); }, {once: true, passive: true});          // opening-only waits end at the first scroll
+    arm(document);
+    // Anything on the first screen at load plays its entrance even if it sits in the bottom
+    // strip the scroll trigger ignores (it would otherwise wait for a scroll that never comes).
+    if (!still) setTimeout(function () {
+      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
+        if (el.getBoundingClientRect().top - 70 < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
+      });
+    }, 400);
+    // Blocks in the last few pixels of the page can't rise past the trigger
+    // line, so reveal whatever is on screen once the bottom is reached.
+    function atBottom() {
+      if (still || innerHeight + scrollY < document.documentElement.scrollHeight - 2) return;
+      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
+        if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
+      });
+    }
+    addEventListener('scroll', atBottom, {passive: true});
+    // a reload lands back at the old scroll position without necessarily scrolling,
+    // so check once everything has loaded and been armed as well
+    addEventListener('load', function () { setTimeout(atBottom, 80); setTimeout(atBottom, 400); });
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) arm(n); }); });
+    }).observe(document.body, {childList: true, subtree: true});
+  })();
+
+  // A discount carried in a link (?discount=MACON10, as the emails use) is remembered for this visit and applied at checkout
+  (function () {
+    var m = location.search.match(/[?&]discount=([A-Za-z0-9_-]{2,40})/);
+    if (m) try { sessionStorage.setItem('macon-discount', m[1].toUpperCase()); } catch (e) {}
+  })();
+
+  // Checkout: the bag becomes a Shopify cart, then Shopify's own checkout takes over (cards, Apple Pay, Shop Pay, tax, shipping)
+  window.MaconCheckout = function (items, button) {
+    var cfg = window.MACON_SHOP || {};
+    var lines = items.filter(function (i) { return i.variant; }).map(function (i) { return {merchandiseId: i.variant, quantity: i.qty || 1}; });
+    if (!lines.length) {
+      if (button) { button.textContent = 'Please re-add your piece'; setTimeout(function () { button.textContent = button.dataset.label || 'Checkout'; }, 3500); }
+      return Promise.reject(new Error('Nothing to check out'));
+    }
+    if (button && button.disabled) return Promise.resolve();          // a second tap while the first is on its way
+    if (button) button.disabled = true;
+    if (window.maconTrack) maconTrack('checkout', items);
+    if (button) { button.setAttribute('aria-busy', 'true'); button.dataset.label = button.textContent; button.textContent = 'One moment…'; }
+    // coming back from Shopify with the Back button restores this page from memory: make the button usable again
+    if (button) addEventListener('pageshow', function () { button.disabled = false; button.removeAttribute('aria-busy'); if (button.dataset.label) button.textContent = button.dataset.label; }, {once: true});
+    // Shopify's standard cart link: the same checkout, but it counts as an Online Store checkout, which is
+    // what Shopify's own abandoned-checkout emails listen to (checkouts opened through the Storefront API do not)
+    var code = ''; try { code = sessionStorage.getItem('macon-discount') || ''; } catch (e) {}
+    var path = lines.map(function (l) { return l.merchandiseId.split('/').pop() + ':' + l.quantity; }).join(',');
+    var extra = code ? {discount: code} : {};
+    var gift = MaconGift.read();          // lands on the order as "Gift wrap" and "Gift note", which Flow and the staff email read
+    if (gift.wrap) { extra['attributes[Gift wrap]'] = 'Yes'; if (gift.note) extra['attributes[Gift note]'] = gift.note; }
+    location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(extra);
+    // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
+    // pieces still waiting. It is emptied on the thank-you page.
+    return Promise.resolve();
+  };
+
+  // Gift wrap: free, chosen in the bag, remembered for this visit until the order goes through
+  window.MaconGift = {
+    read: function () { try { var g = JSON.parse(localStorage.getItem('macon-gift') || '{}'); return {wrap: !!g.wrap, note: String(g.note || '').slice(0, 200)}; } catch (e) { return {wrap: false, note: ''}; } },
+    write: function (g) { try { localStorage.setItem('macon-gift', JSON.stringify(g)); } catch (e) {} },
+    mount: function (box) {
+      var g = MaconGift.read();
+      box.className = 'gift';
+      box.innerHTML = '<div class="gift-row"><label class="gift-check"><input type="checkbox"><span>Add gift wrapping <em>Free</em></span></label><span class="gift-count" aria-live="polite"></span></div>' +
+        '<div class="gift-more"><div><textarea maxlength="200" rows="3" aria-label="Gift note" placeholder="Write a note and we\u2019ll copy it out by hand on a card (optional)"></textarea></div></div>';
+      var box2 = box.querySelector('input'), note = box.querySelector('textarea');
+      box2.checked = g.wrap; note.value = g.note; box.classList.toggle('on', g.wrap);
+      var count = box.querySelector('.gift-count');
+      function save() { MaconGift.write({wrap: box2.checked, note: note.value.trim()}); box.classList.toggle('on', box2.checked); count.textContent = note.value.length + ' / 200'; }
+      count.textContent = note.value.length + ' / 200';
+      box2.addEventListener('change', function () { save(); document.querySelectorAll('.gift input').forEach(function (x) { if (x !== box2) { x.checked = box2.checked; x.closest('.gift').classList.toggle('on', box2.checked); } }); });
+      note.addEventListener('input', save);
+    }
+  };
+
+  // Enquiries (contact + commission forms) go to the Bureau of Provenance, which emails the studio and replies to the sender
+  window.MaconEnquiry = function (payload) {
+    var url = (window.MACON_SHOP || {}).enquiry;
+    if (!url) return Promise.reject(new Error('no enquiry address'));
+    return fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)})
+      .then(function (r) { if (!r.ok) throw new Error('enquiry failed (' + r.status + ')'); return r.json(); })
+      .then(function (j) { if (window.maconTrack) maconTrack('lead', payload.form); return j; });
+  };
+
+  // Newsletter (footer): subscribes the visitor to Shopify email marketing (see the subscribe function)
+  document.querySelectorAll('form[data-newsletter]').forEach(function (f) {
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var cfg = window.MACON_SHOP || {}, input = f.querySelector('input[type=email]'), email = input.value, btn = f.querySelector('button');
+      if (btn.disabled) return;          // already sending
+      btn.disabled = true; btn.textContent = '…';
+      var done = function () {
+        btn.textContent = "You're on the list"; input.value = '';
+        if (window.maconTrack) maconTrack('signup', email);
+      };
+      // subscribes straight into Shopify, which is what starts Shopify Email's welcome series
+      (cfg.subscribeUrl
+        ? fetch(cfg.subscribeUrl, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email: email})})
+            .then(function (r) { return r.json(); })
+            .then(function (j) { if (!j.ok) throw new Error(j.reason); })
+        : Promise.reject(new Error('no sign-up url')))
+        .then(done)
+        .catch(function () { btn.textContent = 'Try again'; btn.disabled = false; });
+    });
+  });
+
+  // Bag: the pieces live in localStorage so the bag, checkout and every page agree
+  window.MaconBag = (function () {
+    var KEY = 'macon-bag-items';
+    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+    function clean(it) { return {variant: /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(it.variant) ? it.variant : '', slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
+      size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
+    function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
+    function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
+    function add(item) {
+      var items = read();
+      var same = items.filter(function (i) { return i.slug === item.slug && (i.size || '') === (item.size || ''); })[0];
+      if (same) { same.qty = (same.qty || 1) + 1; if (item.variant) same.variant = item.variant; if (item.price) same.price = item.price; if (item.img) same.img = item.img; }          // keep the newest Shopify id, so an old bag never checks out a retired size
+      else { item.qty = 1; items.push(item); }
+      write(items);
+      if (window.maconTrack) maconTrack('add', {variant: item.variant, name: item.name, slug: item.slug, price: item.price, qty: 1, image: item.image});
+    }
+    return {read: read, write: write, count: count, add: add};
+  })();
+
+  // The bag's lines, drawn the same way on the Bag page and in the desktop drawer. Returns the subtotal.
+  window.MaconBagMoney = function (n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits: n % 1 ? 2 : 0}); };
+  window.MaconBagLines = function (lines) {
+    var items = MaconBag.read(), money = MaconBagMoney, sub = 0;
+    lines.innerHTML = '';
+    items.forEach(function (it, i) {
+      sub += it.price * it.qty;
+      var row = document.createElement('div'); row.className = 'line';
+      // one price per piece: the line's total, with the price of one alongside when there are several
+      var price = it.qty > 1 ? money(it.price * it.qty) + ' (' + money(it.price) + ' each)' : money(it.price);
+      row.innerHTML = '<a href="' + it.slug + '.html"><img src="' + it.img + '" alt=""></a>' +
+        '<div><p class="nm"><a href="' + it.slug + '.html">' + it.name + '</a></p>' +
+        '<p class="meta">' + price + (it.size ? ' · Size ' + it.size : '') + '</p>' +
+        '<span class="qty"><button type="button" data-d="-1" aria-label="One fewer">−</button><span>' + it.qty + '</span>' +
+        '<button type="button" data-d="1" aria-label="One more">+</button><button type="button" class="remove">Remove</button></span></div>';
+      row.querySelectorAll('[data-d]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var all = MaconBag.read(); all[i].qty += +b.dataset.d;
+          if (all[i].qty < 1) all.splice(i, 1);
+          MaconBag.write(all);
+        });
+      });
+      row.querySelector('.remove').addEventListener('click', function () { var all = MaconBag.read(); all.splice(i, 1); MaconBag.write(all); });
+      lines.appendChild(row);
+    });
+    return sub;
+  };
+
+  // Desktop: Bag opens a drawer from the right instead of leaving the page (phones still go to bag.html)
+  (function () {
+    var link = document.querySelector('.head .right a'); if (!link) return;
+    var wide = matchMedia('(min-width:768px)'), drawer = null, veil = null, last = null;
+    if (!/bag\.html$/.test(location.pathname)) link.setAttribute('data-bag-drawer', '');          // the page fade leaves this link to the drawer
+    function build() {
+      veil = document.createElement('div'); veil.className = 'bag-veil';
+      drawer = document.createElement('aside'); drawer.className = 'bag-drawer'; drawer.setAttribute('aria-label', 'Your bag');
+      drawer.setAttribute('role', 'dialog'); drawer.setAttribute('aria-modal', 'true'); drawer.inert = true;
+      drawer.innerHTML = '<div class="bd-head"><p class="bd-title">Your bag</p><button type="button" class="bd-close" aria-label="Close bag">Close</button></div>' +
+        '<div class="bd-lines lines"></div>' +
+        '<div class="bd-empty" hidden><p>Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
+        '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
+        '<p class="bd-note"></p>' +
+        '<div class="bd-gift"></div>' +
+        '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
+      document.body.appendChild(veil); document.body.appendChild(drawer);
+      MaconGift.mount(drawer.querySelector('.bd-gift'));
+      veil.addEventListener('click', function () { set(false); });
+      drawer.querySelector('.bd-close').addEventListener('click', function () { set(false); });
+      drawer.querySelector('.bd-foot .cta').addEventListener('click', function () { MaconCheckout(MaconBag.read(), this).catch(function () {}); });
+      document.addEventListener('bag:change', paint);
+    }
+    function paint() {
+      if (!drawer) return;
+      var sub = MaconBagLines(drawer.querySelector('.bd-lines')), empty = !MaconBag.count();
+      drawer.querySelector('.bd-sub').textContent = MaconBagMoney(sub);
+      drawer.querySelector('.bd-note').textContent = 'Shipping is calculated at checkout. ' + maconShipNote();
+      drawer.querySelector('.bd-empty').hidden = !empty;
+      drawer.querySelector('.bd-foot').hidden = empty;
+    }
+    function set(on) {
+      if (!drawer) { build(); void drawer.offsetWidth; }          // laid out closed first, so the very first open slides in too
+      if (on) { last = document.activeElement; paint(); }
+      drawer.inert = !on;
+      if (!on) { drawer.classList.add('bag-leaving'); veil.classList.add('bag-leaving'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('bag-leaving'); veil.classList.remove('bag-leaving'); }, 720); }
+      else { clearTimeout(drawer._shut); drawer.classList.remove('bag-leaving'); veil.classList.remove('bag-leaving'); }
+      requestAnimationFrame(function () { drawer.classList.toggle('open', on); veil.classList.toggle('open', on); });
+      document.documentElement.classList.toggle('bag-open', on);
+      if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});
+    }
+    // built while the page is idle, so it is ready to slide the moment Bag is clicked
+    if (wide.matches && !/bag\.html$/.test(location.pathname)) (window.requestIdleCallback || setTimeout)(function () { if (!drawer) build(); });
+    link.addEventListener('click', function (e) {
+      if (!wide.matches || /bag\.html$/.test(location.pathname)) return;          // phones, and the Bag page itself, keep the page
+      if (maconBagTest() === 'page') return;          // the A/B test: this visitor goes to the full bag page instead of the drawer
+      e.preventDefault(); set(true);
+    });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) set(false); });
+    var toNarrow = function (e) { if (!e.matches && drawer && drawer.classList.contains('open')) set(false); };
+    if (wide.addEventListener) wide.addEventListener('change', toNarrow); else wide.addListener(toNarrow);
+    addEventListener('pageshow', function (e) { if (e.persisted && drawer) set(false); });          // back from Shopify: closed, not stuck open
+  })();
+
+  (function () {
+    var bag = document.querySelector('.head .right a'); if (!bag) return;
+    bag.setAttribute('href', 'bag.html');
+    function paint() { bag.textContent = 'Bag (' + MaconBag.count() + ')'; }
+    paint(); document.addEventListener('bag:change', paint);
+    addEventListener('storage', paint);
+    var toast = document.createElement('div');
+    toast.className = 'bag-toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
+    document.querySelector('.head .right').appendChild(toast);
+    var timer = null;
+    document.querySelectorAll('.cta, .dock').forEach(function (b) {
+      if (!/add to bag/i.test(b.textContent)) return;
+      b.addEventListener('click', function (e) {
+        var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price .amt') || document.querySelector('.info .price');          // the amount alone, not the shipping notes beside it
+        var sizeBox = document.querySelector('[data-size]'), size = sizeBox && sizeBox.classList.contains('picked') ? sizeBox.querySelector('.size-value').textContent : '';
+        if (sizeBox && !size) {                       // rings need a size before they go in the bag
+          e.stopPropagation();                        // or the picker's click-outside handler shuts it again
+          sizeBox.classList.add('open', 'need'); sizeBox.querySelector('.size-toggle').setAttribute('aria-expanded', true);
+          sizeBox.scrollIntoView({block: 'center', behavior: 'smooth'});
+          setTimeout(function () { sizeBox.classList.remove('need'); }, 1600);
+          return;
+        }
+        MaconBag.add({
+          image: location.origin + '/img/email/wide-' + location.pathname.split('/').pop().replace('.html', '') + '.jpg',
+          slug: location.pathname.split('/').pop().replace('.html', ''),
+          name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
+          img: hero ? hero.getAttribute('src') : '', size: size,
+          variant: sizeBox ? (sizeBox.dataset.variant || '') : ((document.getElementById('bag') || {}).dataset || {}).variant || ''
+        });
+        toast.textContent = '';
+        if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+        tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+        if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+        toast.appendChild(tx);
+        bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
+        // the Bureau of Provenance presses its seal onto the button: the claim is recorded
+        if (!matchMedia('(prefers-reduced-motion:reduce)').matches && document.body.animate) {
+          var r = b.getBoundingClientRect(), st = document.createElement('img'), sz = Math.min(104, r.height * 2.1);
+          st.src = 'img/claim-stamp.png'; st.alt = ''; st.setAttribute('aria-hidden', 'true');
+          st.style.cssText = 'position:fixed;z-index:60;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;left:' + (r.right - sz - 6) + 'px;top:' + (r.top + r.height / 2 - sz / 2) + 'px';
+          document.body.appendChild(st);
+          st.animate([
+            {transform: 'scale(1.9) rotate(-24deg)', opacity: 0},
+            {transform: 'scale(.94) rotate(-11deg)', opacity: .95, offset: .16},
+            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .24},
+            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .8},
+            {transform: 'scale(1) rotate(-12deg)', opacity: 0}
+          ], {duration: 1500, easing: 'cubic-bezier(.3,.7,.3,1)'}).onfinish = function () { st.remove(); };
+        }
+        toast.classList.add('on'); clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
+      });
+    });
+  })();
+
+  addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
+    // a shopper who backs out of Shopify's checkout returns to a cached page:
+    // put any button that was mid-handoff back the way they found it
+    document.querySelectorAll('[aria-busy="true"]').forEach(function (b) {
+      b.removeAttribute('aria-busy');
+      if (b.dataset.label) b.textContent = b.dataset.label;
+      b.disabled = false;
+    });
+  });
+
+  // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
+  (function () {
+    var link = document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;
+    var home = link.parentElement, next = link.nextSibling, wide = matchMedia('(min-width:768px)');
+    function place() {
+      if (wide.matches) {
+        if (link.parentElement !== head) head.appendChild(link);
+        var x = 0; for (var el = home; el; el = el.offsetParent) x += el.offsetLeft;
+        x += parseFloat(getComputedStyle(home).paddingLeft) || 0;          // in line with the words, not the column's padded edge
+        link.style.left = x + 'px';
+      } else if (link.parentElement !== home) { home.insertBefore(link, next); link.style.left = ''; }
+    }
+    place(); addEventListener('resize', place); addEventListener('load', place);
+  })();
+
+  // Buy with Shop (product pages): this piece alone, straight to Shop Pay
+  document.querySelectorAll('.buy .buy-now').forEach(function (b) {
+    b.addEventListener('click', function (e) {
+      var sizeBox = document.querySelector('[data-size]');
+      if (sizeBox && !sizeBox.classList.contains('picked')) {
+        e.stopPropagation(); sizeBox.classList.add('open', 'need');
+        setTimeout(function () { sizeBox.classList.remove('need'); }, 1600); return;
+      }
+      var variant = sizeBox ? sizeBox.dataset.variant : document.getElementById('bag').dataset.variant;
+      var id = String(variant || '').split('/').pop();
+      var shop = (window.MACON_SHOP || {}).shop;
+      if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
+        var price = parseFloat(((document.querySelector('.info .price .amt') || document.querySelector('.info .price') || {}).textContent || '').replace(/[^0-9.]/g, '')) || 0;
+        if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
+        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery({payment: 'shop_pay'});
+        return;
+      }
+      MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
+    });
+  });
+
+  // While the print dialog is open, every change of printer or paper lays the page out again, which the
+  // page took as a resize and replayed the sizer drawer's slide and fade behind the dialog. Held still until it closes.
+  addEventListener('beforeprint', function () { document.documentElement.classList.add('printing'); });
+  addEventListener('afterprint', function () { setTimeout(function () { document.documentElement.classList.remove('printing'); }, 400); });
+
+  // A/B test (started 2026-09-21): half of desktop visitors open the bag as a drawer, half as the full page.
+  // Each visitor keeps their side for good; Google Analytics records it as the user property bag_test.
+  window.maconBagTest = function () {
+    try {
+      var v = localStorage.getItem('macon-bag-test');
+      if (v !== 'drawer' && v !== 'page') { v = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', v); }
+      return v;
+    } catch (e) { return 'drawer'; }
+  };
+
+  // Mobile menu
+  (function () {
+    var btn = document.querySelector('.head .mob'); if (!btn) return;
+    var menu = document.querySelector('.menu-sheet'); if (!menu) return;          // written into the page (partials/nav.html), so it is whole from the first paint
+    btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
+    var keyboard = false;
+    function set(on, keepX) {
+      if (on && !keepX) {          // Close sits exactly where Menu was
+        var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
+        var shift = document.querySelector('.head').getBoundingClientRect().left;          // how far the page is pushed aside right now
+        c.style.left = (r.left + r.width / 2 - 22 - shift) + 'px'; c.style.top = (r.top + r.height / 2 - 22) + 'px'; c.style.height = '44px';          // the X's centre on the hamburger's centre
+      }
+      // phones can quietly jump the page to the top while scrolling is locked; keep where you were,
+      // and let the home logotype settle back at once rather than easing in over most of a second
+      if (on) savedY = scrollY;
+      if (!on && open && !menu.classList.contains('instant')) {          // closing plays the opening backwards, on every screen
+        var root = document.documentElement; root.classList.add('logo-hold'); clearTimeout(menu._logo);
+        menu._logo = setTimeout(function () { root.classList.remove('logo-hold'); }, 770);          // the logo finishes turning just as the menu has gone
+        menu.classList.add('leaving'); clearTimeout(menu._leave); menu._leave = setTimeout(function () { menu.classList.remove('leaving'); }, 1090);          // the moment the white has gone
+      }
+      if (on) { clearTimeout(menu._leave); menu.classList.remove('leaving'); clearTimeout(menu._logo); document.documentElement.classList.remove('logo-hold'); }
+      menu.classList.toggle('open', on); menu.inert = !on; open = on;
+      document.documentElement.classList.toggle('menu-open', on);
+      [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; });
+      btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : '';
+      if (!on) {
+        if (savedY !== null && Math.abs(scrollY - savedY) > 1) scrollTo(0, savedY);
+        document.body.classList.add('logo-still');
+        dispatchEvent(new Event('scroll'));
+        setTimeout(function () { document.body.classList.remove('logo-still'); }, 700);
+      }
+      if (on && keyboard) menu.querySelector('a').focus();
+    }
+    var open = false, savedY = 0;
+    // the next page draws the X where it stands now, from its first frame (see the head script),
+    // rather than measuring the Menu button again while fonts and layout are still settling
+    function rememberX() {
+      var c = menu.querySelector('.menu-close');
+      sessionStorage.setItem('macon-x', JSON.stringify({l: c.style.left, t: c.style.top, h: c.style.height}));
+    }
+    // tapping the pushed-over page closes the menu
+    document.addEventListener('click', function (e) { if (open && !menu.contains(e.target) && e.target !== btn) set(false); });
+    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });
+    // phones: open as the finger lifts. iPhone Safari treated the first tap as a hover (the logo starts blinking
+    // on the first touch) and swallowed the click, so the menu needed two taps
+    btn.addEventListener('touchend', function (e) { e.preventDefault(); keyboard = false; if (!open) set(true); }, {passive: false});          // focus the first link only for keyboard users, so a tap shows no outline
+    menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
+    // widened past the phone layout with the drawer open: the desktop nav takes over, so close it
+    var wide = matchMedia('(min-width:768px)');
+    var toWide = function () {};          // PREVIEW: the menu now works at every width
+    if (wide.addEventListener) wide.addEventListener('change', toWide); else wide.addListener(toWide);
+
+    // Choosing a page: the drawer stays put and the new page loads behind it
+    menu.addEventListener('click', function (e) {
+      var a = e.target.closest('a'); if (!a) return;
+      var to = new URL(a.href, location.href);
+      if (to.pathname !== location.pathname && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        // another page: the page behind the drawer dims to white, then the next one loads beneath the drawer
+        e.preventDefault();
+        try { sessionStorage.setItem('macon-menu', '1'); sessionStorage.setItem('macon-fade', '1'); rememberX(); } catch (err) {}
+        var dim = document.createElement('div');
+        dim.style.cssText = 'position:fixed;inset:0;z-index:59;background:#fff;pointer-events:none;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.6,1)';
+        document.body.appendChild(dim);
+        requestAnimationFrame(function () { requestAnimationFrame(function () { dim.style.opacity = '1'; }); });
+        setTimeout(function () { location.href = a.href; }, 310);
+        return;
+      }
+      if (to.pathname === location.pathname) {          // same page (Shop from the home page): close first, then move
+        e.preventDefault();
+        set(false);
+        var target = to.hash && document.querySelector(to.hash);
+        // moving while the page is still pushed aside makes the home film draw over the grid for a moment
+        if (target) setTimeout(function () {
+          target.scrollIntoView({behavior: 'smooth', block: 'start'});
+          history.replaceState(null, '', to.hash);
+        }, 620);
+        return;
+      }
+      try { sessionStorage.setItem('macon-menu', '1'); rememberX(); } catch (err) {}
+    });
+    // ...where it arrives already open, and slides closed once the page is ready
+    var root = document.documentElement;
+    if (root.classList.contains('menu-arriving')) {
+      try { sessionStorage.removeItem('macon-menu'); } catch (err) {}
+      menu.classList.add('instant');
+      var kept = false; try { kept = !!JSON.parse(sessionStorage.getItem('macon-x') || 'null'); sessionStorage.removeItem('macon-x'); } catch (err) {}
+      set(true, kept);
+      savedY = null;          // a page arriving goes where its link points (Shop lands on the grid), never back to where it started
+      root.classList.remove('menu-arriving');
+      var closed = false;
+      var close = function () {
+        if (closed) return; closed = true;
+        // in one frame: were it closed a frame after "instant" came off, the still-open drawer
+        // would restart its words' rise-in for that frame and they would blink out
+        requestAnimationFrame(function () { menu.classList.remove('instant'); set(false); });
+        // once the drawer has fully slid away, the page's own intro plays
+        setTimeout(function () { root.classList.remove('intro-wait'); dispatchEvent(new Event('macon:intro')); }, 1100);
+      };
+      if (document.readyState === 'complete') setTimeout(close, 150);
+      else addEventListener('load', function () { setTimeout(close, 150); });
+      setTimeout(close, 1600);          // never held open waiting on a slow picture
+    }
+  })();
+
+  // ── Soft fade between pages ───────────────────────────────────────────
+  // Leaving, the page dims to white in 300ms; the next one lifts out of white in 450ms (see the head script).
+  // Kept brief and low-contrast so it smooths the cut rather than being seen. Not for the phone drawer,
+  // which swaps pages behind itself, and not for Back/Forward.
+  (function () {
+    var FADE_ON = true;                            // flip to false to go back to plain cuts
+    if (!FADE_ON || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var veil = null;
+    addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
+      if (document.body.classList.contains('sizing-open')) return;          // Back closes the sizer rather than leaving
+      if (a.hasAttribute('data-bag-drawer') && matchMedia('(min-width:768px)').matches) return;          // desktop Bag opens its drawer instead
+      var href = a.getAttribute('href') || '';
+      if (!href || href[0] === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return;
+      var to = new URL(a.href, location.href);
+      if (to.origin !== location.origin || (to.pathname === location.pathname && to.search === location.search)) return;
+      e.preventDefault();
+      veil = veil || document.createElement('div');
+      veil.style.cssText = 'position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.6,1)';
+      document.body.appendChild(veil);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { veil.style.opacity = '1'; }); });
+      try { sessionStorage.setItem('macon-fade', '1'); } catch (err) {}
+      setTimeout(function () { location.href = a.href; }, 310);
+    }, true);
+    // coming back through history: never leave the veil up
+    addEventListener('pageshow', function (e) { if (e.persisted && veil) veil.remove(); try { sessionStorage.removeItem('macon-fade'); } catch (err) {} });
+  })();
+
+  // ── Page wipe ─────────────────────────────────────────────────────────
+  // One opaque panel crosses the screen in a single direction: it drops from
+  // above to cover the page, the page is swapped while it is hidden, and the
+  // panel carries on off the bottom to uncover the new one. Because it never
+  // retreats the way it came, it reads as something passing over the page
+  // rather than a shutter opening and closing.
+  (function () {
+    var ON = false;                               // the wipe is parked: flip to true to bring it back
+    var COVER = 420, KEY = 'macon-wipe';          // matches the 420ms cover in the head          // the reveal half runs from the head
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    function panel() {
+      var el = document.querySelector('.wipe');
+      if (!el) { el = document.createElement('div'); el.className = 'wipe'; document.body.appendChild(el); }
+      return el;
+    }
+
+    function leaves(a) {
+      if (!a || a.target === '_blank' || a.hasAttribute('download')) return false;
+      var href = a.getAttribute('href') || '';
+      if (!href || href[0] === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return false;
+      var url = new URL(a.href, location.href);
+      if (url.origin !== location.origin) return false;
+      return url.pathname !== location.pathname || url.search !== location.search;
+    }
+
+    // the wipe is kept for one journey only: leaving a piece for the home page,
+    // whether by the logotype, the Shop link or the Back arrow
+    function home(a) {
+      if (!document.body.hasAttribute('data-slug')) return false;
+      var to = new URL(a.href, location.href).pathname;
+      return /(^|\/)index\.html$/.test(to) || /\/$/.test(to);
+    }
+
+    addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href]');
+      if (!leaves(a)) return;
+      if (document.body.classList.contains('ed-on')) return;          // never while editing
+      if (document.body.classList.contains('sizing-open')) return;     // Back closes the sizer first, it does not leave
+      if (!ON || !home(a)) return;                                           // only the walk back from a piece to the shop
+      e.preventDefault();
+      var el = panel();
+      requestAnimationFrame(function () { el.classList.add('cover'); });
+      try { sessionStorage.setItem(KEY, '1'); } catch (err) {}
+      setTimeout(function () { location.href = a.href; }, COVER);     // swapped while it cannot be seen
+    }, true);
+
+    // coming back through history: never leave the panel sitting over the page
+    addEventListener('pageshow', function (e) {
+      if (!e.persisted) return;
+      var el = document.querySelector('.wipe'); if (el) el.remove();
+      try { sessionStorage.removeItem(KEY); } catch (err) {}
+    });
+  })();
+
+
+
+// Ships by: ten working days from today. Weekends and the federal holidays are skipped,
+// because those are the days the foundry and the post office are shut too.
+// "Your piece is" for one piece in the bag, "Your pieces are" for more
+// The international note (duties included at checkout) is only for visitors outside the US.
+// Cloudflare tells us the country at /_geo; anywhere that endpoint is missing, the note stays hidden.
+(function () {
+  if (/[?&]intl=1\b/.test(location.search)) return document.documentElement.classList.add('intl');
+  try {
+    fetch('/_geo', {cache: 'no-store'}).then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
+      if (g && g.country && g.country !== 'US') document.documentElement.classList.add('intl');
+    }).catch(function () {});
+  } catch (e) {}
+})();
+
+window.maconShipNote = function () {
+  var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
+  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and ' + (n > 1 ? 'ship' : 'ships') + ' by ' + maconShipBy() + '.';
+};
+// the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
+window.maconShipBy = (function () {
+  function holidays(y) {
+    var nth = function (m, dow, n) {          // the nth given weekday of a month
+      var d = new Date(y, m, 1), c = 0;
+      while (true) { if (d.getDay() === dow && ++c === n) return new Date(d); d.setDate(d.getDate() + 1); }
+    };
+    var last = function (m, dow) {
+      var d = new Date(y, m + 1, 0);
+      while (d.getDay() !== dow) d.setDate(d.getDate() - 1);
+      return d;
+    };
+    return [
+      new Date(y, 0, 1), nth(0, 1, 3), nth(1, 1, 3), last(4, 1),
+      new Date(y, 5, 19), new Date(y, 6, 4), nth(8, 1, 1),
+      nth(9, 1, 2), new Date(y, 10, 11), nth(10, 4, 4), new Date(y, 11, 25)
+    ].map(function (d) { return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); });
+  }
+
+  var d = new Date(), left = 10, hol = holidays(d.getFullYear()).concat(holidays(d.getFullYear() + 1));
+  while (left > 0) {
+    d.setDate(d.getDate() + 1);
+    var day = d.getDay();
+    if (day === 0 || day === 6) continue;
+    if (hol.indexOf(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()) > -1) continue;
+    left--;
+  }
+  var when = d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+  return function () { return when; };
+})();
+(function () {
+  var el = document.querySelector('[data-ship-by]');
+  if (!el) return;
+  el.textContent = 'Ships by ' + maconShipBy();
+  el.hidden = false;
+})();
+
+// The ring sizer takes the product column's place rather than a page of its own,
+// so Back returns to the piece instead of leaving for the shop.
+(function () {
+  var panel = document.getElementById('sizer-panel');
+  if (!panel) return;
+  // on wide screens the Back link is moved into the nav row, so it is matched by class alone
+
+  function circ(n) { return 36.537 + 2.5535 * n; }          // the ISO relation, so strip and table agree
+
+  var ticks = panel.querySelector('[data-ticks]'), rows = panel.querySelector('[data-sizes]');
+  var lo = circ(4), span = circ(13) - lo;
+  for (var n = 4; n <= 13; n += 0.5) {
+    var x = (circ(n) - lo) / span * 100;
+    if (ticks) {          // the on-screen strip is gone; the printed sheet draws its own
+    var t = document.createElement('i');
+    t.className = 't' + (n % 1 === 0 ? ' major' : '');
+    t.style.left = x + '%';
+    ticks.appendChild(t);
+    if (n % 1 === 0) {
+      var lab = document.createElement('b');
+      lab.className = 'n'; lab.style.left = x + '%'; lab.textContent = n;
+      ticks.appendChild(lab);
+    }
+    }
+    var c = circ(n), tr = document.createElement('tr');
+    tr.innerHTML = '<td>' + (n % 1 === 0 ? n : n.toFixed(1)) + '</td><td>' +
+      (c / Math.PI).toFixed(2) + ' mm</td><td>' + c.toFixed(1) + ' mm</td>';
+    rows.appendChild(tr);
+  }
+
+  function shutTable() {
+    var wrap = panel.querySelector('.tablewrap');
+    if (!wrap || panel.classList.contains('all-sizes')) return;
+    var r = panel.querySelectorAll('[data-sizes] tr'), th = panel.querySelector('thead');
+    if (r.length > 2) wrap.style.setProperty('--rows',
+      ((th ? th.getBoundingClientRect().height : 0) + (r[2].getBoundingClientRect().bottom - r[0].getBoundingClientRect().top)) + 'px');
+  }
+
+  function open(on) {
+    // an overlay: nothing in the column moves, so there is no height for the page to jump to
+    document.body.classList.toggle('sizing-open', on);
+    if (on) {
+      panel.hidden = false; panel.classList.remove('settled'); shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
+      clearTimeout(panel._settle); panel._settle = setTimeout(function () { panel.classList.add('settled'); }, 1400);          // after the last line has risen in
+      var col = panel.closest('.info'); if (col && col.scrollTop) col.scrollTo({top: 0, behavior: 'smooth'});          // opened from the Sizing row, lower down: its top is never left above the fold
+    }
+    // once it has faded out it is put away again: left in the layout it keeps stretching
+    // the column's own scroll, so the details slide off into empty white afterwards
+    else setTimeout(function () {
+      if (!document.body.classList.contains('sizing-open')) panel.hidden = true;
+    }, 520);
+  }
+
+  window.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    // "Find your size" now goes to the printable sizer page (ring-sizing.html). The drawer below is kept, switched off:
+    // to bring it back, replace the line after this comment with:  e.preventDefault(); e.stopPropagation(); open(true); return;
+    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); location.href = 'ring-sizing.html'; return; }
+    if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
+    var more = e.target.closest('[data-more-sizes]');
+    if (more) {
+      e.preventDefault(); e.stopPropagation();
+      var wrap = panel.querySelector('.tablewrap');
+      var rows = panel.querySelectorAll('[data-sizes] tr');
+      var three = rows.length ? rows[2].getBoundingClientRect().bottom - rows[0].getBoundingClientRect().top : 0;
+      var head = panel.querySelector('thead');
+      var shut = (head ? head.getBoundingClientRect().height : 0) + three;
+      var all = panel.classList.toggle('all-sizes');
+      // a fixed height for the three rows, then to the table's real height, so it can animate
+      var full = wrap.querySelector('table').getBoundingClientRect().height;
+      wrap.style.setProperty('--rows', (all ? full : shut) + 'px');
+      more.setAttribute('aria-expanded', all ? 'true' : 'false');
+      more.textContent = all ? 'Show fewer sizes' : 'Show all sizes';
+      return;
+    }
+    if (e.target.closest('.back') && document.body.classList.contains('sizing-open')) {
+      e.preventDefault(); e.stopPropagation(); open(false);
+    }
+  }, true);
+})();
+
+// The ad click id lives in a cookie scoped to this domain, so Shopify's checkout cannot read it.
+// Carrying fbclid across lets Shopify rebuild it there, which is what ties a sale back to the ad.
+function maconClickQuery(extra) {
+  var p = [];
+  Object.keys(extra || {}).forEach(function (k) { p.push(k + '=' + encodeURIComponent(extra[k])); });
+  try {
+    var saved = JSON.parse(sessionStorage.getItem('macon-click') || '{}');
+    Object.keys(saved).forEach(function (k) { p.push(k + '=' + encodeURIComponent(saved[k])); });
+  } catch (e) {}
+  return p.length ? '?' + p.join('&') : '';
+}
+</script>
+<script>
+</script>
+<script>
+  // Desktop: Back to Shop belongs to the product's right column, so it fades away once that column has scrolled past
+  (function () {
+    var back = document.querySelector('.back'), product = document.querySelector('.product');
+    if (!back || !product || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (e) { back.classList.toggle('gone', !e[0].isIntersecting); }, {rootMargin: '-120px 0px 0px 0px'}).observe(product);
+  })();
+  // Ring size: the bordered block opens a panel of sizes; picking one closes it.
+  document.querySelectorAll('[data-size]').forEach(function (box) {
+    var toggle = box.querySelector('.size-toggle'), value = box.querySelector('.size-value');
+    var items = [].slice.call(box.querySelectorAll('li'));
+    function open(on) { box.classList.toggle('open', on); toggle.setAttribute('aria-expanded', on); if (on && document.activeElement === toggle) (box.querySelector('[aria-selected="true"]') || items[0]).focus(); }
+    toggle.addEventListener('click', function () {
+      open(!box.classList.contains('open'));
+      if (box.classList.contains('open')) box.scrollIntoView({block: 'nearest', behavior: 'smooth'});          // the sizes may open below the fold
+    });
+    items.forEach(function (li) {
+      li.addEventListener('click', function () {
+        items.forEach(function (x) { x.setAttribute('aria-selected', x === li); });
+        value.textContent = li.dataset.value; box.classList.add('picked'); box.dataset.variant = li.dataset.variant; open(false);
+        var priceEl = document.querySelector('.info .price .amt') || document.querySelector('.info .price');          // the amount only, so Free shipping stays          // e.g. Caldera Arc: Single $260, Pair $490
+        if (priceEl && li.dataset.price) priceEl.textContent = '$' + li.dataset.price;
+      });
+      li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); li.click(); } });
+    });
+    document.addEventListener('click', function (e) { if (!box.contains(e.target)) open(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') open(false); });
+  });
+</script>
+<script>
+  // The bag bar appears once the real button has scrolled away, and steps
+  // aside at the footer so it never covers the newsletter.
+  (function () {
+    var dock = document.getElementById('dock'), gone = false, foot = false; dock.inert = true;
+    function sync() { dock.classList.toggle('on', gone && !foot); dock.inert = !(gone && !foot); }
+    new IntersectionObserver(function (e) { gone = !e[0].isIntersecting && e[0].boundingClientRect.top < 0; sync(); })
+      .observe(document.getElementById('bag'));
+    new IntersectionObserver(function (e) { foot = e[0].isIntersecting; sync(); }, {rootMargin: '0px 0px -40% 0px'})
+      .observe(document.querySelector('footer .news'));
+  })();
+</script>
+<script>
+  // Also Worth Keeping loops: five copies side by side; once scrolling comes to rest near an outer copy it
+  // quietly moves back to the middle one (never mid-flight, which is what flickered on fast scrolls)
+  (function () {
+    var box = document.querySelector('.rel-loop'); if (!box) return;
+    var track = box.querySelector('.rel-track'), one = [].slice.call(track.children), n = one.length; if (!n) return;
+    [].forEach.call(track.querySelectorAll('img'), function (i) { i.loading = 'eager'; });
+    for (var c = 0; c < 2; c++) {
+      one.forEach(function (el) { track.appendChild(el.cloneNode(true)); });
+      var first = track.firstChild; one.forEach(function (el) { track.insertBefore(el.cloneNode(true), first); });
+    }
+    var all = track.children, span = function () { return all[n].offsetLeft - all[0].offsetLeft; };
+    function centreOn(el) { box.scrollLeft = el.offsetLeft + el.offsetWidth / 2 - box.clientWidth / 2; }
+    centreOn(all[2 * n + (+box.dataset.centre || 0)]);
+    var queued = false;
+    function dim() {          // the three nearest the centre at full strength, the rest at 35%, once per frame
+      queued = false;
+      var mid = box.getBoundingClientRect().left + box.clientWidth / 2, w = all[0].offsetWidth + 1;
+      for (var i = 0; i < all.length; i++) { var r = all[i].getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - mid); all[i].classList.toggle('side', d > w * .5 && d <= w * 1.5); all[i].classList.toggle('edge', d > w * 1.5); }
+    }
+    var rest = null;
+    function settle() {          // back to the middle copy, by exactly one copy's width: nothing on screen changes
+      var s = span();
+      if (box.scrollLeft < s * 1.5) box.scrollLeft += s * Math.round((2 * s - box.scrollLeft) / s);
+      else if (box.scrollLeft > s * 2.5) box.scrollLeft -= s * Math.round((box.scrollLeft - 2 * s) / s);
+    }
+    box.addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(dim); }
+      clearTimeout(rest); rest = setTimeout(settle, 180);
+    }, {passive: true});
+    dim(); addEventListener('resize', function () { centreOn(all[2 * n + (+box.dataset.centre || 0)]); dim(); });
+  })();
+</script>
+</body>
+</html>
