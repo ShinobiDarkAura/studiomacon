@@ -18,7 +18,7 @@ SILVER_SD = np.array([15.7, 1.2, 2.8])
 REAL = {"ear-cuff": ("Caldera Moss Suede.jpg", .27, 0, 0), "eclipse-ring": ("Eclipse Ring Moss Suede.jpg", .27, 0, 90),
         "wonderhorn-talisman": ("Ida Horn Moss Suede.jpg", .17, 450, 0)}          # file, size in frame, chain cut-off, nudge
 LIFT = {"ear-cuff": 85, "eclipse-ring": 70}          # moss shots taken a touch lower than the terracotta ones: their pieces raised onto the centre, px
-RECOLOUR = ["zuma-ring", "sietch-aperture", "lunar-canyon-ring", "meridian-egg-ring"]
+RECOLOUR = ["zuma-ring", "sietch-aperture", "meridian-egg-ring"]          # lunar-canyon-ring: its own photograph, as shot (see AS_SHOT in place_terracotta.py)
 
 
 def save(slug, im):
