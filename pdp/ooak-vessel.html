@@ -88,10 +88,6 @@
   .desc-block .label{margin:0 0 14px}
   @media (min-width:1024px){ .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#9ca3af;margin-bottom:18px} }          /* the same title as on phones */          /* desktop: 1pt smaller, 4px more air beneath */
   .desc a{color:inherit;text-decoration:underline;text-underline-offset:3px}
-  /* Ibi's first photograph clears out of the morning mist */
-  body[data-slug="ibi"] .gallery .hero .shot:first-child img{animation:ibi-mist 1.6s cubic-bezier(.3,.6,.3,1) .15s both}
-  @keyframes ibi-mist{from{filter:blur(14px) brightness(1.18) contrast(.7);opacity:.55}to{filter:none;opacity:1}}
-  @media (prefers-reduced-motion:reduce){ body[data-slug="ibi"] .gallery .hero .shot:first-child img{animation:none} }
   .desc{margin:0;font-size:17px;letter-spacing:.02em;line-height:var(--body-s-lh)}          /* the same size as the About page's words */          /* same size as the overline */
   .info > .dr-emerge{transform:translateY(66px)}
   .info > .dr-emerge.is-seen{transform:none}
