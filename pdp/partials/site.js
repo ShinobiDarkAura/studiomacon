@@ -15,6 +15,22 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
   })();
 
+  // Arc, while a window edge is dragged, now and then makes the window 0 x 0 for an instant (sometimes
+  // within a single frame, so the page never hears of it). With nothing to scroll the page lands at
+  // the top. So: landing at the top just after a resize, with no key or click to ask for it, goes back.
+  (function () {
+    var saved = scrollY, resized = 0, asked = 0;
+    ['keydown', 'pointerdown'].forEach(function (ev) { addEventListener(ev, function () { asked = Date.now(); }, {passive: true, capture: true}); });
+    function lost() { return scrollY < 2 && saved > 50 && Date.now() - resized < 500 && Date.now() - asked > 1000; }
+    function back() { if (innerWidth && innerHeight) scrollTo({top: saved, behavior: 'instant'}); }
+    addEventListener('scroll', function () {
+      if (!innerWidth || !innerHeight) return;
+      if (lost()) return back();
+      saved = scrollY;
+    }, {passive: true});
+    addEventListener('resize', function () { resized = Date.now(); if (lost()) back(); });
+  })();
+
   // Once the page has moved, a white fade sits behind the header and the nav turns black (site.css, .head::before)
   (function () {
     var root = document.documentElement, on = false;
@@ -36,7 +52,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     function look() { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add('eye-look'); }
     // it looks around once when it first appears (on the home page, once the intro has faded), and whenever it is hovered
     var home = document.querySelector('.film');
-    if (!home) setTimeout(look, 600);
+    if (!home && !document.documentElement.classList.contains('menu-arriving')) setTimeout(look, 600);          // from the menu the logo never left the screen: no replay
     else new MutationObserver(function (m, o) { if (document.body.classList.contains('logo-docked')) { o.disconnect(); setTimeout(look, 700); } })
       .observe(document.body, {attributes: true, attributeFilter: ['class']});
     if (matchMedia('(hover:hover)').matches)          // a mouse only: on touch, a look on first tap swallowed the tap itself
@@ -140,7 +156,8 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         if (el.closest('.head')) continue;
         if (el.tagName === 'VIDEO') return 0;
         if (el.tagName === 'IMG') {
-          var m = map(el); if (!m) return bgLuma(el);
+          var m = map(el);
+          if (!m) return el.complete && el.naturalWidth ? bgLuma(el) : null;          // a picture still decoding: hold the colour (it read as the blank page, and turned the nav black on a dark photo)
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
           var sx = r.width / el.naturalWidth, sy = r.height / el.naturalHeight;
           if (fit === 'cover') sx = sy = Math.max(sx, sy);
@@ -168,6 +185,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
     function tone(force) {
       queued = false;
+      if (window.MaconSwapping) return;          // Back/Next swap under way: nothing under the nav can be read yet
       if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
       lastY = scrollY;
       // the whole nav is one unit: read under each part, then colour every part the same
@@ -198,6 +216,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
     addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
     function fresh() { held = null; lastY = -99; soon(); }
+    window.MaconNavTone = fresh;          // the menu asks for a fresh reading once the page behind it is revealed
     document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
     addEventListener('load', fresh);
     addEventListener('pageshow', fresh);
@@ -329,14 +348,24 @@ addEventListener('load', function () { document.documentElement.classList.add('l
       })();
     });
 
-    // wall pieces cascade by their position in the row, so each row settles left to right
-    // pieces already on screen at load arrive top to bottom, the rest by column
-    document.querySelectorAll('.wall figure').forEach(function (f) {
-      var r = f.getBoundingClientRect();
-      var d = r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 + r.left / innerWidth * 120
-                                  : Math.round(r.left / innerWidth * 4) * 80;
-      f.style.setProperty('--stagger', Math.round(d) + 'ms');
-    });
+    // wall pieces cascade by their column, one by one but only 40ms apart, so each row settles
+    // left to right; pieces already on screen at load also arrive top to bottom. Columns change
+    // with the window (4, 3, 2 across), so the cascade is worked out again on a resize.
+    function wallStagger(first) {
+      document.querySelectorAll('.wall').forEach(function (w) {
+        var figs = [].slice.call(w.querySelectorAll('figure')), lefts = [];
+        figs.forEach(function (f) { var l = Math.round(f.offsetLeft); if (lefts.indexOf(l) < 0) lefts.push(l); });
+        lefts.sort(function (a, b) { return a - b; });
+        figs.forEach(function (f) {
+          if (!first && f.classList.contains('is-seen')) return;
+          var r = f.getBoundingClientRect(), col = lefts.indexOf(Math.round(f.offsetLeft));
+          var d = (first && r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 : 0) + col * 40;
+          f.style.setProperty('--stagger', Math.round(d) + 'ms');
+        });
+      });
+    }
+    wallStagger(true);
+    addEventListener('resize', function () { wallStagger(false); });
     document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
     GROUPS.forEach(function (g) {
       document.querySelectorAll(g).forEach(function (group) {
@@ -640,7 +669,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
 
   // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
   (function () {
-    var link = document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;
+    var link = document.querySelector('.piece-nav') || document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;          // Back and Next move as one
     var home = link.parentElement, next = link.nextSibling, wide = matchMedia('(min-width:768px)');
     function place() {
       if (wide.matches) {
@@ -784,7 +813,13 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         if (closed) return; closed = true;
         // in one frame: were it closed a frame after "instant" came off, the still-open drawer
         // would restart its words' rise-in for that frame and they would blink out
-        requestAnimationFrame(function () { menu.classList.remove('instant'); set(false); });
+        requestAnimationFrame(function () {
+          menu.classList.remove('instant'); set(false);
+          // the logo stays black the whole way (set() would let go at 770ms, while the drawer is still
+          // sliding): only once the new page is fully revealed does it read what is behind it
+          clearTimeout(menu._logo); root.classList.add('logo-hold');
+          menu._logo = setTimeout(function () { root.classList.remove('logo-hold'); if (window.MaconNavTone) window.MaconNavTone(); }, 1100);
+        });
         // once the drawer has fully slid away, the page's own intro plays
         setTimeout(function () { root.classList.remove('intro-wait'); dispatchEvent(new Event('macon:intro')); }, 1100);
       };
@@ -805,7 +840,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     addEventListener('click', function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest('a[href]');
-      if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
+      if (!a || a.closest('.menu-sheet') || a.closest('.piece-nav') || a.target === '_blank' || a.hasAttribute('download')) return;          // Back/Next: the carousel below instead
       if (document.body.classList.contains('sizing-open')) return;          // Back closes the sizer rather than leaving
       if (a.hasAttribute('data-bag-drawer') && matchMedia('(min-width:768px)').matches) return;          // desktop Bag opens its drawer instead
       var href = a.getAttribute('href') || '';
@@ -822,6 +857,25 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     }, true);
     // coming back through history: never leave the veil up
     addEventListener('pageshow', function (e) { if (e.persisted && veil) veil.remove(); try { sessionStorage.removeItem('macon-fade'); } catch (err) {} });
+  })();
+
+  // ── Back / Next between pieces: the photographs swap like a carousel ─────────
+  // A real page load underneath (the browser's view transitions); site.css draws the slide. The leaving page
+  // notes which way you went, and every other kind of navigation keeps its own behaviour (the transition is
+  // skipped). Browsers without view transitions simply change page.
+  (function () {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('.piece-nav a'); if (!a) return;
+      try { sessionStorage.setItem('macon-piece', a.classList.contains('back') ? 'prev' : 'next'); } catch (err) {}
+    }, true);
+    addEventListener('pageswap', function (e) {
+      if (!e.viewTransition) return;
+      var dir = null; try { dir = sessionStorage.getItem('macon-piece'); } catch (err) {}
+      if (dir && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        e.viewTransition.types.add(dir);
+        scrollTo({top: 0, behavior: 'instant'});          // the swap always runs top photograph to top photograph
+      } else e.viewTransition.skipTransition();
+    });
   })();
 
   // ── Page wipe ─────────────────────────────────────────────────────────

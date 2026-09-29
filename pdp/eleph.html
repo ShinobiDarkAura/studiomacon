@@ -3,21 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Eleph | Studio Maçon</title>
-<meta name="description" content="It was unearthed mid-stride, perennially frozen in triumph. A deep, heavy rumbling can still be felt at the place it was discovered.">
+<title>Eleph, Solid Bronze Totem | Studio Maçon</title>
+<meta name="description" content="Eleph: a solid bronze totem, carved by hand in wax, cast at a local foundry and finished in our Santa Monica studio. Made to order. It was unearthed mid-stride, perennially frozen in triumph. A deep, heavy rumbling can still be felt at the place it was discovered.">
 <link rel="canonical" href="https://studiomacon.co/eleph.html">
 <meta property="og:site_name" content="Studio Maçon">
-<meta property="og:title" content="Eleph | Studio Maçon">
-<meta property="og:description" content="It was unearthed mid-stride, perennially frozen in triumph. A deep, heavy rumbling can still be felt at the place it was discovered.">
+<meta property="og:title" content="Eleph, Solid Bronze Totem | Studio Maçon">
+<meta property="og:description" content="Eleph: a solid bronze totem, carved by hand in wax, cast at a local foundry and finished in our Santa Monica studio. Made to order. It was unearthed mid-stride, perennially frozen in triumph. A deep, heavy rumbling can still be felt at the place it was discovered.">
 <meta property="og:url" content="https://studiomacon.co/eleph.html">
 <meta property="og:image" content="https://studiomacon.co/img/eleph/hero.jpg">
 <meta property="og:type" content="product">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Eleph", "description": "It was unearthed mid-stride, perennially frozen in triumph. A deep, heavy rumbling can still be felt at the place it was discovered.", "image": ["https://studiomacon.co/img/eleph/hero.jpg", "https://studiomacon.co/img/eleph/terracotta.jpg", "https://studiomacon.co/img/eleph/hires-1.jpg", "https://studiomacon.co/img/eleph/hand-2-wide.jpg", "https://studiomacon.co/img/eleph/plain-2.jpg", "https://studiomacon.co/img/eleph/hires-3.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "eleph", "offers": [{"@type": "Offer", "price": "200.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eleph.html"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "Eleph", "description": "Eleph: a solid bronze totem, carved by hand in wax, cast at a local foundry and finished in our Santa Monica studio. Made to order. It was unearthed mid-stride, perennially frozen in triumph. A deep, heavy rumbling can still be felt at the place it was discovered.", "image": ["https://studiomacon.co/img/eleph/hero.jpg", "https://studiomacon.co/img/eleph/terracotta.jpg", "https://studiomacon.co/img/eleph/hires-1.jpg", "https://studiomacon.co/img/eleph/hand-2-wide.jpg", "https://studiomacon.co/img/eleph/plain-2.jpg", "https://studiomacon.co/img/eleph/hires-3.jpg"], "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": "eleph", "offers": [{"@type": "Offer", "price": "200.00", "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": "https://studiomacon.co/eleph.html", "itemCondition": "https://schema.org/NewCondition", "shippingDetails": {"@type": "OfferShippingDetails", "shippingRate": {"@type": "MonetaryAmount", "value": "0", "currency": "USD"}, "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "US"}, "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 10, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 3, "maxValue": 7, "unitCode": "DAY"}}}, "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "US", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 30, "returnMethod": "https://schema.org/ReturnByMail"}}], "category": "Solid Bronze Totem", "material": "Bronze"}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Studio Maçon", "item": "https://studiomacon.co"}, {"@type": "ListItem", "position": 2, "name": "Totems", "item": "https://studiomacon.co/index.html#pieces"}, {"@type": "ListItem", "position": 3, "name": "Eleph"}]}</script>
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790613754">
+<link rel="stylesheet" href="site.css?v=1790709940">
 <style>
   /* ── product ───────────────────────────────────────── */
   .gallery figure{margin:0;background:none;overflow:hidden}
@@ -436,11 +436,27 @@
 (function () { try { var n = performance.getEntriesByType('navigation')[0];
   if (n && n.type === 'reload') { history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
 } catch (e) {} })();
+// Back / Next between pieces: the arriving page takes the carousel's direction before its first frame (site.js)
+try { if (sessionStorage.getItem('macon-piece')) document.documentElement.classList.add('piece-swap'); } catch (x) {}
+addEventListener('pagereveal', function (e) { if (!e.viewTransition) return;
+  var d = null; try { d = sessionStorage.getItem('macon-piece'); sessionStorage.removeItem('macon-piece'); } catch (x) {}
+  if (d && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    e.viewTransition.types.add(d);
+    // mid-swap the page can't be looked through (every point reads as the bare page), so the nav holds its colour
+    window.MaconSwapping = true;
+    e.viewTransition.finished.finally(function () { window.MaconSwapping = false; document.documentElement.classList.remove('piece-swap'); if (window.MaconNavTone) window.MaconNavTone(); });
+  } else e.viewTransition.skipTransition(); });
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
   document.documentElement.classList.add('menu-arriving');
   document.documentElement.classList.add('intro-wait');          // the page's own intro waits until the drawer has gone (site.js lifts this)
+  // the home page leaves out the font preload (PageSpeed, see main()), so the drawer's words drawn over it
+  // showed the fallback serif for a moment; arriving from the menu the fonts are in the cache, so ask for them now
+  if (/(^|\/)(index\.html)?$/.test(location.pathname)) ['instrument-serif', 'instrument-sans'].forEach(function (f) {
+    var l = document.createElement('link'); l.rel = 'preload'; l.as = 'font'; l.type = 'font/woff2'; l.crossOrigin = 'anonymous';
+    l.href = 'fonts/' + f + '.woff2'; document.head.appendChild(l);
+  });
   var x = JSON.parse(sessionStorage.getItem('macon-x') || 'null');          // the X stays exactly where it was on the page just left
   if (x && x.l) { var st = document.createElement('style'); st.textContent = 'html .menu-sheet .menu-close{left:' + x.l + ';top:' + x.t + ';height:' + x.h + '}'; document.head.appendChild(st); }
 } } catch (e) {} })();
@@ -566,7 +582,7 @@
 <body class="white-right" data-slug="eleph">
 
 
-<nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping <br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><p class="menu-legal"><a class="hover-line" href="privacy.html">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="terms.html">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="refunds.html">Refunds</a></p></nav>
+<nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping <br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><p class="menu-legal"><a class="hover-line" href="privacy.html">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="terms.html">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="refunds.html">Refunds</a><span aria-hidden="true"> · </span><a class="hover-line" href="faq.html">FAQ</a></p></nav>
 <header class="head">
   <div class="left">
     <a href="#" class="mob hover-line">Menu</a>
@@ -675,7 +691,7 @@
     </script>
 
     <div class="info">
-      <a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>
+      <nav class="piece-nav" aria-label="Other pieces" data-no-emerge><a class="back" href="ibi.html" aria-label="Previous piece: Ibi"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a><a class="piece-next" href="zuma-ring.html" aria-label="Next piece: Zuma Crest"><span>Next</span><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 7 7-7 7"/></svg></a></nav>
       <p class="eyebrow" data-edit="eyebrow">The Great Unbowed</p>
       <h1 data-edit="name">Eleph</h1>
       <p class="price" data-edit="price"><span class="amt">$200</span><span class="ship-free">Free shipping</span></p>
@@ -774,6 +790,22 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
   })();
 
+  // Arc, while a window edge is dragged, now and then makes the window 0 x 0 for an instant (sometimes
+  // within a single frame, so the page never hears of it). With nothing to scroll the page lands at
+  // the top. So: landing at the top just after a resize, with no key or click to ask for it, goes back.
+  (function () {
+    var saved = scrollY, resized = 0, asked = 0;
+    ['keydown', 'pointerdown'].forEach(function (ev) { addEventListener(ev, function () { asked = Date.now(); }, {passive: true, capture: true}); });
+    function lost() { return scrollY < 2 && saved > 50 && Date.now() - resized < 500 && Date.now() - asked > 1000; }
+    function back() { if (innerWidth && innerHeight) scrollTo({top: saved, behavior: 'instant'}); }
+    addEventListener('scroll', function () {
+      if (!innerWidth || !innerHeight) return;
+      if (lost()) return back();
+      saved = scrollY;
+    }, {passive: true});
+    addEventListener('resize', function () { resized = Date.now(); if (lost()) back(); });
+  })();
+
   // Once the page has moved, a white fade sits behind the header and the nav turns black (site.css, .head::before)
   (function () {
     var root = document.documentElement, on = false;
@@ -795,7 +827,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     function look() { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add('eye-look'); }
     // it looks around once when it first appears (on the home page, once the intro has faded), and whenever it is hovered
     var home = document.querySelector('.film');
-    if (!home) setTimeout(look, 600);
+    if (!home && !document.documentElement.classList.contains('menu-arriving')) setTimeout(look, 600);          // from the menu the logo never left the screen: no replay
     else new MutationObserver(function (m, o) { if (document.body.classList.contains('logo-docked')) { o.disconnect(); setTimeout(look, 700); } })
       .observe(document.body, {attributes: true, attributeFilter: ['class']});
     if (matchMedia('(hover:hover)').matches)          // a mouse only: on touch, a look on first tap swallowed the tap itself
@@ -899,7 +931,8 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         if (el.closest('.head')) continue;
         if (el.tagName === 'VIDEO') return 0;
         if (el.tagName === 'IMG') {
-          var m = map(el); if (!m) return bgLuma(el);
+          var m = map(el);
+          if (!m) return el.complete && el.naturalWidth ? bgLuma(el) : null;          // a picture still decoding: hold the colour (it read as the blank page, and turned the nav black on a dark photo)
           var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
           var sx = r.width / el.naturalWidth, sy = r.height / el.naturalHeight;
           if (fit === 'cover') sx = sy = Math.max(sx, sy);
@@ -927,6 +960,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
     function tone(force) {
       queued = false;
+      if (window.MaconSwapping) return;          // Back/Next swap under way: nothing under the nav can be read yet
       if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
       lastY = scrollY;
       // the whole nav is one unit: read under each part, then colour every part the same
@@ -957,6 +991,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
     addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
     function fresh() { held = null; lastY = -99; soon(); }
+    window.MaconNavTone = fresh;          // the menu asks for a fresh reading once the page behind it is revealed
     document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
     addEventListener('load', fresh);
     addEventListener('pageshow', fresh);
@@ -1088,14 +1123,24 @@ addEventListener('load', function () { document.documentElement.classList.add('l
       })();
     });
 
-    // wall pieces cascade by their position in the row, so each row settles left to right
-    // pieces already on screen at load arrive top to bottom, the rest by column
-    document.querySelectorAll('.wall figure').forEach(function (f) {
-      var r = f.getBoundingClientRect();
-      var d = r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 + r.left / innerWidth * 120
-                                  : Math.round(r.left / innerWidth * 4) * 80;
-      f.style.setProperty('--stagger', Math.round(d) + 'ms');
-    });
+    // wall pieces cascade by their column, one by one but only 40ms apart, so each row settles
+    // left to right; pieces already on screen at load also arrive top to bottom. Columns change
+    // with the window (4, 3, 2 across), so the cascade is worked out again on a resize.
+    function wallStagger(first) {
+      document.querySelectorAll('.wall').forEach(function (w) {
+        var figs = [].slice.call(w.querySelectorAll('figure')), lefts = [];
+        figs.forEach(function (f) { var l = Math.round(f.offsetLeft); if (lefts.indexOf(l) < 0) lefts.push(l); });
+        lefts.sort(function (a, b) { return a - b; });
+        figs.forEach(function (f) {
+          if (!first && f.classList.contains('is-seen')) return;
+          var r = f.getBoundingClientRect(), col = lefts.indexOf(Math.round(f.offsetLeft));
+          var d = (first && r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 : 0) + col * 40;
+          f.style.setProperty('--stagger', Math.round(d) + 'ms');
+        });
+      });
+    }
+    wallStagger(true);
+    addEventListener('resize', function () { wallStagger(false); });
     document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
     GROUPS.forEach(function (g) {
       document.querySelectorAll(g).forEach(function (group) {
@@ -1399,7 +1444,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
 
   // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
   (function () {
-    var link = document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;
+    var link = document.querySelector('.piece-nav') || document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;          // Back and Next move as one
     var home = link.parentElement, next = link.nextSibling, wide = matchMedia('(min-width:768px)');
     function place() {
       if (wide.matches) {
@@ -1543,7 +1588,13 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         if (closed) return; closed = true;
         // in one frame: were it closed a frame after "instant" came off, the still-open drawer
         // would restart its words' rise-in for that frame and they would blink out
-        requestAnimationFrame(function () { menu.classList.remove('instant'); set(false); });
+        requestAnimationFrame(function () {
+          menu.classList.remove('instant'); set(false);
+          // the logo stays black the whole way (set() would let go at 770ms, while the drawer is still
+          // sliding): only once the new page is fully revealed does it read what is behind it
+          clearTimeout(menu._logo); root.classList.add('logo-hold');
+          menu._logo = setTimeout(function () { root.classList.remove('logo-hold'); if (window.MaconNavTone) window.MaconNavTone(); }, 1100);
+        });
         // once the drawer has fully slid away, the page's own intro plays
         setTimeout(function () { root.classList.remove('intro-wait'); dispatchEvent(new Event('macon:intro')); }, 1100);
       };
@@ -1564,7 +1615,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     addEventListener('click', function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest('a[href]');
-      if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
+      if (!a || a.closest('.menu-sheet') || a.closest('.piece-nav') || a.target === '_blank' || a.hasAttribute('download')) return;          // Back/Next: the carousel below instead
       if (document.body.classList.contains('sizing-open')) return;          // Back closes the sizer rather than leaving
       if (a.hasAttribute('data-bag-drawer') && matchMedia('(min-width:768px)').matches) return;          // desktop Bag opens its drawer instead
       var href = a.getAttribute('href') || '';
@@ -1581,6 +1632,25 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     }, true);
     // coming back through history: never leave the veil up
     addEventListener('pageshow', function (e) { if (e.persisted && veil) veil.remove(); try { sessionStorage.removeItem('macon-fade'); } catch (err) {} });
+  })();
+
+  // ── Back / Next between pieces: the photographs swap like a carousel ─────────
+  // A real page load underneath (the browser's view transitions); site.css draws the slide. The leaving page
+  // notes which way you went, and every other kind of navigation keeps its own behaviour (the transition is
+  // skipped). Browsers without view transitions simply change page.
+  (function () {
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('.piece-nav a'); if (!a) return;
+      try { sessionStorage.setItem('macon-piece', a.classList.contains('back') ? 'prev' : 'next'); } catch (err) {}
+    }, true);
+    addEventListener('pageswap', function (e) {
+      if (!e.viewTransition) return;
+      var dir = null; try { dir = sessionStorage.getItem('macon-piece'); } catch (err) {}
+      if (dir && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        e.viewTransition.types.add(dir);
+        scrollTo({top: 0, behavior: 'instant'});          // the swap always runs top photograph to top photograph
+      } else e.viewTransition.skipTransition();
+    });
   })();
 
   // ── Page wipe ─────────────────────────────────────────────────────────
@@ -1794,7 +1864,7 @@ function maconClickQuery(extra) {
 <script>
   // Desktop: Back to Shop belongs to the product's right column, so it fades away once that column has scrolled past
   (function () {
-    var back = document.querySelector('.back'), product = document.querySelector('.product');
+    var back = document.querySelector('.piece-nav') || document.querySelector('.back'), product = document.querySelector('.product');          // Back and Next go together
     if (!back || !product || !('IntersectionObserver' in window)) return;
     new IntersectionObserver(function (e) { back.classList.toggle('gone', !e[0].isIntersecting); }, {rootMargin: '-120px 0px 0px 0px'}).observe(product);
   })();

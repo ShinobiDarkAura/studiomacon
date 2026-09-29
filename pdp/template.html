@@ -493,7 +493,7 @@
 <script>
   // Desktop: Back to Shop belongs to the product's right column, so it fades away once that column has scrolled past
   (function () {
-    var back = document.querySelector('.back'), product = document.querySelector('.product');
+    var back = document.querySelector('.piece-nav') || document.querySelector('.back'), product = document.querySelector('.product');          // Back and Next go together
     if (!back || !product || !('IntersectionObserver' in window)) return;
     new IntersectionObserver(function (e) { back.classList.toggle('gone', !e[0].isIntersecting); }, {rootMargin: '-120px 0px 0px 0px'}).observe(product);
   })();

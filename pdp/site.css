@@ -580,8 +580,24 @@ html.logo-hold .head > :not(.logotype){visibility:hidden}
 html.logo-hold .head .logotype{color:#000}
 
 /* Back: the same size and grey as "Free shipping" beside the price */
-.back{font-size:calc(14px - 1pt);color:rgba(0,0,0,.5)}
-.back .back-icon{width:14px;height:14px}          /* the arrow alone, 2px larger */
+.back{font-size:calc(14px - 1pt);color:rgba(0,0,0,.5);gap:0}
+/* only the word shows; on hover the arrow (grey 300) grows in ahead of it and pushes it right, 4px apart */
+.back .back-icon{width:0;height:14px;margin-right:0;opacity:0;color:#D1D5DB;transform:none;
+  transition:width .35s var(--ease),margin-right .35s var(--ease),opacity .3s ease}
+.back:hover .back-icon,.back:focus-visible .back-icon{width:14px;margin-right:4px;opacity:1;transform:none}
+/* a product on the wall: Back (the previous piece) then Next, walking the shop's order round and round */
+.piece-nav{align-self:flex-start;display:inline-flex;align-items:center;gap:12px;margin:0 0 28px;transition:opacity .35s ease}          /* Next just after Back: the column's far edge is Bag's, in the nav row */
+.head .piece-nav{position:absolute;top:50%;margin:0;transform:translateY(-50%)}
+.head .piece-nav .back{position:static;transform:none}
+.piece-nav.gone{opacity:0;pointer-events:none}
+.piece-nav .back{margin:0}
+.piece-nav .back-icon{display:none}          /* Back and Next are words only: no chevron on hover */
+.piece-next{display:inline-flex;align-items:center;font-size:calc(14px - 1pt);color:rgba(0,0,0,.5);transition:color .2s ease}
+.piece-next:hover{color:#000}
+.piece-next .back-icon{width:0;height:14px;margin-left:0;opacity:0;color:#D1D5DB;
+  transition:width .35s var(--ease),margin-left .35s var(--ease),opacity .3s ease}
+.piece-next:hover .back-icon,.piece-next:focus-visible .back-icon{width:14px;margin-left:4px;opacity:1}
+@media (max-width:767px){ .piece-nav{display:none} }          /* phones: as Back alone was */
 
 /* Privacy · Terms · Refunds live at the foot of the menu (moved out of the footer) */
 .menu-sheet .menu-legal{position:absolute;left:0;right:0;bottom:40px;margin:0;text-align:center;font:400 calc(12px - 1pt)/1 var(--sans);
@@ -627,3 +643,27 @@ html.intro-wait .dr-emerge{opacity:0 !important;filter:blur(16px) !important;tra
 html.menu-arriving .head{z-index:61;transform:none !important}
 html.menu-arriving .head > :not(.logotype){visibility:hidden}
 html.menu-arriving .head .logotype,html.menu-arriving .head .logotype *{color:#000;transition:none !important}
+
+/* ── Back / Next between pieces (site.js): the photograph slides like a carousel, and the right-hand column
+   plays its entrance from scratch, as on a fresh load (the old words simply clear). Other navigations skip
+   the transition. */
+@view-transition{navigation:auto}
+.product .gallery .hero{view-transition-name:piece-hero}
+.head{view-transition-name:site-head}          /* the nav rides above the sliding photograph (it sits over it) */
+::view-transition-group(site-head){animation:none;z-index:3}
+::view-transition-old(site-head){display:none}
+::view-transition-new(site-head){animation:none}
+::view-transition-old(root),::view-transition-new(root){animation:none}
+html.piece-swap .head .left,html.piece-swap .head .logotype,html.piece-swap .head .right{transition:none !important}          /* the nav takes the new page's colour at once, not fading from black */
+::view-transition-image-pair(piece-hero){overflow:hidden}          /* the slide stays inside the photograph's frame */
+::view-transition-group(piece-hero){animation-duration:.75s;animation-timing-function:cubic-bezier(.65,0,.35,1)}
+::view-transition-old(piece-hero),::view-transition-new(piece-hero){height:100%;mix-blend-mode:normal;
+  animation-duration:.75s;animation-timing-function:cubic-bezier(.65,0,.35,1);animation-fill-mode:both}
+html:active-view-transition-type(next)::view-transition-old(piece-hero){animation-name:piece-out-left}
+html:active-view-transition-type(next)::view-transition-new(piece-hero){animation-name:piece-in-right}
+html:active-view-transition-type(prev)::view-transition-old(piece-hero){animation-name:piece-out-right}
+html:active-view-transition-type(prev)::view-transition-new(piece-hero){animation-name:piece-in-left}
+@keyframes piece-out-left{to{transform:translateX(-100%)}}
+@keyframes piece-in-right{from{transform:translateX(100%)}}
+@keyframes piece-out-right{to{transform:translateX(100%)}}
+@keyframes piece-in-left{from{transform:translateX(-100%)}}

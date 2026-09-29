@@ -131,7 +131,7 @@ def kind(slug, notes, name=""):
         return "apparel"
     if "bronze" in " ".join(notes).lower():
         return "totem"
-    if slug.endswith("ring") or name.strip().lower().endswith("ring"):          # "Sietch Ring" is a ring too
+    if slug.endswith("ring") or slug == "sietch-aperture" or name.strip().lower().endswith("ring"):          # Sietch is a ring too
         return "ring"
     if "chain" in " ".join(notes).lower():
         return "pendant"
@@ -659,11 +659,27 @@ WIPE_HEAD = """<style>
 (function () { try { var n = performance.getEntriesByType('navigation')[0];
   if (n && n.type === 'reload') { history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
 } catch (e) {} })();
+// Back / Next between pieces: the arriving page takes the carousel's direction before its first frame (site.js)
+try { if (sessionStorage.getItem('macon-piece')) document.documentElement.classList.add('piece-swap'); } catch (x) {}
+addEventListener('pagereveal', function (e) { if (!e.viewTransition) return;
+  var d = null; try { d = sessionStorage.getItem('macon-piece'); sessionStorage.removeItem('macon-piece'); } catch (x) {}
+  if (d && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    e.viewTransition.types.add(d);
+    // mid-swap the page can't be looked through (every point reads as the bare page), so the nav holds its colour
+    window.MaconSwapping = true;
+    e.viewTransition.finished.finally(function () { window.MaconSwapping = false; document.documentElement.classList.remove('piece-swap'); if (window.MaconNavTone) window.MaconNavTone(); });
+  } else e.viewTransition.skipTransition(); });
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
   document.documentElement.classList.add('menu-arriving');
   document.documentElement.classList.add('intro-wait');          // the page's own intro waits until the drawer has gone (site.js lifts this)
+  // the home page leaves out the font preload (PageSpeed, see main()), so the drawer's words drawn over it
+  // showed the fallback serif for a moment; arriving from the menu the fonts are in the cache, so ask for them now
+  if (/(^|\\/)(index\\.html)?$/.test(location.pathname)) ['instrument-serif', 'instrument-sans'].forEach(function (f) {
+    var l = document.createElement('link'); l.rel = 'preload'; l.as = 'font'; l.type = 'font/woff2'; l.crossOrigin = 'anonymous';
+    l.href = 'fonts/' + f + '.woff2'; document.head.appendChild(l);
+  });
   var x = JSON.parse(sessionStorage.getItem('macon-x') || 'null');          // the X stays exactly where it was on the page just left
   if (x && x.l) { var st = document.createElement('style'); st.textContent = 'html .menu-sheet .menu-close{left:' + x.l + ';top:' + x.t + ';height:' + x.h + '}'; document.head.appendChild(st); }
 } } catch (e) {} })();
@@ -912,6 +928,7 @@ PAGE_META = {          # search and share descriptions for the non-product pages
     "inspiration.html": "The images, objects, places and old artifacts behind Studio Maçon's bronze totems and silver jewelry, gathered over years of sketching, travel and looking.",
     "ring-sizing.html": "Find your ring size at home: print the Studio Maçon ring sizer at true scale, or measure a ring you already wear. Half sizes included, with tips for a good fit.",
     "bag.html": "Your bag at Studio Maçon.",
+    "faq.html": "Questions about Studio Maçon: how the pieces are made, solid sterling silver and bronze, ring sizes and resizing, shipping, returns, lifetime repairs and custom commissions.",
     "privacy.html": "How Studio Maçon collects, uses and protects your personal information when you visit the site or order a piece.",
     "terms.html": "The terms of service for shopping with Studio Maçon.",
     "refunds.html": "Returns, store credit, exchanges and damaged pieces at Studio Maçon, where every piece is made to order by hand.",
@@ -931,12 +948,29 @@ def _shots(doc, slug, hero):
     return out[:6]
 
 
+PLAIN = {"Silver Ring": ("Sterling Silver Ring", "sterling silver"), "Silver Pendant": ("Sterling Silver Pendant", "sterling silver"),
+         "Silver Ear Cuff": ("Sterling Silver Ear Cuff", "sterling silver"), "Bronze Totem": ("Solid Bronze Totem", "bronze")}
+
+
+def plain(slug):
+    """What a piece is, said plainly for search engines and AI answers, since the names and the lore
+    never say it: ("Sterling Silver Ring", "sterling silver") or (None, None)."""
+    t = re.sub(r"<[^>]+>|&bull;", "", piece_type(slug)).strip()
+    return PLAIN.get(t, (None, None))
+
+
 def seo(name, doc, product=None):
     """Description, canonical, share tags, and product details for Google, added to <head>."""
+    what, metal = plain(product["slug"]) if product else (None, None)
+    if what:          # "Eclipsis, Sterling Silver Ring | Studio Maçon": the tab and the search result say what it is
+        doc = doc.replace(f"<title>{html.escape(product['name'])} | ", f"<title>{html.escape(product['name'])}, {what} | ", 1)
     title = re.search(r"<title>(.*?)</title>", doc).group(1)
     url = SITE + ("/" if name == "index.html" else "/" + name)
     if product:
         desc, image = DESC[product["slug"]], f'{SITE}/img/{product["slug"]}/hero.jpg'
+        if what:          # the facts first, then the lore
+            desc = (f"{product['name']}: a {what.lower()}, carved by hand in wax, cast at a local foundry and finished "
+                    f"in our Santa Monica studio. Made to order. {desc}")
     else:
         desc, image = PAGE_META.get(name, PAGE_META["index.html"]), f"{SITE}/video/poster-process.jpg"
     desc = html.escape(desc[:300], quote=True)
@@ -964,6 +998,13 @@ def seo(name, doc, product=None):
                 ("What if a ring doesn\u2019t fit?",
                  "Write to hello@studiomacon.co and we will resize or exchange it."))]}
         tags.append('<script type="application/ld+json">' + json.dumps(faq, ensure_ascii=False).replace("</", "<\\/") + '</script>')
+    if name == "faq.html":
+        # the page's own questions and answers, read off the page so the two never drift apart
+        pairs = re.findall(r'<button class="acc-head"[^>]*>(.*?)</button>.*?<div class="acc-body">(.*?)</div>', doc.split('class="acc faq"', 1)[1], re.S)
+        clean = lambda x: html.unescape(re.sub(r"<[^>]+>", "", x)).strip()
+        faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+            {"@type": "Question", "name": clean(q), "acceptedAnswer": {"@type": "Answer", "text": clean(a)}} for q, a in pairs]}
+        tags.append('<script type="application/ld+json">' + json.dumps(faq, ensure_ascii=False).replace("</", "<\\/") + '</script>')
     if name == "index.html":
         # who the studio is, and where else it lives: branded searches from the ads land on this
         org = {"@context": "https://schema.org", "@type": "Organization", "name": "Studio Ma\u00e7on",
@@ -978,8 +1019,24 @@ def seo(name, doc, product=None):
         offers = [{"@type": "Offer", "price": f'{v["price"]:.2f}', "priceCurrency": "USD", "availability": _avail(v),
                    "url": url} for v in SHOPIFY.get(product["slug"], {}).get("variants", [])] or \
                  [{"@type": "Offer", "price": f'{float(product["price"]):.2f}', "priceCurrency": "USD", "availability": "https://schema.org/InStock", "url": url}]
-        ld = {"@context": "https://schema.org", "@type": "Product", "name": product["name"], "description": DESC[product["slug"]],
+        # the policies every offer carries (the same as the Shipping & Returns section): Google and AI
+        # shopping answers read these fields directly rather than the page's words
+        for o in offers:
+            o["itemCondition"] = "https://schema.org/NewCondition"
+            o["shippingDetails"] = {"@type": "OfferShippingDetails",
+                                    "shippingRate": {"@type": "MonetaryAmount", "value": "0", "currency": "USD"},
+                                    "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "US"},
+                                    "deliveryTime": {"@type": "ShippingDeliveryTime",
+                                                     "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 10, "unitCode": "DAY"},
+                                                     "transitTime": {"@type": "QuantitativeValue", "minValue": 3, "maxValue": 7, "unitCode": "DAY"}}}
+            o["hasMerchantReturnPolicy"] = {"@type": "MerchantReturnPolicy", "applicableCountry": "US",
+                                            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                                            "merchantReturnDays": 30, "returnMethod": "https://schema.org/ReturnByMail"}
+        ld = {"@context": "https://schema.org", "@type": "Product", "name": product["name"], "description": html.unescape(desc),
               "image": _shots(doc, product["slug"], image), "brand": {"@type": "Brand", "name": "Studio Maçon"}, "sku": product["slug"], "offers": offers}
+        if what:
+            ld["category"] = what
+            ld["material"] = metal.title()
         tags.append('<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False).replace("</", "<\\/") + '</script>')
         # Studio Maçon > Totems > Zuma, so a search result shows the path instead of a bare address
         family = "Totems" if kind(product["slug"], read_port(product["slug"])[1], product.get("name", "")) == "totem" else "Jewelry"
@@ -1000,12 +1057,12 @@ def editable(doc, page):
     detaches and my new words show: safer than silently keeping stale copy.
     """
     def one(m):
-        tag, attrs, inner = m.group(1), m.group(2), m.group(3)
+        tag, attrs, inner = m.group(1), m.group(2) or "", m.group(3)
         if "data-edit" in attrs or "data-no-edit" in attrs or "{{" in inner:
             return m.group(0)
         key = f"{page}:{hashlib.sha1(inner.strip().encode()).hexdigest()[:8]}"
         return f'<{tag}{attrs} data-edit="page:{key}">{_content.page(key, inner)}</{tag}>'
-    return re.sub(r"<(h1|h2|h3|p)([^>]*)>(.*?)</\1>", one, doc, flags=re.S)
+    return re.sub(r"<(h1|h2|h3|p)(\s[^>]*)?>(.*?)</\1>", one, doc, flags=re.S)          # \s: never <path>
 
 
 def save(name, doc, product=None):
@@ -1342,10 +1399,25 @@ def main():
                           for i, (n, w, h) in enumerate(imgs))))
         save(f, editable(one_block(doc), f))
         print("  ", f)
+    # the shop's running order (the same sort the wall uses below), so Back and Next on a product page walk
+    # the pieces as they hang on the wall, round and round; pieces off the wall keep a plain Back to the shop
+    _group = lambda p: 2 if p["slug"] == "macon-cap" else (0 if kind(p["slug"], read_port(p["slug"])[1]) == "totem" else 1)
+    _order = _content.CONTENT.get("order") or []
+    _rank = lambda p: _order.index(p["slug"]) if p["slug"] in _order else len(_order)
+    wall = sorted((x for x in products if x["slug"] not in HIDE_FROM_SHOP and x["slug"] not in RETIRED and x["slug"] not in OOAK_SLUGS),
+                  key=lambda p: (_group(p), _rank(p)))
     for p in products:
         if p["slug"] in RETIRED:          # no page at all; its old addresses go to the shop (see _redirects)
             continue
         doc = one_block(page(p, template, related_block(p, products)))
+        if p in wall:
+            i = wall.index(p); prev, nxt = wall[i - 1], wall[(i + 1) % len(wall)]
+            doc = doc.replace(
+                '<a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>',
+                f'<nav class="piece-nav" aria-label="Other pieces" data-no-emerge>'
+                f'<a class="back" href="{prev["slug"]}.html" aria-label="Previous piece: {html.escape(prev["name"])}"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>'
+                f'<a class="piece-next" href="{nxt["slug"]}.html" aria-label="Next piece: {html.escape(nxt["name"])}"><span>Next</span><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 7 7-7 7"/></svg></a>'
+                f'</nav>', 1)
         for wide in glob.glob(os.path.join(OUT, "img", p["slug"], "*-wide.jpg.webp")):          # in-hand photos, 10% further out, on the product page only
             base = os.path.basename(wide)[:-len("-wide.jpg.webp")]
             doc = re.sub(rf'img/{re.escape(p["slug"])}/{re.escape(base)}(\.jpg|--m\.jpg)', lambda m: f'img/{p["slug"]}/{base}-wide{m.group(1)}', doc)
