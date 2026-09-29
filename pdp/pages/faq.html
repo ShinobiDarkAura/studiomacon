@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FAQ | Studio Maçon</title>
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="img/favicon.png">
+<link rel="stylesheet" href="site.css?v={{CSSV}}">
+<style>
+  /* the questions people ask, set as the policies are: a quiet single column in the site's type */
+  .legal{max-width:680px;margin:0 auto;padding:calc(var(--head) + 72px) var(--gutter,24px) 120px}
+  /* the heading and the closed list sit in the middle of the first screen (--faq-h is their height, measured
+     below); answers opening grow downward from there rather than pushing the list up */
+  .legal.faq-page{padding-top:max(calc(var(--head) + 24px), calc((100svh - var(--faq-h, 0px)) / 2))}
+  .legal .intro{padding:0;text-align:center;margin-bottom:64px}
+  .legal .intro h1{margin-bottom:20px}
+  .legal .acc-body a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+  /* the questions a size up (1.125x) from the product pages' accordions */
+  .faq .acc-head{padding:15px 0;font-size:calc((17px - 4pt) * 1.125)}
+  .faq .acc-item.open .acc-head{padding-bottom:24px}
+  .faq .acc-head::after{width:11.25px;height:11.25px;background-size:11.25px 1.5px,1.5px 11.25px}
+  .faq .acc-item.open .acc-head::after{background-size:1.5px 11.25px}
+  .faq .acc-body{padding-bottom:22px;font-size:calc(var(--body-s) * 1.125)}
+  @media (max-width:767px){ .legal{padding-top:calc(var(--head) + 48px)} }
+</style>
+</head>
+<body class="legal-page">
+{{NAV}}
+<main>
+  <article class="legal faq-page">
+    <section class="intro">
+      <p class="eyebrow">Studio Maçon</p>
+      <h1>FAQ</h1>
+    </section>
+    <section class="acc faq">
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">How are your pieces made?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Each piece begins as a sketch on paper. It is then carved by hand in wax, cast in bronze or sterling silver at our local foundry, and refined and polished in our studio in Santa Monica, California.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Is your jewelry solid sterling silver?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Yes. Every ring, pendant and ear cuff is 100% sterling silver, and each one is stamped with its hallmark. Our totems are solid bronze.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Is your silver nickel-free?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Yes. Our sterling silver is nickel-free.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">How long until my piece ships?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece is made to order, so please allow up to 10 business days before it ships. Delivery within the US then takes 3 to 7 business days.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Is shipping free? Do you ship internationally?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Shipping is free on all orders within the continental US. We also ship abroad: prices are shown in US dollars, and duties and import taxes are included at checkout, so nothing more is due on arrival.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">How do I find my ring size?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Print our <a href="ring-sizing.html">ring sizer</a>, which is the most accurate way, or measure a ring you already wear. Most of our rings come in US sizes 5.5 to 10.5. Still unsure? Write to <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and we will help you work it out.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Can my ring be resized?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Yes, every ring can be resized. If yours arrives and does not fit, write to <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and we will resize or exchange it.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Can I return a piece?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Pieces in their original condition may be returned within 30 days of delivery for store credit. Custom commissions and one-of-a-kind pieces cannot be returned. The full details are in our <a href="refunds.html">refund policy</a>.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Do you repair or re-polish pieces?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Yes, for life. If your piece takes a knock, needs a repair or would like a fresh polish, write to <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a> and we will look after it.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Do you take custom commissions?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Yes. We make bronze totems of your favorite animal, from $925, and rings, pendants and ear cuffs you have imagined, in silver or gold, from $1,200. <a href="custom.html">Start a commission</a>.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Can I send a piece as a gift?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Every piece arrives in our box, ready to give. Add gift wrapping in your bag and we will wrap it and write out your note by hand. Add the receiver's address at checkout and it goes straight to them.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">How do I care for silver and bronze?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>Sterling silver can darken over time. To bring back the shine, use a silver polish with a cotton pad, then rinse in warm water. Bronze changes with handling and the air it lives in, so no two age alike. To brighten a totem's golden head, rub it gently with a soft cloth and a little metal polish, keeping clear of the darker body.</p></div></div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-head" aria-expanded="false">Where is your studio?</button>
+          <div class="acc-panel"><div class="acc-inner"><div class="acc-body"><p>In Santa Monica, California. Every piece is made to order there. Write to us any time at <a href="mailto:hello@studiomacon.co">hello@studiomacon.co</a>; we answer every message personally.</p></div></div></div>
+        </div>
+    </section>
+  </article>
+</main>
+{{FOOTER}}
+{{SITEJS}}
+<script>
+  (function () {
+    var page = document.querySelector('.faq-page'), intro = page.querySelector('.intro'), list = page.querySelector('.faq');
+    function measure() {
+      if (list.querySelector('.acc-item.open')) return;          // only the closed list sets the centre
+      var h = list.offsetTop + list.offsetHeight - intro.offsetTop;          // layout, not the rows' slide-in
+      page.style.setProperty('--faq-h', Math.round(h) + 'px');
+    }
+    measure(); addEventListener('load', measure); addEventListener('resize', measure);
+    if (document.fonts) document.fonts.ready.then(measure);
+  })();
+</script>
+</body>
+</html>
