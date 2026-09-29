@@ -298,8 +298,8 @@ EMAILS.update({
        + text("Every piece is drawn, carved in wax and cast in silver or gold by hand, then finished in the studio in California. "
               "No two leave quite alike.", "0 153px 31px") + button("Browse artifacts", "{{ event.URL }}")
        + friends()
-       + "{% if 'Eclipse' in event.ProductName %}" + trio(three(("Zuma Ring", "zuma-ring"), ("Lunar Canyon", "lunar-canyon-ring"), ("Caldera Arc", "ear-cuff")))
-       + "{% else %}" + trio(three(("Eclipse Ring", "eclipse-ring"), ("Meridian Egg", "meridian-egg-ring"), ("Sietch Ring", "sietch-aperture"))) + "{% endif %}"
+       + "{% if 'Eclips' in event.ProductName %}" + trio(three(("Zuma Crest", "zuma-ring"), ("Lunar Canyon", "lunar-canyon-ring"), ("Caldera Arc", "ear-cuff")))
+       + "{% else %}" + trio(three(("Eclipsis", "eclipse-ring"), ("Meridian Egg", "meridian-egg-ring"), ("Sietch", "sietch-aperture"))) + "{% endif %}"
        + "{% endif %}"),
  # Post-purchase (trigger: Placed Order). 1: straight away. 2: after 21 days.
  "thanks-1": dict(
@@ -319,7 +319,7 @@ EMAILS.update({
                 ("Share it", 'Photographs of Maçon pieces in their new homes are always welcome: '
                              '<a href="https://www.instagram.com/studiomacon/">@studiomacon</a>.')])
        + button("Browse artifacts", SITE + "/shop?discount=" + CODE)
-       + friends() + trio(three(("Rebi", "rebi"), ("Zuma Ring", "zuma-ring"), ("Yaël", "yael")))),
+       + friends() + trio(three(("Rebi", "rebi"), ("Zuma Crest", "zuma-ring"), ("Yaël", "yael")))),
 
  # Thank customers after they purchase: the email Shopify sends after a customer's second order
  "thanks-repeat": dict(
@@ -329,7 +329,7 @@ EMAILS.update({
        + text("A second order means a lot to a studio our size. We've already started on it, and we'll send tracking "
               "as soon as it's on its way. Thank you for coming back!", "0 131px 34px")
        + button("Browse artifacts", SITE + "/shop")
-       + friends() + trio(three(("Milo", "milo"), ("Eclipse Ring", "eclipse-ring"), ("Ibi", "ibi")))),
+       + friends() + trio(three(("Milo", "milo"), ("Eclipsis", "eclipse-ring"), ("Ibi", "ibi")))),
  # Shipping confirmation (Shopify notification: Shipping confirmation). Sent the moment a parcel gets tracking.
  "shipping-1": dict(
     subject="Your piece is on its way",
