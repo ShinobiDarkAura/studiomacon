@@ -1060,5 +1060,15 @@
     [].forEach.call(imgs, function (i) { var s = i.getAttribute('data-' + side); i.removeAttribute('srcset'); i.src = s; i.classList.add('ab'); });
   })();
 </script>
+<script>
+  // ?ground=sage | moss | pine: the jewelry tiles on a green suede instead of terracotta, to compare (not linked anywhere)
+  (function (g) {
+    if (!g || !/^(sage|moss|pine)$/.test(g[1])) return;
+    [].forEach.call(document.querySelectorAll('img.ab[src^="img/ab-clay/"]'), function (im) {
+      var s = im.getAttribute('src').match(/ab-clay\/([a-z-]+)--tile\.webp/);
+      if (s && /ring|aperture|ear-cuff|wonderhorn/.test(s[1])) im.src = 'img/ab-clay-grounds/' + g[1] + '/' + s[1] + '--tile.webp';
+    });
+  })(location.search.match(/[?&]ground=([a-z]+)/));
+</script>
 </body>
 </html>
