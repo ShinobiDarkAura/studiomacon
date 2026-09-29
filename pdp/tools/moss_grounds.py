@@ -13,10 +13,10 @@ IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "img")
 OUT = os.path.join(IMG, "ab-clay-grounds", "moss")
 SHOOT = os.path.expanduser("~/Downloads/Teracotta photoshoot/Jewelry/")
 SUEDE = np.array([42.6, 4.1, 31.9])          # the real moss suede, Lab, averaged over its three photographs
-SILVER_MEAN = np.array([72.7, -2.2, 7.0])   # the silver in those three, Lab
+SILVER_MEAN = np.array([72.7, -1.2, 7.5])   # the silver in those three, Lab
 SILVER_SD = np.array([15.7, 1.2, 2.8])
-REAL = {"ear-cuff": ("Caldera Moss Suede.jpg", .30, 0, 0), "eclipse-ring": ("Eclipse Ring Moss Suede.jpg", .30, 0, 76),
-        "wonderhorn-talisman": ("Ida Horn Moss Suede.jpg", .19, 450, 0)}          # file, size in frame, chain cut-off, nudge
+REAL = {"ear-cuff": ("Caldera Moss Suede.jpg", .255, 0, 0), "eclipse-ring": ("Eclipse Ring Moss Suede.jpg", .255, 0, 90),
+        "wonderhorn-talisman": ("Ida Horn Moss Suede.jpg", .16, 450, 0)}          # file, size in frame, chain cut-off, nudge
 RECOLOUR = ["zuma-ring", "sietch-aperture", "lunar-canyon-ring", "meridian-egg-ring"]
 
 
@@ -71,7 +71,7 @@ def recolour(slug):
     # the silver matched to how it reads in the three real moss photographs (Caldera, Eclipse, Wonder Horn):
     # a touch darker and warmer than it is against terracotta, with the same spread of light
     sil = (w[..., 0] < .1) & (lab[..., 0] > 35); m_s, s_s = lab[sil].mean(0), lab[sil].std(0)
-    k = np.clip(SILVER_SD / (s_s + 1e-6), .6, 1.2)
+    k = np.clip(SILVER_SD / (s_s + 1e-6), .6, 1.2); k[1:] = .3          # colour swing pulled in hard: reflected greens and blues go, the silver reads neutral-warm
     silver = lab.copy(); silver = (lab - m_s) * k + SILVER_MEAN
     silver = lab + (silver - lab) * (1 - w)          # only where it isn't suede
     out = silver * (1 - w) + new * w
