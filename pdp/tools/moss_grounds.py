@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+"""The jewelry on moss suede. Real moss photographs where the shoot has one (framed as the terracotta ones);
+the rest recoloured from terracotta, suede and silver both matched to those real photographs."""
+import os, sys
+import numpy as np
+from PIL import Image, ImageOps
+from scipy import ndimage
+from skimage import color
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import place_terracotta as P
+
+IMG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "img")
+OUT = os.path.join(IMG, "ab-clay-grounds", "moss")
+SHOOT = os.path.expanduser("~/Downloads/Teracotta photoshoot/Jewelry/")
+SUEDE = np.array([42.6, 4.1, 31.9])          # the real moss suede, Lab, averaged over its three photographs
+SILVER_AB = np.array([-2.3, 7.3])            # and the silver as it reads on it
+REAL = {"ear-cuff": ("Caldera Moss Suede.jpg", .30, 0, 0), "eclipse-ring": ("Eclipse Ring Moss Suede.jpg", .30, 0, 76),
+        "wonderhorn-talisman": ("Ida Horn Moss Suede.jpg", .19, 450, 0)}          # file, size in frame, chain cut-off, nudge
+RECOLOUR = ["zuma-ring", "sietch-aperture", "lunar-canyon-ring", "meridian-egg-ring"]
+
+
+def save(slug, im):
+    os.makedirs(OUT, exist_ok=True)
+    big = im.resize((1600, 2000), Image.LANCZOS); big.save(os.path.join(OUT, slug + ".webp"), quality=86)
+    big.resize((960, 1200), Image.LANCZOS).save(os.path.join(OUT, slug + "--tile.webp"), quality=84)
+
+
+def lab_of(im):
+    return color.rgb2lab(np.asarray(im.convert("RGB")).astype(float) / 255)
+
+
+def to_img(lab):
+    return Image.fromarray((np.clip(color.lab2rgb(lab), 0, 1) * 255 + .5).astype("uint8"))
+
+
+def suede_weight(a, lo=.30, hi=.45):
+    mx, mn = a.max(-1), a.min(-1); s = (mx - mn) / (mx + 1e-6)
+    return np.clip((s - lo) / (hi - lo), 0, 1)
+
+
+TERRA = {"ear-cuff": "Caldera Terracotta Suede.jpg", "eclipse-ring": "Eclipse Ring Terracotta Suede.jpg",
+         "wonderhorn-talisman": "Ida Horn Terracotta Suede.jpg"}
+PENDANT_BOX = [2452, 2354, 3275, 2904]          # the Wonder Horn's pendant, without its chain
+
+
+def real(slug, name, frac, cut, dx):
+    """Shot from the same spot as the terracotta photograph, so it takes that photograph's framing exactly."""
+    im = ImageOps.exif_transpose(Image.open(SHOOT + name)).convert("RGB")
+    if slug == "wonderhorn-talisman":
+        box = PENDANT_BOX
+    else:
+        t = ImageOps.exif_transpose(Image.open(SHOOT + TERRA[slug])).convert("RGB")
+        box = P.find_box(t)
+    box = [box[0] + dx, box[1], box[2] + dx, box[3]]
+    out = P.frame(im, box, frac)
+    lab = lab_of(out); w = suede_weight(np.asarray(out).astype(float) / 255)[..., None]
+    shift = SUEDE - lab[w[..., 0] > .9].mean(0)          # nudge this photo's suede onto the three's average
+    save(slug, to_img(lab + shift * w))
+
+
+def recolour(slug):
+    im = Image.open(os.path.join(IMG, "ab-clay", slug + ".webp")).convert("RGB"); a = np.asarray(im).astype(float) / 255
+    lab = lab_of(im); w = suede_weight(a)[..., None]
+    bg = lab[w[..., 0] > .95]; m = bg.mean(0)
+    new = lab.copy()
+    new[..., 0] = (lab[..., 0] - m[0]) * .95 + SUEDE[0]          # the suede's own light and grain, moved to moss
+    new[..., 1:] = (lab[..., 1:] - m[1:]) * .35 + SUEDE[1:]
+    sil = (w[..., 0] < .1) & (lab[..., 0] > 55)          # the silver's highlights and body: warmed or cooled to read as on moss
+    d = SILVER_AB - lab[sil][:, 1:].mean(0)
+    silver = lab.copy(); silver[..., 1:] += d
+    out = silver * (1 - w) + new * w
+    save(slug, to_img(out))
+
+
+if __name__ == "__main__":
+    for slug, a in REAL.items(): real(slug, *a); print("real", slug)
+    for slug in RECOLOUR: recolour(slug); print("recoloured", slug)
