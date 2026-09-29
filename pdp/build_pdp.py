@@ -976,6 +976,9 @@ def seo(name, doc, product=None):
     desc = html.escape(desc[:300], quote=True)
     tags = [f'<meta name="description" content="{desc}">', f'<link rel="canonical" href="{url}">',
             '<meta property="og:site_name" content="Studio Maçon">', f'<meta property="og:title" content="{title}">',
+            # desktop browsers that tint their bar from the page (Dia, Arc) keep it white instead of borrowing a photograph's
+            # colour; phones are left alone, where the home film is meant to run up behind the browser's bars
+            '<meta name="theme-color" content="#ffffff" media="(min-width: 768px)">',
             f'<meta property="og:description" content="{desc}">', f'<meta property="og:url" content="{url}">',
             f'<meta property="og:image" content="{image}">', f'<meta property="og:type" content="{"product" if product else "website"}">',
             '<meta name="twitter:card" content="summary_large_image">']
