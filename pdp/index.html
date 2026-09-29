@@ -671,18 +671,6 @@ html.menu-arriving .head .logotype,html.menu-arriving .head .logotype *{color:#0
 ::view-transition-group(site-head){animation:none;z-index:3}
 ::view-transition-old(site-head){display:none}
 ::view-transition-new(site-head){animation:none}
-/* the neighbours' names flip over with the home grid's price-to-lore motion: the old lifts away, the new rises in */
-.piece-nav .back span{view-transition-name:piece-prev-name}
-.piece-nav .piece-next span{view-transition-name:piece-next-name}
-::view-transition-group(piece-prev-name),::view-transition-group(piece-next-name){animation:none;z-index:4}          /* above the nav they sit in */
-::view-transition-old(piece-prev-name),::view-transition-old(piece-next-name),
-::view-transition-new(piece-prev-name),::view-transition-new(piece-next-name){width:auto;height:auto;mix-blend-mode:normal}          /* each name at its own width, never stretched */
-::view-transition-old(piece-prev-name),::view-transition-old(piece-next-name){animation:piece-name-fade-out .25s ease both,piece-name-lift .35s ease both}
-::view-transition-new(piece-prev-name),::view-transition-new(piece-next-name){animation:piece-name-fade-in .35s ease both,piece-name-rise .45s cubic-bezier(.2,.7,.2,1) both}
-@keyframes piece-name-fade-out{to{opacity:0}}
-@keyframes piece-name-lift{to{transform:translateY(-6px)}}
-@keyframes piece-name-fade-in{from{opacity:0}}
-@keyframes piece-name-rise{from{transform:translateY(6px)}}
 ::view-transition-old(root),::view-transition-new(root){animation:none}
 html.piece-swap .head .left,html.piece-swap .head .logotype,html.piece-swap .head .right{transition:none !important}          /* the nav takes the new page's colour at once, not fading from black */
 ::view-transition-image-pair(piece-hero){overflow:hidden}          /* the slide stays inside the photograph's frame */

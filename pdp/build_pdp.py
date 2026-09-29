@@ -1430,8 +1430,8 @@ def main():
             doc = doc.replace(
                 '<a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>',
                 f'<nav class="piece-nav" aria-label="Other pieces" data-no-emerge>'
-                f'<a class="back" href="{prev["slug"]}.html" aria-label="Previous piece: {html.escape(prev["name"])}"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>{html.escape(prev["name"])}</span></a>'
-                f'<a class="piece-next" href="{nxt["slug"]}.html" aria-label="Next piece: {html.escape(nxt["name"])}"><span>{html.escape(nxt["name"])}</span><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 7 7-7 7"/></svg></a>'
+                f'<a class="back" href="{prev["slug"]}.html" aria-label="Previous piece: {html.escape(prev["name"])}"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>'
+                f'<a class="piece-next" href="{nxt["slug"]}.html" aria-label="Next piece: {html.escape(nxt["name"])}"><span>Next</span><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 7 7-7 7"/></svg></a>'
                 f'</nav>', 1)
         for wide in glob.glob(os.path.join(OUT, "img", p["slug"], "*-wide.jpg.webp")):          # in-hand photos, 10% further out, on the product page only
             base = os.path.basename(wide)[:-len("-wide.jpg.webp")]
