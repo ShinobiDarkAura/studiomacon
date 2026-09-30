@@ -1583,7 +1583,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         }).catch(function () {});
       });
     }
-    if (near.length) addEventListener('load', function () { (window.requestIdleCallback || setTimeout)(warm, 600); });
+    if (near.length) addEventListener('load', function () { if (window.requestIdleCallback) requestIdleCallback(warm, {timeout: 2000}); else setTimeout(warm, 600); });          // rIC takes options, not a delay
     addEventListener('pageswap', function (e) {
       if (!e.viewTransition) return;
       var dir = null; try { dir = sessionStorage.getItem('macon-piece'); } catch (err) {}
