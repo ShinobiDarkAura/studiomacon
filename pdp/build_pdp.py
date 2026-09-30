@@ -110,6 +110,11 @@ MADE_LINE = {
 # pictures kept on disk (the shop hover may use them) but left off a product page's gallery
 # pieces whose page still builds but which are left off the shop and Also Worth Keeping for now
 HIDE_FROM_SHOP = {"macon-cap", "starshipkey-pendant", "chrysalis"}          # remove a slug here to bring it back
+# the jewelry's moss photographs (grid and product pages) wait while their refocused versions are reviewed;
+# until then the jewelry keeps its in-hand and studio photographs. False brings the moss set back.
+HOLD_JEWELRY_PHOTOS = True
+def moss_held(slug):
+    return HOLD_JEWELRY_PHOTOS and kind(slug, read_port(slug)[1]) != "totem"
 RETIRED = {"macon-cap"}          # pieces with no page any more
 
 # Photographs that repeat one already in the gallery: same framing, sometimes only a higher-resolution
@@ -366,7 +371,7 @@ def page(p, template, related=""):
     chosen = _content.product(slug, "gallery", None)
     if chosen:                                   # the studio's own order and selection
         gallery = [g for g in chosen if g != hero]
-    if os.path.exists(os.path.join(OUT, "img", slug, "terracotta.jpg")):          # the terracotta shoot leads, where the piece has one
+    if os.path.exists(os.path.join(OUT, "img", slug, "terracotta.jpg")) and not moss_held(slug):          # the terracotta shoot leads, where the piece has one
         hero = f"img/{slug}/terracotta.jpg"
 
     hands = [g for g in gallery if "/hand-" in g]
@@ -1463,7 +1468,7 @@ def main():
         hover_src, held = grid_hover(p["slug"])
         still_src = tinted(p["slug"], tile_src(grid_still(p["slug"])))          # the grid shows them small, colour-matched
         clay = f"img/ab-clay/{p['slug']}--tile.webp"          # the terracotta shoot is the grid's picture, where a piece has one
-        if os.path.exists(os.path.join(OUT, clay)):
+        if os.path.exists(os.path.join(OUT, clay)) and not moss_held(p["slug"]):
             still_src = clay
         lazy = "eager" if i < 3 else "lazy"
         tiles.append(
