@@ -328,7 +328,9 @@
          number Google scores, even though the page is finished at 1s. -->
     <img class="film-poster" src="video/poster-process.jpg?v=8" alt="" decoding="async">
     <video autoplay muted loop playsinline preload="metadata" poster="video/poster-process.jpg?v=8">
-      <source src="video/hero-720-av1.mp4?v=8" type='video/mp4; codecs="av01.0.05M.08"' media="(max-width:700px)">          <!-- phones: 720p, a lighter file -->
+      <source src="video/hero-phone-av1.mp4?v=1" type='video/mp4; codecs="av01.0.05M.08"' media="(max-width:700px) and (max-aspect-ratio:5/8)">          <!-- phones upright: only the middle slice they can show, cut from the 1080p master (VMAF 92 vs 81 for the 720p file, less than half the size) -->
+      <source src="video/hero-phone-h265.mp4?v=1" type='video/mp4; codecs="hvc1.1.6.L93.90"' media="(max-width:700px) and (max-aspect-ratio:5/8)">
+      <source src="video/hero-720-av1.mp4?v=8" type='video/mp4; codecs="av01.0.05M.08"' media="(max-width:700px)">          <!-- other narrow screens (squarer than a phone): 720p, a lighter file -->
       <source src="video/hero-720-h265.mp4?v=8" type='video/mp4; codecs="hvc1.1.6.L93.90"' media="(max-width:700px)">
       <source src="video/hero-av1.mp4?v=8" type='video/mp4; codecs="av01.0.08M.08"'>
       <source src="video/hero-h265.mp4?v=8" type='video/mp4; codecs="hvc1.1.6.L120.90"'>
