@@ -131,6 +131,17 @@ TODO = '<span class="todo">{}</span>'
 GREY_OBJECTS = set(json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "grey_objects.json")))) if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "grey_objects.json")) else set()          # photographs of a piece alone on #E4E3E1
 
 
+def make_thumbs(slug):
+    """A 240px copy of each photograph for the gallery's thumbnail strip on phones (it showed 1800px tiles at 65px)."""
+    for f in glob.glob(os.path.join(OUT, "img", slug, "*.webp")):
+        name = os.path.basename(f)
+        if "--" in name or not re.search(r"\.(jpe?g|png)\.webp$", name): continue
+        out = re.sub(r"\.(jpe?g|png)\.webp$", r"--th.\1.webp", f)
+        if os.path.exists(out) and os.path.getmtime(out) >= os.path.getmtime(f): continue
+        with Image.open(f) as im:
+            im = im.convert("RGB"); im.thumbnail((240, 480), Image.LANCZOS); im.save(out, "WEBP", quality=78, method=6)
+
+
 def hero_tone(src):
     """The first photograph's average colour, as its frame's backdrop: a picture still arriving as Back/Next
     swaps shows as its own suede for a moment instead of a pale flash. The grey studio backdrop if unreadable."""
@@ -1432,6 +1443,7 @@ def main():
     for p in products:
         if p["slug"] in RETIRED:          # no page at all; its old addresses go to the shop (see _redirects)
             continue
+        make_thumbs(p["slug"])
         doc = one_block(page(p, template, related_block(p, products)))
         if p in wall:
             i = wall.index(p); prev, nxt = wall[i - 1], wall[(i + 1) % len(wall)]
@@ -1444,6 +1456,14 @@ def main():
         for wide in glob.glob(os.path.join(OUT, "img", p["slug"], "*-wide.jpg.webp")):          # in-hand photos, 10% further out, on the product page only
             base = os.path.basename(wide)[:-len("-wide.jpg.webp")]
             doc = re.sub(rf'img/{re.escape(p["slug"])}/{re.escape(base)}(\.jpg|--m\.jpg)', lambda m: f'img/{p["slug"]}/{base}-wide{m.group(1)}', doc)
+        # (after the in-hand swap above, so a thumbnail shows the same framing as its photograph)
+        # each gallery photograph names its thumbnail, so the strip can use it and the deploy (which ships only
+        # what a page names) carries it
+        def _th(m):
+            tag, src = m.group(0), m.group(1)
+            th = re.sub(r"\.(jpe?g|png)(\.webp)?$", r"--th.\1.webp", src)          # the page names .jpg here; the .webp comes later
+            return tag if "data-th=" in tag or th == src or not os.path.exists(os.path.join(OUT, th)) else tag.replace("<img ", f'<img data-th="{th}" ', 1)
+        doc = re.sub(r'<img [^>]*?src="(img/' + re.escape(p["slug"]) + r'/[^"?]+)[^"]*"[^>]*>', _th, doc)
         first = (SHOP_IDS.get(p["slug"]) or [None])[0]
         if first:                                     # tell Meta and Google a piece was looked at
             # the price Shopify charges today, not the one cached in ids.json: seven pieces were

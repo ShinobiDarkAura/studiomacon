@@ -393,7 +393,7 @@
       var media = f.querySelector('img, video'); if (!media) return;
       var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Picture ' + (i + 1));
       var t = document.createElement('img'); t.alt = ''; t.loading = 'lazy';
-      t.src = media.tagName === 'VIDEO' ? media.getAttribute('poster') : media.getAttribute('src').replace(/\.(jpe?g|png)\.webp$/, '--tile.$1.webp');          // the light grid copy
+      t.src = media.tagName === 'VIDEO' ? media.getAttribute('poster') : (media.dataset.th || media.getAttribute('src'));          // a 240px copy for a thumbnail, named by the builder so it ships
       t.onerror = function () { t.onerror = null; t.src = media.getAttribute('src'); };
       b.appendChild(t); b.style.setProperty('--i', i); if (i === 0) b.classList.add('on');
       b.addEventListener('click', function () { go(i); });
@@ -530,7 +530,7 @@
   // Also Worth Keeping loops: five copies side by side; once scrolling comes to rest near an outer copy it
   // quietly moves back to the middle one (never mid-flight, which is what flickered on fast scrolls)
   (function () {
-    var box = document.querySelector('.rel-loop'); if (!box) return;
+    var box = document.querySelector('.rel-loop'); if (!box || getComputedStyle(box).display === 'none') return;          // retired: left alone it made ~60 hidden pictures load at once
     var track = box.querySelector('.rel-track'), one = [].slice.call(track.children), n = one.length; if (!n) return;
     [].forEach.call(track.querySelectorAll('img'), function (i) { i.loading = 'eager'; });
     for (var c = 0; c < 2; c++) {
