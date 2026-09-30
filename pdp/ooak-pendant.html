@@ -295,10 +295,8 @@
   .rel-swipe{display:none}
   @media (max-width:767px){
     .related .rel-grid{display:none}
-    .rel-swipe{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;text-align:left;
-      scrollbar-width:none;-webkit-overflow-scrolling:touch}          /* inside the page margins, so the next pair stays out of sight */
-    .rel-swipe::-webkit-scrollbar{display:none}
-    .rel-swipe .rel-piece{flex:0 0 calc((100% - 8px) / 2);scroll-snap-align:start}          /* two at a time, the size of the shop grid */
+    .rel-swipe{display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:hidden;text-align:left}          /* locked: two pieces, no scrolling either way */
+    .rel-swipe .rel-piece:nth-child(n+3){display:none}          /* the two closest in look (the row is ordered that way) */
   }
 
   @media (min-width:1024px){
