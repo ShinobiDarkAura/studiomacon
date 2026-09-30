@@ -1081,6 +1081,9 @@ addEventListener('pagereveal', function (e) { if (!e.viewTransition) return;
     e.viewTransition.finished.finally(function () { window.MaconSwapping = false; document.documentElement.classList.remove('piece-swap'); if (window.MaconNavTone) window.MaconNavTone(); });
   } else e.viewTransition.skipTransition(); });
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
+// the in-place design editor (the /editor skill): on this machine only, never on the live site; ?design or ⌥E turns it on
+// (?edit is the Custom page's Past Work manager)
+if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostname)) { window.EDITOR_CONFIG = {param: 'design'}; var ed = document.createElement('script'); ed.src = 'editor.js'; ed.defer = true; document.head.appendChild(ed); }
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
   document.documentElement.classList.add('menu-arriving');
@@ -2675,7 +2678,7 @@ function maconClickQuery(extra) {
 
 
 <script>
-  // Grid editor, local only: open the home page with ?edit (or ?tint). Nothing shows until the pointer
+  // Grid editor, local only: open the home page with ?grid (or ?tint); ?edit is the general editor (editor.js). Nothing shows until the pointer
   // finds something that can change, and then only a hairline where it can be grabbed:
   //   picture        drag or two-finger scroll to reframe, pinch to zoom, Option-scroll to rotate, hold still to balance colour,
   //                  double-click to switch to the hover shot (Option shows it ghosted over the default)
@@ -2691,7 +2694,7 @@ function maconClickQuery(extra) {
   // Cmd-Z undoes, Shift-Cmd-Z redoes, ? shows this list. Changes stay put across reloads until Reset; Copy puts
   // the numbers on the clipboard to paste back. Nothing here changes the site itself.
   addEventListener('load', function () { setTimeout(function () {
-    if (!/[?&](tint|edit)\b/.test(location.search)) return;
+    if (!/[?&](tint|grid)\b/.test(location.search)) return;
     var walls = [].slice.call(document.querySelectorAll('.wall')); if (!walls.length) return;
     var root = document.documentElement; root.classList.add('ge');
     document.querySelectorAll('.wall .piece img').forEach(function (im) { im.loading = 'eager'; });          // every picture ready to compare, not only the ones scrolled near

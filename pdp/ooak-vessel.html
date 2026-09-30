@@ -446,6 +446,9 @@ addEventListener('pagereveal', function (e) { if (!e.viewTransition) return;
     e.viewTransition.finished.finally(function () { window.MaconSwapping = false; document.documentElement.classList.remove('piece-swap'); if (window.MaconNavTone) window.MaconNavTone(); });
   } else e.viewTransition.skipTransition(); });
 (function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
+// the in-place design editor (the /editor skill): on this machine only, never on the live site; ?design or ⌥E turns it on
+// (?edit is the Custom page's Past Work manager)
+if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostname)) { window.EDITOR_CONFIG = {param: 'design'}; var ed = document.createElement('script'); ed.src = 'editor.js'; ed.defer = true; document.head.appendChild(ed); }
 // reached from the mobile drawer: open already pushed aside, with the drawer over the page
 (function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
   document.documentElement.classList.add('menu-arriving');

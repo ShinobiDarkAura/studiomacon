@@ -629,7 +629,7 @@
 
 
 <script>
-  // Grid editor, local only: open the home page with ?edit (or ?tint). Nothing shows until the pointer
+  // Grid editor, local only: open the home page with ?grid (or ?tint); ?edit is the general editor (editor.js). Nothing shows until the pointer
   // finds something that can change, and then only a hairline where it can be grabbed:
   //   picture        drag or two-finger scroll to reframe, pinch to zoom, Option-scroll to rotate, hold still to balance colour,
   //                  double-click to switch to the hover shot (Option shows it ghosted over the default)
@@ -645,7 +645,7 @@
   // Cmd-Z undoes, Shift-Cmd-Z redoes, ? shows this list. Changes stay put across reloads until Reset; Copy puts
   // the numbers on the clipboard to paste back. Nothing here changes the site itself.
   addEventListener('load', function () { setTimeout(function () {
-    if (!/[?&](tint|edit)\b/.test(location.search)) return;
+    if (!/[?&](tint|grid)\b/.test(location.search)) return;
     var walls = [].slice.call(document.querySelectorAll('.wall')); if (!walls.length) return;
     var root = document.documentElement; root.classList.add('ge');
     document.querySelectorAll('.wall .piece img').forEach(function (im) { im.loading = 'eager'; });          // every picture ready to compare, not only the ones scrolled near
