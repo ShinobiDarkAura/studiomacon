@@ -1211,7 +1211,8 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         }).catch(function () {});
       });
     }
-    if (near.length) addEventListener('load', function () { if (window.requestIdleCallback) requestIdleCallback(warm, {timeout: 2000}); else setTimeout(warm, 600); });          // rIC takes options, not a delay
+    // only where Back and Next are shown (not phones): otherwise it is two large photographs nobody asked for
+    if (near.length && matchMedia('(min-width:768px)').matches) addEventListener('load', function () { if (window.requestIdleCallback) requestIdleCallback(warm, {timeout: 2000}); else setTimeout(warm, 600); });          // rIC takes options, not a delay
     addEventListener('pageswap', function (e) {
       if (!e.viewTransition) return;
       var dir = null; try { dir = sessionStorage.getItem('macon-piece'); } catch (err) {}
