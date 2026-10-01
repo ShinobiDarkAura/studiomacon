@@ -90,7 +90,7 @@ button{background:none;border:0;padding:0;cursor:pointer}
 
 /* ── type ──────────────────────────────────────────── */
 .eyebrow{font-size:15px;margin:0 0 10px}
-h1{font:400 46px/1 var(--serif);text-transform:uppercase;letter-spacing:-.005em;margin:0 0 22px}
+h1,.h1{font:400 46px/1 var(--serif);text-transform:uppercase;letter-spacing:-.005em;margin:0 0 22px}
 h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005em;margin:0 0 28px}
 .label{font-size:calc(17px - 3pt);letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.5)}
 .cta{display:flex;align-items:center;justify-content:center;width:100%;height:47px;          /* every black button is the product page's Add to Bag */
@@ -174,7 +174,7 @@ footer .field button{padding:0 0 0 18px}
   .head .desk{display:inline}
   .head .logotype{width:125px;top:-2px}          /* 8px higher on desktop; 15% smaller than it was */
   .eyebrow{font-size:16px}
-  h1{font-size:53px}
+  h1,.h1{font-size:53px}
   h2{font-size:42px}
   footer{grid-template-columns:1fr auto 1fr;align-items:end;gap:40px;min-height:40vh;padding:96px calc(var(--pad) + 24px) 52px}
   footer .middle{margin-bottom:16px}
@@ -188,7 +188,7 @@ footer .field button{padding:0 0 0 18px}
   footer .news .field{text-align:left}          /* the field itself still reads left to right */
 }
 @media (min-width:1200px){
-  h1{font-size:60px}
+  h1,.h1{font-size:60px}
 }
 
 /* ── info pages ────────────────────────────────────── */
@@ -603,19 +603,8 @@ html.logo-hold .head .logotype{color:#000}
 .back .back-icon{width:0;height:14px;margin-right:0;opacity:0;color:#D1D5DB;transform:none;
   transition:width .35s var(--ease),margin-right .35s var(--ease),opacity .3s ease}
 .back:hover .back-icon,.back:focus-visible .back-icon{width:14px;margin-right:4px;opacity:1;transform:none}
+.back .back-icon{display:none}          /* Back is the word alone: it turns black on hover, no chevron */
 /* a product on the wall: Back (the previous piece) then Next, walking the shop's order round and round */
-.piece-nav{align-self:flex-start;display:inline-flex;align-items:center;gap:15px;margin:0 0 28px;transition:opacity .35s ease}          /* Next just after Back: the column's far edge is Bag's, in the nav row */
-.head .piece-nav{position:absolute;top:50%;margin:0;transform:translateY(-50%)}
-.head .piece-nav .back{position:static;transform:none}
-.piece-nav.gone{opacity:0;pointer-events:none}
-.piece-nav .back{margin:0}
-.piece-nav .back-icon{display:none}          /* Back and Next are words only: no chevron on hover */
-.piece-next{display:inline-flex;align-items:center;font-size:calc(14px - 1pt);color:rgba(0,0,0,.5);transition:color .2s ease}
-.piece-next:hover{color:#000}
-.piece-next .back-icon{width:0;height:14px;margin-left:0;opacity:0;color:#D1D5DB;
-  transition:width .35s var(--ease),margin-left .35s var(--ease),opacity .3s ease}
-.piece-next:hover .back-icon,.piece-next:focus-visible .back-icon{width:14px;margin-left:4px;opacity:1}
-@media (max-width:767px){ .piece-nav{display:none} }          /* phones: as Back alone was */
 
 /* Privacy · Terms · Refunds live at the foot of the menu (moved out of the footer) */
 .menu-sheet .menu-legal{position:absolute;left:0;right:0;bottom:40px;margin:0;text-align:center;font:400 calc(12px - 1pt)/1 var(--sans);
@@ -662,29 +651,6 @@ html.menu-arriving .head{z-index:61;transform:none !important}
 html.menu-arriving .head > :not(.logotype){visibility:hidden}
 html.menu-arriving .head .logotype,html.menu-arriving .head .logotype *{color:#000;transition:none !important}
 
-/* ── Back / Next between pieces (site.js): the photograph slides like a carousel, and the right-hand column
-   plays its entrance from scratch, as on a fresh load (the old words simply clear). Other navigations skip
-   the transition. */
-@view-transition{navigation:auto}
-.product .gallery .hero{view-transition-name:piece-hero}
-.head{view-transition-name:site-head}          /* the nav rides above the sliding photograph (it sits over it) */
-::view-transition-group(site-head){animation:none;z-index:3}
-::view-transition-old(site-head){display:none}
-::view-transition-new(site-head){animation:none}
-::view-transition-old(root),::view-transition-new(root){animation:none}
-html.piece-swap .head .left,html.piece-swap .head .logotype,html.piece-swap .head .right{transition:none !important}          /* the nav takes the new page's colour at once, not fading from black */
-::view-transition-image-pair(piece-hero){overflow:hidden}          /* the slide stays inside the photograph's frame */
-::view-transition-group(piece-hero){animation-duration:.75s;animation-timing-function:cubic-bezier(.65,0,.35,1)}
-::view-transition-old(piece-hero),::view-transition-new(piece-hero){height:100%;mix-blend-mode:normal;
-  animation-duration:.75s;animation-timing-function:cubic-bezier(.65,0,.35,1);animation-fill-mode:both}
-html:active-view-transition-type(next)::view-transition-old(piece-hero){animation-name:piece-out-left}
-html:active-view-transition-type(next)::view-transition-new(piece-hero){animation-name:piece-in-right}
-html:active-view-transition-type(prev)::view-transition-old(piece-hero){animation-name:piece-out-right}
-html:active-view-transition-type(prev)::view-transition-new(piece-hero){animation-name:piece-in-left}
-@keyframes piece-out-left{to{transform:translateX(-100%)}}
-@keyframes piece-in-right{from{transform:translateX(100%)}}
-@keyframes piece-out-right{to{transform:translateX(100%)}}
-@keyframes piece-in-left{from{transform:translateX(-100%)}}
 </style>
 <style>:root{--stamp-w:clamp(60px,8.1vw,40vw);--stamp-right:36.9vw;--stamp-drop:296.1%;--stamp-tilt:-14deg}
   /* home grid photo test: the grey and clay stills are framed in the picture itself */
@@ -709,12 +675,12 @@ html:active-view-transition-type(prev)::view-transition-new(piece-hero){animatio
   html.photo-clay .piece[href="ear-cuff.html"] .pic img.ab:not(.held){object-position:50% 50% !important;transform-origin:50% 50% !important;transform:none !important}
   html.photo-clay .piece[href="meridian-egg-ring.html"] .pic img.ab:not(.held){object-position:50% 50% !important;transform-origin:50% 50% !important;transform:none !important}
   html.photo-clay .piece[href="wonderhorn-talisman.html"] .pic img.ab:not(.held){object-position:50% 50% !important;transform-origin:50% 50% !important;transform:none !important}
-  @media (min-width:1024px){ html.photo-clay .wall{column-gap:5px !important;row-gap:65px !important;padding-left:59px !important;padding-right:59px !important} }
+  @media (min-width:1024px){ html.photo-clay .wall{column-gap:5px !important;row-gap:8px !important;padding-left:24px !important;padding-right:24px !important} }
   @media (min-width:1024px){ html.photo-clay .wall .piece .pic{border-radius:0 !important;overflow:hidden !important} }
   @media (min-width:1024px){ html.photo-clay .wall .piece .over{padding-top:15px !important} }
   @media (min-width:1024px){ html.photo-clay .wall .piece .name{font-size:30px !important} }
   @media (min-width:1024px){ html.photo-clay .wall .piece .cost{font-size:13px !important} }
-  @media (min-width:1024px){ html.photo-clay .wall-head{padding-left:57px !important;padding-top:2px !important} }
+  @media (min-width:1024px){ html.photo-clay .wall-head{padding-left:22px !important;padding-top:2px !important} }
 </style>
 <style>
   /* the film fills the first screen; the nav sits over it in white */
@@ -879,7 +845,7 @@ html:active-view-transition-type(prev)::view-transition-new(piece-hero){animatio
   /* pressed down onto the words */
   .stamped .stamp.on{opacity:1;transform:rotate(var(--stamp-tilt,-14deg))}
   /* Back to Shop lands here, with the Ephemeral title just under the nav */
-  #pieces{scroll-margin-top:calc(var(--head) + 36px)}
+  #pieces,#jewelry{scroll-margin-top:calc(var(--head) + 36px)}
   .wall-head{display:flex;align-items:baseline;gap:10px;padding:25vh calc(var(--pad) + 24px + 7.5vw) 24px}   /* aligned with the grid below it */
   .wall-head.next-set{padding-top:0}
   .set::after{content:"";display:block;height:calc(120px + 10vh)}
@@ -1068,19 +1034,9 @@ html:active-view-transition-type(prev)::view-transition-new(piece-hero){animatio
 // or its first frame shows the dark film for an instant before the jump
 // a refresh starts at the top, decided here in the head so Safari never paints the old scroll spot (or a #pieces jump) first
 (function () { try { var n = performance.getEntriesByType('navigation')[0];
-  if (n && n.type === 'reload') { history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
+  if (n && n.type === 'reload') { if (!/(^|\/)(index(\.html)?)?$/.test(location.pathname)) history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
 } catch (e) {} })();
-// Back / Next between pieces: the arriving page takes the carousel's direction before its first frame (site.js)
-try { if (sessionStorage.getItem('macon-piece')) document.documentElement.classList.add('piece-swap'); } catch (x) {}
-addEventListener('pagereveal', function (e) { if (!e.viewTransition) return;
-  var d = null; try { d = sessionStorage.getItem('macon-piece'); sessionStorage.removeItem('macon-piece'); } catch (x) {}
-  if (d && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    e.viewTransition.types.add(d);
-    // mid-swap the page can't be looked through (every point reads as the bare page), so the nav holds its colour
-    window.MaconSwapping = true;
-    e.viewTransition.finished.finally(function () { window.MaconSwapping = false; document.documentElement.classList.remove('piece-swap'); if (window.MaconNavTone) window.MaconNavTone(); });
-  } else e.viewTransition.skipTransition(); });
-(function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
+(function () { if (location.hash === '#pieces' || location.hash === '#jewelry') document.documentElement.classList.add('to-pieces'); })();
 // the in-place design editor (the /editor skill): on this machine only, never on the live site; ?design or ⌥E turns it on
 // (?edit is the Custom page's Past Work manager)
 if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostname)) { window.EDITOR_CONFIG = {param: 'design'}; var ed = document.createElement('script'); ed.src = 'editor.js'; ed.defer = true; document.head.appendChild(ed); }
@@ -1293,18 +1249,18 @@ if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostna
   </section>
   </div>
 
-  <div class="set">
+  <div class="set" id="jewelry">
   <header class="wall-head next-set">
     <h2 class="set-title" data-edit="page:index.html:1fd8cfa3">Jewelry</h2><span class="count">07</span>
   </header>
   <section class="wall shop-wall">
-    <figure><a class="piece" href="zuma-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp" srcset="img/zuma-ring/hires-1--tile--cp0.5m1--g480.jpg.webp 480w, img/zuma-ring/hires-1--tile--cp0.5m1--g800.jpg.webp 800w, img/zuma-ring/hires-1--tile--cp0.5m1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/zuma-ring.webp" data-clay="img/ab-clay/zuma-ring.webp?v=1790696822" alt="Zuma Crest" loading="lazy"><img class="held" src="img/zuma-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:28.95%;--hy:0%;--hz:1.0135"></span></span><span class="over"><span class="name">Zuma Crest</span><span class="cost">$320 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Twin Band</span></span></a></figure>
-    <figure><a class="piece" href="eclipse-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp" srcset="img/eclipse-ring/hires-1--tile--cm0.5p0.5--g480.jpg.webp 480w, img/eclipse-ring/hires-1--tile--cm0.5p0.5--g800.jpg.webp 800w, img/eclipse-ring/hires-1--tile--cm0.5p0.5.jpg.webp 1389w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/eclipse-ring.webp" data-clay="img/ab-clay/eclipse-ring.webp?v=1790696821" alt="Eclipsis" loading="lazy"><img class="held" src="img/eclipse-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:45.69%;--hy:0%;--hz:1.306"></span></span><span class="over"><span class="name">Eclipsis</span><span class="cost">$340 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Ellipses in Patient Equilibrium</span></span></a></figure>
-    <figure><a class="piece" href="sietch-aperture.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp" srcset="img/sietch-aperture/hero--tile--cm2.5m1--g480.jpg.webp 480w, img/sietch-aperture/hero--tile--cm2.5m1--g800.jpg.webp 800w, img/sietch-aperture/hero--tile--cm2.5m1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/sietch-aperture.webp" data-clay="img/ab-clay/sietch-aperture.webp?v=1790695553" alt="Sietch" loading="lazy"><img class="held" src="img/sietch-aperture/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:83.16%;--hy:32.78%;--hz:1.2408"></span></span><span class="over"><span class="name">Sietch</span><span class="cost">$340 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Shelter Cut Into Rock</span></span></a></figure>
-    <figure><a class="piece" href="lunar-canyon-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp" srcset="img/lunar-canyon-ring/hero--tile--cm2.5m1--g480.jpg.webp 480w, img/lunar-canyon-ring/hero--tile--cm2.5m1--g800.jpg.webp 800w, img/lunar-canyon-ring/hero--tile--cm2.5m1.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/lunar-canyon-ring.webp" data-clay="img/ab-clay/lunar-canyon-ring.webp?v=1790696821" alt="Lunar Canyon" loading="lazy"><img class="held" src="img/lunar-canyon-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:67.75%;--hy:30.73%;--hz:1.4365"></span></span><span class="over"><span class="name">Lunar Canyon</span><span class="cost">$370 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Argent Crescent</span></span></a></figure>
-    <figure><a class="piece" href="ear-cuff.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp" srcset="img/ear-cuff/hires-1--tile--cm3.5m2--g480.jpg.webp 480w, img/ear-cuff/hires-1--tile--cm3.5m2--g800.jpg.webp 800w, img/ear-cuff/hires-1--tile--cm3.5m2.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/ear-cuff.webp" data-clay="img/ab-clay/ear-cuff.webp?v=1790695168" alt="Caldera Arc" loading="lazy"><img class="held" src="img/ear-cuff/hand-3--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:56.57%;--hy:100%;--hz:1.3645"></span></span><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260 <span class="type">&bull; Silver Ear Cuff</span></span><span class="ovl" aria-hidden="true">Perfect Geometries</span></span></a></figure>
-    <figure><a class="piece" href="meridian-egg-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp" srcset="img/meridian-egg-ring/hires-1--tile--cm2.5p0--g480.jpg.webp 480w, img/meridian-egg-ring/hires-1--tile--cm2.5p0--g800.jpg.webp 800w, img/meridian-egg-ring/hires-1--tile--cm2.5p0.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/meridian-egg-ring.webp" data-clay="img/ab-clay/meridian-egg-ring.webp?v=1790695554" alt="Meridian Egg" loading="lazy"><img class="held" src="img/meridian-egg-ring/hand-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:85.37%;--hy:66.34%;--hz:1.0697"></span></span><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Heaven&#x27;s Folly</span></span></a></figure>
-    <figure><a class="piece" href="wonderhorn-talisman.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp" srcset="img/wonderhorn-talisman/plain-1--tile--cm3m0.5--g480.jpg.webp 480w, img/wonderhorn-talisman/plain-1--tile--cm3m0.5--g800.jpg.webp 800w, img/wonderhorn-talisman/plain-1--tile--cm3m0.5.jpg.webp 1800w" sizes="(max-width: 767px) 50vw, 27vw" data-grey="img/ab-grey/wonderhorn-talisman.webp" data-clay="img/ab-clay/wonderhorn-talisman.webp?v=1790695556" alt="Ida&#x27;s Wonder Horn" loading="lazy"><img class="held" src="img/wonderhorn-talisman/plain-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy"></span></span><span class="over"><span class="name">Ida&#x27;s Wonder Horn</span><span class="cost">$390 <span class="type">&bull; Silver Pendant</span></span><span class="ovl" aria-hidden="true">Spiral Echo</span></span></a></figure>
+    <figure><a class="piece" href="zuma-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/zuma-ring--tile.webp?v=1790835807" class="ab" alt="Zuma Crest" loading="lazy"><img class="held" src="img/zuma-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:28.95%;--hy:0%;--hz:1.0135"></span></span><span class="over"><span class="name">Zuma Crest</span><span class="cost">$320 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Twin Band</span></span></a></figure>
+    <figure><a class="piece" href="eclipse-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/eclipse-ring--tile.webp?v=1790835807" class="ab" alt="Eclipsis" loading="lazy"><img class="held" src="img/eclipse-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:45.69%;--hy:0%;--hz:1.306"></span></span><span class="over"><span class="name">Eclipsis</span><span class="cost">$340 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Ellipses in Patient Equilibrium</span></span></a></figure>
+    <figure><a class="piece" href="sietch-aperture.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/sietch-aperture--tile.webp?v=1790835807" class="ab" alt="Sietch" loading="lazy"><img class="held" src="img/sietch-aperture/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:83.16%;--hy:32.78%;--hz:1.2408"></span></span><span class="over"><span class="name">Sietch</span><span class="cost">$340 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Shelter Cut Into Rock</span></span></a></figure>
+    <figure><a class="piece" href="lunar-canyon-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/lunar-canyon-ring--tile.webp?v=1790835807" class="ab" alt="Lunar Canyon" loading="lazy"><img class="held" src="img/lunar-canyon-ring/hand-1--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:67.75%;--hy:30.73%;--hz:1.4365"></span></span><span class="over"><span class="name">Lunar Canyon</span><span class="cost">$370 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Argent Crescent</span></span></a></figure>
+    <figure><a class="piece" href="ear-cuff.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/ear-cuff--tile.webp?v=1790835807" class="ab" alt="Caldera Arc" loading="lazy"><img class="held" src="img/ear-cuff/hand-3--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:56.57%;--hy:100%;--hz:1.3645"></span></span><span class="over"><span class="name">Caldera Arc</span><span class="cost">$260 <span class="type">&bull; Silver Ear Cuff</span></span><span class="ovl" aria-hidden="true">Perfect Geometries</span></span></a></figure>
+    <figure><a class="piece" href="meridian-egg-ring.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/meridian-egg-ring--tile.webp?v=1790835807" class="ab" alt="Meridian Egg" loading="lazy"><img class="held" src="img/meridian-egg-ring/hand-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy" style="--hx:85.37%;--hy:66.34%;--hz:1.0697"></span></span><span class="over"><span class="name">Meridian Egg</span><span class="cost">$390 <span class="type">&bull; Silver Ring</span></span><span class="ovl" aria-hidden="true">Heaven&#x27;s Folly</span></span></a></figure>
+    <figure><a class="piece" href="wonderhorn-talisman.html" style="--x:50%;--y:50%;--z:1"><span class="pic-hit"><span class="pic"><img src="img/ab-clay/wonderhorn-talisman--tile.webp?v=1790835807" class="ab" alt="Ida&#x27;s Wonder Horn" loading="lazy"><img class="held" src="img/wonderhorn-talisman/plain-2--tile.jpg.webp" alt="" aria-hidden="true" loading="lazy"></span></span><span class="over"><span class="name">Ida&#x27;s Wonder Horn</span><span class="cost">$390 <span class="type">&bull; Silver Pendant</span></span><span class="ovl" aria-hidden="true">Spiral Echo</span></span></a></figure>
   </section>
   </div>
 </main>
@@ -1319,7 +1275,7 @@ if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostna
     <a class="hover-line" href="story.html">About</a>
     <a class="hover-line" href="custom.html">Custom</a>
     <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
-    <a class="hover-line" href="inspiration.html">Inspiration</a>
+    <a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">Instagram</a>
     <a class="hover-line" href="contact.html">Contact</a>
   </nav>
   </div>
@@ -1338,10 +1294,10 @@ addEventListener('load', function () { document.documentElement.classList.add('l
   if (/[?&]case\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () { document.body.classList.add('title-case'); });
 
   (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
-  // A refresh always starts at the top of the page; Back and Forward still return to where you were
+  // A refresh starts at the top of the page, except on the home page, which keeps your place; Back and Forward still return to where you were
   (function () {
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-    if (nav && nav.type === 'reload') {
+    if (nav && nav.type === 'reload' && !/(^|\/)(index(\.html)?)?$/.test(location.pathname)) {
       history.scrollRestoration = 'manual';
       scrollTo(0, 0);
       addEventListener('load', function () { scrollTo(0, 0); });
@@ -1445,6 +1401,9 @@ addEventListener('load', function () { document.documentElement.classList.add('l
   document.querySelectorAll('.acc-head').forEach(function (b) {
     b.addEventListener('click', function () {
       var item = b.parentElement, open = !item.classList.contains('open');
+      if (open) document.querySelectorAll('.acc-head[aria-expanded="true"]').forEach(function (o) {          // one open at a time
+        if (o !== b) { o.parentElement.classList.remove('open'); o.setAttribute('aria-expanded', 'false'); }
+      });
       item.classList.toggle('open', open);
       b.setAttribute('aria-expanded', open);
     });
@@ -1519,7 +1478,6 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
     function tone(force) {
       queued = false;
-      if (window.MaconSwapping) return;          // Back/Next swap under way: nothing under the nav can be read yet
       if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
       lastY = scrollY;
       // the whole nav is one unit: read under each part, then colour every part the same
@@ -1836,7 +1794,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     var KEY = 'macon-bag-items';
     function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
     function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
-    function clean(it) { return {variant: /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(it.variant) ? it.variant : '', slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
+    function clean(it) { return {variant: /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(it.variant) ? it.variant : '', slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+(\?v=\d+)?$/.test(it.img) ? it.img : '',
       size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
     function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
     function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
@@ -1971,9 +1929,9 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
         // the Bureau of Provenance presses its seal onto the button: the claim is recorded
         if (!matchMedia('(prefers-reduced-motion:reduce)').matches && document.body.animate) {
-          var r = b.getBoundingClientRect(), st = document.createElement('img'), sz = Math.min(104, r.height * 2.1);
+          var r = b.getBoundingClientRect(), st = document.createElement('img'), sz = 1.3 * Math.min(r.height * 1.5, Math.sqrt(1.6 * r.width * r.height / Math.PI));          // centred on the top-right corner: a quarter of the round seal, about 10% of the button
           st.src = 'img/claim-stamp.png'; st.alt = ''; st.setAttribute('aria-hidden', 'true');
-          st.style.cssText = 'position:fixed;z-index:60;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;left:' + (r.right - sz - 6) + 'px;top:' + (r.top + r.height / 2 - sz / 2) + 'px';
+          st.style.cssText = 'position:fixed;z-index:60;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;left:' + Math.min(r.right - sz * .8, innerWidth - sz - 4) + 'px;top:' + (r.top - sz * .85) + 'px';          // a full-width phone button: kept on screen
           document.body.appendChild(st);
           st.animate([
             {transform: 'scale(1.9) rotate(-24deg)', opacity: 0},
@@ -2003,7 +1961,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
 
   // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
   (function () {
-    var link = document.querySelector('.piece-nav') || document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;          // Back and Next move as one
+    var link = document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;
     var home = link.parentElement, next = link.nextSibling, wide = matchMedia('(min-width:768px)');
     function place() {
       if (wide.matches) {
@@ -2174,7 +2132,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     addEventListener('click', function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest('a[href]');
-      if (!a || a.closest('.menu-sheet') || a.closest('.piece-nav') || a.target === '_blank' || a.hasAttribute('download')) return;          // Back/Next: the carousel below instead
+      if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
       if (document.body.classList.contains('sizing-open')) return;          // Back closes the sizer rather than leaving
       if (a.hasAttribute('data-bag-drawer') && matchMedia('(min-width:768px)').matches) return;          // desktop Bag opens its drawer instead
       var href = a.getAttribute('href') || '';
@@ -2191,42 +2149,6 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     }, true);
     // coming back through history: never leave the veil up
     addEventListener('pageshow', function (e) { if (e.persisted && veil) veil.remove(); try { sessionStorage.removeItem('macon-fade'); } catch (err) {} });
-  })();
-
-  // ── Back / Next between pieces: the photographs swap like a carousel ─────────
-  // A real page load underneath (the browser's view transitions); site.css draws the slide. The leaving page
-  // notes which way you went, and every other kind of navigation keeps its own behaviour (the transition is
-  // skipped). Browsers without view transitions simply change page.
-  (function () {
-    document.addEventListener('click', function (e) {
-      var a = e.target.closest && e.target.closest('.piece-nav a'); if (!a) return;
-      try { sessionStorage.setItem('macon-piece', a.classList.contains('back') ? 'prev' : 'next'); } catch (err) {}
-    }, true);
-    // the neighbours' first photographs, fetched once this page is idle at the size this screen will use,
-    // so the one sliding in is already here (without it the new photograph could slide in blank, a white flash)
-    var near = document.querySelectorAll('.piece-nav a');
-    function warm() {
-      [].forEach.call(near, function (a) {
-        fetch(a.href, {credentials: 'same-origin'}).then(function (r) { return r.text(); }).then(function (t) {
-          var img = new DOMParser().parseFromString(t, 'text/html').querySelector('.gallery .hero img'); if (!img) return;
-          var pre = new Image();
-          if (img.getAttribute('sizes')) pre.sizes = img.getAttribute('sizes');
-          if (img.getAttribute('srcset')) pre.srcset = img.getAttribute('srcset');
-          pre.src = img.getAttribute('src');
-          if (pre.decode) pre.decode().catch(function () {});
-        }).catch(function () {});
-      });
-    }
-    // only where Back and Next are shown (not phones): otherwise it is two large photographs nobody asked for
-    if (near.length && matchMedia('(min-width:768px)').matches) addEventListener('load', function () { if (window.requestIdleCallback) requestIdleCallback(warm, {timeout: 2000}); else setTimeout(warm, 600); });          // rIC takes options, not a delay
-    addEventListener('pageswap', function (e) {
-      if (!e.viewTransition) return;
-      var dir = null; try { dir = sessionStorage.getItem('macon-piece'); } catch (err) {}
-      if (dir && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        e.viewTransition.types.add(dir);
-        scrollTo({top: 0, behavior: 'instant'});          // the swap always runs top photograph to top photograph
-      } else e.viewTransition.skipTransition();
-    });
   })();
 
   // ── Page wipe ─────────────────────────────────────────────────────────
@@ -2303,7 +2225,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
 
 window.maconShipNote = function () {
   var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
-  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and ' + (n > 1 ? 'ship' : 'ships') + ' by ' + maconShipBy() + '.';
+  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.';
 };
 // the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
 window.maconShipBy = (function () {

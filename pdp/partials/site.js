@@ -4,10 +4,10 @@ addEventListener('load', function () { document.documentElement.classList.add('l
   if (/[?&]case\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () { document.body.classList.add('title-case'); });
 
   (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
-  // A refresh always starts at the top of the page; Back and Forward still return to where you were
+  // A refresh starts at the top of the page, except on the home page, which keeps your place; Back and Forward still return to where you were
   (function () {
     var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-    if (nav && nav.type === 'reload') {
+    if (nav && nav.type === 'reload' && !/(^|\/)(index(\.html)?)?$/.test(location.pathname)) {
       history.scrollRestoration = 'manual';
       scrollTo(0, 0);
       addEventListener('load', function () { scrollTo(0, 0); });
@@ -111,6 +111,9 @@ addEventListener('load', function () { document.documentElement.classList.add('l
   document.querySelectorAll('.acc-head').forEach(function (b) {
     b.addEventListener('click', function () {
       var item = b.parentElement, open = !item.classList.contains('open');
+      if (open) document.querySelectorAll('.acc-head[aria-expanded="true"]').forEach(function (o) {          // one open at a time
+        if (o !== b) { o.parentElement.classList.remove('open'); o.setAttribute('aria-expanded', 'false'); }
+      });
       item.classList.toggle('open', open);
       b.setAttribute('aria-expanded', open);
     });
@@ -185,7 +188,6 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
     function tone(force) {
       queued = false;
-      if (window.MaconSwapping) return;          // Back/Next swap under way: nothing under the nav can be read yet
       if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
       lastY = scrollY;
       // the whole nav is one unit: read under each part, then colour every part the same
@@ -502,7 +504,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     var KEY = 'macon-bag-items';
     function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
     function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
-    function clean(it) { return {variant: /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(it.variant) ? it.variant : '', slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+$/.test(it.img) ? it.img : '',
+    function clean(it) { return {variant: /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(it.variant) ? it.variant : '', slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+(\?v=\d+)?$/.test(it.img) ? it.img : '',
       size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
     function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
     function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
@@ -637,9 +639,9 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
         // the Bureau of Provenance presses its seal onto the button: the claim is recorded
         if (!matchMedia('(prefers-reduced-motion:reduce)').matches && document.body.animate) {
-          var r = b.getBoundingClientRect(), st = document.createElement('img'), sz = Math.min(104, r.height * 2.1);
+          var r = b.getBoundingClientRect(), st = document.createElement('img'), sz = 1.3 * Math.min(r.height * 1.5, Math.sqrt(1.6 * r.width * r.height / Math.PI));          // centred on the top-right corner: a quarter of the round seal, about 10% of the button
           st.src = 'img/claim-stamp.png'; st.alt = ''; st.setAttribute('aria-hidden', 'true');
-          st.style.cssText = 'position:fixed;z-index:60;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;left:' + (r.right - sz - 6) + 'px;top:' + (r.top + r.height / 2 - sz / 2) + 'px';
+          st.style.cssText = 'position:fixed;z-index:60;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;left:' + Math.min(r.right - sz * .8, innerWidth - sz - 4) + 'px;top:' + (r.top - sz * .85) + 'px';          // a full-width phone button: kept on screen
           document.body.appendChild(st);
           st.animate([
             {transform: 'scale(1.9) rotate(-24deg)', opacity: 0},
@@ -669,7 +671,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
 
   // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
   (function () {
-    var link = document.querySelector('.piece-nav') || document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;          // Back and Next move as one
+    var link = document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;
     var home = link.parentElement, next = link.nextSibling, wide = matchMedia('(min-width:768px)');
     function place() {
       if (wide.matches) {
@@ -840,7 +842,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     addEventListener('click', function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest('a[href]');
-      if (!a || a.closest('.menu-sheet') || a.closest('.piece-nav') || a.target === '_blank' || a.hasAttribute('download')) return;          // Back/Next: the carousel below instead
+      if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
       if (document.body.classList.contains('sizing-open')) return;          // Back closes the sizer rather than leaving
       if (a.hasAttribute('data-bag-drawer') && matchMedia('(min-width:768px)').matches) return;          // desktop Bag opens its drawer instead
       var href = a.getAttribute('href') || '';
@@ -857,42 +859,6 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     }, true);
     // coming back through history: never leave the veil up
     addEventListener('pageshow', function (e) { if (e.persisted && veil) veil.remove(); try { sessionStorage.removeItem('macon-fade'); } catch (err) {} });
-  })();
-
-  // ── Back / Next between pieces: the photographs swap like a carousel ─────────
-  // A real page load underneath (the browser's view transitions); site.css draws the slide. The leaving page
-  // notes which way you went, and every other kind of navigation keeps its own behaviour (the transition is
-  // skipped). Browsers without view transitions simply change page.
-  (function () {
-    document.addEventListener('click', function (e) {
-      var a = e.target.closest && e.target.closest('.piece-nav a'); if (!a) return;
-      try { sessionStorage.setItem('macon-piece', a.classList.contains('back') ? 'prev' : 'next'); } catch (err) {}
-    }, true);
-    // the neighbours' first photographs, fetched once this page is idle at the size this screen will use,
-    // so the one sliding in is already here (without it the new photograph could slide in blank, a white flash)
-    var near = document.querySelectorAll('.piece-nav a');
-    function warm() {
-      [].forEach.call(near, function (a) {
-        fetch(a.href, {credentials: 'same-origin'}).then(function (r) { return r.text(); }).then(function (t) {
-          var img = new DOMParser().parseFromString(t, 'text/html').querySelector('.gallery .hero img'); if (!img) return;
-          var pre = new Image();
-          if (img.getAttribute('sizes')) pre.sizes = img.getAttribute('sizes');
-          if (img.getAttribute('srcset')) pre.srcset = img.getAttribute('srcset');
-          pre.src = img.getAttribute('src');
-          if (pre.decode) pre.decode().catch(function () {});
-        }).catch(function () {});
-      });
-    }
-    // only where Back and Next are shown (not phones): otherwise it is two large photographs nobody asked for
-    if (near.length && matchMedia('(min-width:768px)').matches) addEventListener('load', function () { if (window.requestIdleCallback) requestIdleCallback(warm, {timeout: 2000}); else setTimeout(warm, 600); });          // rIC takes options, not a delay
-    addEventListener('pageswap', function (e) {
-      if (!e.viewTransition) return;
-      var dir = null; try { dir = sessionStorage.getItem('macon-piece'); } catch (err) {}
-      if (dir && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        e.viewTransition.types.add(dir);
-        scrollTo({top: 0, behavior: 'instant'});          // the swap always runs top photograph to top photograph
-      } else e.viewTransition.skipTransition();
-    });
   })();
 
   // ── Page wipe ─────────────────────────────────────────────────────────
@@ -969,7 +935,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
 
 window.maconShipNote = function () {
   var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
-  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and ' + (n > 1 ? 'ship' : 'ships') + ' by ' + maconShipBy() + '.';
+  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.';
 };
 // the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
 window.maconShipBy = (function () {

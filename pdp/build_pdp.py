@@ -112,7 +112,7 @@ MADE_LINE = {
 HIDE_FROM_SHOP = {"macon-cap", "starshipkey-pendant", "chrysalis"}          # remove a slug here to bring it back
 # the jewelry's moss photographs (grid and product pages) wait while their refocused versions are reviewed;
 # until then the jewelry keeps its in-hand and studio photographs. False brings the moss set back.
-HOLD_JEWELRY_PHOTOS = True
+HOLD_JEWELRY_PHOTOS = False
 def moss_held(slug):
     return HOLD_JEWELRY_PHOTOS and kind(slug, read_port(slug)[1]) != "totem"
 RETIRED = {"macon-cap"}          # pieces with no page any more
@@ -176,7 +176,7 @@ OOAK = [
      "notes": ["Glass beads and vegetable-tanned leather", "Worn on a long cord, close to the chest", "One of one"]},
 ]
 OOAK_SLUGS = {x["slug"] for x in OOAK}
-NO_FILM = {"eclipse-ring", "ear-cuff"}          # ear-cuff: its "in motion" film is off the page
+NO_FILM = {"eclipse-ring", "ear-cuff", "meridian-egg-ring"}          # ear-cuff, meridian-egg-ring: their "in motion" films are off the page
 NO_COMPOSITE = {"ear-cuff"}
 PENDANTS = {"wonderhorn-talisman", "starshipkey-pendant"}          # pieces whose gallery ends without the lifestyle composite          # pieces whose product page shows photographs only, though a film exists
 HIDE_FROM_SHOP |= OOAK_SLUGS          # one-of-ones stay off the shop until Ephemeral returns
@@ -588,12 +588,13 @@ def sizer_page():
   .bar button{{font:inherit;font-size:12px;letter-spacing:.14em;text-transform:uppercase;background:#000;color:#fff;border:0;padding:15px 32px;cursor:pointer}}
   .paper{{width:216mm;max-width:calc(100vw - 32px);margin:0 auto 64px;background:#fff;box-shadow:0 18px 40px -18px rgba(0,0,0,.25);overflow-x:auto}}
   .paper .print-sheet{{padding-bottom:12mm}}
+  .ps-head h1{{margin:0;font:400 30pt/1 var(--serif);text-transform:uppercase}}          /* this page's one main heading, set as the sheet's title */
   {css}
   @media print{{ @page{{margin:0}} body{{background:#fff}} .bar{{display:none}} .paper{{width:auto;max-width:none;margin:0;box-shadow:none;overflow:visible}} .paper .print-sheet{{padding-bottom:0}} }}
 </style></head>
 <body>
 <div class="bar"><a href="index.html#pieces" onclick="if (document.referrer.indexOf(location.host) > -1 &amp;&amp; history.length > 1) {{ history.back(); return false; }}">&#8592; Back</a><button type="button" onclick="window.print()">Print the sizer</button></div>
-<div class="paper">{print_sheet().replace(' aria-hidden="true"', '')}</div>
+<div class="paper">{print_sheet().replace(' aria-hidden="true"', '').replace("<h2>Finding your size</h2>", "<h1>Finding your size</h1>", 1)}</div>
 </body></html>
 """
     save("ring-sizing.html", doc)
@@ -685,19 +686,9 @@ WIPE_HEAD = """<style>
 // or its first frame shows the dark film for an instant before the jump
 // a refresh starts at the top, decided here in the head so Safari never paints the old scroll spot (or a #pieces jump) first
 (function () { try { var n = performance.getEntriesByType('navigation')[0];
-  if (n && n.type === 'reload') { history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
+  if (n && n.type === 'reload') { if (!/(^|\/)(index(\.html)?)?$/.test(location.pathname)) history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
 } catch (e) {} })();
-// Back / Next between pieces: the arriving page takes the carousel's direction before its first frame (site.js)
-try { if (sessionStorage.getItem('macon-piece')) document.documentElement.classList.add('piece-swap'); } catch (x) {}
-addEventListener('pagereveal', function (e) { if (!e.viewTransition) return;
-  var d = null; try { d = sessionStorage.getItem('macon-piece'); sessionStorage.removeItem('macon-piece'); } catch (x) {}
-  if (d && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    e.viewTransition.types.add(d);
-    // mid-swap the page can't be looked through (every point reads as the bare page), so the nav holds its colour
-    window.MaconSwapping = true;
-    e.viewTransition.finished.finally(function () { window.MaconSwapping = false; document.documentElement.classList.remove('piece-swap'); if (window.MaconNavTone) window.MaconNavTone(); });
-  } else e.viewTransition.skipTransition(); });
-(function () { if (location.hash === '#pieces') document.documentElement.classList.add('to-pieces'); })();
+(function () { if (location.hash === '#pieces' || location.hash === '#jewelry') document.documentElement.classList.add('to-pieces'); })();
 // the in-place design editor (the /editor skill): on this machine only, never on the live site; ?design or ⌥E turns it on
 // (?edit is the Custom page's Past Work manager)
 if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostname)) { window.EDITOR_CONFIG = {param: 'design'}; var ed = document.createElement('script'); ed.src = 'editor.js'; ed.defer = true; document.head.appendChild(ed); }
@@ -1308,8 +1299,8 @@ def grid_hover(slug):
 
 def rel_tile(x):
     clay = f"img/ab-clay/{x['slug']}--tile.webp"
-    if x["slug"] in CLAY_FRAME and os.path.exists(os.path.join(OUT, clay)):
-        return clay
+    if (x["slug"] in CLAY_FRAME or kind(x["slug"], read_port(x["slug"])[1]) != "totem" and not moss_held(x["slug"])) and os.path.exists(os.path.join(OUT, clay)):
+        return clay          # the jewelry: the same moss photograph as the home grid
     return tinted(x["slug"], tile_src(grid_still(x["slug"])))
 
 
@@ -1445,14 +1436,8 @@ def main():
             continue
         make_thumbs(p["slug"])
         doc = one_block(page(p, template, related_block(p, products)))
-        if p in wall:
-            i = wall.index(p); prev, nxt = wall[i - 1], wall[(i + 1) % len(wall)]
-            doc = doc.replace(
-                '<a class="back" href="index.html#pieces" data-no-emerge><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>',
-                f'<nav class="piece-nav" aria-label="Other pieces" data-no-emerge>'
-                f'<a class="back" href="{prev["slug"]}.html" aria-label="Previous piece: {html.escape(prev["name"])}"><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7"/></svg><span>Back</span></a>'
-                f'<a class="piece-next" href="{nxt["slug"]}.html" aria-label="Next piece: {html.escape(nxt["name"])}"><span>Next</span><svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 5 7 7-7 7"/></svg></a>'
-                f'</nav>', 1)
+        if _group(p) == 1:          # Back: the top of this piece's own section on the home page (jewelry, or totems at #pieces)
+            doc = doc.replace('<a class="back" href="index.html#pieces"', '<a class="back" href="index.html#jewelry"', 1)
         for wide in glob.glob(os.path.join(OUT, "img", p["slug"], "*-wide.jpg.webp")):          # in-hand photos, 10% further out, on the product page only
             base = os.path.basename(wide)[:-len("-wide.jpg.webp")]
             doc = re.sub(rf'img/{re.escape(p["slug"])}/{re.escape(base)}(\.jpg|--m\.jpg)', lambda m: f'img/{p["slug"]}/{base}-wide{m.group(1)}', doc)

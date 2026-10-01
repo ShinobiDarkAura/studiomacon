@@ -56,13 +56,13 @@
   @media (max-width:767px){ .buy{grid-template-columns:1fr;gap:8px} }          /* phones: Shop Pay stacked under Add to Bag */
   /* Shop Pay: a cart link with ?payment=shop_pay, so this really is Shop Pay and not a lookalike */
   .buy-now{display:flex;align-items:center;justify-content:center;gap:.34em;width:100%;height:47px;
-    background:#5a31f4;color:#fff;border:1px solid #5a31f4;letter-spacing:.02em;cursor:pointer;
+    background:#000;color:#fff;border:1px solid #000;letter-spacing:.02em;cursor:pointer;
     font:500 calc((18px - 2pt) * .85 - 1pt)/1 var(--sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);transition:background .25s ease,border-color .25s ease}
   .buy-now{text-transform:uppercase;letter-spacing:.08em}          /* set like Add to Bag */
   /* the real Shop wordmark, sized so its ascender reads a touch taller than the BUY WITH caps */
   .buy-now .shop-word{height:14px;width:auto;fill:currentColor;display:block;flex:0 0 auto;
     transform:translateX(3px)}
-  .buy-now:hover{background:#4a27cc;border-color:#4a27cc}
+  .buy-now:hover{background:#000;border-color:#000}
   /* product buttons: 8px shorter than the site's other black buttons, type and arrow 15% smaller */
   .buy .cta{height:47px;font-size:calc((18px - 2pt) * .85 - 1pt)}
   @media (max-width:767px){ .buy .cta,.buy-now{height:54px} }          /* phones: as tall as the size field above them (52 + its border) */
@@ -488,7 +488,7 @@
 <script>
   // Desktop: Back to Shop belongs to the product's right column, so it fades away once that column has scrolled past
   (function () {
-    var back = document.querySelector('.piece-nav') || document.querySelector('.back'), product = document.querySelector('.product');          // Back and Next go together
+    var back = document.querySelector('.back'), product = document.querySelector('.product');
     if (!back || !product || !('IntersectionObserver' in window)) return;
     new IntersectionObserver(function (e) { back.classList.toggle('gone', !e[0].isIntersecting); }, {rootMargin: '-120px 0px 0px 0px'}).observe(product);
   })();
