@@ -88,10 +88,10 @@
     "tint": -0.5
    },
    "gallery": [
-    "img/eleph/hires-1.jpg",
     "img/eleph/hand-2.jpg",
-    "img/eleph/plain-2.jpg",
-    "img/eleph/hires-3.jpg"
+    "img/eleph/hires-1.jpg",
+    "img/eleph/hires-3.jpg",
+    "img/eleph/plain-2.jpg"
    ],
    "hero": "img/eleph/hero-dm.jpg",
    "hidden": [],
