@@ -71,6 +71,7 @@ def main():
         if parts[0] in SKIP_DIRS:
             dirs[:] = []
             continue
+        dirs[:] = [d for d in dirs if not d.startswith("_")]          # local-only folders (_variant*, _before*, img/_try ...) never ship
         for f in files:
             rel = os.path.normpath(os.path.join(rel_root, f))
             top = rel.split(os.sep)[0]
@@ -85,7 +86,7 @@ def main():
                     take = rel in keep_jpg
                 elif f.endswith((".png",)):
                     take = not os.path.exists(os.path.join(root, f + ".webp"))
-            elif f in ("_redirects", "_headers"):
+            elif f in ("_redirects", "_headers") and os.sep not in rel:          # the site's own, at the root only
                 take = True
             if rel in named:                               # named somewhere: always ship it
                 take = True
