@@ -291,8 +291,8 @@
    },
    "hero": "img/ori/hero.jpg",
    "gallery": [
-    "img/ori/plain-3.jpg",
     "img/ori/hand-2.jpg",
+    "img/ori/plain-3.jpg",
     "img/ori/hires-1.jpg",
     "img/ori/hires-2.jpg"
    ],
