@@ -90,10 +90,7 @@
    "gallery": [
     "img/eleph/hand-2.jpg",
     "img/eleph/white-1.jpg",
-    "img/eleph/white-2.jpg",
-    "img/eleph/hires-1.jpg",
-    "img/eleph/hires-3.jpg",
-    "img/eleph/plain-2.jpg"
+    "img/eleph/white-2.jpg"
    ],
    "hero": "img/eleph/hero-dm.jpg",
    "hidden": [],
@@ -128,8 +125,7 @@
    "gallery": [
     "img/ibi/hand-2.jpg",
     "img/ibi/white-1.jpg",
-    "img/ibi/white-2.jpg",
-    "img/ibi/hires-4.jpg"
+    "img/ibi/white-2.jpg"
    ],
    "hero": "img/ibi/hires-2-dm.jpg",
    "hidden": [],
@@ -301,10 +297,7 @@
     "img/ori/white-1.jpg",
     "img/ori/white-2.jpg",
     "img/ori/white-3.jpg",
-    "img/ori/white-4.jpg",
-    "img/ori/plain-3.jpg",
-    "img/ori/hires-1.jpg",
-    "img/ori/hires-2.jpg"
+    "img/ori/white-4.jpg"
    ],
    "hidden": [],
    "tile_hover": "img/ori/hand-1.jpg",
@@ -334,9 +327,7 @@
    "gallery": [
     "img/pip/hand-2.jpg",
     "img/pip/white-1.jpg",
-    "img/pip/white-2.jpg",
-    "img/pip/plain-2.jpg",
-    "img/pip/plain-3.jpg"
+    "img/pip/white-2.jpg"
    ],
    "hidden": [
     "img/pip/composite.jpg"
@@ -380,7 +371,6 @@
     "tint": 0.5
    },
    "gallery": [
-    "img/rebi/hires-1.jpg",
     "img/rebi/hand-2.jpg"
    ],
    "tile_before_hires": {
@@ -420,9 +410,7 @@
    "gallery": [
     "img/ren/hand-2.jpg",
     "img/ren/white-1.jpg",
-    "img/ren/white-2.jpg",
-    "img/ren/plain-1.jpg",
-    "img/ren/plain-2.jpg"
+    "img/ren/white-2.jpg"
    ],
    "tile_before_hires": {
     "x": 50,
@@ -613,9 +601,7 @@
    "gallery": [
     "img/zuma/hand-2.jpg",
     "img/zuma/white-1.jpg",
-    "img/zuma/white-2.jpg",
-    "img/zuma/plain-1.jpg",
-    "img/zuma/plain-2.jpg"
+    "img/zuma/white-2.jpg"
    ],
    "hidden": [],
    "tile_hover": "img/zuma/hand-1.jpg",
@@ -693,7 +679,10 @@
      "y": 50,
      "z": 1
     }
-   }
+   },
+   "eyebrow": "Studio Maçon × In Her Own Right",
+   "description": "Made with In Her Own Right, Chelsea Madeline's book on the inner lives of women artists. We wanted to cast the butterfly's first emergence from its cocoon, the moment you can see both what it was and what it has become, in bronze small enough to hold in your palm.",
+   "lore": "We wanted this totem itself to show transformation, the moment the thing is about to happen, the moment it becomes something new. We wanted a shape that meant hope, trust, but also inevitability. The butterfly’s first emergence out of its cocoon, its first stretch and solidity beyond its imaginal cells, the moment you can see both what a thing was and what it has become: that was the moment we wanted to cast in bronze and hold in our palms as both reminder and promise."
   }
  },
  "pages": {},

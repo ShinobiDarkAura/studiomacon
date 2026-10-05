@@ -115,6 +115,12 @@ HIDE_FROM_SHOP = {"macon-cap", "starshipkey-pendant", "chrysalis"}          # re
 HOLD_JEWELRY_PHOTOS = False
 def moss_held(slug):
     return HOLD_JEWELRY_PHOTOS and kind(slug, read_port(slug)[1]) != "totem"
+BOOK = ("<p>Part personal manifesto, part historical excavation, <em>In Her Own Right</em> explores the inner lives and artistic "
+        "legacies of women across time. With lyric precision and radical intimacy, author Chelsea Madeline invites readers to "
+        "reconsider what it means to live a creative life as a woman today. Moving between past and present, the book challenges "
+        "the stories we\u2019ve been told about art, genius, and who gets to claim visibility.</p>"
+        '<p class="acc-more">Find <a href="https://www.blueskyblacksheep.com/magazine/p/in-her-own-right" target="_blank" rel="noopener">'
+        "<em>In Her Own Right</em> through Blue Sky Press</a></p>")
 RETIRED = {"macon-cap"}          # pieces with no page any more
 
 # Photographs that repeat one already in the gallery: same framing, sometimes only a higher-resolution
@@ -177,7 +183,7 @@ OOAK = [
 ]
 OOAK_SLUGS = {x["slug"] for x in OOAK}
 NO_FILM = {"eclipse-ring", "ear-cuff", "meridian-egg-ring"}          # ear-cuff, meridian-egg-ring: their "in motion" films are off the page
-NO_COMPOSITE = {"ear-cuff"}
+NO_COMPOSITE = {"ear-cuff", "pip", "rebi", "ren", "zuma"}          # totems show only the suede hero, the in-hand photos and the grey-backdrop shots
 PENDANTS = {"wonderhorn-talisman", "starshipkey-pendant"}          # pieces whose gallery ends without the lifestyle composite          # pieces whose product page shows photographs only, though a film exists
 HIDE_FROM_SHOP |= OOAK_SLUGS          # one-of-ones stay off the shop until Ephemeral returns
 
@@ -316,8 +322,10 @@ def accordions(slug, k, notes):
                   + ('' if k in ("ring", "apparel") else          # rings say this under Sizing
                      f'<p>{_content.shared("exchange:1", EXCHANGE)}</p>')
                   + '<p class="acc-more"><a href="shipping.html">Full details</a></p>'))
+    if slug == "chrysalis":          # the book the piece was made with
+        items.append(("The Book", _content.product(slug, "book", BOOK)))
     # the order on every piece: size first, then what it is, gifting, shipping, and care last
-    rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "Gifting": 2, "Shipping &amp; Returns": 3, "Wear &amp; Care": 4, "Care": 4}
+    rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "The Book": 1.5, "Gifting": 2, "Shipping &amp; Returns": 3, "Wear &amp; Care": 4, "Care": 4}
     items.sort(key=lambda it: rank.get(it[0], 9))
     return "\n".join(
         f'''        <div class="acc-item">
