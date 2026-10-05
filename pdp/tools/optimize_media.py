@@ -18,7 +18,7 @@ TARGET = 0.995          # the lightest webp whose picture is indistinguishable f
 def save_clean(im, out, floor=80):
     """Save the lightest webp that still measures as the same picture as its source."""
     if out.name.startswith("white-"):          # mostly plain grey backdrop: the whole-picture score passes while the small piece smears
-        floor = 93
+        floor = 95
     ref = np.asarray(im.convert("L"), dtype=float)
     for q in sorted(q for q in {floor, 84, 88, 91, 93, 95, 97} if q >= floor):
         buf = io.BytesIO()
@@ -79,7 +79,7 @@ def main():
             make_tile(src)
         out = src.with_name(src.name + ".webp")
         if not out.exists() or out.stat().st_mtime < src.stat().st_mtime:
-            limit = 1000 if top in SMALL else 3200          # retina-sharp on a large display
+            limit = 1000 if top in SMALL else 4000 if src.name.startswith("white-") else 3200          # retina-sharp on a large display; the grey-backdrop shots show a small piece in a wide frame, so they keep more
             im = ImageOps.exif_transpose(Image.open(src))
             im.thumbnail((limit, limit), Image.LANCZOS)
             if src.suffix.lower() == ".png":
