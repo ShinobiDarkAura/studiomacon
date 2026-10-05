@@ -371,7 +371,9 @@
     "tint": 0.5
    },
    "gallery": [
-    "img/rebi/hand-2.jpg"
+    "img/rebi/hand-2.jpg",
+    "img/rebi/white-1.jpg",
+    "img/rebi/white-2.jpg"
    ],
    "tile_before_hires": {
     "x": 51.5,
