@@ -17,8 +17,10 @@ TARGET = 0.995          # the lightest webp whose picture is indistinguishable f
 
 def save_clean(im, out, floor=80):
     """Save the lightest webp that still measures as the same picture as its source."""
+    if out.name.startswith("white-"):          # mostly plain grey backdrop: the whole-picture score passes while the small piece smears
+        floor = 93
     ref = np.asarray(im.convert("L"), dtype=float)
-    for q in (floor, 84, 88, 91, 93, 95, 97):
+    for q in sorted(q for q in {floor, 84, 88, 91, 93, 95, 97} if q >= floor):
         buf = io.BytesIO()
         im.save(buf, "WEBP", quality=q, method=6)
         got = np.asarray(Image.open(io.BytesIO(buf.getvalue())).convert("L"), dtype=float)
