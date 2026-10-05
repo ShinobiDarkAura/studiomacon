@@ -1274,8 +1274,12 @@ addEventListener('load', function () { document.documentElement.classList.add('l
 })();
 
 window.maconShipNote = function () {
-  var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
-  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.';
+  // Chrysalis is a preorder: it ships at the end of October, in the order received, not ten working days out
+  var items = MaconBag.read(), pre = items.some(function (x) { return x.slug === 'chrysalis'; });
+  var n = items.reduce(function (t, x) { return t + (x.slug === 'chrysalis' ? 0 : (x.qty || 1)); }, 0);
+  var preNote = 'Chrysalis is a preorder and ships at the end of October, in the order received.';
+  if (pre && !n) return preNote;
+  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.' + (pre ? ' ' + preNote : '');
 };
 // the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
 window.maconShipBy = (function () {
