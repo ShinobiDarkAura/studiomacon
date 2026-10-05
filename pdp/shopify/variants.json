@@ -508,5 +508,16 @@
     "available": true
    }
   ]
+ },
+ "chrysalis": {
+  "option": "Title",
+  "variants": [
+   {
+    "value": "Default Title",
+    "id": "gid://shopify/ProductVariant/67617048527213",
+    "price": 220.0,
+    "available": true
+   }
+  ]
  }
 }

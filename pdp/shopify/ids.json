@@ -594,5 +594,15 @@
    "price": 490.0,
    "available": true
   }
+ ],
+ "chrysalis": [
+  {
+   "variant": "67617048527213",
+   "product": "15397612585325",
+   "handle": "chrysalis",
+   "value": "Default Title",
+   "price": 220.0,
+   "available": true
+  }
  ]
 }
