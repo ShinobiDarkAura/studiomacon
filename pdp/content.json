@@ -89,6 +89,8 @@
    },
    "gallery": [
     "img/eleph/hand-2.jpg",
+    "img/eleph/white-1.jpg",
+    "img/eleph/white-2.jpg",
     "img/eleph/hires-1.jpg",
     "img/eleph/hires-3.jpg",
     "img/eleph/plain-2.jpg"
@@ -125,6 +127,8 @@
    },
    "gallery": [
     "img/ibi/hand-2.jpg",
+    "img/ibi/white-1.jpg",
+    "img/ibi/white-2.jpg",
     "img/ibi/hires-4.jpg"
    ],
    "hero": "img/ibi/hires-2-dm.jpg",
@@ -249,7 +253,9 @@
     "tint": 0.5
    },
    "gallery": [
-    "img/milo/hand-2.jpg"
+    "img/milo/hand-2.jpg",
+    "img/milo/white-1.jpg",
+    "img/milo/white-2.jpg"
    ],
    "hero": "img/milo/hero-dm.jpg",
    "hidden": [],
@@ -292,6 +298,10 @@
    "hero": "img/ori/hero.jpg",
    "gallery": [
     "img/ori/hand-2.jpg",
+    "img/ori/white-1.jpg",
+    "img/ori/white-2.jpg",
+    "img/ori/white-3.jpg",
+    "img/ori/white-4.jpg",
     "img/ori/plain-3.jpg",
     "img/ori/hires-1.jpg",
     "img/ori/hires-2.jpg"
@@ -322,8 +332,10 @@
     }
    },
    "gallery": [
-    "img/pip/plain-2.jpg",
     "img/pip/hand-2.jpg",
+    "img/pip/white-1.jpg",
+    "img/pip/white-2.jpg",
+    "img/pip/plain-2.jpg",
     "img/pip/plain-3.jpg"
    ],
    "hidden": [
@@ -406,8 +418,10 @@
     "tint": 0.0
    },
    "gallery": [
-    "img/ren/plain-1.jpg",
     "img/ren/hand-2.jpg",
+    "img/ren/white-1.jpg",
+    "img/ren/white-2.jpg",
+    "img/ren/plain-1.jpg",
     "img/ren/plain-2.jpg"
    ],
    "tile_before_hires": {
@@ -548,7 +562,9 @@
     "tint": 0.5
    },
    "gallery": [
-    "img/yael/hand-2.jpg"
+    "img/yael/hand-2.jpg",
+    "img/yael/white-1.jpg",
+    "img/yael/white-2.jpg"
    ],
    "hero": "img/yael/hires-1.jpg",
    "hidden": [],
@@ -595,8 +611,10 @@
    },
    "hero": "img/zuma/hero.jpg",
    "gallery": [
-    "img/zuma/plain-1.jpg",
     "img/zuma/hand-2.jpg",
+    "img/zuma/white-1.jpg",
+    "img/zuma/white-2.jpg",
+    "img/zuma/plain-1.jpg",
     "img/zuma/plain-2.jpg"
    ],
    "hidden": [],
@@ -659,6 +677,23 @@
    "hidden": [
     "img/zuma-ring/composite.jpg"
    ]
+  },
+  "chrysalis": {
+   "gallery": [
+    "img/chrysalis/hand-1.jpg",
+    "img/chrysalis/white-1.jpg",
+    "img/chrysalis/white-2.jpg",
+    "img/chrysalis/white-3.jpg",
+    "img/chrysalis/book-1.jpg",
+    "img/chrysalis/book-2.jpg"
+   ],
+   "frames": {
+    "img/chrysalis/book-1.jpg": {
+     "x": 100,
+     "y": 50,
+     "z": 1
+    }
+   }
   }
  },
  "pages": {},
