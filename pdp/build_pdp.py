@@ -115,11 +115,13 @@ HIDE_FROM_SHOP = {"macon-cap", "starshipkey-pendant"}          # remove a slug h
 HOLD_JEWELRY_PHOTOS = False
 def moss_held(slug):
     return HOLD_JEWELRY_PHOTOS and kind(slug, read_port(slug)[1]) != "totem"
-BOOK = ("<p>Part personal manifesto, part historical excavation, <em>In Her Own Right</em> explores the inner lives and artistic "
+BOOK_URL = "https://www.blueskyblacksheep.com/magazine/p/in-her-own-right"
+BOOK_LINK = f'<a class="book-link" href="{BOOK_URL}" target="_blank" rel="noopener">In Her Own Right</a>'          # the book's name, wherever the Chrysalis page says it
+BOOK = ("<p>Part personal manifesto, part historical excavation, <em>" + BOOK_LINK + "</em> explores the inner lives and artistic "
         "legacies of women across time. With lyric precision and radical intimacy, author Chelsea Madeline invites readers to "
         "reconsider what it means to live a creative life as a woman today. Moving between past and present, the book challenges "
         "the stories we\u2019ve been told about art, genius, and who gets to claim visibility.</p>"
-        '<p class="acc-more">Find <a href="https://www.blueskyblacksheep.com/magazine/p/in-her-own-right" target="_blank" rel="noopener">'
+        f'<p class="acc-more"><a href="{BOOK_URL}" target="_blank" rel="noopener">'
         "<em>In Her Own Right</em> through Blue Sky Press</a></p>")
 RETIRED = {"macon-cap"}          # pieces with no page any more
 
@@ -503,9 +505,10 @@ def page(p, template, related=""):
     return (template
             .replace("{{TITLE}}", html.escape(name))
             .replace("{{SLUG}}", slug)
-            .replace("{{EYEBROW}}", html.escape(eyebrow))
+            .replace("{{EYEBROW}}", html.escape(eyebrow).replace("In Her Own Right", BOOK_LINK, 1) if slug == "chrysalis" else html.escape(eyebrow))
             .replace("{{PRICE}}", f"${price}")
-            .replace("{{DESC}}", html.escape(blurb).replace("namesake band", '<a href="zuma-ring.html">namesake band</a>', 1) if slug == "zuma" else html.escape(blurb))
+            .replace("{{DESC}}", html.escape(blurb).replace("namesake band", '<a href="zuma-ring.html">namesake band</a>', 1) if slug == "zuma"
+                     else html.escape(blurb).replace("In Her Own Right", BOOK_LINK, 1) if slug == "chrysalis" else html.escape(blurb))
             .replace("{{BUY}}", buy_block)
             .replace('<section class="product">', '<section class="product' + ('' if in_stock else ' claimed') + '">')
             .replace("{{SIZE}}", size_select)
