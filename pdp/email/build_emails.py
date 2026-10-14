@@ -96,6 +96,7 @@ def _versioned(html):
     return re.sub(re.escape(IMG) + r"/([\w.-]+\.(?:jpg|gif|png))(?![?\w])", tag, html)
 
 def page(preheader, body):
+    body = body.replace('@SHIPNOTE@', SHIP_KLAVIYO)
     return _versioned(f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>
@@ -259,6 +260,15 @@ ORDER = items("event.extra.line_items", "{{ item.product.title }}", "{{ item.pro
 CHECKOUT = "{{ event.extra.checkout_url }}"
 GRID = "<!--GRID-->"          # checkout 2 only: the bag laid out as a grid (Shopify version, see _grid)
 
+# the shipping line in the order emails: a Chrysalis preorder ships in early November, everything else within ten business days
+SHIP_KLAVIYO = ("{% if 'Chrysalis' in event.ItemNames %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. "
+                "Any other pieces ship within about ten business days.{% else %}You can expect it to ship within about ten business days.{% endif %}")
+SHIP_SHOPIFY = ("{% assign macon_pre = false %}{% assign macon_rest = false %}{% for line in line_items %}"
+                "{% if line.product.tags contains 'preorder' or line.title contains 'Chrysalis' %}{% assign macon_pre = true %}{% else %}{% assign macon_rest = true %}{% endif %}{% endfor %}"
+                "{% if macon_pre and macon_rest %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. Everything else ships within about ten business days."
+                "{% elsif macon_pre %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them."
+                "{% else %}You can expect it to ship within about ten business days.{% endif %}")
+
 def notes(rows):
     cells = "".join(f'<tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
                     f'<div style="font:400 15px/1.6 {SANS};color:#333333">{d}</div></td></tr>' for t, d in rows)
@@ -307,7 +317,7 @@ EMAILS.update({
     preview="What happens between now and its arrival.",
     body=eyebrow("Studio Maçon") + h1("Your piece<br>is being made") + ORDER
        + notes([("Made to order", "We start on your order as soon as it comes in. No two pieces come out alike."),
-                ("On its way", "You can expect it to ship within about ten business days. We'll send you tracking as soon as possible."),
+                ("On its way", "@SHIPNOTE@ We'll send you tracking as soon as possible."),
                 ("Questions", "Just reply to this email! We respond to every message directly.")])),
  "thanks-2": dict(
     subject="How to care for your piece",
@@ -427,6 +437,7 @@ def to_shopify_cart():
 
 def to_shopify(html, name):
     import re
+    html = html.replace(SHIP_KLAVIYO, SHIP_SHOPIFY)
     html = html.replace('<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">', "")
     html = html.replace("<style>", "<style>\n  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;"
                         f"src:url({SITE_ASSETS}/fonts/instrument-serif.woff2) format('woff2')}}", 1)

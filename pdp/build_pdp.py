@@ -124,7 +124,7 @@ BOOK = ("<p>Part personal manifesto, part historical excavation, <em>" + BOOK_LI
         f'<p class="acc-more"><a href="{BOOK_URL}" target="_blank" rel="noopener">'
         "<em>In Her Own Right</em> through Blue Sky Press</a></p>")
 OFF_STRIP = {"chrysalis": ("img/chrysalis/white-3.jpg",)}          # phones: pictures left off the thumbnail strip (still on the page); Chrysalis keeps its book photos instead
-PREORDER = {"chrysalis": "end of October"}          # pieces taken as preorders, and when they begin to ship (in the order received)
+PREORDER = {"chrysalis": "early November"}          # pieces taken as preorders, and when they begin to ship (in the order received)
 RETIRED = {"macon-cap"}          # pieces with no page any more
 
 # Photographs that repeat one already in the gallery: same framing, sometimes only a higher-resolution
@@ -322,7 +322,7 @@ def accordions(slug, k, notes):
     ship_1 = _content.shared("shipping:1", ship_a)
     if slug in PREORDER:          # a preorder ships on its own date, not ten days out
         ship_1 = ship_1.replace("Each piece is made to order; please allow up to 10 business days before it ships.",
-                                f"This piece is a preorder: pieces begin shipping at the {PREORDER[slug]}, in the order we receive them.")
+                                f"This piece is a preorder: pieces begin shipping in {PREORDER[slug]}, in the order we receive them.")
     items.append(("Shipping &amp; Returns",
                   f'<p class="keep-para">{ship_1}</p>'
                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
