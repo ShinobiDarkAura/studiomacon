@@ -123,7 +123,7 @@ BOOK = ("<p>Part personal manifesto, part historical excavation, <em>" + BOOK_LI
         "the stories we\u2019ve been told about art, genius, and who gets to claim visibility.</p>"
         f'<p class="acc-more"><a href="{BOOK_URL}" target="_blank" rel="noopener">'
         "<em>In Her Own Right</em> through Blue Sky Press</a></p>")
-OFF_STRIP = {"chrysalis": ("img/chrysalis/white-2.jpg", "img/chrysalis/white-3.jpg")}          # phones: pictures left off the thumbnail strip (still on the page); Chrysalis keeps its book photos instead
+OFF_STRIP = {"chrysalis": ("img/chrysalis/white-3.jpg",)}          # phones: pictures left off the thumbnail strip (still on the page); Chrysalis keeps its book photos instead
 PREORDER = {"chrysalis": "end of October"}          # pieces taken as preorders, and when they begin to ship (in the order received)
 RETIRED = {"macon-cap"}          # pieces with no page any more
 
