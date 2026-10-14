@@ -3,8 +3,8 @@
 
     python3 pdp/_variant-story/pdp/make_rail.py        (after build_pdp.py and make_collage.py)
 
-Thumbnails on the photograph itself, in a row 44px above the bottom, square with 16px corners and drop shadows.
-The thumbnails are 2.8vw wide, in a row centred at the bottom of the photographs; they travel with the page and stop where the stack ends.
+Thumbnails on the photograph itself, the glass 32px in from the left edge, centred on the screen, square with 16px corners and drop shadows.
+The thumbnails are 2.8vw wide, stacked at the left, centred in the screen; they travel with the page and stop where the stack ends.
 Clicking one scrolls to that photograph; the one in view is marked.
 """
 import glob, os, re
@@ -18,8 +18,8 @@ BLOCK = r"""
   .rail{display:none}
   @media (min-width:1024px){
     .gallery{position:relative}
-    .rail{display:flex;flex-direction:column;justify-content:flex-end;position:absolute;left:0;right:0;top:0;bottom:0;align-items:center;z-index:2;pointer-events:none}          /* under the header and menu */
-    .rail .in{position:sticky;bottom:44px;margin-bottom:44px;display:flex;flex-direction:row;gap:10.5px;padding:10.5px;pointer-events:auto;
+    .rail{display:flex;flex-direction:column;justify-content:flex-start;position:absolute;left:0;right:0;top:0;bottom:0;align-items:flex-start;z-index:2;pointer-events:none}          /* under the header and menu */
+    .rail .in{position:sticky;top:50vh;transform:translateY(-50%);display:flex;flex-direction:column;gap:10.5px;margin-left:32px;padding:10.5px;pointer-events:auto;
       width:fit-content;border-radius:12px;background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
       box-shadow:0 2px 6px rgba(0,0,0,.06),0 14px 34px -12px rgba(0,0,0,.28)}          /* a light frosted glass behind the thumbnails */
     .rail button{display:block;width:2.82vw;aspect-ratio:1/1;padding:0;border:0;border-radius:8px;background:#E5E3DF;overflow:hidden;cursor:pointer;
