@@ -28,7 +28,9 @@ def poly_terms(x, y, deg=3):
     return np.stack([x**i * y**j for i in range(deg + 1) for j in range(deg + 1 - i)], -1)
 
 
-def flatten(f):
+def flatten(f, whole=False):
+    """whole=True only evens out the lighting (every pixel kept, shadows fading naturally); otherwise
+    everything but the piece and its shadow also becomes the one flat grey."""
     im = ImageOps.exif_transpose(Image.open(os.path.join(SRC, f))).convert("RGB")
     # the site's frames are never wider than 5:4, so the far sides are cut away first and the piece keeps its pixels
     if im.width > ASPECT * im.height:
@@ -58,6 +60,8 @@ def flatten(f):
         for y0 in range(0, h, 256):
             full[y0:y0+256, :, c] = poly_terms(Xg[y0:y0+256] / w, Y[y0:y0+256] / h) @ coef[c]
     out = a * (TARGET / full)
+    if whole and ZOOM == 1.0:
+        return Image.fromarray(np.clip(out, 0, 255).round().astype(np.uint8))
     # keep the piece and the shadow it casts; everything else becomes the one flat grey
     bgmask = ndimage.zoom(mask.astype(float), (h / sh, w / sw), order=0)[:h, :w] > 0.5
     hp = out - ndimage.gaussian_filter(out, (3, 3, 0))
