@@ -21,7 +21,7 @@ OUT = os.path.join(ROOT, "pdp")
 MASTER = os.path.expanduser(os.environ.get("MACON_PIECES", "~/Downloads/Maçon/Pieces Master"))
 
 EYEBROW = {
-    "pip": "Tiny Keeper of Tenderness",
+    "pip": "Quiet Keeper",
     "rebi": "Silhouette in Flux",
     "ren": "Steward of Forgotten Paths",
     "zuma": "Desert Spirit",
