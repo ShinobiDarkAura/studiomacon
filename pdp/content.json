@@ -382,7 +382,8 @@
    },
    "hero": "img/rebi/hero.jpg",
    "hidden": [],
-   "tile_hover": "img/rebi/hires-2-mirrored.jpg"
+   "tile_hover": "img/rebi/hires-2-mirrored.jpg",
+   "price": 180
   },
   "ren": {
    "frames": {
@@ -673,7 +674,8 @@
     "img/chrysalis/white-2.jpg",
     "img/chrysalis/white-3.jpg",
     "img/chrysalis/book-1.jpg",
-    "img/chrysalis/book-2.jpg"
+    "img/chrysalis/book-2.jpg",
+    "img/chrysalis/book-3.jpg"
    ],
    "frames": {
     "img/chrysalis/book-1.jpg": {
@@ -684,7 +686,8 @@
    },
    "eyebrow": "Studio Maçon × In Her Own Right",
    "description": "Made with In Her Own Right, Chelsea Madeline's book on the inner lives of women artists. We wanted to cast the butterfly's first emergence from its cocoon, the moment you can see both what it was and what it has become, in bronze small enough to hold in your palm.",
-   "lore": "We wanted this totem itself to show transformation, the moment the thing is about to happen, the moment it becomes something new. We wanted a shape that meant hope, trust, but also inevitability. The butterfly’s first emergence out of its cocoon, its first stretch and solidity beyond its imaginal cells, the moment you can see both what a thing was and what it has become: that was the moment we wanted to cast in bronze and hold in our palms as both reminder and promise."
+   "lore": "We wanted this totem itself to show transformation, the moment the thing is about to happen, the moment it becomes something new. We wanted a shape that meant hope, trust, but also inevitability. The butterfly’s first emergence out of its cocoon, its first stretch and solidity beyond its imaginal cells, the moment you can see both what a thing was and what it has become: that was the moment we wanted to cast in bronze and hold in our palms as both reminder and promise.",
+   "price": 180
   }
  },
  "pages": {},

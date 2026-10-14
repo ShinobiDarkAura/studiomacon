@@ -32,8 +32,6 @@
   "04.png",
   "hannah-custom-rose-gold-ring-edited.jpg",
   "hannah-macon-custom-double-1-edited.jpg",
-  "added-1789609019-custom-totem-01.png",
-  "added-1789609020-custom-totem-02.png",
   "hannah-cordelia-1--warm.jpg",
   "added-1789609021-custom-totem-04.png",
   "added-1789609023-custom-totem-07.png",
@@ -46,6 +44,8 @@
   "13.png",
   "09.png",
   "hannah-heron-1.jpg",
+  "added-1789609019-custom-totem-01.png",
+  "added-1789609020-custom-totem-02.png",
   "hannah-patsy-1-warm--centred.jpg",
   "hannah-patsy-2-warm--centred.jpg",
   "hannah-chess-8-s.jpg",
@@ -87,14 +87,14 @@
    "s": 1.054,
    "x": 0,
    "y": 0,
-   "name": "Border Collie, Front",
+   "name": "Labrador, Front",
    "date": "2026"
   },
   "added-1789609020-custom-totem-02.png": {
    "s": 1.091,
    "x": 0,
    "y": 0,
-   "name": "Border Collie, Back",
+   "name": "Labrador, Back",
    "date": "2026"
   },
   "added-1789609021-custom-totem-03.png": {
@@ -285,7 +285,7 @@
    "y": 0
   },
   "hannah-heron-1.jpg": {
-   "name": "Crane",
+   "name": "Heron",
    "date": "2025",
    "x": 0,
    "y": 0,
@@ -331,11 +331,11 @@
    "date": "2024"
   },
   "hannah-patsy-1-warm--centred.jpg": {
-   "name": "Retriever",
+   "name": "Labrador, Side",
    "date": "2026"
   },
   "hannah-patsy-2-warm--centred.jpg": {
-   "name": "Retriever",
+   "name": "Labrador, Front",
    "date": "2026"
   },
   "hannah-orca--flat.jpg": {
@@ -353,7 +353,7 @@
    "y": 0
   },
   "hannah-cordelia-1--warm.jpg": {
-   "name": "Retriever in Hand",
+   "name": "Border Collie in Hand",
    "date": "2025",
    "s": 1,
    "x": 0,

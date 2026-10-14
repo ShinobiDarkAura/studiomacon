@@ -16,7 +16,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css?v=1790835890">
+<link rel="stylesheet" href="site.css?v=1791945871">
 <style>
   /* ── layout: examples wall left, commission form pinned right ─────────── */
   .commission{display:block}
@@ -54,36 +54,6 @@
   .examples figure.unlabelled .over{display:none}
   @media (hover:none),(max-width:767px){ .examples .over{opacity:1;transform:none} }
 
-  /* ── edit mode ───────────────────────────────────────── */
-  body.editing .examples figure{cursor:pointer;transition:none!important;opacity:1!important;filter:none!important;transform:none!important}
-  body.editing .examples figure:hover{outline:1px dashed rgba(0,0,0,.35);outline-offset:-1px}
-  body.editing .examples figure.sel{outline:2px solid #000;outline-offset:-2px}
-  body.editing .examples figure::before{content:attr(data-pos);position:absolute;top:10px;left:10px;z-index:2;min-width:26px;height:26px;
-    padding:0 7px;border-radius:13px;background:#000;color:#fff;font:500 12px/26px var(--sans);text-align:center}
-  body.editing .examples figure.dragging{opacity:.35!important}
-  body.editing .examples figure.drop-before{box-shadow:inset 0 4px 0 #c8321e}
-  .ed{position:fixed;right:16px;bottom:16px;z-index:50;width:260px;padding:16px;background:#fff;border:1px solid #000;
-    font:13px/1.4 var(--sans);box-shadow:0 8px 30px rgba(0,0,0,.12);display:none}
-  body.editing .ed{display:block}
-  .ed h3{margin:0 0 12px;font:500 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
-  .ed .row{margin:0 0 12px}
-  .ed .row > span{display:block;margin:0 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,0,0,.55)}
-  .ed .frames{display:flex;flex-wrap:wrap;gap:4px}
-  .ed .frames button,.ed .acts button{border:1px solid rgba(0,0,0,.25);padding:5px 8px;font-size:12px}
-  .ed .frames button[aria-pressed="true"]{background:#000;color:#fff;border-color:#000}
-  .ed input[type=range]{width:100%}
-  .ed input[type=text]{width:100%;border:0;border-bottom:1px solid rgba(0,0,0,.25);padding:4px 0;font-size:13px;outline:0}
-  .ed .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
-  .ed .acts .save{background:#000;color:#fff;border-color:#000}
-  .ed .addbtn{display:inline-block;border:1px solid #000;padding:5px 10px;font-size:12px;cursor:pointer}
-  .ed .cutopt{display:flex;align-items:center;gap:6px;margin:8px 0 0;font-size:12px}
-  .ed .restore{display:block;margin:8px 0 0;border:1px solid rgba(0,0,0,.25);padding:5px 8px;font-size:12px}
-  .ed .remove{color:#c8321e;border-color:rgba(200,50,30,.4)!important}
-  .ed{max-height:calc(100vh - 32px);overflow-y:auto}
-  .ed .hint{margin:10px 0 0;font-size:11px;color:rgba(0,0,0,.5)}
-  .ed .msg{margin:8px 0 0;font-size:12px}
-  .ed-toggle{position:fixed;left:16px;bottom:16px;z-index:49;padding:7px 11px;background:#fff;border:1px solid rgba(0,0,0,.3);font-size:12px}
-  body.editing .ed-toggle,body:not(.can-edit) .ed-toggle{display:none}
   .order{padding:48px calc(var(--pad) + 24px) 0}
 
   .head .on-dark{color:#000}
@@ -479,21 +449,21 @@ if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostna
     <figure class="cutout" data-name="04.png" style="--s:0.744;--x:0;--y:0"><img src="img/commissions-cut/04.png.webp?v=1790292684" width="1271" height="735" alt="Faceted Wedding Band" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Faceted Wedding Band</span></span></figure>
     <figure class="photo" data-name="hannah-custom-rose-gold-ring-edited.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-custom-rose-gold-ring-edited.jpg.webp?v=1790292735" width="1001" height="1024" alt="Abstract Love" loading="eager" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Abstract Love</span></span></figure>
     <figure class="photo" data-name="hannah-macon-custom-double-1-edited.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-macon-custom-double-1-edited.jpg.webp?v=1790295289" width="1793" height="1169" alt="Organic Two Finger Ring" loading="eager" draggable="false"><span class="over"><span class="date">2023</span><span class="name">Organic Two Finger Ring</span></span></figure>
-    <figure class="cutout" data-name="added-1789609019-custom-totem-01.png" style="--s:1.054;--x:0;--y:0"><img src="img/commissions-cut/added-1789609019-custom-totem-01.png.webp?v=1790292688" width="903" height="1023" alt="Border Collie, Front" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie, <em>Front</em></span></span></figure>
-    <figure class="cutout" data-name="added-1789609020-custom-totem-02.png" style="--s:1.091;--x:0;--y:0"><img src="img/commissions-cut/added-1789609020-custom-totem-02.png.webp?v=1790292689" width="893" height="1091" alt="Border Collie, Back" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Border Collie, <em>Back</em></span></span></figure>
-    <figure class="photo label-light" data-name="hannah-cordelia-1--warm.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-cordelia-1--warm.jpg.webp?v=1790293994" width="1500" height="2000" alt="Retriever in Hand" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Retriever <em>in Hand</em></span></span></figure>
+    <figure class="photo label-light" data-name="hannah-cordelia-1--warm.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-cordelia-1--warm.jpg.webp?v=1790293994" width="1500" height="2000" alt="Border Collie in Hand" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Border Collie <em>in Hand</em></span></span></figure>
     <figure class="cutout" data-name="added-1789609021-custom-totem-04.png" style="--s:1.104;--x:2;--y:2"><img src="img/commissions-cut/added-1789609021-custom-totem-04.png.webp?v=1790292690" width="864" height="1288" alt="Retriever, Side" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Retriever, <em>Side</em></span></span></figure>
     <figure class="cutout" data-name="added-1789609023-custom-totem-07.png" style="--s:1.08;--x:-3.9;--y:1.9"><img src="img/commissions-cut/added-1789609023-custom-totem-07.png.webp?v=1790292691" width="1339" height="939" alt="Fox, Front" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Fox, <em>Front</em></span></span></figure>
     <figure class="cutout" data-name="added-1789609024-custom-totem-08.png" style="--s:1.08;--x:5.8;--y:3.6"><img src="img/commissions-cut/added-1789609024-custom-totem-08.png.webp?v=1790292692" width="1349" height="924" alt="Fox, Back" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Fox, <em>Back</em></span></span></figure>
     <figure class="cutout" data-name="17.png" style="--s:1.34;--x:-3.5;--y:4.2"><img src="img/commissions-cut/17.png.webp?v=1790292687" width="635" height="201" alt="Cheetah" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Cheetah</span></span></figure>
     <figure class="cutout" data-name="00.png" style="--s:0.942;--x:0;--y:1"><img src="img/commissions-cut/00.png.webp?v=1790292682" width="1250" height="1364" alt="Shiba Inu" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Shiba Inu</span></span></figure>
     <figure class="photo" data-name="hannah-orca--flat.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-orca--flat.jpg.webp?v=1790292755" width="2222" height="2222" alt="Orca" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Orca</span></span></figure>
-    <figure class="photo" data-name="bonnie-1.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/bonnie-1.jpg.webp?v=1790319779" width="2000" height="1905" alt="Westie" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Westie</span></span></figure>
+    <figure class="photo" data-name="bonnie-1.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/bonnie-1.jpg.webp?v=1791946279" width="2000" height="1905" alt="Westie" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Westie</span></span></figure>
     <figure class="cutout" data-name="06.png" style="--s:1.05;--x:3.8;--y:2.6"><img src="img/commissions-cut/06.png.webp?v=1790292686" width="1364" height="1292" alt="Arctic Tern" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Arctic Tern</span></span></figure>
     <figure class="cutout" data-name="13.png" style="--s:1.25;--x:-0.9;--y:4.7"><img src="img/commissions-cut/13.png.webp?v=1790292686" width="1364" height="609" alt="Seal on the Rocks" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Seal <em>on the Rocks</em></span></span></figure>
-    <figure class="photo" data-name="hannah-heron-1.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-heron-1.jpg.webp?v=1790293990" width="2000" height="1519" alt="Crane" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Crane</span></span></figure>
-    <figure class="photo" data-name="hannah-patsy-1-warm--centred.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-patsy-1-warm--centred.jpg.webp?v=1790293167" width="1521" height="1902" alt="Retriever" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Retriever</span></span></figure>
-    <figure class="photo" data-name="hannah-patsy-2-warm--centred.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-patsy-2-warm--centred.jpg.webp?v=1790291427" width="1500" height="1875" alt="Retriever" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Retriever</span></span></figure>
+    <figure class="photo" data-name="hannah-heron-1.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-heron-1.jpg.webp?v=1790293990" width="2000" height="1519" alt="Heron" loading="lazy" draggable="false"><span class="over"><span class="date">2025</span><span class="name">Heron</span></span></figure>
+    <figure class="cutout" data-name="added-1789609019-custom-totem-01.png" style="--s:1.054;--x:0;--y:0"><img src="img/commissions-cut/added-1789609019-custom-totem-01.png.webp?v=1790292688" width="903" height="1023" alt="Labrador, Front" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Labrador, <em>Front</em></span></span></figure>
+    <figure class="cutout" data-name="added-1789609020-custom-totem-02.png" style="--s:1.091;--x:0;--y:0"><img src="img/commissions-cut/added-1789609020-custom-totem-02.png.webp?v=1790292689" width="893" height="1091" alt="Labrador, Back" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Labrador, <em>Back</em></span></span></figure>
+    <figure class="photo" data-name="hannah-patsy-1-warm--centred.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-patsy-1-warm--centred.jpg.webp?v=1790293167" width="1521" height="1902" alt="Labrador, Side" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Labrador, <em>Side</em></span></span></figure>
+    <figure class="photo" data-name="hannah-patsy-2-warm--centred.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-patsy-2-warm--centred.jpg.webp?v=1790291427" width="1500" height="1875" alt="Labrador, Front" loading="lazy" draggable="false"><span class="over"><span class="date">2026</span><span class="name">Labrador, <em>Front</em></span></span></figure>
     <figure class="photo label-light" data-name="hannah-chess-8-s.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-chess-8-s.jpg.webp?v=1790282075" width="1440" height="965" alt="Custom Animal Chess Set" loading="lazy" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Custom Animal Chess Set</span></span></figure>
     <figure class="photo label-light" data-name="added-1789609022-custom-totem-05.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/added-1789609022-custom-totem-05.jpg.webp?v=1790034379" width="1400" height="931" alt="Custom Animal Chess Set" loading="lazy" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Custom Animal Chess Set</span></span></figure>
     <figure class="photo label-light" data-name="hannah-chess-2-s-k-ig.jpg" style="--s:1;--x:0;--y:0"><img src="img/commissions-cut/hannah-chess-2-s-k-ig.jpg.webp?v=1790282074" width="1440" height="1176" alt="Custom Animal Chess Set" loading="lazy" draggable="false"><span class="over"><span class="date">2024</span><span class="name">Custom Animal Chess Set</span></span></figure>
@@ -636,8 +606,8 @@ if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostna
 
 <footer>
   <div class="brand">
-    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
-    <p class="fine" data-edit="page:custom.html:334e67ad">Artifacts of Love,<br>Made to Order</p>
+    <img width="187" height="168" class="mark" src="img/mark-emboss.png.webp" alt="Studio Maçon">
+    <p class="fine" data-edit="page:custom.html:b5574b3f"><span>Artifacts of Love,</span><br><span>Made to Order</span></p>
   </div>
   <div class="middle">
   <nav class="links">
@@ -657,39 +627,6 @@ if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostna
   </div>
 </footer>
 
-<button class="ed-toggle" type="button">Edit wall</button>
-<div class="ed" role="dialog" aria-label="Edit the commission wall" data-removed="[&quot;01.png&quot;, &quot;02.png&quot;, &quot;05.png&quot;, &quot;09.png&quot;, &quot;14.png&quot;, &quot;15.png&quot;, &quot;16.png&quot;, &quot;18.png&quot;, &quot;20.png&quot;, &quot;21.png&quot;, &quot;added-1789609021-custom-totem-03.png&quot;, &quot;added-1789609022-custom-totem-06.png&quot;, &quot;chess-0.jpg&quot;, &quot;chess-1.jpg&quot;, &quot;chess-2.jpg&quot;, &quot;hannah-chess-4-s-edited.jpg&quot;, &quot;hannah-chess-6-s.jpg&quot;, &quot;hannah-cordelia-1.jpg&quot;, &quot;hannah-cordelia-2-warm.jpg&quot;, &quot;hannah-heron--flat.jpg&quot;, &quot;hannah-orca-macon-edited.jpg&quot;, &quot;hannah-patsy-1-warm.jpg&quot;, &quot;hannah-patsy-2-warm.jpg&quot;, &quot;hannah-perlman-custom.jpg&quot;, &quot;hannah-shiba-macon-edited-edited--1.jpg&quot;]">
-  <h3 data-edit="page:custom.html:e1d9e1e5">Edit wall</h3>
-  <div class="row"><span>Frame</span>
-    <div class="frames">
-      <button type="button" data-frame="3/4">3:4</button><button type="button" data-frame="4/5">4:5</button>
-      <button type="button" data-frame="2/3">2:3</button><button type="button" data-frame="1/1">1:1</button>
-      <button type="button" data-frame="5/4">5:4</button><button type="button" data-frame="auto">Natural</button>
-    </div>
-  </div>
-  <div class="row"><span>Selected: <b class="who">click a piece</b></span></div>
-  <div class="row"><span>Position <b class="pv">–</b></span>
-    <div class="acts" style="margin:0"><button type="button" class="earlier">← Earlier</button><button type="button" class="later">Later →</button></div>
-  </div>
-  <div class="row"><span>Name</span><input class="nm" type="text" placeholder="e.g. Seamus" disabled></div>
-  <div class="row"><span>Date</span><input class="dt" type="text" placeholder="e.g. 2024" disabled></div>
-  <div class="row"><span>Size <b class="sv">100%</b></span><input class="size" type="range" min="30" max="200" value="100" disabled></div>
-  <div class="row"><span>Left / right <b class="xv">0</b></span><input class="xr" type="range" min="-40" max="40" value="0" disabled></div>
-  <div class="row"><span>Up / down <b class="yv">0</b></span><input class="yr" type="range" min="-40" max="40" value="0" disabled></div>
-  <div class="acts">
-    <button type="button" class="reset-one">Reset piece</button>
-    <button type="button" class="remove">Remove piece</button>
-    <button type="button" class="done">Close</button>
-    <button type="button" class="save">Save</button>
-  </div>
-  <div class="row add"><span>Add images</span>
-    <label class="addbtn"><input type="file" accept="image/*" multiple hidden>+ Add images</label>
-    <label class="cutopt"><input type="checkbox" checked> Cut out the background</label>
-    <button type="button" class="restore" hidden>Restore removed (<b class="rc">0</b>)</button>
-  </div>
-  <p class="hint" data-edit="page:custom.html:ac4c189b">Click a piece, then use Earlier / Later (or the ← → keys) to move it. Numbers show the order, left to right. Shift + arrows nudge it inside its frame.</p>
-  <p class="msg" data-edit="page:custom.html:da39a3ee"></p>
-</div>
 <script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581", "subscribeUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/subscribe"};</script>
 <script>
 addEventListener('load', function () { document.documentElement.classList.add('late-font'); });          // the footer's pencil font, after first paint
@@ -1899,140 +1836,6 @@ function maconClickQuery(extra) {
           : '<p class="thanks" data-edit="page:custom.html:2acd29b8">Thank you. Your request is with us. Taking you to checkout to begin your commission.</p>';
       });
     });
-  })();
-</script>
-<script>
-  // Edit mode for the commission wall: reorder, resize and nudge pieces, try frame
-  // proportions, then save to the layout file the page is built from.
-  (function () {
-    var wall = document.querySelector('.examples'), ed = document.querySelector('.ed');
-    var q = function (c) { return ed.querySelector(c); };
-    var sel = null, dragged = null;
-    var figs = function () { return [].slice.call(wall.querySelectorAll('figure:not([data-lead])')); };
-    var num = function (f, k, d) { var v = parseFloat(f.style.getPropertyValue('--' + k)); return isNaN(v) ? d : v; };
-
-    function open(on) {
-      document.body.classList.toggle('editing', on);
-      figs().forEach(function (f) { f.classList.add('is-seen'); });
-      if (!on) pick(null);
-    }
-    if (/[?&]edit\b/.test(location.search)) document.body.classList.add('can-edit');
-    document.querySelector('.ed-toggle').addEventListener('click', function () { open(true); });
-    q('.done').addEventListener('click', function () { open(false); });
-    addEventListener('keydown', function (e) {
-      if (e.target.closest('input[type=text], textarea')) return;
-      if (e.key === 'e' || e.key === 'E') { open(!document.body.classList.contains('editing')); return; }
-      if (!document.body.classList.contains('editing') || !sel) return;
-      // Shift + arrows nudge the piece inside its frame; plain arrows move the frame
-      if (e.shiftKey) {
-        var m = {ArrowLeft: ['x', -1], ArrowRight: ['x', 1], ArrowUp: ['y', -1], ArrowDown: ['y', 1]}[e.key];
-        if (m) { e.preventDefault(); set(m[0], num(sel, m[0], 0) + m[1]); }
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
-      else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); move(1); }
-      if (e.key === '+' || e.key === '=') set('s', +(num(sel, 's', 1) + .05).toFixed(2));
-      if (e.key === '-' || e.key === '_') set('s', +(num(sel, 's', 1) - .05).toFixed(2));
-    });
-
-    function number() { figs().forEach(function (f, i) { f.dataset.pos = i + 1; }); if (sel) q('.pv').textContent = sel.dataset.pos + ' of ' + figs().length; }
-    function move(dir) {
-      if (!sel) return;
-      var all = figs(), i = all.indexOf(sel), j = i + dir;
-      if (j < 0 || j >= all.length) return;
-      if (dir < 0) wall.insertBefore(sel, all[j]); else wall.insertBefore(sel, all[j].nextSibling);
-      number(); sel.scrollIntoView({block: 'nearest', behavior: 'smooth'});
-      q('.msg').textContent = 'Unsaved changes';
-    }
-    number();
-    function pick(f) {
-      figs().forEach(function (x) { x.classList.toggle('sel', x === f); });
-      sel = f;
-      ['.size', '.xr', '.yr', '.nm', '.dt'].forEach(function (c) { q(c).disabled = !f; });
-      q('.who').textContent = f ? f.dataset.name : 'click a piece';
-      q('.pv').textContent = f ? f.dataset.pos + ' of ' + figs().length : '–';
-      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
-      if (f) sync();
-    }
-    function sync() {
-      var s = num(sel, 's', 1), x = num(sel, 'x', 0), y = num(sel, 'y', 0);
-      q('.size').value = Math.round(s * 100); q('.sv').textContent = Math.round(s * 100) + '%';
-      q('.xr').value = x; q('.xv').textContent = x; q('.yr').value = y; q('.yv').textContent = y;
-      q('.nm').value = sel.querySelector('.name').textContent; q('.dt').value = sel.querySelector('.date').textContent;
-    }
-    function set(k, v) {
-      if (!sel) return;
-      if (k === 's') v = Math.max(.3, Math.min(2, v));
-      else v = Math.max(-40, Math.min(40, v));
-      sel.style.setProperty('--' + k, v); sync(); q('.msg').textContent = 'Unsaved changes';
-    }
-    wall.addEventListener('click', function (e) {
-      if (!document.body.classList.contains('editing')) return;
-      var f = e.target.closest('figure'); if (f) { e.preventDefault(); pick(f); }
-    });
-    function label() {
-      figs().forEach(function (f) { f.classList.toggle('unlabelled', !f.querySelector('.name').textContent.trim()); });
-    }
-    label();
-    q('.nm').addEventListener('input', function () { if (sel) { sel.querySelector('.name').textContent = this.value; label(); q('.msg').textContent = 'Unsaved changes'; } });
-    q('.dt').addEventListener('input', function () { if (sel) { sel.querySelector('.date').textContent = this.value; q('.msg').textContent = 'Unsaved changes'; } });
-    q('.size').addEventListener('input', function () { set('s', this.value / 100); });
-    ['.size', '.xr', '.yr'].forEach(function (c) { q(c).addEventListener('change', function () { this.blur(); }); });
-    q('.xr').addEventListener('input', function () { set('x', +this.value); });
-    q('.yr').addEventListener('input', function () { set('y', +this.value); });
-    // remove: hidden from the wall on save; the image file itself is kept, so it can be restored
-    var removed = JSON.parse(ed.dataset.removed || '[]');
-    function showRestore() { q('.restore').hidden = !removed.length; q('.rc').textContent = removed.length; }
-    showRestore();
-    q('.remove').addEventListener('click', function () {
-      if (!sel) return;
-      removed.push(sel.dataset.name); var gone = sel; pick(null); gone.remove(); number(); showRestore();
-      q('.msg').textContent = 'Unsaved changes';
-    });
-    q('.restore').addEventListener('click', function () {
-      removed = []; showRestore(); save().then(function (ok) { if (ok) location.href = location.pathname + '?edit'; });
-    });
-    // add: save what's here first, then send each picture to be added, then reload into edit mode
-    q('.addbtn input').addEventListener('change', function () {
-      var files = [].slice.call(this.files), cut = q('.cutopt input').checked ? 1 : 0;
-      if (!files.length) return;
-      q('.msg').textContent = 'Saving, then adding ' + files.length + (files.length > 1 ? ' images' : ' image') + (cut ? ' and cutting them out' : '') + '…';
-      save().then(function (ok) {
-        if (!ok) return;
-        return files.reduce(function (p, f) {
-          return p.then(function () {
-            return fetch('/api/commission-image?cut=' + cut + '&name=' + encodeURIComponent(f.name), {method: 'POST', body: f})
-              .then(function (r) { return r.json(); })
-              .then(function (d) { if (d.error) throw new Error(d.error); });
-          });
-        }, Promise.resolve()).then(function () { location.href = location.pathname + '?edit'; })
-          .catch(function (e) { q('.msg').textContent = 'Not added: ' + e.message; });
-      });
-    });
-    q('.earlier').addEventListener('click', function () { move(-1); });
-    q('.later').addEventListener('click', function () { move(1); });
-    q('.reset-one').addEventListener('click', function () { if (sel) { ['s', 'x', 'y'].forEach(function (k) { sel.style.setProperty('--' + k, k === 's' ? 1 : 0); }); sync(); } });
-
-    // frame proportions for the whole wall
-    function frame(v) {
-      wall.style.setProperty('--frame', v);
-      ed.querySelectorAll('[data-frame]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.frame === v); });
-    }
-    ed.querySelectorAll('[data-frame]').forEach(function (b) {
-      b.addEventListener('click', function () { frame(b.dataset.frame); q('.msg').textContent = 'Unsaved changes'; });
-    });
-    frame(wall.style.getPropertyValue('--frame').trim() || '3/4');
-
-    function save() {
-      var pieces = {};
-      figs().forEach(function (f) { pieces[f.dataset.name] = {s: num(f, 's', 1), x: num(f, 'x', 0), y: num(f, 'y', 0), name: f.querySelector('.name').textContent, date: f.querySelector('.date').textContent}; });
-      var body = {frame: wall.style.getPropertyValue('--frame').trim() || '3/4', order: figs().map(function (f) { return f.dataset.name; }), pieces: pieces, removed: removed};
-      q('.msg').textContent = 'Saving…';
-      return fetch('/api/commission-layout', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)})
-        .then(function (r) { return r.json(); })
-        .then(function (d) { q('.msg').textContent = d.saved ? 'Saved.' : 'Not saved: ' + d.error; return !!d.saved; })
-        .catch(function () { q('.msg').textContent = 'Not saved: the preview server is not the editing one.'; return false; });
-    }
-    q('.save').addEventListener('click', function () { save(); });
-    if (/[?&]edit\b/.test(location.search)) open(true);
   })();
 </script>
 </body>

@@ -137,7 +137,8 @@ h2{font:400 34px/1.02 var(--serif);text-transform:uppercase;letter-spacing:-.005
 footer{overflow:hidden;overflow:clip;display:grid;gap:56px;align-content:end;min-height:105vh;min-height:105svh;padding:96px calc(var(--pad) + 24px) 36px;--f-size:calc(17px - 2pt)}
 footer .brand{order:3}
 footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
-footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
+footer .mark{display:block;width:auto;height:42px;margin:-2px 0 30px -2px}          /* blind-embossed mark, still; the extra 2px each side is its shading */
+footer .fine span{white-space:nowrap}          /* the break always falls after LOVE, at every width */
 footer .fine{margin:0;font:400 calc((32px - 5pt) * 1.2)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
 footer .fine.where{margin:12px 0 0;font-family:"Instrument Serif",serif;font-size:21px;letter-spacing:.01em;text-transform:none;opacity:.6;
   display:inline-block;transform:rotate(-3deg);transform-origin:left center}          /* where the studio is, in the studio's own hand */
