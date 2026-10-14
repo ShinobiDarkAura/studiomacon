@@ -11,11 +11,11 @@
   .commission{display:block}
   .examples{columns:2;column-gap:1px;padding:calc(var(--head) + 24px) calc(var(--pad) + 24px) 0}
   .examples figure{margin:0 0 1px;break-inside:avoid;border-radius:0;overflow:hidden;background:var(--field)}
+  @media (min-width:1024px){ .examples figure[data-name="hannah-chess-2-s-k-ig.jpg"]{display:none !important} }          /* desktop: one of the five chess photos off, so both linen Labradors fit and the grid comes out even */
   .examples img{display:block;width:100%;height:auto}
   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
-  @media (min-width:1024px){ .examples figure[data-name="hannah-patsy-2-warm--centred.jpg"]{display:none !important} }          /* desktop: off for now so the grid comes out even */
   /* name and year sit on the grey, bottom left, in black, on hover; no dark gradient */
   @media (min-width:768px){
     .examples figure:not(.lead) .over{position:absolute;inset:auto auto 28px 28px;padding:0;background:none;color:#000;opacity:0;transform:translateY(6px);gap:0;font-size:14px}
