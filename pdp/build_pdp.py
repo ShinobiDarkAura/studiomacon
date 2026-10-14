@@ -25,7 +25,7 @@ EYEBROW = {
     "rebi": "Silhouette in Flux",
     "ren": "Steward of Forgotten Paths",
     "zuma": "Desert Spirit",
-    "chrysalis": "Keeper of Becoming",
+    "chrysalis": "In Her Own Right",          # the home grid's hover; the page's own overline comes from content.json
     "ori": "Guardian of Forests and Rivers",
     "yael": "Prophecy in Metal",
     "zuma-ring": "Twin Band",
