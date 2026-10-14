@@ -217,9 +217,9 @@
     .big{--w:100%;width:100%;margin-left:0;aspect-ratio:auto;height:50vh;height:50svh}
     .chunk{padding:0}
     /* thumbnails of every picture and film, under the main image */
-    .thumbs{display:flex;gap:8px;margin:10px 0 0;overflow-x:auto;scrollbar-width:none}          /* every picture is on the strip; a long one scrolls sideways */
+    .thumbs{display:flex;gap:8px;margin:10px 0 0}
     .thumbs::-webkit-scrollbar{display:none}
-    .thumbs button{flex:1 0 0;min-width:52px;aspect-ratio:4/5;padding:0;border-radius:0;overflow:hidden}          /* however many there are, they share the full width */
+    .thumbs button{flex:1 1 0;min-width:0;aspect-ratio:4/5;padding:0;border-radius:0;overflow:hidden}          /* however many there are, they share the full width */
     .thumbs button.on{opacity:1}
     .desc-block .label{font-size:calc(17px - 4pt);letter-spacing:.08em;color:#000}
     .thumbs img{width:100%;height:100%;object-fit:cover}
@@ -362,6 +362,9 @@
   (function () {
     var gallery = document.querySelector('.gallery'), hero = gallery.querySelector('.hero');
     var figs = [].slice.call(gallery.querySelectorAll('figure'));
+    var picked = figs.filter(function (f) { return !f.hasAttribute('data-off-strip'); });
+    if (picked.length < figs.length) figs = picked;          // a piece can say which pictures stay off the strip (Chrysalis keeps its book photos)
+    else if (figs.length > 5) figs = figs.slice(0, -2);          // long galleries: the last two pictures stay off the strip
     if (figs.length < 2) return;
     // every picture lives in one track that slides sideways: swapping the hero's contents
     // meant the old picture vanished for a frame before the new one painted, which read as a flash
