@@ -100,7 +100,8 @@
     "x": 50,
     "y": 50,
     "z": 1.48
-   }
+   },
+   "lore": "It remembers everything and forgives most of it. Late at night, keepers still hear a low, distant call from just beyond the room."
   },
   "ibi": {
    "frames": {
@@ -143,7 +144,8 @@
      "y": 0,
      "r": -1
     }
-   }
+   },
+   "lore": "It has kept its long watch for longer than anyone can say, and guards its secrets closely. Every attempt to photograph it ends in fog."
   },
   "lunar-canyon-ring": {
    "frames": {
@@ -269,7 +271,8 @@
      "y": 2.5,
      "r": 0
     }
-   }
+   },
+   "lore": "It crossed a great deal of country to get here, and seems glad to finally stop. Over the years, it comes to resemble whoever holds it."
   },
   "ori": {
    "frames": {
@@ -309,7 +312,8 @@
      "y": 1,
      "r": 1
     }
-   }
+   },
+   "lore": "It keeps a patient watch over forests, rivers and the houses that take it in. In deep winter, the room feels a degree warmer."
   },
   "pip": {
    "frames": {
@@ -353,7 +357,8 @@
      "y": 4.5,
      "r": 0
     }
-   }
+   },
+   "lore": "It kept watch from a sunny windowsill for years. Visitors still pick it up without asking, and those who carry it start checking their pockets."
   },
   "rebi": {
    "frames": {
@@ -383,7 +388,8 @@
    "hero": "img/rebi/hero.jpg",
    "hidden": [],
    "tile_hover": "img/rebi/hires-2-mirrored.jpg",
-   "price": 180
+   "price": 180,
+   "lore": "It never looks the same way twice in the same light. Some see one thing, some another, and it seems quietly pleased by the disagreement."
   },
   "ren": {
    "frames": {
@@ -436,7 +442,8 @@
      "y": -5,
      "r": -1
     }
-   }
+   },
+   "lore": "It knows the way through woods that no longer appear on maps, and its bright crest holds the first light long after dawn."
   },
   "sietch-aperture": {
    "frames": {
@@ -573,7 +580,8 @@
      "y": 0,
      "r": 0
     }
-   }
+   },
+   "lore": "It stands where the footing is narrowest, entirely unbothered. At dusk, keepers sometimes hear a faint ringing, like bells on a far mountain."
   },
   "zuma": {
    "frames": {
@@ -621,7 +629,8 @@
      "y": -3,
      "r": 1.5
     }
-   }
+   },
+   "lore": "It carries the stillness of the desert at noon. Kept in a pocket, it warms slowly and holds that warmth well into the evening."
   },
   "zuma-ring": {
    "frames": {
