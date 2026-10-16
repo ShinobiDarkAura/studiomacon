@@ -224,7 +224,7 @@
 
 <dialog id="newDlg"><div class="dlg">
   <h2>New issue</h2>
-  <p>Every issue opens the same way: the Studio Maçon line, a title, a short intro, a photo and the letter. The monthly layout then adds a sign-off, a featured piece, a few others and a button. Or start with just the opening and a button.</p>
+  <p>Every issue opens the same way: the Studio Maçon line, a title, a short intro, a photo and the letter. The monthly layout then adds a featured piece and a few others. Both end with the sign-off and the button.</p>
   <div class="foot"><button class="btn" data-close>Cancel</button><button class="btn" id="newBlank">Just the opening</button><button class="btn" id="newCopy">Copy this one</button><button class="btn dark" id="newMonthly">Monthly layout</button></div>
 </div></dialog>
 
@@ -368,7 +368,7 @@
         var inner = E ? '<div class="rich" data-f="body" data-rich contenteditable="true" data-ph="' + esc(b.ph || 'Write here. Select words to make them bold, italic or a link.') + '">' + letterHtml(b.body) + '</div>' : letterHtml(b.body);
         return row('padding:0 24px 34px;font:400 16px/1.6 ' + SANS + ';color:#000000', '<div style="max-width:' + w + 'px;margin:0 auto;text-align:center">' + inner + '</div>');
       }},
-    signoff: {label: 'Sign-off', icon: '✎', make: function () { return {line: 'With love,', name: 'Hannah'}; },
+    signoff: {label: 'Sign-off', icon: '✎', make: function () { return {line: 'With love,', name: 'Hannah + Alex'}; },
       html: function (b, E) {
         return row('padding:0 24px 52px', '<div style="max-width:378px;margin:0 auto;text-align:center">'
           + '<div style="font:400 16px/1.6 ' + SANS + ';color:#000000">' + (E ? word(b, 'line', 'With love,', E) : lines(b.line)) + '</div>'
@@ -571,7 +571,7 @@
     var d = blank(); d.title = m + ' newsletter'; d.subject = m + ' at the studio';
     var h = block('heading'); h.title = m + '\nat the studio';
     var g = block('grid'); g.slugs = PIECES.slice(1, 3).map(function (p) { return p.slug; });
-    d.blocks = opening(h).concat([block('signoff'), block('divider'), block('piece'), g, block('button')]);
+    d.blocks = opening(h).concat([block('divider'), block('piece'), g, block('signoff'), block('button')]);          // the sign-off always closes the letter, just above the button
     return d;
   }
   // every issue opens the same way: the Studio Maçon line and a title, a short intro, a photo, then the letter
@@ -582,7 +582,7 @@
   }
   function fresh() {
     var d = blank(); var h = block('heading'); h.title = 'Title';
-    d.blocks = opening(h).concat([block('button')]); return d;
+    d.blocks = opening(h).concat([block('signoff'), block('button')]); return d;
   }
   var D = null, base = 0, dirty = false, timer = null;
 
