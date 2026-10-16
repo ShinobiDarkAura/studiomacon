@@ -96,6 +96,7 @@
     border:1.5px dashed #d9d4ca;border-radius:16px;color:var(--soft);font:13px/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;transition:.15s}
   .empty:hover,.empty.over{border-color:var(--hi);color:var(--hi);background:rgba(47,111,219,.03)}
   .empty b{font-weight:500;color:var(--ink)}
+  .empty.cell{font-size:22px;aspect-ratio:1/1}
   .alt-missing{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);border-radius:12px;padding:3px 9px;font:11px "Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--warn);border:0}
   /* a piece in a grid: × on hover; an empty slot to add one */
   .tile{position:relative}
@@ -334,6 +335,11 @@
   }
   function view(u) { return String(u || '').replace(IMG + '/', 'img/email/').replace(SITE + '/_nl/', '/_nl/'); }          // the editor's own copy of a picture
   var BRAND = 'border-radius:16px;' + SH;
+  function rfControls(o, shapes) {
+    return '<div class="rfbar">' + (shapes ? '<div class="seg2">' + [['3/2', 'Wide'], ['4/5', 'Tall'], ['1/1', 'Square'], ['', 'As shot']].map(function (s) { return '<button data-rfshape="' + s[0] + '" aria-pressed="' + ((o.shape || '') === s[0]) + '">' + s[1] + '</button>'; }).join('') + '</div>' : '')
+      + '<input type="range" data-rfzoom min="1" max="4" step="0.01" value="' + (o.zoom || 1) + '" title="Zoom"><button class="no" data-act="rfcancel">Cancel</button><button class="go" data-act="rfdone">Done</button></div>';
+  }
+  function rfFrame(o) { return '<div class="rf" data-rf style="aspect-ratio:' + (o.shape || '3/2').replace('/', ' / ') + '"><img src="' + esc(view(o.orig || o.src)) + '" alt="" draggable="false"></div>'; }
   function soldTag(p, E) { return E && STATUS && p && STATUS[p.slug] === false ? '<span class="sold">Sold out</span>' : ''; }
   function row(style, inner) { return '<tr><td class="pad" align="center" style="' + style + '">' + inner + '</td></tr>'; }
   function photoFrame(srcUrl, alt, w) {
@@ -358,9 +364,7 @@
       },
       html: function (b, E) {
         if (!b.src) return E ? row('padding:0 24px 32px', '<div class="empty" data-act="choose"><b>Drop a photo here</b>or click to choose one · or use a piece’s photo</div>') : '';
-        if (E && b.reframing) return row('padding:0 24px 32px', '<div class="rf" data-rf style="aspect-ratio:' + (b.shape || '3/2').replace('/', ' / ') + '"><img src="' + esc(view(b.orig || b.src)) + '" alt="" draggable="false"></div>'
-          + '<div class="rfbar"><div class="seg2">' + [['3/2', 'Wide'], ['4/5', 'Tall'], ['1/1', 'Square'], ['', 'As shot']].map(function (s) { return '<button data-rfshape="' + s[0] + '" aria-pressed="' + ((b.shape || '') === s[0]) + '">' + s[1] + '</button>'; }).join('')
-          + '</div><input type="range" data-rfzoom min="1" max="4" step="0.01" value="' + (b.zoom || 1) + '" title="Zoom"><button class="no" data-act="rfcancel">Cancel</button><button class="go" data-act="rfdone">Done</button></div>');
+        if (E && b.reframing) return row('padding:0 24px 32px', rfFrame(b) + rfControls(b, true));
         var img = photoFrame(E ? view(b.src) : b.src, b.alt), u = safeUrl(b.link);
         if (E) return row('padding:0 24px 32px', '<div class="ph' + (b.busy ? ' busy' : '') + '">' + img + (b.alt ? '' : '<button class="alt-missing" data-act="alt">Add a description</button>') + '</div>');
         return row('padding:0 24px 32px', u ? '<a href="' + esc(u) + '">' + img + '</a>' : img);
@@ -404,6 +408,21 @@
             + (E ? inner + '<button class="x" data-act="unpick" data-slug="' + p.slug + '" title="Remove">×</button>' : '<a href="' + link(p) + '" style="text-decoration:none;color:#000000">' + inner + '</a>') + '</div>';
         }).join('') + (E && ps.length < 6 ? '<button class="slot" data-act="addpiece">+ Add a piece</button>' : '');
         return intro + '<tr><td class="pad" style="padding:0 24px 6px"><div style="max-width:408px;margin:0 auto;font-size:' + (E ? '13px' : '0') + ';text-align:center">' + tiles + '</div></td></tr>';
+      }},
+    pgrid: {label: 'Photo grid', icon: '▤', make: function () { return {layout: '2x2', cells: [], link: ''}; },
+      tools: function (b) { return [['layout', '2', '2-up'], ['layout', '2x2', '2 \u00d7 2'], ['layout', '3x3', '3 \u00d7 3'], ['act', 'link', b.link ? 'Link \u2713' : 'Link']]; },
+      html: function (b, E) {
+        cells(b);
+        var L = LAYOUTS[b.layout], u = safeUrl(b.link), r = b.layout === '3x3' ? 12 : 16;
+        if (!E && !b.cells.some(function (c) { return c.src; })) return '';
+        var items = b.cells.slice(0, L.n).map(function (c, i) {
+          var box = '<div style="display:inline-block;width:' + L.w + ';margin:0 1% ' + L.gap + 'px;vertical-align:top">';
+          if (E && c.reframing) return box + rfFrame(c) + rfControls(c, false) + '</div>';
+          if (!c.src) return E ? box + '<div class="empty cell" data-act="cell" data-i="' + i + '" style="aspect-ratio:' + L.shape.replace('/', ' / ') + ';border-radius:' + r + 'px">+</div></div>' : '';
+          var im = '<img src="' + esc(E ? view(c.src) : c.src) + '" width="' + L.px + '" alt="' + esc(c.alt || '') + '" style="width:100%;max-width:' + L.px + 'px;height:auto;border-radius:' + r + 'px;' + SH + '">';
+          return box + (E ? '<div class="ph rel' + (c.busy ? ' busy' : '') + '" data-act="cell" data-i="' + i + '" style="cursor:pointer">' + im + '</div>' : (u ? '<a href="' + esc(u) + '">' + im + '</a>' : im)) + '</div>';
+        }).join('');
+        return '<tr><td class="pad" align="center" style="padding:0 24px ' + Math.max(0, 32 - L.gap) + 'px"><div style="max-width:' + L.max + 'px;margin:0 auto;font-size:' + (E ? '13px' : '0') + '">' + items + '</div></td></tr>';
       }},
     pair: {label: 'Two pieces', icon: '◆◆', make: function () { return {slugs: PIECES.slice(0, 2).map(function (p) { return p.slug; }), photo: 'held', note0: '', note1: ''}; },
       tools: function () { return [['photo', 'held', 'In the hand'], ['photo', 'tile', 'On its own']]; },
@@ -465,7 +484,15 @@
     divider: {label: 'Divider', icon: '—', make: function () { return {}; },
       html: function () { return '<tr><td style="padding:0 0 32px"><div style="height:1px;background:#efece5;font-size:0;line-height:1px">&#160;</div></td></tr>'; }}
   };
-  var ORDER = ['text', 'image', 'heading', 'piece', 'pair', 'grid', 'button', 'quote', 'signoff', 'insta', 'code', 'divider'];
+  var ORDER = ['text', 'image', 'pgrid', 'heading', 'piece', 'pair', 'grid', 'button', 'quote', 'signoff', 'insta', 'code', 'divider'];
+  // the photo grid's three layouts: how many cells, their shape, width and the space between rows
+  var LAYOUTS = {'2': {n: 2, shape: '4/5', w: '48%', px: 220, gap: 12, max: 460}, '2x2': {n: 4, shape: '1/1', w: '48%', px: 220, gap: 12, max: 460}, '3x3': {n: 9, shape: '1/1', w: '31.3%', px: 144, gap: 8, max: 460}};
+  function cells(b) {
+    var L = LAYOUTS[b.layout] || LAYOUTS['2x2']; b.layout = LAYOUTS[b.layout] ? b.layout : '2x2';
+    while (b.cells.length < L.n) b.cells.push({src: '', orig: '', alt: '', shape: L.shape, fx: .5, fy: .5, zoom: 1});
+    b.cells.forEach(function (c) { c.lockShape = L.shape; });
+    return L;
+  }
 
   function tail(html, b, last) { return last && b.type === 'button' ? html.replace('padding:0 24px 32px', 'padding:0 24px 28px') : html; }
 
@@ -525,7 +552,10 @@
         else if (STATUS && STATUS[s] === false) out.push([false, p.name + ' is sold out']);
       });
     });
-    d.blocks.forEach(function (b) { if (b.type === 'insta' && !b.pics.some(Boolean)) out.push([false, 'The Instagram row has no photos yet']); });
+    d.blocks.forEach(function (b) {
+      if (b.type === 'insta' && !b.pics.some(Boolean)) out.push([false, 'The Instagram row has no photos yet']);
+      if (b.type === 'pgrid') { var Lg = LAYOUTS[b.layout] || LAYOUTS['2x2'], filled = (b.cells || []).slice(0, Lg.n).filter(function (c) { return c.src; }).length; if (filled < Lg.n) out.push([false, 'A photo grid has ' + (Lg.n - filled) + ' empty spot' + (Lg.n - filled > 1 ? 's' : '')]); }
+    });
     return out;
   }
 
@@ -598,7 +628,7 @@
     if (!dirty || !D) return;
     dirty = false; D.by = ME; D.updated = Date.now();
     try { localStorage.setItem('macon-nl-last', D.id); } catch (e) {}
-    var copy = JSON.parse(JSON.stringify(D)); copy.blocks.forEach(function (b) { delete b.busy; delete b.fresh; delete b.reframing; });
+    var copy = JSON.parse(JSON.stringify(D)); copy.blocks.forEach(function (b) { delete b.busy; delete b.fresh; delete b.reframing; (b.cells || []).forEach(function (c) { delete c.busy; delete c.reframing; }); });
     store().put(copy, base).then(function (u) { base = u || D.updated; setStatus((REMOTE ? 'Saved' : 'Saved in this browser') + ' · ' + new Date().toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})); })
       .catch(function (e) {
         if (e.message === 'conflict') {
@@ -758,7 +788,11 @@
     if (!t) return;
     var b = owner(t);
     if (t.dataset.addAt != null) { e.stopPropagation(); return openTypes(t, +t.dataset.addAt); }
-    if (t.dataset.set && b) { snap(); b[t.dataset.set] = t.dataset.v; rerender(b); changed(); return; }
+    if (t.dataset.set && b) {
+      snap(); b[t.dataset.set] = t.dataset.v;
+      if (b.type === 'pgrid') { var L = cells(b); b.cells.slice(0, L.n).forEach(function (c) { if (c.src && c.shape !== L.shape) { c.shape = L.shape; c.zoom = 1; recrop(b, c); } }); }
+      rerender(b); changed(); return;
+    }
     var a = t.dataset.act; if (!a || !b) return;
     var i = D.blocks.indexOf(b);
     e.stopPropagation();
@@ -773,6 +807,11 @@
     if (a === 'addpiece') openPieces(t, function (p) { if (b.slugs.indexOf(p.slug) < 0) b.slugs.push(p.slug); rerender(b); changed(); });
     if (a === 'unpick') { b.slugs = b.slugs.filter(function (s) { return s !== t.dataset.slug; }); rerender(b); changed(); }
     if (a === 'reframe') startReframe(b);
+    if (a === 'cell') {
+      var cell = b.cells[+t.dataset.i], extra = [];
+      if (cell.src) extra.push(['frame', '\u2725', 'Reframe', function () { closePop(); startReframe(b, cell); }], ['clear', '\u00d7', 'Remove', function () { closePop(); snap(); b.cells[+t.dataset.i] = {src: '', orig: '', alt: '', shape: cell.lockShape, fx: .5, fy: .5, zoom: 1}; rerender(b); changed(); }]);
+      openPhoto(t, b, cell, extra);
+    }
     if (a === 'rfdone') endReframe(true);
     if (a === 'rfcancel') endReframe(false);
     if (a === 'badge') { b.badge = b.badge ? '' : 'New arrival'; rerender(b); changed(); if (b.badge) { var bf = card.querySelector('[data-id="' + b.id + '"] [data-f="badge"]'); if (bf) { bf.focus(); caretEnd(bf); } } }
@@ -784,10 +823,10 @@
   // reframing: the shape buttons and the zoom slider
   card.addEventListener('click', function (e) {
     var s = e.target.closest('[data-rfshape]'); if (!s || !RF) return;
-    RF.b.shape = s.dataset.rfshape; RF.b.zoom = 1;
+    RF.o.shape = s.dataset.rfshape; RF.o.zoom = 1;
     RF.bar.querySelectorAll('[data-rfshape]').forEach(function (x) { x.setAttribute('aria-pressed', x === s); }); rfLayout();
   });
-  card.addEventListener('input', function (e) { if (e.target.matches('[data-rfzoom]') && RF) { RF.b.zoom = +e.target.value; rfLayout(); } });
+  card.addEventListener('input', function (e) { if (e.target.matches('[data-rfzoom]') && RF) { RF.o.zoom = +e.target.value; rfLayout(); } });
 
   // ── the floating card ───────────────────────────────────────────────────────────────────
   var pop = $('#pop');
@@ -852,23 +891,47 @@
     pop.innerHTML = '<div style="max-height:420px;overflow:auto">' + html + '</div>'; place(pop, anchor);
     pop.querySelectorAll('[data-slug]').forEach(function (x) { x.onclick = function () { closePop(); done(bySlug[x.dataset.slug]); }; });
   }
-  function openPhoto(anchor, b) {
-    pop.innerHTML = '<div class="types" style="grid-template-columns:1fr 1fr;width:300px"><button data-o="up"><i>↑</i>Upload a photo</button><button data-o="piece"><i>◆</i>A piece’s photo</button></div>'
+  function openPhoto(anchor, b, o, extra) {
+    o = o || b;
+    pop.innerHTML = '<div class="types" style="grid-template-columns:1fr 1fr;width:300px"><button data-o="up"><i>↑</i>Upload a photo</button><button data-o="piece"><i>◆</i>A piece’s photo</button>'
+      + (extra || []).map(function (x) { return '<button data-o="' + x[0] + '"><i>' + x[1] + '</i>' + x[2] + '</button>'; }).join('') + '</div>'
       + '<div class="ask" style="margin-top:6px"><input type="url" placeholder="or paste a photo’s link" id="photoUrl"></div>';
     place(pop, anchor);
-    pop.querySelector('[data-o="up"]').onclick = function () { closePop(); choose(b); };
+    pop.querySelector('[data-o="up"]').onclick = function () { closePop(); pickFile(function (f) { uploadInto(b, f, o); }); };
     pop.querySelector('[data-o="piece"]').onclick = function () {
       openPieces(anchor, function (p) {
         pop.innerHTML = '<div class="types" style="grid-template-columns:1fr 1fr;width:260px"><button data-k="held"><i>✋</i>In the hand</button><button data-k="tile"><i>▯</i>On its own</button></div>';
         place(pop, anchor);
         pop.querySelectorAll('[data-k]').forEach(function (x) { x.onclick = function () {
-          closePop(); b.src = b.orig = IMG + '/' + x.dataset.k + '-' + p.slug + '.jpg'; b.shape = x.dataset.k === 'tile' ? '4/5' : '3/2'; b.fx = b.fy = .5; b.zoom = 1; b.alt = b.alt || p.name + (x.dataset.k === 'held' ? ', held in the hand' : ''); b.link = b.link || link(p); rerender(b); changed();
+          closePop(); usePhoto(b, o, IMG + '/' + x.dataset.k + '-' + p.slug + '.jpg', p.name + (x.dataset.k === 'held' ? ', held in the hand' : ''), link(p), x.dataset.k === 'tile' ? '4/5' : '3/2');
         }; });
       });
     };
+    (extra || []).forEach(function (x) { pop.querySelector('[data-o="' + x[0] + '"]').onclick = function () { x[3](); }; });
     var u = pop.querySelector('#photoUrl');
-    u.onkeydown = function (e) { if (e.key === 'Enter') { var v = safeUrl(u.value); if (!v) return toast('Photo links start with https://'); closePop(); b.src = v; b.orig = ''; rerender(b); changed(); } };
+    u.onkeydown = function (e) { if (e.key === 'Enter') { var v = safeUrl(u.value); if (!v) return toast('Photo links start with https://'); closePop(); o.src = v; o.orig = ''; rerender(b); changed(); } };
   }
+  // a photo already on the site (a piece's, the library's): kept whole as the original, cut to the frame's shape
+  function usePhoto(b, o, url, alt, href, shape) {
+    o.orig = url; o.fx = o.fy = .5; o.zoom = 1;
+    if (o.lockShape) o.shape = o.lockShape; else o.shape = shape || o.shape || '3/2';
+    if (!o.alt) o.alt = alt || '';
+    if (b.type === 'image' && !b.link && href) b.link = href;
+    if (o === b && b.type === 'image' && !o.lockShape && /\/img\/email\/(held|tile)-/.test(url)) { o.src = url; rerender(b); return changed(); }          // the shop's email photos are already the right shape
+    recrop(b, o);
+  }
+  // cut the frame's crop from the original again and keep it
+  function recrop(b, o) {
+    if (!o.orig) return;
+    if (!REMOTE) { o.src = o.orig; rerender(b); return changed(); }
+    loadImg(view(o.orig)).then(function (img) {
+      var cut = cropCanvas(img, o), old = o.src;
+      o.src = cut.toDataURL('image/jpeg', .6); o.busy = true; rerender(b);
+      return canvasBlob(cut, .86).then(function (blob) { return putBlob(blob, 'image/jpeg'); })
+        .then(function (u) { o.src = u; delete o.busy; rerender(b); changed(); }, function (e) { o.src = old; delete o.busy; rerender(b); failed(e); });
+    }).catch(function () { o.src = o.orig; rerender(b); changed(); });
+  }
+  function loadImg(url) { return new Promise(function (ok, no) { var i = new Image(); i.crossOrigin = 'anonymous'; i.onload = function () { ok(i); }; i.onerror = no; i.src = url; }); }
   function ask(anchor, title, val, hint, done) {
     pop.innerHTML = '<h5>' + esc(title) + '</h5><div class="ask"><input type="text" value="' + esc(val || '') + '"><button class="btn dark">Done</button></div><span class="ask hint" style="display:block;width:340px">' + esc(hint) + '</span>';
     place(pop, anchor);
@@ -916,24 +979,25 @@
     cv.width = Math.round(w * k); cv.height = Math.round(h * k);
     var g = cv.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(img, 0, 0, cv.width, cv.height); return cv;
   }
-  function uploadInto(b, file) {
+  function uploadInto(b, file, o) {
+    o = o || b;
     if (!REMOTE) { toast('Photo uploads need the studio password (Drafts → Studio password)'); return; }
-    var old = b.src;
+    var old = o.src;
     if (file.type === 'image/gif') {          // a moving GIF goes up as it is: redrawing it would stop it, so it can't be reframed
       if (file.size > 5e6) return toast('That GIF is over 5 MB. Most mail apps struggle past about 1 MB.');
-      b.src = URL.createObjectURL(file); b.busy = true; rerender(b);
-      return putBlob(file, 'image/gif').then(function (u) { b.src = u; b.orig = ''; delete b.busy; rerender(b); changed(); }, function (e) { b.src = old; delete b.busy; rerender(b); failed(e); });
+      o.src = URL.createObjectURL(file); o.busy = true; rerender(b);
+      return putBlob(file, 'image/gif').then(function (u) { o.src = u; o.orig = ''; delete o.busy; rerender(b); changed(); }, function (e) { o.src = old; delete o.busy; rerender(b); failed(e); });
     }
     readImage(file).then(function (img) {
-      b.shape = b.shape == null ? '3/2' : b.shape; b.fx = b.fy = .5; b.zoom = 1;
-      var cut = cropCanvas(img, b), whole = wholeCanvas(img, 2400);
-      b.src = cut.toDataURL('image/jpeg', .6); b.busy = true; rerender(b);          // shown at once, faintly, while it uploads
+      o.shape = o.lockShape || (o.shape == null ? '3/2' : o.shape); o.fx = o.fy = .5; o.zoom = 1;
+      var cut = cropCanvas(img, o), whole = wholeCanvas(img, 2400);
+      o.src = cut.toDataURL('image/jpeg', .6); o.busy = true; rerender(b);          // shown at once, faintly, while it uploads
       return canvasBlob(whole, .9).then(function (blob) { return putBlob(blob, 'image/jpeg'); })          // the original, kept for reframing later
-        .then(function (u) { b.orig = u; return canvasBlob(cut, .86); }).then(function (blob) { return putBlob(blob, 'image/jpeg'); })
-        .then(function (u) { b.src = u; delete b.busy; delete b.fresh; rerender(b); changed(); if (!b.alt) toast('Photo added \u00b7 drag it with Reframe, and add a description'); });
+        .then(function (u) { o.orig = u; return canvasBlob(cut, .86); }).then(function (blob) { return putBlob(blob, 'image/jpeg'); })
+        .then(function (u) { o.src = u; delete o.busy; delete b.fresh; rerender(b); changed(); if (o === b && !b.alt) toast('Photo added \u00b7 drag it with Reframe, and add a description'); });
     }).catch(function (e) {
       if (e && e.message === 'unreadable') { if (b.fresh && !b.src) { D.blocks.splice(D.blocks.indexOf(b), 1); render(); } return toast('This photo\u2019s format can\u2019t be read here (iPhone HEIC?). Save it as a JPEG and try again.'); }
-      b.src = old; delete b.busy; rerender(b); failed(e);
+      o.src = old; delete o.busy; rerender(b); failed(e);
     });
   }
   // an Instagram slot: square, uploaded as it is cropped
@@ -948,36 +1012,37 @@
 
   // ── reframing: drag the photo inside its frame, zoom, change shape; Done cuts a new crop from the original ──
   var RF = null;
-  function canFrame(b) { var u = b.orig || b.src; return !!u && !b.busy && !/\.gif(\?|$)/i.test(u) && (u.indexOf(SITE + '/') === 0 || u.indexOf('/') === 0 || u.indexOf('img/') === 0); }
-  function startReframe(b) {
+  function canFrame(o) { var u = o.orig || o.src; return !!u && !o.busy && !/\.gif(\?|$)/i.test(u) && (u.indexOf(SITE + '/') === 0 || u.indexOf('/') === 0 || u.indexOf('img/') === 0); }
+  function startReframe(b, o) {
+    o = o || b;
     if (RF) endReframe(false);
     if (!REMOTE) return toast('Reframing needs the studio password, so the new crop can be saved');
-    RF = {b: b, prev: {shape: b.shape, fx: b.fx, fy: b.fy, zoom: b.zoom}};
-    if (!b.orig) b.orig = b.src;
-    if (b.shape == null) b.shape = '3/2';
-    b.reframing = true; rerender(b);
+    RF = {b: b, o: o, prev: {shape: o.shape, fx: o.fx, fy: o.fy, zoom: o.zoom}};
+    if (!o.orig) o.orig = o.src;
+    if (o.shape == null) o.shape = o.lockShape || '3/2';
+    o.reframing = true; rerender(b);
     var blk = card.querySelector('[data-id="' + b.id + '"]'); RF.el = blk.querySelector('[data-rf]'); RF.bar = blk.querySelector('.rfbar');
     var img = RF.el.querySelector('img'); if (img.complete && img.naturalWidth) rfLayout(); else img.onload = rfLayout;
   }
   function rfLayout() {
     if (!RF) return;
     var img = RF.el.querySelector('img'), w = img.naturalWidth, h = img.naturalHeight; if (!w) return;
-    RF.el.style.aspectRatio = String(shapeR(RF.b, w, h));
-    var c = crop(RF.b, w, h), s = RF.el.clientWidth / c.w;
+    RF.el.style.aspectRatio = String(shapeR(RF.o, w, h));
+    var c = crop(RF.o, w, h), s = RF.el.clientWidth / c.w;
     img.style.width = w * s + 'px'; img.style.height = h * s + 'px'; img.style.left = -c.x * s + 'px'; img.style.top = -c.y * s + 'px';
-    var z = RF.bar.querySelector('[data-rfzoom]'); if (z && +z.value !== RF.b.zoom) z.value = RF.b.zoom;
+    var z = RF.bar && RF.bar.querySelector('[data-rfzoom]'); if (z && +z.value !== RF.o.zoom) z.value = RF.o.zoom;
     refit();
   }
   function endReframe(keep) {
     if (!RF) return;
-    var b = RF.b, img = RF.el && RF.el.querySelector('img'), prev = RF.prev; RF = null;
-    delete b.reframing;
-    if (!keep || !img || !img.naturalWidth) { Object.assign(b, prev); rerender(b); return; }
+    var b = RF.b, o = RF.o, img = RF.el && RF.el.querySelector('img'), prev = RF.prev; RF = null;
+    delete o.reframing;
+    if (!keep || !img || !img.naturalWidth) { Object.assign(o, prev); rerender(b); return; }
     snap();
-    var cut = cropCanvas(img, b), old = b.src;
-    b.src = cut.toDataURL('image/jpeg', .6); b.busy = true; rerender(b);
+    var cut = cropCanvas(img, o), old = o.src;
+    o.src = cut.toDataURL('image/jpeg', .6); o.busy = true; rerender(b);
     canvasBlob(cut, .86).then(function (blob) { return putBlob(blob, 'image/jpeg'); })
-      .then(function (u) { b.src = u; delete b.busy; rerender(b); changed(); }, function (e) { b.src = old; Object.assign(b, prev); delete b.busy; rerender(b); failed(e); });
+      .then(function (u) { o.src = u; delete o.busy; rerender(b); changed(); }, function (e) { o.src = old; Object.assign(o, prev); delete o.busy; rerender(b); failed(e); });
   }
   (function () {          // dragging inside the frame moves the photo; a scroll or pinch zooms
     var drag = null;
@@ -988,12 +1053,12 @@
     card.addEventListener('pointermove', function (e) {
       if (!drag || !RF) return;
       var img = RF.el.querySelector('img'), dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag = {x: e.clientX, y: e.clientY};
-      RF.b.fx -= dx / img.offsetWidth; RF.b.fy -= dy / img.offsetHeight; rfLayout();
+      RF.o.fx -= dx / img.offsetWidth; RF.o.fy -= dy / img.offsetHeight; rfLayout();
     });
     card.addEventListener('pointerup', function () { drag = null; });
     card.addEventListener('wheel', function (e) {
       if (!RF || !e.target.closest('[data-rf]')) return;
-      e.preventDefault(); RF.b.zoom = Math.min(4, Math.max(1, RF.b.zoom * Math.exp(-e.deltaY * .0025))); rfLayout();
+      e.preventDefault(); RF.o.zoom = Math.min(4, Math.max(1, RF.o.zoom * Math.exp(-e.deltaY * .0025))); rfLayout();
     }, {passive: false});
     document.addEventListener('keydown', function (e) { if (!RF) return; if (e.key === 'Escape') endReframe(false); if (e.key === 'Enter' && !e.target.closest('[data-f]')) { e.preventDefault(); endReframe(true); } });
   })();
@@ -1024,7 +1089,7 @@
   document.addEventListener('dragover', function (e) {
     if (!dragId && !hasFiles(e)) return;
     e.preventDefault(); e.dataTransfer.dropEffect = dragId ? 'move' : 'copy';
-    var empty = e.target.closest && e.target.closest('.empty'); card.querySelectorAll('.empty.over').forEach(function (x) { if (x !== empty) x.classList.remove('over'); });
+    var empty = e.target.closest && e.target.closest('.empty,[data-act="cell"]'); card.querySelectorAll('.empty.over').forEach(function (x) { if (x !== empty) x.classList.remove('over'); });
     if (empty && !dragId) { empty.classList.add('over'); mark(null); return; }
     mark(nearestGap(e.clientY));
   });
@@ -1039,6 +1104,14 @@
       snap(); D.blocks.splice(from, 1); D.blocks.splice(at > from ? at - 1 : at, 0, b); render(); changed(); return;
     }
     var files = [].filter.call(e.dataTransfer.files, function (f) { return /^image\//.test(f.type); }); if (!files.length) return;
+    var cellEl = e.target.closest && e.target.closest('[data-act="cell"]');
+    if (cellEl) {
+      var gb = owner(cellEl), at0 = +cellEl.dataset.i, L0 = cells(gb), open = [];
+      for (var ci = 0; ci < L0.n; ci++) { var k = (at0 + ci) % L0.n; if (ci === 0 || !gb.cells[k].src) open.push(k); }
+      files.slice(0, open.length).forEach(function (f, n) { uploadInto(gb, f, gb.cells[open[n]]); });
+      card.querySelectorAll('.empty.over').forEach(function (x) { x.classList.remove('over'); });
+      return;
+    }
     var slot = e.target.closest && e.target.closest('.islot');
     if (slot) { var sb = owner(slot); if (sb) uploadPic(sb, +slot.dataset.i, files[0]); return; }
     var empty = e.target.closest && e.target.closest('.empty');
