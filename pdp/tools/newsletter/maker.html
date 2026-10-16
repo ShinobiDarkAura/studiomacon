@@ -140,6 +140,9 @@
   .cbox .nw{left:0;top:0;cursor:nwse-resize}.cbox .ne{left:100%;top:0;cursor:nesw-resize}.cbox .se{left:100%;top:100%;cursor:nwse-resize}.cbox .sw{left:0;top:100%;cursor:nesw-resize}
   .cbox .rot.nw{left:-11px;top:-11px}.cbox .rot.ne{left:calc(100% + 11px);top:-11px}.cbox .rot.se{left:calc(100% + 11px);top:calc(100% + 11px)}.cbox .rot.sw{left:-11px;top:calc(100% + 11px)}
   [data-type="collage"] canvas{touch-action:none}
+  .cwrap{position:relative;margin:0 auto}
+  .csize{position:absolute;right:-7px;bottom:-7px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px #0d99ff,0 2px 6px rgba(0,0,0,.2);cursor:nwse-resize;opacity:0;transition:opacity .15s;z-index:7}
+  .blk:hover .csize,.csize.on{opacity:1}
   .lib{min-height:280px;max-height:60vh;overflow:auto}
   .lib .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
   .lib .g button{border:0;padding:0;background:#f1eee8;border-radius:8px;overflow:hidden;aspect-ratio:1/1;position:relative}
@@ -458,10 +461,11 @@
         var framing = b.pieces.filter(function (x) { return x.reframing; })[0];
         if (E && framing) return row('padding:0 24px 48px', rfFrame(framing) + rfControls(framing, false));
         if (E) return row('padding:0 24px 48px', b.pieces.length
-          ? '<canvas class="clg" data-collage width="' + CW + '" height="' + CH + '" style="width:100%;max-width:' + CW / 2 + 'px;display:block;margin:0 auto;cursor:pointer"></canvas>'
+          ? '<div class="cwrap" style="max-width:' + Math.round(CW / 2 * (b.size || 1)) + 'px"><canvas class="clg" data-collage width="' + CW + '" height="' + CH + '" style="width:100%;display:block;cursor:pointer"></canvas><span class="csize" data-csize title="Drag to make the whole collage larger or smaller"></span></div>'
           : '<div class="empty" data-act="cadd" style="aspect-ratio:' + CW + '/' + CH + ';max-width:' + CW / 2 + 'px"><b>Add five to eight photos</b>from your desktop or the library</div>');
         if (!b.rendered) return '';
-        var im = '<img src="' + esc(b.rendered) + '" width="' + CW / 2 + '" alt="' + esc(b.alt || 'A collage of photographs from the studio') + '" style="width:100%;max-width:' + CW / 2 + 'px;height:auto;display:block;margin:0 auto">';
+        var cw2 = Math.round(CW / 2 * (b.size || 1));          // the whole collage, as large as it was made
+        var im = '<img src="' + esc(b.rendered) + '" width="' + cw2 + '" alt="' + esc(b.alt || 'A collage of photographs from the studio') + '" style="width:100%;max-width:' + cw2 + 'px;height:auto;display:block;margin:0 auto">';
         var u = safeUrl(b.link);
         return row('padding:0 24px 48px', u ? '<a href="' + esc(u) + '">' + im + '</a>' : im);
       }},
@@ -1024,6 +1028,27 @@
       ['out', '\u00d7', 'Remove', function () { closePop(); snap(); b.pieces.splice(b.pieces.indexOf(x), 1); HAND.sel = null; if (b.mode !== 'hand') b.seed = Math.floor(Math.random() * 1e9); rerender(b); changed(); }]
     ]);
   });
+  // the whole collage, larger or smaller: dragging its corner grip (it stays centred, so it grows both ways)
+  (function () {
+    var S = null;
+    card.addEventListener('pointerdown', function (e) {
+      var g = e.target.closest('[data-csize]'); if (!g) return;
+      e.preventDefault(); e.stopPropagation();
+      var wrap = g.parentNode; S = {b: owner(g), wrap: wrap, grip: g, w0: wrap.offsetWidth, x0: e.clientX};
+      g.classList.add('on'); g.setPointerCapture(e.pointerId);
+    }, true);
+    card.addEventListener('pointermove', function (e) {
+      if (!S) return;
+      var w = Math.max(CW / 2 * .4, Math.min(CW / 2, S.w0 + (e.clientX - S.x0) * 2));
+      S.wrap.style.maxWidth = Math.round(w) + 'px'; S.size = w / (CW / 2);
+      setStatus(Math.round(S.size * 100) + '% of the width'); refit();
+    });
+    card.addEventListener('pointerup', function () {
+      if (!S) return; var s = S; S = null; s.grip.classList.remove('on');
+      if (s.size) { snap(); s.b.size = +s.size.toFixed(3); rerender(s.b); changed(); }
+    });
+  })();
+
   // ── by hand: drag to move; the frame's corners resize, just outside them turns ──────────
   var HAND = {sel: null, act: null, moved: false};
   function handBox(b, cv) {
