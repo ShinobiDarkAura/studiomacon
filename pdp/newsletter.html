@@ -539,7 +539,7 @@
       var c = slot % cols, r = Math.floor(slot / cols), inRow = r === rows - 1 ? n - cols * (rows - 1) : cols;
       var off = (cols - inRow) * cw / 2;          // a shorter last row sits centred
       var scale = .84 + R() * .3, ar = ratios[k];          // each a little larger or smaller than the next
-      var w = Math.min(cw * 1.0, ch * 1.0 * ar) * scale, h = w / ar;
+      var w = Math.min(cw * 1.1, ch * 1.1 * ar) * scale, h = w / ar;
       var x = off + c * cw + cw / 2 + (R() - .5) * cw * .3, y = r * ch + ch / 2 + (R() - .5) * ch * .26;
       x = Math.max(w / 2 + 14, Math.min(CW - w / 2 - 14, x)); y = Math.max(h / 2 + 14, Math.min(CH - h / 2 - 18, y));
       return {k: k, x: x, y: y, w: w, h: h, rot: (R() - .5) * 15 * Math.PI / 180, z: R(), tear: Math.floor(R() * 1e9)};
@@ -547,9 +547,9 @@
     return relax(L0(placed));
   }
   function L0(x) { return x; }
-  // push overlapping photos apart (by their turned outlines' boxes) until each has GAP around it;
+  // push photos apart (by their turned outlines' boxes) until no two overlap by more than a lap at the edge;
   // if they can't all fit, shrink every one a little and try again
-  var GAP = 22;
+  var GAP = -64;          // negative: neighbours may lap over each other's edges, never pile up
   function relax(L) {
     for (var round = 0; round < 8; round++) {
       for (var it = 0; it < 120; it++) {
