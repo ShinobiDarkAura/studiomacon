@@ -443,6 +443,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     var extra = code ? {discount: code} : {};
     var gift = MaconGift.read();          // lands on the order as "Gift wrap" and "Gift note", which Flow and the staff email read
     if (gift.wrap) { extra['attributes[Gift wrap]'] = 'Yes'; if (gift.note) extra['attributes[Gift note]'] = gift.note; }
+    if (items.some(function (i) { return i.slug === 'chrysalis'; })) extra['attributes[Preorder]'] = 'Chrysalis, ships early November';          // shows on the order in Shopify, so a preorder is never packed with the ten-day pieces
     location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(extra);
     // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
     // pieces still waiting. It is emptied on the thank-you page.
@@ -612,7 +613,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
     document.querySelector('.head .right').appendChild(toast);
     var timer = null;
     document.querySelectorAll('.cta, .dock').forEach(function (b) {
-      if (!/add to bag/i.test(b.textContent)) return;
+      if (!/add to bag|preorder/i.test(b.textContent)) return;          // Chrysalis's button says Preorder; it fills the bag the same way
       b.addEventListener('click', function (e) {
         var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price .amt') || document.querySelector('.info .price');          // the amount alone, not the shipping notes beside it
         var sizeBox = document.querySelector('[data-size]'), size = sizeBox && sizeBox.classList.contains('picked') ? sizeBox.querySelector('.size-value').textContent : '';
@@ -632,7 +633,7 @@ addEventListener('load', function () { document.documentElement.classList.add('l
         });
         toast.textContent = '';
         if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
-        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = /preorder/i.test(b.textContent) ? 'Preorder added to bag' : 'Added to bag';
         tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
         if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
         toast.appendChild(tx);
@@ -698,7 +699,9 @@ addEventListener('load', function () { document.documentElement.classList.add('l
       if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
         var price = parseFloat(((document.querySelector('.info .price .amt') || document.querySelector('.info .price') || {}).textContent || '').replace(/[^0-9.]/g, '')) || 0;
         if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
-        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery({payment: 'shop_pay'});
+        var q = {payment: 'shop_pay'};
+        if (/\/chrysalis(\.html)?$/.test(location.pathname)) q['attributes[Preorder]'] = 'Chrysalis, ships early November';          // the same note the bag sends
+        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery(q);
         return;
       }
       MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
