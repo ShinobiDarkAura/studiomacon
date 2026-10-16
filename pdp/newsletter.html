@@ -348,8 +348,8 @@
         var out = (E || b.eyebrow) ? row('padding:0 24px 17px;font:400 14px/1.4 ' + SANS + ';color:#000000', eb) : '';
         var t = E ? word(b, 'title', 'Title', E) : upper(b.title);
         if (b.size === 'large') return out + row('padding:0 24px 24px;font:400 54px/1 ' + SERIF + ';text-transform:uppercase;letter-spacing:-.005em;color:#000000', t).replace('class="pad"', 'class="pad h1"')
-          + '<tr><td align="center" style="padding:0 0 40px"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0">&#160;</td></tr></table></td></tr>';
-        return out + row('padding:0 24px 30px;font:400 46px/1 ' + SERIF + ';text-transform:uppercase;letter-spacing:-.005em;color:#000000', t).replace('class="pad"', 'class="pad h1"');
+          + '<tr><td align="center" style="padding:0 0 32px"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0">&#160;</td></tr></table></td></tr>';
+        return out + row('padding:0 24px 22px;font:400 46px/1 ' + SERIF + ';text-transform:uppercase;letter-spacing:-.005em;color:#000000', t).replace('class="pad"', 'class="pad h1"');
       }},
     image: {label: 'Photo', icon: '▭', make: function () { return {src: '', alt: '', link: '', shape: '3/2', orig: '', fx: .5, fy: .5, zoom: 1}; },
       tools: function (b) {
@@ -357,31 +357,31 @@
         return (canFrame(b) ? [['act', 'reframe', 'Reframe']] : []).concat([['act', 'replace', 'Replace'], ['act', 'alt', b.alt ? 'Description' : 'Describe it'], ['act', 'link', b.link ? 'Link ✓' : 'Link']]);
       },
       html: function (b, E) {
-        if (!b.src) return E ? row('padding:0 24px 40px', '<div class="empty" data-act="choose"><b>Drop a photo here</b>or click to choose one · or use a piece’s photo</div>') : '';
-        if (E && b.reframing) return row('padding:0 24px 40px', '<div class="rf" data-rf style="aspect-ratio:' + (b.shape || '3/2').replace('/', ' / ') + '"><img src="' + esc(view(b.orig || b.src)) + '" alt="" draggable="false"></div>'
+        if (!b.src) return E ? row('padding:0 24px 32px', '<div class="empty" data-act="choose"><b>Drop a photo here</b>or click to choose one · or use a piece’s photo</div>') : '';
+        if (E && b.reframing) return row('padding:0 24px 32px', '<div class="rf" data-rf style="aspect-ratio:' + (b.shape || '3/2').replace('/', ' / ') + '"><img src="' + esc(view(b.orig || b.src)) + '" alt="" draggable="false"></div>'
           + '<div class="rfbar"><div class="seg2">' + [['3/2', 'Wide'], ['4/5', 'Tall'], ['1/1', 'Square'], ['', 'As shot']].map(function (s) { return '<button data-rfshape="' + s[0] + '" aria-pressed="' + ((b.shape || '') === s[0]) + '">' + s[1] + '</button>'; }).join('')
           + '</div><input type="range" data-rfzoom min="1" max="4" step="0.01" value="' + (b.zoom || 1) + '" title="Zoom"><button class="no" data-act="rfcancel">Cancel</button><button class="go" data-act="rfdone">Done</button></div>');
         var img = photoFrame(E ? view(b.src) : b.src, b.alt), u = safeUrl(b.link);
-        if (E) return row('padding:0 24px 40px', '<div class="ph' + (b.busy ? ' busy' : '') + '">' + img + (b.alt ? '' : '<button class="alt-missing" data-act="alt">Add a description</button>') + '</div>');
-        return row('padding:0 24px 40px', u ? '<a href="' + esc(u) + '">' + img + '</a>' : img);
+        if (E) return row('padding:0 24px 32px', '<div class="ph' + (b.busy ? ' busy' : '') + '">' + img + (b.alt ? '' : '<button class="alt-missing" data-act="alt">Add a description</button>') + '</div>');
+        return row('padding:0 24px 32px', u ? '<a href="' + esc(u) + '">' + img + '</a>' : img);
       }},
     text: {label: 'Letter', icon: '¶', make: function () { return {body: '', width: 'narrow'}; },
       tools: function () { return [['width', 'narrow', 'Narrow'], ['width', 'wide', 'Wide']]; },
       html: function (b, E) {
         var w = b.width === 'wide' ? 456 : 378;
         var inner = E ? '<div class="rich" data-f="body" data-rich contenteditable="true" data-ph="' + esc(b.ph || 'Write here. Select words to make them bold, italic or a link.') + '">' + letterHtml(b.body) + '</div>' : letterHtml(b.body);
-        return row('padding:0 24px 40px;font:400 16px/1.6 ' + SANS + ';color:#000000', '<div style="max-width:' + w + 'px;margin:0 auto;text-align:center">' + inner + '</div>');
+        return row('padding:0 24px 32px;font:400 16px/1.6 ' + SANS + ';color:#000000', '<div style="max-width:' + w + 'px;margin:0 auto;text-align:center">' + inner + '</div>');
       }},
     signoff: {label: 'Sign-off', icon: '✎', make: function () { return {line: 'With love,', name: 'Hannah + Alex'}; },
       html: function (b, E) {
-        return row('padding:0 24px 40px', '<div style="max-width:378px;margin:0 auto;text-align:center">'
+        return row('padding:0 24px 32px', '<div style="max-width:378px;margin:0 auto;text-align:center">'
           + '<div style="font:400 16px/1.6 ' + SANS + ';color:#000000">' + (E ? word(b, 'line', 'With love,', E) : lines(b.line)) + '</div>'
           + '<div style="font:400 30px/1.1 ' + SERIF + ';color:#000000;padding-top:6px">' + (E ? word(b, 'name', 'Name', E) : lines(b.name)) + '</div></div>');
       }},
     piece: {label: 'Featured piece', icon: '◆', make: function () { return {slug: (PIECES[0] || {}).slug || '', photo: 'held', note: '', badge: ''}; },
       tools: function (b) { return [['act', 'piece', 'Change piece'], ['photo', 'held', 'In the hand'], ['photo', 'tile', 'On its own'], ['act', 'badge', b.badge ? 'Badge ✓' : 'Badge']]; },
       html: function (b, E) {
-        var p = bySlug[b.slug]; if (!p) return E ? row('padding:0 24px 40px', '<div class="empty" data-act="piece"><b>Choose a piece</b></div>') : '';
+        var p = bySlug[b.slug]; if (!p) return E ? row('padding:0 24px 32px', '<div class="empty" data-act="piece"><b>Choose a piece</b></div>') : '';
         var img = photoFrame(src((b.photo === 'tile' ? 'tile-' : 'held-') + p.slug + '.jpg', E), p.name);
         var note = E ? '<div style="font:400 16px/1.6 ' + SANS + ';color:#000000;padding-top:14px">' + word(b, 'note', 'A line about it (optional)', E) + '</div>'
           : (b.note ? '<div style="font:400 16px/1.6 ' + SANS + ';color:#000000;padding-top:14px">' + lines(b.note) + '</div>' : '');
@@ -389,7 +389,7 @@
         var inner = (E ? '<div class="pick-target rel" data-act="piece" style="max-width:408px;margin:0 auto">' + soldTag(p, E) + img + '</div>' : img) + '<div style="max-width:408px;margin:0 auto;text-align:center">' + badge
           + '<div class="pn" style="font:400 35px/1 ' + SERIF + ';text-transform:uppercase;color:#000000;padding:' + (b.badge ? 14 : 20) + 'px 0 6px">' + upper(p.name) + '</div>'
           + '<div style="font:400 16px/1 ' + SANS + ';color:#6b6b6b">' + price(p) + '</div>';
-        return row('padding:0 24px 40px', E ? inner + note + '</div>' : '<a href="' + link(p) + '" style="text-decoration:none;color:#000000">' + inner + note + '</div></a>');
+        return row('padding:0 24px 32px', E ? inner + note + '</div>' : '<a href="' + link(p) + '" style="text-decoration:none;color:#000000">' + inner + note + '</div></a>');
       }},
     grid: {label: 'Pieces', icon: '▦', make: function () { return {intro: "We'd like to introduce you\nto a few friends", slugs: PIECES.slice(0, 2).map(function (p) { return p.slug; })}; },
       html: function (b, E) {
@@ -403,7 +403,7 @@
           return '<div class="tile" style="display:inline-block;width:48%;vertical-align:top;margin:0 1% 26px;text-align:center">'
             + (E ? inner + '<button class="x" data-act="unpick" data-slug="' + p.slug + '" title="Remove">×</button>' : '<a href="' + link(p) + '" style="text-decoration:none;color:#000000">' + inner + '</a>') + '</div>';
         }).join('') + (E && ps.length < 6 ? '<button class="slot" data-act="addpiece">+ Add a piece</button>' : '');
-        return intro + '<tr><td class="pad" style="padding:0 24px 14px"><div style="max-width:408px;margin:0 auto;font-size:' + (E ? '13px' : '0') + ';text-align:center">' + tiles + '</div></td></tr>';
+        return intro + '<tr><td class="pad" style="padding:0 24px 6px"><div style="max-width:408px;margin:0 auto;font-size:' + (E ? '13px' : '0') + ';text-align:center">' + tiles + '</div></td></tr>';
       }},
     pair: {label: 'Two pieces', icon: '◆◆', make: function () { return {slugs: PIECES.slice(0, 2).map(function (p) { return p.slug; }), photo: 'held', note0: '', note1: ''}; },
       tools: function () { return [['photo', 'held', 'In the hand'], ['photo', 'tile', 'On its own']]; },
@@ -421,7 +421,7 @@
             + (E ? '<div class="pick-target rel" data-act="pairpick" data-i="' + i + '">' + soldTag(p, E) + im + '</div>' + words
               : '<a href="' + link(p) + '" style="text-decoration:none;color:#000000">' + im + words + '</a>') + '</div>';
         }).join('');
-        return '<tr><td class="pad" style="padding:0 24px 40px"><div style="max-width:440px;margin:0 auto;font-size:' + (E ? '13px' : '0') + ';text-align:center">' + cols + '</div></td></tr>';
+        return '<tr><td class="pad" style="padding:0 24px 32px"><div style="max-width:440px;margin:0 auto;font-size:' + (E ? '13px' : '0') + ';text-align:center">' + cols + '</div></td></tr>';
       }},
     insta: {label: 'Instagram', icon: '◎', make: function () { return {intro: 'Follow along', handle: 'studiomacon', pics: ['', '', '']}; },
       html: function (b, E) {
@@ -436,12 +436,12 @@
             + (E ? im + '<button class="x" data-act="iclear" data-i="' + i + '" title="Remove">×</button>' : '<a href="' + url + '">' + im + '</a>') + '</div>';
         }).join('');
         var handle = '<div style="font:400 13px/1.6 ' + SANS + ';color:#8a8a8a;padding-top:14px">' + (E ? '@' + word(b, 'handle', 'studiomacon', E) : '<a href="' + url + '" style="color:#8a8a8a;text-decoration:none">@' + esc(b.handle) + '</a>') + '</div>';
-        return intro + '<tr><td class="pad" align="center" style="padding:0 24px 40px"><div style="max-width:420px;margin:0 auto;font-size:' + (E ? '13px' : '0') + '">' + pics + '</div>' + handle + '</td></tr>';
+        return intro + '<tr><td class="pad" align="center" style="padding:0 24px 32px"><div style="max-width:420px;margin:0 auto;font-size:' + (E ? '13px' : '0') + '">' + pics + '</div>' + handle + '</td></tr>';
       }},
     quote: {label: 'Quote', icon: '“', make: function () { return {text: '', by: ''}; },
       html: function (b, E) {
         if (!E && !b.text) return '';
-        return row('padding:0 24px 40px', '<div style="max-width:440px;margin:0 auto">'
+        return row('padding:0 24px 32px', '<div style="max-width:440px;margin:0 auto">'
           + '<div class="q" style="font:400 30px/1.2 ' + SERIF + ';color:#000000">' + (E ? '“' + word(b, 'text', 'A line worth repeating', E) + '”' : '“' + lines(b.text) + '”') + '</div>'
           + (E ? '<div style="font:400 13px/1.6 ' + SANS + ';color:#8a8a8a;padding-top:14px">' + word(b, 'by', 'Who said it (optional)', E) + '</div>'
             : (b.by ? '<div style="font:400 13px/1.6 ' + SANS + ';color:#8a8a8a;padding-top:14px">— ' + lines(b.by) + '</div>' : '')) + '</div>');
@@ -451,23 +451,23 @@
       html: function (b, E) {
         var u = safeUrl(b.link); if (!E && (!u || !b.label)) return '';
         var lab = E ? word(b, 'label', 'Button words', E) : upper(b.label);
-        return '<tr><td align="center" style="padding:0 24px 40px"><table role="presentation" width="290" cellpadding="0" cellspacing="0" style="width:290px"><tr><td align="center" bgcolor="#000000" style="background:#000000">'
+        return '<tr><td align="center" style="padding:0 24px 32px"><table role="presentation" width="290" cellpadding="0" cellspacing="0" style="width:290px"><tr><td align="center" bgcolor="#000000" style="background:#000000">'
           + (E ? '<div style="display:block;padding:17px 10px;font:500 12px/1 ' + SANS + ';letter-spacing:.14em;text-transform:uppercase;color:#ffffff">' + lab + '</div>'
             : '<a href="' + esc(u) + '" style="display:block;padding:17px 10px;font:500 12px/1 ' + SANS + ';letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">' + lab + '</a>')
           + '</td></tr></table></td></tr>';
       }},
     code: {label: 'Discount', icon: '%', make: function () { return {note: '10% off this week', code: 'MACON10'}; },
       html: function (b, E) {
-        return '<tr><td class="pad" align="center" style="padding:0 24px 40px"><table role="presentation" cellpadding="0" cellspacing="0" style="border:1px solid rgba(0,0,0,.12)"><tr><td align="center" style="padding:24px 34px">'
+        return '<tr><td class="pad" align="center" style="padding:0 24px 32px"><table role="presentation" cellpadding="0" cellspacing="0" style="border:1px solid rgba(0,0,0,.12)"><tr><td align="center" style="padding:24px 34px">'
           + '<div style="font:400 11px/1 ' + SANS + ';letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;padding-bottom:10px">' + (E ? word(b, 'note', 'A line above', E) : upper(b.note)) + '</div>'
           + '<div style="font:400 30px/1 ' + SERIF + ';letter-spacing:.06em;color:#000000;text-transform:uppercase"><span style="padding:3px 9px 1px;background-color:#fbe84a;border-radius:3px 6px 4px 7px">' + (E ? word(b, 'code', 'CODE', E) : upper(b.code)) + '</span></div></td></tr></table></td></tr>';
       }},
     divider: {label: 'Divider', icon: '—', make: function () { return {}; },
-      html: function () { return '<tr><td style="padding:0 0 40px"><div style="height:1px;background:#efece5;font-size:0;line-height:1px">&#160;</div></td></tr>'; }}
+      html: function () { return '<tr><td style="padding:0 0 32px"><div style="height:1px;background:#efece5;font-size:0;line-height:1px">&#160;</div></td></tr>'; }}
   };
   var ORDER = ['text', 'image', 'heading', 'piece', 'pair', 'grid', 'button', 'quote', 'signoff', 'insta', 'code', 'divider'];
 
-  function tail(html, b, last) { return last && b.type === 'button' ? html.replace('padding:0 24px 40px', 'padding:0 24px 28px') : html; }
+  function tail(html, b, last) { return last && b.type === 'button' ? html.replace('padding:0 24px 32px', 'padding:0 24px 28px') : html; }
 
   // ── the whole email, in Shopify Email's terms (the same shell as the welcome emails) ──────
   function email(d, forPreview) {
@@ -481,7 +481,7 @@
       + '<div style="display:none;max-height:0;overflow:hidden;opacity:0">' + esc(d.preheader) + '&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>\n'
       + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea"><tr><td align="center" style="padding:28px 12px">\n'
       + '<table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#ffffff;border-radius:14px">\n'
-      + '  <tr><td align="center" style="padding:53px 0 40px"><a href="' + SITE + '"><img src="' + IMG + '/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>\n'
+      + '  <tr><td align="center" style="padding:53px 0 32px"><a href="' + SITE + '"><img src="' + IMG + '/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>\n'
       + body + '\n'
       + '  <tr><td class="pad" align="center" style="padding:0 24px 44px;font:400 12px/1.7 ' + SANS + ';color:#8a8a8a">\n'
       + '    Every piece is made to order in the studio in California.<br>\n'
@@ -650,7 +650,7 @@
       + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + tail(KINDS[b.type].html(b, true), b, b === D.blocks[D.blocks.length - 1]) + '</table></div>';
   }
   function render(focusId) {
-    card.innerHTML = '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:53px 0 40px"><img src="img/email/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></td></tr></table>'
+    card.innerHTML = '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:53px 0 32px"><img src="img/email/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></td></tr></table>'
       + D.blocks.map(function (b, i) { return gap(i) + blockEl(b); }).join('') + gap(D.blocks.length)
       + '<div class="end"><button data-add-at="' + D.blocks.length + '">+ Add a block</button></div>'
       + '<div class="foot-in">Every piece is made to order in the studio in California.<br><a>About</a> &nbsp;·&nbsp; <a>Instagram</a> &nbsp;·&nbsp; <a>Unsubscribe</a><br>Studio Maçon · Santa Monica</div>';
@@ -677,8 +677,8 @@
     });
     var gaps = card.querySelectorAll('.gap');
     [].forEach.call(gaps, function (g, i) {          // halfway through the space before the next block
-      var prev = boxes[i - 1]; g.style.top = prev ? -(prev.bottom / 2) + 'px' : '-20px';
-      if (i < boxes.length) { var nx = boxes[i]; g.style.top = (prev ? -(prev.bottom / 2) : -20) + nx.top / 2 + 'px'; }
+      var prev = boxes[i - 1]; g.style.top = prev ? -(prev.bottom / 2) + 'px' : '-16px';
+      if (i < boxes.length) { var nx = boxes[i]; g.style.top = (prev ? -(prev.bottom / 2) : -16) + nx.top / 2 + 'px'; }
     });
   }
   function rerender(b) {          // one block again (after a tool), leaving the rest (and any typing) alone
