@@ -92,18 +92,18 @@
   .ph img{display:block}
   .ph.busy img{opacity:.55}
   .ph.busy::after{content:"Uploading…";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:20px;padding:5px 12px;font-size:12px}
-  .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;max-width:408px;aspect-ratio:3/2;margin:0 auto;
-    border:1.5px dashed #d9d4ca;border-radius:16px;color:var(--soft);font:13px/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;transition:.15s}
-  .empty:hover,.empty.over{border-color:var(--hi);color:var(--hi);background:rgba(47,111,219,.03)}
-  .empty b{font-weight:500;color:var(--ink)}
+  .empty{background:#f4efe6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;max-width:408px;aspect-ratio:3/2;margin:0 auto;
+    border:1.5px dashed #e3dacb;border-radius:16px;color:#a99f8e;font:13px/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;transition:.15s}
+  .empty:hover,.empty.over{border-color:var(--hi);color:var(--hi);background:#f1ebe0}
+  .empty b{font-weight:500;color:#6f6656}
   .empty.cell{font-size:22px;aspect-ratio:1/1}
   .alt-missing{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);border-radius:12px;padding:3px 9px;font:11px "Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--warn);border:0}
   /* a piece in a grid: × on hover; an empty slot to add one */
   .tile{position:relative}
   .tile .x{position:absolute;right:6px;top:6px;width:22px;height:22px;border:0;border-radius:50%;background:rgba(255,255,255,.95);font-size:14px;line-height:22px;padding:0;opacity:0;transition:.12s;box-shadow:0 2px 6px rgba(0,0,0,.15)}
   .tile:hover .x{opacity:1}
-  .slot{display:inline-flex;align-items:center;justify-content:center;width:48%;aspect-ratio:4/5;margin:0 1% 26px;vertical-align:top;border:1.5px dashed #d9d4ca;border-radius:8px;
-    color:var(--soft);font:13px "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;background:none}
+  .slot{display:inline-flex;align-items:center;justify-content:center;width:48%;aspect-ratio:4/5;margin:0 1% 26px;vertical-align:top;border:1.5px dashed #e3dacb;border-radius:8px;
+    color:#a99f8e;font:13px "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;background:#f4efe6}
   .slot:hover{border-color:var(--hi);color:var(--hi)}
   .pick-target{cursor:pointer}
 
@@ -123,8 +123,8 @@
   .sold{position:absolute;left:10px;top:10px;z-index:2;background:var(--warn);color:#fff;border-radius:12px;padding:3px 9px;font:500 11px "Helvetica Neue",Helvetica,Arial,sans-serif}
   .rel{position:relative}
   /* Instagram slots */
-  .islot{display:inline-flex;align-items:center;justify-content:center;width:31.3%;aspect-ratio:1/1;margin:0 1%;vertical-align:top;border:1.5px dashed #d9d4ca;border-radius:16px;
-    color:var(--soft);font:20px "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;background:none}
+  .islot{display:inline-flex;align-items:center;justify-content:center;width:31.3%;aspect-ratio:1/1;margin:0 1%;vertical-align:top;border:1.5px dashed #e3dacb;border-radius:16px;
+    color:#a99f8e;font:20px "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;background:#f4efe6}
   .islot:hover,.islot.over{border-color:var(--hi);color:var(--hi)}
   /* saved sections in the + menu */
   .saved{margin-top:6px;border-top:1px solid #f0ede7;padding-top:6px}
@@ -134,6 +134,12 @@
   .saved .row .del{flex:none;color:#aaa;opacity:0}
   .saved .row:hover .del{opacity:1}
   .hist li .t i{display:block}
+  .cbox{position:absolute;z-index:6;box-sizing:border-box;border:1px solid #0d99ff;pointer-events:none;transform-origin:50% 50%}
+  .cbox i{position:absolute;box-sizing:border-box;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;background:#fff;border:1px solid #0d99ff;pointer-events:auto}
+  .cbox i.rot{width:24px;height:24px;margin:-12px 0 0 -12px;background:none;border:0;cursor:alias}
+  .cbox .nw{left:0;top:0;cursor:nwse-resize}.cbox .ne{left:100%;top:0;cursor:nesw-resize}.cbox .se{left:100%;top:100%;cursor:nwse-resize}.cbox .sw{left:0;top:100%;cursor:nesw-resize}
+  .cbox .rot.nw{left:-11px;top:-11px}.cbox .rot.ne{left:calc(100% + 11px);top:-11px}.cbox .rot.se{left:calc(100% + 11px);top:calc(100% + 11px)}.cbox .rot.sw{left:-11px;top:calc(100% + 11px)}
+  [data-type="collage"] canvas{touch-action:none}
   .lib{min-height:280px;max-height:60vh;overflow:auto}
   .lib .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
   .lib .g button{border:0;padding:0;background:#f1eee8;border-radius:8px;overflow:hidden;aspect-ratio:1/1;position:relative}
@@ -292,7 +298,7 @@
   // ── the shop's pieces, filled in by the build ──────────────────────────────────────────
   var PIECES = [{"slug": "pip", "name": "Pip", "price": 220, "kind": "totem", "preorder": false}, {"slug": "rebi", "name": "Rebi", "price": 180, "kind": "totem", "preorder": false}, {"slug": "ren", "name": "Ren", "price": 240, "kind": "totem", "preorder": false}, {"slug": "zuma", "name": "Zuma", "price": 200, "kind": "totem", "preorder": false}, {"slug": "milo", "name": "Milo", "price": 180, "kind": "totem", "preorder": false}, {"slug": "yael", "name": "Yael", "price": 180, "kind": "totem", "preorder": false}, {"slug": "ori", "name": "Ori", "price": 220, "kind": "totem", "preorder": false}, {"slug": "ibi", "name": "Ibi", "price": 180, "kind": "totem", "preorder": false}, {"slug": "eleph", "name": "Eleph", "price": 200, "kind": "totem", "preorder": false}, {"slug": "chrysalis", "name": "Chrysalis", "price": 180, "kind": "totem", "preorder": true}, {"slug": "zuma-ring", "name": "Zuma Crest", "price": 320, "kind": "jewelry", "preorder": false}, {"slug": "eclipse-ring", "name": "Eclipsis", "price": 340, "kind": "jewelry", "preorder": false}, {"slug": "sietch-aperture", "name": "Sietch", "price": 340, "kind": "jewelry", "preorder": false}, {"slug": "lunar-canyon-ring", "name": "Lunar Canyon", "price": 370, "kind": "jewelry", "preorder": false}, {"slug": "ear-cuff", "name": "Caldera Arc", "price": 260, "kind": "jewelry", "preorder": false}, {"slug": "meridian-egg-ring", "name": "Meridian Egg", "price": 390, "kind": "jewelry", "preorder": false}, {"slug": "wonderhorn-talisman", "name": "Ida's Wonder Horn", "price": 390, "kind": "jewelry", "preorder": false}];
   var STARTERS = [{"key": "2026-10-chrysalis", "label": "October — Chrysalis", "note": "From the Chrysalis posts on Instagram (Oct 15 and 16) and the totem's page", "title": "October — Chrysalis", "subject": "Chrysalis, made with In Her Own Right", "preheader": "Our new bronze totem, and the book that shaped it. Preorders ship in early November.", "blocks": [{"type": "heading", "eyebrow": "Studio Maçon × In Her Own Right", "title": "Chrysalis", "size": "normal"}, {"type": "text", "width": "narrow", "body": "<p>This month is all about Chrysalis, a small bronze totem we made with Chelsea Madeline and her book, <i>In Her Own Right</i>.</p>"}, {"type": "image", "src": "https://studiomacon.co/img/email/chrysalis-cover.jpg", "orig": "https://studiomacon.co/img/email/chrysalis-cover.jpg", "alt": "Chrysalis resting on the cover of In Her Own Right", "link": "https://studiomacon.co/chrysalis.html", "shape": "1/1", "fx": 0.5, "fy": 0.5, "zoom": 1}, {"type": "text", "width": "narrow", "body": "<p><i>In Her Own Right</i> is Chelsea’s book on the inner lives and artistic legacies of women across time. Reading it, we kept coming back to one image: the butterfly’s first emergence from its cocoon, the moment you can see both what it was and what it has become.</p><p>That’s the moment we wanted to cast in bronze, small enough to hold in your palm, as both a reminder and a promise.</p><p>Like all of our totems, Chrysalis began as a sketch and a wax carving so delicate a candle flame could melt it. Our caster, Koko, brought it into bronze with the lost-wax technique, and back in the studio we filed, oxidized, waxed and polished it by hand until its warm golden undertone came through.</p>"}, {"type": "quote", "text": "With lyric precision and radical intimacy, author Chelsea Madeline invites readers to reconsider what it means to live a creative life as a woman today.", "by": "Blue Sky Black Sheep, publisher of In Her Own Right"}, {"type": "image", "src": "https://studiomacon.co/img/email/chrysalis-pages.jpg", "orig": "https://studiomacon.co/img/email/chrysalis-pages.jpg", "alt": "Chrysalis on an open page of In Her Own Right", "link": "https://www.blueskyblacksheep.com/magazine/p/in-her-own-right", "shape": "3/2", "fx": 0.5, "fy": 0.5, "zoom": 1}, {"type": "text", "width": "narrow", "body": "<p>This summer Hannah and Chelsea sat down, between Puerto Rico and London, to talk about how the totem was conceived, the passages of the book that shaped it, and how it came to exist in real life. Chelsea reads from the book, too.</p><p><a href=\"https://www.instagram.com/studiomacon/reel/DekRj22Btut/\">Watch part one on Instagram</a>, and stay tuned for part two.</p>"}, {"type": "piece", "slug": "chrysalis", "photo": "held", "badge": "New arrival", "note": "Solid bronze, 44 × 20 × 16 mm. Preorders begin shipping in early November, in the order we receive them, in plenty of time for the holidays."}, {"type": "text", "width": "narrow", "body": "<p>And if it isn’t on your shelf yet, find <a href=\"https://www.blueskyblacksheep.com/magazine/p/in-her-own-right\"><i>In Her Own Right</i></a> through Blue Sky Press.</p>"}, {"type": "signoff", "line": "With love,", "name": "Hannah + Alex"}, {"type": "button", "label": "Preorder Chrysalis", "link": "https://studiomacon.co/chrysalis.html"}]}];
-  var LIB = {"shop": [{"file": "img/pip/hero.jpg.webp", "thumb": "img/pip/hero--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/pip/terracotta--m.jpg.webp", "thumb": "img/pip/terracotta--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/pip/hand-2--m.jpg.webp", "thumb": "img/pip/hand-2--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/pip/white-1--m.jpg.webp", "thumb": "img/pip/white-1--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/pip/white-2--m.jpg.webp", "thumb": "img/pip/white-2--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/rebi/hero--m.jpg.webp", "thumb": "img/rebi/hero--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/rebi/terracotta--m.jpg.webp", "thumb": "img/rebi/terracotta--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/rebi/hand-2--m.jpg.webp", "thumb": "img/rebi/hand-2--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/rebi/white-1--m.jpg.webp", "thumb": "img/rebi/white-1--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/rebi/white-2--m.jpg.webp", "thumb": "img/rebi/white-2--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/ren/hero--m.jpg.webp", "thumb": "img/ren/hero--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/ren/terracotta--m.jpg.webp", "thumb": "img/ren/terracotta--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/ren/hand-2--m.jpg.webp", "thumb": "img/ren/hand-2--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/ren/white-1--m.jpg.webp", "thumb": "img/ren/white-1--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/ren/white-2--m.jpg.webp", "thumb": "img/ren/white-2--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/zuma/hero--m.jpg.webp", "thumb": "img/zuma/hero--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/zuma/terracotta--m.jpg.webp", "thumb": "img/zuma/terracotta--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/zuma/hand-2--m.jpg.webp", "thumb": "img/zuma/hand-2--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/zuma/white-1--m.jpg.webp", "thumb": "img/zuma/white-1--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/zuma/white-2--m.jpg.webp", "thumb": "img/zuma/white-2--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/milo/hero-dm--m.jpg.webp", "thumb": "img/milo/hero-dm--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/milo/terracotta--m.jpg.webp", "thumb": "img/milo/terracotta--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/milo/hand-2--m.jpg.webp", "thumb": "img/milo/hand-2--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/milo/white-1--m.jpg.webp", "thumb": "img/milo/white-1--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/milo/white-2--m.jpg.webp", "thumb": "img/milo/white-2--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/yael/hires-1--m.jpg.webp", "thumb": "img/yael/hires-1--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/yael/terracotta--m.jpg.webp", "thumb": "img/yael/terracotta--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/yael/hand-2--m.jpg.webp", "thumb": "img/yael/hand-2--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/yael/white-1--m.jpg.webp", "thumb": "img/yael/white-1--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/yael/white-2--m.jpg.webp", "thumb": "img/yael/white-2--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/ori/hero.jpg.webp", "thumb": "img/ori/hero--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/terracotta--m.jpg.webp", "thumb": "img/ori/terracotta--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/hand-2--m.jpg.webp", "thumb": "img/ori/hand-2--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/white-1--m.jpg.webp", "thumb": "img/ori/white-1--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/white-2--m.jpg.webp", "thumb": "img/ori/white-2--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/white-3--m.jpg.webp", "thumb": "img/ori/white-3--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/white-4--m.jpg.webp", "thumb": "img/ori/white-4--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ibi/hires-2-dm--m.jpg.webp", "thumb": "img/ibi/hires-2-dm--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/ibi/terracotta--m.jpg.webp", "thumb": "img/ibi/terracotta--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/ibi/hand-2--m.jpg.webp", "thumb": "img/ibi/hand-2--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/ibi/white-1--m.jpg.webp", "thumb": "img/ibi/white-1--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/ibi/white-2--m.jpg.webp", "thumb": "img/ibi/white-2--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/eleph/hero-dm--m.jpg.webp", "thumb": "img/eleph/hero-dm--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/eleph/terracotta--m.jpg.webp", "thumb": "img/eleph/terracotta--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/eleph/hand-2--m.jpg.webp", "thumb": "img/eleph/hand-2--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/eleph/white-1--m.jpg.webp", "thumb": "img/eleph/white-1--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/eleph/white-2--m.jpg.webp", "thumb": "img/eleph/white-2--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/chrysalis/terracotta--m.jpg.webp", "thumb": "img/chrysalis/terracotta--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/hand-1--m.jpg.webp", "thumb": "img/chrysalis/hand-1--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/white-1--m.jpg.webp", "thumb": "img/chrysalis/white-1--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/white-3--m.jpg.webp", "thumb": "img/chrysalis/white-3--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/book-1--m.jpg.webp", "thumb": "img/chrysalis/book-1--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/book-3--m.jpg.webp", "thumb": "img/chrysalis/book-3--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/zuma-ring/hand-2--m.jpg.webp", "thumb": "img/zuma-ring/hand-2--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/terracotta--m.jpg.webp", "thumb": "img/zuma-ring/terracotta--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/hires-1--m.jpg.webp", "thumb": "img/zuma-ring/hires-1--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/plain-1--m.jpg.webp", "thumb": "img/zuma-ring/plain-1--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/plain-2--m.jpg.webp", "thumb": "img/zuma-ring/plain-2--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/hero--m.jpg.webp", "thumb": "img/zuma-ring/hero--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/hand-1--m.jpg.webp", "thumb": "img/zuma-ring/hand-1--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/eclipse-ring/hand-2--m.jpg.webp", "thumb": "img/eclipse-ring/hand-2--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/eclipse-ring/terracotta--m.jpg.webp", "thumb": "img/eclipse-ring/terracotta--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/eclipse-ring/hero--m.jpg.webp", "thumb": "img/eclipse-ring/hero--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/eclipse-ring/hires-1--m.jpg.webp", "thumb": "img/eclipse-ring/hires-1--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/eclipse-ring/hand-1--m.jpg.webp", "thumb": "img/eclipse-ring/hand-1--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/sietch-aperture/hero--m.jpg.webp", "thumb": "img/sietch-aperture/hero--th.jpg.webp", "alt": "Sietch", "slug": "sietch-aperture"}, {"file": "img/sietch-aperture/terracotta--m.jpg.webp", "thumb": "img/sietch-aperture/terracotta--th.jpg.webp", "alt": "Sietch", "slug": "sietch-aperture"}, {"file": "img/sietch-aperture/plain-1--m.jpg.webp", "thumb": "img/sietch-aperture/plain-1--th.jpg.webp", "alt": "Sietch", "slug": "sietch-aperture"}, {"file": "img/lunar-canyon-ring/hero--m.jpg.webp", "thumb": "img/lunar-canyon-ring/hero--th.jpg.webp", "alt": "Lunar Canyon", "slug": "lunar-canyon-ring"}, {"file": "img/lunar-canyon-ring/terracotta--m.jpg.webp", "thumb": "img/lunar-canyon-ring/terracotta--th.jpg.webp", "alt": "Lunar Canyon", "slug": "lunar-canyon-ring"}, {"file": "img/lunar-canyon-ring/hand-2--m.jpg.webp", "thumb": "img/lunar-canyon-ring/hand-2--th.jpg.webp", "alt": "Lunar Canyon", "slug": "lunar-canyon-ring"}, {"file": "img/lunar-canyon-ring/hand-1--m.jpg.webp", "thumb": "img/lunar-canyon-ring/hand-1--th.jpg.webp", "alt": "Lunar Canyon", "slug": "lunar-canyon-ring"}, {"file": "img/ear-cuff/hires-1--m.jpg.webp", "thumb": "img/ear-cuff/hires-1--th.jpg.webp", "alt": "Caldera Arc", "slug": "ear-cuff"}, {"file": "img/ear-cuff/terracotta--m.jpg.webp", "thumb": "img/ear-cuff/terracotta--th.jpg.webp", "alt": "Caldera Arc", "slug": "ear-cuff"}, {"file": "img/ear-cuff/hand-3--m.jpg.webp", "thumb": "img/ear-cuff/hand-3--th.jpg.webp", "alt": "Caldera Arc", "slug": "ear-cuff"}, {"file": "img/ear-cuff/hires-3.jpg.webp", "thumb": "img/ear-cuff/hires-3--th.jpg.webp", "alt": "Caldera Arc", "slug": "ear-cuff"}, {"file": "img/meridian-egg-ring/hero--m.jpg.webp", "thumb": "img/meridian-egg-ring/hero--th.jpg.webp", "alt": "Meridian Egg", "slug": "meridian-egg-ring"}, {"file": "img/meridian-egg-ring/terracotta--m.jpg.webp", "thumb": "img/meridian-egg-ring/terracotta--th.jpg.webp", "alt": "Meridian Egg", "slug": "meridian-egg-ring"}, {"file": "img/meridian-egg-ring/hand-2--m.jpg.webp", "thumb": "img/meridian-egg-ring/hand-2--th.jpg.webp", "alt": "Meridian Egg", "slug": "meridian-egg-ring"}, {"file": "img/meridian-egg-ring/plain-1--m.jpg.webp", "thumb": "img/meridian-egg-ring/plain-1--th.jpg.webp", "alt": "Meridian Egg", "slug": "meridian-egg-ring"}, {"file": "img/wonderhorn-talisman/plain-1--m.jpg.webp", "thumb": "img/wonderhorn-talisman/plain-1--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}, {"file": "img/wonderhorn-talisman/terracotta--m.jpg.webp", "thumb": "img/wonderhorn-talisman/terracotta--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}, {"file": "img/wonderhorn-talisman/plain-2--m.jpg.webp", "thumb": "img/wonderhorn-talisman/plain-2--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}, {"file": "img/wonderhorn-talisman/plain-3--m.jpg.webp", "thumb": "img/wonderhorn-talisman/plain-3--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}, {"file": "img/wonderhorn-talisman/hand-1--m.jpg.webp", "thumb": "img/wonderhorn-talisman/hand-1--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}], "instagram": [{"file": "img/library/instagram/DRLBGbQE-aR.jpg", "date": "2025-11-17", "caption": "From wax to bronze: how every totem begins", "link": "https://www.instagram.com/studiomacon/reel/DRLBGbQE-aR/"}, {"file": "img/library/instagram/DekRj22Btut.jpg", "date": "2026-10-16", "caption": "Hannah and Chelsea Madeline on Chrysalis", "link": "https://www.instagram.com/studiomacon/reel/DekRj22Btut/"}, {"file": "img/library/instagram/DeiSr0wHUHR.jpg", "date": "2026-10-15", "caption": "Chrysalis, made with In Her Own Right", "link": "https://www.instagram.com/studiomacon/p/DeiSr0wHUHR/"}, {"file": "img/library/instagram/DeOfAvagN90.jpg", "date": "2026-10-08", "caption": "The bronze box for Vessels: Studies in Form", "link": "https://www.instagram.com/studiomacon/reel/DeOfAvagN90/"}, {"file": "img/library/instagram/Dd6kWrcgBJo.jpg", "date": "2026-09-30", "caption": "Ida's Wonder Horn", "link": "https://www.instagram.com/studiomacon/p/Dd6kWrcgBJo/"}, {"file": "img/library/instagram/Dd4DddjAxlQ.jpg", "date": "2026-09-29", "caption": "Zuma", "link": "https://www.instagram.com/studiomacon/p/Dd4DddjAxlQ/"}, {"file": "img/library/instagram/Ddp3Cm3pdeG.jpg", "date": "2026-09-23", "caption": "Patinating Ori", "link": "https://www.instagram.com/studiomacon/reel/Ddp3Cm3pdeG/"}, {"file": "img/library/instagram/DdkKMxhBS0M.jpg", "date": "2026-09-21", "caption": "Lunar Canyon Ring", "link": "https://www.instagram.com/studiomacon/reel/DdkKMxhBS0M/"}, {"file": "img/library/instagram/Ddes42gj9bK.jpg", "date": "2026-09-19", "caption": "Inspiration we saved this week", "link": "https://www.instagram.com/studiomacon/p/Ddes42gj9bK/"}, {"file": "img/library/instagram/Dder5TpPg1v.jpg", "date": "2026-09-19", "caption": "Meridian Egg Ring", "link": "https://www.instagram.com/studiomacon/p/Dder5TpPg1v/"}, {"file": "img/library/instagram/DdaS5ELg6wg.jpg", "date": "2026-09-17", "caption": "Meet Alex, the other half of Studio Maçon", "link": "https://www.instagram.com/studiomacon/reel/DdaS5ELg6wg/"}, {"file": "img/library/instagram/DdXIJ0bhodB.jpg", "date": "2026-09-16", "caption": "A rabbit box for LA Design Weekend", "link": "https://www.instagram.com/studiomacon/reel/DdXIJ0bhodB/"}], "corkboard": {"url": "https://kdoapkbdsdppxgvslzbh.supabase.co", "key": "sb_publishable_8O4eRex_2YPGrKfPJqh65Q_IcLLhPI0"}};          // the library's sources: the shop's photographs, imported Instagram posts, Corkboard's address          // issues written ahead of time
+  var LIB = {"shop": [{"file": "img/pip/hero.jpg.webp", "thumb": "img/pip/hero--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/pip/terracotta--m.jpg.webp", "thumb": "img/pip/terracotta--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/pip/hand-2--m.jpg.webp", "thumb": "img/pip/hand-2--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/pip/white-1--m.jpg.webp", "thumb": "img/pip/white-1--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/pip/white-2--m.jpg.webp", "thumb": "img/pip/white-2--th.jpg.webp", "alt": "Pip", "slug": "pip"}, {"file": "img/rebi/hero--m.jpg.webp", "thumb": "img/rebi/hero--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/rebi/terracotta--m.jpg.webp", "thumb": "img/rebi/terracotta--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/rebi/hand-2--m.jpg.webp", "thumb": "img/rebi/hand-2--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/rebi/white-1--m.jpg.webp", "thumb": "img/rebi/white-1--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/rebi/white-2--m.jpg.webp", "thumb": "img/rebi/white-2--th.jpg.webp", "alt": "Rebi", "slug": "rebi"}, {"file": "img/ren/hero--m.jpg.webp", "thumb": "img/ren/hero--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/ren/terracotta--m.jpg.webp", "thumb": "img/ren/terracotta--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/ren/hand-2--m.jpg.webp", "thumb": "img/ren/hand-2--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/ren/white-1--m.jpg.webp", "thumb": "img/ren/white-1--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/ren/white-2--m.jpg.webp", "thumb": "img/ren/white-2--th.jpg.webp", "alt": "Ren", "slug": "ren"}, {"file": "img/zuma/hero--m.jpg.webp", "thumb": "img/zuma/hero--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/zuma/terracotta--m.jpg.webp", "thumb": "img/zuma/terracotta--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/zuma/hand-2--m.jpg.webp", "thumb": "img/zuma/hand-2--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/zuma/white-1--m.jpg.webp", "thumb": "img/zuma/white-1--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/zuma/white-2--m.jpg.webp", "thumb": "img/zuma/white-2--th.jpg.webp", "alt": "Zuma", "slug": "zuma"}, {"file": "img/milo/hero-dm--m.jpg.webp", "thumb": "img/milo/hero-dm--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/milo/terracotta--m.jpg.webp", "thumb": "img/milo/terracotta--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/milo/hand-2--m.jpg.webp", "thumb": "img/milo/hand-2--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/milo/white-1--m.jpg.webp", "thumb": "img/milo/white-1--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/milo/white-2--m.jpg.webp", "thumb": "img/milo/white-2--th.jpg.webp", "alt": "Milo", "slug": "milo"}, {"file": "img/yael/hires-1--m.jpg.webp", "thumb": "img/yael/hires-1--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/yael/terracotta--m.jpg.webp", "thumb": "img/yael/terracotta--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/yael/hand-2--m.jpg.webp", "thumb": "img/yael/hand-2--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/yael/white-1--m.jpg.webp", "thumb": "img/yael/white-1--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/yael/white-2--m.jpg.webp", "thumb": "img/yael/white-2--th.jpg.webp", "alt": "Yael", "slug": "yael"}, {"file": "img/ori/hero.jpg.webp", "thumb": "img/ori/hero--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/terracotta--m.jpg.webp", "thumb": "img/ori/terracotta--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/hand-2--m.jpg.webp", "thumb": "img/ori/hand-2--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/white-1--m.jpg.webp", "thumb": "img/ori/white-1--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/white-2--m.jpg.webp", "thumb": "img/ori/white-2--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/white-3--m.jpg.webp", "thumb": "img/ori/white-3--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ori/white-4--m.jpg.webp", "thumb": "img/ori/white-4--th.jpg.webp", "alt": "Ori", "slug": "ori"}, {"file": "img/ibi/hires-2-dm--m.jpg.webp", "thumb": "img/ibi/hires-2-dm--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/ibi/terracotta--m.jpg.webp", "thumb": "img/ibi/terracotta--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/ibi/hand-2--m.jpg.webp", "thumb": "img/ibi/hand-2--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/ibi/white-1--m.jpg.webp", "thumb": "img/ibi/white-1--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/ibi/white-2--m.jpg.webp", "thumb": "img/ibi/white-2--th.jpg.webp", "alt": "Ibi", "slug": "ibi"}, {"file": "img/eleph/hero-dm--m.jpg.webp", "thumb": "img/eleph/hero-dm--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/eleph/terracotta--m.jpg.webp", "thumb": "img/eleph/terracotta--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/eleph/hand-2--m.jpg.webp", "thumb": "img/eleph/hand-2--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/eleph/white-1--m.jpg.webp", "thumb": "img/eleph/white-1--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/eleph/white-2--m.jpg.webp", "thumb": "img/eleph/white-2--th.jpg.webp", "alt": "Eleph", "slug": "eleph"}, {"file": "img/chrysalis/terracotta--m.jpg.webp", "thumb": "img/chrysalis/terracotta--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/hand-1--m.jpg.webp", "thumb": "img/chrysalis/hand-1--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/white-1--m.jpg.webp", "thumb": "img/chrysalis/white-1--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/white-3--m.jpg.webp", "thumb": "img/chrysalis/white-3--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/book-1--m.jpg.webp", "thumb": "img/chrysalis/book-1--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/chrysalis/book-3--m.jpg.webp", "thumb": "img/chrysalis/book-3--th.jpg.webp", "alt": "Chrysalis", "slug": "chrysalis"}, {"file": "img/zuma-ring/hand-2--m.jpg.webp", "thumb": "img/zuma-ring/hand-2--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/terracotta--m.jpg.webp", "thumb": "img/zuma-ring/terracotta--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/hires-1--m.jpg.webp", "thumb": "img/zuma-ring/hires-1--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/plain-1--m.jpg.webp", "thumb": "img/zuma-ring/plain-1--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/plain-2--m.jpg.webp", "thumb": "img/zuma-ring/plain-2--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/hero--m.jpg.webp", "thumb": "img/zuma-ring/hero--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/zuma-ring/hand-1--m.jpg.webp", "thumb": "img/zuma-ring/hand-1--th.jpg.webp", "alt": "Zuma Crest", "slug": "zuma-ring"}, {"file": "img/eclipse-ring/hand-2--m.jpg.webp", "thumb": "img/eclipse-ring/hand-2--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/eclipse-ring/terracotta--m.jpg.webp", "thumb": "img/eclipse-ring/terracotta--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/eclipse-ring/hero--m.jpg.webp", "thumb": "img/eclipse-ring/hero--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/eclipse-ring/hires-1--m.jpg.webp", "thumb": "img/eclipse-ring/hires-1--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/eclipse-ring/hand-1--m.jpg.webp", "thumb": "img/eclipse-ring/hand-1--th.jpg.webp", "alt": "Eclipsis", "slug": "eclipse-ring"}, {"file": "img/sietch-aperture/hero--m.jpg.webp", "thumb": "img/sietch-aperture/hero--th.jpg.webp", "alt": "Sietch", "slug": "sietch-aperture"}, {"file": "img/sietch-aperture/terracotta--m.jpg.webp", "thumb": "img/sietch-aperture/terracotta--th.jpg.webp", "alt": "Sietch", "slug": "sietch-aperture"}, {"file": "img/sietch-aperture/plain-1--m.jpg.webp", "thumb": "img/sietch-aperture/plain-1--th.jpg.webp", "alt": "Sietch", "slug": "sietch-aperture"}, {"file": "img/lunar-canyon-ring/hero--m.jpg.webp", "thumb": "img/lunar-canyon-ring/hero--th.jpg.webp", "alt": "Lunar Canyon", "slug": "lunar-canyon-ring"}, {"file": "img/lunar-canyon-ring/terracotta--m.jpg.webp", "thumb": "img/lunar-canyon-ring/terracotta--th.jpg.webp", "alt": "Lunar Canyon", "slug": "lunar-canyon-ring"}, {"file": "img/lunar-canyon-ring/hand-2--m.jpg.webp", "thumb": "img/lunar-canyon-ring/hand-2--th.jpg.webp", "alt": "Lunar Canyon", "slug": "lunar-canyon-ring"}, {"file": "img/lunar-canyon-ring/hand-1--m.jpg.webp", "thumb": "img/lunar-canyon-ring/hand-1--th.jpg.webp", "alt": "Lunar Canyon", "slug": "lunar-canyon-ring"}, {"file": "img/ear-cuff/hires-1--m.jpg.webp", "thumb": "img/ear-cuff/hires-1--th.jpg.webp", "alt": "Caldera Arc", "slug": "ear-cuff"}, {"file": "img/ear-cuff/terracotta--m.jpg.webp", "thumb": "img/ear-cuff/terracotta--th.jpg.webp", "alt": "Caldera Arc", "slug": "ear-cuff"}, {"file": "img/ear-cuff/hand-3--m.jpg.webp", "thumb": "img/ear-cuff/hand-3--th.jpg.webp", "alt": "Caldera Arc", "slug": "ear-cuff"}, {"file": "img/ear-cuff/hires-3.jpg.webp", "thumb": "img/ear-cuff/hires-3--th.jpg.webp", "alt": "Caldera Arc", "slug": "ear-cuff"}, {"file": "img/meridian-egg-ring/hero--m.jpg.webp", "thumb": "img/meridian-egg-ring/hero--th.jpg.webp", "alt": "Meridian Egg", "slug": "meridian-egg-ring"}, {"file": "img/meridian-egg-ring/terracotta--m.jpg.webp", "thumb": "img/meridian-egg-ring/terracotta--th.jpg.webp", "alt": "Meridian Egg", "slug": "meridian-egg-ring"}, {"file": "img/meridian-egg-ring/hand-2--m.jpg.webp", "thumb": "img/meridian-egg-ring/hand-2--th.jpg.webp", "alt": "Meridian Egg", "slug": "meridian-egg-ring"}, {"file": "img/meridian-egg-ring/plain-1--m.jpg.webp", "thumb": "img/meridian-egg-ring/plain-1--th.jpg.webp", "alt": "Meridian Egg", "slug": "meridian-egg-ring"}, {"file": "img/wonderhorn-talisman/plain-1--m.jpg.webp", "thumb": "img/wonderhorn-talisman/plain-1--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}, {"file": "img/wonderhorn-talisman/terracotta--m.jpg.webp", "thumb": "img/wonderhorn-talisman/terracotta--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}, {"file": "img/wonderhorn-talisman/plain-2--m.jpg.webp", "thumb": "img/wonderhorn-talisman/plain-2--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}, {"file": "img/wonderhorn-talisman/plain-3--m.jpg.webp", "thumb": "img/wonderhorn-talisman/plain-3--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}, {"file": "img/wonderhorn-talisman/hand-1--m.jpg.webp", "thumb": "img/wonderhorn-talisman/hand-1--th.jpg.webp", "alt": "Ida's Wonder Horn", "slug": "wonderhorn-talisman"}], "instagram": [{"file": "img/library/instagram/DRLBGbQE-aR.jpg", "date": "2025-11-17", "caption": "From wax to bronze: how every totem begins", "link": "https://www.instagram.com/studiomacon/reel/DRLBGbQE-aR/", "kind": "reel"}, {"file": "img/library/instagram/DekRj22Btut.jpg", "date": "2026-10-16", "caption": "Hannah and Chelsea Madeline on Chrysalis", "link": "https://www.instagram.com/studiomacon/reel/DekRj22Btut/", "kind": "reel"}, {"file": "img/library/instagram/DeiSr0wHUHR.jpg", "date": "2026-10-15", "caption": "Chrysalis, made with In Her Own Right", "link": "https://www.instagram.com/studiomacon/p/DeiSr0wHUHR/", "kind": "post"}, {"file": "img/library/instagram/DeOfAvagN90.jpg", "date": "2026-10-08", "caption": "The bronze box for Vessels: Studies in Form", "link": "https://www.instagram.com/studiomacon/reel/DeOfAvagN90/", "kind": "reel"}, {"file": "img/library/instagram/Dd6kWrcgBJo.jpg", "date": "2026-09-30", "caption": "Ida's Wonder Horn", "link": "https://www.instagram.com/studiomacon/p/Dd6kWrcgBJo/", "kind": "post"}, {"file": "img/library/instagram/Dd4DddjAxlQ.jpg", "date": "2026-09-29", "caption": "Zuma", "link": "https://www.instagram.com/studiomacon/p/Dd4DddjAxlQ/", "kind": "post"}, {"file": "img/library/instagram/Ddp3Cm3pdeG.jpg", "date": "2026-09-23", "caption": "Patinating Ori", "link": "https://www.instagram.com/studiomacon/reel/Ddp3Cm3pdeG/", "kind": "reel"}, {"file": "img/library/instagram/DdkKMxhBS0M.jpg", "date": "2026-09-21", "caption": "Lunar Canyon Ring", "link": "https://www.instagram.com/studiomacon/reel/DdkKMxhBS0M/", "kind": "reel"}, {"file": "img/library/instagram/Ddes42gj9bK.jpg", "date": "2026-09-19", "caption": "Inspiration we saved this week", "link": "https://www.instagram.com/studiomacon/p/Ddes42gj9bK/", "kind": "post"}, {"file": "img/library/instagram/Dder5TpPg1v.jpg", "date": "2026-09-19", "caption": "Meridian Egg Ring", "link": "https://www.instagram.com/studiomacon/p/Dder5TpPg1v/", "kind": "post"}, {"file": "img/library/instagram/DdaS5ELg6wg.jpg", "date": "2026-09-17", "caption": "Meet Alex, the other half of Studio Maçon", "link": "https://www.instagram.com/studiomacon/reel/DdaS5ELg6wg/", "kind": "reel"}, {"file": "img/library/instagram/DdXIJ0bhodB.jpg", "date": "2026-09-16", "caption": "A rabbit box for LA Design Weekend", "link": "https://www.instagram.com/studiomacon/reel/DdXIJ0bhodB/", "kind": "reel"}], "corkboard": {"url": "https://kdoapkbdsdppxgvslzbh.supabase.co", "key": "sb_publishable_8O4eRex_2YPGrKfPJqh65Q_IcLLhPI0"}};          // the library's sources: the shop's photographs, imported Instagram posts, Corkboard's address          // issues written ahead of time
   var LETTERS = {"makers": {"2026-07": {"label": "July — The London Letters", "subject": "The London Letters — what the Thames taught us", "body": "Hi there,\n\nIt's Alex and Hannah. We've spent the summer working from London, and the river has been teaching us things — about patience, about what survives, about objects that outlast their owners.\n\n[What we found on the foreshore, what we made because of it, how London changed the work.]\n\nThank you for being part of this.\n\nWarmly,\nAlex & Hannah"}, "2026-08": {"label": "August — Where Objects Live", "subject": "Where your artifacts live", "body": "Hi there,\n\nWe asked a few collectors to show us where their pieces ended up — a windowsill in Lisbon, a desk in Brooklyn, a pocket that crosses the Atlantic twice a year.\n\n[The photo essay — three or four homes, in the collectors' own words.]\n\nIf your piece has found its spot, we'd love to see it.\n\nWarmly,\nAlex & Hannah"}, "2026-09": {"label": "September — The Foundry Letter", "subject": "How a totem is cast", "body": "Hi there,\n\nThis month, the whole process — wax to investment to bronze pour to patina — for one single piece, start to finish.\n\n[The casting story, with process photos. Where it almost went wrong. Why we still do it this way.]\n\nWarmly,\nAlex & Hannah"}, "2026-10": {"label": "October — Patina", "subject": "On bronze aging alongside you", "body": "Hi there,\n\nBronze doesn't stay the way we ship it. It darkens where you hold it, brightens where it rubs, and slowly becomes a record of its keeper.\n\n[Patina stories — before/after photos from older pieces, how to care (or deliberately not care) for yours.]\n\nWarmly,\nAlex & Hannah"}, "2026-11": {"label": "November — The Gift Letter", "subject": "Choosing an artifact for someone else", "body": "Hi there,\n\nMost of our favorite stories start with someone choosing a piece for someone else. This month: how to choose well.\n\n[Gift guidance by person, not product — plus ordering deadlines for the holidays.]\n\nWarmly,\nAlex & Hannah"}, "2026-12": {"label": "December — Artifacts of Love", "subject": "The year in the studio — thank you", "body": "Hi there,\n\nA year ago this letter didn't exist. Here's what you made possible: every piece, every story, every place our objects now live.\n\n[Year in review — numbers, favorite moments, one collector story. A genuine thank-you.]\n\nWith love,\nAlex & Hannah"}, "2027-01": {"label": "January — Beginnings", "subject": "First sketches of the new collection", "body": "Hi there,\n\nEvery piece starts ugly — a thumbnail sketch, a lump of wax. This month we're showing you the very beginnings of what's coming this year.\n\n[Sketchbook pages, early waxes, the ideas that probably won't survive.]\n\nWarmly,\nAlex & Hannah"}, "2027-02": {"label": "February — Love Letters", "subject": "Pieces given, stories received", "body": "Hi there,\n\nFebruary belongs to the givers. These are the stories that came back to us after pieces were given away — proposals, apologies, long-distance anchors.\n\n[Two or three gift stories, shared with permission.]\n\nWith love,\nAlex & Hannah"}, "2027-03": {"label": "March — The Ephemeral Collection", "subject": "Objects that exist only once", "body": "Hi there,\n\nSome things we make once and never again. This month we're introducing the Ephemeral Collection — pieces with no editions, no remakes, no second chances.\n\n[The concept, the first pieces, how they'll be released.]\n\nWarmly,\nAlex & Hannah"}, "2027-04": {"label": "April — Tools", "subject": "The hands and instruments behind each piece", "body": "Hi there,\n\nOur tools are older than we are, mostly. This month: the files, the burnishers, the dental tools and the one hammer Hannah won't let anyone else touch.\n\n[Tool portraits and what each one does.]\n\nWarmly,\nAlex & Hannah"}, "2027-05": {"label": "May — The Collector's Shelf", "subject": "Conversations with true collectors", "body": "Hi there,\n\nSome of you now live with three, four, five of our pieces. We asked what that's like — why they come back, how the pieces talk to each other on the shelf.\n\n[Interview with one or two repeat collectors.]\n\nWarmly,\nAlex & Hannah"}, "2027-06": {"label": "June — One Year of the Bureau", "subject": "The archive, by the numbers", "body": "Hi there,\n\nOne year of keeping records: where every piece went, the stories that came back, the map our objects have quietly drawn across the world.\n\n[The numbers, the map, what's next for year two.]\n\nWarmly,\nAlex & Hannah"}}, "firstlook": {"2026-07": {"label": "July — Thames Finds", "subject": "First look: what the river gave us", "body": "Hi there,\n\nBefore anyone else hears about it — the London foreshore work is becoming pieces. You're seeing them first.\n\n[The river-marked pieces, how many exist, how to claim one.]\n\nWith love,\nAlex & Hannah"}, "2026-08": {"label": "August — Home Edition", "subject": "First look: pieces made for the places they'll live", "body": "Hi there,\n\nA small run designed around where they'll live — shelf pieces, pocket pieces, windowsill pieces. First look is yours.\n\n[The edition, the thinking, the count.]\n\nWith love,\nAlex & Hannah"}, "2026-09": {"label": "September — Foundry Firsts", "subject": "First look: fresh from the pour", "body": "Hi there,\n\nThe autumn casting is out of the investment and still warm. Before these reach the shop, you choose first.\n\n[What came out of the kiln, the one-offs, the seconds we love anyway.]\n\nWith love,\nAlex & Hannah"}, "2026-10": {"label": "October — Dark Patinas", "subject": "First look: the dark editions", "body": "Hi there,\n\nOctober pieces, patinated almost black. A small run, and you're at the front of the line.\n\n[The dark edition — process, count, claiming.]\n\nWith love,\nAlex & Hannah"}, "2026-11": {"label": "November — Before the Rush", "subject": "First look: the holiday pieces, early", "body": "Hi there,\n\nThe holiday pieces are done early this year, and before the rush begins, our inner circle picks first.\n\n[The pieces, guaranteed-by dates, how to reserve.]\n\nWith love,\nAlex & Hannah"}, "2026-12": {"label": "December — The Vault", "subject": "First look: one of each, from the archive", "body": "Hi there,\n\nWe kept one of almost everything this year. This December, the keepers' copies go to keepers — you.\n\n[The archive pieces, their stories, first-come basis.]\n\nWith love,\nAlex & Hannah"}, "2027-01": {"label": "January — Prototypes", "subject": "First look: pieces that aren't finished yet", "body": "Hi there,\n\nThis one isn't even an edition — it's the prototypes. See the new collection before it exists, and tell us what you think.\n\n[Early photos, an invitation to respond.]\n\nWith love,\nAlex & Hannah"}, "2027-02": {"label": "February — The Pair Edition", "subject": "First look: pieces made in pairs", "body": "Hi there,\n\nFor February: pieces cast in pairs — one to keep, one to give. You see them before anyone.\n\n[The pairs, the idea, the count.]\n\nWith love,\nAlex & Hannah"}, "2027-03": {"label": "March — Ephemeral, First", "subject": "First look: once, and never again", "body": "Hi there,\n\nThe Ephemeral Collection launches this month. Each piece exists once. Inner circle sees the catalogue 48 hours early.\n\n[The pieces, the rules, the early window.]\n\nWith love,\nAlex & Hannah"}, "2027-04": {"label": "April — Toolmarks", "subject": "First look: pieces that show their making", "body": "Hi there,\n\nAn edition where we left every toolmark visible — file strokes, fingerprints in the wax, honest making. First look is yours.\n\n[The toolmark edition.]\n\nWith love,\nAlex & Hannah"}, "2027-05": {"label": "May — Collector Requests", "subject": "First look: the pieces you asked for", "body": "Hi there,\n\nAll year, collectors have asked for things — sizes, rings, a darker this, a smaller that. We made some of them. Requesters and inner circle first.\n\n[The request pieces.]\n\nWith love,\nAlex & Hannah"}, "2027-06": {"label": "June — Year Two Opens", "subject": "First look: where Maçon goes next", "body": "Hi there,\n\nYear two begins. The first pieces of the new direction are ready, and as ever, you see them before the world does.\n\n[The new direction, the opening pieces.]\n\nWith love,\nAlex & Hannah"}}};          // the Bureau of Provenance's monthly letter outlines
   var SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07"}, STATUS = null, NEWEST = [];          // STATUS: each piece's handle → available, read live from the store
   var SITE = 'https://studiomacon.co', IMG = SITE + '/img/email';
@@ -442,6 +448,23 @@
         }).join('');
         return '<tr><td class="pad" align="center" style="padding:0 24px ' + Math.max(0, 32 - L.gap) + 'px"><div style="max-width:' + L.max + 'px;margin:0 auto;font-size:' + (E ? '13px' : '0') + '">' + items + '</div></td></tr>';
       }},
+    collage: {label: 'Collage', icon: '✣', make: function () {
+        // photo posts first: reel covers often carry title text
+        var ig = (LIB.instagram || []).slice().sort(function (a, b2) { return (a.kind === 'reel') - (b2.kind === 'reel'); }).slice(0, 6).map(function (x) { return {orig: SITE + '/' + x.file, src: '', alt: x.caption, shape: '', fx: .5, fy: .5, zoom: 1}; });
+        return {pieces: ig, seed: Math.floor(Math.random() * 1e9), link: SITE, rendered: '', sig: ''};
+      },
+      tools: function (b) { return [['act', 'cauto', 'Auto', (b.mode || 'auto') === 'auto'], ['act', 'chand', 'By hand', b.mode === 'hand'], ['act', 'shuffle', 'Shuffle'], ['act', 'cadd', '+ Photo'], ['act', 'link', b.link ? 'Link \u2713' : 'Link']]; },
+      html: function (b, E) {
+        var framing = b.pieces.filter(function (x) { return x.reframing; })[0];
+        if (E && framing) return row('padding:0 24px 32px', rfFrame(framing) + rfControls(framing, false));
+        if (E) return row('padding:0 24px 32px', b.pieces.length
+          ? '<canvas class="clg" data-collage width="' + CW + '" height="' + CH + '" style="width:100%;max-width:' + CW / 2 + 'px;display:block;margin:0 auto;cursor:pointer"></canvas>'
+          : '<div class="empty" data-act="cadd" style="aspect-ratio:' + CW + '/' + CH + ';max-width:' + CW / 2 + 'px"><b>Add five to eight photos</b>from your desktop or the library</div>');
+        if (!b.rendered) return '';
+        var im = '<img src="' + esc(b.rendered) + '" width="' + CW / 2 + '" alt="' + esc(b.alt || 'A collage of photographs from the studio') + '" style="width:100%;max-width:' + CW / 2 + 'px;height:auto;display:block;margin:0 auto">';
+        var u = safeUrl(b.link);
+        return row('padding:0 24px 32px', u ? '<a href="' + esc(u) + '">' + im + '</a>' : im);
+      }},
     pair: {label: 'Two pieces', icon: '◆◆', make: function () { return {slugs: PIECES.slice(0, 2).map(function (p) { return p.slug; }), photo: 'held', note0: '', note1: ''}; },
       tools: function () { return [['photo', 'held', 'In the hand'], ['photo', 'tile', 'On its own']]; },
       html: function (b, E) {
@@ -502,7 +525,145 @@
     divider: {label: 'Divider', icon: '—', make: function () { return {}; },
       html: function () { return '<tr><td style="padding:0 0 32px"><div style="height:1px;background:#efece5;font-size:0;line-height:1px">&#160;</div></td></tr>'; }}
   };
-  var ORDER = ['text', 'image', 'pgrid', 'heading', 'piece', 'pair', 'grid', 'button', 'quote', 'signoff', 'insta', 'code', 'divider'];
+  var ORDER = ['text', 'image', 'pgrid', 'collage', 'heading', 'piece', 'pair', 'grid', 'button', 'quote', 'signoff', 'insta', 'code', 'divider'];
+  var CW = 1104, CH = 960;          // the collage at twice the email's 552px
+  function rng(seed) { var s = seed >>> 0; return function () { s += 0x6D2B79F5; var t = s; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var imgs = {};
+  function pic(url) { return imgs[url] || (imgs[url] = loadImg(view(url)).catch(function () { delete imgs[url]; throw new Error('missing'); })); }
+  function snapR(r) { var opts = [2 / 3, 4 / 5, 1, 5 / 4, 3 / 2]; return opts.reduce(function (a, b) { return Math.abs(Math.log(b / r)) < Math.abs(Math.log(a / r)) ? b : a; }); }
+  // where each photo lands: a loose grid, every one a little off its spot, a little larger or smaller, a little turned
+  function arrange(b, ratios) {
+    var n = ratios.length, R = rng(b.seed), cols = n <= 2 ? n : n <= 4 ? 2 : n <= 6 ? 3 : 3, rows = Math.ceil(n / cols);
+    var cw = CW / cols, ch = CH / rows, order = ratios.map(function (_, i) { return i; }).sort(function () { return R() - .5; });
+    var placed = order.map(function (k, slot) {
+      var c = slot % cols, r = Math.floor(slot / cols), inRow = r === rows - 1 ? n - cols * (rows - 1) : cols;
+      var off = (cols - inRow) * cw / 2;          // a shorter last row sits centred
+      var scale = .84 + R() * .3, ar = ratios[k];          // each a little larger or smaller than the next
+      var w = Math.min(cw * 1.0, ch * 1.0 * ar) * scale, h = w / ar;
+      var x = off + c * cw + cw / 2 + (R() - .5) * cw * .3, y = r * ch + ch / 2 + (R() - .5) * ch * .26;
+      x = Math.max(w / 2 + 14, Math.min(CW - w / 2 - 14, x)); y = Math.max(h / 2 + 14, Math.min(CH - h / 2 - 18, y));
+      return {k: k, x: x, y: y, w: w, h: h, rot: (R() - .5) * 15 * Math.PI / 180, z: R(), tear: Math.floor(R() * 1e9)};
+    }).sort(function (a, b2) { return (a.k === n - 1 && b.front) - (b2.k === n - 1 && b.front) || a.z - b2.z; });
+    return relax(L0(placed));
+  }
+  function L0(x) { return x; }
+  // push overlapping photos apart (by their turned outlines' boxes) until each has GAP around it;
+  // if they can't all fit, shrink every one a little and try again
+  var GAP = 22;
+  function relax(L) {
+    for (var round = 0; round < 8; round++) {
+      for (var it = 0; it < 120; it++) {
+        var moved = false;
+        for (var i = 0; i < L.length; i++) for (var j = i + 1; j < L.length; j++) {
+          var a = L[i], c = L[j], ea = ext(a), ec = ext(c);
+          var ox = ea.x + ec.x + GAP - Math.abs(a.x - c.x), oy = ea.y + ec.y + GAP - Math.abs(a.y - c.y);
+          if (ox > 0 && oy > 0) {
+            moved = true;
+            if (ox < oy) { var sx = (a.x < c.x ? -1 : 1) * ox / 2; a.x += sx; c.x -= sx; } else { var sy = (a.y < c.y ? -1 : 1) * oy / 2; a.y += sy; c.y -= sy; }
+          }
+        }
+        L.forEach(function (s) { var e = ext(s); s.x = Math.max(e.x + 12, Math.min(CW - e.x - 12, s.x)); s.y = Math.max(e.y + 12, Math.min(CH - e.y - 16, s.y)); });
+        if (!moved) return L;
+      }
+      L.forEach(function (s) { s.w *= .93; s.h *= .93; });
+    }
+    return L;
+  }
+  function ext(s) { var c = Math.abs(Math.cos(s.rot)), sn = Math.abs(Math.sin(s.rot)); return {x: (s.w * c + s.h * sn) / 2, y: (s.w * sn + s.h * c) / 2}; }
+  // a soft, deckled paper edge: the rectangle's outline walked in small steps, each nudged in or out a little
+  function torn(g, w, h, seed) {
+    var R = rng(seed), step = 7, amp = 2.2, pts = [];
+    function side(x0, y0, x1, y1, nx, ny) {
+      var len = Math.hypot(x1 - x0, y1 - y0), n = Math.max(2, Math.round(len / step));
+      for (var i = 0; i < n; i++) { var t = i / n, j = (R() - .5) * 2 * amp + (R() < .06 ? -amp * 1.4 : 0); pts.push([x0 + (x1 - x0) * t + nx * j, y0 + (y1 - y0) * t + ny * j]); }
+    }
+    side(-w / 2, -h / 2, w / 2, -h / 2, 0, 1); side(w / 2, -h / 2, w / 2, h / 2, -1, 0); side(w / 2, h / 2, -w / 2, h / 2, 0, -1); side(-w / 2, h / 2, -w / 2, -h / 2, 1, 0);
+    g.beginPath(); pts.forEach(function (p, i) { if (i) g.lineTo(p[0], p[1]); else g.moveTo(p[0], p[1]); }); g.closePath();
+  }
+  var paper = null;
+  function drawCollage(b, cv) {
+    var ps = b.pieces.slice();
+    return Promise.all(ps.map(function (x) { return pic(x.orig || x.src).catch(function () { return null; }); }).concat([paper || (paper = loadImg(view(SITE + '/img/pages/polaroid-paper.png')).catch(function () { return null; }))]))
+      .then(function (loaded) {
+        var tex = loaded.pop(), g = cv.getContext('2d');
+        var ratios = loaded.map(function (img, i) { var x = ps[i]; if (x.shape) return shapeR(x, 1, 1); return img ? snapR(img.naturalWidth / img.naturalHeight) : 1; });
+        var L = b.mode === 'hand' ? handLayout(b, ratios) : arrange(b, ratios);
+        g.fillStyle = '#ffffff'; g.fillRect(0, 0, CW, CH);
+        L.forEach(function (s) {
+          var img = loaded[s.k], x = ps[s.k], border = Math.max(10, s.w * .045);
+          g.save(); g.translate(s.x, s.y); g.rotate(s.rot);
+          // the paper, lying flat: a hard, shallow shadow under it
+          torn(g, s.w, s.h, s.tear);
+          g.shadowColor = 'rgba(0,0,0,.30)'; g.shadowBlur = 3; g.shadowOffsetX = 1; g.shadowOffsetY = 3;
+          g.fillStyle = '#f3efe6'; g.fill();
+          g.shadowColor = 'rgba(0,0,0,.14)'; g.shadowBlur = 9; g.shadowOffsetY = 6; g.fill();
+          g.shadowColor = 'transparent';
+          if (tex) { g.save(); torn(g, s.w, s.h, s.tear); g.clip(); g.globalAlpha = .5; g.fillStyle = g.createPattern(tex, 'repeat'); g.fillRect(-s.w / 2, -s.h / 2, s.w, s.h); g.restore(); }
+          // the photograph on it
+          var iw = s.w - border * 2, ih = s.h - border * 2;
+          if (img) {
+            var o = {shape: x.shape || (iw / ih).toFixed(4) + '/1', fx: x.fx, fy: x.fy, zoom: x.zoom}, c = crop(o, img.naturalWidth, img.naturalHeight);
+            x.fx = o.fx; x.fy = o.fy;
+            g.drawImage(img, c.x, c.y, c.w, c.h, -iw / 2, -ih / 2, iw, ih);
+          } else { g.fillStyle = '#f4efe6'; g.fillRect(-iw / 2, -ih / 2, iw, ih); }
+          g.strokeStyle = 'rgba(0,0,0,.08)'; g.lineWidth = 1; g.strokeRect(-iw / 2, -ih / 2, iw, ih);
+          g.restore();
+        });
+        b._layout = L;
+        return L;
+      });
+  }
+  function collageSig(b) { return JSON.stringify([b.seed, b.mode || 'auto', b.pieces.map(function (x) { return [x.orig || x.src, x.shape, +(x.fx || .5).toFixed(3), +(x.fy || .5).toFixed(3), +(x.zoom || 1).toFixed(2), x.pos ? [Math.round(x.pos.x), Math.round(x.pos.y), Math.round(x.pos.w), +x.pos.rot.toFixed(3)] : 0]; })]); }
+  // by hand: drawn in the pieces' own order (last on top), each where it was put; a new one lands in the middle
+  function handLayout(b, ratios) {
+    return b.pieces.map(function (x, k) {
+      var ar = ratios[k];
+      if (!x.pos) x.pos = {x: CW / 2, y: CH / 2, w: CW * .3, rot: 0};
+      if (!x.tear) x.tear = Math.floor(Math.random() * 1e9);
+      return {k: k, x: x.pos.x, y: x.pos.y, w: x.pos.w, h: x.pos.w / ar, rot: x.pos.rot, tear: x.tear};
+    });
+  }
+  // switching to by hand starts from the arrangement on screen
+  function toHand(b) {
+    (b._layout || []).forEach(function (s) { var x = b.pieces[s.k]; if (!x) return; x.pos = {x: s.x, y: s.y, w: s.w, rot: s.rot}; x.tear = s.tear; });
+    var order = (b._layout || []).map(function (s) { return b.pieces[s.k]; }).filter(Boolean);
+    if (order.length === b.pieces.length) b.pieces = order;          // keep who's on top
+    b.mode = 'hand';
+  }
+  function paintCollages() {
+    card.querySelectorAll('canvas[data-collage]').forEach(function (cv) {
+      var b = owner(cv); if (!b) return; var sig = collageSig(b);
+      if (cv.dataset.sig === sig) return; cv.dataset.sig = sig;
+      drawCollage(b, cv).then(function () { handBox(b, cv); if (b.sig !== sig) flatten(b, cv, sig); });
+    });
+  }
+  // the email gets the collage as one picture, kept on the site; redone a moment after each change
+  var flatT = {};
+  function flatten(b, cv, sig) {
+    if (!REMOTE) return;
+    clearTimeout(flatT[b.id]);
+    flatT[b.id] = setTimeout(function () {
+      if (collageSig(b) !== sig) return;
+      canvasBlob(cv, .88).then(function (blob) { return putBlob(blob, 'image/jpeg'); }).then(function (u) {
+        if (collageSig(b) !== sig) return; b.rendered = u; b.sig = sig; changed(); badge();
+      }).catch(function () {});
+    }, 1200);
+  }
+  // which photo is under a click on the canvas: the topmost whose turned rectangle holds the point
+  function hitPiece(b, cv, e) {
+    var r = cv.getBoundingClientRect(), px = (e.clientX - r.left) * CW / r.width, py = (e.clientY - r.top) * CH / r.height, hit = null;
+    (b._layout || []).forEach(function (s) {
+      var dx = px - s.x, dy = py - s.y, c = Math.cos(-s.rot), sn = Math.sin(-s.rot), lx = dx * c - dy * sn, ly = dx * sn + dy * c;
+      if (Math.abs(lx) <= s.w / 2 && Math.abs(ly) <= s.h / 2) hit = s;
+    });
+    return hit;
+  }
+  function addPiece(b, anchor) {
+    var piece = {orig: '', src: '', alt: '', shape: '', fx: .5, fy: .5, zoom: 1};
+    PENDING[b.id] = piece; piece.lockShape = '';
+    openPhoto(anchor, {type: 'collage-add', id: b.id}, piece);
+  }
+
   // the photo grid's three layouts: how many cells, their shape, width and the space between rows
   var LAYOUTS = {'2': {n: 2, shape: '4/5', w: '48%', px: 220, gap: 12, max: 460}, '2x2': {n: 4, shape: '1/1', w: '48%', px: 220, gap: 12, max: 460}, '3x3': {n: 9, shape: '1/1', w: '31.3%', px: 144, gap: 8, max: 460}};
   function cells(b) {
@@ -572,6 +733,7 @@
     });
     d.blocks.forEach(function (b) {
       if (b.type === 'insta' && !b.pics.some(Boolean)) out.push([false, 'The Instagram row has no photos yet']);
+      if (b.type === 'collage') { if (b.pieces.length < 2) out.push([false, 'A collage needs a few photos']); else if (!b.rendered || b.sig !== collageSig(b)) out.push([false, REMOTE ? 'The collage is still being prepared: give it a moment' : 'Collages need the studio password to be saved for the email']); }
       if (b.type === 'pgrid') { var Lg = LAYOUTS[b.layout] || LAYOUTS['2x2'], filled = (b.cells || []).slice(0, Lg.n).filter(function (c) { return c.src; }).length; if (filled < Lg.n) out.push([false, 'A photo grid has ' + (Lg.n - filled) + ' empty spot' + (Lg.n - filled > 1 ? 's' : '')]); }
     });
     return out;
@@ -646,7 +808,7 @@
     if (!dirty || !D) return;
     dirty = false; D.by = ME; D.updated = Date.now();
     try { localStorage.setItem('macon-nl-last', D.id); } catch (e) {}
-    var copy = JSON.parse(JSON.stringify(D)); copy.blocks.forEach(function (b) { delete b.busy; delete b.fresh; delete b.reframing; (b.cells || []).forEach(function (c) { delete c.busy; delete c.reframing; }); });
+    var copy = JSON.parse(JSON.stringify(D)); copy.blocks.forEach(function (b) { delete b.busy; delete b.fresh; delete b.reframing; (b.cells || []).concat(b.pieces || []).forEach(function (c) { delete c.busy; delete c.reframing; delete c._onset; }); delete b._layout; });
     store().put(copy, base).then(function (u) { base = u || D.updated; setStatus((REMOTE ? 'Saved' : 'Saved in this browser') + ' · ' + new Date().toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})); })
       .catch(function (e) {
         if (e.message === 'conflict') {
@@ -688,7 +850,7 @@
   function toolsFor(b) {
     var k = KINDS[b.type], t = k.tools ? k.tools(b) : [];
     return '<div class="tools">' + t.map(function (x) {
-      return x[0] === 'act' ? '<button data-act="' + x[1] + '">' + esc(x[2]) + '</button>'
+      return x[0] === 'act' ? '<button data-act="' + x[1] + '"' + (x[3] != null ? ' aria-pressed="' + !!x[3] + '"' : '') + '>' + esc(x[2]) + '</button>'
         : '<button data-set="' + x[0] + '" data-v="' + x[1] + '" aria-pressed="' + (b[x[0]] === x[1]) + '">' + esc(x[2]) + '</button>';
     }).join('') + (t.length ? '<span class="sep"></span>' : '')
       + '<button data-act="keep" title="Save as a section to reuse">Save</button><button data-act="dup" title="Duplicate">Copy</button><button data-act="del" title="Remove">Remove</button></div>';
@@ -702,7 +864,7 @@
       + D.blocks.map(function (b, i) { return gap(i) + blockEl(b); }).join('') + gap(D.blocks.length)
       + '<div class="end"><button data-add-at="' + D.blocks.length + '">+ Add a block</button></div>'
       + '<div class="foot-in">Every piece is made to order in the studio in California.<br><a>About</a> &nbsp;·&nbsp; <a>Instagram</a> &nbsp;·&nbsp; <a>Unsubscribe</a><br>Studio Maçon · Santa Monica</div>';
-    fit();
+    fit(); paintCollages();
     if (focusId) {
       var f = card.querySelector('[data-id="' + focusId + '"] [data-f]');
       if (f) { f.focus(); caretEnd(f); }
@@ -730,9 +892,16 @@
     });
   }
   function rerender(b) {          // one block again (after a tool), leaving the rest (and any typing) alone
+    if (b && b.type === 'collage-add') { var real = byId(b.id); var p = real && real.pieces; (D.blocks.filter(function (x) { return x.id === b.id; })[0] || {}); return pendingAdd(real); }
     var el = card.querySelector('[data-id="' + b.id + '"]'); if (!el) return render();
-    var t = document.createElement('div'); t.innerHTML = blockEl(b); el.replaceWith(t.firstChild); fit();
+    var t = document.createElement('div'); t.innerHTML = blockEl(b); el.replaceWith(t.firstChild); fit(); paintCollages();
   }
+  function pendingAdd(b) {          // a new piece's photo has arrived (or is on its way): it joins once it has one
+    if (!b) return; var waiting = PENDING[b.id]; if (!waiting) return rerender(b);
+    if (waiting.orig || waiting.src) { delete PENDING[b.id]; if (b.pieces.indexOf(waiting) < 0) { snap(); b.pieces.push(waiting); } if (b.mode !== 'hand') b.seed = Math.floor(Math.random() * 1e9); }
+    rerender(b);
+  }
+  var PENDING = {};
   function byId(id) { return D.blocks.filter(function (b) { return b.id === id; })[0]; }
   function owner(el) { var c = el && el.closest && el.closest('.blk'); return c ? byId(c.dataset.id) : null; }
   function insert(type, at) { snap(); var b = block(type); D.blocks.splice(at, 0, b); render(b.id); changed(); return b; }
@@ -825,6 +994,10 @@
     if (a === 'addpiece') openPieces(t, function (p) { if (b.slugs.indexOf(p.slug) < 0) b.slugs.push(p.slug); rerender(b); changed(); });
     if (a === 'unpick') { b.slugs = b.slugs.filter(function (s) { return s !== t.dataset.slug; }); rerender(b); changed(); }
     if (a === 'reframe') startReframe(b);
+    if (a === 'shuffle') { snap(); b.seed = Math.floor(Math.random() * 1e9); b.mode = 'auto'; b.front = false; b.pieces.forEach(function (x) { delete x.pos; }); rerender(b); changed(); }
+    if (a === 'chand' && b.mode !== 'hand') { snap(); toHand(b); rerender(b); changed(); toast('Drag a photo to move it; its corners resize it, just outside them turns it'); }
+    if (a === 'cauto' && b.mode === 'hand') { snap(); b.mode = 'auto'; b.pieces.forEach(function (x) { delete x.pos; }); rerender(b); changed(); }
+    if (a === 'cadd') { if (b.pieces.length >= 9) return toast('Nine is plenty for one collage'); addPiece(b, t); }
     if (a === 'cell') {
       var cell = b.cells[+t.dataset.i], extra = [];
       if (cell.src) extra.push(['frame', '\u2725', 'Reframe', function () { closePop(); startReframe(b, cell); }], ['clear', '\u00d7', 'Remove', function () { closePop(); snap(); b.cells[+t.dataset.i] = {src: '', orig: '', alt: '', shape: cell.lockShape, fx: .5, fy: .5, zoom: 1}; rerender(b); changed(); }]);
@@ -838,6 +1011,62 @@
     if (a === 'iclear') { b.pics[+t.dataset.i] = ''; rerender(b); changed(); }
     if (a === 'keep') keepSection(t, b);
   });
+  // a click on the collage picks the photo under it
+  card.addEventListener('click', function (e) {
+    var cv = e.target.closest('canvas[data-collage]'); if (!cv) return;
+    if (HAND.moved) { HAND.moved = false; return; }
+    var b = owner(cv), s = hitPiece(b, cv, e); if (!s) return;
+    var x = (b.mode === 'hand' && HAND.sel && HAND.sel.b === b) ? HAND.sel.x : b.pieces[s.k], anchor = {getBoundingClientRect: function () { return {left: e.clientX - 1, right: e.clientX + 1, top: e.clientY - 1, bottom: e.clientY + 1, width: 2, height: 2}; }};
+    x.lockShape = x.shape || (s.w / s.h).toFixed(4) + '/1';
+    openPhoto(anchor, b, x, [
+      ['frame', '✥', 'Reframe', function () { closePop(); x.shape = x.lockShape; startReframe(b, x); }],
+      ['front', '▲', 'Bring to front', function () { closePop(); snap(); b.pieces.splice(b.pieces.indexOf(x), 1); b.pieces.push(x); b.front = true; rerender(b); changed(); }],
+      ['out', '\u00d7', 'Remove', function () { closePop(); snap(); b.pieces.splice(b.pieces.indexOf(x), 1); HAND.sel = null; if (b.mode !== 'hand') b.seed = Math.floor(Math.random() * 1e9); rerender(b); changed(); }]
+    ]);
+  });
+  // ── by hand: drag to move; the frame's corners resize, just outside them turns ──────────
+  var HAND = {sel: null, act: null, moved: false};
+  function handBox(b, cv) {
+    var old = cv.parentNode.querySelector('.cbox'); if (old) old.remove();
+    if (b.mode !== 'hand' || !HAND.sel || HAND.sel.b !== b) return;
+    var s = (b._layout || []).filter(function (q) { return b.pieces[q.k] === HAND.sel.x; })[0]; if (!s) return;
+    var sc = cv.clientWidth / CW, box = document.createElement('div');
+    box.className = 'cbox';
+    box.style.cssText = 'left:' + (cv.offsetLeft + (s.x - s.w / 2) * sc) + 'px;top:' + (cv.offsetTop + (s.y - s.h / 2) * sc) + 'px;width:' + s.w * sc + 'px;height:' + s.h * sc + 'px;transform:rotate(' + s.rot + 'rad)';
+    box.innerHTML = ['nw', 'ne', 'se', 'sw'].map(function (c) { return '<i class="rot ' + c + '" data-h="rot"></i>'; }).join('') + ['nw', 'ne', 'se', 'sw'].map(function (c) { return '<i class="' + c + '" data-h="size"></i>'; }).join('');
+    cv.parentNode.style.position = 'relative'; cv.parentNode.appendChild(box);
+  }
+  card.addEventListener('pointerdown', function (e) {
+    var h = e.target.closest('.cbox i'), cv = e.target.closest('canvas[data-collage]') || (h && h.closest('td').querySelector('canvas[data-collage]'));
+    if (!cv) { if (!e.target.closest('#pop')) { var had = HAND.sel; HAND.sel = null; if (had) card.querySelectorAll('.cbox').forEach(function (x) { x.remove(); }); } return; }
+    var b = owner(cv); if (b.mode !== 'hand') return;
+    var r = cv.getBoundingClientRect(), k = CW / r.width, px = (e.clientX - r.left) * k, py = (e.clientY - r.top) * k;
+    if (h && HAND.sel) {
+      var x = HAND.sel.x, pos = x.pos;
+      HAND.act = {mode: h.dataset.h, b: b, cv: cv, x: x, start: {x: pos.x, y: pos.y, w: pos.w, rot: pos.rot}, a0: Math.atan2(py - pos.y, px - pos.x), d0: Math.hypot(px - pos.x, py - pos.y), k: k, r: r};
+    } else {
+      var s = hitPiece(b, cv, e); if (!s) { HAND.sel = null; handBox(b, cv); return; }
+      var piece = b.pieces[s.k]; snap();
+      b.pieces.splice(s.k, 1); b.pieces.push(piece);          // the one you take sits on top
+      HAND.sel = {b: b, x: piece};
+      HAND.act = {mode: 'move', b: b, cv: cv, x: piece, start: {x: piece.pos.x, y: piece.pos.y}, p0: {x: px, y: py}, k: k, r: r};
+    }
+    HAND.moved = false; e.preventDefault(); cv.setPointerCapture && cv.setPointerCapture(e.pointerId);
+  });
+  card.addEventListener('pointermove', function (e) {
+    var A = HAND.act; if (!A) return;
+    var px = (e.clientX - A.r.left) * A.k, py = (e.clientY - A.r.top) * A.k, pos = A.x.pos;
+    if (A.mode === 'move') { if (Math.hypot(px - A.p0.x, py - A.p0.y) > 4) HAND.moved = true; pos.x = A.start.x + px - A.p0.x; pos.y = A.start.y + py - A.p0.y; }
+    if (A.mode === 'size') { HAND.moved = true; pos.w = Math.max(90, Math.min(CW * .9, A.start.w * Math.hypot(px - pos.x, py - pos.y) / A.d0)); }
+    if (A.mode === 'rot') { HAND.moved = true; var a = A.start.rot + Math.atan2(py - pos.y, px - pos.x) - A.a0; if (e.shiftKey) a = Math.round(a / (Math.PI / 12)) * (Math.PI / 12); pos.rot = a; }
+    if (!A.raf) A.raf = requestAnimationFrame(function () { A.raf = 0; drawCollage(A.b, A.cv).then(function () { handBox(A.b, A.cv); }); });
+  });
+  card.addEventListener('pointerup', function () {
+    var A = HAND.act; HAND.act = null; if (!A) return;
+    drawCollage(A.b, A.cv).then(function () { handBox(A.b, A.cv); A.cv.dataset.sig = collageSig(A.b); flatten(A.b, A.cv, collageSig(A.b)); });
+    if (HAND.moved) changed();
+  });
+
   // reframing: the shape buttons and the zoom slider
   card.addEventListener('click', function (e) {
     var s = e.target.closest('[data-rfshape]'); if (!s || !RF) return;
@@ -932,6 +1161,7 @@
   }
   // a photo already on the site (a piece's, the library's): kept whole as the original, cut to the frame's shape
   function usePhoto(b, o, url, alt, href, shape) {
+    if (b.type === 'collage' || b.type === 'collage-add') { o.orig = url; o.src = ''; o.fx = o.fy = .5; o.zoom = 1; if (!o.alt) o.alt = alt || ''; rerender(b); return changed(); }
     o.orig = url; o.fx = o.fy = .5; o.zoom = 1;
     if (o.lockShape) o.shape = o.lockShape; else o.shape = shape || o.shape || '3/2';
     if (!o.alt) o.alt = alt || '';
@@ -1123,6 +1353,8 @@
       snap(); D.blocks.splice(from, 1); D.blocks.splice(at > from ? at - 1 : at, 0, b); render(); changed(); return;
     }
     var files = [].filter.call(e.dataTransfer.files, function (f) { return /^image\//.test(f.type); }); if (!files.length) return;
+    var clg = e.target.closest && e.target.closest('canvas[data-collage],[data-type="collage"] .empty');
+    if (clg) { var cb = owner(clg); files.slice(0, Math.max(0, 9 - cb.pieces.length)).forEach(function (f) { var piece = {orig: '', src: '', alt: '', shape: '', fx: .5, fy: .5, zoom: 1, lockShape: ''}; cb.pieces.push(piece); uploadInto(cb, f, piece); }); cb.seed = Math.floor(Math.random() * 1e9); rerender(cb); return; }
     var cellEl = e.target.closest && e.target.closest('[data-act="cell"]');
     if (cellEl) {
       var gb = owner(cellEl), at0 = +cellEl.dataset.i, L0 = cells(gb), open = [];

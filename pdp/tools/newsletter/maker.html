@@ -92,18 +92,18 @@
   .ph img{display:block}
   .ph.busy img{opacity:.55}
   .ph.busy::after{content:"Uploading…";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:20px;padding:5px 12px;font-size:12px}
-  .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;max-width:408px;aspect-ratio:3/2;margin:0 auto;
-    border:1.5px dashed #d9d4ca;border-radius:16px;color:var(--soft);font:13px/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;transition:.15s}
-  .empty:hover,.empty.over{border-color:var(--hi);color:var(--hi);background:rgba(47,111,219,.03)}
-  .empty b{font-weight:500;color:var(--ink)}
+  .empty{background:#f4efe6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;max-width:408px;aspect-ratio:3/2;margin:0 auto;
+    border:1.5px dashed #e3dacb;border-radius:16px;color:#a99f8e;font:13px/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;transition:.15s}
+  .empty:hover,.empty.over{border-color:var(--hi);color:var(--hi);background:#f1ebe0}
+  .empty b{font-weight:500;color:#6f6656}
   .empty.cell{font-size:22px;aspect-ratio:1/1}
   .alt-missing{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);border-radius:12px;padding:3px 9px;font:11px "Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--warn);border:0}
   /* a piece in a grid: × on hover; an empty slot to add one */
   .tile{position:relative}
   .tile .x{position:absolute;right:6px;top:6px;width:22px;height:22px;border:0;border-radius:50%;background:rgba(255,255,255,.95);font-size:14px;line-height:22px;padding:0;opacity:0;transition:.12s;box-shadow:0 2px 6px rgba(0,0,0,.15)}
   .tile:hover .x{opacity:1}
-  .slot{display:inline-flex;align-items:center;justify-content:center;width:48%;aspect-ratio:4/5;margin:0 1% 26px;vertical-align:top;border:1.5px dashed #d9d4ca;border-radius:8px;
-    color:var(--soft);font:13px "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;background:none}
+  .slot{display:inline-flex;align-items:center;justify-content:center;width:48%;aspect-ratio:4/5;margin:0 1% 26px;vertical-align:top;border:1.5px dashed #e3dacb;border-radius:8px;
+    color:#a99f8e;font:13px "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;background:#f4efe6}
   .slot:hover{border-color:var(--hi);color:var(--hi)}
   .pick-target{cursor:pointer}
 
@@ -123,8 +123,8 @@
   .sold{position:absolute;left:10px;top:10px;z-index:2;background:var(--warn);color:#fff;border-radius:12px;padding:3px 9px;font:500 11px "Helvetica Neue",Helvetica,Arial,sans-serif}
   .rel{position:relative}
   /* Instagram slots */
-  .islot{display:inline-flex;align-items:center;justify-content:center;width:31.3%;aspect-ratio:1/1;margin:0 1%;vertical-align:top;border:1.5px dashed #d9d4ca;border-radius:16px;
-    color:var(--soft);font:20px "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;background:none}
+  .islot{display:inline-flex;align-items:center;justify-content:center;width:31.3%;aspect-ratio:1/1;margin:0 1%;vertical-align:top;border:1.5px dashed #e3dacb;border-radius:16px;
+    color:#a99f8e;font:20px "Helvetica Neue",Helvetica,Arial,sans-serif;cursor:pointer;background:#f4efe6}
   .islot:hover,.islot.over{border-color:var(--hi);color:var(--hi)}
   /* saved sections in the + menu */
   .saved{margin-top:6px;border-top:1px solid #f0ede7;padding-top:6px}
@@ -134,6 +134,12 @@
   .saved .row .del{flex:none;color:#aaa;opacity:0}
   .saved .row:hover .del{opacity:1}
   .hist li .t i{display:block}
+  .cbox{position:absolute;z-index:6;box-sizing:border-box;border:1px solid #0d99ff;pointer-events:none;transform-origin:50% 50%}
+  .cbox i{position:absolute;box-sizing:border-box;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;background:#fff;border:1px solid #0d99ff;pointer-events:auto}
+  .cbox i.rot{width:24px;height:24px;margin:-12px 0 0 -12px;background:none;border:0;cursor:alias}
+  .cbox .nw{left:0;top:0;cursor:nwse-resize}.cbox .ne{left:100%;top:0;cursor:nesw-resize}.cbox .se{left:100%;top:100%;cursor:nwse-resize}.cbox .sw{left:0;top:100%;cursor:nesw-resize}
+  .cbox .rot.nw{left:-11px;top:-11px}.cbox .rot.ne{left:calc(100% + 11px);top:-11px}.cbox .rot.se{left:calc(100% + 11px);top:calc(100% + 11px)}.cbox .rot.sw{left:-11px;top:calc(100% + 11px)}
+  [data-type="collage"] canvas{touch-action:none}
   .lib{min-height:280px;max-height:60vh;overflow:auto}
   .lib .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
   .lib .g button{border:0;padding:0;background:#f1eee8;border-radius:8px;overflow:hidden;aspect-ratio:1/1;position:relative}
@@ -442,6 +448,23 @@
         }).join('');
         return '<tr><td class="pad" align="center" style="padding:0 24px ' + Math.max(0, 32 - L.gap) + 'px"><div style="max-width:' + L.max + 'px;margin:0 auto;font-size:' + (E ? '13px' : '0') + '">' + items + '</div></td></tr>';
       }},
+    collage: {label: 'Collage', icon: '✣', make: function () {
+        // photo posts first: reel covers often carry title text
+        var ig = (LIB.instagram || []).slice().sort(function (a, b2) { return (a.kind === 'reel') - (b2.kind === 'reel'); }).slice(0, 6).map(function (x) { return {orig: SITE + '/' + x.file, src: '', alt: x.caption, shape: '', fx: .5, fy: .5, zoom: 1}; });
+        return {pieces: ig, seed: Math.floor(Math.random() * 1e9), link: SITE, rendered: '', sig: ''};
+      },
+      tools: function (b) { return [['act', 'cauto', 'Auto', (b.mode || 'auto') === 'auto'], ['act', 'chand', 'By hand', b.mode === 'hand'], ['act', 'shuffle', 'Shuffle'], ['act', 'cadd', '+ Photo'], ['act', 'link', b.link ? 'Link \u2713' : 'Link']]; },
+      html: function (b, E) {
+        var framing = b.pieces.filter(function (x) { return x.reframing; })[0];
+        if (E && framing) return row('padding:0 24px 32px', rfFrame(framing) + rfControls(framing, false));
+        if (E) return row('padding:0 24px 32px', b.pieces.length
+          ? '<canvas class="clg" data-collage width="' + CW + '" height="' + CH + '" style="width:100%;max-width:' + CW / 2 + 'px;display:block;margin:0 auto;cursor:pointer"></canvas>'
+          : '<div class="empty" data-act="cadd" style="aspect-ratio:' + CW + '/' + CH + ';max-width:' + CW / 2 + 'px"><b>Add five to eight photos</b>from your desktop or the library</div>');
+        if (!b.rendered) return '';
+        var im = '<img src="' + esc(b.rendered) + '" width="' + CW / 2 + '" alt="' + esc(b.alt || 'A collage of photographs from the studio') + '" style="width:100%;max-width:' + CW / 2 + 'px;height:auto;display:block;margin:0 auto">';
+        var u = safeUrl(b.link);
+        return row('padding:0 24px 32px', u ? '<a href="' + esc(u) + '">' + im + '</a>' : im);
+      }},
     pair: {label: 'Two pieces', icon: '◆◆', make: function () { return {slugs: PIECES.slice(0, 2).map(function (p) { return p.slug; }), photo: 'held', note0: '', note1: ''}; },
       tools: function () { return [['photo', 'held', 'In the hand'], ['photo', 'tile', 'On its own']]; },
       html: function (b, E) {
@@ -502,7 +525,145 @@
     divider: {label: 'Divider', icon: '—', make: function () { return {}; },
       html: function () { return '<tr><td style="padding:0 0 32px"><div style="height:1px;background:#efece5;font-size:0;line-height:1px">&#160;</div></td></tr>'; }}
   };
-  var ORDER = ['text', 'image', 'pgrid', 'heading', 'piece', 'pair', 'grid', 'button', 'quote', 'signoff', 'insta', 'code', 'divider'];
+  var ORDER = ['text', 'image', 'pgrid', 'collage', 'heading', 'piece', 'pair', 'grid', 'button', 'quote', 'signoff', 'insta', 'code', 'divider'];
+  var CW = 1104, CH = 960;          // the collage at twice the email's 552px
+  function rng(seed) { var s = seed >>> 0; return function () { s += 0x6D2B79F5; var t = s; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var imgs = {};
+  function pic(url) { return imgs[url] || (imgs[url] = loadImg(view(url)).catch(function () { delete imgs[url]; throw new Error('missing'); })); }
+  function snapR(r) { var opts = [2 / 3, 4 / 5, 1, 5 / 4, 3 / 2]; return opts.reduce(function (a, b) { return Math.abs(Math.log(b / r)) < Math.abs(Math.log(a / r)) ? b : a; }); }
+  // where each photo lands: a loose grid, every one a little off its spot, a little larger or smaller, a little turned
+  function arrange(b, ratios) {
+    var n = ratios.length, R = rng(b.seed), cols = n <= 2 ? n : n <= 4 ? 2 : n <= 6 ? 3 : 3, rows = Math.ceil(n / cols);
+    var cw = CW / cols, ch = CH / rows, order = ratios.map(function (_, i) { return i; }).sort(function () { return R() - .5; });
+    var placed = order.map(function (k, slot) {
+      var c = slot % cols, r = Math.floor(slot / cols), inRow = r === rows - 1 ? n - cols * (rows - 1) : cols;
+      var off = (cols - inRow) * cw / 2;          // a shorter last row sits centred
+      var scale = .84 + R() * .3, ar = ratios[k];          // each a little larger or smaller than the next
+      var w = Math.min(cw * 1.0, ch * 1.0 * ar) * scale, h = w / ar;
+      var x = off + c * cw + cw / 2 + (R() - .5) * cw * .3, y = r * ch + ch / 2 + (R() - .5) * ch * .26;
+      x = Math.max(w / 2 + 14, Math.min(CW - w / 2 - 14, x)); y = Math.max(h / 2 + 14, Math.min(CH - h / 2 - 18, y));
+      return {k: k, x: x, y: y, w: w, h: h, rot: (R() - .5) * 15 * Math.PI / 180, z: R(), tear: Math.floor(R() * 1e9)};
+    }).sort(function (a, b2) { return (a.k === n - 1 && b.front) - (b2.k === n - 1 && b.front) || a.z - b2.z; });
+    return relax(L0(placed));
+  }
+  function L0(x) { return x; }
+  // push overlapping photos apart (by their turned outlines' boxes) until each has GAP around it;
+  // if they can't all fit, shrink every one a little and try again
+  var GAP = 22;
+  function relax(L) {
+    for (var round = 0; round < 8; round++) {
+      for (var it = 0; it < 120; it++) {
+        var moved = false;
+        for (var i = 0; i < L.length; i++) for (var j = i + 1; j < L.length; j++) {
+          var a = L[i], c = L[j], ea = ext(a), ec = ext(c);
+          var ox = ea.x + ec.x + GAP - Math.abs(a.x - c.x), oy = ea.y + ec.y + GAP - Math.abs(a.y - c.y);
+          if (ox > 0 && oy > 0) {
+            moved = true;
+            if (ox < oy) { var sx = (a.x < c.x ? -1 : 1) * ox / 2; a.x += sx; c.x -= sx; } else { var sy = (a.y < c.y ? -1 : 1) * oy / 2; a.y += sy; c.y -= sy; }
+          }
+        }
+        L.forEach(function (s) { var e = ext(s); s.x = Math.max(e.x + 12, Math.min(CW - e.x - 12, s.x)); s.y = Math.max(e.y + 12, Math.min(CH - e.y - 16, s.y)); });
+        if (!moved) return L;
+      }
+      L.forEach(function (s) { s.w *= .93; s.h *= .93; });
+    }
+    return L;
+  }
+  function ext(s) { var c = Math.abs(Math.cos(s.rot)), sn = Math.abs(Math.sin(s.rot)); return {x: (s.w * c + s.h * sn) / 2, y: (s.w * sn + s.h * c) / 2}; }
+  // a soft, deckled paper edge: the rectangle's outline walked in small steps, each nudged in or out a little
+  function torn(g, w, h, seed) {
+    var R = rng(seed), step = 7, amp = 2.2, pts = [];
+    function side(x0, y0, x1, y1, nx, ny) {
+      var len = Math.hypot(x1 - x0, y1 - y0), n = Math.max(2, Math.round(len / step));
+      for (var i = 0; i < n; i++) { var t = i / n, j = (R() - .5) * 2 * amp + (R() < .06 ? -amp * 1.4 : 0); pts.push([x0 + (x1 - x0) * t + nx * j, y0 + (y1 - y0) * t + ny * j]); }
+    }
+    side(-w / 2, -h / 2, w / 2, -h / 2, 0, 1); side(w / 2, -h / 2, w / 2, h / 2, -1, 0); side(w / 2, h / 2, -w / 2, h / 2, 0, -1); side(-w / 2, h / 2, -w / 2, -h / 2, 1, 0);
+    g.beginPath(); pts.forEach(function (p, i) { if (i) g.lineTo(p[0], p[1]); else g.moveTo(p[0], p[1]); }); g.closePath();
+  }
+  var paper = null;
+  function drawCollage(b, cv) {
+    var ps = b.pieces.slice();
+    return Promise.all(ps.map(function (x) { return pic(x.orig || x.src).catch(function () { return null; }); }).concat([paper || (paper = loadImg(view(SITE + '/img/pages/polaroid-paper.png')).catch(function () { return null; }))]))
+      .then(function (loaded) {
+        var tex = loaded.pop(), g = cv.getContext('2d');
+        var ratios = loaded.map(function (img, i) { var x = ps[i]; if (x.shape) return shapeR(x, 1, 1); return img ? snapR(img.naturalWidth / img.naturalHeight) : 1; });
+        var L = b.mode === 'hand' ? handLayout(b, ratios) : arrange(b, ratios);
+        g.fillStyle = '#ffffff'; g.fillRect(0, 0, CW, CH);
+        L.forEach(function (s) {
+          var img = loaded[s.k], x = ps[s.k], border = Math.max(10, s.w * .045);
+          g.save(); g.translate(s.x, s.y); g.rotate(s.rot);
+          // the paper, lying flat: a hard, shallow shadow under it
+          torn(g, s.w, s.h, s.tear);
+          g.shadowColor = 'rgba(0,0,0,.30)'; g.shadowBlur = 3; g.shadowOffsetX = 1; g.shadowOffsetY = 3;
+          g.fillStyle = '#f3efe6'; g.fill();
+          g.shadowColor = 'rgba(0,0,0,.14)'; g.shadowBlur = 9; g.shadowOffsetY = 6; g.fill();
+          g.shadowColor = 'transparent';
+          if (tex) { g.save(); torn(g, s.w, s.h, s.tear); g.clip(); g.globalAlpha = .5; g.fillStyle = g.createPattern(tex, 'repeat'); g.fillRect(-s.w / 2, -s.h / 2, s.w, s.h); g.restore(); }
+          // the photograph on it
+          var iw = s.w - border * 2, ih = s.h - border * 2;
+          if (img) {
+            var o = {shape: x.shape || (iw / ih).toFixed(4) + '/1', fx: x.fx, fy: x.fy, zoom: x.zoom}, c = crop(o, img.naturalWidth, img.naturalHeight);
+            x.fx = o.fx; x.fy = o.fy;
+            g.drawImage(img, c.x, c.y, c.w, c.h, -iw / 2, -ih / 2, iw, ih);
+          } else { g.fillStyle = '#f4efe6'; g.fillRect(-iw / 2, -ih / 2, iw, ih); }
+          g.strokeStyle = 'rgba(0,0,0,.08)'; g.lineWidth = 1; g.strokeRect(-iw / 2, -ih / 2, iw, ih);
+          g.restore();
+        });
+        b._layout = L;
+        return L;
+      });
+  }
+  function collageSig(b) { return JSON.stringify([b.seed, b.mode || 'auto', b.pieces.map(function (x) { return [x.orig || x.src, x.shape, +(x.fx || .5).toFixed(3), +(x.fy || .5).toFixed(3), +(x.zoom || 1).toFixed(2), x.pos ? [Math.round(x.pos.x), Math.round(x.pos.y), Math.round(x.pos.w), +x.pos.rot.toFixed(3)] : 0]; })]); }
+  // by hand: drawn in the pieces' own order (last on top), each where it was put; a new one lands in the middle
+  function handLayout(b, ratios) {
+    return b.pieces.map(function (x, k) {
+      var ar = ratios[k];
+      if (!x.pos) x.pos = {x: CW / 2, y: CH / 2, w: CW * .3, rot: 0};
+      if (!x.tear) x.tear = Math.floor(Math.random() * 1e9);
+      return {k: k, x: x.pos.x, y: x.pos.y, w: x.pos.w, h: x.pos.w / ar, rot: x.pos.rot, tear: x.tear};
+    });
+  }
+  // switching to by hand starts from the arrangement on screen
+  function toHand(b) {
+    (b._layout || []).forEach(function (s) { var x = b.pieces[s.k]; if (!x) return; x.pos = {x: s.x, y: s.y, w: s.w, rot: s.rot}; x.tear = s.tear; });
+    var order = (b._layout || []).map(function (s) { return b.pieces[s.k]; }).filter(Boolean);
+    if (order.length === b.pieces.length) b.pieces = order;          // keep who's on top
+    b.mode = 'hand';
+  }
+  function paintCollages() {
+    card.querySelectorAll('canvas[data-collage]').forEach(function (cv) {
+      var b = owner(cv); if (!b) return; var sig = collageSig(b);
+      if (cv.dataset.sig === sig) return; cv.dataset.sig = sig;
+      drawCollage(b, cv).then(function () { handBox(b, cv); if (b.sig !== sig) flatten(b, cv, sig); });
+    });
+  }
+  // the email gets the collage as one picture, kept on the site; redone a moment after each change
+  var flatT = {};
+  function flatten(b, cv, sig) {
+    if (!REMOTE) return;
+    clearTimeout(flatT[b.id]);
+    flatT[b.id] = setTimeout(function () {
+      if (collageSig(b) !== sig) return;
+      canvasBlob(cv, .88).then(function (blob) { return putBlob(blob, 'image/jpeg'); }).then(function (u) {
+        if (collageSig(b) !== sig) return; b.rendered = u; b.sig = sig; changed(); badge();
+      }).catch(function () {});
+    }, 1200);
+  }
+  // which photo is under a click on the canvas: the topmost whose turned rectangle holds the point
+  function hitPiece(b, cv, e) {
+    var r = cv.getBoundingClientRect(), px = (e.clientX - r.left) * CW / r.width, py = (e.clientY - r.top) * CH / r.height, hit = null;
+    (b._layout || []).forEach(function (s) {
+      var dx = px - s.x, dy = py - s.y, c = Math.cos(-s.rot), sn = Math.sin(-s.rot), lx = dx * c - dy * sn, ly = dx * sn + dy * c;
+      if (Math.abs(lx) <= s.w / 2 && Math.abs(ly) <= s.h / 2) hit = s;
+    });
+    return hit;
+  }
+  function addPiece(b, anchor) {
+    var piece = {orig: '', src: '', alt: '', shape: '', fx: .5, fy: .5, zoom: 1};
+    PENDING[b.id] = piece; piece.lockShape = '';
+    openPhoto(anchor, {type: 'collage-add', id: b.id}, piece);
+  }
+
   // the photo grid's three layouts: how many cells, their shape, width and the space between rows
   var LAYOUTS = {'2': {n: 2, shape: '4/5', w: '48%', px: 220, gap: 12, max: 460}, '2x2': {n: 4, shape: '1/1', w: '48%', px: 220, gap: 12, max: 460}, '3x3': {n: 9, shape: '1/1', w: '31.3%', px: 144, gap: 8, max: 460}};
   function cells(b) {
@@ -572,6 +733,7 @@
     });
     d.blocks.forEach(function (b) {
       if (b.type === 'insta' && !b.pics.some(Boolean)) out.push([false, 'The Instagram row has no photos yet']);
+      if (b.type === 'collage') { if (b.pieces.length < 2) out.push([false, 'A collage needs a few photos']); else if (!b.rendered || b.sig !== collageSig(b)) out.push([false, REMOTE ? 'The collage is still being prepared: give it a moment' : 'Collages need the studio password to be saved for the email']); }
       if (b.type === 'pgrid') { var Lg = LAYOUTS[b.layout] || LAYOUTS['2x2'], filled = (b.cells || []).slice(0, Lg.n).filter(function (c) { return c.src; }).length; if (filled < Lg.n) out.push([false, 'A photo grid has ' + (Lg.n - filled) + ' empty spot' + (Lg.n - filled > 1 ? 's' : '')]); }
     });
     return out;
@@ -646,7 +808,7 @@
     if (!dirty || !D) return;
     dirty = false; D.by = ME; D.updated = Date.now();
     try { localStorage.setItem('macon-nl-last', D.id); } catch (e) {}
-    var copy = JSON.parse(JSON.stringify(D)); copy.blocks.forEach(function (b) { delete b.busy; delete b.fresh; delete b.reframing; (b.cells || []).forEach(function (c) { delete c.busy; delete c.reframing; }); });
+    var copy = JSON.parse(JSON.stringify(D)); copy.blocks.forEach(function (b) { delete b.busy; delete b.fresh; delete b.reframing; (b.cells || []).concat(b.pieces || []).forEach(function (c) { delete c.busy; delete c.reframing; delete c._onset; }); delete b._layout; });
     store().put(copy, base).then(function (u) { base = u || D.updated; setStatus((REMOTE ? 'Saved' : 'Saved in this browser') + ' · ' + new Date().toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})); })
       .catch(function (e) {
         if (e.message === 'conflict') {
@@ -688,7 +850,7 @@
   function toolsFor(b) {
     var k = KINDS[b.type], t = k.tools ? k.tools(b) : [];
     return '<div class="tools">' + t.map(function (x) {
-      return x[0] === 'act' ? '<button data-act="' + x[1] + '">' + esc(x[2]) + '</button>'
+      return x[0] === 'act' ? '<button data-act="' + x[1] + '"' + (x[3] != null ? ' aria-pressed="' + !!x[3] + '"' : '') + '>' + esc(x[2]) + '</button>'
         : '<button data-set="' + x[0] + '" data-v="' + x[1] + '" aria-pressed="' + (b[x[0]] === x[1]) + '">' + esc(x[2]) + '</button>';
     }).join('') + (t.length ? '<span class="sep"></span>' : '')
       + '<button data-act="keep" title="Save as a section to reuse">Save</button><button data-act="dup" title="Duplicate">Copy</button><button data-act="del" title="Remove">Remove</button></div>';
@@ -702,7 +864,7 @@
       + D.blocks.map(function (b, i) { return gap(i) + blockEl(b); }).join('') + gap(D.blocks.length)
       + '<div class="end"><button data-add-at="' + D.blocks.length + '">+ Add a block</button></div>'
       + '<div class="foot-in">Every piece is made to order in the studio in California.<br><a>About</a> &nbsp;·&nbsp; <a>Instagram</a> &nbsp;·&nbsp; <a>Unsubscribe</a><br>Studio Maçon · Santa Monica</div>';
-    fit();
+    fit(); paintCollages();
     if (focusId) {
       var f = card.querySelector('[data-id="' + focusId + '"] [data-f]');
       if (f) { f.focus(); caretEnd(f); }
@@ -730,9 +892,16 @@
     });
   }
   function rerender(b) {          // one block again (after a tool), leaving the rest (and any typing) alone
+    if (b && b.type === 'collage-add') { var real = byId(b.id); var p = real && real.pieces; (D.blocks.filter(function (x) { return x.id === b.id; })[0] || {}); return pendingAdd(real); }
     var el = card.querySelector('[data-id="' + b.id + '"]'); if (!el) return render();
-    var t = document.createElement('div'); t.innerHTML = blockEl(b); el.replaceWith(t.firstChild); fit();
+    var t = document.createElement('div'); t.innerHTML = blockEl(b); el.replaceWith(t.firstChild); fit(); paintCollages();
   }
+  function pendingAdd(b) {          // a new piece's photo has arrived (or is on its way): it joins once it has one
+    if (!b) return; var waiting = PENDING[b.id]; if (!waiting) return rerender(b);
+    if (waiting.orig || waiting.src) { delete PENDING[b.id]; if (b.pieces.indexOf(waiting) < 0) { snap(); b.pieces.push(waiting); } if (b.mode !== 'hand') b.seed = Math.floor(Math.random() * 1e9); }
+    rerender(b);
+  }
+  var PENDING = {};
   function byId(id) { return D.blocks.filter(function (b) { return b.id === id; })[0]; }
   function owner(el) { var c = el && el.closest && el.closest('.blk'); return c ? byId(c.dataset.id) : null; }
   function insert(type, at) { snap(); var b = block(type); D.blocks.splice(at, 0, b); render(b.id); changed(); return b; }
@@ -825,6 +994,10 @@
     if (a === 'addpiece') openPieces(t, function (p) { if (b.slugs.indexOf(p.slug) < 0) b.slugs.push(p.slug); rerender(b); changed(); });
     if (a === 'unpick') { b.slugs = b.slugs.filter(function (s) { return s !== t.dataset.slug; }); rerender(b); changed(); }
     if (a === 'reframe') startReframe(b);
+    if (a === 'shuffle') { snap(); b.seed = Math.floor(Math.random() * 1e9); b.mode = 'auto'; b.front = false; b.pieces.forEach(function (x) { delete x.pos; }); rerender(b); changed(); }
+    if (a === 'chand' && b.mode !== 'hand') { snap(); toHand(b); rerender(b); changed(); toast('Drag a photo to move it; its corners resize it, just outside them turns it'); }
+    if (a === 'cauto' && b.mode === 'hand') { snap(); b.mode = 'auto'; b.pieces.forEach(function (x) { delete x.pos; }); rerender(b); changed(); }
+    if (a === 'cadd') { if (b.pieces.length >= 9) return toast('Nine is plenty for one collage'); addPiece(b, t); }
     if (a === 'cell') {
       var cell = b.cells[+t.dataset.i], extra = [];
       if (cell.src) extra.push(['frame', '\u2725', 'Reframe', function () { closePop(); startReframe(b, cell); }], ['clear', '\u00d7', 'Remove', function () { closePop(); snap(); b.cells[+t.dataset.i] = {src: '', orig: '', alt: '', shape: cell.lockShape, fx: .5, fy: .5, zoom: 1}; rerender(b); changed(); }]);
@@ -838,6 +1011,62 @@
     if (a === 'iclear') { b.pics[+t.dataset.i] = ''; rerender(b); changed(); }
     if (a === 'keep') keepSection(t, b);
   });
+  // a click on the collage picks the photo under it
+  card.addEventListener('click', function (e) {
+    var cv = e.target.closest('canvas[data-collage]'); if (!cv) return;
+    if (HAND.moved) { HAND.moved = false; return; }
+    var b = owner(cv), s = hitPiece(b, cv, e); if (!s) return;
+    var x = (b.mode === 'hand' && HAND.sel && HAND.sel.b === b) ? HAND.sel.x : b.pieces[s.k], anchor = {getBoundingClientRect: function () { return {left: e.clientX - 1, right: e.clientX + 1, top: e.clientY - 1, bottom: e.clientY + 1, width: 2, height: 2}; }};
+    x.lockShape = x.shape || (s.w / s.h).toFixed(4) + '/1';
+    openPhoto(anchor, b, x, [
+      ['frame', '✥', 'Reframe', function () { closePop(); x.shape = x.lockShape; startReframe(b, x); }],
+      ['front', '▲', 'Bring to front', function () { closePop(); snap(); b.pieces.splice(b.pieces.indexOf(x), 1); b.pieces.push(x); b.front = true; rerender(b); changed(); }],
+      ['out', '\u00d7', 'Remove', function () { closePop(); snap(); b.pieces.splice(b.pieces.indexOf(x), 1); HAND.sel = null; if (b.mode !== 'hand') b.seed = Math.floor(Math.random() * 1e9); rerender(b); changed(); }]
+    ]);
+  });
+  // ── by hand: drag to move; the frame's corners resize, just outside them turns ──────────
+  var HAND = {sel: null, act: null, moved: false};
+  function handBox(b, cv) {
+    var old = cv.parentNode.querySelector('.cbox'); if (old) old.remove();
+    if (b.mode !== 'hand' || !HAND.sel || HAND.sel.b !== b) return;
+    var s = (b._layout || []).filter(function (q) { return b.pieces[q.k] === HAND.sel.x; })[0]; if (!s) return;
+    var sc = cv.clientWidth / CW, box = document.createElement('div');
+    box.className = 'cbox';
+    box.style.cssText = 'left:' + (cv.offsetLeft + (s.x - s.w / 2) * sc) + 'px;top:' + (cv.offsetTop + (s.y - s.h / 2) * sc) + 'px;width:' + s.w * sc + 'px;height:' + s.h * sc + 'px;transform:rotate(' + s.rot + 'rad)';
+    box.innerHTML = ['nw', 'ne', 'se', 'sw'].map(function (c) { return '<i class="rot ' + c + '" data-h="rot"></i>'; }).join('') + ['nw', 'ne', 'se', 'sw'].map(function (c) { return '<i class="' + c + '" data-h="size"></i>'; }).join('');
+    cv.parentNode.style.position = 'relative'; cv.parentNode.appendChild(box);
+  }
+  card.addEventListener('pointerdown', function (e) {
+    var h = e.target.closest('.cbox i'), cv = e.target.closest('canvas[data-collage]') || (h && h.closest('td').querySelector('canvas[data-collage]'));
+    if (!cv) { if (!e.target.closest('#pop')) { var had = HAND.sel; HAND.sel = null; if (had) card.querySelectorAll('.cbox').forEach(function (x) { x.remove(); }); } return; }
+    var b = owner(cv); if (b.mode !== 'hand') return;
+    var r = cv.getBoundingClientRect(), k = CW / r.width, px = (e.clientX - r.left) * k, py = (e.clientY - r.top) * k;
+    if (h && HAND.sel) {
+      var x = HAND.sel.x, pos = x.pos;
+      HAND.act = {mode: h.dataset.h, b: b, cv: cv, x: x, start: {x: pos.x, y: pos.y, w: pos.w, rot: pos.rot}, a0: Math.atan2(py - pos.y, px - pos.x), d0: Math.hypot(px - pos.x, py - pos.y), k: k, r: r};
+    } else {
+      var s = hitPiece(b, cv, e); if (!s) { HAND.sel = null; handBox(b, cv); return; }
+      var piece = b.pieces[s.k]; snap();
+      b.pieces.splice(s.k, 1); b.pieces.push(piece);          // the one you take sits on top
+      HAND.sel = {b: b, x: piece};
+      HAND.act = {mode: 'move', b: b, cv: cv, x: piece, start: {x: piece.pos.x, y: piece.pos.y}, p0: {x: px, y: py}, k: k, r: r};
+    }
+    HAND.moved = false; e.preventDefault(); cv.setPointerCapture && cv.setPointerCapture(e.pointerId);
+  });
+  card.addEventListener('pointermove', function (e) {
+    var A = HAND.act; if (!A) return;
+    var px = (e.clientX - A.r.left) * A.k, py = (e.clientY - A.r.top) * A.k, pos = A.x.pos;
+    if (A.mode === 'move') { if (Math.hypot(px - A.p0.x, py - A.p0.y) > 4) HAND.moved = true; pos.x = A.start.x + px - A.p0.x; pos.y = A.start.y + py - A.p0.y; }
+    if (A.mode === 'size') { HAND.moved = true; pos.w = Math.max(90, Math.min(CW * .9, A.start.w * Math.hypot(px - pos.x, py - pos.y) / A.d0)); }
+    if (A.mode === 'rot') { HAND.moved = true; var a = A.start.rot + Math.atan2(py - pos.y, px - pos.x) - A.a0; if (e.shiftKey) a = Math.round(a / (Math.PI / 12)) * (Math.PI / 12); pos.rot = a; }
+    if (!A.raf) A.raf = requestAnimationFrame(function () { A.raf = 0; drawCollage(A.b, A.cv).then(function () { handBox(A.b, A.cv); }); });
+  });
+  card.addEventListener('pointerup', function () {
+    var A = HAND.act; HAND.act = null; if (!A) return;
+    drawCollage(A.b, A.cv).then(function () { handBox(A.b, A.cv); A.cv.dataset.sig = collageSig(A.b); flatten(A.b, A.cv, collageSig(A.b)); });
+    if (HAND.moved) changed();
+  });
+
   // reframing: the shape buttons and the zoom slider
   card.addEventListener('click', function (e) {
     var s = e.target.closest('[data-rfshape]'); if (!s || !RF) return;
@@ -932,6 +1161,7 @@
   }
   // a photo already on the site (a piece's, the library's): kept whole as the original, cut to the frame's shape
   function usePhoto(b, o, url, alt, href, shape) {
+    if (b.type === 'collage' || b.type === 'collage-add') { o.orig = url; o.src = ''; o.fx = o.fy = .5; o.zoom = 1; if (!o.alt) o.alt = alt || ''; rerender(b); return changed(); }
     o.orig = url; o.fx = o.fy = .5; o.zoom = 1;
     if (o.lockShape) o.shape = o.lockShape; else o.shape = shape || o.shape || '3/2';
     if (!o.alt) o.alt = alt || '';
@@ -1123,6 +1353,8 @@
       snap(); D.blocks.splice(from, 1); D.blocks.splice(at > from ? at - 1 : at, 0, b); render(); changed(); return;
     }
     var files = [].filter.call(e.dataTransfer.files, function (f) { return /^image\//.test(f.type); }); if (!files.length) return;
+    var clg = e.target.closest && e.target.closest('canvas[data-collage],[data-type="collage"] .empty');
+    if (clg) { var cb = owner(clg); files.slice(0, Math.max(0, 9 - cb.pieces.length)).forEach(function (f) { var piece = {orig: '', src: '', alt: '', shape: '', fx: .5, fy: .5, zoom: 1, lockShape: ''}; cb.pieces.push(piece); uploadInto(cb, f, piece); }); cb.seed = Math.floor(Math.random() * 1e9); rerender(cb); return; }
     var cellEl = e.target.closest && e.target.closest('[data-act="cell"]');
     if (cellEl) {
       var gb = owner(cellEl), at0 = +cellEl.dataset.i, L0 = cells(gb), open = [];
