@@ -37,6 +37,34 @@ console.log(JSON.stringify(Function('return ('+s.slice(i,j+1)+')')()))"""
         return {}
 
 
+CORKBOARD_ENV = os.path.expanduser("~/Documents/git/macon-process-app/web-claude/.env.local")          # Corkboard's public address and key
+
+
+def library(pdp, pieces, content):
+    """What the photo library offers besides past uploads: every piece's own photographs (their 1200px and
+    thumbnail copies), the imported Instagram posts, and where Corkboard lives (its publishable key only:
+    everything in it still needs a Corkboard sign-in)."""
+    shop = []
+    for p in pieces:
+        s, c = p["slug"], content.get(p["slug"]) or {}
+        names = [c.get("hero"), f"img/{s}/terracotta.jpg"] + list(c.get("gallery") or [])
+        seen = set()
+        for n in names:
+            if not n or n in seen or not n.endswith(".jpg") or not os.path.exists(os.path.join(pdp, n)): continue
+            seen.add(n); base = n[:-4]
+            full = next((f for f in (base + "--m.jpg.webp", n + ".webp", n) if os.path.exists(os.path.join(pdp, f))), n)
+            th = next((f for f in (base + "--th.jpg.webp", base + "--tile.jpg.webp", full) if os.path.exists(os.path.join(pdp, f))), full)
+            shop.append({"file": full, "thumb": th, "alt": p["name"], "slug": s})
+    ig_index = os.path.join(pdp, "img", "library", "instagram", "index.json")
+    ig = json.load(open(ig_index, encoding="utf-8")) if os.path.exists(ig_index) else []
+    cork = {}
+    if os.path.exists(CORKBOARD_ENV):
+        env = dict(l.strip().split("=", 1) for l in open(CORKBOARD_ENV) if "=" in l and not l.lstrip().startswith("#"))
+        if env.get("VITE_SUPABASE_URL") and env.get("VITE_SUPABASE_ANON_KEY"):
+            cork = {"url": env["VITE_SUPABASE_URL"].strip().strip('"'), "key": env["VITE_SUPABASE_ANON_KEY"].strip().strip('"')}
+    return {"shop": shop, "instagram": ig, "corkboard": cork}
+
+
 def build(pdp, pieces, content, shop=None):
     """pieces: the shop's running order, each {slug, name, price, kind}."""
     for p in pieces:
@@ -54,6 +82,7 @@ def build(pdp, pieces, content, shop=None):
     # issues written ahead of time (starters/*.json), offered first under New
     sd = os.path.join(HERE, "starters")
     starters = [json.load(open(os.path.join(sd, f), encoding="utf-8")) for f in sorted(os.listdir(sd)) if f.endswith(".json")] if os.path.isdir(sd) else []
-    page = page.replace("/*STARTERS*/[]", json.dumps(starters, ensure_ascii=False))          # the public, read-only store key the site already uses
+    page = page.replace("/*STARTERS*/[]", json.dumps(starters, ensure_ascii=False))
+    page = page.replace("/*LIBRARY*/{}", json.dumps(library(pdp, pieces, content), ensure_ascii=False))          # the public, read-only store key the site already uses
     with open(os.path.join(pdp, "newsletter.html"), "w", encoding="utf-8") as f:
         f.write(page)

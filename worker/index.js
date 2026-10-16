@@ -84,7 +84,8 @@ async function newsletter(request, env, url) {
     const pic = await request.arrayBuffer();
     if (!pic.byteLength || pic.byteLength > 5e6) return json({error: 'photo too large'}, 413);
     const id = crypto.randomUUID(), ext = /gif/.test(request.headers.get('content-type') || '') ? 'gif' : 'jpg';          // moving GIFs are kept as they are
-    await kv.put('img:' + id, pic);
+    const kind = /^(orig|crop)$/.test(request.headers.get('x-kind') || '') ? request.headers.get('x-kind') : 'orig';
+    await kv.put('img:' + id, pic, {metadata: {at: Date.now(), kind, ext}});          // the library shows the originals, newest first
     return json({url: `https://studiomacon.co/_nl/img/${id}.${ext}`});
   }
   if (url.pathname === '/_nl/drafts' && request.method === 'GET') {
@@ -122,6 +123,14 @@ async function newsletter(request, env, url) {
       return json({ok: true, updated});
     }
     if (request.method === 'DELETE') { await kv.delete(key); return json({ok: true}); }
+  }
+  // the photo library: every original uploaded, newest first (crops of them are left out)
+  if (url.pathname === '/_nl/library' && request.method === 'GET') {
+    const keys = []; let cursor;
+    do { const page = await kv.list({prefix: 'img:', cursor}); keys.push(...page.keys); cursor = page.list_complete ? null : page.cursor; } while (cursor && keys.length < 3000);
+    return json(keys.filter(k => !k.metadata || k.metadata.kind !== 'crop')
+      .map(k => ({url: `https://studiomacon.co/_nl/img/${k.name.slice(4)}.${(k.metadata && k.metadata.ext) || 'jpg'}`, at: (k.metadata && k.metadata.at) || 0}))
+      .sort((a, b) => b.at - a.at));
   }
   // earlier versions of a draft
   m = url.pathname.match(/^\/_nl\/versions\/([a-z0-9-]{8,64})(?:\/(\d{10,16}))?$/);

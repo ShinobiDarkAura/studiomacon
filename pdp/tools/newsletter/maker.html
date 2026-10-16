@@ -134,6 +134,16 @@
   .saved .row .del{flex:none;color:#aaa;opacity:0}
   .saved .row:hover .del{opacity:1}
   .hist li .t i{display:block}
+  .lib{min-height:280px;max-height:60vh;overflow:auto}
+  .lib .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+  .lib .g button{border:0;padding:0;background:#f1eee8;border-radius:8px;overflow:hidden;aspect-ratio:1/1;position:relative}
+  .lib .g button img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+  .lib .g button:hover img{transform:scale(1.04)}
+  .lib .g button span{position:absolute;left:0;right:0;bottom:0;padding:14px 6px 5px;font-size:10px;color:#fff;text-align:left;background:linear-gradient(transparent,rgba(0,0,0,.55));opacity:0;transition:.15s}
+  .lib .g button:hover span{opacity:1}
+  .lib .msg{color:#777;padding:30px 4px;text-align:center}
+  .lib form{display:flex;flex-direction:column;gap:8px;max-width:300px;margin:30px auto}
+  .lib form input{border:1px solid var(--line);border-radius:7px;padding:8px 9px}
   /* the one floating card: block types, the piece chooser, a link or a description */
   .pop{position:absolute;z-index:40;background:#fff;border-radius:12px;box-shadow:0 18px 50px -14px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.05);padding:8px;display:none}
   .pop.on{display:block}
@@ -240,6 +250,13 @@
   <div class="foot"><button class="btn" id="keySkip">This browser only</button><button class="btn dark" id="keyOk">Unlock</button></div>
 </div></dialog>
 
+<dialog id="libDlg" class="wide"><div class="dlg">
+  <h2>Library</h2>
+  <div class="seg" id="libTabs"><button data-src="uploads" aria-pressed="true">Uploads</button><button data-src="shop">Shop</button><button data-src="instagram">Instagram</button><button data-src="corkboard">Corkboard</button></div>
+  <div id="libBody" class="lib"></div>
+  <div class="foot"><button class="btn" data-close>Close</button></div>
+</div></dialog>
+
 <dialog id="historyDlg"><div class="dlg">
   <h2>Earlier versions</h2>
   <p id="histNote">A version is kept whenever the other person saves over your work, and every 15 minutes while you edit. Kept for four months.</p>
@@ -274,7 +291,8 @@
 (function () {
   // ── the shop's pieces, filled in by the build ──────────────────────────────────────────
   var PIECES = /*PIECES*/[];
-  var STARTERS = /*STARTERS*/[];          // issues written ahead of time
+  var STARTERS = /*STARTERS*/[];
+  var LIB = /*LIBRARY*/{};          // the library's sources: the shop's photographs, imported Instagram posts, Corkboard's address          // issues written ahead of time
   var LETTERS = /*LETTERS*/{};          // the Bureau of Provenance's monthly letter outlines
   var SHOP = /*SHOP*/{}, STATUS = null, NEWEST = [];          // STATUS: each piece's handle → available, read live from the store
   var SITE = 'https://studiomacon.co', IMG = SITE + '/img/email';
@@ -333,7 +351,7 @@
     if (!E) return null;
     return '<span class="plain ' + (cls || '') + '" data-f="' + key + '" contenteditable="plaintext-only" data-ph="' + esc(ph) + '">' + esc(b[key] || '') + '</span>';
   }
-  function view(u) { return String(u || '').replace(IMG + '/', 'img/email/').replace(SITE + '/_nl/', '/_nl/'); }          // the editor's own copy of a picture
+  function view(u) { u = String(u || ''); return u.indexOf(SITE + '/_nl/') === 0 ? u.slice(SITE.length) : u.indexOf(SITE + '/') === 0 ? u.slice(SITE.length + 1) : u; }          // the site's own pictures, read from wherever this page runs          // the editor's own copy of a picture
   var BRAND = 'border-radius:16px;' + SH;
   function rfControls(o, shapes) {
     return '<div class="rfbar">' + (shapes ? '<div class="seg2">' + [['3/2', 'Wide'], ['4/5', 'Tall'], ['1/1', 'Square'], ['', 'As shot']].map(function (s) { return '<button data-rfshape="' + s[0] + '" aria-pressed="' + ((o.shape || '') === s[0]) + '">' + s[1] + '</button>'; }).join('') + '</div>' : '')
@@ -518,7 +536,7 @@
       + '  </td></tr>\n</table></td></tr></table>{{ open_tracking_block }}\n</body></html>';
     // accented letters as HTML codes (ç → &#231;), so a paste that loses UTF-8 cannot break them
     html = Array.from(html).map(function (c) { return c.charCodeAt(0) > 127 ? '&#' + c.codePointAt(0) + ';' : c; }).join('');          // whole characters, so emoji survive
-    if (forPreview) html = html.split(IMG + '/').join(new URL('img/email/', location.href).href).split(SITE + '/_nl/').join(location.origin + '/_nl/').replace('{{ unsubscribe_url }}', '#')
+    if (forPreview) html = html.split(IMG + '/').join(new URL('img/email/', location.href).href).split(SITE + '/_nl/').join(location.origin + '/_nl/').split(SITE + '/img/').join(new URL('img/', location.href).href).replace('{{ unsubscribe_url }}', '#')
       .replace('{{ shop.name }}', 'Studio Ma&#231;on').replace('{{ shop.address.city }}', 'Santa Monica').replace('{{ open_tracking_block }}', '');
     return html;
   }
@@ -893,11 +911,12 @@
   }
   function openPhoto(anchor, b, o, extra) {
     o = o || b;
-    pop.innerHTML = '<div class="types" style="grid-template-columns:1fr 1fr;width:300px"><button data-o="up"><i>↑</i>Upload a photo</button><button data-o="piece"><i>◆</i>A piece’s photo</button>'
+    pop.innerHTML = '<div class="types" style="grid-template-columns:1fr 1fr;width:300px"><button data-o="up"><i>↑</i>Upload a photo</button><button data-o="lib"><i>▦</i>From the library</button><button data-o="piece"><i>◆</i>A piece’s photo</button>'
       + (extra || []).map(function (x) { return '<button data-o="' + x[0] + '"><i>' + x[1] + '</i>' + x[2] + '</button>'; }).join('') + '</div>'
       + '<div class="ask" style="margin-top:6px"><input type="url" placeholder="or paste a photo’s link" id="photoUrl"></div>';
     place(pop, anchor);
     pop.querySelector('[data-o="up"]').onclick = function () { closePop(); pickFile(function (f) { uploadInto(b, f, o); }); };
+    pop.querySelector('[data-o="lib"]').onclick = function () { closePop(); openLibrary(function (it) { usePhoto(b, o, it.url, it.alt, it.link); }); };
     pop.querySelector('[data-o="piece"]').onclick = function () {
       openPieces(anchor, function (p) {
         pop.innerHTML = '<div class="types" style="grid-template-columns:1fr 1fr;width:260px"><button data-k="held"><i>✋</i>In the hand</button><button data-k="tile"><i>▯</i>On its own</button></div>';
@@ -946,8 +965,8 @@
     inp.onchange = function () { if (inp.files[0]) done(inp.files[0]); }; inp.click();
   }
   function choose(b) { pickFile(function (f) { uploadInto(b, f); }); }
-  function putBlob(blob, type) {
-    return api('/img', {method: 'POST', headers: {'content-type': type}, body: blob})
+  function putBlob(blob, type, kind) {
+    return api('/img', {method: 'POST', headers: {'content-type': type, 'x-kind': kind || 'crop'}, body: blob})
       .then(function (r) { if (!r.ok) throw new Error(r.status === 413 ? 'big' : ''); return r.json(); }).then(function (j) { return j.url; });
   }
   function failed(e) { toast(e && e.message === 'big' ? 'That file is over 5 MB. Try a smaller one.' : 'That upload didn\u2019t go through. Try again.'); }
@@ -986,13 +1005,13 @@
     if (file.type === 'image/gif') {          // a moving GIF goes up as it is: redrawing it would stop it, so it can't be reframed
       if (file.size > 5e6) return toast('That GIF is over 5 MB. Most mail apps struggle past about 1 MB.');
       o.src = URL.createObjectURL(file); o.busy = true; rerender(b);
-      return putBlob(file, 'image/gif').then(function (u) { o.src = u; o.orig = ''; delete o.busy; rerender(b); changed(); }, function (e) { o.src = old; delete o.busy; rerender(b); failed(e); });
+      return putBlob(file, 'image/gif', 'orig').then(function (u) { o.src = u; o.orig = ''; delete o.busy; rerender(b); changed(); }, function (e) { o.src = old; delete o.busy; rerender(b); failed(e); });
     }
     readImage(file).then(function (img) {
       o.shape = o.lockShape || (o.shape == null ? '3/2' : o.shape); o.fx = o.fy = .5; o.zoom = 1;
       var cut = cropCanvas(img, o), whole = wholeCanvas(img, 2400);
       o.src = cut.toDataURL('image/jpeg', .6); o.busy = true; rerender(b);          // shown at once, faintly, while it uploads
-      return canvasBlob(whole, .9).then(function (blob) { return putBlob(blob, 'image/jpeg'); })          // the original, kept for reframing later
+      return canvasBlob(whole, .9).then(function (blob) { return putBlob(blob, 'image/jpeg', 'orig'); })          // the original, kept for reframing later
         .then(function (u) { o.orig = u; return canvasBlob(cut, .86); }).then(function (blob) { return putBlob(blob, 'image/jpeg'); })
         .then(function (u) { o.src = u; delete o.busy; delete b.fresh; rerender(b); changed(); if (o === b && !b.alt) toast('Photo added \u00b7 drag it with Reframe, and add a description'); });
     }).catch(function (e) {
@@ -1159,6 +1178,86 @@
   }
   document.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { setView(b.dataset.view); }); });
   try { if (localStorage.getItem('macon-nl-view') === 'phone') setView('phone'); } catch (e) {}
+
+  // ── the library: past uploads, the shop's photographs, Instagram, Corkboard ──────────────
+  var libPick = null, libSrc = 'uploads', corkSession = null;
+  try { corkSession = JSON.parse(localStorage.getItem('macon-nl-cork') || 'null'); } catch (e) {}
+  function openLibrary(done) { libPick = done; showLib(libSrc); $('#libDlg').showModal(); }
+  document.querySelectorAll('#libTabs [data-src]').forEach(function (b) { b.onclick = function () { showLib(b.dataset.src); }; });
+  function tiles(items) {
+    return '<div class="g">' + items.map(function (it, i) { return '<button data-li="' + i + '" title="' + esc(it.alt || '') + '"><img src="' + esc(it.thumb || it.view || it.url) + '" alt="" loading="lazy">' + (it.alt ? '<span>' + esc(it.alt) + '</span>' : '') + '</button>'; }).join('') + '</div>';
+  }
+  function showLib(src) {
+    libSrc = src;
+    document.querySelectorAll('#libTabs [data-src]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.src === src); });
+    var body = $('#libBody'), list = [];
+    function draw(items, empty) {
+      list = items; body.innerHTML = items.length ? tiles(items) : '<p class="msg">' + empty + '</p>';
+      body.querySelectorAll('[data-li]').forEach(function (b) { b.onclick = function () { pick(list[+b.dataset.li]); }; });
+    }
+    if (src === 'uploads') {
+      if (!REMOTE) return draw([], 'Past uploads are kept on the site: enter the studio password (Drafts → Studio password).');
+      body.innerHTML = '<p class="msg">Loading…</p>';
+      api('/library').then(function (r) { if (!r.ok) throw r; return r.json(); }).then(function (xs) {
+        draw(xs.map(function (x) { return {url: x.url, thumb: view(x.url)}; }), 'Nothing uploaded yet.');
+      }).catch(function () { draw([], 'Couldn’t load the uploads.'); });
+    }
+    if (src === 'shop') draw((LIB.shop || []).map(function (x) { return {url: SITE + '/' + x.file, thumb: x.thumb, alt: x.alt, link: bySlug[x.slug] ? link(bySlug[x.slug]) : ''}; }), 'No shop photos found.');
+    if (src === 'instagram') draw((LIB.instagram || []).map(function (x) { return {url: SITE + '/' + x.file, thumb: x.file, alt: x.caption, link: x.link}; }), 'No Instagram posts imported yet.');
+    if (src === 'corkboard') corkboard(body, draw);
+  }
+  function pick(it) {
+    $('#libDlg').close(); var done = libPick; libPick = null; if (!done || !it) return;
+    if (!it.remote) return done(it);
+    // a Corkboard photo lives behind its own sign-in: a copy is kept on the site, so the email can show it
+    if (!REMOTE) return toast('Bringing in Corkboard photos needs the studio password');
+    toast('Bringing the photo in…');
+    loadImg(it.url).then(function (img) { return canvasBlob(wholeCanvas(img, 2400), .9); })
+      .then(function (blob) { return putBlob(blob, 'image/jpeg', 'orig'); })
+      .then(function (u) { done({url: u, alt: it.alt || '', link: ''}); }, function () { toast('Couldn’t bring that photo in from Corkboard.'); });
+  }
+  // Corkboard: signed in with your Corkboard email and password, kept in this browser
+  function corkFetch(path, opt) {
+    var C = LIB.corkboard; opt = opt || {};
+    opt.headers = Object.assign({apikey: C.key, Authorization: 'Bearer ' + (corkSession ? corkSession.access_token : C.key)}, opt.headers || {});
+    return fetch(C.url + path, opt);
+  }
+  function corkRefresh() {
+    var C = LIB.corkboard; if (!corkSession || !corkSession.refresh_token) return Promise.reject();
+    return fetch(C.url + '/auth/v1/token?grant_type=refresh_token', {method: 'POST', headers: {apikey: C.key, 'content-type': 'application/json'}, body: JSON.stringify({refresh_token: corkSession.refresh_token})})
+      .then(function (r) { if (!r.ok) throw r; return r.json(); }).then(function (s) { corkSession = s; try { localStorage.setItem('macon-nl-cork', JSON.stringify(s)); } catch (e) {} });
+  }
+  function corkboard(body, draw) {
+    var C = LIB.corkboard;
+    if (!C || !C.url) return draw([], 'Corkboard isn’t connected to this page.');
+    if (!corkSession) {
+      body.innerHTML = '<form id="corkIn"><p class="msg" style="padding:0 0 6px">Sign in with your Corkboard email and password. It stays signed in on this browser.</p><input type="email" placeholder="Email" autocomplete="username" required><input type="password" placeholder="Password" autocomplete="current-password" required><button class="btn dark">Sign in to Corkboard</button><p class="msg" style="padding:0;color:var(--warn)" id="corkMsg"></p></form>';
+      $('#corkIn').onsubmit = function (e) {
+        e.preventDefault(); var ins = this.querySelectorAll('input');
+        fetch(C.url + '/auth/v1/token?grant_type=password', {method: 'POST', headers: {apikey: C.key, 'content-type': 'application/json'}, body: JSON.stringify({email: ins[0].value.trim(), password: ins[1].value})})
+          .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw j; return j; }); })
+          .then(function (s) { corkSession = s; try { localStorage.setItem('macon-nl-cork', JSON.stringify(s)); } catch (x) {} showLib('corkboard'); })
+          .catch(function () { $('#corkMsg').textContent = 'That email and password didn’t work.'; });
+      };
+      return;
+    }
+    body.innerHTML = '<p class="msg">Loading Corkboard…</p>';
+    var load = function () {
+      return corkFetch('/rest/v1/studio_assets?select=id,data&order=updated_at.desc&limit=300').then(function (r) { if (r.status === 401) throw 401; if (!r.ok) throw r; return r.json(); });
+    };
+    load().catch(function (e) { if (e === 401) return corkRefresh().then(load); throw e; }).then(function (rows) {
+      var own = rows.map(function (r) { return r.data || {}; }).filter(function (a) { return a.kind === 'image' && !a.attribution; });
+      var keys = own.map(function (a) { return a.blobKey || a.id; });
+      if (!keys.length) return draw([], 'No photos in Corkboard yet.');
+      return corkFetch('/storage/v1/object/sign/studio-assets', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({expiresIn: 3600, paths: keys})})
+        .then(function (r) { return r.json(); }).then(function (signed) {
+          var at = {}; (signed || []).forEach(function (s) { if (s.signedURL) at[s.path] = C.url + '/storage/v1' + s.signedURL; });
+          draw(own.map(function (a, i) { var u = at[keys[i]]; return u ? {url: u, thumb: u, alt: (a.notes || (a.labels || []).join(', ') || '').slice(0, 80), remote: true} : null; }).filter(Boolean), 'No photos in Corkboard yet.');
+          body.insertAdjacentHTML('beforeend', '<p class="msg" style="padding:10px 0 0"><button class="btn" id="corkOut">Sign out of Corkboard</button></p>');
+          $('#corkOut').onclick = function () { corkSession = null; try { localStorage.removeItem('macon-nl-cork'); } catch (x) {} showLib('corkboard'); };
+        });
+    }).catch(function () { corkSession = null; try { localStorage.removeItem('macon-nl-cork'); } catch (x) {} draw([], 'Couldn’t reach Corkboard. Try signing in again.'); });
+  }
 
   // ── the bar ─────────────────────────────────────────────────────────────────────────────
   $('#title').addEventListener('input', function () { D.title = this.value; changed(); });
