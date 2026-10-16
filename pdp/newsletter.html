@@ -39,6 +39,16 @@
   .foot-note{width:600px;max-width:100%;padding:30px 24px 8px;text-align:center;font:400 12px/1.7 "Helvetica Neue",Helvetica,Arial,sans-serif;color:#8a8a8a}
   .foot-note a{color:#8a8a8a}
 
+  /* the phone view: the email at a phone's width, with the email's own phone rules */
+  .view{display:flex;gap:2px;padding:2px;background:#ebe7df;border-radius:8px}
+  .view button{border:0;background:none;border-radius:6px;padding:5px 10px;font-size:12px;color:#666}
+  .view button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  .inbox,.card,.foot-note{transition:width .25s ease}
+  .stage.phone .inbox,.stage.phone .card,.stage.phone .foot-note{width:375px}
+  .stage.phone .inbox .subj{max-width:60%}
+  .stage.phone .h1{font-size:40px!important}
+  .stage.phone .q{font-size:25px!important}
+  .stage.phone .pn{font-size:30px!important}
   /* editable words: no boxes, a soft wash only while hovering or typing */
   [data-f]{outline:none;border-radius:3px;transition:background .15s;cursor:text}
   [data-f]:hover{background:rgba(47,111,219,.06)}
@@ -154,6 +164,7 @@
 <div class="bar">
   <input class="issue" id="title" type="text" placeholder="Name this issue (only you two see it)" aria-label="Issue name">
   <span class="status" id="status"></span>
+  <div class="view" role="group" aria-label="View"><button data-view="desktop" aria-pressed="true">Desktop</button><button data-view="phone">Phone</button></div>
   <button class="btn" id="openDrafts">Drafts</button>
   <button class="btn" id="newDraft">New</button>
   <button class="btn" id="previewBtn">Preview</button>
@@ -289,7 +300,7 @@
         var eb = E ? word(b, 'eyebrow', 'Small line (optional)', E) : lines(b.eyebrow);
         var out = (E || b.eyebrow) ? row('padding:0 24px 17px;font:400 14px/1.4 ' + SANS + ';color:#000000', eb) : '';
         var t = E ? word(b, 'title', 'Title', E) : upper(b.title);
-        if (b.size === 'large') return out + row('padding:8px 24px 24px;font:400 54px/1 ' + SERIF + ';text-transform:uppercase;letter-spacing:-.005em;color:#000000', t)
+        if (b.size === 'large') return out + row('padding:8px 24px 24px;font:400 54px/1 ' + SERIF + ';text-transform:uppercase;letter-spacing:-.005em;color:#000000', t).replace('class="pad"', 'class="pad h1"')
           + '<tr><td align="center" style="padding:0 0 40px"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0">&#160;</td></tr></table></td></tr>';
         return out + row('padding:0 24px 51px;font:400 46px/1 ' + SERIF + ';text-transform:uppercase;letter-spacing:-.005em;color:#000000', t).replace('class="pad"', 'class="pad h1"');
       }},
@@ -306,11 +317,11 @@
       html: function (b, E) {
         var w = b.width === 'wide' ? 456 : 378;
         var inner = E ? '<div class="rich" data-f="body" data-rich contenteditable="true" data-ph="Write here. Select words to make them bold, italic or a link.">' + letterHtml(b.body) + '</div>' : letterHtml(b.body);
-        return row('padding:0 24px 34px;font:400 16px/1.6 ' + SANS + ';color:#000000', '<div style="max-width:' + w + 'px;margin:0 auto;text-align:left">' + inner + '</div>');
+        return row('padding:0 24px 34px;font:400 16px/1.6 ' + SANS + ';color:#000000', '<div style="max-width:' + w + 'px;margin:0 auto;text-align:center">' + inner + '</div>');
       }},
     signoff: {label: 'Sign-off', icon: '✎', make: function () { return {line: 'With love,', name: 'Hannah'}; },
       html: function (b, E) {
-        return row('padding:0 24px 52px', '<div style="max-width:378px;margin:0 auto;text-align:left">'
+        return row('padding:0 24px 52px', '<div style="max-width:378px;margin:0 auto;text-align:center">'
           + '<div style="font:400 16px/1.6 ' + SANS + ';color:#000000">' + (E ? word(b, 'line', 'With love,', E) : lines(b.line)) + '</div>'
           + '<div style="font:400 30px/1.1 ' + SERIF + ';color:#000000;padding-top:6px">' + (E ? word(b, 'name', 'Name', E) : lines(b.name)) + '</div></div>');
       }},
@@ -321,8 +332,8 @@
         var img = photoFrame(src((b.photo === 'tile' ? 'tile-' : 'held-') + p.slug + '.jpg', E), p.name);
         var note = E ? '<div style="font:400 16px/1.6 ' + SANS + ';color:#000000;padding-top:14px">' + word(b, 'note', 'A line about it (optional)', E) + '</div>'
           : (b.note ? '<div style="font:400 16px/1.6 ' + SANS + ';color:#000000;padding-top:14px">' + lines(b.note) + '</div>' : '');
-        var inner = (E ? '<div class="pick-target" data-act="piece">' + img + '</div>' : img) + '<div style="max-width:408px;margin:0 auto;text-align:left">'
-          + '<div style="font:400 35px/1 ' + SERIF + ';text-transform:uppercase;color:#000000;padding:20px 0 6px">' + upper(p.name) + '</div>'
+        var inner = (E ? '<div class="pick-target" data-act="piece">' + img + '</div>' : img) + '<div style="max-width:408px;margin:0 auto;text-align:center">'
+          + '<div class="pn" style="font:400 35px/1 ' + SERIF + ';text-transform:uppercase;color:#000000;padding:20px 0 6px">' + upper(p.name) + '</div>'
           + '<div style="font:400 16px/1 ' + SANS + ';color:#6b6b6b">' + price(p) + '</div>';
         return row('padding:0 24px 52px', E ? inner + note + '</div>' : '<a href="' + link(p) + '" style="text-decoration:none;color:#000000">' + inner + note + '</div></a>');
       }},
@@ -335,7 +346,7 @@
           var inner = '<img src="' + src('tile-' + p.slug + '.jpg', E) + '" width="196" alt="' + esc(p.name) + '" style="width:100%;max-width:196px;height:auto;border-radius:8px;background:#f4f1ea">'
             + '<div style="font:400 22px/1.1 ' + SERIF + ';text-transform:uppercase;color:#000000;padding:12px 0 2px">' + upper(p.name) + '</div>'
             + '<div style="font:400 13px/1.6 ' + SANS + ';color:#8a8a8a">' + price(p) + '</div>';
-          return '<div class="tile" style="display:inline-block;width:48%;vertical-align:top;margin:0 1% 26px;text-align:left">'
+          return '<div class="tile" style="display:inline-block;width:48%;vertical-align:top;margin:0 1% 26px;text-align:center">'
             + (E ? inner + '<button class="x" data-act="unpick" data-slug="' + p.slug + '" title="Remove">×</button>' : '<a href="' + link(p) + '" style="text-decoration:none;color:#000000">' + inner + '</a>') + '</div>';
         }).join('') + (E && ps.length < 6 ? '<button class="slot" data-act="addpiece">+ Add a piece</button>' : '');
         return intro + '<tr><td class="pad" style="padding:0 24px 18px"><div style="max-width:408px;margin:0 auto;font-size:' + (E ? '13px' : '0') + ';text-align:center">' + tiles + '</div></td></tr>';
@@ -344,7 +355,7 @@
       html: function (b, E) {
         if (!E && !b.text) return '';
         return row('padding:6px 24px 52px', '<div style="max-width:440px;margin:0 auto">'
-          + '<div style="font:400 30px/1.2 ' + SERIF + ';color:#000000">' + (E ? '“' + word(b, 'text', 'A line worth repeating', E) + '”' : '“' + lines(b.text) + '”') + '</div>'
+          + '<div class="q" style="font:400 30px/1.2 ' + SERIF + ';color:#000000">' + (E ? '“' + word(b, 'text', 'A line worth repeating', E) + '”' : '“' + lines(b.text) + '”') + '</div>'
           + (E ? '<div style="font:400 13px/1.6 ' + SANS + ';color:#8a8a8a;padding-top:14px">' + word(b, 'by', 'Who said it (optional)', E) + '</div>'
             : (b.by ? '<div style="font:400 13px/1.6 ' + SANS + ';color:#8a8a8a;padding-top:14px">— ' + lines(b.by) + '</div>' : '')) + '</div>');
       }},
@@ -376,7 +387,7 @@
       + '<meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>\n<style>\n'
       + "  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;src:url(" + SITE + "/fonts/instrument-serif.woff2) format('woff2')}\n"
       + '  body{margin:0;padding:0;background:#f4f1ea} a{color:#000000} img{border:0;display:block}\n'
-      + '  @media (max-width:620px){ .wrap{width:100%!important} .pad{padding-left:24px!important;padding-right:24px!important} .h1{font-size:40px!important} }\n'
+      + '  @media (max-width:620px){ .wrap{width:100%!important} .pad{padding-left:24px!important;padding-right:24px!important} .h1{font-size:40px!important} .q{font-size:25px!important} .pn{font-size:30px!important} }\n'
       + '</style></head>\n<body style="margin:0;padding:0;background:#f4f1ea">\n'
       + '<div style="display:none;max-height:0;overflow:hidden;opacity:0">' + esc(d.preheader) + '&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>\n'
       + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea"><tr><td align="center" style="padding:28px 12px">\n'
@@ -521,15 +532,24 @@
     }
   }
   function fit() {
-    var prev = 44;          // the eye's own space below it
-    [].forEach.call(card.querySelectorAll('.blk'), function (el) {
-      var tds = el.querySelectorAll(':scope > table > tbody > tr > td'), last = tds[tds.length - 1];
-      var own = last ? parseFloat(getComputedStyle(last).paddingBottom) || 0 : 0;
-      el.style.setProperty('--ot', -(prev / 2) + 'px'); el.style.setProperty('--ob', (own / 2) + 'px');
-      var g = el.previousElementSibling; if (g && g.classList.contains('gap')) g.style.top = -(prev / 2) + 'px';
-      prev = own;
+    var blks = [].slice.call(card.querySelectorAll('.blk')), boxes = blks.map(function (el) {
+      var b = el.getBoundingClientRect(), top = Infinity, bottom = -Infinity;
+      [].forEach.call(el.querySelectorAll(':scope > table > tbody > tr > td'), function (td) {
+        var r = document.createRange(); r.selectNodeContents(td); var c = r.getBoundingClientRect();
+        if (c.height) { top = Math.min(top, c.top); bottom = Math.max(bottom, c.bottom); }
+      });
+      if (top === Infinity) { top = b.top; bottom = b.bottom; }
+      return {el: el, top: top - b.top, bottom: b.bottom - bottom, h: b.height};
     });
-    var gaps = card.querySelectorAll('.gap'), endGap = gaps[gaps.length - 1]; if (endGap) endGap.style.top = -(prev / 2) + 'px';
+    boxes.forEach(function (x) {          // the same air above and below the words or photo
+      var m = Math.max(10, Math.min(22, x.bottom / 2));
+      x.el.style.setProperty('--ot', (x.top - m) + 'px'); x.el.style.setProperty('--ob', (x.bottom - m) + 'px');
+    });
+    var gaps = card.querySelectorAll('.gap');
+    [].forEach.call(gaps, function (g, i) {          // halfway through the space before the next block
+      var prev = boxes[i - 1]; g.style.top = prev ? -(prev.bottom / 2) + 'px' : '-22px';
+      if (i < boxes.length) { var nx = boxes[i]; g.style.top = (prev ? -(prev.bottom / 2) : -22) + nx.top / 2 + 'px'; }
+    });
   }
   function rerender(b) {          // one block again (after a tool), leaving the rest (and any typing) alone
     var el = card.querySelector('[data-id="' + b.id + '"]'); if (!el) return render();
@@ -770,6 +790,20 @@
       var f = savedRange.commonAncestorContainer; f = (f.nodeType === 1 ? f : f.parentNode).closest('[data-rich]'); if (f) f.dispatchEvent(new Event('input', {bubbles: true}));
     });
   }
+
+  var fitT = null; function refit() { clearTimeout(fitT); fitT = setTimeout(fit, 60); }
+  card.addEventListener('load', refit, true);          // photos arriving change the heights
+  addEventListener('resize', refit);
+  document.addEventListener('input', refit);
+  // ── desktop or phone: the same email, reflowed ──────────────────────────────────────────
+  function setView(v) {
+    $('.stage').classList.toggle('phone', v === 'phone');
+    document.querySelectorAll('[data-view]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.view === v); });
+    try { localStorage.setItem('macon-nl-view', v); } catch (e) {}
+    setTimeout(fit, 280);          // after the width settles
+  }
+  document.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { setView(b.dataset.view); }); });
+  try { if (localStorage.getItem('macon-nl-view') === 'phone') setView('phone'); } catch (e) {}
 
   // ── the bar ─────────────────────────────────────────────────────────────────────────────
   $('#title').addEventListener('input', function () { D.title = this.value; changed(); });
