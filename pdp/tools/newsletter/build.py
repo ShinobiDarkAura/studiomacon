@@ -20,7 +20,7 @@ def _first(pdp, *paths):
     return next((p for p in paths if p and os.path.exists(os.path.join(pdp, p))), None)
 
 
-def build(pdp, pieces, content):
+def build(pdp, pieces, content, shop=None):
     """pieces: the shop's running order, each {slug, name, price, kind}."""
     for p in pieces:
         s, c = p["slug"], content.get(p["slug"]) or {}
@@ -32,5 +32,6 @@ def build(pdp, pieces, content):
             if src: _cut(pdp, src, f"held-{s}.jpg", 960, 3 / 2)
     page = open(os.path.join(HERE, "maker.html"), encoding="utf-8").read()
     page = page.replace("/*PIECES*/[]", json.dumps(pieces, ensure_ascii=False))
+    page = page.replace("/*SHOP*/{}", json.dumps(shop or {}))          # the public, read-only store key the site already uses
     with open(os.path.join(pdp, "newsletter.html"), "w", encoding="utf-8") as f:
         f.write(page)

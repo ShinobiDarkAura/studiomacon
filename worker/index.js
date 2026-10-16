@@ -108,10 +108,42 @@ async function newsletter(request, env, url) {
       const cur = await kv.getWithMetadata(key);
       const baseUpdated = Number(request.headers.get('x-base-updated') || 0);
       if (cur.value && cur.metadata && cur.metadata.updated > baseUpdated) return new Response(cur.value, {status: 409, headers: {'content-type': 'application/json'}});
+      // an earlier version is kept: every 15 minutes of editing, and whenever someone else saves over it
+      const by = String(d.by || '').slice(0, 40);
+      if (cur.value && cur.metadata && (request.headers.get('x-keep-version') === '1' || (cur.metadata.by || '') !== by)) {
+        await kv.put('ver:' + m[1] + ':' + cur.metadata.updated, cur.value,
+          {metadata: {by: cur.metadata.by || '', updated: cur.metadata.updated}, expirationTtl: 60 * 60 * 24 * 120});
+        const vs = (await kv.list({prefix: 'ver:' + m[1] + ':'})).keys.sort((a, b) => (b.metadata?.updated || 0) - (a.metadata?.updated || 0));
+        for (const k of vs.slice(40)) await kv.delete(k.name);          // the newest forty
+      }
       const updated = Date.now();
       d.updated = updated;
       await kv.put(key, JSON.stringify(d), {metadata: {title: String(d.title || '').slice(0, 120), by: String(d.by || '').slice(0, 40), updated}});
       return json({ok: true, updated});
+    }
+    if (request.method === 'DELETE') { await kv.delete(key); return json({ok: true}); }
+  }
+  // earlier versions of a draft
+  m = url.pathname.match(/^\/_nl\/versions\/([a-z0-9-]{8,64})(?:\/(\d{10,16}))?$/);
+  if (m && request.method === 'GET') {
+    if (m[2]) { const v = await kv.get('ver:' + m[1] + ':' + m[2]); return v ? new Response(v, {headers: {'content-type': 'application/json', 'cache-control': 'no-store'}}) : json({error: 'not found'}, 404); }
+    const ks = (await kv.list({prefix: 'ver:' + m[1] + ':'})).keys;
+    return json(ks.map(k => k.metadata || {updated: Number(k.name.split(':').pop())}));
+  }
+  // saved sections, shared by everyone with the password
+  if (url.pathname === '/_nl/sections' && request.method === 'GET') {
+    const ks = (await kv.list({prefix: 'section:'})).keys;
+    return json(ks.map(k => Object.assign({id: k.name.slice(8)}, k.metadata || {})));
+  }
+  m = url.pathname.match(/^\/_nl\/sections\/([a-z0-9-]{8,64})$/);
+  if (m) {
+    const key = 'section:' + m[1];
+    if (request.method === 'GET') { const v = await kv.get(key); return v ? new Response(v, {headers: {'content-type': 'application/json', 'cache-control': 'no-store'}}) : json({error: 'not found'}, 404); }
+    if (request.method === 'PUT') {
+      const text = await request.text(); if (text.length > 2e5) return json({error: 'too large'}, 413);
+      let s; try { s = JSON.parse(text); } catch (e) { return json({error: 'not a section'}, 400); }
+      await kv.put(key, text, {metadata: {name: String(s.name || '').slice(0, 80), n: (s.blocks || []).length, by: String(s.by || '').slice(0, 40)}});
+      return json({ok: true});
     }
     if (request.method === 'DELETE') { await kv.delete(key); return json({ok: true}); }
   }
