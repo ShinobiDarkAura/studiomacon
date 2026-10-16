@@ -3,4 +3,5 @@ Disallow: /pages/
 Disallow: /partials/
 Disallow: /tools/
 Disallow: /_picker/
+Disallow: /newsletter.html
 Sitemap: https://studiomacon.co/sitemap.xml

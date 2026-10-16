@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Newsletter maker · Studio Maçon</title>
+<link rel="icon" href="img/favicon.png">
+<!-- The monthly newsletter, written here and pasted into Shopify Email ("Code your own").
+     Built from pdp/tools/newsletter/maker.html by build_pdp.py; the pieces below are filled in from the shop.
+     Drafts and uploaded photos live in the site's worker (/_nl), behind the studio's shared password. -->
+<style>
+  @font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif.woff2) format("woff2");font-display:swap}
+  :root{--ink:#111;--soft:#6b6b6b;--line:#e4e1da;--paper:#f4f1ea;--card:#fff;--accent:#111;--ok:#2f7a4a;--warn:#b5562b}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font:13px/1.45 "Helvetica Neue",Helvetica,Arial,sans-serif}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer}
+  .app{display:grid;grid-template-rows:auto 1fr;height:100vh}
+  header{display:flex;align-items:center;gap:10px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line)}
+  header h1{margin:0 8px 0 0;font:400 22px/1 "Instrument Serif",serif;text-transform:uppercase;white-space:nowrap}
+  header .name{flex:1;min-width:0;border:1px solid transparent;border-radius:6px;padding:6px 8px;font-size:14px;background:none}
+  header .name:hover,header .name:focus{border-color:var(--line);outline:none;background:#fff}
+  .status{font-size:12px;color:var(--soft);white-space:nowrap}
+  .status.bad{color:var(--warn)}
+  .btn{border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 11px;white-space:nowrap}
+  .btn:hover{border-color:#bbb}
+  .btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .btn.dark:hover{background:#333}
+  .btn.small{padding:4px 8px;font-size:12px}
+  main{display:grid;grid-template-columns:440px 1fr;min-height:0}
+  .side{overflow:auto;border-right:1px solid var(--line);background:#faf9f6;padding:14px 14px 80px}
+  .preview{overflow:auto;display:flex;flex-direction:column;align-items:center;padding:18px 18px 60px}
+  .ptools{display:flex;gap:6px;margin-bottom:12px}
+  .ptools .btn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  iframe{flex:none;border:0;background:var(--paper);box-shadow:0 10px 40px -18px rgba(0,0,0,.35);border-radius:10px;transition:width .2s}
+  .meta{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
+  label.f{display:block;margin:0 0 10px}
+  label.f > span{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin-bottom:4px}
+  label.f small{display:block;color:var(--soft);margin-top:3px;font-size:11px}
+  input[type=text],input[type=url],textarea,select{width:100%;border:1px solid var(--line);border-radius:6px;padding:7px 8px;background:#fff}
+  textarea{resize:vertical;min-height:90px;line-height:1.5}
+  input:focus,textarea:focus,select:focus{outline:2px solid #11111122;border-color:#999}
+  .block{background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+  .block.open{border-color:#bdb8ad;box-shadow:0 4px 18px -10px rgba(0,0,0,.3)}
+  .bhead{display:flex;align-items:center;gap:6px;padding:9px 10px;cursor:pointer;user-select:none}
+  .bhead .kind{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);white-space:nowrap}
+  .bhead .sum{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bhead .ic{border:0;background:none;padding:2px 6px;border-radius:5px;color:var(--soft);font-size:14px;line-height:1}
+  .bhead .ic:hover{background:#f0eee9;color:var(--ink)}
+  .bbody{display:none;padding:2px 12px 12px;border-top:1px solid #f0eee9}
+  .block.open .bbody{display:block;padding-top:12px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .seg{display:flex;flex-wrap:wrap;gap:4px}
+  .seg button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 8px;font-size:12px}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .thumb{display:flex;gap:8px;align-items:center;margin:0 0 10px}
+  .thumb img{width:84px;height:60px;object-fit:cover;border-radius:6px;background:#eee}
+  .picks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:260px;overflow:auto;margin-bottom:6px}
+  .picks label{display:flex;flex-direction:column;gap:3px;font-size:11px;border:1px solid var(--line);border-radius:7px;padding:4px;cursor:pointer;position:relative}
+  .picks label img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:5px;background:#eee}
+  .picks input{position:absolute;opacity:0}
+  .picks label:has(input:checked){border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+  .picks .n{position:absolute;top:6px;left:6px;background:var(--ink);color:#fff;border-radius:9px;min-width:18px;height:18px;font-size:11px;display:none;align-items:center;justify-content:center}
+  .picks label:has(input:checked) .n{display:flex}
+  .add{position:relative;margin-top:6px}
+  .add .menu{display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:5;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px;box-shadow:0 12px 30px -12px rgba(0,0,0,.3);grid-template-columns:1fr 1fr;gap:4px}
+  .add.on .menu{display:grid}
+  .add .menu button{text-align:left;border:0;background:none;padding:8px;border-radius:7px}
+  .add .menu button:hover{background:#f4f2ee}
+  .add .menu b{display:block;font-weight:500}
+  .add .menu i{font-style:normal;color:var(--soft);font-size:11px}
+  .help{font-size:11px;color:var(--soft);margin:4px 0 0}
+  .checks{margin:10px 0 0;padding:0;list-style:none;font-size:12px}
+  .checks li{padding:3px 0 3px 18px;position:relative}
+  .checks li::before{content:"";position:absolute;left:3px;top:8px;width:7px;height:7px;border-radius:50%;background:var(--warn)}
+  .checks li.ok::before{background:var(--ok)}
+  dialog{border:0;border-radius:14px;padding:0;width:min(560px,92vw);box-shadow:0 30px 80px -20px rgba(0,0,0,.45)}
+  dialog::backdrop{background:rgba(20,18,14,.35)}
+  .dlg{padding:20px}
+  .dlg h2{margin:0 0 4px;font:400 26px/1 "Instrument Serif",serif;text-transform:uppercase}
+  .dlg p{margin:6px 0 12px;color:var(--soft)}
+  .dlg .foot{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+  .drafts{list-style:none;margin:10px 0 0;padding:0;max-height:50vh;overflow:auto}
+  .drafts li{display:flex;align-items:center;gap:8px;padding:9px 8px;border-radius:8px}
+  .drafts li:hover{background:#f6f4f0}
+  .drafts li .t{flex:1;min-width:0}
+  .drafts li .t b{display:block;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .drafts li .t i{font-style:normal;font-size:11px;color:var(--soft)}
+  .copyrow{display:flex;gap:6px;align-items:center;margin:0 0 8px}
+  .copyrow input{flex:1}
+  ol.steps{margin:8px 0 0;padding-left:18px;color:#333}
+  ol.steps li{margin:3px 0}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--ink);color:#fff;padding:9px 14px;border-radius:8px;transition:.2s;pointer-events:none;z-index:50}
+  .toast.on{opacity:1;transform:translateX(-50%)}
+  @media (max-width:900px){ main{grid-template-columns:1fr} .preview{display:none} }
+</style></head>
+<body>
+<div class="app">
+  <header>
+    <h1>Newsletter</h1>
+    <input class="name" id="title" type="text" placeholder="Name this issue (only you two see it)">
+    <span class="status" id="status"></span>
+    <button class="btn" id="openDrafts">Drafts</button>
+    <button class="btn" id="newDraft">New</button>
+    <button class="btn dark" id="exportBtn">Export for Shopify</button>
+  </header>
+  <main>
+    <section class="side">
+      <div class="meta">
+        <label class="f"><span>Subject line</span><input type="text" id="subject" maxlength="150" placeholder="e.g. October at the studio"></label>
+        <label class="f"><span>Preview text</span><input type="text" id="preheader" maxlength="200" placeholder="The grey line after the subject in the inbox"><small>Shows in the inbox next to the subject. One short sentence.</small></label>
+        <label class="f" style="margin:0"><span>Your name</span><input type="text" id="me" maxlength="40" placeholder="Alex or Hannah"><small>So the other person can see who last edited a draft.</small></label>
+      </div>
+      <div id="blocks"></div>
+      <div class="add" id="add">
+        <button class="btn" style="width:100%" id="addBtn">+ Add a block</button>
+        <div class="menu" id="addMenu"></div>
+      </div>
+      <ul class="checks" id="checks"></ul>
+    </section>
+    <section class="preview">
+      <div class="ptools">
+        <button class="btn small" data-w="640" aria-pressed="true">Desktop</button>
+        <button class="btn small" data-w="390">Phone</button>
+      </div>
+      <iframe id="frame" title="Newsletter preview" width="640" height="900"></iframe>
+    </section>
+  </main>
+</div>
+
+<dialog id="draftsDlg"><div class="dlg">
+  <h2>Drafts</h2>
+  <p id="draftsNote"></p>
+  <ul class="drafts" id="draftsList"></ul>
+  <div class="foot"><button class="btn" data-close>Close</button></div>
+</div></dialog>
+
+<dialog id="newDlg"><div class="dlg">
+  <h2>New issue</h2>
+  <p>Start from the monthly layout (title, photo, letter, a featured piece, a few others, a button) or from nothing.</p>
+  <div class="foot">
+    <button class="btn" data-close>Cancel</button>
+    <button class="btn" id="newBlank">Blank</button>
+    <button class="btn" id="newCopy">Copy this one</button>
+    <button class="btn dark" id="newMonthly">Monthly layout</button>
+  </div>
+</div></dialog>
+
+<dialog id="keyDlg"><div class="dlg">
+  <h2>Studio password</h2>
+  <p>Shared drafts and photo uploads are kept on studiomacon.co behind the password you and Hannah share. Without it, drafts stay in this browser only.</p>
+  <label class="f"><span>Password</span><input type="text" id="keyInput" autocomplete="off"></label>
+  <p id="keyMsg" style="color:var(--warn);margin:0"></p>
+  <div class="foot"><button class="btn" id="keySkip">Use this browser only</button><button class="btn dark" id="keyOk">Unlock</button></div>
+</div></dialog>
+
+<dialog id="exportDlg"><div class="dlg">
+  <h2>Export for Shopify</h2>
+  <ul class="checks" id="exportChecks"></ul>
+  <div class="copyrow" style="margin-top:12px"><input type="text" id="exSubject" readonly><button class="btn small" data-copy="exSubject">Copy subject</button></div>
+  <div class="copyrow"><input type="text" id="exPre" readonly><button class="btn small" data-copy="exPre">Copy preview</button></div>
+  <div class="copyrow"><button class="btn dark" id="copyHtml" style="flex:1">Copy the email's HTML</button><button class="btn" id="dlHtml">Download .html</button></div>
+  <ol class="steps">
+    <li>In Shopify, open <a href="https://admin.shopify.com/store/w3nidi-ny/apps/shopify-messaging/custom-templates" target="_blank" rel="noopener">Messaging → Templates</a> and choose <b>Create template</b>, then paste the HTML and save.</li>
+    <li>From <b>Messaging</b>, <b>Create message</b> → Email, pick that template, and paste the subject and preview text.</li>
+    <li>Send yourself a test, look at it on your phone, then schedule or send.</li>
+  </ol>
+  <div class="foot"><button class="btn" data-close>Done</button></div>
+</div></dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function () {
+  // ── the shop's pieces, filled in by the build ──────────────────────────────────────────
+  var PIECES = /*PIECES*/[];
+  var SITE = 'https://studiomacon.co', IMG = SITE + '/img/email';
+  var SERIF = "'Instrument Serif','Times New Roman',Georgia,serif", SANS = "'Helvetica Neue',Helvetica,Arial,sans-serif";
+  var SH = 'box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)';
+  var bySlug = {}; PIECES.forEach(function (p) { bySlug[p.slug] = p; });
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+
+  // ── text helpers ────────────────────────────────────────────────────────────────────────
+  // everything typed is escaped, and { } become entities so nothing can be read as Shopify code
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\{/g, '&#123;').replace(/\}/g, '&#125;'); }
+  function safeUrl(u) { u = String(u || '').trim(); return /^(https?:\/\/|mailto:)/i.test(u) ? u : ''; }
+  function lines(s) { return esc(s).replace(/\n/g, '<br>'); }
+  function upper(s) { return lines(String(s || '').toUpperCase()); }
+  // the letter's text: blank lines make paragraphs, **bold**, *italic*, [words](link)
+  function rich(s) {
+    var paras = String(s || '').trim().split(/\n\s*\n/);
+    return paras.map(function (p, i) {
+      var h = esc(p)
+        .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (m, t, u) { u = safeUrl(u.replace(/&amp;/g, '&')); return u ? '<a href="' + esc(u) + '" style="color:#000000">' + t + '</a>' : t; })
+        .replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\*([^*]+)\*/g, '<i>$1</i>').replace(/\n/g, '<br>');
+      return '<p style="margin:0 0 ' + (i === paras.length - 1 ? 0 : 16) + 'px">' + h + '</p>';
+    }).join('');
+  }
+  function price(p) { return p ? '$' + (Number.isInteger(p.price) ? p.price : Number(p.price).toFixed(0)) : ''; }
+  function link(p) { return SITE + '/' + p.slug + '.html'; }
+
+  // ── the blocks: what each is, its defaults, how it is edited, how it is written into the email ──
+  var KINDS = {
+    heading: {label: 'Title', hint: 'Small line over a large title', make: function () { return {eyebrow: 'Studio Maçon', title: 'A note from\nthe studio', size: 'normal'}; },
+      sum: function (b) { return b.title.replace(/\n/g, ' '); },
+      html: function (b) {
+        var out = b.eyebrow ? '<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 ' + SANS + ';color:#000000">' + lines(b.eyebrow) + '</td></tr>' : '';
+        if (b.size === 'large') return out + '<tr><td class="pad h1" align="center" style="padding:8px 24px 24px;font:400 54px/1 ' + SERIF + ';text-transform:uppercase;letter-spacing:-.005em;color:#000000">' + upper(b.title) + '</td></tr>'
+          + '<tr><td align="center" style="padding:0 0 40px"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td width="48" height="1" style="width:48px;height:1px;background:#000000;font-size:0;line-height:0">&#160;</td></tr></table></td></tr>';
+        return out + '<tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 ' + SERIF + ';text-transform:uppercase;letter-spacing:-.005em;color:#000000">' + upper(b.title) + '</td></tr>';
+      },
+      form: function (b) { return field('eyebrow', 'Small line above', 'text', b) + field('title', 'Title (Enter for a new line)', 'area-short', b) + seg('size', 'Size', [['normal', 'Standard'], ['large', 'Large, with a rule']], b); }},
+    image: {label: 'Photo', hint: 'Upload one, or use a piece’s photo', make: function () { return {src: '', alt: '', link: SITE, shape: '3/2'}; },
+      sum: function (b) { return b.alt || (b.src ? 'Photo' : 'No photo yet'); },
+      html: function (b) {
+        if (!b.src) return '';
+        var img = '<img src="' + esc(b.src) + '" width="408" alt="' + esc(b.alt) + '" style="width:100%;max-width:408px;height:auto;margin:0 auto;border-radius:16px;' + SH + '">';
+        var u = safeUrl(b.link);
+        return '<tr><td class="pad" align="center" style="padding:0 24px 63px">' + (u ? '<a href="' + esc(u) + '">' + img + '</a>' : img) + '</td></tr>';
+      },
+      form: function (b) { return photoField(b) + field('alt', 'Describe the photo (for screen readers, and when images are off)', 'text', b) + field('link', 'Link when tapped (optional)', 'url', b); }},
+    text: {label: 'Letter', hint: 'A paragraph or a few, in Hannah’s voice', make: function () { return {body: 'Write here. Leave a blank line between paragraphs.\n\n**Bold**, *italic* and [a link](https://studiomacon.co) all work.', width: 'narrow'}; },
+      sum: function (b) { return b.body.replace(/\s+/g, ' ').slice(0, 80); },
+      html: function (b) { var w = b.width === 'wide' ? 456 : 378; return '<tr><td class="pad" align="center" style="padding:0 24px 34px;font:400 16px/1.6 ' + SANS + ';color:#000000"><div style="max-width:' + w + 'px;margin:0 auto;text-align:left">' + rich(b.body) + '</div></td></tr>'; },
+      form: function (b) { return field('body', 'Text', 'area', b, 'Blank line = new paragraph · **bold** · *italic* · [words](https://…) makes a link') + seg('width', 'Column', [['narrow', 'Narrow'], ['wide', 'Wide']], b); }},
+    signoff: {label: 'Sign-off', hint: '“With love,” and a name', make: function () { return {line: 'With love,', name: 'Hannah'}; },
+      sum: function (b) { return b.line + ' ' + b.name; },
+      html: function (b) {
+        return '<tr><td class="pad" align="center" style="padding:0 24px 52px"><div style="max-width:378px;margin:0 auto;text-align:left">'
+          + '<div style="font:400 16px/1.6 ' + SANS + ';color:#000000">' + lines(b.line) + '</div>'
+          + '<div style="font:400 30px/1.1 ' + SERIF + ';color:#000000;padding-top:6px">' + lines(b.name) + '</div></div></td></tr>';
+      },
+      form: function (b) { return '<div class="row2">' + field('line', 'Closing line', 'text', b) + field('name', 'Name', 'text', b) + '</div>'; }},
+    piece: {label: 'Featured piece', hint: 'One piece, large, with its name and price', make: function () { return {slug: (PIECES[0] || {}).slug || '', photo: 'held', note: ''}; },
+      sum: function (b) { return (bySlug[b.slug] || {}).name || 'Choose a piece'; },
+      html: function (b) {
+        var p = bySlug[b.slug]; if (!p) return '';
+        var src = IMG + '/' + (b.photo === 'tile' ? 'tile-' : 'held-') + p.slug + '.jpg';
+        return '<tr><td class="pad" align="center" style="padding:0 24px 52px"><a href="' + link(p) + '" style="text-decoration:none;color:#000000">'
+          + '<img src="' + src + '" width="408" alt="' + esc(p.name) + '" style="width:100%;max-width:408px;height:auto;border-radius:16px;margin:0 auto;' + SH + '">'
+          + '<div style="max-width:408px;margin:0 auto;text-align:left">'
+          + '<div style="font:400 35px/1 ' + SERIF + ';text-transform:uppercase;color:#000000;padding:20px 0 6px">' + upper(p.name) + '</div>'
+          + '<div style="font:400 16px/1 ' + SANS + ';color:#6b6b6b">' + price(p) + '</div>'
+          + (b.note ? '<div style="font:400 16px/1.6 ' + SANS + ';color:#000000;padding-top:14px">' + lines(b.note) + '</div>' : '')
+          + '</div></a></td></tr>';
+      },
+      form: function (b) { return pieceSelect(b) + seg('photo', 'Photo', [['held', 'In the hand (wide)'], ['tile', 'On its own (tall)']], b) + field('note', 'A line about it (optional)', 'area-short', b); }},
+    grid: {label: 'Pieces', hint: 'Two to six pieces in a grid', make: function () { return {intro: "We'd like to introduce you\nto a few friends", slugs: PIECES.slice(0, 2).map(function (p) { return p.slug; })}; },
+      sum: function (b) { return b.slugs.map(function (s) { return (bySlug[s] || {}).name; }).filter(Boolean).join(', ') || 'Choose pieces'; },
+      html: function (b) {
+        var ps = b.slugs.map(function (s) { return bySlug[s]; }).filter(Boolean); if (!ps.length) return '';
+        var intro = b.intro ? '<tr><td class="pad" align="center" style="padding:0 24px 26px;font:400 16px/1.35 ' + SANS + ';color:#000000">' + lines(b.intro) + '</td></tr>' : '';
+        return intro + '<tr><td class="pad" style="padding:0 24px 18px"><div style="max-width:408px;margin:0 auto;font-size:0;text-align:center">' + ps.map(function (p) {
+          return '<div style="display:inline-block;width:48%;vertical-align:top;margin:0 1% 26px;text-align:left"><a href="' + link(p) + '" style="text-decoration:none;color:#000000">'
+            + '<img src="' + IMG + '/tile-' + p.slug + '.jpg" width="196" alt="' + esc(p.name) + '" style="width:100%;max-width:196px;height:auto;border-radius:8px;background:#f4f1ea">'
+            + '<div style="font:400 22px/1.1 ' + SERIF + ';text-transform:uppercase;color:#000000;padding:12px 0 2px">' + upper(p.name) + '</div>'
+            + '<div style="font:400 13px/1.6 ' + SANS + ';color:#8a8a8a">' + price(p) + '</div></a></div>';
+        }).join('') + '</div></td></tr>';
+      },
+      form: function (b) { return field('intro', 'Line above (optional)', 'area-short', b) + piecePicks(b); }},
+    quote: {label: 'Quote', hint: 'A line set large, with who said it', make: function () { return {text: 'A small thing to keep close.', by: ''}; },
+      sum: function (b) { return b.text; },
+      html: function (b) {
+        return '<tr><td class="pad" align="center" style="padding:6px 24px 52px"><div style="max-width:440px;margin:0 auto">'
+          + '<div style="font:400 30px/1.2 ' + SERIF + ';color:#000000">“' + lines(b.text) + '”</div>'
+          + (b.by ? '<div style="font:400 13px/1.6 ' + SANS + ';color:#8a8a8a;padding-top:14px">— ' + lines(b.by) + '</div>' : '') + '</div></td></tr>';
+      },
+      form: function (b) { return field('text', 'Quote', 'area-short', b) + field('by', 'Who said it (optional)', 'text', b); }},
+    button: {label: 'Button', hint: 'A black button with a link', make: function () { return {label: 'Browse artifacts', link: SITE}; },
+      sum: function (b) { return b.label; },
+      html: function (b) {
+        var u = safeUrl(b.link); if (!u || !b.label) return '';
+        return '<tr><td align="center" style="padding:4px 24px 52px"><table role="presentation" width="290" cellpadding="0" cellspacing="0" style="width:290px"><tr><td align="center" bgcolor="#000000" style="background:#000000">'
+          + '<a href="' + esc(u) + '" style="display:block;padding:17px 10px;font:500 12px/1 ' + SANS + ';letter-spacing:.14em;text-transform:uppercase;color:#ffffff;text-decoration:none">' + upper(b.label) + '</a></td></tr></table></td></tr>';
+      },
+      form: function (b) { return field('label', 'Button words', 'text', b) + field('link', 'Link', 'url', b, 'Add ?discount=CODE to a studiomacon.co link to apply a discount automatically'); }},
+    code: {label: 'Discount code', hint: 'A code in a box, highlighted', make: function () { return {note: '10% off this week', code: 'MACON10'}; },
+      sum: function (b) { return b.code + ' · ' + b.note; },
+      html: function (b) {
+        return '<tr><td class="pad" align="center" style="padding:10px 24px 49px"><table role="presentation" cellpadding="0" cellspacing="0" style="border:1px solid rgba(0,0,0,.12)"><tr><td align="center" style="padding:24px 34px">'
+          + '<div style="font:400 11px/1 ' + SANS + ';letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;padding-bottom:10px">' + upper(b.note) + '</div>'
+          + '<div style="font:400 30px/1 ' + SERIF + ';letter-spacing:.06em;color:#000000"><span style="padding:3px 9px 1px;background-color:#fbe84a;border-radius:3px 6px 4px 7px">' + upper(b.code) + '</span></div></td></tr></table></td></tr>';
+      },
+      form: function (b) { return field('note', 'Line above the code', 'text', b) + field('code', 'Code (make it in Shopify → Discounts first)', 'text', b); }},
+    divider: {label: 'Divider', hint: 'A thin line between sections', make: function () { return {}; },
+      sum: function () { return '—'; },
+      html: function () { return '<tr><td style="padding:0 0 52px"><div style="height:1px;background:#efece5;font-size:0;line-height:1px">&#160;</div></td></tr>'; },
+      form: function () { return '<p class="help">A thin rule across the email, with space below it.</p>'; }}
+  };
+
+  // ── the whole email, in Shopify Email's terms (the same shell as the welcome emails) ──────
+  function email(d, forPreview) {
+    var body = d.blocks.map(function (b) { return KINDS[b.type] ? KINDS[b.type].html(b) : ''; }).join('\n');
+    var html = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n'
+      + '<meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>\n<style>\n'
+      + "  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;src:url(" + SITE + "/fonts/instrument-serif.woff2) format('woff2')}\n"
+      + '  body{margin:0;padding:0;background:#f4f1ea} a{color:#000000} img{border:0;display:block}\n'
+      + '  @media (max-width:620px){ .wrap{width:100%!important} .pad{padding-left:24px!important;padding-right:24px!important} .h1{font-size:40px!important} }\n'
+      + '</style></head>\n<body style="margin:0;padding:0;background:#f4f1ea">\n'
+      + '<div style="display:none;max-height:0;overflow:hidden;opacity:0">' + esc(d.preheader) + '&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>\n'
+      + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1ea"><tr><td align="center" style="padding:28px 12px">\n'
+      + '<table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#ffffff;border-radius:14px">\n'
+      + '  <tr><td align="center" style="padding:53px 0 44px"><a href="' + SITE + '"><img src="' + IMG + '/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>\n'
+      + body + '\n'
+      + '  <tr><td style="font-size:0;line-height:0;height:10px">&#160;</td></tr>\n'
+      + '</table><table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px"><tr><td align="center" style="padding:30px 24px 8px;font:400 12px/1.7 ' + SANS + ';color:#8a8a8a">\n'
+      + '    Every piece is made to order in the studio in California.<br>\n'
+      + '    <a href="' + SITE + '/story" style="color:#8a8a8a">About</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/studiomacon/" style="color:#8a8a8a">Instagram</a>\n'
+      + '    &nbsp;·&nbsp; <a href="{{ unsubscribe_url }}" style="color:#8a8a8a">Unsubscribe</a><br>\n'
+      + '    {{ shop.name }} · {{ shop.address.city }}\n'
+      + '  </td></tr>\n</table></td></tr></table>{{ open_tracking_block }}\n</body></html>';
+    // accented letters as HTML codes (ç → &#231;), so a paste that loses UTF-8 cannot break them
+    html = html.replace(/[^\x00-\x7f]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; });
+    if (forPreview) html = html.split(IMG + '/').join(location.origin + '/img/email/').replace('{{ unsubscribe_url }}', '#').replace('{{ shop.name }}', 'Studio Ma&#231;on').replace('{{ shop.address.city }}', 'Santa Monica').replace('{{ open_tracking_block }}', '');
+    return html;
+  }
+
+  // ── checks before it goes out ───────────────────────────────────────────────────────────
+  function checks(d) {
+    var out = [];
+    out.push([!!d.subject.trim(), d.subject.trim() ? 'Subject line set' : 'Add a subject line']);
+    out.push([!!d.preheader.trim(), d.preheader.trim() ? 'Preview text set' : 'Add preview text (otherwise inboxes show the first words of the email)']);
+    var imgs = d.blocks.filter(function (b) { return b.type === 'image'; });
+    imgs.forEach(function (b, i) {
+      if (!b.src) out.push([false, 'Photo ' + (i + 1) + ' has no picture yet']);
+      else if (!b.alt.trim()) out.push([false, 'Photo ' + (i + 1) + ' needs a description']);
+    });
+    d.blocks.forEach(function (b) {
+      if (b.type === 'button' && !safeUrl(b.link)) out.push([false, 'A button has no working link (it must start with https://)']);
+      if (b.type === 'piece' && !bySlug[b.slug]) out.push([false, 'Choose the featured piece']);
+      if (b.type === 'grid' && !b.slugs.length) out.push([false, 'Choose pieces for the grid']);
+      if (b.type === 'text' && /Leave a blank line between paragraphs/.test(b.body)) out.push([false, 'A letter block still has the example text']);
+    });
+    if (!d.blocks.some(function (b) { return b.type === 'button' || b.type === 'piece' || b.type === 'grid'; })) out.push([false, 'Nothing to click: add a button, a piece or pieces']);
+    if (out.every(function (c) { return c[0]; })) out.push([true, 'Ready to export']);
+    return out;
+  }
+
+  // ── storage: shared drafts on studiomacon.co, or this browser only ───────────────────────
+  var KEY = '', REMOTE = false;
+  try { KEY = localStorage.getItem('macon-nl-key') || ''; } catch (e) {}
+  function api(path, opt) {
+    opt = opt || {}; opt.headers = Object.assign({'x-macon-key': KEY}, opt.headers || {});
+    return fetch('/_nl' + path, opt);
+  }
+  var local = {
+    list: function () { var o = []; for (var k in localStorage) if (k.indexOf('macon-nl-draft:') === 0) try { var d = JSON.parse(localStorage.getItem(k)); o.push({id: d.id, title: d.title, updated: d.updated, by: d.by}); } catch (e) {} return Promise.resolve(o); },
+    get: function (id) { return Promise.resolve(JSON.parse(localStorage.getItem('macon-nl-draft:' + id) || 'null')); },
+    put: function (d) { localStorage.setItem('macon-nl-draft:' + d.id, JSON.stringify(d)); return Promise.resolve(d.updated); },
+    del: function (id) { localStorage.removeItem('macon-nl-draft:' + id); return Promise.resolve(); }
+  };
+  var remote = {
+    list: function () { return api('/drafts').then(function (r) { if (!r.ok) throw r; return r.json(); }); },
+    get: function (id) { return api('/drafts/' + id).then(function (r) { return r.ok ? r.json() : null; }); },
+    put: function (d, base) {
+      return api('/drafts/' + d.id, {method: 'PUT', headers: {'content-type': 'application/json', 'x-base-updated': String(base || 0)}, body: JSON.stringify(d)})
+        .then(function (r) { if (r.status === 409) return r.json().then(function (j) { var e = new Error('conflict'); e.theirs = j; throw e; }); if (!r.ok) throw new Error('save failed'); return r.json(); })
+        .then(function (j) { return j.updated; });
+    },
+    del: function (id) { return api('/drafts/' + id, {method: 'DELETE'}); }
+  };
+  function store() { return REMOTE ? remote : local; }
+
+  // ── the draft being edited ──────────────────────────────────────────────────────────────
+  function uid() { return (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2)).replace(/[^a-z0-9-]/gi, '').toLowerCase(); }
+  function block(type) { var b = KINDS[type].make(); b.type = type; b.id = uid(); return b; }
+  function monthly() {
+    var m = new Date().toLocaleString('en-US', {month: 'long'});
+    var d = blank(); d.title = m + ' newsletter'; d.subject = m + ' at the studio';
+    var h = block('heading'); h.title = m + '\nat the studio';
+    var feat = block('piece'), grid = block('grid'); grid.slugs = PIECES.slice(1, 3).map(function (p) { return p.slug; });
+    d.blocks = [h, block('image'), block('text'), block('signoff'), block('divider'), feat, grid, block('button')];
+    return d;
+  }
+  function blank() { return {id: uid(), title: 'Untitled issue', subject: '', preheader: '', by: '', updated: 0, blocks: []}; }
+  var D = null, base = 0, openId = null, dirty = false, timer = null;
+
+  function setStatus(t, bad) { var s = $('#status'); s.textContent = t; s.classList.toggle('bad', !!bad); }
+  function toast(t) { var e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(e._t); e._t = setTimeout(function () { e.classList.remove('on'); }, 2200); }
+
+  function changed() {
+    dirty = true; setStatus('Saving…'); paint();
+    clearTimeout(timer); timer = setTimeout(save, 900);
+  }
+  function save() {
+    if (!dirty) return;
+    dirty = false; D.by = $('#me').value.trim(); D.updated = Date.now();
+    try { localStorage.setItem('macon-nl-last', D.id); } catch (e) {}
+    store().put(D, base).then(function (u) { base = u || D.updated; setStatus((REMOTE ? 'Saved for both of you' : 'Saved in this browser') + ' · ' + new Date().toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})); })
+      .catch(function (e) {
+        if (e.message === 'conflict') {
+          var who = (e.theirs && e.theirs.by) || 'Someone';
+          if (confirm(who + ' saved a newer version of this draft. Load theirs? (Cancel keeps yours and overwrites theirs.)')) { load(e.theirs); }
+          else { base = e.theirs.updated; dirty = true; save(); }
+          return;
+        }
+        dirty = true; setStatus('Not saved, will retry', true); clearTimeout(timer); timer = setTimeout(save, 5000);
+      });
+  }
+  addEventListener('beforeunload', function (e) { if (dirty) { save(); e.preventDefault(); } });
+
+  function load(d) {
+    D = d; base = d.updated || 0; openId = null;
+    $('#title').value = D.title; $('#subject').value = D.subject; $('#preheader').value = D.preheader;
+    render(); paint();
+    setStatus(REMOTE ? 'Shared draft' : 'This browser only');
+    try { localStorage.setItem('macon-nl-last', D.id); } catch (e) {}
+  }
+
+  // ── the side panel ──────────────────────────────────────────────────────────────────────
+  function field(key, label, kind, b, help) {
+    var v = esc(b[key] || '');
+    var input = kind === 'area' ? '<textarea data-k="' + key + '" rows="8">' + v + '</textarea>'
+      : kind === 'area-short' ? '<textarea data-k="' + key + '" rows="2" style="min-height:52px">' + v + '</textarea>'
+      : '<input type="' + (kind === 'url' ? 'url' : 'text') + '" data-k="' + key + '" value="' + v + '">';
+    return '<label class="f"><span>' + label + '</span>' + input + (help ? '<small>' + help + '</small>' : '') + '</label>';
+  }
+  function seg(key, label, opts, b) {
+    return '<div class="f" style="margin-bottom:10px"><span style="display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin-bottom:4px">' + label + '</span><div class="seg">'
+      + opts.map(function (o) { return '<button type="button" data-seg="' + key + '" data-v="' + o[0] + '" aria-pressed="' + (b[key] === o[0]) + '">' + o[1] + '</button>'; }).join('') + '</div></div>';
+  }
+  function groups(fn) {
+    var g = {totem: 'Totems', jewelry: 'Jewelry'}, out = '';
+    Object.keys(g).forEach(function (k) { var ps = PIECES.filter(function (p) { return p.kind === k; }); if (ps.length) out += fn(g[k], ps); });
+    return out;
+  }
+  function pieceSelect(b) {
+    return '<label class="f"><span>Piece</span><select data-k="slug">' + groups(function (name, ps) {
+      return '<optgroup label="' + name + '">' + ps.map(function (p) { return '<option value="' + p.slug + '"' + (p.slug === b.slug ? ' selected' : '') + '>' + esc(p.name) + ' · ' + price(p) + '</option>'; }).join('') + '</optgroup>';
+    }) + '</select></label>';
+  }
+  function piecePicks(b) {
+    return '<span style="display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);margin-bottom:4px">Pieces, in the order you tick them (up to 6)</span><div class="picks">'
+      + PIECES.map(function (p) {
+        var i = b.slugs.indexOf(p.slug);
+        return '<label><input type="checkbox" data-pick="' + p.slug + '"' + (i > -1 ? ' checked' : '') + '><span class="n">' + (i + 1) + '</span><img src="img/email/tile-' + p.slug + '.jpg" alt="" loading="lazy">' + esc(p.name) + '</label>';
+      }).join('') + '</div>';
+  }
+  function photoField(b) {
+    return '<div class="thumb">' + (b.src ? '<img src="' + esc(b.src) + '" alt="">' : '<img alt="">')
+      + '<div style="flex:1"><div class="seg" style="margin-bottom:6px"><button type="button" data-upload>Upload a photo</button></div>'
+      + '<select data-usepiece style="margin-bottom:6px"><option value="">Or use a piece’s photo…</option>' + groups(function (name, ps) { return '<optgroup label="' + name + '">' + ps.map(function (p) { return '<option value="held:' + p.slug + '">' + esc(p.name) + ', in the hand</option><option value="tile:' + p.slug + '">' + esc(p.name) + ', on its own</option>'; }).join('') + '</optgroup>'; }) + '</select>'
+      + seg('shape', 'Crop new uploads to', [['3/2', 'Wide'], ['4/5', 'Tall'], ['1/1', 'Square'], ['', 'As shot']], b) + '</div></div>'
+      + field('src', 'Or paste a photo’s link', 'url', b, 'e.g. from Shopify → Content → Files');
+  }
+
+  function render() {
+    var box = $('#blocks'); box.innerHTML = '';
+    D.blocks.forEach(function (b, i) {
+      var k = KINDS[b.type]; if (!k) return;
+      var el = document.createElement('div'); el.className = 'block' + (openId === b.id ? ' open' : ''); el.dataset.id = b.id;
+      el.innerHTML = '<div class="bhead"><span class="kind">' + k.label + '</span><span class="sum">' + esc(k.sum(b)) + '</span>'
+        + '<button class="ic" data-act="up" title="Move up"' + (i === 0 ? ' disabled style="opacity:.3"' : '') + '>↑</button>'
+        + '<button class="ic" data-act="down" title="Move down"' + (i === D.blocks.length - 1 ? ' disabled style="opacity:.3"' : '') + '>↓</button>'
+        + '<button class="ic" data-act="dup" title="Duplicate">⧉</button>'
+        + '<button class="ic" data-act="del" title="Remove">×</button></div>'
+        + '<div class="bbody">' + k.form(b) + '</div>';
+      box.appendChild(el);
+    });
+    if (!D.blocks.length) box.innerHTML = '<p class="help" style="margin:4px 2px 10px">Empty. Add a block below, or start a new issue from the monthly layout.</p>';
+  }
+  function find(el) { var c = el.closest('.block'); return c ? D.blocks.filter(function (b) { return b.id === c.dataset.id; })[0] : null; }
+  function resum(el, b) { var s = el.closest('.block').querySelector('.sum'); s.textContent = KINDS[b.type].sum(b); }
+
+  $('#blocks').addEventListener('click', function (e) {
+    var b = find(e.target); if (!b) return;
+    var act = e.target.dataset.act, i = D.blocks.indexOf(b);
+    if (act) {
+      e.stopPropagation();
+      if (act === 'up' && i > 0) D.blocks.splice(i - 1, 0, D.blocks.splice(i, 1)[0]);
+      if (act === 'down' && i < D.blocks.length - 1) D.blocks.splice(i + 1, 0, D.blocks.splice(i, 1)[0]);
+      if (act === 'dup') { var c = JSON.parse(JSON.stringify(b)); c.id = uid(); D.blocks.splice(i + 1, 0, c); openId = c.id; }
+      if (act === 'del') { if (!confirm('Remove this ' + KINDS[b.type].label.toLowerCase() + '?')) return; D.blocks.splice(i, 1); }
+      render(); changed(); return;
+    }
+    if (e.target.closest('.bhead')) { openId = openId === b.id ? null : b.id; render(); return; }
+    var sg = e.target.closest('[data-seg]');
+    if (sg) { b[sg.dataset.seg] = sg.dataset.v; sg.parentNode.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === sg); }); changed(); return; }
+    if (e.target.closest('[data-upload]')) { upload(b); return; }
+  });
+  $('#blocks').addEventListener('input', function (e) {
+    var b = find(e.target); if (!b) return;
+    if (e.target.dataset.k) { b[e.target.dataset.k] = e.target.value; resum(e.target, b); changed(); }
+  });
+  $('#blocks').addEventListener('change', function (e) {
+    var b = find(e.target); if (!b) return;
+    if (e.target.dataset.k === 'slug') { b.slug = e.target.value; resum(e.target, b); changed(); }
+    if (e.target.dataset.k === 'src') { render(); }
+    if (e.target.hasAttribute('data-usepiece') && e.target.value) { usePiece(b, e.target.value); }
+    if (e.target.dataset.pick) {
+      var s = e.target.dataset.pick;
+      if (e.target.checked) { if (b.slugs.length >= 6) { e.target.checked = false; toast('Six at most'); return; } b.slugs.push(s); }
+      else b.slugs = b.slugs.filter(function (x) { return x !== s; });
+      render(); changed();
+    }
+  });
+
+  // photos: cropped and made email-sized in the browser, then kept on studiomacon.co
+  function upload(b) {
+    if (!REMOTE) { toast('Uploads need the studio password (Drafts → Unlock). You can paste a photo link instead.'); return; }
+    var inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
+    inp.onchange = function () {
+      var f = inp.files[0]; if (!f) return;
+      var img = new Image(), url = URL.createObjectURL(f);
+      img.onload = function () {
+        var r = b.shape ? b.shape.split('/').map(Number) : null, sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
+        if (r) { var want = r[0] / r[1]; if (sw / sh > want) { sx = (sw - sh * want) / 2; sw = sh * want; } else { sy = (sh - sw / want) / 2; sh = sw / want; } }
+        var W = Math.min(1200, sw), H = Math.round(sh * W / sw), c = document.createElement('canvas'); c.width = W; c.height = H;
+        var g = c.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+        URL.revokeObjectURL(url);
+        setStatus('Uploading photo…');
+        c.toBlob(function (blob) {
+          api('/img', {method: 'POST', headers: {'content-type': 'image/jpeg'}, body: blob}).then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+            .then(function (j) { b.src = j.url; if (!b.alt) b.alt = ''; render(); changed(); toast('Photo uploaded'); })
+            .catch(function () { setStatus('Upload failed', true); toast('That upload did not go through. Try again, or paste a link.'); });
+        }, 'image/jpeg', 0.86);
+      };
+      img.src = url;
+    };
+    inp.click();
+  }
+  function usePiece(b, v) {
+    var kind = v.split(':')[0], p = bySlug[v.split(':')[1]]; if (!p) return;
+    b.src = IMG + '/' + kind + '-' + p.slug + '.jpg'; b.alt = p.name + (kind === 'held' ? ', held in the hand' : ''); b.link = link(p);
+    render(); changed();
+  }
+
+  // the add menu
+  $('#addMenu').innerHTML = Object.keys(KINDS).map(function (k) { return '<button data-add="' + k + '"><b>' + KINDS[k].label + '</b><i>' + KINDS[k].hint + '</i></button>'; }).join('');
+  $('#addBtn').addEventListener('click', function (e) { e.stopPropagation(); $('#add').classList.toggle('on'); });
+  $('#addMenu').addEventListener('click', function (e) {
+    var t = e.target.closest('[data-add]'); if (!t) return;
+    var b = block(t.dataset.add); D.blocks.push(b); openId = b.id; $('#add').classList.remove('on'); render(); changed();
+    setTimeout(function () { var el = document.querySelector('[data-id="' + b.id + '"]'); if (el) el.scrollIntoView({block: 'nearest', behavior: 'smooth'}); }, 30);
+  });
+  document.addEventListener('click', function (e) { if (!e.target.closest('#add')) $('#add').classList.remove('on'); });
+
+  ['title', 'subject', 'preheader'].forEach(function (k) { $('#' + k).addEventListener('input', function () { D[k] = this.value; changed(); }); });
+  try { $('#me').value = localStorage.getItem('macon-nl-me') || ''; } catch (e) {}
+  $('#me').addEventListener('input', function () { try { localStorage.setItem('macon-nl-me', this.value.trim()); } catch (e) {} });
+
+  // ── the preview ─────────────────────────────────────────────────────────────────────────
+  var frame = $('#frame'), lastHtml = '';
+  function paint() {
+    var h = email(D, true);
+    if (h !== lastHtml) {
+      lastHtml = h; var y = frame.contentWindow ? frame.contentWindow.scrollY : 0;
+      frame.srcdoc = h;
+      frame.onload = function () {
+        try {
+          var doc = frame.contentDocument, fit = function () { frame.style.height = Math.max(600, doc.documentElement.scrollHeight) + 'px'; };
+          fit(); frame.contentWindow.scrollTo(0, y);
+          [].forEach.call(doc.images, function (im) { if (!im.complete) im.addEventListener('load', fit); });          // photos arriving make it taller
+        } catch (e) {}
+      };
+    }
+    $('#checks').innerHTML = checks(D).map(function (c) { return '<li class="' + (c[0] ? 'ok' : '') + '">' + esc(c[1]) + '</li>'; }).join('');
+  }
+  document.querySelectorAll('.ptools [data-w]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.ptools [data-w]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+      frame.width = b.dataset.w; frame.style.width = b.dataset.w + 'px'; lastHtml = ''; paint();
+    });
+  });
+
+  // ── dialogs ─────────────────────────────────────────────────────────────────────────────
+  document.querySelectorAll('dialog [data-close]').forEach(function (b) { b.addEventListener('click', function () { b.closest('dialog').close(); }); });
+  function ago(t) { if (!t) return ''; var s = (Date.now() - t) / 1000; return s < 60 ? 'just now' : s < 3600 ? Math.round(s / 60) + ' min ago' : s < 86400 ? Math.round(s / 3600) + ' h ago' : new Date(t).toLocaleDateString(); }
+  function showDrafts() {
+    save();
+    $('#draftsNote').textContent = REMOTE ? 'Shared between you and Hannah. Newest first.' : 'Kept in this browser only. Unlock with the studio password to share them.';
+    $('#draftsList').innerHTML = '<li>Loading…</li>'; $('#draftsDlg').showModal();
+    store().list().then(function (list) {
+      list.sort(function (a, b) { return (b.updated || 0) - (a.updated || 0); });
+      $('#draftsList').innerHTML = list.map(function (x) {
+        return '<li data-id="' + esc(x.id) + '"><span class="t"><b>' + esc(x.title || 'Untitled') + (x.id === D.id ? ' (open)' : '') + '</b><i>' + esc(ago(x.updated)) + (x.by ? ' · ' + esc(x.by) : '') + '</i></span>'
+          + '<button class="btn small" data-d="open">Open</button><button class="btn small" data-d="dup">Copy</button><button class="btn small" data-d="del">Delete</button></li>';
+      }).join('') || '<li>No drafts yet.</li>';
+    }).catch(function () { $('#draftsList').innerHTML = '<li>Could not load drafts.</li>'; });
+  }
+  $('#draftsList').addEventListener('click', function (e) {
+    var li = e.target.closest('li[data-id]'), a = e.target.dataset.d; if (!li || !a) return;
+    var id = li.dataset.id;
+    if (a === 'open') store().get(id).then(function (d) { if (d) { load(d); $('#draftsDlg').close(); } });
+    if (a === 'dup') store().get(id).then(function (d) { if (!d) return; d.id = uid(); d.title = (d.title || 'Untitled') + ' (copy)'; d.updated = 0; load(d); dirty = true; save(); $('#draftsDlg').close(); });
+    if (a === 'del') { if (!confirm('Delete this draft for good?')) return; store().del(id).then(function () { if (id === D.id) load(monthly()); showDrafts(); }); }
+  });
+  $('#openDrafts').addEventListener('click', showDrafts);
+  $('#draftsDlg .foot').insertAdjacentHTML('afterbegin', '<button class="btn" id="unlock" style="margin-right:auto">Studio password</button>');
+  $('#unlock').addEventListener('click', function () { $('#draftsDlg').close(); askKey(); });
+
+  $('#newDraft').addEventListener('click', function () { save(); $('#newDlg').showModal(); });
+  $('#newMonthly').addEventListener('click', function () { load(monthly()); dirty = true; save(); $('#newDlg').close(); });
+  $('#newBlank').addEventListener('click', function () { load(blank()); dirty = true; save(); $('#newDlg').close(); });
+  $('#newCopy').addEventListener('click', function () { var d = JSON.parse(JSON.stringify(D)); d.id = uid(); d.title += ' (copy)'; d.updated = 0; load(d); dirty = true; save(); $('#newDlg').close(); });
+
+  $('#exportBtn').addEventListener('click', function () {
+    save();
+    $('#exportChecks').innerHTML = checks(D).map(function (c) { return '<li class="' + (c[0] ? 'ok' : '') + '">' + esc(c[1]) + '</li>'; }).join('');
+    $('#exSubject').value = D.subject; $('#exPre').value = D.preheader;
+    $('#exportDlg').showModal();
+  });
+  function copy(t, what) { navigator.clipboard.writeText(t).then(function () { toast(what + ' copied'); }, function () { toast('Copy did not work; use Download instead'); }); }
+  $('#copyHtml').addEventListener('click', function () { copy(email(D, false), 'HTML'); });
+  document.querySelectorAll('[data-copy]').forEach(function (b) { b.addEventListener('click', function () { copy($('#' + b.dataset.copy).value, b.textContent.replace('Copy ', '').replace(/^./, function (c) { return c.toUpperCase(); })); }); });
+  $('#dlHtml').addEventListener('click', function () {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([email(D, false)], {type: 'text/html'}));
+    a.download = (D.title || 'newsletter').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.html'; a.click();
+  });
+
+  // ── the studio password ─────────────────────────────────────────────────────────────────
+  function askKey() { $('#keyInput').value = KEY; $('#keyMsg').textContent = ''; $('#keyDlg').showModal(); }
+  function tryKey(k) {
+    KEY = k; return api('/check').then(function (r) {
+      if (r.ok) { REMOTE = true; try { localStorage.setItem('macon-nl-key', k); } catch (e) {} return 'ok'; }
+      REMOTE = false; return r.status === 401 ? 'wrong' : 'off';
+    }).catch(function () { REMOTE = false; return 'off'; });
+  }
+  $('#keyOk').addEventListener('click', function () {
+    tryKey($('#keyInput').value.trim()).then(function (res) {
+      if (res === 'ok') { $('#keyDlg').close(); toast('Unlocked: drafts are shared'); start(); }
+      else $('#keyMsg').textContent = res === 'wrong' ? 'That password is not right.' : 'Shared drafts are not set up on the site yet. Use this browser for now.';
+    });
+  });
+  $('#keySkip').addEventListener('click', function () { REMOTE = false; $('#keyDlg').close(); start(); });
+
+  // ── start: the last draft opened, or a fresh monthly issue ──────────────────────────────
+  var started = false;
+  function start() {
+    var last = null; try { last = localStorage.getItem('macon-nl-last'); } catch (e) {}
+    (last ? store().get(last) : Promise.resolve(null)).catch(function () { return null; }).then(function (d) {
+      load(d || monthly()); if (!d) { dirty = true; save(); }
+      started = true;
+    });
+  }
+  (KEY ? tryKey(KEY) : Promise.resolve('none')).then(function (res) { if (res === 'ok') start(); else if (res === 'off') start(); else askKey(); });
+})();
+</script>
+</body></html>

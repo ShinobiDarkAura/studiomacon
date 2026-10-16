@@ -65,10 +65,64 @@ async function relay(request, env, ctx) {
   return new Response(null, {status: 204});
 }
 
+// The newsletter maker (newsletter.html): its shared drafts and uploaded photos, kept in KV (binding NEWSLETTER).
+// Drafts need the studio's shared password (secret NEWSLETTER_KEY); photos are public, since emails load them.
+async function newsletter(request, env, url) {
+  const kv = env.NEWSLETTER;
+  const json = (o, status = 200) => new Response(JSON.stringify(o), {status, headers: {'content-type': 'application/json', 'cache-control': 'no-store'}});
+  let m = url.pathname.match(/^\/_nl\/img\/([a-z0-9-]{8,64})\.jpg$/);
+  if (m) {
+    if (!kv || request.method !== 'GET') return new Response(null, {status: 404});
+    const pic = await kv.get('img:' + m[1], 'arrayBuffer');
+    if (!pic) return new Response(null, {status: 404});
+    return new Response(pic, {headers: {'content-type': 'image/jpeg', 'cache-control': 'public, max-age=31536000, immutable'}});
+  }
+  if (!kv || !env.NEWSLETTER_KEY) return json({error: 'not set up'}, 503);
+  if (request.headers.get('x-macon-key') !== env.NEWSLETTER_KEY) return json({error: 'wrong password'}, 401);
+  if (url.pathname === '/_nl/check') return json({ok: true});
+  if (url.pathname === '/_nl/img' && request.method === 'POST') {
+    const pic = await request.arrayBuffer();
+    if (!pic.byteLength || pic.byteLength > 5e6) return json({error: 'photo too large'}, 413);
+    const id = crypto.randomUUID();
+    await kv.put('img:' + id, pic);
+    return json({url: `https://studiomacon.co/_nl/img/${id}.jpg`});
+  }
+  if (url.pathname === '/_nl/drafts' && request.method === 'GET') {
+    const keys = [];
+    let cursor;
+    do { const page = await kv.list({prefix: 'draft:', cursor}); keys.push(...page.keys); cursor = page.list_complete ? null : page.cursor; } while (cursor);
+    return json(keys.map(k => Object.assign({id: k.name.slice(6)}, k.metadata || {})));
+  }
+  m = url.pathname.match(/^\/_nl\/drafts\/([a-z0-9-]{8,64})$/);
+  if (m) {
+    const key = 'draft:' + m[1];
+    if (request.method === 'GET') {
+      const v = await kv.get(key);
+      return v ? new Response(v, {headers: {'content-type': 'application/json', 'cache-control': 'no-store'}}) : json({error: 'not found'}, 404);
+    }
+    if (request.method === 'PUT') {
+      const text = await request.text();
+      if (text.length > 1e6) return json({error: 'too large'}, 413);
+      let d; try { d = JSON.parse(text); } catch (e) { return json({error: 'not a draft'}, 400); }
+      // two people on one draft: a save made from an older copy is refused, and the newer one sent back
+      const cur = await kv.getWithMetadata(key);
+      const baseUpdated = Number(request.headers.get('x-base-updated') || 0);
+      if (cur.value && cur.metadata && cur.metadata.updated > baseUpdated) return new Response(cur.value, {status: 409, headers: {'content-type': 'application/json'}});
+      const updated = Date.now();
+      d.updated = updated;
+      await kv.put(key, JSON.stringify(d), {metadata: {title: String(d.title || '').slice(0, 120), by: String(d.by || '').slice(0, 40), updated}});
+      return json({ok: true, updated});
+    }
+    if (request.method === 'DELETE') { await kv.delete(key); return json({ok: true}); }
+  }
+  return json({error: 'not found'}, 404);
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/_e') return relay(request, env, ctx);
+    if (url.pathname.startsWith('/_nl/')) return newsletter(request, env, url);
     // Which country the visitor is in, so the pages can show the international note to them only.
     if (url.pathname === '/_geo') {
       return new Response(JSON.stringify({country: request.cf && request.cf.country || ''}),

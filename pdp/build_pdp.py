@@ -1527,12 +1527,16 @@ def main():
     save("index.html", editable(shop, "index.html"))
     sizer_page()
     feeds(products)
+    # the newsletter maker (a private page, newsletter.html), its pieces taken from the wall in the same order
+    sys.path.insert(0, os.path.join(OUT, "tools", "newsletter")); import build as _newsletter
+    _newsletter.build(OUT, [{"slug": p["slug"], "name": p["name"], "price": p["price"], "kind": "totem" if _group(p) == 0 else "jewelry"}
+                            for p in wall if p["slug"] != "macon-cap"], _content.CONTENT["products"])
     _today = __import__("datetime").date.today().isoformat()
     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                 + "".join(f"  <url><loc>{u}</loc><lastmod>{_today}</lastmod></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")
     with open(os.path.join(OUT, "robots.txt"), "w") as f:
-        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nSitemap: {SITE}/sitemap.xml\n")
+        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nDisallow: /newsletter.html\nSitemap: {SITE}/sitemap.xml\n")
     print(f"{len(products)} pages")
     # the emails name prices by hand (a marketing email has no cart to read from),
     # so re-write them from Shopify before anyone copies a template out
