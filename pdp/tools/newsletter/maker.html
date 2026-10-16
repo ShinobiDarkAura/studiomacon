@@ -36,15 +36,15 @@
   .inbox [contenteditable]{outline:none;border-radius:4px}
   .inbox [contenteditable]:hover,.inbox [contenteditable]:focus{background:#f6f3ed}
   .card{position:relative;width:600px;max-width:100%;background:#fff;border-radius:14px;padding-bottom:10px}
-  .foot-note{width:600px;max-width:100%;padding:30px 24px 8px;text-align:center;font:400 12px/1.7 "Helvetica Neue",Helvetica,Arial,sans-serif;color:#8a8a8a}
-  .foot-note a{color:#8a8a8a}
+  .foot-in{padding:0 24px 34px;text-align:center;font:400 12px/1.7 "Helvetica Neue",Helvetica,Arial,sans-serif;color:#8a8a8a}
+  .foot-in a{color:#8a8a8a;text-decoration:underline}
 
   /* the phone view: the email at a phone's width, with the email's own phone rules */
   .view{display:flex;gap:2px;padding:2px;background:#ebe7df;border-radius:8px}
   .view button{border:0;background:none;border-radius:6px;padding:5px 10px;font-size:12px;color:#666}
   .view button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-  .inbox,.card,.foot-note{transition:width .25s ease}
-  .stage.phone .inbox,.stage.phone .card,.stage.phone .foot-note{width:375px}
+  .inbox,.card{transition:width .25s ease}
+  .stage.phone .inbox,.stage.phone .card{width:375px}
   .stage.phone .inbox .subj{max-width:60%}
   .stage.phone .h1{font-size:40px!important}
   .stage.phone .q{font-size:25px!important}
@@ -81,7 +81,7 @@
   .gap:hover .hit::before,.gap.drop .hit::before{opacity:1}
   .gap:hover .hit button{opacity:1;transform:none}
   .gap.drop .hit::before{height:3px}
-  .end{display:flex;justify-content:center;padding:6px 0 30px}
+  .end{display:flex;justify-content:center;padding:0 0 22px}
   .end button{border:1px dashed #d9d4ca;background:none;border-radius:20px;padding:6px 14px;color:var(--soft);font-size:12px}
   .end button:hover{border-color:var(--hi);color:var(--hi)}
 
@@ -178,7 +178,6 @@
     <span class="pre plain" data-meta="preheader" contenteditable="plaintext-only" data-f data-ph="— preview text, one short sentence"></span>
   </div>
   <div class="card" id="card"></div>
-  <div class="foot-note">Every piece is made to order in the studio in California.<br><a>About</a> &nbsp;·&nbsp; <a>Instagram</a> &nbsp;·&nbsp; <a>Unsubscribe</a><br>Studio Maçon · Santa Monica</div>
 </div>
 
 <div class="pop" id="pop"></div>
@@ -193,8 +192,8 @@
 
 <dialog id="newDlg"><div class="dlg">
   <h2>New issue</h2>
-  <p>Start from the monthly layout (a title, a photo, a letter, a featured piece, a few others, a button) or from nothing.</p>
-  <div class="foot"><button class="btn" data-close>Cancel</button><button class="btn" id="newBlank">Blank</button><button class="btn" id="newCopy">Copy this one</button><button class="btn dark" id="newMonthly">Monthly layout</button></div>
+  <p>Every issue opens the same way: the Studio Maçon line, a title, a short intro, a photo and the letter. The monthly layout then adds a sign-off, a featured piece, a few others and a button. Or start with just the opening and a button.</p>
+  <div class="foot"><button class="btn" data-close>Cancel</button><button class="btn" id="newBlank">Just the opening</button><button class="btn" id="newCopy">Copy this one</button><button class="btn dark" id="newMonthly">Monthly layout</button></div>
 </div></dialog>
 
 <dialog id="keyDlg"><div class="dlg">
@@ -316,7 +315,7 @@
       tools: function () { return [['width', 'narrow', 'Narrow'], ['width', 'wide', 'Wide']]; },
       html: function (b, E) {
         var w = b.width === 'wide' ? 456 : 378;
-        var inner = E ? '<div class="rich" data-f="body" data-rich contenteditable="true" data-ph="Write here. Select words to make them bold, italic or a link.">' + letterHtml(b.body) + '</div>' : letterHtml(b.body);
+        var inner = E ? '<div class="rich" data-f="body" data-rich contenteditable="true" data-ph="' + esc(b.ph || 'Write here. Select words to make them bold, italic or a link.') + '">' + letterHtml(b.body) + '</div>' : letterHtml(b.body);
         return row('padding:0 24px 34px;font:400 16px/1.6 ' + SANS + ';color:#000000', '<div style="max-width:' + w + 'px;margin:0 auto;text-align:center">' + inner + '</div>');
       }},
     signoff: {label: 'Sign-off', icon: '✎', make: function () { return {line: 'With love,', name: 'Hannah'}; },
@@ -380,9 +379,11 @@
   };
   var ORDER = ['text', 'image', 'heading', 'piece', 'grid', 'button', 'quote', 'signoff', 'code', 'divider'];
 
+  function tail(html, b, last) { return last && b.type === 'button' ? html.replace('padding:4px 24px 52px', 'padding:4px 24px 28px') : html; }
+
   // ── the whole email, in Shopify Email's terms (the same shell as the welcome emails) ──────
   function email(d, forPreview) {
-    var body = d.blocks.map(function (b) { return KINDS[b.type] ? KINDS[b.type].html(b, false) : ''; }).join('\n');
+    var body = d.blocks.map(function (b, i) { return KINDS[b.type] ? tail(KINDS[b.type].html(b, false), b, i === d.blocks.length - 1) : ''; }).join('\n');
     var html = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n'
       + '<meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>\n<style>\n'
       + "  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;src:url(" + SITE + "/fonts/instrument-serif.woff2) format('woff2')}\n"
@@ -394,8 +395,7 @@
       + '<table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#ffffff;border-radius:14px">\n'
       + '  <tr><td align="center" style="padding:53px 0 44px"><a href="' + SITE + '"><img src="' + IMG + '/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>\n'
       + body + '\n'
-      + '  <tr><td style="font-size:0;line-height:0;height:10px">&#160;</td></tr>\n'
-      + '</table><table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px"><tr><td align="center" style="padding:30px 24px 8px;font:400 12px/1.7 ' + SANS + ';color:#8a8a8a">\n'
+      + '  <tr><td class="pad" align="center" style="padding:0 24px 44px;font:400 12px/1.7 ' + SANS + ';color:#8a8a8a">\n'
       + '    Every piece is made to order in the studio in California.<br>\n'
       + '    <a href="' + SITE + '/story" style="color:#8a8a8a">About</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/studiomacon/" style="color:#8a8a8a">Instagram</a>\n'
       + '    &nbsp;·&nbsp; <a href="{{ unsubscribe_url }}" style="color:#8a8a8a">Unsubscribe</a><br>\n'
@@ -456,8 +456,18 @@
     var d = blank(); d.title = m + ' newsletter'; d.subject = m + ' at the studio';
     var h = block('heading'); h.title = m + '\nat the studio';
     var g = block('grid'); g.slugs = PIECES.slice(1, 3).map(function (p) { return p.slug; });
-    d.blocks = [h, block('image'), block('text'), block('signoff'), block('divider'), block('piece'), g, block('button')];
+    d.blocks = opening(h).concat([block('signoff'), block('divider'), block('piece'), g, block('button')]);
     return d;
+  }
+  // every issue opens the same way: the Studio Maçon line and a title, a short intro, a photo, then the letter
+  function opening(h) {
+    var intro = block('text'); intro.ph = 'A short intro: a line or two to open the issue.';
+    var letter = block('text'); letter.ph = 'The letter. Select words to make them bold, italic or a link.';
+    return [h, intro, block('image'), letter];
+  }
+  function fresh() {
+    var d = blank(); var h = block('heading'); h.title = 'Title';
+    d.blocks = opening(h).concat([block('button')]); return d;
   }
   var D = null, base = 0, dirty = false, timer = null;
 
@@ -518,12 +528,13 @@
   }
   function blockEl(b) {
     return '<div class="blk" data-id="' + b.id + '" data-type="' + b.type + '"><span class="grip" draggable="true" role="button" title="Drag to move">⠇</span>' + toolsFor(b)
-      + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + KINDS[b.type].html(b, true) + '</table></div>';
+      + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0">' + tail(KINDS[b.type].html(b, true), b, b === D.blocks[D.blocks.length - 1]) + '</table></div>';
   }
   function render(focusId) {
     card.innerHTML = '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:53px 0 44px"><img src="img/email/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></td></tr></table>'
       + D.blocks.map(function (b, i) { return gap(i) + blockEl(b); }).join('') + gap(D.blocks.length)
-      + '<div class="end"><button data-add-at="' + D.blocks.length + '">+ Add a block</button></div>';
+      + '<div class="end"><button data-add-at="' + D.blocks.length + '">+ Add a block</button></div>'
+      + '<div class="foot-in">Every piece is made to order in the studio in California.<br><a>About</a> &nbsp;·&nbsp; <a>Instagram</a> &nbsp;·&nbsp; <a>Unsubscribe</a><br>Studio Maçon · Santa Monica</div>';
     fit();
     if (focusId) {
       var f = card.querySelector('[data-id="' + focusId + '"] [data-f]');
@@ -832,7 +843,7 @@
   $('#unlock').addEventListener('click', function () { $('#draftsDlg').close(); askKey(); });
   $('#newDraft').addEventListener('click', function () { save(); $('#newDlg').showModal(); });
   $('#newMonthly').addEventListener('click', function () { load(monthly()); dirty = true; save(); $('#newDlg').close(); });
-  $('#newBlank').addEventListener('click', function () { load(blank()); dirty = true; save(); $('#newDlg').close(); });
+  $('#newBlank').addEventListener('click', function () { load(fresh()); dirty = true; save(); $('#newDlg').close(); });
   $('#newCopy').addEventListener('click', function () { var d = JSON.parse(JSON.stringify(D)); d.id = uid(); d.title += ' (copy)'; d.updated = 0; load(d); dirty = true; save(); $('#newDlg').close(); });
 
   // preview: the exported email itself, at desktop or phone width
