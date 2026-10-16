@@ -3,20 +3,32 @@
 // Before running it, the old Wix records for studiomacon.co (A) and www (CNAME) must be deleted in
 // Cloudflare DNS, or Cloudflare refuses to attach the domain. See pdp/dns/LAUNCH.md.
 {
-  "name": "studiomacon",
-  "compatibility_date": "2026-09-01",
-  "main": "worker/index.js",
-  // keep the preview host alive: the Shopify email templates load their images and fonts from it
-  "workers_dev": true,
-  "routes": [
-    { "pattern": "studiomacon.co", "custom_domain": true },
-    { "pattern": "www.studiomacon.co", "custom_domain": true }
-  ],
-  "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS",
-    "html_handling": "none",
-    "not_found_handling": "404-page",
-    "run_worker_first": true               // every request passes the worker, so www can be sent to the bare domain
-  }
+	"name": "studiomacon",
+	"compatibility_date": "2026-09-01",
+	"main": "worker/index.js",
+	// keep the preview host alive: the Shopify email templates load their images and fonts from it
+	"workers_dev": true,
+	"routes": [
+		{
+			"pattern": "studiomacon.co",
+			"custom_domain": true
+		},
+		{
+			"pattern": "www.studiomacon.co",
+			"custom_domain": true
+		}
+	],
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS",
+		"html_handling": "none",
+		"not_found_handling": "404-page",
+		"run_worker_first": true // every request passes the worker, so www can be sent to the bare domain
+	},
+	"kv_namespaces": [
+		{
+			"binding": "NEWSLETTER",
+			"id": "4785c80865a4433eaebdf95af567dc19"
+		}
+	]
 }
