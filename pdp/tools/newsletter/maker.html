@@ -22,6 +22,8 @@
   .status.bad{color:var(--warn)}
   .btn{border:0;background:none;border-radius:7px;padding:7px 10px;white-space:nowrap;color:#444}
   .btn:hover{background:#fff;color:var(--ink)}
+  .btn.ic{display:inline-flex;align-items:center;justify-content:center;width:34px;height:32px;padding:0}
+  .view button{display:inline-flex;align-items:center}
   .btn.dark{background:var(--ink);color:#fff}
   .btn.dark:hover{background:#333}
   .btn .dot{display:inline-block;min-width:17px;height:17px;padding:0 5px;margin-left:6px;border-radius:9px;background:var(--warn);color:#fff;font-size:11px;line-height:17px;text-align:center}
@@ -147,6 +149,8 @@
   .checks li{padding:3px 0 3px 18px;position:relative}
   .checks li::before{content:"";position:absolute;left:3px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--warn)}
   .checks li.ok::before{background:var(--ok)}
+  .checks li.tip{color:#777}
+  .checks li.tip::before{background:#c9c4ba}
   .copyrow{display:flex;gap:6px;align-items:center;margin:0 0 8px}
   .copyrow input{flex:1}
   ol.steps{margin:10px 0 0;padding-left:18px;color:#333}
@@ -164,10 +168,10 @@
 <div class="bar">
   <input class="issue" id="title" type="text" placeholder="Name this issue (only you two see it)" aria-label="Issue name">
   <span class="status" id="status"></span>
-  <div class="view" role="group" aria-label="View"><button data-view="desktop" aria-pressed="true">Desktop</button><button data-view="phone">Phone</button></div>
-  <button class="btn" id="openDrafts">Drafts</button>
-  <button class="btn" id="newDraft">New</button>
-  <button class="btn" id="previewBtn">Preview</button>
+  <div class="view" role="group" aria-label="View"><button data-view="desktop" aria-pressed="true" title="Desktop view" aria-label="Desktop view"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M9 20h6M12 16v4"/></svg></button><button data-view="phone" title="Phone view" aria-label="Phone view"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg></button></div>
+  <button class="btn ic" id="openDrafts" title="Drafts" aria-label="Drafts"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></button>
+  <button class="btn ic" id="newDraft" title="New issue" aria-label="New issue"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button class="btn ic" id="previewBtn" title="Preview the real email" aria-label="Preview"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
   <button class="btn dark" id="exportBtn">Export</button>
 </div>
 
@@ -246,7 +250,7 @@
   }
   function lines(s) { return esc(s).replace(/\n/g, '<br>'); }
   function upper(s) { return lines(String(s || '').toUpperCase()); }
-  function price(p) { return p ? '$' + Math.round(Number(p.price)) : ''; }
+  function price(p) { return p ? '$' + Math.round(Number(p.price)) + (p.preorder ? ' \u00b7 Preorder' : '') : ''; }
   function link(p) { return SITE + '/' + p.slug + '.html'; }
   function src(path, E) { return (E ? 'img/email/' : IMG + '/') + path; }          // the editor shows the site's own copies, so new ones appear before a deploy
 
@@ -385,7 +389,7 @@
   function email(d, forPreview) {
     var body = d.blocks.map(function (b, i) { return KINDS[b.type] ? tail(KINDS[b.type].html(b, false), b, i === d.blocks.length - 1) : ''; }).join('\n');
     var html = '<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n'
-      + '<meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>\n<style>\n'
+      + '<meta name="x-apple-disable-message-reformatting"><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light only"><title>Studio Maçon</title>\n<style>\n'
       + "  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;src:url(" + SITE + "/fonts/instrument-serif.woff2) format('woff2')}\n"
       + '  body{margin:0;padding:0;background:#f4f1ea} a{color:#000000} img{border:0;display:block}\n'
       + '  @media (max-width:620px){ .wrap{width:100%!important} .pad{padding-left:24px!important;padding-right:24px!important} .h1{font-size:40px!important} .q{font-size:25px!important} .pn{font-size:30px!important} }\n'
@@ -402,7 +406,7 @@
       + '    {{ shop.name }} · {{ shop.address.city }}\n'
       + '  </td></tr>\n</table></td></tr></table>{{ open_tracking_block }}\n</body></html>';
     // accented letters as HTML codes (ç → &#231;), so a paste that loses UTF-8 cannot break them
-    html = html.replace(/[^\x00-\x7f]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; });
+    html = Array.from(html).map(function (c) { return c.charCodeAt(0) > 127 ? '&#' + c.codePointAt(0) + ';' : c; }).join('');          // whole characters, so emoji survive
     if (forPreview) html = html.split(IMG + '/').join(new URL('img/email/', location.href).href).split(SITE + '/_nl/').join(location.origin + '/_nl/').replace('{{ unsubscribe_url }}', '#')
       .replace('{{ shop.name }}', 'Studio Ma&#231;on').replace('{{ shop.address.city }}', 'Santa Monica').replace('{{ open_tracking_block }}', '');
     return html;
@@ -413,6 +417,9 @@
     var out = [];
     if (!d.subject.trim()) out.push([false, 'Add a subject line (top, in the inbox row)']);
     if (!d.preheader.trim()) out.push([false, 'Add preview text (otherwise inboxes show the first words of the email)']);
+    if (d.subject.length > 60) out.push([null, 'Tip: the subject is ' + d.subject.length + ' characters; phones cut it at about 40\u201350']);
+    if (d.preheader.length > 110) out.push([null, 'Tip: the preview text is long; inboxes show about 90 characters']);
+    if (/[A-Z]{6,}/.test(d.subject)) out.push([null, 'Tip: words in capitals in the subject can land it in spam']);
     var n = 0;
     d.blocks.forEach(function (b) {
       if (b.type === 'image') { n++; if (!b.src) out.push([false, 'Photo ' + n + ' is still empty']); else if (!String(b.alt || '').trim()) out.push([false, 'Photo ' + n + ' needs a description']); }
@@ -479,7 +486,7 @@
     if (!dirty || !D) return;
     dirty = false; D.by = ME; D.updated = Date.now();
     try { localStorage.setItem('macon-nl-last', D.id); } catch (e) {}
-    var copy = JSON.parse(JSON.stringify(D)); copy.blocks.forEach(function (b) { delete b.busy; });
+    var copy = JSON.parse(JSON.stringify(D)); copy.blocks.forEach(function (b) { delete b.busy; delete b.fresh; });
     store().put(copy, base).then(function (u) { base = u || D.updated; setStatus((REMOTE ? 'Saved' : 'Saved in this browser') + ' · ' + new Date().toLocaleTimeString([], {hour: 'numeric', minute: '2-digit'})); })
       .catch(function (e) {
         if (e.message === 'conflict') {
@@ -511,7 +518,7 @@
     try { localStorage.setItem('macon-nl-last', D.id); } catch (e) {}
   }
   function badge() {
-    var n = D ? checks(D).length : 0, b = $('#exportBtn');
+    var n = D ? checks(D).filter(function (c) { return c[0] === false; }).length : 0, b = $('#exportBtn');
     b.innerHTML = 'Export' + (n ? '<span class="dot" title="' + n + ' thing' + (n > 1 ? 's' : '') + ' to fix before sending">' + n + '</span>' : '');
   }
 
@@ -710,9 +717,19 @@
     var inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
     inp.onchange = function () { if (inp.files[0]) uploadInto(b, inp.files[0]); }; inp.click();
   }
+  function send(b, blob, type, old) {
+    api('/img', {method: 'POST', headers: {'content-type': type}, body: blob}).then(function (r) { if (!r.ok) throw new Error(r.status === 413 ? 'big' : ''); return r.json(); })
+      .then(function (j) { b.src = j.url; delete b.busy; rerender(b); changed(); if (!b.alt) toast('Photo added \u00b7 add a description when you can'); })
+      .catch(function (e) { b.src = old; delete b.busy; rerender(b); toast(e.message === 'big' ? 'That file is over 5 MB. Try a smaller one.' : 'That upload didn\u2019t go through. Try again.'); });
+  }
   function uploadInto(b, file) {
     if (!REMOTE) { toast('Photo uploads need the studio password (Drafts → Studio password)'); return; }
+    if (file.type === 'image/gif') {          // a moving GIF goes up as it is: redrawing it would stop it
+      if (file.size > 5e6) return toast('That GIF is over 5 MB. Most mail apps struggle past about 1 MB.');
+      var old0 = b.src; b.src = URL.createObjectURL(file); b.busy = true; rerender(b); return send(b, file, 'image/gif', old0);
+    }
     var img = new Image(), url = URL.createObjectURL(file);
+    img.onerror = function () { URL.revokeObjectURL(url); if (b.fresh && !b.src) { D.blocks.splice(D.blocks.indexOf(b), 1); render(); } toast('This photo\u2019s format can\u2019t be read here (iPhone HEIC?). Save it as a JPEG and try again.'); };
     img.onload = function () {
       var r = b.shape ? b.shape.split('/').map(Number) : null, sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
       if (r) { var want = r[0] / r[1]; if (sw / sh > want) { sx = (sw - sh * want) / 2; sw = sh * want; } else { sy = (sh - sw / want) / 2; sh = sw / want; } }
@@ -720,18 +737,14 @@
       var g = c.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
       URL.revokeObjectURL(url);
       var old = b.src; b.src = c.toDataURL('image/jpeg', .6); b.busy = true; rerender(b);          // shown at once, faintly, while it uploads
-      c.toBlob(function (blob) {
-        api('/img', {method: 'POST', headers: {'content-type': 'image/jpeg'}, body: blob}).then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
-          .then(function (j) { b.src = j.url; delete b.busy; rerender(b); changed(); if (!b.alt) toast('Photo added · add a description when you can'); })
-          .catch(function () { b.src = old; delete b.busy; rerender(b); toast('That upload didn’t go through. Try again.'); });
-      }, 'image/jpeg', 0.86);
+      c.toBlob(function (blob) { send(b, blob, 'image/jpeg', old); }, 'image/jpeg', 0.86);
     };
     img.src = url;
   }
   function dropFiles(files, at) {
     if (!REMOTE) { toast('Photo uploads need the studio password (Drafts → Studio password)'); return; }
     snap();
-    files.forEach(function (f, k) { var b = block('image'); D.blocks.splice(at + k, 0, b); });
+    files.forEach(function (f, k) { var b = block('image'); b.fresh = true; D.blocks.splice(at + k, 0, b); });          // fresh: taken away again if its file can't be read
     render();
     files.forEach(function (f, k) { uploadInto(D.blocks[at + k], f); });
   }
@@ -861,7 +874,8 @@
 
   $('#exportBtn').addEventListener('click', function () {
     save(); var c = checks(D);
-    $('#exportChecks').innerHTML = (c.length ? c : [[true, 'Ready to send']]).map(function (x) { return '<li class="' + (x[0] ? 'ok' : '') + '">' + esc(x[1]) + '</li>'; }).join('');
+    if (!c.some(function (x) { return x[0] === false; })) c.unshift([true, 'Ready to send']);
+    $('#exportChecks').innerHTML = c.map(function (x) { return '<li class="' + (x[0] ? 'ok' : x[0] === null ? 'tip' : '') + '">' + esc(x[1]) + '</li>'; }).join('');
     $('#exSubject').value = D.subject; $('#exPre').value = D.preheader; $('#exportDlg').showModal();
   });
   function copy(t, what) { navigator.clipboard.writeText(t).then(function () { toast(what + ' copied'); }, function () { toast('Copy didn’t work: use Download instead'); }); }

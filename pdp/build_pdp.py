@@ -1529,7 +1529,7 @@ def main():
     feeds(products)
     # the newsletter maker (a private page, newsletter.html), its pieces taken from the wall in the same order
     sys.path.insert(0, os.path.join(OUT, "tools", "newsletter")); import build as _newsletter
-    _newsletter.build(OUT, [{"slug": p["slug"], "name": p["name"], "price": p["price"], "kind": "totem" if _group(p) == 0 else "jewelry"}
+    _newsletter.build(OUT, [{"slug": p["slug"], "name": p["name"], "price": p["price"], "kind": "totem" if _group(p) == 0 else "jewelry", "preorder": p["slug"] in PREORDER}
                             for p in wall if p["slug"] != "macon-cap"], _content.CONTENT["products"])
     _today = __import__("datetime").date.today().isoformat()
     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:

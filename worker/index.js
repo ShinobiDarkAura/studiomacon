@@ -70,12 +70,12 @@ async function relay(request, env, ctx) {
 async function newsletter(request, env, url) {
   const kv = env.NEWSLETTER;
   const json = (o, status = 200) => new Response(JSON.stringify(o), {status, headers: {'content-type': 'application/json', 'cache-control': 'no-store'}});
-  let m = url.pathname.match(/^\/_nl\/img\/([a-z0-9-]{8,64})\.jpg$/);
+  let m = url.pathname.match(/^\/_nl\/img\/([a-z0-9-]{8,64})\.(jpg|gif)$/);
   if (m) {
     if (!kv || request.method !== 'GET') return new Response(null, {status: 404});
     const pic = await kv.get('img:' + m[1], 'arrayBuffer');
     if (!pic) return new Response(null, {status: 404});
-    return new Response(pic, {headers: {'content-type': 'image/jpeg', 'cache-control': 'public, max-age=31536000, immutable'}});
+    return new Response(pic, {headers: {'content-type': m[2] === 'gif' ? 'image/gif' : 'image/jpeg', 'cache-control': 'public, max-age=31536000, immutable'}});
   }
   if (!kv || !env.NEWSLETTER_KEY) return json({error: 'not set up'}, 503);
   if (request.headers.get('x-macon-key') !== env.NEWSLETTER_KEY) return json({error: 'wrong password'}, 401);
@@ -83,9 +83,9 @@ async function newsletter(request, env, url) {
   if (url.pathname === '/_nl/img' && request.method === 'POST') {
     const pic = await request.arrayBuffer();
     if (!pic.byteLength || pic.byteLength > 5e6) return json({error: 'photo too large'}, 413);
-    const id = crypto.randomUUID();
+    const id = crypto.randomUUID(), ext = /gif/.test(request.headers.get('content-type') || '') ? 'gif' : 'jpg';          // moving GIFs are kept as they are
     await kv.put('img:' + id, pic);
-    return json({url: `https://studiomacon.co/_nl/img/${id}.jpg`});
+    return json({url: `https://studiomacon.co/_nl/img/${id}.${ext}`});
   }
   if (url.pathname === '/_nl/drafts' && request.method === 'GET') {
     const keys = [];
