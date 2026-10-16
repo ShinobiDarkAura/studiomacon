@@ -50,6 +50,10 @@ def build(pdp, pieces, content, shop=None):
     page = open(os.path.join(HERE, "maker.html"), encoding="utf-8").read()
     page = page.replace("/*PIECES*/[]", json.dumps(pieces, ensure_ascii=False))
     page = page.replace("/*SHOP*/{}", json.dumps(shop or {}))
-    page = page.replace("/*LETTERS*/{}", json.dumps(letters(), ensure_ascii=False))          # the public, read-only store key the site already uses
+    page = page.replace("/*LETTERS*/{}", json.dumps(letters(), ensure_ascii=False))
+    # issues written ahead of time (starters/*.json), offered first under New
+    sd = os.path.join(HERE, "starters")
+    starters = [json.load(open(os.path.join(sd, f), encoding="utf-8")) for f in sorted(os.listdir(sd)) if f.endswith(".json")] if os.path.isdir(sd) else []
+    page = page.replace("/*STARTERS*/[]", json.dumps(starters, ensure_ascii=False))          # the public, read-only store key the site already uses
     with open(os.path.join(pdp, "newsletter.html"), "w", encoding="utf-8") as f:
         f.write(page)

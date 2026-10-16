@@ -1,0 +1,22 @@
+{
+ "key": "2026-10-chrysalis",
+ "label": "October — Chrysalis",
+ "note": "From the Chrysalis posts on Instagram (Oct 15 and 16) and the totem's page",
+ "title": "October — Chrysalis",
+ "subject": "Chrysalis, made with In Her Own Right",
+ "preheader": "Our new bronze totem, and the book that shaped it. Preorders ship in early November.",
+ "blocks": [
+  {"type": "heading", "eyebrow": "Studio Maçon × In Her Own Right", "title": "Chrysalis", "size": "normal"},
+  {"type": "text", "width": "narrow", "body": "<p>This month is all about Chrysalis, a small bronze totem we made with Chelsea Madeline and her book, <i>In Her Own Right</i>.</p>"},
+  {"type": "image", "src": "https://studiomacon.co/img/email/chrysalis-cover.jpg", "orig": "https://studiomacon.co/img/email/chrysalis-cover.jpg", "alt": "Chrysalis resting on the cover of In Her Own Right", "link": "https://studiomacon.co/chrysalis.html", "shape": "1/1", "fx": 0.5, "fy": 0.5, "zoom": 1},
+  {"type": "text", "width": "narrow", "body": "<p><i>In Her Own Right</i> is Chelsea’s book on the inner lives and artistic legacies of women across time. Reading it, we kept coming back to one image: the butterfly’s first emergence from its cocoon, the moment you can see both what it was and what it has become.</p><p>That’s the moment we wanted to cast in bronze, small enough to hold in your palm, as both a reminder and a promise.</p><p>Like all of our totems, Chrysalis began as a sketch and a wax carving so delicate a candle flame could melt it. Our caster, Koko, brought it into bronze with the lost-wax technique, and back in the studio we filed, oxidized, waxed and polished it by hand until its warm golden undertone came through.</p>"},
+  {"type": "quote", "text": "With lyric precision and radical intimacy, author Chelsea Madeline invites readers to reconsider what it means to live a creative life as a woman today.", "by": "Blue Sky Black Sheep, publisher of In Her Own Right"},
+  {"type": "image", "src": "https://studiomacon.co/img/email/chrysalis-pages.jpg", "orig": "https://studiomacon.co/img/email/chrysalis-pages.jpg", "alt": "Chrysalis on an open page of In Her Own Right", "link": "https://www.blueskyblacksheep.com/magazine/p/in-her-own-right", "shape": "3/2", "fx": 0.5, "fy": 0.5, "zoom": 1},
+  {"type": "text", "width": "narrow", "body": "<p>This summer Hannah and Chelsea sat down, between Puerto Rico and London, to talk about how the totem was conceived, the passages of the book that shaped it, and how it came to exist in real life. Chelsea reads from the book, too.</p><p><a href=\"https://www.instagram.com/studiomacon/reel/DekRj22Btut/\">Watch part one on Instagram</a>, and stay tuned for part two.</p>"},
+  {"type": "divider"},
+  {"type": "piece", "slug": "chrysalis", "photo": "held", "badge": "New arrival", "note": "Solid bronze, 44 × 20 × 16 mm. Preorders begin shipping in early November, in the order we receive them, in plenty of time for the holidays."},
+  {"type": "text", "width": "narrow", "body": "<p>And if it isn’t on your shelf yet, find <a href=\"https://www.blueskyblacksheep.com/magazine/p/in-her-own-right\"><i>In Her Own Right</i></a> through Blue Sky Press.</p>"},
+  {"type": "signoff", "line": "With love,", "name": "Hannah + Alex"},
+  {"type": "button", "label": "Preorder Chrysalis", "link": "https://studiomacon.co/chrysalis.html"}
+ ]
+}

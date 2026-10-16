@@ -224,6 +224,7 @@
 
 <dialog id="newDlg"><div class="dlg">
   <h2>New issue</h2>
+  <div id="ready" hidden style="margin:4px 0 10px;padding:12px;border-radius:10px;background:#f6f3ed"><b style="font-weight:600">Written for you</b><div class="foot" style="justify-content:flex-start;flex-wrap:wrap;margin-top:10px" id="readyBtns"></div></div>
   <div id="smart" hidden style="margin:4px 0 14px;padding:12px;border-radius:10px;background:#f6f3ed"><b style="font-weight:600">Smart draft</b> <span style="color:#777" id="smartWhat"></span><div class="foot" style="justify-content:flex-start;margin-top:10px" id="smartBtns"></div></div>
   <p>Every issue opens the same way: the Studio Maçon line, a title, a short intro, a photo and the letter. The monthly layout then adds a featured piece and a few others. Both end with the sign-off and the button.</p>
   <div class="foot"><button class="btn" data-close>Cancel</button><button class="btn" id="newBlank">Just the opening</button><button class="btn" id="newCopy">Copy this one</button><button class="btn dark" id="newMonthly">Monthly layout</button></div>
@@ -272,6 +273,7 @@
 (function () {
   // ── the shop's pieces, filled in by the build ──────────────────────────────────────────
   var PIECES = /*PIECES*/[];
+  var STARTERS = /*STARTERS*/[];          // issues written ahead of time
   var LETTERS = /*LETTERS*/{};          // the Bureau of Provenance's monthly letter outlines
   var SHOP = /*SHOP*/{}, STATUS = null, NEWEST = [];          // STATUS: each piece's handle → available, read live from the store
   var SITE = 'https://studiomacon.co', IMG = SITE + '/img/email';
@@ -1143,6 +1145,14 @@
       $('#smartBtns').innerHTML = kinds.map(function (k) { return '<button class="btn dark" data-smart="' + k[0] + '">' + k[1] + ': ' + esc(LETTERS[k[0]][m].label.replace(/^\w+\s+[\u2014-]\s+/, '')) + '</button>'; }).join('');
       $('#smartBtns').querySelectorAll('[data-smart]').forEach(function (b) { b.onclick = function () { var d = smart(b.dataset.smart); if (!d) return; load(d); dirty = true; save(); $('#newDlg').close(); toast('Drafted from the Bureau\u2019s letter and the newest pieces'); }; });
     }
+    $('#ready').hidden = !STARTERS.length;
+    $('#readyBtns').innerHTML = STARTERS.map(function (s, i) { return '<button class="btn dark" data-ready="' + i + '" title="' + esc(s.note || '') + '">' + esc(s.label) + '</button>'; }).join('');
+    $('#readyBtns').querySelectorAll('[data-ready]').forEach(function (b) { b.onclick = function () {
+      var s = JSON.parse(JSON.stringify(STARTERS[+b.dataset.ready])), d = blank();
+      d.title = s.title || s.label; d.subject = s.subject || ''; d.preheader = s.preheader || '';
+      d.blocks = s.blocks.map(function (x) { var k = block(x.type); Object.keys(x).forEach(function (f) { k[f] = x[f]; }); k.id = uid(); return k; });
+      load(d); dirty = true; save(); $('#newDlg').close(); toast('Opened \u201c' + s.label + '\u201d \u00b7 read it through and make it yours');
+    }; });
     $('#newDlg').showModal();
   });
   $('#newMonthly').addEventListener('click', function () { load(monthly()); dirty = true; save(); $('#newDlg').close(); });
