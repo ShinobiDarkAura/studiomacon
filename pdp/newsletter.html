@@ -48,14 +48,14 @@
 
   /* a block: invisible until hovered, then a grip on the left and a few words on the right */
   .blk{position:relative}
-  .blk::after{content:"";position:absolute;inset:-2px 10px;border-radius:12px;pointer-events:none;box-shadow:inset 0 0 0 1px transparent;transition:box-shadow .15s}
+  .blk::after{content:"";position:absolute;left:10px;right:10px;top:var(--ot,-2px);bottom:var(--ob,-2px);border-radius:12px;pointer-events:none;box-shadow:inset 0 0 0 1px transparent;transition:box-shadow .15s}
   .blk:hover::after{box-shadow:inset 0 0 0 1px rgba(47,111,219,.22)}
   .blk.dragging{opacity:.35}
-  .grip{position:absolute;left:-30px;top:6px;width:22px;height:26px;border:0;border-radius:6px;background:none;color:#b9b3a7;cursor:grab;opacity:0;transition:opacity .15s;
+  .grip{position:absolute;left:-30px;top:calc(50% + (var(--ot,0px) - var(--ob,0px)) / 2 - 13px);width:22px;height:26px;border:0;border-radius:6px;background:none;color:#b9b3a7;cursor:grab;opacity:0;transition:opacity .15s;
     font-size:15px;line-height:26px;text-align:center;user-select:none}
   .blk:hover .grip{opacity:1}
   .grip:hover{background:#ece8e0;color:var(--ink)}
-  .tools{position:absolute;right:14px;top:-13px;z-index:5;display:flex;gap:1px;padding:2px;background:#fff;border-radius:8px;
+  .tools{position:absolute;right:14px;top:calc(var(--ot,0px) - 13px);z-index:5;display:flex;gap:1px;padding:2px;background:#fff;border-radius:8px;
     box-shadow:0 4px 14px -4px rgba(0,0,0,.22),0 0 0 1px rgba(0,0,0,.05);opacity:0;pointer-events:none;transform:translateY(3px);transition:.15s}
   .blk:hover .tools,.tools:focus-within{opacity:1;pointer-events:auto;transform:none}
   .tools button{border:0;background:none;padding:3px 7px;border-radius:6px;font-size:11px;color:#555;white-space:nowrap}
@@ -513,15 +513,27 @@
     card.innerHTML = '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:53px 0 44px"><img src="img/email/eye.gif" width="54" alt="Studio Maçon" style="width:54px;height:auto"></td></tr></table>'
       + D.blocks.map(function (b, i) { return gap(i) + blockEl(b); }).join('') + gap(D.blocks.length)
       + '<div class="end"><button data-add-at="' + D.blocks.length + '">+ Add a block</button></div>';
+    fit();
     if (focusId) {
       var f = card.querySelector('[data-id="' + focusId + '"] [data-f]');
       if (f) { f.focus(); caretEnd(f); }
       var el = card.querySelector('[data-id="' + focusId + '"]'); if (el) el.scrollIntoView({block: 'nearest', behavior: 'smooth'});
     }
   }
+  function fit() {
+    var prev = 44;          // the eye's own space below it
+    [].forEach.call(card.querySelectorAll('.blk'), function (el) {
+      var tds = el.querySelectorAll(':scope > table > tbody > tr > td'), last = tds[tds.length - 1];
+      var own = last ? parseFloat(getComputedStyle(last).paddingBottom) || 0 : 0;
+      el.style.setProperty('--ot', -(prev / 2) + 'px'); el.style.setProperty('--ob', (own / 2) + 'px');
+      var g = el.previousElementSibling; if (g && g.classList.contains('gap')) g.style.top = -(prev / 2) + 'px';
+      prev = own;
+    });
+    var gaps = card.querySelectorAll('.gap'), endGap = gaps[gaps.length - 1]; if (endGap) endGap.style.top = -(prev / 2) + 'px';
+  }
   function rerender(b) {          // one block again (after a tool), leaving the rest (and any typing) alone
     var el = card.querySelector('[data-id="' + b.id + '"]'); if (!el) return render();
-    var t = document.createElement('div'); t.innerHTML = blockEl(b); el.replaceWith(t.firstChild);
+    var t = document.createElement('div'); t.innerHTML = blockEl(b); el.replaceWith(t.firstChild); fit();
   }
   function byId(id) { return D.blocks.filter(function (b) { return b.id === id; })[0]; }
   function owner(el) { var c = el && el.closest && el.closest('.blk'); return c ? byId(c.dataset.id) : null; }
