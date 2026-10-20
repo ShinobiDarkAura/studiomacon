@@ -16,6 +16,7 @@
     "tint": -2.0
    },
    "gallery": [
+    "img/ear-cuff/white-1.jpg",
     "img/ear-cuff/hand-3.jpg",
     "img/ear-cuff/hires-3.jpg"
    ],
@@ -44,6 +45,7 @@
     "tint": 0.5
    },
    "gallery": [
+    "img/eclipse-ring/white-1.jpg",
     "img/eclipse-ring/hero.jpg",
     "img/eclipse-ring/hires-1.jpg",
     "img/eclipse-ring/hand-1.jpg"
@@ -174,6 +176,7 @@
    },
    "hero": "img/lunar-canyon-ring/hero.jpg",
    "gallery": [
+    "img/lunar-canyon-ring/white-1.jpg",
     "img/lunar-canyon-ring/hand-2.jpg",
     "img/lunar-canyon-ring/hand-1.jpg"
    ],
@@ -218,6 +221,7 @@
     "tint": 0.0
    },
    "gallery": [
+    "img/meridian-egg-ring/white-1.jpg",
     "img/meridian-egg-ring/hand-2.jpg",
     "img/meridian-egg-ring/plain-1.jpg"
    ],
@@ -472,6 +476,7 @@
    },
    "hero": "img/sietch-aperture/hero.jpg",
    "gallery": [
+    "img/sietch-aperture/white-1.jpg",
     "img/sietch-aperture/plain-1.jpg"
    ]
   },
@@ -538,6 +543,7 @@
     "z": 2.03
    },
    "gallery": [
+    "img/wonderhorn-talisman/white-1.jpg",
     "img/wonderhorn-talisman/plain-2.jpg",
     "img/wonderhorn-talisman/plain-3.jpg",
     "img/wonderhorn-talisman/hand-1.jpg"
@@ -658,6 +664,7 @@
     "tint": -1.0
    },
    "gallery": [
+    "img/zuma-ring/white-1.jpg",
     "img/zuma-ring/hires-1.jpg",
     "img/zuma-ring/plain-1.jpg",
     "img/zuma-ring/plain-2.jpg",
