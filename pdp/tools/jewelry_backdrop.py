@@ -30,6 +30,9 @@ PIECES = {          # slug: the file sent
 }
 
 
+ANCHOR = {}          # slug: "left" to cut and zoom out from the left edge (for something that runs off that edge as shot)
+
+
 def piece_mask(a):
     """0..1: the piece (and nothing of the flat grey), feathered."""
     q = 4
@@ -54,7 +57,7 @@ if __name__ == "__main__":
     out = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else G.PDP
     flats = {}
     for slug, f in PIECES.items():
-        a = np.asarray(G.flatten(f)).astype(np.float32)
+        a = np.asarray(G.flatten(f, anchor=ANCHOR.get(slug, "centre"))).astype(np.float32)
         m = piece_mask(a)
         flats[slug] = (a, m, *spread(a, m))
         print(f"{slug:22s} contrast {flats[slug][2]:.0f}  mean {flats[slug][3]:.0f}")

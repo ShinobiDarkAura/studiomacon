@@ -28,13 +28,13 @@ def poly_terms(x, y, deg=3):
     return np.stack([x**i * y**j for i in range(deg + 1) for j in range(deg + 1 - i)], -1)
 
 
-def flatten(f, whole=False):
+def flatten(f, whole=False, anchor="centre"):
     """whole=True only evens out the lighting (every pixel kept, shadows fading naturally); otherwise
     everything but the piece and its shadow also becomes the one flat grey."""
     im = ImageOps.exif_transpose(Image.open(os.path.join(SRC, f))).convert("RGB")
     # the site's frames are never wider than 5:4, so the far sides are cut away first and the piece keeps its pixels
     if im.width > ASPECT * im.height:
-        w = round(ASPECT * im.height); x = (im.width - w) // 2
+        w = round(ASPECT * im.height); x = 0 if anchor == "left" else (im.width - w) // 2          # left: something (a chain) runs off that edge and must keep doing so
         im = im.crop((x, 0, x + w, im.height))
     k = MAXL * ZOOM / max(im.size)                   # final long side at most MAXL after padding
     if k < 1: im = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
@@ -87,7 +87,7 @@ def flatten(f, whole=False):
     H, W = round(h / ZOOM), round(w / ZOOM)
     rng = np.random.default_rng(0)
     canvas = TARGET + rng.normal(0, 1, (H, W, 3)) * sigma
-    y0, x0 = (H - h) // 2, (W - w) // 2
+    y0, x0 = (H - h) // 2, 0 if anchor == "left" else (W - w) // 2
     canvas[y0:y0+h, x0:x0+w] = alpha * out + (1 - alpha) * canvas[y0:y0+h, x0:x0+w]
     return Image.fromarray(np.clip(canvas, 0, 255).round().astype(np.uint8))
 
