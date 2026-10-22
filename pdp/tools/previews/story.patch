@@ -1,0 +1,1147 @@
+# _variant-story: this preview's source, as a patch against the live pdp at commit 296015a6 (2026-10-22).
+# Only files the preview had; it predates some later work, so older copies of shared files show as changes.
+--- a/pdp/build_pdp.py
++++ b/pdp/build_pdp.py
+@@ -1527,17 +1527,12 @@
+     save("index.html", editable(shop, "index.html"))
+     sizer_page()
+     feeds(products)
+-    # the newsletter maker (a private page, newsletter.html), its pieces taken from the wall in the same order
+-    sys.path.insert(0, os.path.join(OUT, "tools", "newsletter")); import build as _newsletter
+-    _newsletter.build(OUT, [{"slug": p["slug"], "name": p["name"], "price": p["price"], "kind": "totem" if _group(p) == 0 else "jewelry", "preorder": p["slug"] in PREORDER}
+-                            for p in wall if p["slug"] != "macon-cap"], _content.CONTENT["products"],
+-                     (lambda c: {"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"]})(json.load(open(os.path.join(OUT, "shopify", "config.json")))))
+     _today = __import__("datetime").date.today().isoformat()
+     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
+         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                 + "".join(f"  <url><loc>{u}</loc><lastmod>{_today}</lastmod></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")
+     with open(os.path.join(OUT, "robots.txt"), "w") as f:
+-        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nDisallow: /newsletter.html\nSitemap: {SITE}/sitemap.xml\n")
++        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nSitemap: {SITE}/sitemap.xml\n")
+     print(f"{len(products)} pages")
+     # the emails name prices by hand (a marketing email has no cart to read from),
+     # so re-write them from Shopify before anyone copies a template out
+--- a/pdp/collages.html
++++ b/pdp/collages.html
+@@ -0,0 +1,12 @@
++<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
++<title>Story collages · library</title><link rel="stylesheet" href="site.css"><style>
++body{background:#fff;margin:0;padding:72px 24px;font:400 15px/1.5 var(--sans)} h1{margin:0 0 8px} .lede{max-width:640px;opacity:.7;margin:0 0 48px}
++section{margin:0 0 72px} h2{font:400 34px/1 var(--serif);text-transform:uppercase;margin:0 0 18px} h2 a{color:inherit;text-decoration:none}
++h2 .arr{font:400 12px var(--sans);text-transform:none;opacity:.55;margin-left:12px;text-decoration:underline}
++.lib{display:flex;gap:28px;align-items:flex-end;flex-wrap:wrap} .lib figure{margin:0;width:220px}
++.lib img{width:100%;display:block;filter:drop-shadow(0 1px 0 rgba(0,0,0,.2)) drop-shadow(0 2px 2px rgba(0,0,0,.16))}
++figcaption{font-size:12px;opacity:.55;margin-top:8px}</style></head><body>
++<h1>Story collages</h1><p class="lede">The image library for each totem: four paper pieces, mixed differently on each product page above Kindred Spirits.
++Open a totem to see its collage; add <b>?arrange</b> (the "arrange" link) to drag pieces, scroll to resize, shift+scroll to rotate,
++add or remove pieces, and bring forward or send back. Arrangements save in this browser; "Download all" gives the layout file to make them the default.
++Local preview only.</p><section><h2><a href="pip.html">Pip</a> <a class="arr" href="pip.html?arrange">arrange</a></h2><div class="lib"><figure><img src="img/story/pieces/pip-cyano.webp" loading="lazy" alt=""><figcaption>Cyanotype</figcaption></figure><figure><img src="img/story/pieces/pip-photogenic.webp" loading="lazy" alt=""><figcaption>Photogenic drawing</figcaption></figure><figure><img src="img/story/pieces/pip-sketch.webp" loading="lazy" alt=""><figcaption>Pastel sketch</figcaption></figure><figure><img src="img/story/pieces/pip-note.webp" loading="lazy" alt=""><figcaption>Field note</figcaption></figure></div></section><section><h2><a href="rebi.html">Rebi</a> <a class="arr" href="rebi.html?arrange">arrange</a></h2><div class="lib"><figure><img src="img/story/pieces/rebi-cyano.webp" loading="lazy" alt=""><figcaption>Cyanotype</figcaption></figure><figure><img src="img/story/pieces/rebi-photogenic.webp" loading="lazy" alt=""><figcaption>Photogenic drawing</figcaption></figure><figure><img src="img/story/pieces/rebi-sketch.webp" loading="lazy" alt=""><figcaption>Pastel sketch</figcaption></figure><figure><img src="img/story/pieces/rebi-note.webp" loading="lazy" alt=""><figcaption>Field note</figcaption></figure></div></section><section><h2><a href="ren.html">Ren</a> <a class="arr" href="ren.html?arrange">arrange</a></h2><div class="lib"><figure><img src="img/story/pieces/ren-cyano.webp" loading="lazy" alt=""><figcaption>Cyanotype</figcaption></figure><figure><img src="img/story/pieces/ren-photogenic.webp" loading="lazy" alt=""><figcaption>Photogenic drawing</figcaption></figure><figure><img src="img/story/pieces/ren-sketch.webp" loading="lazy" alt=""><figcaption>Pastel sketch</figcaption></figure><figure><img src="img/story/pieces/ren-note.webp" loading="lazy" alt=""><figcaption>Field note</figcaption></figure></div></section><section><h2><a href="zuma.html">Zuma</a> <a class="arr" href="zuma.html?arrange">arrange</a></h2><div class="lib"><figure><img src="img/story/pieces/zuma-cyano.webp" loading="lazy" alt=""><figcaption>Cyanotype</figcaption></figure><figure><img src="img/story/pieces/zuma-photogenic.webp" loading="lazy" alt=""><figcaption>Photogenic drawing</figcaption></figure><figure><img src="img/story/pieces/zuma-sketch.webp" loading="lazy" alt=""><figcaption>Pastel sketch</figcaption></figure><figure><img src="img/story/pieces/zuma-note.webp" loading="lazy" alt=""><figcaption>Field note</figcaption></figure></div></section><section><h2><a href="milo.html">Milo</a> <a class="arr" href="milo.html?arrange">arrange</a></h2><div class="lib"><figure><img src="img/story/pieces/milo-cyano.webp" loading="lazy" alt=""><figcaption>Cyanotype</figcaption></figure><figure><img src="img/story/pieces/milo-photogenic.webp" loading="lazy" alt=""><figcaption>Photogenic drawing</figcaption></figure><figure><img src="img/story/pieces/milo-sketch.webp" loading="lazy" alt=""><figcaption>Pastel sketch</figcaption></figure><figure><img src="img/story/pieces/milo-note.webp" loading="lazy" alt=""><figcaption>Field note</figcaption></figure></div></section><section><h2><a href="yael.html">Yael</a> <a class="arr" href="yael.html?arrange">arrange</a></h2><div class="lib"><figure><img src="img/story/pieces/yael-cyano.webp" loading="lazy" alt=""><figcaption>Cyanotype</figcaption></figure><figure><img src="img/story/pieces/yael-photogenic.webp" loading="lazy" alt=""><figcaption>Photogenic drawing</figcaption></figure><figure><img src="img/story/pieces/yael-sketch.webp" loading="lazy" alt=""><figcaption>Pastel sketch</figcaption></figure><figure><img src="img/story/pieces/yael-note.webp" loading="lazy" alt=""><figcaption>Field note</figcaption></figure></div></section><section><h2><a href="ori.html">Ori</a> <a class="arr" href="ori.html?arrange">arrange</a></h2><div class="lib"><figure><img src="img/story/pieces/ori-cyano.webp" loading="lazy" alt=""><figcaption>Cyanotype</figcaption></figure><figure><img src="img/story/pieces/ori-photogenic.webp" loading="lazy" alt=""><figcaption>Photogenic drawing</figcaption></figure><figure><img src="img/story/pieces/ori-sketch.webp" loading="lazy" alt=""><figcaption>Pastel sketch</figcaption></figure><figure><img src="img/story/pieces/ori-note.webp" loading="lazy" alt=""><figcaption>Field note</figcaption></figure></div></section><section><h2><a href="ibi.html">Ibi</a> <a class="arr" href="ibi.html?arrange">arrange</a></h2><div class="lib"><figure><img src="img/story/pieces/ibi-cyano.webp" loading="lazy" alt=""><figcaption>Cyanotype</figcaption></figure><figure><img src="img/story/pieces/ibi-photogenic.webp" loading="lazy" alt=""><figcaption>Photogenic drawing</figcaption></figure><figure><img src="img/story/pieces/ibi-sketch.webp" loading="lazy" alt=""><figcaption>Pastel sketch</figcaption></figure><figure><img src="img/story/pieces/ibi-note.webp" loading="lazy" alt=""><figcaption>Field note</figcaption></figure></div></section><section><h2><a href="eleph.html">Eleph</a> <a class="arr" href="eleph.html?arrange">arrange</a></h2><div class="lib"><figure><img src="img/story/pieces/eleph-cyano.webp" loading="lazy" alt=""><figcaption>Cyanotype</figcaption></figure><figure><img src="img/story/pieces/eleph-photogenic.webp" loading="lazy" alt=""><figcaption>Photogenic drawing</figcaption></figure><figure><img src="img/story/pieces/eleph-sketch.webp" loading="lazy" alt=""><figcaption>Pastel sketch</figcaption></figure><figure><img src="img/story/pieces/eleph-note.webp" loading="lazy" alt=""><figcaption>Field note</figcaption></figure></div></section></body></html>
+--- a/pdp/content.json
++++ b/pdp/content.json
+@@ -16,7 +16,6 @@
+     "tint": -2.0
+    },
+    "gallery": [
+-    "img/ear-cuff/white-1.jpg",
+     "img/ear-cuff/hand-3.jpg",
+     "img/ear-cuff/hires-3.jpg"
+    ],
+@@ -45,7 +44,6 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/eclipse-ring/white-1.jpg",
+     "img/eclipse-ring/hero.jpg",
+     "img/eclipse-ring/hires-1.jpg",
+     "img/eclipse-ring/hand-1.jpg"
+@@ -176,7 +174,6 @@
+    },
+    "hero": "img/lunar-canyon-ring/hero.jpg",
+    "gallery": [
+-    "img/lunar-canyon-ring/white-1.jpg",
+     "img/lunar-canyon-ring/hand-2.jpg",
+     "img/lunar-canyon-ring/hand-1.jpg"
+    ],
+@@ -221,7 +218,6 @@
+     "tint": 0.0
+    },
+    "gallery": [
+-    "img/meridian-egg-ring/white-1.jpg",
+     "img/meridian-egg-ring/hand-2.jpg",
+     "img/meridian-egg-ring/plain-1.jpg"
+    ],
+@@ -476,7 +472,6 @@
+    },
+    "hero": "img/sietch-aperture/hero.jpg",
+    "gallery": [
+-    "img/sietch-aperture/white-1.jpg",
+     "img/sietch-aperture/plain-1.jpg"
+    ]
+   },
+@@ -543,7 +538,6 @@
+     "z": 2.03
+    },
+    "gallery": [
+-    "img/wonderhorn-talisman/white-1.jpg",
+     "img/wonderhorn-talisman/plain-2.jpg",
+     "img/wonderhorn-talisman/plain-3.jpg",
+     "img/wonderhorn-talisman/hand-1.jpg"
+@@ -664,7 +658,6 @@
+     "tint": -1.0
+    },
+    "gallery": [
+-    "img/zuma-ring/white-1.jpg",
+     "img/zuma-ring/hires-1.jpg",
+     "img/zuma-ring/plain-1.jpg",
+     "img/zuma-ring/plain-2.jpg",
+--- a/pdp/email/build_emails.py
++++ b/pdp/email/build_emails.py
+@@ -96,7 +96,6 @@
+     return re.sub(re.escape(IMG) + r"/([\w.-]+\.(?:jpg|gif|png))(?![?\w])", tag, html)
+ 
+ def page(preheader, body):
+-    body = body.replace('@SHIPNOTE@', SHIP_KLAVIYO)
+     return _versioned(f"""<!doctype html>
+ <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>
+@@ -259,15 +258,6 @@
+               "{{ item.line_price|floatformat:0 }}", SITE)
+ CHECKOUT = "{{ event.extra.checkout_url }}"
+ GRID = "<!--GRID-->"          # checkout 2 only: the bag laid out as a grid (Shopify version, see _grid)
+-
+-# the shipping line in the order emails: a Chrysalis preorder ships in early November, everything else within ten business days
+-SHIP_KLAVIYO = ("{% if 'Chrysalis' in event.ItemNames %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. "
+-                "Any other pieces ship within about ten business days.{% else %}You can expect it to ship within about ten business days.{% endif %}")
+-SHIP_SHOPIFY = ("{% assign macon_pre = false %}{% assign macon_rest = false %}{% for line in line_items %}"
+-                "{% if line.product.tags contains 'preorder' or line.title contains 'Chrysalis' %}{% assign macon_pre = true %}{% else %}{% assign macon_rest = true %}{% endif %}{% endfor %}"
+-                "{% if macon_pre and macon_rest %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. Everything else ships within about ten business days."
+-                "{% elsif macon_pre %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them."
+-                "{% else %}You can expect it to ship within about ten business days.{% endif %}")
+ 
+ def notes(rows):
+     cells = "".join(f'<tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
+@@ -317,7 +307,7 @@
+     preview="What happens between now and its arrival.",
+     body=eyebrow("Studio Maçon") + h1("Your piece<br>is being made") + ORDER
+        + notes([("Made to order", "We start on your order as soon as it comes in. No two pieces come out alike."),
+-                ("On its way", "@SHIPNOTE@ We'll send you tracking as soon as possible."),
++                ("On its way", "You can expect it to ship within about ten business days. We'll send you tracking as soon as possible."),
+                 ("Questions", "Just reply to this email! We respond to every message directly.")])),
+  "thanks-2": dict(
+     subject="How to care for your piece",
+@@ -437,7 +427,6 @@
+ 
+ def to_shopify(html, name):
+     import re
+-    html = html.replace(SHIP_KLAVIYO, SHIP_SHOPIFY)
+     html = html.replace('<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">', "")
+     html = html.replace("<style>", "<style>\n  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;"
+                         f"src:url({SITE_ASSETS}/fonts/instrument-serif.woff2) format('woff2')}}", 1)
+--- a/pdp/email/thanks-1.html
++++ b/pdp/email/thanks-1.html
+@@ -14,7 +14,7 @@
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center">
+ <table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
+   <tr><td align="center" style="padding:53px 0 44px"><a href="https://studiomacon.co"><img src="https://studiomacon.studiomacon.workers.dev/img/email/eye.gif?v=210bf680" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>
+-<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr><tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">Your piece<br>is being made</td></tr><tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{% for item in event.extra.line_items %}<tr><td align="center" style="padding:0 0 40px"><a href="https://studiomacon.co" style="text-decoration:none"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr><td height="272" valign="bottom" background="{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center" bgcolor="#8a7a6a" style="height:272px;border-radius:16px;background-image:url({{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center);background-size:cover;background-position:center"><div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))"><div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#ffffff">{{ item.product.title }}</div><div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#ffffff;padding-top:7px">${{ item.line_price|floatformat:0 }}</div></div></td></tr></table></a></td></tr>{% endfor %}</table></td></tr><tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto"><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Made to order</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces come out alike.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">On its way</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">{% if 'Chrysalis' in event.ItemNames %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. Any other pieces ship within about ten business days.{% else %}You can expect it to ship within about ten business days.{% endif %} We'll send you tracking as soon as possible.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Questions</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr></table></td></tr>
++<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr><tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">Your piece<br>is being made</td></tr><tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{% for item in event.extra.line_items %}<tr><td align="center" style="padding:0 0 40px"><a href="https://studiomacon.co" style="text-decoration:none"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr><td height="272" valign="bottom" background="{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center" bgcolor="#8a7a6a" style="height:272px;border-radius:16px;background-image:url({{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center);background-size:cover;background-position:center"><div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))"><div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#ffffff">{{ item.product.title }}</div><div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#ffffff;padding-top:7px">${{ item.line_price|floatformat:0 }}</div></div></td></tr></table></a></td></tr>{% endfor %}</table></td></tr><tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto"><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Made to order</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces come out alike.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">On its way</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">You can expect it to ship within about ten business days. We'll send you tracking as soon as possible.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Questions</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr></table></td></tr>
+   <tr><td class="pad" align="center" style="padding:56px 24px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8a8a8a">
+     Every piece is made to order in the studio in California.<br>
+     <a href="https://studiomacon.co/story" style="color:#8a8a8a">About</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/studiomacon/" style="color:#8a8a8a">Instagram</a>
+--- a/pdp/gen_library.py
++++ b/pdp/gen_library.py
+@@ -0,0 +1,80 @@
++#!/usr/bin/env python3
++"""Generate the story-collage image library for the nine totems through Codex, two at a time.
++Skips anything already made, so it can be re-run to fill gaps.
++
++    python3 pdp/_variant-story/pdp/gen_library.py
++"""
++import os, subprocess, sys
++from concurrent.futures import ThreadPoolExecutor
++
++HERE = os.path.dirname(os.path.abspath(__file__))
++O = os.path.join(HERE, "img", "story")
++GEN = os.path.join(O, "gen")
++M = os.path.join(HERE, "img", "moodboard", "museum")
++CODEX = os.path.expanduser("~/.claude/skills/codex-imagegen/scripts/gen.py")
++
++TOTEMS = {  # name; what lies beside it in the cyanotype (varied objects, from its story)
++    "pip": ("Pip", "a small old key, a single shirt button, a loose loop of thread and a sprig of lavender"),
++    "rebi": ("Rebi", "a four-leaf clover, a small coin, a loose loop of thread and a fern frond"),
++    "ren": ("Ren", "an oak leaf, an acorn, a small compass and a short twig"),
++    "zuma": ("Zuma", "a small spiral shell, a smooth pebble, a coil of string and a sprig of sage"),
++    "milo": ("Milo", "a wheat stalk, a small feather, a button and a length of twine"),
++    "yael": ("Yael", "a feather, a tiny bell, a short ribbon and a fern frond"),
++    "ori": ("Ori", "a maple leaf, an acorn, a small key and a pine twig"),
++    "ibi": ("Ibi", "a long feather, a slender reed, a scrap of lace and a small coin"),
++    "eleph": ("Eleph", "a ginkgo leaf, a loop of string, a small button and a pressed flower"),
++}
++PH = ("a Talbot photogenic drawing, a salted-paper negative from about 1840: warm brown, uneven, mottled sensitised paper "
++      "with soft darker edges and a few small specks, the object recorded as a pale cream trace by light alone.")
++
++
++def jobs():
++    for s, (name, things) in TOTEMS.items():
++        yield (f"{s}-cyano2.png", [f"{M}/aic-73448.jpg"],
++               "Make a new cyanotype in the same technique as the reference: deep Prussian blue with a soft, uneven, brushed and mottled "
++               "texture and tiny specks, crisp pale near-white contact-print traces. The blue print has its four corners CLIPPED (chamfered), "
++               "and it sits on a plain flat PURE WHITE background with NO paper border, no mount and no frame around the blue. On the print, "
++               f"laid loosely and naturally around the edges as if placed by hand: {things}, each printed as a crisp, sharp white silhouette. "
++               "Leave a clear EMPTY area of plain blue in the MIDDLE of the sheet (centred both ways, about a third of the sheet's width) with "
++               "nothing in it. At the lower right, a tiny, scratchy, barely legible white pencil scribble of two short words: "
++               f"'{name}' and 'bronze'. Nothing else written. Portrait.", "1024x1408")
++        yield (f"{s}-photogenic2.png", [f"{O}/{s}-neg-ref.png", f"{O}/{s}-grey-ref.jpg", f"{M}/wc-william-henry-fox-talbot-leaf-study-1839.jpg"],
++               f"Make a single portrait 4:5 print in the style of the THIRD reference image: {PH} The subject is the small bronze totem '{name}' "
++               "(photographed in the SECOND reference). Copy its outline EXACTLY from the FIRST reference image (same silhouette and proportions, "
++               "clean edges, nothing added), but SMALL: the figure is only about a quarter of the sheet's height, centred on the sheet, with "
++               "lots of empty paper around it, and only faint soft inner tonal detail. At the BOTTOM RIGHT corner, quick, loose, gestural, barely "
++               f"legible graphite pencil notes in three short lines: '{name}', 'solid bronze', 'carved by hand'. No numbers, no measurements, "
++               "no scale bar, no other text, no borders.", "1024x1280")
++        yield (f"{s}-sketch2.png", [f"{O}/{s}-grey-ref.jpg"],
++               f"A loose, modern, gestural OUTLINE drawing of the small totem in the reference photo ({name}), drawn quickly and confidently in "
++               "soft black oil pastel: contour lines only, a few expressive overlapping strokes, NO shading, NO fill, NO hatching, NO smudged "
++               "tone. Keep its shape and proportions true to the photo, and CENTRE it on the paper with even space around it. It is drawn on a "
++               "single piece of clean off-white sketchbook paper torn out by hand: one edge ragged and torn, the others straight. Photograph the "
++               "paper flat, straight from above, on a perfectly flat, evenly lit pure green background (#00FF00) with NO shadow on the green. "
++               "No text, no signature.", "1024x1280")
++        yield (f"{s}-note2.png", [f"{O}/{s}-grey-ref.jpg"],
++               "A small, plain, slightly worn off-white index card (one torn edge), photographed flat from directly above on a perfectly flat, "
++               "evenly lit pure green background (#00FF00) with NO shadow on the green. On the LEFT half, in tiny, light grey graphite pencil, "
++               f"in a loose natural handwriting, exactly these lines: '{name}', 'solid bronze', 'carved in wax, cast by hand', and below them a "
++               "small hand-drawn straight scale bar with tick marks labelled '10 mm'. On the RIGHT half, a light, quick graphite pencil OUTLINE "
++               "sketch of the small totem in the reference photo: contour lines only, NO shading, NO hatching. Plenty of empty card. Landscape "
++               "card, no logos.", "1280x896")
++
++
++def run(job):
++    out, refs, prompt, size = job
++    dst = os.path.join(GEN, out)
++    if os.path.exists(dst):
++        return f"skip {out}"
++    args = [sys.executable, CODEX, prompt, "-o", dst, "--size", size]
++    for r in refs:
++        args += ["-i", r]
++    r = subprocess.run(args, capture_output=True, text=True)
++    return f"{'ok  ' if os.path.exists(dst) else 'FAIL'} {out} {'' if os.path.exists(dst) else (r.stdout + r.stderr)[-200:]}"
++
++
++if __name__ == "__main__":
++    os.makedirs(GEN, exist_ok=True)
++    with ThreadPoolExecutor(2) as ex:
++        for line in ex.map(run, list(jobs())):
++            print(line, flush=True)
+--- a/pdp/gen_library3.py
++++ b/pdp/gen_library3.py
+@@ -0,0 +1,64 @@
++#!/usr/bin/env python3
++"""Generate the story-collage image library for the nine totems through Codex, two at a time.
++Skips anything already made, so it can be re-run to fill gaps.
++
++    python3 pdp/_variant-story/pdp/gen_library.py
++"""
++import os, subprocess, sys
++from concurrent.futures import ThreadPoolExecutor
++
++HERE = os.path.dirname(os.path.abspath(__file__))
++O = os.path.join(HERE, "img", "story")
++GEN = os.path.join(O, "gen")
++M = os.path.join(HERE, "img", "moodboard", "museum")
++CODEX = os.path.expanduser("~/.claude/skills/codex-imagegen/scripts/gen.py")
++
++TOTEMS = {  # name; what lies beside it in the cyanotype (varied objects, from its story)
++    "pip": ("Pip", "a small old key, a single shirt button, a loose loop of thread and a sprig of lavender"),
++    "rebi": ("Rebi", "a four-leaf clover, a small coin, a loose loop of thread and a fern frond"),
++    "ren": ("Ren", "an oak leaf, an acorn, a small compass and a short twig"),
++    "zuma": ("Zuma", "a small spiral shell, a smooth pebble, a coil of string and a sprig of sage"),
++    "milo": ("Milo", "a wheat stalk, a small feather, a button and a length of twine"),
++    "yael": ("Yael", "a feather, a tiny bell, a short ribbon and a fern frond"),
++    "ori": ("Ori", "a maple leaf, an acorn, a small key and a pine twig"),
++    "ibi": ("Ibi", "a long feather, a slender reed, a scrap of lace and a small coin"),
++    "eleph": ("Eleph", "a ginkgo leaf, a loop of string, a small button and a pressed flower"),
++}
++PH = ("a Talbot photogenic drawing, a salted-paper negative from about 1840: warm brown, uneven, mottled sensitised paper "
++      "with soft darker edges and a few small specks, the object recorded as a pale cream trace by light alone.")
++
++
++def jobs():
++    for s, (name, things) in TOTEMS.items():
++        yield (f"{s}-photogenic3.png", [f"{O}/{s}-neg-ref.png", f"{O}/{s}-grey-ref.jpg", f"{M}/wc-william-henry-fox-talbot-leaf-study-1839.jpg"],
++               f"Make a single portrait 4:5 print in the style of the THIRD reference image: {PH} The subject is the small bronze totem '{name}' "
++               "(photographed in the SECOND reference). Copy its outline EXACTLY from the FIRST reference image (same silhouette and proportions, "
++               "clean edges, nothing added), but SMALL: the figure is only about a quarter of the sheet's height, centred on the sheet, with "
++               "lots of empty paper around it, and only faint soft inner tonal detail. At the BOTTOM RIGHT corner, quick, loose, gestural, barely "
++               f"legible handwritten notes in PALE CREAM-WHITE (light on the brown paper, like chalk or white pencil), three short lines: '{name}', "
++               "'solid bronze', 'carved by hand'. No numbers, no measurements, no scale bar, no other text, no borders.", "1024x1280")
++        yield (f"{s}-note3.png", [f"{O}/{s}-grey-ref.jpg", f"{O}/{s}-grey-ref2.jpg"],
++               "A small, plain, slightly worn off-white index card (one torn edge), photographed flat from directly above on a perfectly flat, "
++               "evenly lit pure green background (#00FF00) with NO shadow on the green. On the card, three light, quick graphite pencil OUTLINE "
++               "sketches of the same small totem shown in the two reference photos, seen from three different angles (for example the side, "
++               "the other side and the front), drawn small, side by side in a loose row with space around them: contour lines only, NO shading, "
++               "NO hatching, NO text, NO numbers, NO labels. Keep each drawing true to the totem's real shape. Landscape card, no logos.", "1280x896")
++
++
++def run(job):
++    out, refs, prompt, size = job
++    dst = os.path.join(GEN, out)
++    if os.path.exists(dst):
++        return f"skip {out}"
++    args = [sys.executable, CODEX, prompt, "-o", dst, "--size", size]
++    for r in refs:
++        args += ["-i", r]
++    r = subprocess.run(args, capture_output=True, text=True)
++    return f"{'ok  ' if os.path.exists(dst) else 'FAIL'} {out} {'' if os.path.exists(dst) else (r.stdout + r.stderr)[-200:]}"
++
++
++if __name__ == "__main__":
++    os.makedirs(GEN, exist_ok=True)
++    with ThreadPoolExecutor(2) as ex:
++        for line in ex.map(run, list(jobs())):
++            print(line, flush=True)
+--- a/pdp/make_collage.py
++++ b/pdp/make_collage.py
+@@ -0,0 +1,286 @@
++#!/usr/bin/env python3
++"""Story collages above Kindred Spirits on the nine totem pages (local preview only; lives in _variant-story).
++
++    python3 pdp/build_pdp.py            (in this copy) then
++    python3 pdp/_variant-story/pdp/make_collage.py
++
++Each totem mixes two or three paper pieces from the library (cyanotype, photogenic drawing, pastel sketch,
++field-note card), laid like a collage with hard, shallow contact shadows, its story in large type beside it.
++Add ?arrange to a page, click a piece, then drag it, pull its corners to resize or just outside them to rotate; the layout is kept in this
++browser and can be copied or downloaded as story-layout.json (put it beside this script to make it the default).
++"""
++import html, json, os, re
++
++HERE = os.path.dirname(os.path.abspath(__file__))
++E = html.escape
++PIECES = json.load(open(os.path.join(HERE, "img", "story", "pieces", "pieces.json")))
++SLUGS = "pip rebi ren zuma milo yael ori ibi eleph".split()
++MADE = "Sketched on paper, carved by hand in wax, cast at a local foundry and finished at the bench. Made to order."
++TYPE = {"size": 46, "weight": 400, "track": 0, "lead": 1.3, "small": 15, "font": 0, "width": 745, "above": 347, "below": 41, "mode": 0}          # font 0 = Instrument Serif (one weight), 1 = PP Editorial Old (100-900)          # the story's type; the editor changes it for every page
++# placeholder keeper quotes in the story's place (local preview only; to be swapped for real ones before anything ships)
++QUOTES = {
++    "pip": "I keep it on my windowsill. Guests always pick it up, and I've started checking my pocket for it.",
++    "rebi": "Every morning it looks different to me. My partner sees a hare; I see something with no name.",
++    "ren": "It came on every trip with me this year. Somehow I never once took a wrong turn.",
++    "zuma": "I carry it in my coat pocket. By afternoon it's warm, and it stays warm all evening.",
++    "milo": "It sat on my desk a week before I noticed it was the first thing I touched each morning.",
++    "yael": "I hold it before every climb. It's small, but it makes the narrow ledges feel wider somehow.",
++    "ori": "It lives on our kitchen windowsill now. The whole house feels calmer, especially in winter.",
++    "ibi": "I've tried to photograph it a dozen times. None of the pictures look like it, which I love.",
++    "eleph": "It sits by my bed. It's the heaviest small thing I own, and somehow that's comforting.",
++}
++WHO = {          # placeholder names and places for the quotes above
++    "pip": "Maren L., Portland", "rebi": "Theo K., Brooklyn", "ren": "Ines R., Lisbon",
++    "zuma": "Sam O., Santa Fe", "milo": "Hugo B., Copenhagen", "yael": "Noa S., Boulder",
++    "ori": "Clara M., Vermont", "ibi": "Jun T., Kyoto", "eleph": "Ada W., London",
++}
++KINDS = {"cyano": "Cyanotype", "photogenic": "Photogenic drawing", "sketch": "Sketch", "note": "Field note"}
++
++# each piece: kind, left %, top %, width % (of the collage), rotation in degrees, layer
++DEFAULT = {
++    "pip": [("photogenic", 6, 2, 60, -3, 1), ("note", 50, 66, 44, 4, 2)],
++    "rebi": [("cyano", 4, 0, 56, 2, 1), ("sketch", 50, 36, 44, -5, 2)],
++    "ren": [("sketch", 2, 8, 50, -2, 1), ("cyano", 44, 0, 50, 4, 2), ("note", 12, 70, 38, -6, 3)],
++    "zuma": [("cyano", 22, 0, 58, -2, 1), ("note", 2, 64, 42, 5, 2)],
++    "milo": [("photogenic", 2, 0, 58, 3, 1), ("sketch", 50, 30, 44, -4, 2)],
++    "yael": [("cyano", 6, 2, 54, -4, 1), ("sketch", 54, 46, 38, 6, 2)],
++    "ori": [("sketch", 16, 0, 58, -1, 1), ("note", 48, 66, 44, -5, 2)],
++    "ibi": [("photogenic", 34, 0, 56, 4, 1), ("cyano", 0, 26, 46, -5, 2)],
++    "eleph": [("cyano", 2, 8, 48, -3, 1), ("sketch", 44, 0, 46, 4, 2), ("note", 26, 70, 40, 2, 3)],
++}
++saved = os.path.join(HERE, "story-layout.json")
++if os.path.exists(saved):
++    _saved = json.load(open(saved)); TYPE.update(_saved.pop("_type", {}))
++    for k, v in _saved.items():
++        DEFAULT[k] = [(p["k"], p["x"], p["y"], p["w"], p["r"], p["z"]) for p in v]
++
++CSS = """
++<style>
++  .tale{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:72px;align-items:center;
++    max-width:calc(700px + var(--tx) * 1px);margin:0 auto;padding:calc(var(--pa) * 1px) calc(var(--pad) + 24px) calc(var(--pb) * 1px)}          /* centred between the photo stack and Kindred Spirits, whose own 370px of room sits above its title */
++  .collage{position:relative;aspect-ratio:1/1.08;width:100%}
++  .collage .pc{position:absolute;display:block;height:auto;transform-origin:50% 50%;user-select:none;-webkit-user-drag:none;
++    filter:drop-shadow(0 0 .5px rgba(0,0,0,.18)) drop-shadow(0 1px 0 rgba(0,0,0,.2)) drop-shadow(0 2px 2px rgba(0,0,0,.16)) drop-shadow(0 4px 6px rgba(0,0,0,.08))}
++  @font-face{font-family:"PP Editorial Old";src:url(fonts/pp-editorial-old.woff2) format("woff2");font-weight:100 900;font-display:swap}
++  .tale-copy{width:min(calc(var(--tx) * 1px),50vw)}
++  body[data-tmode="1"] .tale-text{display:none}
++  body[data-tmode="1"] .tale-made{margin-top:0}
++  body[data-tmode="2"] .tale-copy{display:none}
++  body[data-tmode="2"] .tale{grid-template-columns:minmax(0,760px);justify-content:center}
++  body[data-tf="1"] .tale-text{font-family:"PP Editorial Old","Instrument Serif",serif;font-variation-settings:"wght" var(--tw)}
++  .tale-text{margin:0;color:#2e2e2e;font-family:var(--serif);font-size:clamp(24px,calc(var(--ts) * 0.07vw),calc(var(--ts) * 1px));font-weight:var(--tw);
++    letter-spacing:calc(var(--tt) * 1em);line-height:var(--tl);text-wrap:pretty}
++  .tale-who{margin:28px 0 0;font:400 calc(var(--tm) * 1px)/1.55 var(--sans);opacity:.6}          /* who said it, where the small text was */
++  body[data-tmode="1"] .tale-who{display:none}
++  .tale-made{margin:28px 0 0;max-width:400px;font:400 calc(var(--tm) * 1px)/1.55 var(--sans);opacity:.6;text-wrap:pretty}
++  @media (max-width:899px){ .tale-copy{width:auto} .tale{grid-template-columns:1fr;gap:40px;padding:96px 20px 72px} .tale-text{font-size:26px} }
++  /* the arrange tool (local only) */
++  body.arranging.has-sel .collage{outline:1px dashed rgba(0,0,0,.2);outline-offset:8px}          /* guides only while something is selected; otherwise it looks as it will live */
++  body.arranging .pc.sel{cursor:move}
++  .bbox{position:absolute;z-index:1000;box-sizing:border-box;border:1px solid #0d99ff;pointer-events:none;transform-origin:50% 50%}          /* the selected piece's frame, Figma-like */
++  .bbox i{position:absolute;box-sizing:border-box;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;background:#fff;border:1px solid #0d99ff;pointer-events:auto}
++  .bbox i.rot{width:24px;height:24px;margin:-12px 0 0 -12px;background:none;border:0;
++    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M4 12a7 7 0 0 1 12-5' fill='none' stroke='white' stroke-width='4'/%3E%3Cpath d='M4 12a7 7 0 0 1 12-5' fill='none' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M17 2v6h-6' fill='none' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") 10 10,crosshair}
++  .bbox .nw{left:0;top:0;cursor:nwse-resize}.bbox .ne{left:100%;top:0;cursor:nesw-resize}.bbox .se{left:100%;top:100%;cursor:nwse-resize}.bbox .sw{left:0;top:100%;cursor:nesw-resize}
++  .bbox .rot.nw{left:-11px;top:-11px}.bbox .rot.ne{left:calc(100% + 11px);top:-11px}.bbox .rot.se{left:calc(100% + 11px);top:calc(100% + 11px)}.bbox .rot.sw{left:-11px;top:calc(100% + 11px)}          /* just outside each corner: rotate */
++  .ctx{position:absolute;z-index:1001;display:flex;gap:2px;padding:3px;transform:translate(-50%,-100%);background:#111;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
++  .ctx button{border:0;background:none;color:#fff;padding:5px 9px;border-radius:6px;font:500 11px/1 var(--sans);cursor:pointer;white-space:nowrap}
++  .ctx button:hover{background:#333}
++  .ctx[hidden],.bbox[hidden]{display:none}
++  .arr{position:fixed;right:16px;bottom:16px;z-index:100;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:10px;
++    font:12px/1.45 var(--sans);box-shadow:0 8px 30px rgba(0,0,0,.12);overflow:hidden}
++  .arr button{border:0;background:none;padding:6px 9px;border-radius:6px;font:12px/1 var(--sans);cursor:pointer;white-space:nowrap}
++  .arr button:hover{background:#f2f2f2}
++  .arr button[aria-expanded="true"],.arr button[aria-pressed="true"]{background:#111;color:#fff}
++  .arr .bar{display:flex;align-items:center;gap:1px;padding:4px}
++  .arr .who{padding:0 8px 0 6px;font:500 11px/1 var(--sans);opacity:.45}
++  .arr .pop{width:236px;padding:10px 12px 12px;border-bottom:1px solid #eee}
++  .arr .kinds,.arr .seg{display:flex;flex-wrap:wrap;gap:3px;margin:0 0 6px}
++  .arr .kinds button,.arr .seg button{border:1px solid rgba(0,0,0,.15);padding:5px 8px}
++  .arr .sl{display:grid;grid-template-columns:1fr auto;margin:6px 0 0;font-size:11px}
++  .arr .sl b{font-weight:400;opacity:.5}
++  .arr .sl input{grid-column:1/-1;width:100%;margin:2px 0 0}
++  .arr p{margin:6px 0 0;font-size:11px;opacity:.55}
++  .arr.hidden{display:none}
++  .arr-tab{position:fixed;right:16px;bottom:16px;z-index:100;display:none;padding:7px 11px;background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:8px;
++    font:500 11px/1 var(--sans);cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.1)}
++  .arr.hidden + .arr-tab{display:block}
++</style>"""
++
++JS = r"""
++<script>
++(function () {
++  var slug = document.body.getAttribute('data-tale'), box = document.querySelector('.collage');
++  if (!box) return;
++  var KEY = 'macon-tale-' + slug, ALL = JSON.parse(box.getAttribute('data-all'));
++  function read() { return [].map.call(box.querySelectorAll('.pc'), function (p) { return {k: p.dataset.k, x: +p.dataset.x, y: +p.dataset.y, w: +p.dataset.w, r: +p.dataset.r, z: +p.dataset.z}; }); }
++  function put(p, s) {
++    p.dataset.x = s.x; p.dataset.y = s.y; p.dataset.w = s.w; p.dataset.r = s.r; p.dataset.z = s.z;
++    p.style.left = s.x + '%'; p.style.top = s.y + '%'; p.style.width = s.w + '%'; p.style.transform = 'rotate(' + s.r + 'deg)'; p.style.zIndex = s.z;
++  }
++  function make(s) { var p = document.createElement('img'); p.className = 'pc'; p.dataset.k = s.k; p.src = ALL[s.k]; p.alt = ''; put(p, s); box.appendChild(p); return p; }
++  function load(list) { box.querySelectorAll('.pc').forEach(function (p) { p.remove(); }); list.forEach(make); }
++  try { var mine = JSON.parse(localStorage.getItem(KEY) || 'null'); if (mine) load(mine); } catch (e) {}
++  var TKEY = 'macon-tale-type-2', TV = {size: '--ts', weight: '--tw', track: '--tt', lead: '--tl', small: '--tm', width: '--tx', above: '--pa', below: '--pb'};
++  function applyType(t) { Object.keys(t).forEach(function (k) { if (TV[k]) document.body.style.setProperty(TV[k], t[k]); }); if (t.font !== undefined) document.body.setAttribute('data-tf', t.font); if (t.mode !== undefined) document.body.setAttribute('data-tmode', t.mode); }
++  try { var tp = JSON.parse(localStorage.getItem(TKEY) || 'null'); if (tp) applyType(tp); } catch (e) {}
++  function readType() { var cs = getComputedStyle(document.body), o = {}; Object.keys(TV).forEach(function (k) { o[k] = +cs.getPropertyValue(TV[k]); }); o.font = +(document.body.getAttribute('data-tf') || 0); o.mode = +(document.body.getAttribute('data-tmode') || 0); return o; }
++  if (!/[?&]arrange\b/.test(location.search)) return;
++
++  document.body.classList.add('arranging');
++  var sel = null, act = null;
++  function state(p) { return {k: p.dataset.k, x: +p.dataset.x, y: +p.dataset.y, w: +p.dataset.w, r: +p.dataset.r, z: +p.dataset.z}; }
++  // the selected piece gets a frame: corners resize, just outside a corner rotates; a small toolbar sits above it
++  var bb = document.createElement('div'), ctx = document.createElement('div'), C = ['nw', 'ne', 'se', 'sw'];
++  bb.className = 'bbox'; bb.hidden = true;
++  bb.innerHTML = C.map(function (c) { return '<i class="rot ' + c + '" data-h="rot"></i>'; }).join('') + C.map(function (c) { return '<i class="' + c + '" data-h="size"></i>'; }).join('');
++  ctx.className = 'ctx'; ctx.hidden = true;
++  ctx.innerHTML = '<button data-c="up">Forward</button><button data-c="down">Back</button><button data-c="del">Remove</button>';
++  box.appendChild(bb); box.appendChild(ctx);
++  function frame() {
++    bb.hidden = ctx.hidden = !sel; if (!sel) return;
++    bb.style.left = sel.style.left; bb.style.top = sel.style.top; bb.style.width = sel.style.width; bb.style.height = sel.offsetHeight + 'px'; bb.style.transform = sel.style.transform;
++    var b = box.getBoundingClientRect(), r = sel.getBoundingClientRect();
++    ctx.style.left = (r.left + r.width / 2 - b.left) + 'px'; ctx.style.top = (r.top - b.top - 20) + 'px';
++  }
++  function pick(p) { if (sel) sel.classList.remove('sel'); sel = p; if (p) p.classList.add('sel'); document.body.classList.toggle('has-sel', !!p); frame(); }
++  window.addEventListener('resize', frame);
++  box.addEventListener('load', function (e) { if (e.target === sel) frame(); }, true);
++
++  var panel = document.createElement('div'); panel.className = 'arr';
++  var SL = [['size', 'Size', 20, 64, 1], ['weight', 'Weight (Editorial)', 100, 900, 10], ['track', 'Letter spacing', -0.04, 0.1, 0.005], ['lead', 'Line height', 1, 1.7, 0.02],
++            ['small', 'Small text', 11, 22, 0.5], ['width', 'Text width', 280, 900, 10], ['above', 'Space above', 0, 700, 1], ['below', 'Space below', -200, 600, 1]];
++  panel.innerHTML = '<div class="pop" data-p="pieces" hidden><div class="kinds"></div><p>Click a piece to select it, then drag to move, pull a corner to resize (alt: from the centre) or just outside a corner to rotate (shift: 15° steps).</p></div>'
++    + '<div class="pop" data-p="type" hidden><div class="seg"><button data-mode="0">Story</button><button data-mode="1">Small line</button><button data-mode="2">Collage only</button></div>'
++    + '<div class="seg"><button data-font="0">Instrument</button><button data-font="1">Editorial</button></div>'
++    + SL.map(function (r) { return '<label class="sl"><span>' + r[1] + '</span><b data-v="' + r[0] + '"></b><input type="range" data-t="' + r[0] + '" min="' + r[2] + '" max="' + r[3] + '" step="' + r[4] + '"></label>'; }).join('') + '</div>'
++    + '<div class="pop" data-p="save" hidden><div class="seg"><button data-a="copy">Copy layout</button><button data-a="dl">Download all</button><button data-a="reset">Reset</button></div></div>'
++    + '<div class="bar"><span class="who">' + slug + '</span><button data-open="pieces">Pieces</button><button data-open="type">Type</button><button data-open="save">Save</button><button data-a="hide" aria-label="Hide the editor">×</button></div>';
++  document.body.appendChild(panel);
++  var tab = document.createElement('button'); tab.className = 'arr-tab'; tab.textContent = 'Arrange'; document.body.appendChild(tab);
++  function hidePanel(h) { panel.classList.toggle('hidden', h); try { localStorage.setItem('macon-tale-hidden', h ? '1' : ''); } catch (e) {} }
++  tab.addEventListener('click', function () { hidePanel(false); });
++  try { if (localStorage.getItem('macon-tale-hidden') === '1') panel.classList.add('hidden'); } catch (e) {}
++  var kinds = panel.querySelector('.kinds');
++  function paintKinds() {
++    kinds.innerHTML = ''; var have = read().map(function (s) { return s.k; });
++    Object.keys(ALL).forEach(function (k) {
++      var b = document.createElement('button'); b.textContent = k; b.setAttribute('aria-pressed', have.indexOf(k) > -1);
++      b.onclick = function () {
++        var p = box.querySelector('.pc[data-k="' + k + '"]');
++        if (p) { if (p === sel) pick(null); p.remove(); } else pick(make({k: k, x: 20, y: 20, w: 45, r: 0, z: read().length + 1}));
++        save(); paintKinds();
++      };
++      kinds.appendChild(b);
++    });
++  }
++  function save() { try { localStorage.setItem(KEY, JSON.stringify(read())); } catch (e) {} }
++  function remove() { sel.remove(); pick(null); save(); paintKinds(); }
++
++  document.addEventListener('pointerdown', function (e) { if (!e.target.closest('.collage') && !e.target.closest('.arr')) pick(null); });
++  document.addEventListener('keydown', function (e) {
++    if (e.key === 'Escape') pick(null);
++    if ((e.key === 'Delete' || e.key === 'Backspace') && sel && !e.target.closest('input')) { e.preventDefault(); remove(); }
++  });
++  box.addEventListener('pointerdown', function (e) {
++    var h = e.target.dataset && e.target.dataset.h, p = e.target.closest('.pc');
++    if (!h && !p) { if (!e.target.closest('.ctx')) pick(null); return; }
++    e.preventDefault();
++    var b = box.getBoundingClientRect();
++    if (p) { pick(p); act = {m: 'move', s: state(p), sx: e.clientX, sy: e.clientY, B: b}; }
++    else {
++      var r = sel.getBoundingClientRect(), c = {x: r.left + r.width / 2, y: r.top + r.height / 2};
++      if (h === 'rot') act = {m: 'rot', s: state(sel), c: c, a0: Math.atan2(e.clientY - c.y, e.clientX - c.x)};
++      else { var hr = e.target.getBoundingClientRect(); act = {m: 'size', s: state(sel), c: c, k: {x: hr.left + hr.width / 2, y: hr.top + hr.height / 2}, wpx: sel.offsetWidth, ar: sel.offsetHeight / sel.offsetWidth, B: b}; }
++    }
++    box.setPointerCapture(e.pointerId);
++  });
++  box.addEventListener('pointermove', function (e) {
++    if (!act) return; var s = Object.assign({}, act.s), B = act.B;
++    if (act.m === 'move') { s.x = +(s.x + (e.clientX - act.sx) / B.width * 100).toFixed(1); s.y = +(s.y + (e.clientY - act.sy) / B.height * 100).toFixed(1); }
++    else if (act.m === 'rot') { var a = s.r + (Math.atan2(e.clientY - act.c.y, e.clientX - act.c.x) - act.a0) * 180 / Math.PI; if (e.shiftKey) a = Math.round(a / 15) * 15; s.r = +a.toFixed(1); }
++    else {          // scale along the diagonal, from the opposite corner (or the centre with alt)
++      var an = e.altKey ? act.c : {x: 2 * act.c.x - act.k.x, y: 2 * act.c.y - act.k.y}, dx = act.k.x - an.x, dy = act.k.y - an.y;
++      var f = Math.max(((e.clientX - an.x) * dx + (e.clientY - an.y) * dy) / (dx * dx + dy * dy), 8 / act.s.w);
++      var cx = an.x + (act.c.x - an.x) * f - B.left, cy = an.y + (act.c.y - an.y) * f - B.top, w = act.wpx * f;
++      s.w = +(act.s.w * f).toFixed(1); s.x = +((cx - w / 2) / B.width * 100).toFixed(1); s.y = +((cy - w * act.ar / 2) / B.height * 100).toFixed(1);
++    }
++    put(sel, s); frame();
++  });
++  box.addEventListener('pointerup', function () { if (act) { act = null; save(); } });
++  ctx.addEventListener('click', function (e) {
++    var c = e.target.dataset.c; if (!c || !sel) return;
++    if (c === 'del') return remove();
++    var zs = read().filter(function (q) { return q.k !== sel.dataset.k; }).map(function (q) { return q.z; }), s = state(sel);
++    s.z = c === 'up' ? Math.max.apply(null, zs.concat(0)) + 1 : Math.min.apply(null, zs.concat(2)) - 1; put(sel, s); save();
++  });
++  panel.addEventListener('click', function (e) {
++    var o = e.target.dataset.open;
++    if (o) {
++      var on = e.target.getAttribute('aria-expanded') !== 'true';
++      panel.querySelectorAll('[data-open]').forEach(function (b) { b.setAttribute('aria-expanded', false); });
++      panel.querySelectorAll('.pop').forEach(function (p) { p.hidden = true; });
++      if (on) { e.target.setAttribute('aria-expanded', true); panel.querySelector('[data-p="' + o + '"]').hidden = false; }
++      return;
++    }
++    var a = e.target.dataset.a; if (!a) return;
++    if (a === 'hide') { hidePanel(true); pick(null); return; }
++    if (a === 'reset') { localStorage.removeItem(KEY); localStorage.removeItem(TKEY); location.reload(); }
++    if (a === 'copy') { var o2 = {}; o2[slug] = read(); navigator.clipboard.writeText(JSON.stringify(o2, null, 1)); e.target.textContent = 'Copied'; }
++    if (a === 'dl') {
++      var o3 = {}; Object.keys(localStorage).forEach(function (k) { if (k.indexOf('macon-tale-') === 0 && k !== TKEY && k !== 'macon-tale-hidden') o3[k.slice(11)] = JSON.parse(localStorage.getItem(k)); }); o3._type = readType();
++      var b = new Blob([JSON.stringify(o3, null, 1)], {type: 'application/json'}), u = document.createElement('a');
++      u.href = URL.createObjectURL(b); u.download = 'story-layout.json'; u.click();
++    }
++  });
++  var t0 = readType();
++  function paintFont() { var f = readType().font; panel.querySelectorAll('[data-font]').forEach(function (b) { b.setAttribute('aria-pressed', +b.dataset.font === f); }); }
++  panel.querySelectorAll('[data-font]').forEach(function (b) {
++    b.addEventListener('click', function () { var t = readType(); t.font = +b.dataset.font; applyType(t); try { localStorage.setItem(TKEY, JSON.stringify(t)); } catch (e) {} paintFont(); });
++  });
++  paintFont();
++  function paintMode() { var m = readType().mode; panel.querySelectorAll('[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', +b.dataset.mode === m); }); }
++  panel.querySelectorAll('[data-mode]').forEach(function (b) {
++    b.addEventListener('click', function () { var t = readType(); t.mode = +b.dataset.mode; applyType(t); try { localStorage.setItem(TKEY, JSON.stringify(t)); } catch (e) {} paintMode(); });
++  });
++  paintMode();
++  panel.querySelectorAll('[data-t]').forEach(function (inp) {
++    var k = inp.dataset.t, out = panel.querySelector('[data-v="' + k + '"]');
++    inp.value = t0[k]; out.textContent = t0[k];
++    inp.addEventListener('input', function () {
++      var t = readType(); t[k] = +inp.value; applyType(t); out.textContent = inp.value;
++      try { localStorage.setItem(TKEY, JSON.stringify(t)); } catch (e) {}
++    });
++  });
++  paintKinds();
++})();
++</script>"""
++
++
++def section(slug, lore):
++    all_kinds = {k: f"img/story/pieces/{slug}-{k}.webp" for k in KINDS if f"{slug}-{k}" in PIECES}
++    layout = [p for p in DEFAULT[slug] if p[0] in all_kinds]
++    as_json = [{"k": k, "x": x, "y": y, "w": w, "r": r, "z": z} for k, x, y, w, r, z in layout]
++    pcs = "".join(f'<img class="pc" data-k="{k}" data-x="{x}" data-y="{y}" data-w="{w}" data-r="{r}" data-z="{z}" src="{all_kinds[k]}" alt="{E(KINDS[k])}" '
++                  f'style="left:{x}%;top:{y}%;width:{w}%;transform:rotate({r}deg);z-index:{z}" draggable="false">' for k, x, y, w, r, z in layout)
++    return (f'<section class="tale"><div class="collage" data-all="{E(json.dumps(all_kinds))}" data-default="{E(json.dumps(as_json))}">{pcs}</div>'
++            f'<div class="tale-copy"><p class="tale-text">\u201c{E(QUOTES.get(slug, lore))}\u201d</p><p class="tale-who">\u2014 {E(WHO[slug])}</p></div></section>')
++
++
++for slug in SLUGS:
++    p = os.path.join(HERE, f"{slug}.html"); d = open(p).read()
++    lore = html.unescape(re.search(r'data-edit="lore">(.*?)</p>', d, re.S).group(1))
++    d = re.sub(r'<section class="tale">.*?</section>', "", d, flags=re.S)          # idempotent
++    i = d.index('<section class="related')
++    d = d[:i] + section(slug, lore) + d[i:]
++    d = re.sub(r"\n?<style>\n  \.tale\{display:grid.*?</style>", "", d, flags=re.S)          # the old blocks out, so a rerun brings the new ones
++    d = re.sub(r"\n?<script>\n\(function \(\) \{\n  var slug = document\.body\.getAttribute\('data-tale'\).*?</script>", "", d, flags=re.S)
++    d = d.replace("</head>", CSS + "\n</head>", 1)
++    vars_ = f'--ts:{TYPE["size"]};--tw:{TYPE["weight"]};--tt:{TYPE["track"]};--tl:{TYPE["lead"]};--tm:{TYPE["small"]};--tx:{TYPE["width"]};--pa:{TYPE["above"]};--pb:{TYPE["below"]}'
++    d = re.sub(r'<body data-tale="[^"]*" data-tf="[^"]*" data-tmode="[^"]*" style="[^"]*"', '<body', d)
++    d = re.sub(r'<body data-tale="[^"]*" data-tf="[^"]*" style="[^"]*"', '<body', d)
++    d = re.sub(r'<body data-tale="[^"]*" style="[^"]*"', '<body', d)
++    d = d.replace("<body", f'<body data-tale="{slug}" data-tf="{TYPE["font"]}" data-tmode="{TYPE["mode"]}" style="{vars_}"', 1)
++    d = d.replace("</body>", JS + "\n</body>", 1)
++    open(p, "w").write(d)
++    print(slug, "collage written")
+--- a/pdp/make_moodboard.py
++++ b/pdp/make_moodboard.py
+@@ -0,0 +1,191 @@
++#!/usr/bin/env python3
++"""The artifact-imagery moodboard: a local page, never deployed (it lives in _variant-story).
++
++    python3 pdp/_variant-story/pdp/make_moodboard.py   ->  pdp/_variant-story/pdp/moodboard.html
++"""
++import html, json, os
++
++HERE = os.path.dirname(os.path.abspath(__file__))
++E = html.escape
++
++THEMES = [
++    ("A", "The museum record", "Plain, honest, documentary: the totem as if it already sat in a collection."),
++    ("B", "Typologies and quiet still life", "The same light and scale, repeated, so the differences show."),
++    ("C", "The hand and the making", "What really happened to the object: the sketch, the wax, the mould, the bench."),
++    ("D", "Direct traces", "Contact, shadow, impression: marks the object left itself."),
++    ("E", "Landscape, editorial, digital", "Where it lives once it leaves the studio."),
++]
++
++# (theme, number, name, looks, fit, effort, [(image, credit, licence)], [(label, url)])
++A = [
++    ("A", 1, "Plain museum object shot", "One object on a neutral sweep, soft even light, front/side/back, nothing else.",
++     "Natural, and the grey-backdrop shots already do it. Cold on its own: the lore carries the myth.", "Already have it",
++     [("01a.jpg", "Cat amulet, Egypt. The Met", "CC0"), ("01b.jpg", "Cat amulet, Egypt. The Met", "CC0"), ("own-grey.webp", "Rebi, grey backdrop. Studio Maçon", "ours")],
++     [("Met object page", "https://www.metmuseum.org/art/collection/search/553799")]),
++    ("A", 2, "Netsuke and okimono catalogues", "Japanese miniature carved animals shot close, in rotations, undersides shown.",
++     "Very strong: the same scale, subject and pocket-companion idea. The Hare with Amber Eyes gave netsuke a story of passing hand to hand.", "Easy (turntable series)",
++     [("02a.jpg", "Netsuke of a seated hare. The Met", "CC0"), ("02b.jpg", "Okimono of a raven. The Met", "CC0")],
++     [("Met netsuke", "https://www.metmuseum.org/art/collection/search/59676")]),
++    ("A", 3, "Small-find record", "Plain ground, a small scale bar, a find number.",
++     "A scale bar says '2.8 cm' honestly. Styled, it becomes the relic sheet again.", "Easy",
++     [("03.jpg", "Roman horse figurine, Portable Antiquities Scheme", "CC BY-SA 4.0")], []),
++    ("A", 4, "Raking light / RTI", "One low light across the surface shows every carving mark; RTI lets you relight it.",
++     "Shows the wax-carved surface and backs up the 'made' text. Could become a relightable viewer.", "One lamp (RTI: free method, more work)",
++     [("04.jpg", "Roman coin in raking light, PAS", "CC BY 2.0")], [("Cultural Heritage Imaging: RTI", "https://culturalheritageimaging.org/Technologies/RTI/")]),
++    ("A", 5, "Archaeological line and stipple", "Pen drawings of finds in face, profile and section, dotted shading.",
++     "Close to what felt forced. Only works drawn loosely by Hannah, not styled as a document.", "Hours per piece",
++     [("05.jpg", "Lubbock, Prehistoric Times, fig. 103", "Public domain")], []),
++    ("A", 6, "Handwritten tags (Pitt Rivers)", "Dense cases, every small object with its own handwritten tag.",
++     "Take the tag, not the case: a manila tag on string, written by hand.", "Easy",
++     [("06.jpg", "Pitt Rivers Museum interior", "CC BY-SA 4.0")], []),
++    ("A", 7, "Cabinet of curiosities", "Imperato's and Worm's cabinets: shelves, drawers, crocodiles on the ceiling.",
++     "Mood, not a model. High risk of feeling forced.", "n/a",
++     [("07.jpg", "Ferrante Imperato's cabinet, 1599", "Public domain")], []),
++    ("B", 8, "Typology grids", "Blossfeldt, the Bechers: identical framing, light and scale, many objects.",
++     "Very strong for collections: every animal at one scale on one ground. A scientist laying out leaves, like Hannah did.", "Mostly have it",
++     [("08.jpg", "Blossfeldt, Urformen der Kunst. Rijksmuseum", "CC0")], [("Bernd & Hilla Becher, The Met", "https://www.metmuseum.org/art/collection/search/285454")]),
++    ("B", 9, "Articles on shelves", "Talbot, 1844: modest things lined up on plain shelves, almost an inventory.",
++     "Very natural: a real plank, real objects, nothing staged.", "Easy",
++     [("09.jpg", "Talbot, Articles of China. The Met", "CC0")], []),
++    ("B", 10, "Morandi tonal still life", "A few objects close together, dusty muted tones, the gaps matter.",
++     "Good if the props are ordinary studio things (wax block, burr, stone), not 'meaningful' props.", "Easy",
++     [], [("Fondazione Morandi", "https://www.fondazionemorandi.it")]),
++    ("B", 11, "Irving Penn close still life", "Found objects shot very sharp and large on plain paper.",
++     "Makes a 3 cm object monumental. Hero shots.", "Macro lens",
++     [], [("irvingpenn.org", "https://www.irvingpenn.org")]),
++    ("B", 12, "Mingei catalogues", "Soft natural light, fabric or wood ground, no fuss, the made thing first.",
++     "Strong in spirit: the maker, use, humility.", "Easy",
++     [], [("Nihon Mingeikan", "https://en.wikipedia.org/wiki/Japanese_Folk_Crafts_Museum")]),
++    ("C", 13, "Animalier sketches", "Barye's pencil and watercolour studies, by the man who cast small bronze animals in 1840s Paris.",
++     "Excellent and true: Maçon's real ancestor. Hannah's own sketches fill this role directly.", "Already have them",
++     [("13a.jpg", "Barye, Study of Cats, 1836. The Met", "CC0"), ("13b.jpg", "Barye, Walking Tiger. The Met", "CC0"), ("own-sketch.jpg", "Rebi, charcoal. Studio Maçon", "ours")], []),
++    ("C", 14, "Trial pieces and models", "Egyptian sculptors' practice pieces: half-finished heads, a horse scratched on the back.",
++     "Precedent for showing the unfinished wax.", "n/a",
++     [("14a.jpg", "Trial piece, Akhenaten / horse. The Met", "CC0"), ("14b.jpg", "Sculptor's model of a fist. The Met", "CC0")], []),
++    ("C", 15, "The wax itself", "The carved wax before casting. Degas's waxes were the work; the bronzes came later.",
++     "Top pick: unique to Maçon, true, unfakeable. Wax beside bronze tells the 'made' paragraph in one picture.", "Shoot each wax before the foundry",
++     [("15b.jpg", "Degas, Study of a Mustang, original wax. NGA", "CC0"), ("15a.jpg", "Lost-wax apple model", "CC BY-SA 2.5")], []),
++    ("C", 16, "Moulds, sprues, the casting tree", "Rubber moulds, the wax tree, raw castings still on their sprues.",
++     "Strong and honest. A raw casting on its sprue is a striking image.", "Ten minutes at the foundry",
++     [("16.jpg", "Rubber moulds, lost wax", "CC BY-SA 4.0")], []),
++    ("C", 17, "Foundry", "Pouring, glowing crucibles, leather aprons.",
++     "One image, sparingly. Generic if overused.", "One visit",
++     [("17.jpg", "Lomax, Bronze Statue Chasing Shop", "Public domain")], []),
++    ("C", 18, "Hands at the bench", "Tools, burrs, files, the gold head being brought up.",
++     "Natural; keep it plain, no shallow-focus romance.", "Easy",
++     [], [("Completedworks", "https://completedworks.com")]),
++    ("C", 19, "In the palm, for scale", "One totem in an open hand.",
++     "Essential at 2–4 cm, and already on every page.", "Already have it",
++     [("own-hand.webp", "Yael in hand. Studio Maçon", "ours")], [("Sophie Buhai", "https://www.sophiebuhai.com")]),
++    ("C", 20, "The sculptor's studio", "Brâncuși photographed his own studio: work among plaster dust and plinths.",
++     "A model for how to see: the work living among the tools. Shoot the bench as it is.", "Easy",
++     [("20.jpg", "Steichen, Brâncuși's studio, 1920", "Public domain")],
++     [("Hepworth studio, Tate", "https://www.tate.org.uk/visit/tate-st-ives/barbara-hepworth-museum-and-sculpture-garden"), ("Noguchi Museum", "https://www.noguchi.org/isamu-noguchi/digital-features/")]),
++    ("D", 21, "Cyanotypes and photograms", "The object laid on light-sensitive paper, leaving its silhouette.",
++     "Excellent with Vermont leaves and stones: a real trace, not an illustration. Doubles as a packaging insert.", "Cyanotype paper, an afternoon of sun",
++     [("21a.jpg", "Anna Atkins, British Algae. The Met", "CC0"), ("21b.jpg", "Talbot, photogenic drawing. The Met", "CC0")], []),
++    ("D", 22, "Rubbings", "Paper over a surface, rubbed with graphite or ink.",
++     "Totems are too small and round; works for ring bands or the crest.", "Easy",
++     [("22.jpg", "Rubbing of a stele. The Met", "CC0")], []),
++    ("D", 23, "Nature prints and herbaria", "Plants pressed into lead, or taped to card with a handwritten label.",
++     "Strong for the founder story; there's even a Vermont herbarium.", "Free",
++     [("23a.jpg", "Bradbury fern nature print", "Public domain")], []),
++    ("D", 24, "Contact sheets", "The whole roll, misses and all, picks circled in grease pencil.",
++     "'Never the same twice in the same light': one totem across 12 frames as the light moves.", "A roll, or a phone burst",
++     [("24.jpg", "Contact prints, State Library of NSW", "Public domain")], []),
++    ("E", 25, "Placed in the landscape", "Goldsworthy, Richard Long: small things left in their setting.",
++     "The strongest emotional fit (tiny worlds from leaves and stones). Shoot it flat and documentary to avoid fairy-garden kitsch.", "A walk",
++     [], [("Goldsworthy archive", "https://www.goldsworthy.cc.gla.ac.uk"), ("Richard Long", "https://www.richardlong.org")]),
++    ("E", 26, "Editorial interiors", "The object on a real windowsill, desk or bedside, in natural light.",
++     "Good for 'where it lives'.", "Easy",
++     [], [("Apartamento", "https://www.apartamentomagazine.com"), ("The Gentlewoman", "https://www.thegentlewoman.co.uk"), ("Aesop", "https://www.aesop.com")]),
++    ("E", 27, "3D scan renders", "A turnable model, or a flat grey 'clay' render.",
++     "Useful as an interactive spinner; clinical as a still.", "Phone photogrammetry app",
++     [("27.jpg", "Cosmic Buddha laser scan. Smithsonian", "CC0")], []),
++]
++
++PICKS = [(15, "Wax beside bronze", "the 'made' paragraph in one true picture"),
++         (13, "Hannah's own sketch", "scanned flat, as it is, no ageing filter"),
++         (24, "A light study", "one totem across a day, a 6–12 frame strip beside the lore"),
++         (25, "In the Vermont landscape", "moss, bark, a creek stone, shot flat"),
++         (21, "Cyanotype with leaves", "the totem's own silhouette among pressed leaves")]
++
++THEME_NAMES = {"record": "The museum record", "typology": "Typologies and quiet still life", "making": "The hand and the making",
++               "trace": "Direct traces", "kin": "Kin: small animals in bronze, faience and wood"}
++
++
++def card(t):
++    _, n, name, looks, fit, effort, imgs, links = t
++    pics = "".join(f'<figure><img src="img/moodboard/{E(f)}" alt="{E(c)}" loading="lazy"><figcaption>{E(c)} · {E(l)}</figcaption></figure>' for f, c, l in imgs)
++    refs = "".join(f'<a href="{E(u)}" target="_blank" rel="noopener">{E(lbl)} ↗</a>' for lbl, u in links)
++    return (f'<article class="card{" textonly" if not imgs else ""}">{pics}'
++            f'<div class="words"><p class="num">{n:02d}</p><h3>{E(name)}</h3><p>{E(looks)}</p>'
++            f'<p class="fit"><b>For Maçon</b> {E(fit)}</p><p class="effort"><b>Effort</b> {E(effort)}</p>'
++            + (f'<p class="refs">{refs}</p>' if refs else "") + "</div></article>")
++
++
++def museum_section():
++    path = os.path.join(HERE, "img", "moodboard", "museum", "manifest.json")
++    if not os.path.exists(path):
++        return '<section class="theme"><h2>From the museums</h2><p class="lede">Gathering open-access images from museum collections…</p></section>'
++    items = json.load(open(path))
++    out = ['<section class="theme"><p class="kicker">Open access</p><h2>From the museums</h2>'
++           '<p class="lede">Public-domain images from museum open-access collections, for reference only (not for the site).</p>']
++    for key, label in THEME_NAMES.items():
++        group = [i for i in items if i.get("theme") == key]
++        if not group: continue
++        out.append(f'<h3 class="sub">{E(label)}</h3><div class="wall">')
++        for i in group:
++            meta = " · ".join(x for x in (i.get("maker"), i.get("date"), i.get("museum")) if x)
++            out.append(f'<article class="card"><figure><a href="{E(i.get("source", ""))}" target="_blank" rel="noopener">'
++                       f'<img src="img/moodboard/{E(i["file"])}" alt="{E(i.get("title", ""))}" loading="lazy"></a></figure>'
++                       f'<div class="words"><h3>{E(i.get("title", ""))}</h3><p class="meta">{E(meta)} · {E(i.get("license", ""))}</p>'
++                       f'<p>{E(i.get("note", ""))}</p></div></article>')
++        out.append("</div>")
++    out.append("</section>")
++    return "\n".join(out)
++
++
++page = f"""<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
++<title>Artifact imagery · moodboard</title>
++<link rel="stylesheet" href="site.css">
++<style>
++  @font-face{{font-family:"Instrument Serif";src:url(fonts/instrument-serif.woff2) format("woff2")}}
++  @font-face{{font-family:"Instrument Sans";src:url(fonts/instrument-sans.woff2) format("woff2")}}
++  body{{background:#fff;color:#1a1a1a;font:400 15px/1.5 "Instrument Sans",system-ui,sans-serif;margin:0}}
++  .top{{padding:96px 24px 40px;max-width:900px}}
++  .kicker{{margin:0 0 8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.55}}
++  h1,h2{{font:400 clamp(40px,6vw,76px)/.95 "Instrument Serif",serif;text-transform:uppercase;margin:0 0 18px;letter-spacing:.005em}}
++  h2{{font-size:clamp(32px,4.4vw,56px)}}
++  .lede{{max-width:640px;margin:0;opacity:.75}}
++  .picks{{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#e8e6e2;margin:32px 24px 0;border:1px solid #e8e6e2}}
++  .picks div{{background:#fff;padding:18px}} .picks b{{display:block;font:400 26px/1 "Instrument Serif",serif;text-transform:uppercase;margin:6px 0 8px}}
++  .picks span{{opacity:.7;font-size:14px}}
++  .theme{{padding:96px 24px 0}}
++  .theme > .lede{{margin-bottom:32px}}
++  h3.sub{{font:400 28px/1 "Instrument Serif",serif;text-transform:uppercase;margin:48px 0 18px}}
++  .wall{{columns:4 280px;column-gap:12px}}
++  .card{{break-inside:avoid;margin:0 0 28px;display:block}}
++  .card figure{{margin:0 0 6px;background:#f4f3f1}}
++  .card img{{display:block;width:100%;height:auto}}
++  .card figcaption{{font-size:11px;opacity:.5;padding:4px 0 6px;background:#fff}}
++  .card .words{{padding:4px 2px 0}}
++  .card .num{{margin:0;font-size:12px;opacity:.45}}
++  .card h3{{font:400 24px/1.05 "Instrument Serif",serif;text-transform:uppercase;margin:2px 0 6px}}
++  .card p{{margin:0 0 6px;font-size:14px}}
++  .card .meta{{font-size:12px;opacity:.55}}
++  .card b{{font-weight:500;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-right:6px}}
++  .card.textonly{{border:1px solid #e8e6e2;padding:16px}}
++  .refs a{{display:inline-block;margin:0 12px 0 0;font-size:13px;color:inherit}}
++  footer{{padding:120px 24px 60px;opacity:.5;font-size:12px}}
++</style></head><body>
++<header class="top"><p class="kicker">Studio Maçon · local moodboard</p><h1>Ways to show an artifact</h1>
++<p class="lede">Imagery to sit beside each piece's story. The relic sheet felt forced because it imitated a document; these record real things that happened to the object.</p></header>
++<div class="picks">{"".join(f'<div><span>{n:02d}</span><b>{E(t)}</b><span>{E(d)}</span></div>' for n, t, d in PICKS)}</div>
++{"".join(f'<section class="theme"><p class="kicker">{k}</p><h2>{E(name)}</h2><p class="lede">{E(sub)}</p><div class="wall">' + "".join(card(t) for t in A if t[0] == k) + "</div></section>" for k, name, sub in THEMES)}
++{museum_section()}
++<footer>Reference images: The Met Open Access (CC0), Wikimedia Commons (licences as marked), Rijksmuseum (CC0), NGA (CC0), Smithsonian (CC0). For internal reference only; nothing here is for the site.</footer>
++</body></html>"""
++open(os.path.join(HERE, "moodboard.html"), "w").write(page)
++print("moodboard.html written")
+--- a/pdp/make_pieces.py
++++ b/pdp/make_pieces.py
+@@ -0,0 +1,86 @@
++#!/usr/bin/env python3
++"""Turn the generated library into collage pieces (local preview only).
++
++    python3 pdp/_variant-story/pdp/make_pieces.py
++
++- sketch / note: the green ground keyed out, the torn paper kept with clean transparent edges
++- cyano: the totem's exact silhouette laid crisp into the clear space of its leaf sheet, small in the frame
++- photogenic: used as generated (the whole sheet)
++Writes img/story/pieces/<slug>-<kind>.webp and pieces.json (the sizes, for the layout).
++"""
++import glob, json, os
++import numpy as np
++from PIL import Image
++from scipy import ndimage
++
++HERE = os.path.dirname(os.path.abspath(__file__))
++S = os.path.join(HERE, "img", "story")
++GEN, OUT = os.path.join(S, "gen"), os.path.join(S, "pieces")
++SLUGS = "pip rebi ren zuma milo yael ori ibi eleph".split()
++SIL_H, SIL_W = 0.20, 0.26          # the silhouette's largest height and width as shares of the cyanotype sheet
++
++
++def key_green(path):
++    """Cut a paper piece off a flat #00FF00 ground: alpha from how green each pixel is, the green spill removed."""
++    a = np.asarray(Image.open(path).convert("RGB")).astype(float)
++    r, g, b = a[..., 0], a[..., 1], a[..., 2]
++    greenness = g - np.maximum(r, b)
++    alpha = 1 - np.clip((greenness - 25) / 60, 0, 1)
++    solid = ndimage.binary_fill_holes(alpha > .5)
++    lab, k = ndimage.label(solid)
++    solid = lab == (np.argmax(ndimage.sum(solid, lab, range(1, k + 1))) + 1)          # the paper only, no specks
++    alpha = np.where(ndimage.binary_dilation(solid, iterations=2), alpha, 0)
++    alpha = np.where(ndimage.binary_erosion(solid, iterations=3), 1, alpha)          # the paper's inside fully opaque
++    spill = np.clip(g - np.maximum(r, b), 0, None)
++    a[..., 1] = g - spill * (1 - alpha) * 1.0 - np.clip(spill, 0, 30) * .6          # take the green cast off the torn edges
++    rgba = np.dstack([np.clip(a, 0, 255), alpha * 255]).astype(np.uint8)
++    ys, xs = np.where(alpha > .02)
++    return Image.fromarray(rgba).crop((xs.min(), ys.min(), xs.max() + 1, ys.max() + 1))
++
++
++def cyano(slug):
++    """The blue print alone (the white around it and its clipped corners made transparent), the totem's exact silhouette
++    laid crisp in the middle, a few degrees askew, as if set down by hand."""
++    src = np.asarray(Image.open(os.path.join(GEN, f"{slug}-cyano2.png")).convert("RGB")).astype(float)
++    blue = ndimage.binary_opening((src[..., 2] > src[..., 0] + 35) & (src.mean(2) < 200), iterations=2)
++    lab, k = ndimage.label(blue); blue = lab == (np.argmax(ndimage.sum(blue, lab, range(1, k + 1))) + 1)
++    sheet_mask = ndimage.binary_fill_holes(ndimage.binary_closing(blue, iterations=6))          # the sheet, its pale traces included
++    ys, xs = np.where(sheet_mask)
++    y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
++    sheet, alpha = src[y0:y1, x0:x1].copy(), sheet_mask[y0:y1, x0:x1].astype(float)
++    alpha = ndimage.gaussian_filter(alpha, .7)
++    H, W, _ = sheet.shape
++    trace = sheet[(sheet.mean(2) > 170) & (alpha > .99)]
++    white = np.percentile(trace, 90, axis=0) if len(trace) > 50 else np.array([226.0, 234, 240])          # as pale as the brightest of the printed things
++    m = Image.open(os.path.join(S, f"{slug}-mask.png")).convert("L")
++    angle = ((sum(map(ord, slug)) % 13) - 6) * 1.6 or 5          # a different small tilt for each piece, never quite flat
++    m = m.rotate(angle, resample=Image.BICUBIC, expand=True)
++    k0 = min(H * SIL_H / m.height, W * SIL_W / m.width); h, w = int(m.height * k0), int(m.width * k0)
++    mm = np.asarray(m.resize((w * 4, h * 4), Image.LANCZOS).resize((w, h), Image.BOX)).astype(float) / 255          # crisp, antialiased only
++    cy, cx = H // 2, W // 2                                    # centred both ways
++    ty, tx = cy - h // 2, cx - w // 2
++    region = sheet[ty:ty + h, tx:tx + w]
++    grain = 1 + (np.random.default_rng(1).normal(0, .018, mm.shape))[..., None]
++    sheet[ty:ty + h, tx:tx + w] = region * (1 - mm[..., None]) + np.clip(white * grain, 0, 255) * mm[..., None]
++    return Image.fromarray(np.dstack([sheet, alpha * 255]).round().clip(0, 255).astype(np.uint8))
++
++
++if __name__ == "__main__":
++    os.makedirs(OUT, exist_ok=True)
++    sizes = {}
++    for slug in SLUGS:
++        newest = lambda s, k: next((os.path.join(GEN, f"{s}-{k}{v}.png") for v in ("3", "2") if os.path.exists(os.path.join(GEN, f"{s}-{k}{v}.png"))), os.path.join(GEN, f"{s}-{k}2.png"))
++        for kind, make in (("sketch", lambda s: key_green(newest(s, "sketch"))),
++                           ("note", lambda s: key_green(newest(s, "note"))),
++                           ("cyano", cyano),
++                           ("photogenic", lambda s: Image.open(newest(s, "photogenic")).convert("RGB"))):
++            src = newest(slug, kind)
++            if not os.path.exists(src):
++                continue
++            im = make(slug)
++            if max(im.size) > 1800: im.thumbnail((1800, 1800), Image.LANCZOS)
++            dst = os.path.join(OUT, f"{slug}-{kind}.webp")
++            im.save(dst, "WEBP", quality=90, method=6)
++            sizes[f"{slug}-{kind}"] = im.size
++            print(slug, kind, im.size)
++    json.dump(sizes, open(os.path.join(OUT, "pieces.json"), "w"), indent=1)
+--- a/pdp/make_story_lab.py
++++ b/pdp/make_story_lab.py
+@@ -0,0 +1,102 @@
++#!/usr/bin/env python3
++"""Story-section variants on Rebi's and Yael's pages (local preview only; lives in _variant-story).
++
++    python3 pdp/_variant-story/pdp/make_story_lab.py
++Run after this copy's build_pdp.py: it replaces the parked story block in rebi.html and yael.html.
++"""
++import html, json, os, re
++
++HERE = os.path.dirname(os.path.abspath(__file__))
++E = html.escape
++SCALE = json.load(open(os.path.join(HERE, "img", "story", "scale.json")))
++KIN = {"rebi": ("Netsuke of a Seated Hare", "Minkō, 18th–19th century. The Metropolitan Museum of Art, CC0"),
++       "yael": ("Moorhen (Vandhøne)", "François Pompon. SMK, Statens Museum for Kunst, public domain")}
++SIZE = {"rebi": "42 × 16 × 16 mm", "yael": "30 × 22 × 11 mm"}
++
++CSS = """
++<style>
++  .lab{padding:120px 0 40px;border-top:1px solid #eee}
++  .lab-head{max-width:760px;margin:0 auto 40px;padding:0 24px;font:400 13px/1.5 var(--sans);opacity:.6}
++  .v{padding:96px 24px;border-bottom:1px solid #eee}
++  .v-tag{display:block;max-width:1100px;margin:0 auto 36px;font:500 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;opacity:.45}
++  .v-tag b{opacity:1;color:#000;margin-right:10px}
++  .story{font:400 clamp(20px,2vw,26px)/1.45 var(--serif-text, "Instrument Serif", serif);max-width:560px;margin:0}
++  .made{font:400 15px/1.6 var(--sans);opacity:.7;max-width:460px;margin:22px 0 0}
++  .row{display:grid;gap:48px;align-items:center;max-width:1100px;margin:0 auto}
++  .row img{display:block;width:100%;height:auto}
++  .cap{font:400 12px/1.4 var(--sans);opacity:.55;margin:10px 0 0}
++  .r3{grid-template-columns:1fr 1.2fr 1fr}
++  .r2{grid-template-columns:1fr 1fr}
++  .r2-wide{grid-template-columns:1.4fr 1fr}
++  .strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:1100px;margin:0 auto 40px}
++  .strip figure{margin:0}.strip img{aspect-ratio:4/5;object-fit:cover;width:100%;display:block}
++  .strip .n{font:400 11px/1 var(--sans);opacity:.45;margin-top:6px}
++  .record{position:relative;max-width:900px;margin:0 auto}
++  .record img{width:100%;display:block}
++  .record .bar{position:absolute;height:1px;background:#1a1a1a}
++  .record .bar::before,.record .bar::after{content:"";position:absolute;top:-4px;width:1px;height:9px;background:#1a1a1a}
++  .record .bar::before{left:0}.record .bar::after{right:0}
++  .record .lbl{position:absolute;font:400 11px/1 var(--sans);letter-spacing:.04em}
++  .record-text{max-width:1100px;margin:40px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:48px}
++  .ph{aspect-ratio:4/5;border:1px dashed #bbb;display:flex;align-items:center;justify-content:center;text-align:center;
++      font:400 13px/1.5 var(--sans);opacity:.7;padding:24px;background:repeating-linear-gradient(45deg,#fafafa 0 12px,#f4f4f4 12px 24px)}
++  .note{font:400 12px/1.4 var(--sans);opacity:.5;max-width:1100px;margin:18px auto 0}
++  .centered{max-width:640px;margin:0 auto;text-align:center}.centered .story,.centered .made{margin-left:auto;margin-right:auto}
++  .plate{max-width:620px;margin:0 auto 48px}
++  @media (max-width:767px){ .r3,.r2,.r2-wide,.record-text{grid-template-columns:1fr} .strip{grid-template-columns:repeat(2,1fr)} .v{padding:64px 16px} }
++</style>"""
++
++
++def variants(slug, name, lore, made):
++    S = SCALE[slug]
++    t = f'<p class="story">{E(lore)}</p>'
++    m = f'<p class="made">{E(made)}</p>'
++    img = lambda f, alt="": f'<img src="img/story/{f}" alt="{E(alt)}" loading="lazy">'
++    v = []
++    v.append(("Sketch to bronze", "Hannah's charcoal, the story, the bronze it became.",
++              f'<div class="row r3"><div>{img(slug + "-sketch.jpg")}<p class="cap">Charcoal, before the wax</p></div><div>{t}{m}</div>'
++              f'<div>{img(slug + "-grey.jpg")}<p class="cap">Solid bronze</p></div></div>'))
++    shots = [(f"../{slug}/terracotta.jpg.webp", "On suede, afternoon"), (f"../{slug}/hand-2.jpg.webp", "In the hand"),
++             (f"../{slug}/white-1.jpg.webp", "Studio, from the left"), (f"../{slug}/white-2.jpg.webp", "Studio, from the right")]
++    v.append(("A light study", "The same piece, four lights: a loose contact sheet beside the story.",
++              '<div class="strip">' + "".join(f'<figure>{img(f)}<p class="n">{i:02d} · {E(c)}</p></figure>' for i, (f, c) in enumerate(shots, 1)) + "</div>"
++              f'<div class="centered">{t}{m}</div>'))
++    kt, kc = KIN[slug]
++    v.append(("Kin", "One ancestor beside it, captioned plainly.",
++              f'<div class="row r2"><div>{img(slug + "-grey.jpg")}<p class="cap">{E(name)}, solid bronze, 2026</p></div>'
++              f'<div>{img("kin-" + slug + ".jpg")}<p class="cap">{E(kt)}. {E(kc)}</p></div></div>'
++              f'<div class="record-text"><div>{t}</div><div>{m}</div></div>'))
++    bar_w = S["bar_pct_of_width"]; left = S["right_pct"] + 4; top = S["base_pct_from_top"]
++    v.append(("Plain record, to scale", "One photograph, a hairline 10 mm mark and the size. Nothing else.",
++              f'<div class="record">{img(slug + "-grey.jpg")}<span class="bar" style="left:{left}%;top:{top}%;width:{bar_w}%"></span>'
++              f'<span class="lbl" style="left:{left}%;top:calc({top}% + 10px)">10 mm</span>'
++              f'<span class="lbl" style="left:{left}%;top:calc({top}% + 26px);opacity:.55">{E(SIZE[slug])}</span></div>'
++              f'<div class="record-text"><div>{t}</div><div>{m}</div></div>'))
++    v.append(("Wax beside bronze (to shoot)", "Where the carved wax would sit, if the next one is photographed before the foundry.",
++              f'<div class="row r3"><div class="ph">The wax, before casting<br>(photograph to come)</div><div>{t}{m}</div>'
++              f'<div>{img(slug + "-grey.jpg")}<p class="cap">The bronze it became</p></div></div>'))
++    v.append(("In the landscape (to shoot)", "One documentary photograph outside, on moss or stone, nothing added.",
++              f'<div class="row r2-wide"><div class="ph" style="aspect-ratio:3/2">{E(name)} on moss, bark or a creek stone<br>(photograph to come)</div>'
++              f'<div>{t}{m}</div></div>'))
++    v.append(("Object and trace", "The bronze, and the mark it leaves on light-sensitive paper (after the Hatton fern album).",
++              f'<div class="row r2"><div>{img(slug + "-grey.jpg")}<p class="cap">The object</p></div>'
++              f'<div>{img(slug + "-cyanotype-single.jpg")}<p class="cap">Its cyanotype</p></div></div>'
++              f'<div class="record-text"><div>{t}</div><div>{m}</div></div>'))
++    v.append(("A pair of plates", "Two angles on one cyanotype sheet, a pencilled caption at the foot.",
++              f'<div class="plate">{img(slug + "-cyanotype-pair.jpg")}</div><div class="centered">{t}{m}</div>'))
++    v.append(("Photogenic drawing", "Talbot's paper negative: the piece's light and dark reversed, its carving showing like a leaf's veins.",
++              f'<div class="row r2-wide"><div>{img(slug + "-photogenic.jpg")}<p class="cap">{E(name)}, photogenic drawing</p></div><div>{t}{m}</div></div>'))
++    body = "".join(f'<section class="v"><span class="v-tag"><b>{i:02d}</b>{E(n)} · {E(d)}</span>{h}</section>' for i, (n, d, h) in enumerate(v, 1))
++    return (CSS + '<section class="lab"><p class="lab-head">Story section: nine ways to show it (local preview). '
++            'The cyanotypes and the photogenic drawing are digital stand-ins made from the real silhouettes; real ones need paper and sun. '
++            'The dashed frames are photographs still to take.</p>' + body + "</section>")
++
++
++for slug, name in (("rebi", "Rebi"), ("yael", "Yael")):
++    p = os.path.join(HERE, f"{slug}.html"); d = open(p).read()
++    lore = html.unescape(re.search(r'data-edit="lore">(.*?)</p>', d, re.S).group(1))
++    made = html.unescape(re.search(r'data-edit="made">(.*?)</p>', d, re.S).group(1))
++    d = re.sub(r"<!-- lore and making blocks, parked for now.*?-->", lambda _m: variants(slug, name, lore, made), d, count=1, flags=re.S)
++    assert 'class="lab"' in d, slug
++    open(p, "w").write(d)
++    print(slug, "story lab written")
+--- a/pdp/moodboard.html
++++ b/pdp/moodboard.html
+@@ -0,0 +1,132 @@
++<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
++<title>Artifact imagery · moodboard</title>
++<link rel="stylesheet" href="site.css">
++<style>
++  @font-face{font-family:"Instrument Serif";src:url(fonts/instrument-serif.woff2) format("woff2")}
++  @font-face{font-family:"Instrument Sans";src:url(fonts/instrument-sans.woff2) format("woff2")}
++  body{background:#fff;color:#1a1a1a;font:400 15px/1.5 "Instrument Sans",system-ui,sans-serif;margin:0}
++  .top{padding:96px 24px 40px;max-width:900px}
++  .kicker{margin:0 0 8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.55}
++  h1,h2{font:400 clamp(40px,6vw,76px)/.95 "Instrument Serif",serif;text-transform:uppercase;margin:0 0 18px;letter-spacing:.005em}
++  h2{font-size:clamp(32px,4.4vw,56px)}
++  .lede{max-width:640px;margin:0;opacity:.75}
++  .picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#e8e6e2;margin:32px 24px 0;border:1px solid #e8e6e2}
++  .picks div{background:#fff;padding:18px} .picks b{display:block;font:400 26px/1 "Instrument Serif",serif;text-transform:uppercase;margin:6px 0 8px}
++  .picks span{opacity:.7;font-size:14px}
++  .theme{padding:96px 24px 0}
++  .theme > .lede{margin-bottom:32px}
++  h3.sub{font:400 28px/1 "Instrument Serif",serif;text-transform:uppercase;margin:48px 0 18px}
++  .wall{columns:4 280px;column-gap:12px}
++  .card{break-inside:avoid;margin:0 0 28px;display:block}
++  .card figure{margin:0 0 6px;background:#f4f3f1}
++  .card img{display:block;width:100%;height:auto}
++  .card figcaption{font-size:11px;opacity:.5;padding:4px 0 6px;background:#fff}
++  .card .words{padding:4px 2px 0}
++  .card .num{margin:0;font-size:12px;opacity:.45}
++  .card h3{font:400 24px/1.05 "Instrument Serif",serif;text-transform:uppercase;margin:2px 0 6px}
++  .card p{margin:0 0 6px;font-size:14px}
++  .card .meta{font-size:12px;opacity:.55}
++  .card b{font-weight:500;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-right:6px}
++  .card.textonly{border:1px solid #e8e6e2;padding:16px}
++  .refs a{display:inline-block;margin:0 12px 0 0;font-size:13px;color:inherit}
++  footer{padding:120px 24px 60px;opacity:.5;font-size:12px}
++</style></head><body>
++<header class="top"><p class="kicker">Studio Maçon · local moodboard</p><h1>Ways to show an artifact</h1>
++<p class="lede">Imagery to sit beside each piece's story. The relic sheet felt forced because it imitated a document; these record real things that happened to the object.</p></header>
++<div class="picks"><div><span>15</span><b>Wax beside bronze</b><span>the &#x27;made&#x27; paragraph in one true picture</span></div><div><span>13</span><b>Hannah&#x27;s own sketch</b><span>scanned flat, as it is, no ageing filter</span></div><div><span>24</span><b>A light study</b><span>one totem across a day, a 6–12 frame strip beside the lore</span></div><div><span>25</span><b>In the Vermont landscape</b><span>moss, bark, a creek stone, shot flat</span></div><div><span>21</span><b>Cyanotype with leaves</b><span>the totem&#x27;s own silhouette among pressed leaves</span></div></div>
++<section class="theme"><p class="kicker">A</p><h2>The museum record</h2><p class="lede">Plain, honest, documentary: the totem as if it already sat in a collection.</p><div class="wall"><article class="card"><figure><img src="img/moodboard/01a.jpg" alt="Cat amulet, Egypt. The Met" loading="lazy"><figcaption>Cat amulet, Egypt. The Met · CC0</figcaption></figure><figure><img src="img/moodboard/01b.jpg" alt="Cat amulet, Egypt. The Met" loading="lazy"><figcaption>Cat amulet, Egypt. The Met · CC0</figcaption></figure><figure><img src="img/moodboard/own-grey.webp" alt="Rebi, grey backdrop. Studio Maçon" loading="lazy"><figcaption>Rebi, grey backdrop. Studio Maçon · ours</figcaption></figure><div class="words"><p class="num">01</p><h3>Plain museum object shot</h3><p>One object on a neutral sweep, soft even light, front/side/back, nothing else.</p><p class="fit"><b>For Maçon</b> Natural, and the grey-backdrop shots already do it. Cold on its own: the lore carries the myth.</p><p class="effort"><b>Effort</b> Already have it</p><p class="refs"><a href="https://www.metmuseum.org/art/collection/search/553799" target="_blank" rel="noopener">Met object page ↗</a></p></div></article><article class="card"><figure><img src="img/moodboard/02a.jpg" alt="Netsuke of a seated hare. The Met" loading="lazy"><figcaption>Netsuke of a seated hare. The Met · CC0</figcaption></figure><figure><img src="img/moodboard/02b.jpg" alt="Okimono of a raven. The Met" loading="lazy"><figcaption>Okimono of a raven. The Met · CC0</figcaption></figure><div class="words"><p class="num">02</p><h3>Netsuke and okimono catalogues</h3><p>Japanese miniature carved animals shot close, in rotations, undersides shown.</p><p class="fit"><b>For Maçon</b> Very strong: the same scale, subject and pocket-companion idea. The Hare with Amber Eyes gave netsuke a story of passing hand to hand.</p><p class="effort"><b>Effort</b> Easy (turntable series)</p><p class="refs"><a href="https://www.metmuseum.org/art/collection/search/59676" target="_blank" rel="noopener">Met netsuke ↗</a></p></div></article><article class="card"><figure><img src="img/moodboard/03.jpg" alt="Roman horse figurine, Portable Antiquities Scheme" loading="lazy"><figcaption>Roman horse figurine, Portable Antiquities Scheme · CC BY-SA 4.0</figcaption></figure><div class="words"><p class="num">03</p><h3>Small-find record</h3><p>Plain ground, a small scale bar, a find number.</p><p class="fit"><b>For Maçon</b> A scale bar says &#x27;2.8 cm&#x27; honestly. Styled, it becomes the relic sheet again.</p><p class="effort"><b>Effort</b> Easy</p></div></article><article class="card"><figure><img src="img/moodboard/04.jpg" alt="Roman coin in raking light, PAS" loading="lazy"><figcaption>Roman coin in raking light, PAS · CC BY 2.0</figcaption></figure><div class="words"><p class="num">04</p><h3>Raking light / RTI</h3><p>One low light across the surface shows every carving mark; RTI lets you relight it.</p><p class="fit"><b>For Maçon</b> Shows the wax-carved surface and backs up the &#x27;made&#x27; text. Could become a relightable viewer.</p><p class="effort"><b>Effort</b> One lamp (RTI: free method, more work)</p><p class="refs"><a href="https://culturalheritageimaging.org/Technologies/RTI/" target="_blank" rel="noopener">Cultural Heritage Imaging: RTI ↗</a></p></div></article><article class="card"><figure><img src="img/moodboard/05.jpg" alt="Lubbock, Prehistoric Times, fig. 103" loading="lazy"><figcaption>Lubbock, Prehistoric Times, fig. 103 · Public domain</figcaption></figure><div class="words"><p class="num">05</p><h3>Archaeological line and stipple</h3><p>Pen drawings of finds in face, profile and section, dotted shading.</p><p class="fit"><b>For Maçon</b> Close to what felt forced. Only works drawn loosely by Hannah, not styled as a document.</p><p class="effort"><b>Effort</b> Hours per piece</p></div></article><article class="card"><figure><img src="img/moodboard/06.jpg" alt="Pitt Rivers Museum interior" loading="lazy"><figcaption>Pitt Rivers Museum interior · CC BY-SA 4.0</figcaption></figure><div class="words"><p class="num">06</p><h3>Handwritten tags (Pitt Rivers)</h3><p>Dense cases, every small object with its own handwritten tag.</p><p class="fit"><b>For Maçon</b> Take the tag, not the case: a manila tag on string, written by hand.</p><p class="effort"><b>Effort</b> Easy</p></div></article><article class="card"><figure><img src="img/moodboard/07.jpg" alt="Ferrante Imperato&#x27;s cabinet, 1599" loading="lazy"><figcaption>Ferrante Imperato&#x27;s cabinet, 1599 · Public domain</figcaption></figure><div class="words"><p class="num">07</p><h3>Cabinet of curiosities</h3><p>Imperato&#x27;s and Worm&#x27;s cabinets: shelves, drawers, crocodiles on the ceiling.</p><p class="fit"><b>For Maçon</b> Mood, not a model. High risk of feeling forced.</p><p class="effort"><b>Effort</b> n/a</p></div></article></div></section><section class="theme"><p class="kicker">B</p><h2>Typologies and quiet still life</h2><p class="lede">The same light and scale, repeated, so the differences show.</p><div class="wall"><article class="card"><figure><img src="img/moodboard/08.jpg" alt="Blossfeldt, Urformen der Kunst. Rijksmuseum" loading="lazy"><figcaption>Blossfeldt, Urformen der Kunst. Rijksmuseum · CC0</figcaption></figure><div class="words"><p class="num">08</p><h3>Typology grids</h3><p>Blossfeldt, the Bechers: identical framing, light and scale, many objects.</p><p class="fit"><b>For Maçon</b> Very strong for collections: every animal at one scale on one ground. A scientist laying out leaves, like Hannah did.</p><p class="effort"><b>Effort</b> Mostly have it</p><p class="refs"><a href="https://www.metmuseum.org/art/collection/search/285454" target="_blank" rel="noopener">Bernd &amp; Hilla Becher, The Met ↗</a></p></div></article><article class="card"><figure><img src="img/moodboard/09.jpg" alt="Talbot, Articles of China. The Met" loading="lazy"><figcaption>Talbot, Articles of China. The Met · CC0</figcaption></figure><div class="words"><p class="num">09</p><h3>Articles on shelves</h3><p>Talbot, 1844: modest things lined up on plain shelves, almost an inventory.</p><p class="fit"><b>For Maçon</b> Very natural: a real plank, real objects, nothing staged.</p><p class="effort"><b>Effort</b> Easy</p></div></article><article class="card textonly"><div class="words"><p class="num">10</p><h3>Morandi tonal still life</h3><p>A few objects close together, dusty muted tones, the gaps matter.</p><p class="fit"><b>For Maçon</b> Good if the props are ordinary studio things (wax block, burr, stone), not &#x27;meaningful&#x27; props.</p><p class="effort"><b>Effort</b> Easy</p><p class="refs"><a href="https://www.fondazionemorandi.it" target="_blank" rel="noopener">Fondazione Morandi ↗</a></p></div></article><article class="card textonly"><div class="words"><p class="num">11</p><h3>Irving Penn close still life</h3><p>Found objects shot very sharp and large on plain paper.</p><p class="fit"><b>For Maçon</b> Makes a 3 cm object monumental. Hero shots.</p><p class="effort"><b>Effort</b> Macro lens</p><p class="refs"><a href="https://www.irvingpenn.org" target="_blank" rel="noopener">irvingpenn.org ↗</a></p></div></article><article class="card textonly"><div class="words"><p class="num">12</p><h3>Mingei catalogues</h3><p>Soft natural light, fabric or wood ground, no fuss, the made thing first.</p><p class="fit"><b>For Maçon</b> Strong in spirit: the maker, use, humility.</p><p class="effort"><b>Effort</b> Easy</p><p class="refs"><a href="https://en.wikipedia.org/wiki/Japanese_Folk_Crafts_Museum" target="_blank" rel="noopener">Nihon Mingeikan ↗</a></p></div></article></div></section><section class="theme"><p class="kicker">C</p><h2>The hand and the making</h2><p class="lede">What really happened to the object: the sketch, the wax, the mould, the bench.</p><div class="wall"><article class="card"><figure><img src="img/moodboard/13a.jpg" alt="Barye, Study of Cats, 1836. The Met" loading="lazy"><figcaption>Barye, Study of Cats, 1836. The Met · CC0</figcaption></figure><figure><img src="img/moodboard/13b.jpg" alt="Barye, Walking Tiger. The Met" loading="lazy"><figcaption>Barye, Walking Tiger. The Met · CC0</figcaption></figure><figure><img src="img/moodboard/own-sketch.jpg" alt="Rebi, charcoal. Studio Maçon" loading="lazy"><figcaption>Rebi, charcoal. Studio Maçon · ours</figcaption></figure><div class="words"><p class="num">13</p><h3>Animalier sketches</h3><p>Barye&#x27;s pencil and watercolour studies, by the man who cast small bronze animals in 1840s Paris.</p><p class="fit"><b>For Maçon</b> Excellent and true: Maçon&#x27;s real ancestor. Hannah&#x27;s own sketches fill this role directly.</p><p class="effort"><b>Effort</b> Already have them</p></div></article><article class="card"><figure><img src="img/moodboard/14a.jpg" alt="Trial piece, Akhenaten / horse. The Met" loading="lazy"><figcaption>Trial piece, Akhenaten / horse. The Met · CC0</figcaption></figure><figure><img src="img/moodboard/14b.jpg" alt="Sculptor&#x27;s model of a fist. The Met" loading="lazy"><figcaption>Sculptor&#x27;s model of a fist. The Met · CC0</figcaption></figure><div class="words"><p class="num">14</p><h3>Trial pieces and models</h3><p>Egyptian sculptors&#x27; practice pieces: half-finished heads, a horse scratched on the back.</p><p class="fit"><b>For Maçon</b> Precedent for showing the unfinished wax.</p><p class="effort"><b>Effort</b> n/a</p></div></article><article class="card"><figure><img src="img/moodboard/15b.jpg" alt="Degas, Study of a Mustang, original wax. NGA" loading="lazy"><figcaption>Degas, Study of a Mustang, original wax. NGA · CC0</figcaption></figure><figure><img src="img/moodboard/15a.jpg" alt="Lost-wax apple model" loading="lazy"><figcaption>Lost-wax apple model · CC BY-SA 2.5</figcaption></figure><div class="words"><p class="num">15</p><h3>The wax itself</h3><p>The carved wax before casting. Degas&#x27;s waxes were the work; the bronzes came later.</p><p class="fit"><b>For Maçon</b> Top pick: unique to Maçon, true, unfakeable. Wax beside bronze tells the &#x27;made&#x27; paragraph in one picture.</p><p class="effort"><b>Effort</b> Shoot each wax before the foundry</p></div></article><article class="card"><figure><img src="img/moodboard/16.jpg" alt="Rubber moulds, lost wax" loading="lazy"><figcaption>Rubber moulds, lost wax · CC BY-SA 4.0</figcaption></figure><div class="words"><p class="num">16</p><h3>Moulds, sprues, the casting tree</h3><p>Rubber moulds, the wax tree, raw castings still on their sprues.</p><p class="fit"><b>For Maçon</b> Strong and honest. A raw casting on its sprue is a striking image.</p><p class="effort"><b>Effort</b> Ten minutes at the foundry</p></div></article><article class="card"><figure><img src="img/moodboard/17.jpg" alt="Lomax, Bronze Statue Chasing Shop" loading="lazy"><figcaption>Lomax, Bronze Statue Chasing Shop · Public domain</figcaption></figure><div class="words"><p class="num">17</p><h3>Foundry</h3><p>Pouring, glowing crucibles, leather aprons.</p><p class="fit"><b>For Maçon</b> One image, sparingly. Generic if overused.</p><p class="effort"><b>Effort</b> One visit</p></div></article><article class="card textonly"><div class="words"><p class="num">18</p><h3>Hands at the bench</h3><p>Tools, burrs, files, the gold head being brought up.</p><p class="fit"><b>For Maçon</b> Natural; keep it plain, no shallow-focus romance.</p><p class="effort"><b>Effort</b> Easy</p><p class="refs"><a href="https://completedworks.com" target="_blank" rel="noopener">Completedworks ↗</a></p></div></article><article class="card"><figure><img src="img/moodboard/own-hand.webp" alt="Yael in hand. Studio Maçon" loading="lazy"><figcaption>Yael in hand. Studio Maçon · ours</figcaption></figure><div class="words"><p class="num">19</p><h3>In the palm, for scale</h3><p>One totem in an open hand.</p><p class="fit"><b>For Maçon</b> Essential at 2–4 cm, and already on every page.</p><p class="effort"><b>Effort</b> Already have it</p><p class="refs"><a href="https://www.sophiebuhai.com" target="_blank" rel="noopener">Sophie Buhai ↗</a></p></div></article><article class="card"><figure><img src="img/moodboard/20.jpg" alt="Steichen, Brâncuși&#x27;s studio, 1920" loading="lazy"><figcaption>Steichen, Brâncuși&#x27;s studio, 1920 · Public domain</figcaption></figure><div class="words"><p class="num">20</p><h3>The sculptor&#x27;s studio</h3><p>Brâncuși photographed his own studio: work among plaster dust and plinths.</p><p class="fit"><b>For Maçon</b> A model for how to see: the work living among the tools. Shoot the bench as it is.</p><p class="effort"><b>Effort</b> Easy</p><p class="refs"><a href="https://www.tate.org.uk/visit/tate-st-ives/barbara-hepworth-museum-and-sculpture-garden" target="_blank" rel="noopener">Hepworth studio, Tate ↗</a><a href="https://www.noguchi.org/isamu-noguchi/digital-features/" target="_blank" rel="noopener">Noguchi Museum ↗</a></p></div></article></div></section><section class="theme"><p class="kicker">D</p><h2>Direct traces</h2><p class="lede">Contact, shadow, impression: marks the object left itself.</p><div class="wall"><article class="card"><figure><img src="img/moodboard/21a.jpg" alt="Anna Atkins, British Algae. The Met" loading="lazy"><figcaption>Anna Atkins, British Algae. The Met · CC0</figcaption></figure><figure><img src="img/moodboard/21b.jpg" alt="Talbot, photogenic drawing. The Met" loading="lazy"><figcaption>Talbot, photogenic drawing. The Met · CC0</figcaption></figure><div class="words"><p class="num">21</p><h3>Cyanotypes and photograms</h3><p>The object laid on light-sensitive paper, leaving its silhouette.</p><p class="fit"><b>For Maçon</b> Excellent with Vermont leaves and stones: a real trace, not an illustration. Doubles as a packaging insert.</p><p class="effort"><b>Effort</b> Cyanotype paper, an afternoon of sun</p></div></article><article class="card"><figure><img src="img/moodboard/22.jpg" alt="Rubbing of a stele. The Met" loading="lazy"><figcaption>Rubbing of a stele. The Met · CC0</figcaption></figure><div class="words"><p class="num">22</p><h3>Rubbings</h3><p>Paper over a surface, rubbed with graphite or ink.</p><p class="fit"><b>For Maçon</b> Totems are too small and round; works for ring bands or the crest.</p><p class="effort"><b>Effort</b> Easy</p></div></article><article class="card"><figure><img src="img/moodboard/23a.jpg" alt="Bradbury fern nature print" loading="lazy"><figcaption>Bradbury fern nature print · Public domain</figcaption></figure><div class="words"><p class="num">23</p><h3>Nature prints and herbaria</h3><p>Plants pressed into lead, or taped to card with a handwritten label.</p><p class="fit"><b>For Maçon</b> Strong for the founder story; there&#x27;s even a Vermont herbarium.</p><p class="effort"><b>Effort</b> Free</p></div></article><article class="card"><figure><img src="img/moodboard/24.jpg" alt="Contact prints, State Library of NSW" loading="lazy"><figcaption>Contact prints, State Library of NSW · Public domain</figcaption></figure><div class="words"><p class="num">24</p><h3>Contact sheets</h3><p>The whole roll, misses and all, picks circled in grease pencil.</p><p class="fit"><b>For Maçon</b> &#x27;Never the same twice in the same light&#x27;: one totem across 12 frames as the light moves.</p><p class="effort"><b>Effort</b> A roll, or a phone burst</p></div></article></div></section><section class="theme"><p class="kicker">E</p><h2>Landscape, editorial, digital</h2><p class="lede">Where it lives once it leaves the studio.</p><div class="wall"><article class="card textonly"><div class="words"><p class="num">25</p><h3>Placed in the landscape</h3><p>Goldsworthy, Richard Long: small things left in their setting.</p><p class="fit"><b>For Maçon</b> The strongest emotional fit (tiny worlds from leaves and stones). Shoot it flat and documentary to avoid fairy-garden kitsch.</p><p class="effort"><b>Effort</b> A walk</p><p class="refs"><a href="https://www.goldsworthy.cc.gla.ac.uk" target="_blank" rel="noopener">Goldsworthy archive ↗</a><a href="https://www.richardlong.org" target="_blank" rel="noopener">Richard Long ↗</a></p></div></article><article class="card textonly"><div class="words"><p class="num">26</p><h3>Editorial interiors</h3><p>The object on a real windowsill, desk or bedside, in natural light.</p><p class="fit"><b>For Maçon</b> Good for &#x27;where it lives&#x27;.</p><p class="effort"><b>Effort</b> Easy</p><p class="refs"><a href="https://www.apartamentomagazine.com" target="_blank" rel="noopener">Apartamento ↗</a><a href="https://www.thegentlewoman.co.uk" target="_blank" rel="noopener">The Gentlewoman ↗</a><a href="https://www.aesop.com" target="_blank" rel="noopener">Aesop ↗</a></p></div></article><article class="card"><figure><img src="img/moodboard/27.jpg" alt="Cosmic Buddha laser scan. Smithsonian" loading="lazy"><figcaption>Cosmic Buddha laser scan. Smithsonian · CC0</figcaption></figure><div class="words"><p class="num">27</p><h3>3D scan renders</h3><p>A turnable model, or a flat grey &#x27;clay&#x27; render.</p><p class="fit"><b>For Maçon</b> Useful as an interactive spinner; clinical as a still.</p><p class="effort"><b>Effort</b> Phone photogrammetry app</p></div></article></div></section>
++<section class="theme"><p class="kicker">Open access</p><h2>From the museums</h2><p class="lede">Public-domain images from museum open-access collections, for reference only (not for the site).</p>
++<h3 class="sub">The museum record</h3><div class="wall">
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/59676" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-59676.jpg" alt="Netsuke of a Seated Hare" loading="lazy"></a></figure><div class="words"><h3>Netsuke of a Seated Hare</h3><p class="meta">Minkō · late 18th–early 19th century · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>Same scale and spirit: a 2.7 cm carved hare on a plain grey sweep, nothing else in frame.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/136204" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-136204.jpg" alt="Amulet of a Hare" loading="lazy"></a></figure><div class="words"><h3>Amulet of a Hare</h3><p class="meta">Egyptian · Third Intermediate Period, Dynasty 21–25 (1070–656 BCE) · Art Institute of Chicago · CC0 (public domain)</p><p>A 2 cm faience hare amulet photographed flat and honest, the size of a Maçon totem.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/545175" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-545175.jpg" alt="Hedgehog Amulet on a String" loading="lazy"></a></figure><div class="words"><h3>Hedgehog Amulet on a String</h3><p class="meta">Middle Kingdom · ca. 1750–1700 B.C. · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>A 1 cm hedgehog still on its original string: shows how a tiny amulet was worn and carried.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1975.24" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-148266.jpg" alt="Hedgehog" loading="lazy"></a></figure><div class="words"><h3>Hedgehog</h3><p class="meta">Egypt, New Kingdom (1540–1069 BCE), Dynasty 18, reign of Amenhotep III (1390–1352 BCE) · c. 1391–1353 BCE · Cleveland Museum of Art · CC0</p><p>Small steatite hedgehog lit low from the side so the carved texture reads.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Okimono-Rijksmuseum_AK-MAK-717.jpeg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-okimono-rijksmuseum-ak-mak-717.jpg" alt="Okimono in the form of a water buffalo" loading="lazy"></a></figure><div class="words"><h3>Okimono in the form of a water buffalo</h3><p class="meta">Japan · 1800–1900 · Rijksmuseum (via Wikimedia Commons) · Public domain (Wikimedia Commons)</p><p>A tiny gold-toned buffalo left small in a wide empty frame, scale told by space.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1914.570" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-93996.jpg" alt="Frog Amulet" loading="lazy"></a></figure><div class="words"><h3>Frog Amulet</h3><p class="meta">Egypt, New Kingdom (1540–1069 BCE), Dynasty 18 · c. 1540–1296 BCE · Cleveland Museum of Art · CC0</p><p>Carnelian frog under 1 cm, warm stone on white: proof a tiny piece can hold a page.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/59160" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-59160.jpg" alt="Netsuke Rat with Small Acorn" loading="lazy"></a></figure><div class="words"><h3>Netsuke Rat with Small Acorn</h3><p class="meta">Japan · 19th century · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>Dark wooden rat off-centre on grey, a quiet crop that suits short text beside it.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/59614" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-59614.jpg" alt="Netsuke of Rat Eating" loading="lazy"></a></figure><div class="words"><h3>Netsuke of Rat Eating</h3><p class="meta">Japan · 19th century · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>Netsuke rat with soft raking light that picks out carved fur, like patina on bronze.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/59646" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-59646.jpg" alt="Netsuke of a Rat Curled into a Ball" loading="lazy"></a></figure><div class="words"><h3>Netsuke of a Rat Curled into a Ball</h3><p class="meta">Masanao · 19th century · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>Rat curled into a ball, a compact form close to a totem&#x27;s closed silhouette.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/548433" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-548433.jpg" alt="Frog Amulet" loading="lazy"></a></figure><div class="words"><h3>Frog Amulet</h3><p class="meta">Late Period · 664–332 BCE · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>Lapis frog shot close and large: the opposite approach, detail over scale.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/544086" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-544086.jpg" alt="Seal amulet in the shape of hedgehog" loading="lazy"></a></figure><div class="words"><h3>Seal amulet in the shape of hedgehog</h3><p class="meta">Late Period · 664–332 BCE · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>Egyptian blue hedgehog seal on white, a small find recorded plainly.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/544104" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-544104.jpg" alt="Frog Amulet" loading="lazy"></a></figure><div class="words"><h3>Frog Amulet</h3><p class="meta">Late Period · 664–380 BCE · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>Polished dark-stone frog on white, close to the totems&#x27; dark body and sheen.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1980.123" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-149884.jpg" alt="Frog Amulet" loading="lazy"></a></figure><div class="words"><h3>Frog Amulet</h3><p class="meta">Egypt, New Kingdom (1540–1069 BCE), Dynasty 18 · c. 1380–1330 BCE · Cleveland Museum of Art · CC0</p><p>Faience frog on a graded backdrop with low light, museum record at its simplest.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1914.738" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-94358.jpg" alt="Hamadryas Baboon Amulet" loading="lazy"></a></figure><div class="words"><h3>Hamadryas Baboon Amulet</h3><p class="meta">Egypt, New Kingdom (1540–1069 BCE) · 1540–1069 BCE · Cleveland Museum of Art · CC0</p><p>Baboon amulet 1.5 cm high in saturated blue, one object, one shadow.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1914.793.3" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-94441.jpg" alt="Fly Amulet" loading="lazy"></a></figure><div class="words"><h3>Fly Amulet</h3><p class="meta">Egypt, Middle Kingdom (2040–1648 BCE) · 2040–1648 BCE · Cleveland Museum of Art · CC0</p><p>Faience fly amulet: a single small symbol shot on grey, like a talisman.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1966.448" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-142741.jpg" alt="Begging Poodle" loading="lazy"></a></figure><div class="words"><h3>Begging Poodle</h3><p class="meta">House of Fabergé (Russian, 1842–1918) · c. 1895–1915 · Cleveland Museum of Art · CC0</p><p>Agate poodle on black with a pool of light, a darker, more dramatic record.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/2015.12" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-172482.jpg" alt="Insect Bell Pendant" loading="lazy"></a></figure><div class="words"><h3>Insect Bell Pendant</h3><p class="meta">Isthmian Region (Panama), Coclé, 5th century-12th century · 400–1100 · Cleveland Museum of Art · CC0</p><p>Cast-gold insect pendant 2.2 cm, lost-wax gold at Maçon scale.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1973.161" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-147417.jpg" alt="Seal with Unicorn and Inscription" loading="lazy"></a></figure><div class="words"><h3>Seal with Unicorn and Inscription</h3><p class="meta">Pakistan, Indus Valley civilization · c. 2000 BCE · Cleveland Museum of Art · CC0</p><p>Indus seal 2.5 cm, carved animal and script: an animal as a mark of identity.</p></div></article>
++</div>
++<h3 class="sub">Typologies and quiet still life</h3><div class="wall">
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Articles_Of_China.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-articles-of-china.jpg" alt="Articles of China (The Pencil of Nature, pl. III)" loading="lazy"></a></figure><div class="words"><h3>Articles of China (The Pencil of Nature, pl. III)</h3><p class="meta">William Henry Fox Talbot · before 1844 · The Metropolitan Museum of Art (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>Talbot&#x27;s shelves of china: small objects in rows, the first catalogue photograph.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1992.121" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-156285.jpg" alt="Articles of Glass" loading="lazy"></a></figure><div class="words"><h3>Articles of Glass</h3><p class="meta">William Henry Fox Talbot (British, 1800–1877) · 1844 · Cleveland Museum of Art · CC0</p><p>Glassware on shelves, the same quiet inventory approach as Articles of China.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Blossfeldt_-_Eryngium_bourgatii,_16095.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-blossfeldt-eryngium-bourgatii-16095.jpg" alt="Eryngium bourgatii" loading="lazy"></a></figure><div class="words"><h3>Eryngium bourgatii</h3><p class="meta">Karl Blossfeldt · before 1928 · via Wikimedia Commons · Public domain (Wikimedia Commons)</p><p>Blossfeldt&#x27;s sea holly: one specimen, centred, flat ground, ruthless simplicity.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Blossfeldt_-_Equisetum_hyemale,_16168.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-blossfeldt-equisetum-hyemale-16168.jpg" alt="Equisetum hyemale" loading="lazy"></a></figure><div class="words"><h3>Equisetum hyemale</h3><p class="meta">Karl Blossfeldt · before 1928 · via Wikimedia Commons · Public domain (Wikimedia Commons)</p><p>Horsetail stem shot like a carved ring, close kin to the silver rings.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Blossfeldt_94a.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-blossfeldt-94a.jpg" alt="Garlic plant, from Urformen der Kunst (pl. 94a)" loading="lazy"></a></figure><div class="words"><h3>Garlic plant, from Urformen der Kunst (pl. 94a)</h3><p class="meta">Karl Blossfeldt · 1928 · via Wikimedia Commons · Public domain (Wikimedia Commons)</p><p>Garlic flower head on a stalk: a form read like sculpture.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:A_Scene_in_a_Library_Plate_VIII_from_The_Pencil_of_Nature_by_William_Henry_Fox_Talbot.jpeg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-a-scene-in-a-library-plate-viii-from-the.jpg" alt="A Scene in a Library (The Pencil of Nature, pl. VIII)" loading="lazy"></a></figure><div class="words"><h3>A Scene in a Library (The Pencil of Nature, pl. VIII)</h3><p class="meta">William Henry Fox Talbot · c. 1844 · via Wikimedia Commons · Public domain (Wikimedia Commons)</p><p>Talbot&#x27;s bookshelf, a still life of ordinary things given full attention.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/39020" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-39020.jpg" alt="Bust of Patroclus" loading="lazy"></a></figure><div class="words"><h3>Bust of Patroclus</h3><p class="meta">William Henry Fox Talbot · August 9, 1843 · Art Institute of Chicago · CC0 (public domain)</p><p>Early salt print of a plaster bust, an object photographed as a portrait.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/2016.538" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-291517.jpg" alt="Silenus Holding the Child Dionysus, Louvre Museum, Paris" loading="lazy"></a></figure><div class="words"><h3>Silenus Holding the Child Dionysus, Louvre Museum, Paris</h3><p class="meta">Charles Soulier (French, 1830–1900) · c. 1860s · Cleveland Museum of Art · CC0</p><p>19th-century photograph of a sculpture on its plinth, mounted with a caption.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1988.86" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-154277.jpg" alt="Floral Still Life (Bleeding Hearts)" loading="lazy"></a></figure><div class="words"><h3>Floral Still Life (Bleeding Hearts)</h3><p class="meta">Charles Aubry (French, 1811–1877) · c. 1865 · Cleveland Museum of Art · CC0</p><p>Bleeding hearts on dark ground, a quiet botanical still life.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Bloemstudie_met_twijgen_en_bladeren,_RP-F-00-4999-17.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-bloemstudie-met-twijgen-en-bladeren-rp-f.jpg" alt="Flower study with twigs and leaves" loading="lazy"></a></figure><div class="words"><h3>Flower study with twigs and leaves</h3><p class="meta">Anonymous · c. 1875–1895 · Rijksmuseum (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>Dense flower study from a pattern album, a looser grid-like field of forms.</p></div></article>
++</div>
++<h3 class="sub">The hand and the making</h3><div class="wall">
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Antoine-Louis_Barye_-_Sketches_of_a_Lion_-_Walters_372248.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-antoine-louis-barye-sketches-of-a-lion-w.jpg" alt="Sketches of a Lion" loading="lazy"></a></figure><div class="words"><h3>Sketches of a Lion</h3><p class="meta">Antoine-Louis Barye · c. 1832 · Walters Art Museum (via Wikimedia Commons) · Public domain (Wikimedia Commons)</p><p>Barye&#x27;s quick lion sketches on toned paper, the thinking before the wax.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/2010.168.b" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-168339.jpg" alt="Studies of Animals (verso)" loading="lazy"></a></figure><div class="words"><h3>Studies of Animals (verso)</h3><p class="meta">Antoine-Louis Barye (French, 1796–1875) · c. 1823–75 · Cleveland Museum of Art · CC0</p><p>Barye&#x27;s pencil studies of a deer and heads on one sheet, the working page.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Antoine-Louis_Barye_-_Study_of_a_Sleeping_Boar_-_Walters_372338.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-antoine-louis-barye-study-of-a-sleeping.jpg" alt="Study of a Sleeping Boar" loading="lazy"></a></figure><div class="words"><h3>Study of a Sleeping Boar</h3><p class="meta">Antoine-Louis Barye · 19th century · Walters Art Museum (via Wikimedia Commons) · Public domain (Wikimedia Commons)</p><p>A sleeping boar in a few lines, the animal reduced to its resting shape.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Antoine-Louis_Barye_-_Studies_of_a_Lion%27s_Head_and_Paw,_an_Owl,_Etc_-_Walters_372132.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-antoine-louis-barye-studies-of-a-lion-s.jpg" alt="Studies of a Lion&#x27;s Head and Paw, an Owl, etc." loading="lazy"></a></figure><div class="words"><h3>Studies of a Lion&#x27;s Head and Paw, an Owl, etc.</h3><p class="meta">Antoine-Louis Barye · late 1820s · Walters Art Museum (via Wikimedia Commons) · Public domain (Wikimedia Commons)</p><p>Studies of a lion&#x27;s head and paw: parts studied before the whole.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Edgar_Degas,_Horse_Walking,_original_wax_possibly_early_1870s,_cast_c._1920-1921,_NGA_71031.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-edgar-degas-horse-walking-original-wax-p.jpg" alt="Horse Walking (original wax early 1870s, cast c. 1920–21)" loading="lazy"></a></figure><div class="words"><h3>Horse Walking (original wax early 1870s, cast c. 1920–21)</h3><p class="meta">Edgar Degas · early 1870s · National Gallery of Art (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>Degas modelled this horse in wax; the cast keeps every thumb mark.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Edgar_Degas,_Study_of_a_Mustang,_original_wax_1860s,_cast_by_1921,_NGA_71030.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-edgar-degas-study-of-a-mustang-original.jpg" alt="Study of a Mustang (original wax 1860s, cast by 1921)" loading="lazy"></a></figure><div class="words"><h3>Study of a Mustang (original wax 1860s, cast by 1921)</h3><p class="meta">Edgar Degas · 1860s · National Gallery of Art (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>Degas&#x27;s small mustang study, a hand-modelled wax made permanent in bronze.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1963.576" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-139817.jpg" alt="Model for a Fallen Warrior" loading="lazy"></a></figure><div class="words"><h3>Model for a Fallen Warrior</h3><p class="meta">Giovanni Francesco Rustici (Italian, 1474–1554) · c. 1520 · Cleveland Museum of Art · CC0</p><p>Renaissance wax model on its metal armature, the sculptor&#x27;s trial piece itself.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1984.38" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-151965.jpg" alt="Model for an Angel" loading="lazy"></a></figure><div class="words"><h3>Model for an Angel</h3><p class="meta">Annibale Fontana (Italian, 1540–1587) · c. 1583–84 · Cleveland Museum of Art · CC0</p><p>Wax angel on its block, a model that shows how wax figures were built.</p></div></article>
++<article class="card"><figure><a href="https://open.smk.dk/artwork/image/KKSnls466/58" target="_blank" rel="noopener"><img src="img/moodboard/museum/smk-KKSnls46658.jpg" alt="Studier af græsk vase, romanske aquamaniler, dyreskulpturer m.m." loading="lazy"></a></figure><div class="words"><h3>Studier af græsk vase, romanske aquamaniler, dyreskulpturer m.m.</h3><p class="meta">Larsen Stevns, Niels · 1896 · SMK – Statens Museum for Kunst · Public domain (CC0)</p><p>A sculptor&#x27;s sketchbook of aquamaniles and animal forms: research on the page.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1998.159" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-160279.jpg" alt="Casts of Architectural Details in a Studio" loading="lazy"></a></figure><div class="words"><h3>Casts of Architectural Details in a Studio</h3><p class="meta">Adolphe Terris (French, 1820–1900) · c. 1868 · Cleveland Museum of Art · CC0</p><p>Cyanotype of plaster casts pinned up in a studio, references on the wall.</p></div></article>
++<article class="card"><figure><a href="https://open.smk.dk/artwork/image/KMS62" target="_blank" rel="noopener"><img src="img/moodboard/museum/smk-KMS62.jpg" alt="En billedhugger (Christen Christensen) arbejder efter levende model i sit atelier" loading="lazy"></a></figure><div class="words"><h3>En billedhugger (Christen Christensen) arbejder efter levende model i sit atelier</h3><p class="meta">Bendz, Wilhelm · 1827 · SMK – Statens Museum for Kunst · Public domain (CC0)</p><p>A sculptor working from a model in a plain studio, light from one window.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:De_beeldhouwer_Bart_van_Hove_in_zijn_atelier,_2e_Constantijn_Huygensstraat_81,_Amsterdam,_RP-F-00-2590.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-de-beeldhouwer-bart-van-hove-in-zijn-ate.jpg" alt="The sculptor Bart van Hove in his studio, Amsterdam" loading="lazy"></a></figure><div class="words"><h3>The sculptor Bart van Hove in his studio, Amsterdam</h3><p class="meta">Anonymous (formerly attributed to Sigmund Löw) · 1903 · Rijksmuseum (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>A real sculptor&#x27;s atelier crowded with models and casts, 1903.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/80888" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-80888.jpg" alt="Portrait of the Sculptor Auguste Rodin in his Studio" loading="lazy"></a></figure><div class="words"><h3>Portrait of the Sculptor Auguste Rodin in his Studio</h3><p class="meta">Jean François Raffaëlli · c. 1889 · Art Institute of Chicago · CC0 (public domain)</p><p>Rodin at his modelling stand in his smock, the maker at work.</p></div></article>
++<article class="card"><figure><a href="https://open.smk.dk/artwork/image/KMS3605" target="_blank" rel="noopener"><img src="img/moodboard/museum/smk-KMS3605.jpg" alt="Fra Burmeister &amp; Wains jernstøberi" loading="lazy"></a></figure><div class="words"><h3>Fra Burmeister &amp; Wains jernstøberi</h3><p class="meta">Krøyer, P.S. · 1885 · SMK – Statens Museum for Kunst · Public domain (CC0)</p><p>Krøyer&#x27;s iron foundry: the heat and labour behind every cast.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/6198" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-6198.jpg" alt="Jaguar Standing" loading="lazy"></a></figure><div class="words"><h3>Jaguar Standing</h3><p class="meta">Antoine Louis Barye · 1830/50 · Art Institute of Chicago · CC0 (public domain)</p><p>Barye&#x27;s watercolour of a jaguar, the animalier&#x27;s eye in colour.</p></div></article>
++</div>
++<h3 class="sub">Direct traces</h3><div class="wall">
++<article class="card"><figure><a href="https://www.artic.edu/artworks/125577" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-125577.jpg" alt="Untitled (Fern Study), c. 1850, from the Hatton Fern Album" loading="lazy"></a></figure><div class="words"><h3>Untitled (Fern Study), c. 1850, from the Hatton Fern Album</h3><p class="meta">Anonymous · c. 1850 · Art Institute of Chicago · CC0 (public domain)</p><p>Fern and its cyanotype side by side: object and trace on one page.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Blad_met_cyanotypie_fotogram_van_blad_van_een_Witte_albeel_en_het_blad_zelf,_RP-F-2013-20-4.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-blad-met-cyanotypie-fotogram-van-blad-va.jpg" alt="Cyanotype photogram of a white poplar leaf, with the leaf itself" loading="lazy"></a></figure><div class="words"><h3>Cyanotype photogram of a white poplar leaf, with the leaf itself</h3><p class="meta">Anonymous · c. 1900–1920 · Rijksmuseum (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>A poplar leaf mounted beside its own blueprint, the thing and its shadow.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1995.26" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-159058.jpg" alt="Scolopendrium Vulgare" loading="lazy"></a></figure><div class="words"><h3>Scolopendrium Vulgare</h3><p class="meta">Anna Atkins (British, 1799–1871) · 1852–54 · Cleveland Museum of Art · CC0</p><p>Anna Atkins&#x27;s fern fronds in white on blue, the classic photogram.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:William_Henry_Fox_Talbot,_Leaf_Study,_1839-1840,_NGA_92376.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-william-henry-fox-talbot-leaf-study-1839.jpg" alt="Leaf Study" loading="lazy"></a></figure><div class="words"><h3>Leaf Study</h3><p class="meta">William Henry Fox Talbot · 1839–1840 · National Gallery of Art (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>Talbot&#x27;s leaf contact print, every vein recorded by light alone.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:-Leaf-_MET_DP167358.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-leaf-met-dp167358.jpg" alt="Leaf (photogenic drawing negative)" loading="lazy"></a></figure><div class="words"><h3>Leaf (photogenic drawing negative)</h3><p class="meta">William Henry Fox Talbot · c. 1840 · The Metropolitan Museum of Art (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>A paper negative of a leaf, the earliest kind of photographic trace.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Anna_Atkins_Laminaria_digitata.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-anna-atkins-laminaria-digitata.jpg" alt="Laminaria digitata, from Photographs of British Algae" loading="lazy"></a></figure><div class="words"><h3>Laminaria digitata, from Photographs of British Algae</h3><p class="meta">Anna Atkins · 1843–1853 · via Wikimedia Commons · Public domain (Wikimedia Commons)</p><p>Atkins&#x27;s kelp: one specimen, a handwritten name, nothing else.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/291509" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-291509.jpg" alt="Polysiphonia violacea" loading="lazy"></a></figure><div class="words"><h3>Polysiphonia violacea</h3><p class="meta">Anna Atkins · ca. 1853 · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>Atkins plate in its bound book, showing the page as an object.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/38930" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-38930.jpg" alt="Two Plant Specimens" loading="lazy"></a></figure><div class="words"><h3>Two Plant Specimens</h3><p class="meta">William Henry Fox Talbot · 1839 · Art Institute of Chicago · CC0 (public domain)</p><p>Two plant specimens printed by light in Talbot&#x27;s warm brown-pink.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/27066" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-27066.jpg" alt="Lace" loading="lazy"></a></figure><div class="words"><h3>Lace</h3><p class="meta">William Henry Fox Talbot · 1844/45 · Art Institute of Chicago · CC0 (public domain)</p><p>Talbot&#x27;s lace photogram, pattern captured by contact with the paper.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/197570" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-197570.jpg" alt="Study of Leaves" loading="lazy"></a></figure><div class="words"><h3>Study of Leaves</h3><p class="meta">Amelia Bergner · 1877 · Art Institute of Chicago · CC0 (public domain)</p><p>Leaves printed in gum bichromate, a soft green take on the nature print.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/73448" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-73448.jpg" alt="Untitled" loading="lazy"></a></figure><div class="words"><h3>Untitled</h3><p class="meta">Artist unknown · c. 1850 · Art Institute of Chicago · CC0 (public domain)</p><p>Simple fern cyanotype with a pencilled caption at the foot.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/88492" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-88492.jpg" alt="Badger, from the series &quot;Mirror of Stone Rubbings of Views of the Provinces&quot; (Kohon meihitsu ishizuri kagami)" loading="lazy"></a></figure><div class="words"><h3>Badger, from the series &quot;Mirror of Stone Rubbings of Views of the Provinces&quot; (Kohon meihitsu ishizuri kagami)</h3><p class="meta">Utagawa Hiroshige 歌川 広重 · n.d. · Art Institute of Chicago · CC0 (public domain)</p><p>Hiroshige&#x27;s badger in the style of a stone rubbing, an animal as a pressed mark.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/13634" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-13634.jpg" alt="Nature Print of Moonwort and Adder&#x27;s Tongue Ferns, plate 51 from The Ferns of Great Britain and Ireland" loading="lazy"></a></figure><div class="words"><h3>Nature Print of Moonwort and Adder&#x27;s Tongue Ferns, plate 51 from The Ferns of Great Britain and Ireland</h3><p class="meta">Henry Bradbury · 1855 · Art Institute of Chicago · CC0 (public domain)</p><p>Bradbury&#x27;s nature-printed ferns, made by pressing the plant into the plate.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Naturalis_Biodiversity_Center_-_L.1915777_-_Rosa_elliptica_Tausch_ex_Tratt._var._andresiana_-_herbarium_sheet.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-naturalis-biodiversity-center-l-1915777.jpg" alt="Herbarium sheet: Rosa elliptica var. andresiana" loading="lazy"></a></figure><div class="words"><h3>Herbarium sheet: Rosa elliptica var. andresiana</h3><p class="meta">Naturalis herbarium · n.d. · Naturalis Biodiversity Center (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>A herbarium sheet: specimen, label and ruler, the archive as image.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/140598" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-140598.jpg" alt="Memorial Stele for the Buddhist Master Daoyin (Ink Rubbings)" loading="lazy"></a></figure><div class="words"><h3>Memorial Stele for the Buddhist Master Daoyin (Ink Rubbings)</h3><p class="meta">Calligraphy attributed to Qiu Ying · Qing dynasty (1644–1911); Jiaqing–Daoguang reigns, c. 1796–1850 · Art Institute of Chicago · CC0 (public domain)</p><p>Album of ink rubbings, white text pulled from stone in black.</p></div></article>
++</div>
++<h3 class="sub">Kin: small animals in bronze, faience and wood</h3><div class="wall">
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/570258" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-570258.jpg" alt="Hedgehog" loading="lazy"></a></figure><div class="words"><h3>Hedgehog</h3><p class="meta">Late Period–Ptolemaic Period? · probably 664–30 BCE · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>A 1.9 cm Egyptian metal hedgehog: the totems&#x27; direct ancestor in size, metal and subject.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1985.74" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-152836.jpg" alt="Recumbent Bull" loading="lazy"></a></figure><div class="words"><h3>Recumbent Bull</h3><p class="meta">China, Tang dynasty (618-907) · 700s · Cleveland Museum of Art · CC0</p><p>A 3.5 cm gilt-bronze resting bull, gold and patina on an animal small enough to hold.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/544227" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-544227.jpg" alt="Hippopotamus (&quot;William&quot;)" loading="lazy"></a></figure><div class="words"><h3>Hippopotamus (&quot;William&quot;)</h3><p class="meta">Middle Kingdom · ca. 1961–1878 B.C. · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>&#x27;William&#x27;, the faience hippo, a small animal treasured for 4,000 years.</p></div></article>
++<article class="card"><figure><a href="https://open.smk.dk/artwork/image/KMSr130" target="_blank" rel="noopener"><img src="img/moodboard/museum/smk-KMSr130.jpg" alt="And" loading="lazy"></a></figure><div class="words"><h3>And</h3><p class="meta">Pompon, François · 1900 · SMK – Statens Museum for Kunst · Public domain (CC0)</p><p>Pompon&#x27;s duck, smooth simplified planes, the clearest precedent for the totems&#x27; form.</p></div></article>
++<article class="card"><figure><a href="https://open.smk.dk/artwork/image/KMSr131" target="_blank" rel="noopener"><img src="img/moodboard/museum/smk-KMSr131.jpg" alt="Ugle" loading="lazy"></a></figure><div class="words"><h3>Ugle</h3><p class="meta">Pompon, François · 1918 · SMK – Statens Museum for Kunst · Public domain (CC0)</p><p>Pompon&#x27;s owl, one dark polished volume with almost no detail.</p></div></article>
++<article class="card"><figure><a href="https://open.smk.dk/artwork/image/KMSr132" target="_blank" rel="noopener"><img src="img/moodboard/museum/smk-KMSr132.jpg" alt="Vandhøne" loading="lazy"></a></figure><div class="words"><h3>Vandhøne</h3><p class="meta">Pompon, François · 1921 · SMK – Statens Museum for Kunst · Public domain (CC0)</p><p>Pompon&#x27;s moorhen mid-step, simplified to its outline.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1977.132" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-148976.jpg" alt="Walking Panther" loading="lazy"></a></figure><div class="words"><h3>Walking Panther</h3><p class="meta">Rembrandt Bugatti (Italian, 1884–1916) · 1903 · Cleveland Museum of Art · CC0</p><p>Bugatti&#x27;s walking panther, a small bronze full of movement.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1940.565" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-119730.jpg" alt="Bull" loading="lazy"></a></figure><div class="words"><h3>Bull</h3><p class="meta">Antoine-Louis Barye (French, 1796–1875) · c. 1841 · Cleveland Museum of Art · CC0</p><p>Barye&#x27;s small bull in dark patina on its own base.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1942.776" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-122512.jpg" alt="Cat" loading="lazy"></a></figure><div class="words"><h3>Cat</h3><p class="meta">Egypt, Late period (715–332 BCE), Dynasty 26 or later · 664–30 BCE OR 664–330 BCE · Cleveland Museum of Art · CC0</p><p>Egyptian bronze cat, a dark votive animal with a calm presence.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/545724" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-545724.jpg" alt="Standing Hippopotamus" loading="lazy"></a></figure><div class="words"><h3>Standing Hippopotamus</h3><p class="meta">Middle Kingdom · ca. 1810–1700 B.C. · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>A second faience hippo, the small blue animal shot plainly.</p></div></article>
++<article class="card"><figure><a href="https://www.metmuseum.org/art/collection/search/573253" target="_blank" rel="noopener"><img src="img/moodboard/museum/met-573253.jpg" alt="Aryballos (perfume jar) in the shape of a hedgehog" loading="lazy"></a></figure><div class="words"><h3>Aryballos (perfume jar) in the shape of a hedgehog</h3><p class="meta">Late Period · 6th century BCE · The Metropolitan Museum of Art · CC0 (Open Access, public domain)</p><p>Hedgehog-shaped faience perfume jar, a useful animal object.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1987.160" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-153635.jpg" alt="Dog-shaped Paperweight" loading="lazy"></a></figure><div class="words"><h3>Dog-shaped Paperweight</h3><p class="meta">Korea, Unified Silla period (676–935) · 676–935 · Cleveland Museum of Art · CC0</p><p>Korean gilt-bronze dog paperweight 5 cm, a desk companion in gold.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1974.37" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-147936.jpg" alt="Recumbent Animal on Grater or Scraper" loading="lazy"></a></figure><div class="words"><h3>Recumbent Animal on Grater or Scraper</h3><p class="meta">Greece or Anatolia · 700–500 BCE · Cleveland Museum of Art · CC0</p><p>A recumbent animal on a grater, a small bronze animal used as a handle.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1998.173" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-160295.jpg" alt="Statuette of a Horse" loading="lazy"></a></figure><div class="words"><h3>Statuette of a Horse</h3><p class="meta">Greek, Geometric, probably Corinthian · 750–700 BCE · Cleveland Museum of Art · CC0</p><p>Greek Geometric bronze horse, an animal reduced to lines and a pierced base.</p></div></article>
++<article class="card"><figure><a href="https://www.artic.edu/artworks/196491" target="_blank" rel="noopener"><img src="img/moodboard/museum/aic-196491.jpg" alt="Bird on a Knob" loading="lazy"></a></figure><div class="words"><h3>Bird on a Knob</h3><p class="meta">Greek; Thessaly · Geometric Period (800–600 BCE) · Art Institute of Chicago · CC0 (public domain)</p><p>A Thessalian bronze bird on a knob, a tiny votive charm.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1965.554" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-142030.jpg" alt="Ibex Whetstone Handle" loading="lazy"></a></figure><div class="words"><h3>Ibex Whetstone Handle</h3><p class="meta">Iran, Luristan · 1100–900 BCE · Cleveland Museum of Art · CC0</p><p>Luristan ibex handle, the animal bent to fit the hand.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1915.415" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-94853.jpg" alt="Weight in the Form of a Coiled Animal" loading="lazy"></a></figure><div class="words"><h3>Weight in the Form of a Coiled Animal</h3><p class="meta">China, Eastern Han dynasty (25–220 CE)–Six Dynasties (317–581) · c. 200s CE · Cleveland Museum of Art · CC0</p><p>A Han bronze weight as a coiled animal, heavy and meant to be held.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1972.167" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-146722.jpg" alt="Lion Aquamanile" loading="lazy"></a></figure><div class="words"><h3>Lion Aquamanile</h3><p class="meta">Germany, Lower Saxony, Hildesheim, Gothic period, first half 13th century · 1200–1250 · Cleveland Museum of Art · CC0</p><p>Medieval lion aquamanile, a bronze animal made for daily ritual.</p></div></article>
++<article class="card"><figure><a href="https://clevelandart.org/art/1969.26" target="_blank" rel="noopener"><img src="img/moodboard/museum/cma-144625.jpg" alt="Aquamanile: Saddled Horse" loading="lazy"></a></figure><div class="words"><h3>Aquamanile: Saddled Horse</h3><p class="meta">North Germany, Lower Saxony (?), 14th century · c. 1250–1300 · Cleveland Museum of Art · CC0</p><p>Saddled horse aquamanile, the same tradition in a quieter form.</p></div></article>
++<article class="card"><figure><a href="https://open.smk.dk/artwork/image/KMS6072" target="_blank" rel="noopener"><img src="img/moodboard/museum/smk-KMS6072.jpg" alt="Stående tyr" loading="lazy"></a></figure><div class="words"><h3>Stående tyr</h3><p class="meta">Carl Nielsen, Anne Marie · 1896 · SMK – Statens Museum for Kunst · Public domain (CC0)</p><p>Anne Marie Carl-Nielsen&#x27;s standing bull, a modern study in bronze.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Hamadryas_Baboon_by_Rembrandt_Bugatti,_c._1910.JPG" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-hamadryas-baboon-by-rembrandt-bugatti-c.jpg" alt="Hamadryas Baboon" loading="lazy"></a></figure><div class="words"><h3>Hamadryas Baboon</h3><p class="meta">Rembrandt Bugatti · c. 1910 · Legion of Honor, San Francisco (photo via Wikimedia Commons) · CC0 (photograph) (Wikimedia Commons)</p><p>Bugatti&#x27;s baboon, angular modelling in green-brown bronze.</p></div></article>
++<article class="card"><figure><a href="https://commons.wikimedia.org/wiki/File:Gordelhaak_in_de_vorm_van_een_vogel,_AK-BR-FLA-7.jpg" target="_blank" rel="noopener"><img src="img/moodboard/museum/wc-gordelhaak-in-de-vorm-van-een-vogel-ak-b.jpg" alt="Belt hook in the form of a bird" loading="lazy"></a></figure><div class="words"><h3>Belt hook in the form of a bird</h3><p class="meta">Western Zhou / China · c. 1030–490 BCE · Rijksmuseum (via Wikimedia Commons) · CC0 (Wikimedia Commons)</p><p>Bronze bird belt hook, a small animal made to be worn.</p></div></article>
++</div>
++</section>
++<footer>Reference images: The Met Open Access (CC0), Wikimedia Commons (licences as marked), Rijksmuseum (CC0), NGA (CC0), Smithsonian (CC0). For internal reference only; nothing here is for the site.</footer>
++</body></html>
+--- a/pdp/robots.txt
++++ b/pdp/robots.txt
+@@ -3,5 +3,4 @@
+ Disallow: /partials/
+ Disallow: /tools/
+ Disallow: /_picker/
+-Disallow: /newsletter.html
+ Sitemap: https://studiomacon.co/sitemap.xml
+--- a/pdp/tools/grey_backdrop.py
++++ b/pdp/tools/grey_backdrop.py
+@@ -28,13 +28,13 @@
+     return np.stack([x**i * y**j for i in range(deg + 1) for j in range(deg + 1 - i)], -1)
+ 
+ 
+-def flatten(f, whole=False, anchor="centre"):
++def flatten(f, whole=False):
+     """whole=True only evens out the lighting (every pixel kept, shadows fading naturally); otherwise
+     everything but the piece and its shadow also becomes the one flat grey."""
+     im = ImageOps.exif_transpose(Image.open(os.path.join(SRC, f))).convert("RGB")
+     # the site's frames are never wider than 5:4, so the far sides are cut away first and the piece keeps its pixels
+     if im.width > ASPECT * im.height:
+-        w = round(ASPECT * im.height); x = 0 if anchor == "left" else (im.width - w) // 2          # left: something (a chain) runs off that edge and must keep doing so
++        w = round(ASPECT * im.height); x = (im.width - w) // 2
+         im = im.crop((x, 0, x + w, im.height))
+     k = MAXL * ZOOM / max(im.size)                   # final long side at most MAXL after padding
+     if k < 1: im = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
+@@ -87,7 +87,7 @@
+     H, W = round(h / ZOOM), round(w / ZOOM)
+     rng = np.random.default_rng(0)
+     canvas = TARGET + rng.normal(0, 1, (H, W, 3)) * sigma
+-    y0, x0 = (H - h) // 2, 0 if anchor == "left" else (W - w) // 2
++    y0, x0 = (H - h) // 2, (W - w) // 2
+     canvas[y0:y0+h, x0:x0+w] = alpha * out + (1 - alpha) * canvas[y0:y0+h, x0:x0+w]
+     return Image.fromarray(np.clip(canvas, 0, 255).round().astype(np.uint8))
+ 

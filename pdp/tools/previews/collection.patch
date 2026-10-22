@@ -1,0 +1,2474 @@
+# _variant-collection: this preview's source, as a patch against the live pdp at commit 296015a6 (2026-10-22).
+# Only files the preview had; it predates some later work, so older copies of shared files show as changes.
+--- a/pdp/build_pdp.py
++++ b/pdp/build_pdp.py
+@@ -21,11 +21,11 @@
+ MASTER = os.path.expanduser(os.environ.get("MACON_PIECES", "~/Downloads/Maçon/Pieces Master"))
+ 
+ EYEBROW = {
+-    "pip": "Quiet Keeper",
++    "pip": "Tiny Keeper of Tenderness",
+     "rebi": "Silhouette in Flux",
+     "ren": "Steward of Forgotten Paths",
+     "zuma": "Desert Spirit",
+-    "chrysalis": "In Her Own Right",          # the home grid's hover; the page's own overline comes from content.json
++    "chrysalis": "Keeper of Becoming",
+     "ori": "Guardian of Forests and Rivers",
+     "yael": "Prophecy in Metal",
+     "zuma-ring": "Twin Band",
+@@ -109,22 +109,12 @@
+ 
+ # pictures kept on disk (the shop hover may use them) but left off a product page's gallery
+ # pieces whose page still builds but which are left off the shop and Also Worth Keeping for now
+-HIDE_FROM_SHOP = {"macon-cap", "starshipkey-pendant"}          # remove a slug here to bring it back
++HIDE_FROM_SHOP = {"macon-cap", "starshipkey-pendant", "chrysalis"}          # remove a slug here to bring it back
+ # the jewelry's moss photographs (grid and product pages) wait while their refocused versions are reviewed;
+ # until then the jewelry keeps its in-hand and studio photographs. False brings the moss set back.
+ HOLD_JEWELRY_PHOTOS = False
+ def moss_held(slug):
+     return HOLD_JEWELRY_PHOTOS and kind(slug, read_port(slug)[1]) != "totem"
+-BOOK_URL = "https://www.blueskyblacksheep.com/magazine/p/in-her-own-right"
+-BOOK_LINK = f'<a class="book-link" href="{BOOK_URL}" target="_blank" rel="noopener">In Her Own Right</a>'          # the book's name, wherever the Chrysalis page says it
+-BOOK = ("<p>Part personal manifesto, part historical excavation, <em>" + BOOK_LINK + "</em> explores the inner lives and artistic "
+-        "legacies of women across time. With lyric precision and radical intimacy, author Chelsea Madeline invites readers to "
+-        "reconsider what it means to live a creative life as a woman today. Moving between past and present, the book challenges "
+-        "the stories we\u2019ve been told about art, genius, and who gets to claim visibility.</p>"
+-        f'<p class="acc-more"><a href="{BOOK_URL}" target="_blank" rel="noopener">'
+-        "<em>In Her Own Right</em> through Blue Sky Press</a></p>")
+-OFF_STRIP = {"chrysalis": ("img/chrysalis/white-3.jpg",)}          # phones: pictures left off the thumbnail strip (still on the page); Chrysalis keeps its book photos instead
+-PREORDER = {"chrysalis": "early November"}          # pieces taken as preorders, and when they begin to ship (in the order received)
+ RETIRED = {"macon-cap"}          # pieces with no page any more
+ 
+ # Photographs that repeat one already in the gallery: same framing, sometimes only a higher-resolution
+@@ -187,7 +177,7 @@
+ ]
+ OOAK_SLUGS = {x["slug"] for x in OOAK}
+ NO_FILM = {"eclipse-ring", "ear-cuff", "meridian-egg-ring"}          # ear-cuff, meridian-egg-ring: their "in motion" films are off the page
+-NO_COMPOSITE = {"ear-cuff", "pip", "rebi", "ren", "zuma"}          # totems show only the suede hero, the in-hand photos and the grey-backdrop shots
++NO_COMPOSITE = {"ear-cuff"}
+ PENDANTS = {"wonderhorn-talisman", "starshipkey-pendant"}          # pieces whose gallery ends without the lifestyle composite          # pieces whose product page shows photographs only, though a film exists
+ HIDE_FROM_SHOP |= OOAK_SLUGS          # one-of-ones stay off the shop until Ephemeral returns
+ 
+@@ -319,21 +309,15 @@
+             "with an extra flourish, and write out your note by hand. Add the gift receiver\u2019s address at checkout and it goes "
+             "straight to them. If it isn\u2019t quite right, they can return it within 30 days for store credit.")
+     items.append(("Gifting", f'<p>{_content.shared("gift:1", gift)}</p>'))
+-    ship_1 = _content.shared("shipping:1", ship_a)
+-    if slug in PREORDER:          # a preorder ships on its own date, not ten days out
+-        ship_1 = ship_1.replace("Each piece is made to order; please allow up to 10 business days before it ships.",
+-                                f"This piece is a preorder: pieces begin shipping in {PREORDER[slug]}, in the order we receive them.")
+     items.append(("Shipping &amp; Returns",
+-                  f'<p class="keep-para">{ship_1}</p>'
++                  f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
+                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
+                   f'<p class="intl-note">{_content.shared("shipping:intl", INTL)}</p>'
+                   + ('' if k in ("ring", "apparel") else          # rings say this under Sizing
+                      f'<p>{_content.shared("exchange:1", EXCHANGE)}</p>')
+                   + '<p class="acc-more"><a href="shipping.html">Full details</a></p>'))
+-    if slug == "chrysalis":          # the book the piece was made with
+-        items.append(("The Book", _content.product(slug, "book", BOOK)))
+     # the order on every piece: size first, then what it is, gifting, shipping, and care last
+-    rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "The Book": 1.5, "Gifting": 2, "Shipping &amp; Returns": 3, "Wear &amp; Care": 4, "Care": 4}
++    rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "Gifting": 2, "Shipping &amp; Returns": 3, "Wear &amp; Care": 4, "Care": 4}
+     items.sort(key=lambda it: rank.get(it[0], 9))
+     return "\n".join(
+         f'''        <div class="acc-item">
+@@ -448,8 +432,8 @@
+     in_stock = slug not in OOAK_SLUGS or (any(v.get("available", True) for v in variants) if variants else True)
+     if in_stock:
+         buy_block = ('<div class="buy" id="bag" data-variant="{{VARIANT}}">'
+-                     + ('<button class="cta">Preorder</button>' if slug in PREORDER else '<button class="cta">Add to Bag</button>')
+-                     + '<button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">'
++                     '<button class="cta">Add to Bag</button>'
++                     '<button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">'
+                      'Buy with <svg class="shop-word" viewBox="0 0 101 42" aria-hidden="true" focusable="false"><path d="M12.0288 18.2598C7.97006 17.3793 6.16191 17.0348 6.16191 15.4708C6.16191 13.9997 7.38555 13.2669 9.83283 13.2669C11.9851 13.2669 13.5584 14.2075 14.7165 16.0504C14.8039 16.1926 14.9841 16.2418 15.1316 16.1653L19.6984 13.8575C19.8623 13.7755 19.9224 13.5677 19.8295 13.4091C17.934 10.1224 14.4324 8.32324 9.82191 8.32324C3.76379 8.32324 0 11.3091 0 16.0559C0 21.098 4.58319 22.3722 8.64743 23.2527C12.7117 24.1331 14.5253 24.4776 14.5253 26.0417C14.5253 27.6057 13.2033 28.344 10.5648 28.344C8.12848 28.344 6.32033 27.2284 5.22779 25.0628C5.14585 24.9042 4.95466 24.8386 4.79624 24.9206L0.240358 27.1791C0.0819403 27.2612 0.0163881 27.4526 0.0983284 27.6166C1.90648 31.2533 5.61564 33.2986 10.5703 33.2986C16.8797 33.2986 20.6927 30.3619 20.6927 25.4675C20.6927 20.573 16.0876 19.1512 12.0288 18.2707V18.2598Z"/><path d="M36.5018 8.32341C33.9125 8.32341 31.6236 9.24214 29.9794 10.8773C29.8756 10.9757 29.7062 10.9046 29.7062 10.7624V0.322772C29.7062 0.142307 29.5642 0.00012207 29.3839 0.00012207H23.67C23.4897 0.00012207 23.3477 0.142307 23.3477 0.322772V32.7245C23.3477 32.905 23.4897 33.0472 23.67 33.0472H29.3839C29.5642 33.0472 29.7062 32.905 29.7062 32.7245V18.5115C29.7062 15.7662 31.8094 13.6608 34.6445 13.6608C37.4796 13.6608 39.5336 15.7225 39.5336 18.5115V32.7245C39.5336 32.905 39.6756 33.0472 39.8559 33.0472H45.5699C45.7501 33.0472 45.8922 32.905 45.8922 32.7245V18.5115C45.8922 12.5397 41.9809 8.32887 36.5018 8.32887V8.32341Z"/><path d="M57.4962 7.39915C54.3934 7.39915 51.4764 8.34522 49.3896 9.71785C49.2476 9.81082 49.1984 10.0022 49.2858 10.1499L51.8041 14.4537C51.897 14.6068 52.0937 14.6615 52.2466 14.5685C53.8308 13.6115 55.6444 13.1139 57.4962 13.1248C62.4837 13.1248 66.1491 16.6466 66.1491 21.3005C66.1491 25.2652 63.2157 28.2019 59.4956 28.2019C56.4638 28.2019 54.3607 26.4355 54.3607 23.9418C54.3607 22.5145 54.967 21.3442 56.5457 20.5184C56.7096 20.4309 56.7697 20.2286 56.6714 20.07L54.2951 16.0451C54.2186 15.9138 54.0548 15.8537 53.9073 15.9084C50.7225 17.0896 48.4883 19.9333 48.4883 23.7504C48.4883 29.5253 53.0824 33.8346 59.4901 33.8346C66.974 33.8346 72.3548 28.6448 72.3548 21.202C72.3548 13.2233 66.0945 7.39368 57.4853 7.39368L57.4962 7.39915Z"/><path d="M89.0635 8.27964C86.1738 8.27964 83.5954 9.34603 81.7108 11.2272C81.607 11.3311 81.4376 11.2546 81.4376 11.1124V8.84838C81.4376 8.66791 81.2956 8.52573 81.1153 8.52573H75.5489C75.3686 8.52573 75.2266 8.66791 75.2266 8.84838V41.2009C75.2266 41.3814 75.3686 41.5236 75.5489 41.5236H81.2628C81.4431 41.5236 81.5851 41.3814 81.5851 41.2009V30.5917C81.5851 30.4495 81.7545 30.3784 81.8583 30.4714C83.7374 32.2214 86.2229 33.244 89.069 33.244C95.7717 33.244 101 27.8137 101 20.7591C101 13.7045 95.7663 8.27417 89.069 8.27417L89.0635 8.27964ZM87.9874 27.7644C84.1744 27.7644 81.2847 24.7293 81.2847 20.7153C81.2847 16.7014 84.169 13.6663 87.9874 13.6663C91.8058 13.6663 94.6846 16.6521 94.6846 20.7153C94.6846 24.7786 91.844 27.7644 87.9819 27.7644H87.9874Z"/></svg></button></div>')
+     else:
+         buy_block = ('<div class="buy sold" id="bag" data-variant="{{VARIANT}}">'
+@@ -489,8 +473,6 @@
+         return f'<figure{cls}><img src="{src}"{style} alt="{html.escape(alt)}"{extra}></figure>'
+ 
+     figs = [framed(g, ' loading="lazy"') for g in gallery]
+-    off = OFF_STRIP.get(slug, ())
+-    figs = [f.replace("<figure", "<figure data-off-strip", 1) if any(f'src="{o}"' in f for o in off) else f for f in figs]
+     hf = dict((_content.product(slug, "frames", {}) or {}).get(hero) or {})
+     if hero in GREY_OBJECTS:          # same as the gallery: 15% smaller on the grey
+         hf["z"] = hf.get("z", 1) * 0.7586
+@@ -513,10 +495,9 @@
+     return (template
+             .replace("{{TITLE}}", html.escape(name))
+             .replace("{{SLUG}}", slug)
+-            .replace("{{EYEBROW}}", html.escape(eyebrow).replace("In Her Own Right", BOOK_LINK, 1) if slug == "chrysalis" else html.escape(eyebrow))
++            .replace("{{EYEBROW}}", html.escape(eyebrow))
+             .replace("{{PRICE}}", f"${price}")
+-            .replace("{{DESC}}", html.escape(blurb).replace("namesake band", '<a href="zuma-ring.html">namesake band</a>', 1) if slug == "zuma"
+-                     else html.escape(blurb).replace("In Her Own Right", BOOK_LINK, 1) if slug == "chrysalis" else html.escape(blurb))
++            .replace("{{DESC}}", html.escape(blurb).replace("namesake band", '<a href="zuma-ring.html">namesake band</a>', 1) if slug == "zuma" else html.escape(blurb))
+             .replace("{{BUY}}", buy_block)
+             .replace('<section class="product">', '<section class="product' + ('' if in_stock else ' claimed') + '">')
+             .replace("{{SIZE}}", size_select)
+@@ -528,11 +509,7 @@
+             .replace("{{ACCORDIONS}}", accordions(slug, k, notes))
+             .replace("{{SIZER}}", (SIZER + print_sheet()) if k == "ring" else "")
+             .replace("{{CLOSING}}", close)
+-            .replace("{{RELATED}}", related)
+-            .replace('<span class="ship-free">Free shipping</span>',          # a preorder says so beside the price, and on the phone's sticky button
+-                     f'<span class="ship-free">Free shipping · Preorder, ships {PREORDER[slug]}</span>' if slug in PREORDER else '<span class="ship-free">Free shipping</span>')
+-            .replace('aria-label="Add to Bag, ', 'aria-label="Preorder, ' if slug in PREORDER else 'aria-label="Add to Bag, ')
+-            .replace('<span>Add to Bag</span>', '<span>Preorder</span>' if slug in PREORDER else '<span>Add to Bag</span>'))
++            .replace("{{RELATED}}", related))
+ 
+ 
+ def one_block(doc):
+@@ -1527,17 +1504,12 @@
+     save("index.html", editable(shop, "index.html"))
+     sizer_page()
+     feeds(products)
+-    # the newsletter maker (a private page, newsletter.html), its pieces taken from the wall in the same order
+-    sys.path.insert(0, os.path.join(OUT, "tools", "newsletter")); import build as _newsletter
+-    _newsletter.build(OUT, [{"slug": p["slug"], "name": p["name"], "price": p["price"], "kind": "totem" if _group(p) == 0 else "jewelry", "preorder": p["slug"] in PREORDER}
+-                            for p in wall if p["slug"] != "macon-cap"], _content.CONTENT["products"],
+-                     (lambda c: {"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"]})(json.load(open(os.path.join(OUT, "shopify", "config.json")))))
+     _today = __import__("datetime").date.today().isoformat()
+     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
+         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                 + "".join(f"  <url><loc>{u}</loc><lastmod>{_today}</lastmod></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")
+     with open(os.path.join(OUT, "robots.txt"), "w") as f:
+-        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nDisallow: /newsletter.html\nSitemap: {SITE}/sitemap.xml\n")
++        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nSitemap: {SITE}/sitemap.xml\n")
+     print(f"{len(products)} pages")
+     # the emails name prices by hand (a marketing email has no cart to read from),
+     # so re-write them from Shopify before anyone copies a template out
+--- a/pdp/collection.html
++++ b/pdp/collection.html
+@@ -0,0 +1,1484 @@
++<!doctype html>
++<html lang="en">
++<head>
++<meta charset="utf-8">
++<meta name="viewport" content="width=device-width,initial-scale=1">
++<title>My Collection | Studio Maçon</title>
++<meta name="description" content="Handmade bronze totems and sterling silver jewelry by Studio Maçon, sketched on paper, carved in wax and cast by hand in Southern California. Each made to order.">
++<link rel="canonical" href="https://studiomacon.co/collection.html">
++<meta property="og:site_name" content="Studio Maçon">
++<meta property="og:title" content="My Collection | Studio Maçon">
++<meta name="theme-color" content="#ffffff" media="(min-width: 768px)">
++<meta property="og:description" content="Handmade bronze totems and sterling silver jewelry by Studio Maçon, sketched on paper, carved in wax and cast by hand in Southern California. Each made to order.">
++<meta property="og:url" content="https://studiomacon.co/collection.html">
++<meta property="og:image" content="https://studiomacon.co/video/poster-process.jpg">
++<meta property="og:type" content="website">
++<meta name="twitter:card" content="summary_large_image">
++<link rel="icon" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png"><meta name="google-site-verification" content="UEObIGdEnOoIRdBe4jtGb3HLqJgLBge1lnn0HqgOmNs"><meta name="google-site-verification" content="9SgxVt1BO36yXRainJxHVzcSkmpf8mZAYfmHSm4phnw">
++<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
++<link rel="stylesheet" href="site.css?v=1790835890">
++<style>
++  /* the title, set as the other wall pages' */
++  .cx-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px 24px;flex-wrap:wrap;padding:calc(90px + clamp(40px,10vh,120px)) 24px 24px}
++  @media (min-width:768px){ .cx-head{padding-left:64px} }          /* the title lines up with the menu button */
++  .cx-head h1{margin:0;font-size:57.5px}
++  @media (min-width:768px){ .cx-head h1{font-size:66.25px} }
++  @media (min-width:1200px){ .cx-head h1{font-size:75px} }
++  .cx-tally{min-width:200px}
++  .cx-count{margin:0;font-size:13px;color:rgba(0,0,0,.45)}.cx-count b{font-weight:400;color:#111}
++  .cx-bar{height:1px;background:rgba(0,0,0,.06);margin-top:10px;position:relative}
++  .cx-bar i{position:absolute;left:0;top:-1px;height:3px;background:#111;width:0;transition:width .9s cubic-bezier(.3,.7,.2,1)}
++  /* the drawer: screen edge to screen edge, hairlines between the compartments */
++  .cx-drawer{--cols:6;border-top:1px solid rgba(0,0,0,.06);display:grid;grid-template-columns:repeat(var(--cols),1fr);background:#fff}
++  .cx-cell{position:relative;border-right:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column;cursor:pointer;
++    opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
++  .cx-cell.got{cursor:default}
++  .cx-drawer.open .cx-cell{opacity:1;transform:none}
++  .cx-art{position:relative;aspect-ratio:4/5}
++  .cx-art img,.cx-art canvas{position:absolute;inset:6% 8%;width:84%;height:88%;object-fit:contain;mix-blend-mode:multiply;pointer-events:none;border-radius:0}
++  /* not yet claimed: a faint, smaller pencil sketch; on hover its outer edge firms up */
++  .cx-sketch,.cx-edge{transform:scale(.85);transition:opacity .35s ease}
++  .cx-sketch{opacity:.4}
++  .cx-edge{opacity:0}
++  .cx-cell:not(.got):hover .cx-edge{opacity:.85}
++  .cx-cell:not(.got):hover .cx-sketch{opacity:.5}
++  .cx-drawn{opacity:0}
++  .got .cx-drawn{opacity:1}
++  .got .cx-sketch,.got .cx-edge,.cx-cell.sketching .cx-sketch,.cx-cell.sketching .cx-edge{opacity:0 !important;transition:none !important}
++  .cx-no{position:absolute;top:clamp(12px,1.2vw,20px);right:clamp(12px,1.2vw,20px);font-size:13px;letter-spacing:.04em;color:rgba(0,0,0,.45);font-variant-numeric:tabular-nums;z-index:1}
++  /* labels as on the home grid; greyed until gathered */
++  .cx-lab{padding:0 clamp(12px,1.2vw,20px) clamp(12px,1.2vw,20px);display:flex;flex-direction:column;gap:4px;transition:opacity .3s ease}
++  .cx-cell:not(.got) .cx-lab{opacity:.32}
++  .cx-cell:not(.got):hover .cx-lab{opacity:.55}
++  .cx-nm{font:400 calc(18px + 9pt)/1 var(--serif);text-transform:uppercase}
++  .cx-ov{font-size:14px;color:rgba(0,0,0,.55)}
++  /* the Bureau's seal, tucked into the top-right corner */
++  .cx-seal{position:absolute;width:clamp(59px,5.82vw,112px);z-index:5;opacity:0;mix-blend-mode:multiply;pointer-events:none;transform:rotate(var(--a))}
++  .got .cx-seal{opacity:.72}
++  .stamping .cx-seal{animation:cx-seal 1.1s cubic-bezier(.3,.7,.3,1) both}
++  @keyframes cx-seal{0%{opacity:0;transform:scale(1.9) rotate(calc(var(--a) - 12deg))}40%{opacity:.8;transform:scale(.94) rotate(var(--a))}100%{opacity:.72;transform:rotate(var(--a))}}
++  .cx-cell:nth-child(6n){border-right:0}
++  @media (max-width:1100px){ .cx-drawer{--cols:4} .cx-cell:nth-child(6n){border-right:1px solid rgba(0,0,0,.06)} .cx-cell:nth-child(4n){border-right:0} }
++  @media (max-width:700px){ .cx-drawer{--cols:2} .cx-cell:nth-child(4n){border-right:1px solid rgba(0,0,0,.06)} .cx-cell:nth-child(2n){border-right:0} .cx-head{padding-left:16px;padding-right:16px}
++    .cx-nm{font-size:calc(18px + 4pt)} .cx-ov{font-size:12px} }
++  @media (prefers-reduced-motion:reduce){ .cx-cell{transition:none} .stamping .cx-seal{animation:none} }
++</style>
++<style>
++.wipe{position:fixed;inset:0;z-index:2147483000;pointer-events:none;will-change:transform;
++  transform:translate3d(0,-100%,0);background:#000}
++.wipe.cover{transform:translate3d(0,0,0);transition:transform 420ms cubic-bezier(.5,0,.25,1)}
++.wipe.gone{transform:translate3d(0,100%,0);transition:transform 500ms cubic-bezier(.5,0,.25,1)}
++</style>
++<script>
++(function () {
++  try { if (sessionStorage.getItem('macon-wipe') !== '1') return; sessionStorage.removeItem('macon-wipe'); } catch (e) { return; }
++  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
++  var el = document.createElement('div');
++  el.className = 'wipe';
++  el.style.transform = 'translate3d(0,0,0)';
++  var put = function () { (document.body || document.documentElement).appendChild(el); };
++  put();
++  requestAnimationFrame(function () { requestAnimationFrame(function () {
++    if (!el.isConnected) put();
++    el.style.transform = '';
++    el.classList.add('gone');
++    // Wait for the slide to actually finish. On a timer the tail gets clipped
++    // whenever the animation starts a frame or two late, and the panel appears
++    // to vanish instead of leaving.
++    var done = false;
++    var off = function () { if (done) return; done = true; el.remove(); };
++    el.addEventListener('transitionend', function (e) { if (e.propertyName === 'transform') off(); });
++    setTimeout(off, 1400);          // only a backstop, never the usual path
++  }); });
++})();
++// the soft fade between pages: arriving, the page starts under a white veil that lifts
++(function () {
++  var fromDrawer = false;
++  try {
++    if (sessionStorage.getItem('macon-fade') !== '1') return; sessionStorage.removeItem('macon-fade');
++    fromDrawer = sessionStorage.getItem('macon-menu') === '1';
++  } catch (e) { return; }
++  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
++  var st = document.createElement('style');
++  st.textContent = '.veil{position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:1}';
++  document.head.appendChild(st);
++  var v = document.createElement('div'); v.className = 'veil';
++  if (fromDrawer) v.style.zIndex = '59';               // beneath the drawer, over the page
++  var put = function () { (document.body || document.documentElement).appendChild(v); }; put();
++  var gone = function () { v.remove(); };
++  // animated directly rather than by a style change: a style change this close to the page's first frame
++  // is sometimes skipped by the browser, and the veil vanished instead of lifting
++  var lift = function () {
++    if (!v.isConnected) put();
++    if (!v.animate) { gone(); return; }
++    var a = v.animate([{opacity: 1}, {opacity: 0}], {duration: 450, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards'});
++    a.onfinish = gone;
++  };
++  setTimeout(gone, 2600);                            // never left over the page
++  // lift once the pictures on the first screen are ready to show, so the page fades in whole rather than
++  // the veil lifting off a blank page and the photographs popping in after (never waits more than 0.7s)
++  var ready = function () {
++    var imgs = [].filter.call(document.images, function (i) { var r = i.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight && r.width > 40; });
++    var done = false, go = function () { if (!done) { done = true; lift(); } };
++    // the browser keeps the old page on screen until the new one first draws real content; start lifting
++    // only after that, or the fade runs where no one can see it
++    var drawn = new Promise(function (res) {
++      try {
++        if (performance.getEntriesByName('first-contentful-paint').length) return res();
++        new PerformanceObserver(function (l) { if (l.getEntriesByName('first-contentful-paint').length) res(); }).observe({type: 'paint', buffered: true});
++      } catch (e) { res(); }
++    });
++    Promise.all([drawn].concat(imgs.map(function (i) { return (i.decode ? i.decode() : Promise.resolve()).catch(function () {}); }))).then(go);
++    setTimeout(go, 900);
++  };
++  if (document.readyState !== 'loading') ready(); else document.addEventListener('DOMContentLoaded', ready);
++})();
++// arriving for the shop grid: the film at the top is kept hidden until the page has moved down to the grid,
++// or its first frame shows the dark film for an instant before the jump
++// a refresh starts at the top, decided here in the head so Safari never paints the old scroll spot (or a #pieces jump) first
++(function () { try { var n = performance.getEntriesByType('navigation')[0];
++  if (n && n.type === 'reload') { if (!/(^|\/)(index(\.html)?)?$/.test(location.pathname)) history.scrollRestoration = 'manual'; if (location.hash) history.replaceState(history.state, '', location.pathname + location.search); }
++} catch (e) {} })();
++(function () { if (location.hash === '#pieces' || location.hash === '#jewelry') document.documentElement.classList.add('to-pieces'); })();
++// the in-place design editor (the /editor skill): on this machine only, never on the live site; ?design or ⌥E turns it on
++// (?edit is the Custom page's Past Work manager)
++if (/^(localhost|127\.0\.0\.1|\[::1\]|.+\.local|.+\.test)$/.test(location.hostname)) { window.EDITOR_CONFIG = {param: 'design'}; var ed = document.createElement('script'); ed.src = 'editor.js'; ed.defer = true; document.head.appendChild(ed); }
++// reached from the mobile drawer: open already pushed aside, with the drawer over the page
++(function () { try { if (sessionStorage.getItem('macon-menu') === '1') {
++  document.documentElement.classList.add('menu-arriving');
++  document.documentElement.classList.add('intro-wait');          // the page's own intro waits until the drawer has gone (site.js lifts this)
++  // the home page leaves out the font preload (PageSpeed, see main()), so the drawer's words drawn over it
++  // showed the fallback serif for a moment; arriving from the menu the fonts are in the cache, so ask for them now
++  if (/(^|\/)(index\.html)?$/.test(location.pathname)) ['instrument-serif', 'instrument-sans'].forEach(function (f) {
++    var l = document.createElement('link'); l.rel = 'preload'; l.as = 'font'; l.type = 'font/woff2'; l.crossOrigin = 'anonymous';
++    l.href = 'fonts/' + f + '.woff2'; document.head.appendChild(l);
++  });
++  var x = JSON.parse(sessionStorage.getItem('macon-x') || 'null');          // the X stays exactly where it was on the page just left
++  if (x && x.l) { var st = document.createElement('style'); st.textContent = 'html .menu-sheet .menu-close{left:' + x.l + ';top:' + x.t + ';height:' + x.h + '}'; document.head.appendChild(st); }
++} } catch (e) {} })();
++</script>
++<meta name="facebook-domain-verification" content="ae0yp3uhbruy2um27iahgcmha7bnph">
++<script>
++(function () {
++  window.maconTrack = function () {};
++  // the home grid photo test (desktop only): linen (as now), grey or clay. The same draw the grid makes.
++  window.MACON_PHOTO_TEST_ON = false;          // the whole test is off until clay is ready; flip to true to start it
++  window.MACON_CLAY_READY = false;          // flip to true once every piece has a clay photo in img/ab-clay
++  window.maconPhotoTest = function () {
++    if (!window.MACON_PHOTO_TEST_ON) return 'off';
++    if (!matchMedia('(min-width:1024px) and (hover:hover) and (pointer:fine)').matches) return 'not-desktop';          // desktops only: no phones, no tablets
++    var sides = ['linen', 'grey'].concat(window.MACON_CLAY_READY ? ['clay'] : []);
++    var v = null; try { v = localStorage.getItem('macon-photo-test'); } catch (e) {}
++    if (sides.indexOf(v) < 0) { v = sides[Math.floor(Math.random() * sides.length)]; try { localStorage.setItem('macon-photo-test', v); } catch (e) {} }
++    return v;
++  };
++  if (!/(^|\.)studiomacon\.co$/.test(location.hostname)) return;          // the real site only
++  // Meta's and Google's scripts (about 250 KB) wait until the page has finished loading, so on a slow
++  // phone they don't compete with the film and the logo. Calls made before then queue up and are sent
++  // when they arrive; Meta also hears every page view from our own server (worker /_e) regardless.
++  // On a slow phone even "after loading" is too soon: they would still run while the first screen is being
++  // drawn. So they wait for the visitor's first scroll, tap or key, or four seconds after loading, whichever
++  // comes first. Only a visit that leaves within those seconds, untouched, goes uncounted by Google.
++  var queued = [], started = false;
++  var start = function () {
++    if (started) return; started = true;
++    ['scroll', 'pointerdown', 'touchstart', 'keydown'].forEach(function (t) { removeEventListener(t, start, true); });
++    queued.forEach(function (fn) { fn(); });
++  };
++  ['scroll', 'pointerdown', 'touchstart', 'keydown'].forEach(function (t) { addEventListener(t, start, {capture: true, passive: true}); });
++  var afterLoad = function () { setTimeout(start, 4000); };
++  if (document.readyState === 'complete') afterLoad(); else addEventListener('load', afterLoad, {once: true});
++  var later = function (fn) { if (started) fn(); else queued.push(fn); };
++  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
++  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
++  s=b.getElementsByTagName(e)[0];later(function(){s.parentNode.insertBefore(t,s)})}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
++  // An email address, scrambled beyond recovery, lets Meta match an event to a person.
++  // Without it a visitor is only a cookie, which often fails: match quality sat at 4.4/10.
++  var PIXEL = '501136812574699';
++  window.maconIdentify = function (email) {
++    try {
++      email = String(email || '').trim().toLowerCase();
++      if (!email || !crypto.subtle) return;
++      crypto.subtle.digest('SHA-256', new TextEncoder().encode(email)).then(function (buf) {
++        var hex = [].map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
++        try { localStorage.setItem('macon-em', hex); } catch (e) {}
++        fbq('init', PIXEL, {em: hex});          // from here on, every event carries it
++      }).catch(function () {});
++    } catch (e) {}
++  };
++  var known = null;
++  try { known = localStorage.getItem('macon-em'); } catch (e) {}
++  if (known) fbq('init', PIXEL, {em: known}); else fbq('init', PIXEL);
++
++  // A click id only reaches Shopify if we carry it there ourselves: the cookie it becomes
++  // belongs to this domain, and checkout happens on another.
++  try {
++    var q = new URLSearchParams(location.search), keep = {};
++    if (q.get('fbclid')) keep.fbclid = q.get('fbclid');
++    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function (k) { if (q.get(k)) keep[k] = q.get(k); });
++    if (Object.keys(keep).length) sessionStorage.setItem('macon-click', JSON.stringify(keep));
++  } catch (e) {}
++
++  // The same event, twice: once from the browser, once from our own server, sharing an id
++  // so Meta counts it once. Browser events alone are lost to blockers and ITP; that gap is
++  // what Meta reports as event coverage.
++  var eid = function () {
++    try { if (crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
++    return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
++  };
++  var relay = function (name, id, custom) {
++    try {
++      fetch('/_e', {
++        method: 'POST', keepalive: true, credentials: 'same-origin',
++        headers: {'Content-Type': 'application/json'},
++        body: JSON.stringify({ev: name, id: id, url: location.href, em: known || null, custom: custom || {}})
++      }).catch(function () {});
++    } catch (e) {}
++  };
++  window.maconSend = function (name, params, custom) {
++    var id = eid();
++    fbq('track', name, params || {}, {eventID: id});          // eventID, not event_id: the browser key
++    relay(name, id, custom || params || {});
++  };
++
++  maconSend('PageView', {});
++  var g = document.createElement('script'); g.async = true; g.src = 'https://www.googletagmanager.com/gtag/js?id=G-B5GNGQ1WME'; later(function () { document.head.appendChild(g); });
++  window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
++  gtag('js', new Date());
++  try {          // the bag A/B test: which side this visitor is on, the same draw site.js makes
++    var bt = 'phone';          // phones always get the full bag page, so they stay out of the comparison
++    if (matchMedia('(min-width:768px)').matches) {
++      bt = localStorage.getItem('macon-bag-test');
++      if (bt !== 'drawer' && bt !== 'page') { bt = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', bt); }
++    }
++    gtag('set', 'user_properties', {bag_test: bt, photo_test: maconPhotoTest()});
++  } catch (e) {}
++  gtag('config', 'G-B5GNGQ1WME'); gtag('config', 'AW-16466703173');
++  var ITEMS = {"53985362870637":"shopify_US_15222550331757_53985362870637","53985363001709":"shopify_US_15222550462829_53985363001709","53985363067245":"shopify_US_15222550528365_53985363067245","53985363263853":"shopify_US_15222550659437_53985363263853","53985363329389":"shopify_US_15222550724973_53985363329389","53985363427693":"shopify_US_15222550823277_53985363427693","53985363525997":"shopify_US_15222550921581_53985363525997","53985363558765":"shopify_US_15222550921581_53985363558765","53985363591533":"shopify_US_15222550921581_53985363591533","53985363624301":"shopify_US_15222550921581_53985363624301","53985363657069":"shopify_US_15222550921581_53985363657069","53985363689837":"shopify_US_15222550921581_53985363689837","53985363722605":"shopify_US_15222550921581_53985363722605","53985363755373":"shopify_US_15222550921581_53985363755373","53985363788141":"shopify_US_15222550921581_53985363788141","53985363820909":"shopify_US_15222550921581_53985363820909","53985363853677":"shopify_US_15222550921581_53985363853677","53985363886445":"shopify_US_15222550921581_53985363886445","53985363984749":"shopify_US_15222550987117_53985363984749","53985364083053":"shopify_US_15222551118189_53985364083053","53985364115821":"shopify_US_15222551118189_53985364115821","53985364148589":"shopify_US_15222551118189_53985364148589","53985364181357":"shopify_US_15222551118189_53985364181357","53985364214125":"shopify_US_15222551118189_53985364214125","53985364246893":"shopify_US_15222551118189_53985364246893","53985364279661":"shopify_US_15222551118189_53985364279661","53985364312429":"shopify_US_15222551118189_53985364312429","53985364345197":"shopify_US_15222551118189_53985364345197","53985364377965":"shopify_US_15222551118189_53985364377965","53985364410733":"shopify_US_15222551118189_53985364410733","53985364443501":"shopify_US_15222551118189_53985364443501","53985364509037":"shopify_US_15222551183725_53985364509037","53985364541805":"shopify_US_15222551183725_53985364541805","53985364574573":"shopify_US_15222551183725_53985364574573","53985364607341":"shopify_US_15222551183725_53985364607341","53985364640109":"shopify_US_15222551183725_53985364640109","53985364672877":"shopify_US_15222551183725_53985364672877","53985364705645":"shopify_US_15222551183725_53985364705645","53985364738413":"shopify_US_15222551183725_53985364738413","53985365131629":"shopify_US_15222551249261_53985365131629","53985365164397":"shopify_US_15222551249261_53985365164397","53985365197165":"shopify_US_15222551249261_53985365197165","53985365229933":"shopify_US_15222551249261_53985365229933","53985365262701":"shopify_US_15222551249261_53985365262701","53985365295469":"shopify_US_15222551249261_53985365295469","53985365328237":"shopify_US_15222551249261_53985365328237","53985365361005":"shopify_US_15222551249261_53985365361005","53985365393773":"shopify_US_15222551249261_53985365393773","53985365426541":"shopify_US_15222551249261_53985365426541","53985365459309":"shopify_US_15222551249261_53985365459309","53985365492077":"shopify_US_15222551249261_53985365492077","53985365590381":"shopify_US_15222551347565_53985365590381","53985365655917":"shopify_US_15222551413101_53985365655917","53985365819757":"shopify_US_15222551576941_53985365819757","53985365885293":"shopify_US_15222551642477_53985365885293","53985365950829":"shopify_US_15222551708013_53985365950829","53985365983597":"shopify_US_15222551708013_53985365983597","53985366016365":"shopify_US_15222551708013_53985366016365","53985366049133":"shopify_US_15222551708013_53985366049133","53985366081901":"shopify_US_15222551708013_53985366081901","53985366114669":"shopify_US_15222551708013_53985366114669","53985366147437":"shopify_US_15222551708013_53985366147437","53985366180205":"shopify_US_15222551708013_53985366180205","53985366212973":"shopify_US_15222551708013_53985366212973","53985366245741":"shopify_US_15222551708013_53985366245741","53985366278509":"shopify_US_15222551708013_53985366278509","53985366311277":"shopify_US_15222551708013_53985366311277","53985366409581":"shopify_US_15222551806317_53985366409581","53985373192557":"shopify_US_15222557737325_53985373192557","53985373225325":"shopify_US_15222557737325_53985373225325"};                                     // Shopify variant id -> catalog id
++  var idOf = function (v) { v = String(v || '').split('/').pop(); return ITEMS[v] || v; };
++  window.maconTrack = function (kind, x) {
++    try {
++      var list = [].concat(x || []), ids = list.map(function (i) { return idOf(i.variant); });
++      var value = list.reduce(function (n, i) { return n + (i.price || 0) * (i.qty || 1); }, 0);
++      var g4 = list.map(function (i) { return {item_id: idOf(i.variant), item_name: i.name || i.slug, price: i.price, quantity: i.qty || 1}; });
++      if (kind === 'signup') { if (window.maconIdentify) maconIdentify(x); return; }
++      if (kind === 'view') { maconSend('ViewContent', {content_ids: ids, content_type: 'product', content_name: list[0].name, value: value, currency: 'USD'});
++                             gtag('event', 'view_item', {currency: 'USD', value: value, items: g4}); }
++      if (kind === 'add') { maconSend('AddToCart', {content_ids: ids, content_type: 'product', value: value, currency: 'USD'});
++                            gtag('event', 'add_to_cart', {currency: 'USD', value: value, items: g4}); }
++      // Shopify's own checkout fires InitiateCheckout with an id Meta can deduplicate against.
++      // Ours carried no id, so the two could never be matched and checkouts counted twice.
++      if (kind === 'checkout') { gtag('event', 'begin_checkout', {currency: 'USD', value: value, items: g4}); }
++      if (kind === 'lead') { maconSend('Contact', {}); gtag('event', 'generate_lead', {form: x}); }
++    } catch (e) {}
++  };
++})();
++</script>
++</head>
++<body>
++
++
++<nav class="menu-sheet" aria-label="Menu" inert><button class="menu-close" type="button" aria-label="Close menu">Close</button><a href="index.html#pieces" style="--i:0">Shop</a><a href="custom.html" style="--i:1">Custom</a><a href="shipping.html" class="two-line" style="--i:2">Shipping <br>&amp; Returns</a><a href="inspiration.html" style="--i:3">Inspiration</a><a href="contact.html" style="--i:4">Contact</a><a href="story.html" style="--i:5">About</a><p class="menu-legal" data-edit="page:collection.html:cf9e97ae"><a class="hover-line" href="privacy.html">Privacy</a><span aria-hidden="true"> · </span><a class="hover-line" href="terms.html">Terms</a><span aria-hidden="true"> · </span><a class="hover-line" href="refunds.html">Refunds</a><span aria-hidden="true"> · </span><a class="hover-line" href="faq.html">FAQ</a></p></nav>
++<header class="head">
++  <div class="left">
++    <a href="#" class="mob hover-line">Menu</a>
++    <a href="index.html#pieces" class="desk hover-line">Shop</a>
++    <a href="custom.html" class="desk hover-line">Custom</a>
++    <a href="story.html" class="desk hover-line">About</a>
++  </div>
++  <a class="logotype" href="index.html#pieces" aria-label="Studio Maçon"></a>
++  <div class="right"><a href="#">Bag (0)</a></div>
++</header>
++
++<main>
++  <header class="cx-head">
++    <h1 data-edit="page:collection.html:aa78fda0">My Collection</h1>
++    <div class="cx-tally"><p class="cx-count" data-edit="page:collection.html:43317ca2"><b id="cx-got">0 of 17</b> gathered</p><div class="cx-bar"><i id="cx-bar"></i></div></div>
++  </header>
++  <section class="cx-drawer" id="cx-drawer">
++    <div class="cx-cell" data-slug="pip" style="transition-delay:0ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/pip--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/pip--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/pip--drawn.webp" alt="Pip" loading="lazy"></div><span class="cx-no">01</span><div class="cx-lab"><span class="cx-nm">Pip</span><span class="cx-ov">Tiny Keeper of Tenderness</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="rebi" style="transition-delay:40ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/rebi--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/rebi--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/rebi--drawn.webp" alt="Rebi" loading="lazy"></div><span class="cx-no">02</span><div class="cx-lab"><span class="cx-nm">Rebi</span><span class="cx-ov">Silhouette in Flux</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="ren" style="transition-delay:80ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ren--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ren--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ren--drawn.webp" alt="Ren" loading="lazy"></div><span class="cx-no">03</span><div class="cx-lab"><span class="cx-nm">Ren</span><span class="cx-ov">Steward of Forgotten Paths</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="zuma" style="transition-delay:120ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/zuma--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/zuma--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/zuma--drawn.webp" alt="Zuma" loading="lazy"></div><span class="cx-no">04</span><div class="cx-lab"><span class="cx-nm">Zuma</span><span class="cx-ov">Spirit of the Sunbaked Shore</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="ori" style="transition-delay:160ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ori--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ori--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ori--drawn.webp" alt="Ori" loading="lazy"></div><span class="cx-no">05</span><div class="cx-lab"><span class="cx-nm">Ori</span><span class="cx-ov">Guardian of Lost Souls</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="yael" style="transition-delay:200ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/yael--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/yael--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/yael--drawn.webp" alt="Yael" loading="lazy"></div><span class="cx-no">06</span><div class="cx-lab"><span class="cx-nm">Yael</span><span class="cx-ov">Prophecy in Metal</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="milo" style="transition-delay:240ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/milo--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/milo--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/milo--drawn.webp" alt="Milo" loading="lazy"></div><span class="cx-no">07</span><div class="cx-lab"><span class="cx-nm">Milo</span><span class="cx-ov">Ancient Wanderer</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="ibi" style="transition-delay:280ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ibi--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ibi--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ibi--drawn.webp" alt="Ibi" loading="lazy"></div><span class="cx-no">08</span><div class="cx-lab"><span class="cx-nm">Ibi</span><span class="cx-ov">Daybreak Apparition</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="eleph" style="transition-delay:320ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/eleph--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/eleph--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/eleph--drawn.webp" alt="Eleph" loading="lazy"></div><span class="cx-no">09</span><div class="cx-lab"><span class="cx-nm">Eleph</span><span class="cx-ov">Breath Suspended</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="zuma-ring" style="transition-delay:360ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/zuma-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/zuma-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/zuma-ring--drawn.webp" alt="Zuma Ring" loading="lazy"></div><span class="cx-no">10</span><div class="cx-lab"><span class="cx-nm">Zuma Ring</span><span class="cx-ov">Sand Spirit, Distilled</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="eclipse-ring" style="transition-delay:400ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/eclipse-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/eclipse-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/eclipse-ring--drawn.webp" alt="Eclipse Ring" loading="lazy"></div><span class="cx-no">11</span><div class="cx-lab"><span class="cx-nm">Eclipse Ring</span><span class="cx-ov">Ellipses in Patient Equilibrium</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="sietch-aperture" style="transition-delay:440ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/sietch-aperture--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/sietch-aperture--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/sietch-aperture--drawn.webp" alt="Sietch Ring" loading="lazy"></div><span class="cx-no">12</span><div class="cx-lab"><span class="cx-nm">Sietch Ring</span><span class="cx-ov">Shelter Cut Into Rock</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="lunar-canyon-ring" style="transition-delay:480ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/lunar-canyon-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/lunar-canyon-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/lunar-canyon-ring--drawn.webp" alt="Lunar Canyon" loading="lazy"></div><span class="cx-no">13</span><div class="cx-lab"><span class="cx-nm">Lunar Canyon</span><span class="cx-ov">Moonrisen Memory</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="ear-cuff" style="transition-delay:520ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ear-cuff--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ear-cuff--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ear-cuff--drawn.webp" alt="Caldera Arc" loading="lazy"></div><span class="cx-no">14</span><div class="cx-lab"><span class="cx-nm">Caldera Arc</span><span class="cx-ov">Perfect Geometries</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="meridian-egg-ring" style="transition-delay:560ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/meridian-egg-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/meridian-egg-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/meridian-egg-ring--drawn.webp" alt="Meridian Egg" loading="lazy"></div><span class="cx-no">15</span><div class="cx-lab"><span class="cx-nm">Meridian Egg</span><span class="cx-ov">Heavier Than It Looks</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="wonderhorn-talisman" style="transition-delay:600ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/wonderhorn-talisman--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/wonderhorn-talisman--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/wonderhorn-talisman--drawn.webp" alt="Wonder Horn" loading="lazy"></div><span class="cx-no">16</span><div class="cx-lab"><span class="cx-nm">Wonder Horn</span><span class="cx-ov">Horn of Undiscovered Chords</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++    <div class="cx-cell" data-slug="starshipkey-pendant" style="transition-delay:640ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/starshipkey-pendant--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/starshipkey-pendant--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/starshipkey-pendant--drawn.webp" alt="Starship Key" loading="lazy"></div><span class="cx-no">17</span><div class="cx-lab"><span class="cx-nm">Starship Key</span><span class="cx-ov">Relic of the Outer Dark</span></div><img width="520" height="520" class="cx-seal" src="img/claim-stamp.png.webp" alt=""></div>
++  </section>
++</main>
++
++<footer>
++  <div class="brand">
++    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
++    <p class="fine" data-edit="page:collection.html:334e67ad">Artifacts of Love,<br>Made to Order</p>
++  </div>
++  <div class="middle">
++  <nav class="links">
++    <a class="hover-line" href="story.html">About</a>
++    <a class="hover-line" href="custom.html">Custom</a>
++    <a class="hover-line" href="shipping.html">Shipping &amp; Returns</a>
++    <a class="hover-line" href="https://www.instagram.com/studiomacon/" target="_blank" rel="noopener">Instagram</a>
++    <a class="hover-line" href="contact.html">Contact</a>
++  </nav>
++  </div>
++  <div class="news">
++    <p data-edit="page:collection.html:79b10d2b">Subscribe to hear about new pieces before anyone else.</p>
++    <form class="field" data-newsletter>
++      <input type="email" placeholder="Email address" aria-label="Email address" required>
++      <button>Submit</button>
++    </form>
++  </div>
++</footer>
++<script>window.MACON_SHOP = {"shop": "w3nidi-ny.myshopify.com", "token": "82e89606c89ba23c139fd3d9cf91d344", "api": "2025-07", "enquiry": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/enquiry", "totemCommission": "gid://shopify/ProductVariant/53985366409581", "subscribeUrl": "https://berdrzxjoejirbhdgjer.supabase.co/functions/v1/subscribe"};</script>
++<script>
++addEventListener('load', function () { document.documentElement.classList.add('late-font'); });          // the footer's pencil font, after first paint
++  // ?case shows the shop set in title case rather than capitals. Local look-see only.
++  if (/[?&]case\b/.test(location.search)) document.addEventListener('DOMContentLoaded', function () { document.body.classList.add('title-case'); });
++
++  (function (m) { if (m) document.documentElement.classList.add('logo-' + m[1]); })(location.search.match(/[?&]logo=(artifacts|objects)\b/));
++  // A refresh starts at the top of the page, except on the home page, which keeps your place; Back and Forward still return to where you were
++  (function () {
++    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
++    if (nav && nav.type === 'reload' && !/(^|\/)(index(\.html)?)?$/.test(location.pathname)) {
++      history.scrollRestoration = 'manual';
++      scrollTo(0, 0);
++      addEventListener('load', function () { scrollTo(0, 0); });
++    }
++    addEventListener('beforeunload', function () { history.scrollRestoration = 'auto'; });
++  })();
++
++  // Arc, while a window edge is dragged, now and then makes the window 0 x 0 for an instant (sometimes
++  // within a single frame, so the page never hears of it). With nothing to scroll the page lands at
++  // the top. So: landing at the top just after a resize, with no key or click to ask for it, goes back.
++  (function () {
++    var saved = scrollY, resized = 0, asked = 0;
++    ['keydown', 'pointerdown'].forEach(function (ev) { addEventListener(ev, function () { asked = Date.now(); }, {passive: true, capture: true}); });
++    function lost() { return scrollY < 2 && saved > 50 && Date.now() - resized < 500 && Date.now() - asked > 1000; }
++    function back() { if (innerWidth && innerHeight) scrollTo({top: saved, behavior: 'instant'}); }
++    addEventListener('scroll', function () {
++      if (!innerWidth || !innerHeight) return;
++      if (lost()) return back();
++      saved = scrollY;
++    }, {passive: true});
++    addEventListener('resize', function () { resized = Date.now(); if (lost()) back(); });
++  })();
++
++  // Once the page has moved, a white fade sits behind the header and the nav turns black (site.css, .head::before)
++  (function () {
++    var root = document.documentElement, on = false;
++    // on the home page it waits until the film has scrolled away: over the film the nav stays white, with no fade
++    var film = document.querySelector('.film');
++    function check() {
++      var now = film ? film.getBoundingClientRect().bottom - 90 <= 0 : scrollY > 24;
++      if (now !== on) { on = now; root.classList.toggle('past-top', on); }
++    }
++    addEventListener('scroll', check, {passive: true}); check();
++  })();
++
++  // The eye in the nav blinks now and then: every 5-10s at random, mostly a blink, sometimes a look around.
++  // (On the home page the same element is the big logotype until it has faded; the CSS keeps it still then.)
++  (function () {
++    var eye = document.querySelector('.head .logotype');
++    if (!eye || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
++    eye.addEventListener('animationend', function () { eye.classList.remove('eye-blink', 'eye-look'); });
++    function look() { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add('eye-look'); }
++    // it looks around once when it first appears (on the home page, once the intro has faded), and whenever it is hovered
++    var home = document.querySelector('.film');
++    if (!home && !document.documentElement.classList.contains('menu-arriving')) setTimeout(look, 600);          // from the menu the logo never left the screen: no replay
++    else new MutationObserver(function (m, o) { if (document.body.classList.contains('logo-docked')) { o.disconnect(); setTimeout(look, 700); } })
++      .observe(document.body, {attributes: true, attributeFilter: ['class']});
++    if (matchMedia('(hover:hover)').matches)          // a mouse only: on touch, a look on first tap swallowed the tap itself
++      eye.addEventListener('mouseenter', function () { if (!eye.classList.contains('eye-look')) look(); });
++    // The blink repaints the logotype's sprite, and a browser counts that as the page's largest paint
++    // arriving 10s in - the number Google scores the page on - even though everything is on screen in
++    // one second. That measurement is sealed at the visitor's first touch, so the eye waits for it.
++    var blinking = false;
++    function startBlinking() {
++      if (blinking) return;
++      blinking = true;
++      (function next() {
++        setTimeout(function () {
++          if (!document.hidden) { eye.classList.remove('eye-blink', 'eye-look'); void eye.offsetWidth; eye.classList.add(Math.random() < 0.25 ? 'eye-look' : 'eye-blink'); }
++          next();
++        }, 5000 + Math.random() * 5000);
++      })();
++    }
++    ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
++      addEventListener(ev, startBlinking, {once: true, passive: true});
++    });
++  })();
++
++  // Free shipping notice: shows once the first screen is behind you, so it never covers the
++  // film or a product's opening photograph. Dismissing it keeps it away for the rest of the visit.
++  (function () {
++    var bar = document.querySelector('.ship-bar');
++    if (!bar) return;
++    var gone = false;
++    try { gone = sessionStorage.getItem('macon-ship-hide') === '1'; } catch (e) {}
++    if (gone) { bar.remove(); return; }
++
++    // it arrives with the page rather than waiting for the first screen to pass
++    var past = function () { return true; };
++    // Once it has arrived it stays: scrolling back up to the hero should not take it away again.
++    var sync = function () {
++      if (!past()) return;
++      document.body.classList.add('ship-on');
++      removeEventListener('scroll', sync);
++      removeEventListener('resize', sync);
++    };
++    addEventListener('scroll', sync, {passive: true});
++    addEventListener('resize', sync, {passive: true});
++    sync();
++
++    bar.querySelector('.ship-x').addEventListener('click', function () {
++      document.body.classList.remove('ship-on');
++      try { sessionStorage.setItem('macon-ship-hide', '1'); } catch (e) {}
++      setTimeout(function () { bar.remove(); }, 520);
++      removeEventListener('scroll', sync);
++    });
++  })();
++
++  // Accordions: the height eases through a grid-row transition, so nothing is
++  // measured in script and a panel of any length opens at the same pace.
++  document.querySelectorAll('.acc-head').forEach(function (b) {
++    b.addEventListener('click', function () {
++      var item = b.parentElement, open = !item.classList.contains('open');
++      if (open) document.querySelectorAll('.acc-head[aria-expanded="true"]').forEach(function (o) {          // one open at a time
++        if (o !== b) { o.parentElement.classList.remove('open'); o.setAttribute('aria-expanded', 'false'); }
++      });
++      item.classList.toggle('open', open);
++      b.setAttribute('aria-expanded', open);
++    });
++  });
++
++  // Nav tone: each part of the nav (links, logotype, bag) looks at what is
++  // actually beneath it. Over an image it reads the pixels there; over anything
++  // else, the background colour. Only very light ground keeps the nav black.
++  (function () {
++    var LIGHT = 0.82;                      // "super light": white, pale grey, paper
++    var parts = [].slice.call(document.querySelectorAll('.head .left, .head .logotype, .head .right'));
++    var maps = new WeakMap();
++
++    function lumaOf(r, g, b) { return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255; }
++
++    function map(img) {                    // a small luminance copy of each image, made once
++      if (maps.has(img)) return maps.get(img);
++      if (!img.complete || !img.naturalWidth) return null;
++      var w = 64, h = Math.max(1, Math.round(64 * img.naturalHeight / img.naturalWidth));
++      var c = document.createElement('canvas'); c.width = w; c.height = h;
++      var x = c.getContext('2d', {willReadFrequently: true});
++      try { x.drawImage(img, 0, 0, w, h); var d = x.getImageData(0, 0, w, h).data; } catch (e) { return null; }
++      var m = {w: w, h: h, d: d}; maps.set(img, m); return m;
++    }
++
++    var lumas = new WeakMap();
++    function bgLuma(el) {                  // first painted background up the tree, else the white page
++      if (el && lumas.has(el)) return lumas.get(el);
++      var v = paintedLuma(el); if (el) lumas.set(el, v); return v;
++    }
++    function paintedLuma(el) {
++      for (; el && el !== document.documentElement; el = el.parentElement) {
++        var c = getComputedStyle(el).backgroundColor.match(/[\d.]+/g);
++        if (c && (c.length < 4 || +c[3] > 0.5)) return lumaOf(+c[0], +c[1], +c[2]);
++      }
++      return 1;
++    }
++
++    function lumaAt(px, py) {
++      var stack = document.elementsFromPoint(px, py);
++      for (var i = 0; i < stack.length; i++) {
++        var el = stack[i];
++        if (el.closest('.head')) continue;
++        if (el.tagName === 'VIDEO') return 0;
++        if (el.tagName === 'IMG') {
++          var m = map(el);
++          if (!m) return el.complete && el.naturalWidth ? bgLuma(el) : null;          // a picture still decoding: hold the colour (it read as the blank page, and turned the nav black on a dark photo)
++          var r = el.getBoundingClientRect(), fit = getComputedStyle(el).objectFit;
++          var sx = r.width / el.naturalWidth, sy = r.height / el.naturalHeight;
++          if (fit === 'cover') sx = sy = Math.max(sx, sy);
++          else if (fit === 'contain') sx = sy = Math.min(sx, sy);
++          var ox = (r.width - el.naturalWidth * sx) / 2, oy = (r.height - el.naturalHeight * sy) / 2;
++          var u = (px - r.left - ox) / (el.naturalWidth * sx), v = (py - r.top - oy) / (el.naturalHeight * sy);
++          if (u < 0 || u > 1 || v < 0 || v > 1) return bgLuma(el);
++          var tx = Math.min(m.w - 1, Math.floor(u * m.w)), ty = Math.min(m.h - 1, Math.floor(v * m.h));
++          var sum = 0, n = 0, alpha = 0;
++          for (var dy = -1; dy <= 1; dy++) for (var dx = -2; dx <= 2; dx++) {
++            var X = Math.max(0, Math.min(m.w - 1, tx + dx)), Y = Math.max(0, Math.min(m.h - 1, ty + dy)), k = (Y * m.w + X) * 4;
++            sum += lumaOf(m.d[k], m.d[k + 1], m.d[k + 2]) * m.d[k + 3] / 255; alpha += m.d[k + 3] / 255; n++;
++          }
++          // transparent pixels show whatever is behind the picture
++          var under = bgLuma(el.parentElement);
++          return (sum + under * (n - alpha)) / n;
++        }
++        // a gap between pictures in an image grid: hold the current colour until the grid is left
++        if (el.closest('.wall, .examples')) return null;
++        return bgLuma(el);
++      }
++      return 1;
++    }
++
++    var queued = false, held = null, head = document.querySelector('.head'), lastY = -99;
++    function tone(force) {
++      queued = false;
++      if (force !== true && Math.abs(scrollY - lastY) < 8) return;          // nothing under the nav has moved enough to matter
++      lastY = scrollY;
++      // the whole nav is one unit: read under each part, then colour every part the same
++      var r0 = head.getBoundingClientRect(), mid = r0.top + r0.height / 2;
++      var grid = null;
++      document.elementsFromPoint(innerWidth / 2, mid).some(function (el) {
++        if (el.closest('.head')) return false;
++        grid = el.closest('.wall, .examples'); return true;
++      });
++      if (grid && held === grid) return;          // over an image grid: keep the colour until the grid has passed
++      held = grid;
++      var dark = 0, counted = 0;
++      parts.forEach(function (p) {
++        var r = p.getBoundingClientRect(); if (!r.width) return;
++        var y = r.top + r.height / 2, l = 1, seen = false;
++        [0.15, 0.5, 0.85].forEach(function (f) {
++          var v = lumaAt(r.left + r.width * f, y);
++          if (v === null) return;
++          seen = true; l = Math.min(l, v);
++        });
++        if (!seen) return;
++        counted++; if (l < LIGHT) dark++;
++      });
++      if (!counted) return;
++      var onDark = dark * 2 > counted;              // most of the nav sits over something dark
++      parts.forEach(function (p) { p.classList.toggle('on-dark', onDark); });
++    }
++    function soon() { if (!queued) { queued = true; requestAnimationFrame(tone); } }
++    addEventListener('scroll', soon, {passive: true}); addEventListener('resize', function () { lastY = -99; soon(); });
++    function fresh() { held = null; lastY = -99; soon(); }
++    window.MaconNavTone = fresh;          // the menu asks for a fresh reading once the page behind it is revealed
++    document.querySelectorAll('img').forEach(function (i) { if (!i.complete) i.addEventListener('load', fresh); });
++    addEventListener('load', fresh);
++    addEventListener('pageshow', fresh);
++    // The first reading can land before the page has settled — the picture under the
++    // nav may not be laid out or decoded yet — and then nothing would look again.
++    // A few more reads over the first half second cost nothing and settle it.
++    [0, 120, 400, 900].forEach(function (ms) { setTimeout(fresh, ms); });
++    // A product page opens on a photograph, so the nav starts white rather than
++    // flicking from black once the picture has decoded.
++    if (document.querySelector('.product .gallery img, .product .gallery video')) {
++      parts.forEach(function (p) { p.classList.add('on-dark'); });
++    }
++    document.querySelectorAll('.product .gallery img').forEach(function (i) {
++      if (i.decode) i.decode().then(fresh).catch(function () {});
++    });
++    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fresh);
++    tone(true);
++  })();
++
++  // Emerge: every image and text block starts hidden and settles into place the
++  // first time about 16% of it is on screen. It never fades back out (toggling
++  // flickered), and anything added later is picked up too.
++  (function () {
++    var BLOCKS = '.opening .hand, .ship .branch, .gallery figure, .info > *, .acc-item, .closing > *, .intro > *, .panel, .prose > *, ' +
++                 '.steps figure, .childhood figure, .split .pics figure, .split .copy > *, ' +
++                 '.policies, .ways > *, .form > *, footer > *, .wall figure, .wall-head, .order > *, .related > :not(.rel-grid), .rel-piece';
++    // side-by-side groups cascade instead of arriving at once
++    var GROUPS = ['.related', '.rel-grid', '.order', '.steps', '.childhood', '.history .intro', '.info', '.intro', '.split .copy', '.acc', '.ways', '.form', 'footer'];
++    // coming back (Back button or history) the page simply reappears as it was, with no entrance
++    var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
++    var still = matchMedia('(prefers-reduced-motion: reduce)').matches || !!(nav && nav.type === 'back_forward');
++    var phone = matchMedia('(max-width:767px)').matches;
++    var io = still ? null : new IntersectionObserver(function (entries) {
++      entries.forEach(function (e) {
++        if (!e.isIntersecting) return;
++        e.target.classList.add('is-seen');
++        io.unobserve(e.target);
++      });
++    }, phone ? {threshold: 0, rootMargin: '0px 0px 18% 0px'}          // phones: start a block just BEFORE it reaches the screen, so
++             : {threshold: 0.16, rootMargin: '0px 0px -6% 0px'});      // it is already arriving rather than blank when you get there
++    // the footer sits against the page's bottom edge, where the main trigger line
++    // can never be crossed, so it reveals as soon as any of it is on screen
++    var edge = still ? null : new IntersectionObserver(function (entries) {
++      entries.forEach(function (e) {
++        if (!e.isIntersecting) return;
++        e.target.classList.add('is-seen');
++        edge.unobserve(e.target);
++      });
++    }, {threshold: 0, rootMargin: '0px 0px 120px 0px'});          // allow for the 66px drop of the hidden state
++
++    // photographs on the first screen are simply there when the page arrives: only
++    // words rise in. The two staged illustrations (the box, the hand) keep their entrance.
++    var PICS = '.gallery figure, .split .pics figure, .wall figure, .rel-piece, .steps figure, .childhood figure';
++    var fresh = true;
++    addEventListener('load', function () { setTimeout(function () { fresh = false; }, 0); });
++    // arriving part-way down the page (the Shop link lands on #pieces, or the browser
++    // restores where you were): the window stays open until the first scroll, so blocks
++    // armed a few frames late are caught too
++    var landing = false;
++    addEventListener('load', function () { landing = !!(location.hash || scrollY); });
++    addEventListener('scroll', function () { landing = false; }, {passive: true, once: true});
++    setTimeout(function () { landing = false; }, 2000);
++    function onScreen(el) {
++      var r = el.getBoundingClientRect();
++      return r.top < innerHeight && r.bottom > 0;
++    }
++
++    function alreadyThere(el) {
++      if (!fresh || !el.matches || !el.matches(PICS)) return false;
++      var r = el.getBoundingClientRect();
++      return r.top < innerHeight && r.bottom > 0;
++    }
++
++    // arriving by a link to a spot on the page (Shop lands on #pieces): whatever sits in the screenful
++    // it lands on is never hidden to begin with. Deciding this only after every picture had loaded
++    // left the grid invisible on white for a moment (the flash), then nudged it into place.
++    var anchor = null;
++    try { anchor = location.hash && location.hash.length > 1 ? document.querySelector(location.hash) : null; } catch (err) {}
++    function inLanding(el) {
++      if (!anchor) return false;
++      var top = anchor.getBoundingClientRect().top + scrollY, r = el.getBoundingClientRect(), y = r.top + scrollY;
++      return y < top + innerHeight && y + r.height > top - 40;
++    }
++
++    function arm(root) {
++      (root.matches && root.matches(BLOCKS) ? [root] : []).concat([].slice.call(root.querySelectorAll(BLOCKS)))
++        .forEach(function (el) {
++          if (el.classList.contains('dr-emerge') || el.hasAttribute('data-no-emerge')) return;
++          if (alreadyThere(el)) return;                 // a picture waiting on the first screen
++          if (inLanding(el) && !el.closest('.wall')) return;          // on screen where the link lands (the grid's cards still play their entrance)
++          // hide instantly: the transition is for arriving, not for going away
++          el.style.transition = 'none';
++          el.classList.add('dr-emerge');
++          void el.offsetWidth;
++          el.style.transition = '';
++          if (still) { el.classList.add('is-seen'); return; }
++          // the inspiration wall's first screen plays in full on load, even the
++          // pieces only partly in view, so no part of the screen is left empty
++          if (el.closest('.wall, .wall-head') && el.getBoundingClientRect().top < innerHeight) {
++            requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-seen'); }); });
++            return;
++          }
++          // let the hidden state paint first, or blocks already on screen at load
++          // would jump straight to their resting place without animating
++          // (and wait for the stylesheet: until the hidden state has actually taken
++          // effect there is nothing to animate from)
++          var tries = 0;
++          (function ready() {
++            if (getComputedStyle(el).opacity !== '0' && tries++ < 120) return requestAnimationFrame(ready);
++            requestAnimationFrame(function () { (el.closest('footer') ? edge : io).observe(el); });
++          })();
++        });
++    }
++    // arriving part-way down the page (the Shop link lands on #pieces, or the browser
++    // restores where you were): whatever is already on screen is simply there, and the
++    // entrance picks up again only once you scroll on
++    if (!still) addEventListener('load', function () {
++      if (!location.hash && !scrollY) return;
++      (function sweep() {
++        if (!landing) return;
++        document.querySelectorAll('.dr-emerge').forEach(function (el) {
++          if (!onScreen(el) || getComputedStyle(el).opacity === '1' || el.closest('.wall')) return;          // the cards keep their entrance
++          el.style.setProperty('--stagger', '0ms');       // no cascade on a landing, either
++          el.style.transition = 'none';
++          el.classList.add('is-seen');
++          requestAnimationFrame(function () { el.style.transition = ''; });
++        });
++        requestAnimationFrame(sweep);
++      })();
++    });
++
++    // wall pieces cascade by their column, one by one but only 40ms apart, so each row settles
++    // left to right; pieces already on screen at load also arrive top to bottom. Columns change
++    // with the window (4, 3, 2 across), so the cascade is worked out again on a resize.
++    function wallStagger(first) {
++      document.querySelectorAll('.wall').forEach(function (w) {
++        var figs = [].slice.call(w.querySelectorAll('figure')), lefts = [];
++        figs.forEach(function (f) { var l = Math.round(f.offsetLeft); if (lefts.indexOf(l) < 0) lefts.push(l); });
++        lefts.sort(function (a, b) { return a - b; });
++        figs.forEach(function (f) {
++          if (!first && f.classList.contains('is-seen')) return;
++          var r = f.getBoundingClientRect(), col = lefts.indexOf(Math.round(f.offsetLeft));
++          var d = (first && r.top < innerHeight ? Math.max(0, r.top) / innerHeight * 700 : 0) + col * 40;
++          f.style.setProperty('--stagger', Math.round(d) + 'ms');
++        });
++      });
++    }
++    wallStagger(true);
++    addEventListener('resize', function () { wallStagger(false); });
++    document.querySelectorAll('.wall-head').forEach(function (h) { h.style.setProperty('--stagger', '0ms'); });
++    GROUPS.forEach(function (g) {
++      document.querySelectorAll(g).forEach(function (group) {
++        // on a phone the whole details column is on screen at once, so a long cascade just
++        // reads as the lower blocks (Field Notes especially) being late
++        var quick = phone && (g === '.info' || g === '.acc');          // accordions too: each row is reached by scrolling, so a long cascade only adds lag
++        var cap = quick ? 2 : 6, step = quick ? 45 : 90;
++        [].slice.call(group.children).forEach(function (el, i) { el.style.setProperty('--stagger', Math.min(i, cap) * step + 'ms'); });
++      });
++    });
++    // Also Worth Keeping reads as one block, so the heading, the line under it and
++    // the three pieces arrive in a single run rather than two separate flurries.
++    document.querySelectorAll('.related').forEach(function (rel) {
++      var n = 0;
++      [].slice.call(rel.children).forEach(function (el) {
++        if (el.classList.contains('rel-grid')) {
++          [].slice.call(el.children).forEach(function (tile) { tile.style.setProperty('--stagger', (n++) * 90 + 'ms'); });
++        } else {
++          el.style.setProperty('--stagger', (n++) * 90 + 'ms');
++        }
++      });
++    });
++    addEventListener('scroll', function () { document.documentElement.classList.add('moved'); }, {once: true, passive: true});          // opening-only waits end at the first scroll
++    arm(document);
++    // Anything on the first screen at load plays its entrance even if it sits in the bottom
++    // strip the scroll trigger ignores (it would otherwise wait for a scroll that never comes).
++    if (!still) setTimeout(function () {
++      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
++        if (el.getBoundingClientRect().top - 70 < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
++      });
++    }, 400);
++    // Blocks in the last few pixels of the page can't rise past the trigger
++    // line, so reveal whatever is on screen once the bottom is reached.
++    function atBottom() {
++      if (still || innerHeight + scrollY < document.documentElement.scrollHeight - 2) return;
++      document.querySelectorAll('.dr-emerge:not(.is-seen)').forEach(function (el) {
++        if (el.getBoundingClientRect().top < innerHeight) { el.classList.add('is-seen'); io.unobserve(el); }
++      });
++    }
++    addEventListener('scroll', atBottom, {passive: true});
++    // a reload lands back at the old scroll position without necessarily scrolling,
++    // so check once everything has loaded and been armed as well
++    addEventListener('load', function () { setTimeout(atBottom, 80); setTimeout(atBottom, 400); });
++    new MutationObserver(function (muts) {
++      muts.forEach(function (m) { m.addedNodes.forEach(function (n) { if (n.nodeType === 1) arm(n); }); });
++    }).observe(document.body, {childList: true, subtree: true});
++  })();
++
++  // A discount carried in a link (?discount=MACON10, as the emails use) is remembered for this visit and applied at checkout
++  (function () {
++    var m = location.search.match(/[?&]discount=([A-Za-z0-9_-]{2,40})/);
++    if (m) try { sessionStorage.setItem('macon-discount', m[1].toUpperCase()); } catch (e) {}
++  })();
++
++  // Checkout: the bag becomes a Shopify cart, then Shopify's own checkout takes over (cards, Apple Pay, Shop Pay, tax, shipping)
++  window.MaconCheckout = function (items, button) {
++    var cfg = window.MACON_SHOP || {};
++    var lines = items.filter(function (i) { return i.variant; }).map(function (i) { return {merchandiseId: i.variant, quantity: i.qty || 1}; });
++    if (!lines.length) {
++      if (button) { button.textContent = 'Please re-add your piece'; setTimeout(function () { button.textContent = button.dataset.label || 'Checkout'; }, 3500); }
++      return Promise.reject(new Error('Nothing to check out'));
++    }
++    if (button && button.disabled) return Promise.resolve();          // a second tap while the first is on its way
++    if (button) button.disabled = true;
++    if (window.maconTrack) maconTrack('checkout', items);
++    if (button) { button.setAttribute('aria-busy', 'true'); button.dataset.label = button.textContent; button.textContent = 'One moment…'; }
++    // coming back from Shopify with the Back button restores this page from memory: make the button usable again
++    if (button) addEventListener('pageshow', function () { button.disabled = false; button.removeAttribute('aria-busy'); if (button.dataset.label) button.textContent = button.dataset.label; }, {once: true});
++    // Shopify's standard cart link: the same checkout, but it counts as an Online Store checkout, which is
++    // what Shopify's own abandoned-checkout emails listen to (checkouts opened through the Storefront API do not)
++    var code = ''; try { code = sessionStorage.getItem('macon-discount') || ''; } catch (e) {}
++    var path = lines.map(function (l) { return l.merchandiseId.split('/').pop() + ':' + l.quantity; }).join(',');
++    var extra = code ? {discount: code} : {};
++    var gift = MaconGift.read();          // lands on the order as "Gift wrap" and "Gift note", which Flow and the staff email read
++    if (gift.wrap) { extra['attributes[Gift wrap]'] = 'Yes'; if (gift.note) extra['attributes[Gift note]'] = gift.note; }
++    location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(extra);
++    // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
++    // pieces still waiting. It is emptied on the thank-you page.
++    return Promise.resolve();
++  };
++
++  // Gift wrap: free, chosen in the bag, remembered for this visit until the order goes through
++  window.MaconGift = {
++    read: function () { try { var g = JSON.parse(localStorage.getItem('macon-gift') || '{}'); return {wrap: !!g.wrap, note: String(g.note || '').slice(0, 200)}; } catch (e) { return {wrap: false, note: ''}; } },
++    write: function (g) { try { localStorage.setItem('macon-gift', JSON.stringify(g)); } catch (e) {} },
++    mount: function (box) {
++      var g = MaconGift.read();
++      box.className = 'gift';
++      box.innerHTML = '<div class="gift-row"><label class="gift-check"><input type="checkbox"><span>Add gift wrapping <em>Free</em></span></label><span class="gift-count" aria-live="polite"></span></div>' +
++        '<div class="gift-more"><div><textarea maxlength="200" rows="3" aria-label="Gift note" placeholder="Write a note and we\u2019ll copy it out by hand on a card (optional)"></textarea></div></div>';
++      var box2 = box.querySelector('input'), note = box.querySelector('textarea');
++      box2.checked = g.wrap; note.value = g.note; box.classList.toggle('on', g.wrap);
++      var count = box.querySelector('.gift-count');
++      function save() { MaconGift.write({wrap: box2.checked, note: note.value.trim()}); box.classList.toggle('on', box2.checked); count.textContent = note.value.length + ' / 200'; }
++      count.textContent = note.value.length + ' / 200';
++      box2.addEventListener('change', function () { save(); document.querySelectorAll('.gift input').forEach(function (x) { if (x !== box2) { x.checked = box2.checked; x.closest('.gift').classList.toggle('on', box2.checked); } }); });
++      note.addEventListener('input', save);
++    }
++  };
++
++  // Enquiries (contact + commission forms) go to the Bureau of Provenance, which emails the studio and replies to the sender
++  window.MaconEnquiry = function (payload) {
++    var url = (window.MACON_SHOP || {}).enquiry;
++    if (!url) return Promise.reject(new Error('no enquiry address'));
++    return fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)})
++      .then(function (r) { if (!r.ok) throw new Error('enquiry failed (' + r.status + ')'); return r.json(); })
++      .then(function (j) { if (window.maconTrack) maconTrack('lead', payload.form); return j; });
++  };
++
++  // Newsletter (footer): subscribes the visitor to Shopify email marketing (see the subscribe function)
++  document.querySelectorAll('form[data-newsletter]').forEach(function (f) {
++    f.addEventListener('submit', function (e) {
++      e.preventDefault();
++      var cfg = window.MACON_SHOP || {}, input = f.querySelector('input[type=email]'), email = input.value, btn = f.querySelector('button');
++      if (btn.disabled) return;          // already sending
++      btn.disabled = true; btn.textContent = '…';
++      var done = function () {
++        btn.textContent = "You're on the list"; input.value = '';
++        if (window.maconTrack) maconTrack('signup', email);
++      };
++      // subscribes straight into Shopify, which is what starts Shopify Email's welcome series
++      (cfg.subscribeUrl
++        ? fetch(cfg.subscribeUrl, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email: email})})
++            .then(function (r) { return r.json(); })
++            .then(function (j) { if (!j.ok) throw new Error(j.reason); })
++        : Promise.reject(new Error('no sign-up url')))
++        .then(done)
++        .catch(function () { btn.textContent = 'Try again'; btn.disabled = false; });
++    });
++  });
++
++  // Bag: the pieces live in localStorage so the bag, checkout and every page agree
++  window.MaconBag = (function () {
++    var KEY = 'macon-bag-items';
++    function read() { try { var v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v.map(clean).filter(function (it) { return it.slug; }) : []; } catch (e) { return []; } }
++    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
++    function clean(it) { return {variant: /^gid:\/\/shopify\/ProductVariant\/\d+$/.test(it.variant) ? it.variant : '', slug: /^[a-z0-9-]+$/.test(it.slug) ? it.slug : '', name: esc(it.name), img: /^img\/[\w\/.-]+(\?v=\d+)?$/.test(it.img) ? it.img : '',
++      size: esc(it.size || ''), price: Math.max(0, +it.price || 0), qty: Math.max(1, Math.floor(+it.qty) || 1)}; }
++    function write(items) { try { localStorage.setItem(KEY, JSON.stringify(items)); } catch (e) {} document.dispatchEvent(new CustomEvent('bag:change')); }
++    function count() { return read().reduce(function (n, i) { return n + (i.qty || 1); }, 0); }
++    function add(item) {
++      var items = read();
++      var same = items.filter(function (i) { return i.slug === item.slug && (i.size || '') === (item.size || ''); })[0];
++      if (same) { same.qty = (same.qty || 1) + 1; if (item.variant) same.variant = item.variant; if (item.price) same.price = item.price; if (item.img) same.img = item.img; }          // keep the newest Shopify id, so an old bag never checks out a retired size
++      else { item.qty = 1; items.push(item); }
++      write(items);
++      if (window.maconTrack) maconTrack('add', {variant: item.variant, name: item.name, slug: item.slug, price: item.price, qty: 1, image: item.image});
++    }
++    return {read: read, write: write, count: count, add: add};
++  })();
++
++  // The bag's lines, drawn the same way on the Bag page and in the desktop drawer. Returns the subtotal.
++  window.MaconBagMoney = function (n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits: n % 1 ? 2 : 0}); };
++  window.MaconBagLines = function (lines) {
++    var items = MaconBag.read(), money = MaconBagMoney, sub = 0;
++    lines.innerHTML = '';
++    items.forEach(function (it, i) {
++      sub += it.price * it.qty;
++      var row = document.createElement('div'); row.className = 'line';
++      // one price per piece: the line's total, with the price of one alongside when there are several
++      var price = it.qty > 1 ? money(it.price * it.qty) + ' (' + money(it.price) + ' each)' : money(it.price);
++      row.innerHTML = '<a href="' + it.slug + '.html"><img src="' + it.img + '" alt=""></a>' +
++        '<div><p class="nm" data-edit="page:collection.html:24ce9244"><a href="' + it.slug + '.html">' + it.name + '</a></p>' +
++        '<p class="meta" data-edit="page:collection.html:0a78319b">' + price + (it.size ? ' · Size ' + it.size : '') + '</p>' +
++        '<span class="qty"><button type="button" data-d="-1" aria-label="One fewer">−</button><span>' + it.qty + '</span>' +
++        '<button type="button" data-d="1" aria-label="One more">+</button><button type="button" class="remove">Remove</button></span></div>';
++      row.querySelectorAll('[data-d]').forEach(function (b) {
++        b.addEventListener('click', function () {
++          var all = MaconBag.read(); all[i].qty += +b.dataset.d;
++          if (all[i].qty < 1) all.splice(i, 1);
++          MaconBag.write(all);
++        });
++      });
++      row.querySelector('.remove').addEventListener('click', function () { var all = MaconBag.read(); all.splice(i, 1); MaconBag.write(all); });
++      lines.appendChild(row);
++    });
++    return sub;
++  };
++
++  // Desktop: Bag opens a drawer from the right instead of leaving the page (phones still go to bag.html)
++  (function () {
++    var link = document.querySelector('.head .right a'); if (!link) return;
++    var wide = matchMedia('(min-width:768px)'), drawer = null, veil = null, last = null;
++    if (!/bag\.html$/.test(location.pathname)) link.setAttribute('data-bag-drawer', '');          // the page fade leaves this link to the drawer
++    function build() {
++      veil = document.createElement('div'); veil.className = 'bag-veil';
++      drawer = document.createElement('aside'); drawer.className = 'bag-drawer'; drawer.setAttribute('aria-label', 'Your bag');
++      drawer.setAttribute('role', 'dialog'); drawer.setAttribute('aria-modal', 'true'); drawer.inert = true;
++      drawer.innerHTML = '<div class="bd-head"><p class="bd-title" data-edit="page:collection.html:4a84232f">Your bag</p><button type="button" class="bd-close" aria-label="Close bag">Close</button></div>' +
++        '<div class="bd-lines lines"></div>' +
++        '<div class="bd-empty" hidden><p data-edit="page:collection.html:e000f14a">Your bag is empty.</p><a class="cta" href="index.html#pieces">Continue Shopping</a></div>' +
++        '<div class="bd-foot"><dl><dt>Subtotal</dt><dd class="bd-sub">$0</dd></dl>' +
++        '<p class="bd-note" data-edit="page:collection.html:da39a3ee"></p>' +
++        '<div class="bd-gift"></div>' +
++        '<button class="cta" type="button">Checkout</button><a class="bd-page" href="bag.html">View bag</a></div>';
++      document.body.appendChild(veil); document.body.appendChild(drawer);
++      MaconGift.mount(drawer.querySelector('.bd-gift'));
++      veil.addEventListener('click', function () { set(false); });
++      drawer.querySelector('.bd-close').addEventListener('click', function () { set(false); });
++      drawer.querySelector('.bd-foot .cta').addEventListener('click', function () { MaconCheckout(MaconBag.read(), this).catch(function () {}); });
++      document.addEventListener('bag:change', paint);
++    }
++    function paint() {
++      if (!drawer) return;
++      var sub = MaconBagLines(drawer.querySelector('.bd-lines')), empty = !MaconBag.count();
++      drawer.querySelector('.bd-sub').textContent = MaconBagMoney(sub);
++      drawer.querySelector('.bd-note').textContent = 'Shipping is calculated at checkout. ' + maconShipNote();
++      drawer.querySelector('.bd-empty').hidden = !empty;
++      drawer.querySelector('.bd-foot').hidden = empty;
++    }
++    function set(on) {
++      if (!drawer) { build(); void drawer.offsetWidth; }          // laid out closed first, so the very first open slides in too
++      if (on) { last = document.activeElement; paint(); }
++      drawer.inert = !on;
++      if (!on) { drawer.classList.add('bag-leaving'); veil.classList.add('bag-leaving'); clearTimeout(drawer._shut); drawer._shut = setTimeout(function () { drawer.classList.remove('bag-leaving'); veil.classList.remove('bag-leaving'); }, 720); }
++      else { clearTimeout(drawer._shut); drawer.classList.remove('bag-leaving'); veil.classList.remove('bag-leaving'); }
++      requestAnimationFrame(function () { drawer.classList.toggle('open', on); veil.classList.toggle('open', on); });
++      document.documentElement.classList.toggle('bag-open', on);
++      if (on) drawer.querySelector('.bd-close').focus({preventScroll: true}); else if (last && last.focus) last.focus({preventScroll: true});
++    }
++    // built while the page is idle, so it is ready to slide the moment Bag is clicked
++    if (wide.matches && !/bag\.html$/.test(location.pathname)) (window.requestIdleCallback || setTimeout)(function () { if (!drawer) build(); });
++    link.addEventListener('click', function (e) {
++      if (!wide.matches || /bag\.html$/.test(location.pathname)) return;          // phones, and the Bag page itself, keep the page
++      if (maconBagTest() === 'page') return;          // the A/B test: this visitor goes to the full bag page instead of the drawer
++      e.preventDefault(); set(true);
++    });
++    addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) set(false); });
++    var toNarrow = function (e) { if (!e.matches && drawer && drawer.classList.contains('open')) set(false); };
++    if (wide.addEventListener) wide.addEventListener('change', toNarrow); else wide.addListener(toNarrow);
++    addEventListener('pageshow', function (e) { if (e.persisted && drawer) set(false); });          // back from Shopify: closed, not stuck open
++  })();
++
++  (function () {
++    var bag = document.querySelector('.head .right a'); if (!bag) return;
++    bag.setAttribute('href', 'bag.html');
++    function paint() { bag.textContent = 'Bag (' + MaconBag.count() + ')'; }
++    paint(); document.addEventListener('bag:change', paint);
++    addEventListener('storage', paint);
++    var toast = document.createElement('div');
++    toast.className = 'bag-toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
++    document.querySelector('.head .right').appendChild(toast);
++    var timer = null;
++    document.querySelectorAll('.cta, .dock').forEach(function (b) {
++      if (!/add to bag/i.test(b.textContent)) return;
++      b.addEventListener('click', function (e) {
++        var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price .amt') || document.querySelector('.info .price');          // the amount alone, not the shipping notes beside it
++        var sizeBox = document.querySelector('[data-size]'), size = sizeBox && sizeBox.classList.contains('picked') ? sizeBox.querySelector('.size-value').textContent : '';
++        if (sizeBox && !size) {                       // rings need a size before they go in the bag
++          e.stopPropagation();                        // or the picker's click-outside handler shuts it again
++          sizeBox.classList.add('open', 'need'); sizeBox.querySelector('.size-toggle').setAttribute('aria-expanded', true);
++          sizeBox.scrollIntoView({block: 'center', behavior: 'smooth'});
++          setTimeout(function () { sizeBox.classList.remove('need'); }, 1600);
++          return;
++        }
++        MaconBag.add({
++          image: location.origin + '/img/email/wide-' + location.pathname.split('/').pop().replace('.html', '') + '.jpg',
++          slug: location.pathname.split('/').pop().replace('.html', ''),
++          name: title ? title.textContent : '', price: price ? parseFloat(price.textContent.replace(/[^0-9.]/g, '')) || 0 : 0,
++          img: hero ? hero.getAttribute('src') : '', size: size,
++          variant: sizeBox ? (sizeBox.dataset.variant || '') : ((document.getElementById('bag') || {}).dataset || {}).variant || ''
++        });
++        toast.textContent = '';
++        if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
++        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
++        tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
++        if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
++        toast.appendChild(tx);
++        bag.classList.remove('bump'); void bag.offsetWidth; bag.classList.add('bump');
++        // the Bureau of Provenance presses its seal onto the button: the claim is recorded
++        if (!matchMedia('(prefers-reduced-motion:reduce)').matches && document.body.animate) {
++          var r = b.getBoundingClientRect(), st = document.createElement('img'), sz = 1.3 * Math.min(r.height * 1.5, Math.sqrt(1.6 * r.width * r.height / Math.PI));          // centred on the top-right corner: a quarter of the round seal, about 10% of the button
++          st.src = 'img/claim-stamp.png'; st.alt = ''; st.setAttribute('aria-hidden', 'true');
++          st.style.cssText = 'position:fixed;z-index:60;pointer-events:none;width:' + sz + 'px;height:' + sz + 'px;left:' + Math.min(r.right - sz * .8, innerWidth - sz - 4) + 'px;top:' + (r.top - sz * .85) + 'px';          // a full-width phone button: kept on screen
++          document.body.appendChild(st);
++          st.animate([
++            {transform: 'scale(1.9) rotate(-24deg)', opacity: 0},
++            {transform: 'scale(.94) rotate(-11deg)', opacity: .95, offset: .16},
++            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .24},
++            {transform: 'scale(1) rotate(-12deg)', opacity: .95, offset: .8},
++            {transform: 'scale(1) rotate(-12deg)', opacity: 0}
++          ], {duration: 1500, easing: 'cubic-bezier(.3,.7,.3,1)'}).onfinish = function () { st.remove(); };
++        }
++        toast.classList.add('on'); clearTimeout(timer);
++        timer = setTimeout(function () { toast.classList.remove('on'); }, 2600);
++      });
++    });
++  })();
++
++  addEventListener('pageshow', function (e) {
++    if (!e.persisted) return;
++    document.querySelectorAll('.dr-emerge').forEach(function (el) { el.style.transition = 'none'; el.classList.add('is-seen'); });
++    // a shopper who backs out of Shopify's checkout returns to a cached page:
++    // put any button that was mid-handoff back the way they found it
++    document.querySelectorAll('[aria-busy="true"]').forEach(function (b) {
++      b.removeAttribute('aria-busy');
++      if (b.dataset.label) b.textContent = b.dataset.label;
++      b.disabled = false;
++    });
++  });
++
++  // Back to Shop: on wide screens it sits in the nav row, over the left edge of the right-hand column
++  (function () {
++    var link = document.querySelector('.back'), head = document.querySelector('.head'); if (!link || !head) return;
++    var home = link.parentElement, next = link.nextSibling, wide = matchMedia('(min-width:768px)');
++    function place() {
++      if (wide.matches) {
++        if (link.parentElement !== head) head.appendChild(link);
++        var x = 0; for (var el = home; el; el = el.offsetParent) x += el.offsetLeft;
++        x += parseFloat(getComputedStyle(home).paddingLeft) || 0;          // in line with the words, not the column's padded edge
++        link.style.left = x + 'px';
++      } else if (link.parentElement !== home) { home.insertBefore(link, next); link.style.left = ''; }
++    }
++    place(); addEventListener('resize', place); addEventListener('load', place);
++  })();
++
++  // Buy with Shop (product pages): this piece alone, straight to Shop Pay
++  document.querySelectorAll('.buy .buy-now').forEach(function (b) {
++    b.addEventListener('click', function (e) {
++      var sizeBox = document.querySelector('[data-size]');
++      if (sizeBox && !sizeBox.classList.contains('picked')) {
++        e.stopPropagation(); sizeBox.classList.add('open', 'need');
++        setTimeout(function () { sizeBox.classList.remove('need'); }, 1600); return;
++      }
++      var variant = sizeBox ? sizeBox.dataset.variant : document.getElementById('bag').dataset.variant;
++      var id = String(variant || '').split('/').pop();
++      var shop = (window.MACON_SHOP || {}).shop;
++      if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
++        var price = parseFloat(((document.querySelector('.info .price .amt') || document.querySelector('.info .price') || {}).textContent || '').replace(/[^0-9.]/g, '')) || 0;
++        if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
++        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery({payment: 'shop_pay'});
++        return;
++      }
++      MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
++    });
++  });
++
++  // While the print dialog is open, every change of printer or paper lays the page out again, which the
++  // page took as a resize and replayed the sizer drawer's slide and fade behind the dialog. Held still until it closes.
++  addEventListener('beforeprint', function () { document.documentElement.classList.add('printing'); });
++  addEventListener('afterprint', function () { setTimeout(function () { document.documentElement.classList.remove('printing'); }, 400); });
++
++  // A/B test (started 2026-09-21): half of desktop visitors open the bag as a drawer, half as the full page.
++  // Each visitor keeps their side for good; Google Analytics records it as the user property bag_test.
++  window.maconBagTest = function () {
++    try {
++      var v = localStorage.getItem('macon-bag-test');
++      if (v !== 'drawer' && v !== 'page') { v = Math.random() < 0.5 ? 'drawer' : 'page'; localStorage.setItem('macon-bag-test', v); }
++      return v;
++    } catch (e) { return 'drawer'; }
++  };
++
++  // Mobile menu
++  (function () {
++    var btn = document.querySelector('.head .mob'); if (!btn) return;
++    var menu = document.querySelector('.menu-sheet'); if (!menu) return;          // written into the page (partials/nav.html), so it is whole from the first paint
++    btn.setAttribute('role', 'button'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('href', '#menu');
++    var keyboard = false;
++    function set(on, keepX) {
++      if (on && !keepX) {          // Close sits exactly where Menu was
++        var r = btn.getBoundingClientRect(), c = menu.querySelector('.menu-close');
++        var shift = document.querySelector('.head').getBoundingClientRect().left;          // how far the page is pushed aside right now
++        c.style.left = (r.left + r.width / 2 - 22 - shift) + 'px'; c.style.top = (r.top + r.height / 2 - 22) + 'px'; c.style.height = '44px';          // the X's centre on the hamburger's centre
++      }
++      // phones can quietly jump the page to the top while scrolling is locked; keep where you were,
++      // and let the home logotype settle back at once rather than easing in over most of a second
++      if (on) savedY = scrollY;
++      if (!on && open && !menu.classList.contains('instant')) {          // closing plays the opening backwards, on every screen
++        var root = document.documentElement; root.classList.add('logo-hold'); clearTimeout(menu._logo);
++        menu._logo = setTimeout(function () { root.classList.remove('logo-hold'); }, 770);          // the logo finishes turning just as the menu has gone
++        menu.classList.add('leaving'); clearTimeout(menu._leave); menu._leave = setTimeout(function () { menu.classList.remove('leaving'); }, 1090);          // the moment the white has gone
++      }
++      if (on) { clearTimeout(menu._leave); menu.classList.remove('leaving'); clearTimeout(menu._logo); document.documentElement.classList.remove('logo-hold'); }
++      menu.classList.toggle('open', on); menu.inert = !on; open = on;
++      document.documentElement.classList.toggle('menu-open', on);
++      [].forEach.call(document.body.children, function (c) { if (c !== menu && c.tagName !== 'SCRIPT') c.inert = on; });
++      btn.setAttribute('aria-expanded', on); document.documentElement.style.overflow = on ? 'hidden' : '';
++      if (!on) {
++        if (savedY !== null && Math.abs(scrollY - savedY) > 1) scrollTo(0, savedY);
++        document.body.classList.add('logo-still');
++        dispatchEvent(new Event('scroll'));
++        setTimeout(function () { document.body.classList.remove('logo-still'); }, 700);
++      }
++      if (on && keyboard) menu.querySelector('a').focus();
++    }
++    var open = false, savedY = 0;
++    // the next page draws the X where it stands now, from its first frame (see the head script),
++    // rather than measuring the Menu button again while fonts and layout are still settling
++    function rememberX() {
++      var c = menu.querySelector('.menu-close');
++      sessionStorage.setItem('macon-x', JSON.stringify({l: c.style.left, t: c.style.top, h: c.style.height}));
++    }
++    // tapping the pushed-over page closes the menu
++    document.addEventListener('click', function (e) { if (open && !menu.contains(e.target) && e.target !== btn) set(false); });
++    btn.addEventListener('click', function (e) { e.preventDefault(); keyboard = e.detail === 0; set(true); });
++    // phones: open as the finger lifts. iPhone Safari treated the first tap as a hover (the logo starts blinking
++    // on the first touch) and swallowed the click, so the menu needed two taps
++    btn.addEventListener('touchend', function (e) { e.preventDefault(); keyboard = false; if (!open) set(true); }, {passive: false});          // focus the first link only for keyboard users, so a tap shows no outline
++    menu.querySelector('.menu-close').addEventListener('click', function () { set(false); btn.focus(); });
++    addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) { set(false); btn.focus(); } });
++    // widened past the phone layout with the drawer open: the desktop nav takes over, so close it
++    var wide = matchMedia('(min-width:768px)');
++    var toWide = function () {};          // PREVIEW: the menu now works at every width
++    if (wide.addEventListener) wide.addEventListener('change', toWide); else wide.addListener(toWide);
++
++    // Choosing a page: the drawer stays put and the new page loads behind it
++    menu.addEventListener('click', function (e) {
++      var a = e.target.closest('a'); if (!a) return;
++      var to = new URL(a.href, location.href);
++      if (to.pathname !== location.pathname && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
++        // another page: the page behind the drawer dims to white, then the next one loads beneath the drawer
++        e.preventDefault();
++        try { sessionStorage.setItem('macon-menu', '1'); sessionStorage.setItem('macon-fade', '1'); rememberX(); } catch (err) {}
++        var dim = document.createElement('div');
++        dim.style.cssText = 'position:fixed;inset:0;z-index:59;background:#fff;pointer-events:none;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.6,1)';
++        document.body.appendChild(dim);
++        requestAnimationFrame(function () { requestAnimationFrame(function () { dim.style.opacity = '1'; }); });
++        setTimeout(function () { location.href = a.href; }, 310);
++        return;
++      }
++      if (to.pathname === location.pathname) {          // same page (Shop from the home page): close first, then move
++        e.preventDefault();
++        set(false);
++        var target = to.hash && document.querySelector(to.hash);
++        // moving while the page is still pushed aside makes the home film draw over the grid for a moment
++        if (target) setTimeout(function () {
++          target.scrollIntoView({behavior: 'smooth', block: 'start'});
++          history.replaceState(null, '', to.hash);
++        }, 620);
++        return;
++      }
++      try { sessionStorage.setItem('macon-menu', '1'); rememberX(); } catch (err) {}
++    });
++    // ...where it arrives already open, and slides closed once the page is ready
++    var root = document.documentElement;
++    if (root.classList.contains('menu-arriving')) {
++      try { sessionStorage.removeItem('macon-menu'); } catch (err) {}
++      menu.classList.add('instant');
++      var kept = false; try { kept = !!JSON.parse(sessionStorage.getItem('macon-x') || 'null'); sessionStorage.removeItem('macon-x'); } catch (err) {}
++      set(true, kept);
++      savedY = null;          // a page arriving goes where its link points (Shop lands on the grid), never back to where it started
++      root.classList.remove('menu-arriving');
++      var closed = false;
++      var close = function () {
++        if (closed) return; closed = true;
++        // in one frame: were it closed a frame after "instant" came off, the still-open drawer
++        // would restart its words' rise-in for that frame and they would blink out
++        requestAnimationFrame(function () {
++          menu.classList.remove('instant'); set(false);
++          // the logo stays black the whole way (set() would let go at 770ms, while the drawer is still
++          // sliding): only once the new page is fully revealed does it read what is behind it
++          clearTimeout(menu._logo); root.classList.add('logo-hold');
++          menu._logo = setTimeout(function () { root.classList.remove('logo-hold'); if (window.MaconNavTone) window.MaconNavTone(); }, 1100);
++        });
++        // once the drawer has fully slid away, the page's own intro plays
++        setTimeout(function () { root.classList.remove('intro-wait'); dispatchEvent(new Event('macon:intro')); }, 1100);
++      };
++      if (document.readyState === 'complete') setTimeout(close, 150);
++      else addEventListener('load', function () { setTimeout(close, 150); });
++      setTimeout(close, 1600);          // never held open waiting on a slow picture
++    }
++  })();
++
++  // ── Soft fade between pages ───────────────────────────────────────────
++  // Leaving, the page dims to white in 300ms; the next one lifts out of white in 450ms (see the head script).
++  // Kept brief and low-contrast so it smooths the cut rather than being seen. Not for the phone drawer,
++  // which swaps pages behind itself, and not for Back/Forward.
++  (function () {
++    var FADE_ON = true;                            // flip to false to go back to plain cuts
++    if (!FADE_ON || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
++    var veil = null;
++    addEventListener('click', function (e) {
++      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
++      var a = e.target.closest && e.target.closest('a[href]');
++      if (!a || a.closest('.menu-sheet') || a.target === '_blank' || a.hasAttribute('download')) return;
++      if (document.body.classList.contains('sizing-open')) return;          // Back closes the sizer rather than leaving
++      if (a.hasAttribute('data-bag-drawer') && matchMedia('(min-width:768px)').matches) return;          // desktop Bag opens its drawer instead
++      var href = a.getAttribute('href') || '';
++      if (!href || href[0] === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return;
++      var to = new URL(a.href, location.href);
++      if (to.origin !== location.origin || (to.pathname === location.pathname && to.search === location.search)) return;
++      e.preventDefault();
++      veil = veil || document.createElement('div');
++      veil.style.cssText = 'position:fixed;inset:0;z-index:2147482000;background:#fff;pointer-events:none;opacity:0;transition:opacity 300ms cubic-bezier(.4,0,.6,1)';
++      document.body.appendChild(veil);
++      requestAnimationFrame(function () { requestAnimationFrame(function () { veil.style.opacity = '1'; }); });
++      try { sessionStorage.setItem('macon-fade', '1'); } catch (err) {}
++      setTimeout(function () { location.href = a.href; }, 310);
++    }, true);
++    // coming back through history: never leave the veil up
++    addEventListener('pageshow', function (e) { if (e.persisted && veil) veil.remove(); try { sessionStorage.removeItem('macon-fade'); } catch (err) {} });
++  })();
++
++  // ── Page wipe ─────────────────────────────────────────────────────────
++  // One opaque panel crosses the screen in a single direction: it drops from
++  // above to cover the page, the page is swapped while it is hidden, and the
++  // panel carries on off the bottom to uncover the new one. Because it never
++  // retreats the way it came, it reads as something passing over the page
++  // rather than a shutter opening and closing.
++  (function () {
++    var ON = false;                               // the wipe is parked: flip to true to bring it back
++    var COVER = 420, KEY = 'macon-wipe';          // matches the 420ms cover in the head          // the reveal half runs from the head
++    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
++
++    function panel() {
++      var el = document.querySelector('.wipe');
++      if (!el) { el = document.createElement('div'); el.className = 'wipe'; document.body.appendChild(el); }
++      return el;
++    }
++
++    function leaves(a) {
++      if (!a || a.target === '_blank' || a.hasAttribute('download')) return false;
++      var href = a.getAttribute('href') || '';
++      if (!href || href[0] === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return false;
++      var url = new URL(a.href, location.href);
++      if (url.origin !== location.origin) return false;
++      return url.pathname !== location.pathname || url.search !== location.search;
++    }
++
++    // the wipe is kept for one journey only: leaving a piece for the home page,
++    // whether by the logotype, the Shop link or the Back arrow
++    function home(a) {
++      if (!document.body.hasAttribute('data-slug')) return false;
++      var to = new URL(a.href, location.href).pathname;
++      return /(^|\/)index\.html$/.test(to) || /\/$/.test(to);
++    }
++
++    addEventListener('click', function (e) {
++      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
++      var a = e.target.closest && e.target.closest('a[href]');
++      if (!leaves(a)) return;
++      if (document.body.classList.contains('ed-on')) return;          // never while editing
++      if (document.body.classList.contains('sizing-open')) return;     // Back closes the sizer first, it does not leave
++      if (!ON || !home(a)) return;                                           // only the walk back from a piece to the shop
++      e.preventDefault();
++      var el = panel();
++      requestAnimationFrame(function () { el.classList.add('cover'); });
++      try { sessionStorage.setItem(KEY, '1'); } catch (err) {}
++      setTimeout(function () { location.href = a.href; }, COVER);     // swapped while it cannot be seen
++    }, true);
++
++    // coming back through history: never leave the panel sitting over the page
++    addEventListener('pageshow', function (e) {
++      if (!e.persisted) return;
++      var el = document.querySelector('.wipe'); if (el) el.remove();
++      try { sessionStorage.removeItem(KEY); } catch (err) {}
++    });
++  })();
++
++
++
++// Ships by: ten working days from today. Weekends and the federal holidays are skipped,
++// because those are the days the foundry and the post office are shut too.
++// "Your piece is" for one piece in the bag, "Your pieces are" for more
++// The international note (duties included at checkout) is only for visitors outside the US.
++// Cloudflare tells us the country at /_geo; anywhere that endpoint is missing, the note stays hidden.
++(function () {
++  if (/[?&]intl=1\b/.test(location.search)) return document.documentElement.classList.add('intl');
++  try {
++    fetch('/_geo', {cache: 'no-store'}).then(function (r) { return r.ok ? r.json() : null; }).then(function (g) {
++      if (g && g.country && g.country !== 'US') document.documentElement.classList.add('intl');
++    }).catch(function () {});
++  } catch (e) {}
++})();
++
++window.maconShipNote = function () {
++  var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
++  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.';
++};
++// the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
++window.maconShipBy = (function () {
++  function holidays(y) {
++    var nth = function (m, dow, n) {          // the nth given weekday of a month
++      var d = new Date(y, m, 1), c = 0;
++      while (true) { if (d.getDay() === dow && ++c === n) return new Date(d); d.setDate(d.getDate() + 1); }
++    };
++    var last = function (m, dow) {
++      var d = new Date(y, m + 1, 0);
++      while (d.getDay() !== dow) d.setDate(d.getDate() - 1);
++      return d;
++    };
++    return [
++      new Date(y, 0, 1), nth(0, 1, 3), nth(1, 1, 3), last(4, 1),
++      new Date(y, 5, 19), new Date(y, 6, 4), nth(8, 1, 1),
++      nth(9, 1, 2), new Date(y, 10, 11), nth(10, 4, 4), new Date(y, 11, 25)
++    ].map(function (d) { return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); });
++  }
++
++  var d = new Date(), left = 10, hol = holidays(d.getFullYear()).concat(holidays(d.getFullYear() + 1));
++  while (left > 0) {
++    d.setDate(d.getDate() + 1);
++    var day = d.getDay();
++    if (day === 0 || day === 6) continue;
++    if (hol.indexOf(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()) > -1) continue;
++    left--;
++  }
++  var when = d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
++  return function () { return when; };
++})();
++(function () {
++  var el = document.querySelector('[data-ship-by]');
++  if (!el) return;
++  el.textContent = 'Ships by ' + maconShipBy();
++  el.hidden = false;
++})();
++
++// The ring sizer takes the product column's place rather than a page of its own,
++// so Back returns to the piece instead of leaving for the shop.
++(function () {
++  var panel = document.getElementById('sizer-panel');
++  if (!panel) return;
++  // on wide screens the Back link is moved into the nav row, so it is matched by class alone
++
++  function circ(n) { return 36.537 + 2.5535 * n; }          // the ISO relation, so strip and table agree
++
++  var ticks = panel.querySelector('[data-ticks]'), rows = panel.querySelector('[data-sizes]');
++  var lo = circ(4), span = circ(13) - lo;
++  for (var n = 4; n <= 13; n += 0.5) {
++    var x = (circ(n) - lo) / span * 100;
++    if (ticks) {          // the on-screen strip is gone; the printed sheet draws its own
++    var t = document.createElement('i');
++    t.className = 't' + (n % 1 === 0 ? ' major' : '');
++    t.style.left = x + '%';
++    ticks.appendChild(t);
++    if (n % 1 === 0) {
++      var lab = document.createElement('b');
++      lab.className = 'n'; lab.style.left = x + '%'; lab.textContent = n;
++      ticks.appendChild(lab);
++    }
++    }
++    var c = circ(n), tr = document.createElement('tr');
++    tr.innerHTML = '<td>' + (n % 1 === 0 ? n : n.toFixed(1)) + '</td><td>' +
++      (c / Math.PI).toFixed(2) + ' mm</td><td>' + c.toFixed(1) + ' mm</td>';
++    rows.appendChild(tr);
++  }
++
++  function shutTable() {
++    var wrap = panel.querySelector('.tablewrap');
++    if (!wrap || panel.classList.contains('all-sizes')) return;
++    var r = panel.querySelectorAll('[data-sizes] tr'), th = panel.querySelector('thead');
++    if (r.length > 2) wrap.style.setProperty('--rows',
++      ((th ? th.getBoundingClientRect().height : 0) + (r[2].getBoundingClientRect().bottom - r[0].getBoundingClientRect().top)) + 'px');
++  }
++
++  function open(on) {
++    // an overlay: nothing in the column moves, so there is no height for the page to jump to
++    document.body.classList.toggle('sizing-open', on);
++    if (on) {
++      panel.hidden = false; panel.classList.remove('settled'); shutTable(); window.scrollTo({top: 0, behavior: 'smooth'});
++      clearTimeout(panel._settle); panel._settle = setTimeout(function () { panel.classList.add('settled'); }, 1400);          // after the last line has risen in
++      var col = panel.closest('.info'); if (col && col.scrollTop) col.scrollTo({top: 0, behavior: 'smooth'});          // opened from the Sizing row, lower down: its top is never left above the fold
++    }
++    // once it has faded out it is put away again: left in the layout it keeps stretching
++    // the column's own scroll, so the details slide off into empty white afterwards
++    else setTimeout(function () {
++      if (!document.body.classList.contains('sizing-open')) panel.hidden = true;
++    }, 520);
++  }
++
++  window.addEventListener('click', function (e) {
++    if (!e.target.closest) return;
++    // "Find your size" now goes to the printable sizer page (ring-sizing.html). The drawer below is kept, switched off:
++    // to bring it back, replace the line after this comment with:  e.preventDefault(); e.stopPropagation(); open(true); return;
++    if (e.target.closest('[data-open-sizer]')) { e.preventDefault(); e.stopPropagation(); location.href = 'ring-sizing.html'; return; }
++    if (e.target.closest('[data-print-sizer]')) { e.preventDefault(); e.stopPropagation(); window.print(); return; }
++    var more = e.target.closest('[data-more-sizes]');
++    if (more) {
++      e.preventDefault(); e.stopPropagation();
++      var wrap = panel.querySelector('.tablewrap');
++      var rows = panel.querySelectorAll('[data-sizes] tr');
++      var three = rows.length ? rows[2].getBoundingClientRect().bottom - rows[0].getBoundingClientRect().top : 0;
++      var head = panel.querySelector('thead');
++      var shut = (head ? head.getBoundingClientRect().height : 0) + three;
++      var all = panel.classList.toggle('all-sizes');
++      // a fixed height for the three rows, then to the table's real height, so it can animate
++      var full = wrap.querySelector('table').getBoundingClientRect().height;
++      wrap.style.setProperty('--rows', (all ? full : shut) + 'px');
++      more.setAttribute('aria-expanded', all ? 'true' : 'false');
++      more.textContent = all ? 'Show fewer sizes' : 'Show all sizes';
++      return;
++    }
++    if (e.target.closest('.back') && document.body.classList.contains('sizing-open')) {
++      e.preventDefault(); e.stopPropagation(); open(false);
++    }
++  }, true);
++})();
++
++// The ad click id lives in a cookie scoped to this domain, so Shopify's checkout cannot read it.
++// Carrying fbclid across lets Shopify rebuild it there, which is what ties a sale back to the ad.
++function maconClickQuery(extra) {
++  var p = [];
++  Object.keys(extra || {}).forEach(function (k) { p.push(k + '=' + encodeURIComponent(extra[k])); });
++  try {
++    var saved = JSON.parse(sessionStorage.getItem('macon-click') || '{}');
++    Object.keys(saved).forEach(function (k) { p.push(k + '=' + encodeURIComponent(saved[k])); });
++  } catch (e) {}
++  return p.length ? '?' + p.join('&') : '';
++}
++</script>
++<script>
++  // a concept for now: clicking a piece gathers it; nothing is remembered
++  (function () {
++  // the seal lands over the top-right of the drawing itself, a little differently each time
++  function placeSeal(c, drawnSel, sealSel) {
++    var img = c.querySelector(drawnSel), seal = c.querySelector(sealSel); if (!img || !seal || !img.naturalWidth) return;
++    if (!img._ink) {          // where the ink is, found once per drawing
++      var G = 120, cv = document.createElement('canvas'); cv.width = cv.height = G; var g = cv.getContext('2d');
++      g.fillStyle = '#fff'; g.fillRect(0, 0, G, G); g.drawImage(img, 0, 0, G, G);
++      var d = g.getImageData(0, 0, G, G).data, x0 = G, y0 = G, x1 = 0, y1 = 0;
++      for (var y = 0; y < G; y++) for (var x = 0; x < G; x++) { var q = (y * G + x) * 4; if (d[q] + d[q + 1] + d[q + 2] < 720) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } }
++      img._ink = [x0 / G, y0 / G, x1 / G, y1 / G];
++    }
++    var cr = c.getBoundingClientRect(), ir = img.getBoundingClientRect(), k = Math.min(ir.width / img.naturalWidth, ir.height / img.naturalHeight);
++    var dw = img.naturalWidth * k, dh = img.naturalHeight * k, ox = ir.left - cr.left + (ir.width - dw) / 2, oy = ir.top - cr.top + (ir.height - dh) / 2;
++    var i = [].indexOf.call(c.parentNode.children, c), r = function (n) { var v = Math.sin((i + 1) * 12.9898 + n * 78.233) * 43758.5453; return v - Math.floor(v); };
++    var S = seal.offsetWidth, tx = ox + img._ink[2] * dw, ty = oy + img._ink[1] * dh;
++    seal.style.right = 'auto'; seal.style.left = (tx - S * (.62 + r(2) * .2)) + 'px'; seal.style.top = (ty - S * (.38 + r(1) * .2)) + 'px';
++    seal.style.setProperty('--a', Math.round(-30 + r(3) * 60) + 'deg');
++  }
++
++    var box = document.getElementById('cx-drawer'), cells = [].slice.call(box.querySelectorAll('.cx-cell'));
++    cells.forEach(function (c, i) {          // each seal in the top-right corner, never quite in the same spot or at the same angle
++      var r = function (k) { var x = Math.sin((i + 1) * 12.9898 + k * 78.233) * 43758.5453; return x - Math.floor(x); };
++      var s = c.querySelector('.cx-seal'); s.style.setProperty('--a', Math.round(-30 + r(3) * 60) + 'deg');
++      s.style.top = (3 + r(1) * 5).toFixed(1) + '%'; s.style.right = (2 + r(2) * 6).toFixed(1) + '%';
++    });
++    var n = 0, bar = document.getElementById('cx-bar'), label = document.getElementById('cx-got');
++    function tally() { label.textContent = n + ' of ' + cells.length; bar.style.width = (n / cells.length * 100) + '%'; }
++    new IntersectionObserver(function (e, o) { if (e[0].isIntersecting) { o.disconnect(); box.classList.add('open'); } }, {threshold: .02}).observe(box);
++    function sketchIn(c, done) {          // the drawing is hatched in, stroke by stroke, until every part of it is covered
++      var art = c.querySelector('.cx-art'), img = c.querySelector('.cx-drawn'), dpr = Math.min(2, devicePixelRatio || 1);
++      var W = Math.round(img.clientWidth * dpr), H = Math.round(img.clientHeight * dpr);
++      if (!img.complete || !img.naturalWidth || matchMedia('(prefers-reduced-motion:reduce)').matches) return done();
++      var cv = document.createElement('canvas'); cv.width = W; cv.height = H; art.appendChild(cv);
++      var ctx = cv.getContext('2d'), mask = document.createElement('canvas'); mask.width = W; mask.height = H; var mx = mask.getContext('2d');
++      var k = Math.min(W / img.naturalWidth, H / img.naturalHeight), dw = img.naturalWidth * k, dh = img.naturalHeight * k, ox = (W - dw) / 2, oy = (H - dh) / 2;
++      var G = 72, gc = document.createElement('canvas'); gc.width = gc.height = G; var gx = gc.getContext('2d');
++      gx.fillStyle = '#fff'; gx.fillRect(0, 0, G, G); gx.drawImage(img, 0, 0, G, G);
++      var px = gx.getImageData(0, 0, G, G).data, todo = [];
++      for (var y = 0; y < G; y++) for (var x = 0; x < G; x++) { var q = (y * G + x) * 4; if (px[q] + px[q + 1] + px[q + 2] < 735) todo.push([x, y]); }
++      var cw = dw / G, ch = dh / G, covered = new Uint8Array(G * G), strokes = [];
++      todo.forEach(function (t) { t.push(t[0] - t[1] + (Math.random() - .5) * G * .35); });
++      todo.sort(function (a, b) { return a[2] - b[2]; });
++      todo.forEach(function (t) {
++        if (covered[t[1] * G + t[0]]) return;
++        var len = 6 + Math.random() * 9, ang = -.7 + (Math.random() - .5) * .4, w = 1.6 + Math.random() * 1.4, ca = Math.cos(ang), sa = Math.sin(ang);
++        for (var u = -len / 2; u <= len / 2; u += .5) for (var v = -w / 2; v <= w / 2; v += .5) {
++          var cx = Math.round(t[0] + ca * u - sa * v), cy = Math.round(t[1] + sa * u + ca * v);
++          if (cx >= 0 && cy >= 0 && cx < G && cy < G) covered[cy * G + cx] = 1;
++        }
++        var x0 = ox + (t[0] + .5) * cw, y0 = oy + (t[1] + .5) * ch, L = len * cw / 2;
++        strokes.push([x0 - ca * L, y0 - sa * L, x0 + ca * L, y0 + sa * L, (w + 1) * cw]);
++      });
++      var N = strokes.length, t0 = performance.now(), D = 3200, drawn = 0;
++      mx.lineCap = 'round'; mx.strokeStyle = '#000';
++      (function frame(now) {
++        var p = Math.min(1, (now - t0) / D), upto = Math.ceil(N * p);
++        for (; drawn < upto; drawn++) { var s = strokes[drawn]; mx.lineWidth = s[4]; mx.beginPath(); mx.moveTo(s[0], s[1]); mx.lineTo(s[2], s[3]); mx.stroke(); }
++        ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, W, H); ctx.drawImage(mask, 0, 0);
++        ctx.globalCompositeOperation = 'source-in'; ctx.drawImage(img, ox, oy, dw, dh);
++        if (p < 1) requestAnimationFrame(frame); else setTimeout(function () { cv.remove(); done(); }, 60);
++      })(t0);
++    }
++    addEventListener('resize', function () { box.querySelectorAll('.cx-cell.got').forEach(function (c) { placeSeal(c, '.cx-drawn', '.cx-seal'); }); });
++    box.addEventListener('click', function (e) {
++      var c = e.target.closest('.cx-cell'); if (!c || c.classList.contains('got') || c.classList.contains('sketching')) return;
++      c.style.transitionDelay = '0ms'; c.classList.add('sketching');
++      sketchIn(c, function () { c.classList.remove('sketching'); c.classList.add('got', 'stamping'); placeSeal(c, '.cx-drawn', '.cx-seal'); n++; tally(); });
++    });
++  })();
++</script>
++</body>
++</html>
+--- a/pdp/content.json
++++ b/pdp/content.json
+@@ -16,7 +16,6 @@
+     "tint": -2.0
+    },
+    "gallery": [
+-    "img/ear-cuff/white-1.jpg",
+     "img/ear-cuff/hand-3.jpg",
+     "img/ear-cuff/hires-3.jpg"
+    ],
+@@ -45,7 +44,6 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/eclipse-ring/white-1.jpg",
+     "img/eclipse-ring/hero.jpg",
+     "img/eclipse-ring/hires-1.jpg",
+     "img/eclipse-ring/hand-1.jpg"
+@@ -91,8 +89,9 @@
+    },
+    "gallery": [
+     "img/eleph/hand-2.jpg",
+-    "img/eleph/white-1.jpg",
+-    "img/eleph/white-2.jpg"
++    "img/eleph/hires-1.jpg",
++    "img/eleph/hires-3.jpg",
++    "img/eleph/plain-2.jpg"
+    ],
+    "hero": "img/eleph/hero-dm.jpg",
+    "hidden": [],
+@@ -102,8 +101,7 @@
+     "x": 50,
+     "y": 50,
+     "z": 1.48
+-   },
+-   "lore": "It remembers everything and forgives most of it. Late at night, keepers still hear a low, distant call from just beyond the room."
++   }
+   },
+   "ibi": {
+    "frames": {
+@@ -127,8 +125,7 @@
+    },
+    "gallery": [
+     "img/ibi/hand-2.jpg",
+-    "img/ibi/white-1.jpg",
+-    "img/ibi/white-2.jpg"
++    "img/ibi/hires-4.jpg"
+    ],
+    "hero": "img/ibi/hires-2-dm.jpg",
+    "hidden": [],
+@@ -146,8 +143,7 @@
+      "y": 0,
+      "r": -1
+     }
+-   },
+-   "lore": "It has kept its long watch for longer than anyone can say, and guards its secrets closely. Every attempt to photograph it ends in fog."
++   }
+   },
+   "lunar-canyon-ring": {
+    "frames": {
+@@ -176,7 +172,6 @@
+    },
+    "hero": "img/lunar-canyon-ring/hero.jpg",
+    "gallery": [
+-    "img/lunar-canyon-ring/white-1.jpg",
+     "img/lunar-canyon-ring/hand-2.jpg",
+     "img/lunar-canyon-ring/hand-1.jpg"
+    ],
+@@ -221,7 +216,6 @@
+     "tint": 0.0
+    },
+    "gallery": [
+-    "img/meridian-egg-ring/white-1.jpg",
+     "img/meridian-egg-ring/hand-2.jpg",
+     "img/meridian-egg-ring/plain-1.jpg"
+    ],
+@@ -255,9 +249,7 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/milo/hand-2.jpg",
+-    "img/milo/white-1.jpg",
+-    "img/milo/white-2.jpg"
++    "img/milo/hand-2.jpg"
+    ],
+    "hero": "img/milo/hero-dm.jpg",
+    "hidden": [],
+@@ -275,8 +267,7 @@
+      "y": 2.5,
+      "r": 0
+     }
+-   },
+-   "lore": "It crossed a great deal of country to get here, and seems glad to finally stop. Over the years, it comes to resemble whoever holds it."
++   }
+   },
+   "ori": {
+    "frames": {
+@@ -301,10 +292,9 @@
+    "hero": "img/ori/hero.jpg",
+    "gallery": [
+     "img/ori/hand-2.jpg",
+-    "img/ori/white-1.jpg",
+-    "img/ori/white-2.jpg",
+-    "img/ori/white-3.jpg",
+-    "img/ori/white-4.jpg"
++    "img/ori/plain-3.jpg",
++    "img/ori/hires-1.jpg",
++    "img/ori/hires-2.jpg"
+    ],
+    "hidden": [],
+    "tile_hover": "img/ori/hand-1.jpg",
+@@ -316,8 +306,7 @@
+      "y": 1,
+      "r": 1
+     }
+-   },
+-   "lore": "It keeps a patient watch over forests, rivers and the houses that take it in. In deep winter, the room feels a degree warmer."
++   }
+   },
+   "pip": {
+    "frames": {
+@@ -333,9 +322,9 @@
+     }
+    },
+    "gallery": [
++    "img/pip/plain-2.jpg",
+     "img/pip/hand-2.jpg",
+-    "img/pip/white-1.jpg",
+-    "img/pip/white-2.jpg"
++    "img/pip/plain-3.jpg"
+    ],
+    "hidden": [
+     "img/pip/composite.jpg"
+@@ -361,8 +350,7 @@
+      "y": 4.5,
+      "r": 0
+     }
+-   },
+-   "lore": "It kept watch from a sunny windowsill for years. Visitors still pick it up without asking, and those who carry it start checking their pockets."
++   }
+   },
+   "rebi": {
+    "frames": {
+@@ -380,9 +368,8 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/rebi/hand-2.jpg",
+-    "img/rebi/white-1.jpg",
+-    "img/rebi/white-2.jpg"
++    "img/rebi/hires-1.jpg",
++    "img/rebi/hand-2.jpg"
+    ],
+    "tile_before_hires": {
+     "x": 51.5,
+@@ -391,9 +378,7 @@
+    },
+    "hero": "img/rebi/hero.jpg",
+    "hidden": [],
+-   "tile_hover": "img/rebi/hires-2-mirrored.jpg",
+-   "price": 180,
+-   "lore": "It never looks the same way twice in the same light. Some see one thing, some another, and it seems quietly pleased by the disagreement."
++   "tile_hover": "img/rebi/hires-2-mirrored.jpg"
+   },
+   "ren": {
+    "frames": {
+@@ -421,9 +406,9 @@
+     "tint": 0.0
+    },
+    "gallery": [
++    "img/ren/plain-1.jpg",
+     "img/ren/hand-2.jpg",
+-    "img/ren/white-1.jpg",
+-    "img/ren/white-2.jpg"
++    "img/ren/plain-2.jpg"
+    ],
+    "tile_before_hires": {
+     "x": 50,
+@@ -446,8 +431,7 @@
+      "y": -5,
+      "r": -1
+     }
+-   },
+-   "lore": "It knows the way through woods that no longer appear on maps, and its bright crest holds the first light long after dawn."
++   }
+   },
+   "sietch-aperture": {
+    "frames": {
+@@ -476,7 +460,6 @@
+    },
+    "hero": "img/sietch-aperture/hero.jpg",
+    "gallery": [
+-    "img/sietch-aperture/white-1.jpg",
+     "img/sietch-aperture/plain-1.jpg"
+    ]
+   },
+@@ -543,7 +526,6 @@
+     "z": 2.03
+    },
+    "gallery": [
+-    "img/wonderhorn-talisman/white-1.jpg",
+     "img/wonderhorn-talisman/plain-2.jpg",
+     "img/wonderhorn-talisman/plain-3.jpg",
+     "img/wonderhorn-talisman/hand-1.jpg"
+@@ -566,9 +548,7 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/yael/hand-2.jpg",
+-    "img/yael/white-1.jpg",
+-    "img/yael/white-2.jpg"
++    "img/yael/hand-2.jpg"
+    ],
+    "hero": "img/yael/hires-1.jpg",
+    "hidden": [],
+@@ -586,8 +566,7 @@
+      "y": 0,
+      "r": 0
+     }
+-   },
+-   "lore": "It stands where the footing is narrowest, entirely unbothered. At dusk, keepers sometimes hear a faint ringing, like bells on a far mountain."
++   }
+   },
+   "zuma": {
+    "frames": {
+@@ -616,9 +595,9 @@
+    },
+    "hero": "img/zuma/hero.jpg",
+    "gallery": [
++    "img/zuma/plain-1.jpg",
+     "img/zuma/hand-2.jpg",
+-    "img/zuma/white-1.jpg",
+-    "img/zuma/white-2.jpg"
++    "img/zuma/plain-2.jpg"
+    ],
+    "hidden": [],
+    "tile_hover": "img/zuma/hand-1.jpg",
+@@ -635,8 +614,7 @@
+      "y": -3,
+      "r": 1.5
+     }
+-   },
+-   "lore": "It carries the stillness of the desert at noon. Kept in a pocket, it warms slowly and holds that warmth well into the evening."
++   }
+   },
+   "zuma-ring": {
+    "frames": {
+@@ -664,7 +642,6 @@
+     "tint": -1.0
+    },
+    "gallery": [
+-    "img/zuma-ring/white-1.jpg",
+     "img/zuma-ring/hires-1.jpg",
+     "img/zuma-ring/plain-1.jpg",
+     "img/zuma-ring/plain-2.jpg",
+@@ -682,26 +659,6 @@
+    "hidden": [
+     "img/zuma-ring/composite.jpg"
+    ]
+-  },
+-  "chrysalis": {
+-   "gallery": [
+-    "img/chrysalis/hand-1.jpg",
+-    "img/chrysalis/white-1.jpg",
+-    "img/chrysalis/white-3.jpg",
+-    "img/chrysalis/book-1.jpg",
+-    "img/chrysalis/book-3.jpg"
+-   ],
+-   "frames": {
+-    "img/chrysalis/book-1.jpg": {
+-     "x": 100,
+-     "y": 50,
+-     "z": 1
+-    }
+-   },
+-   "eyebrow": "Studio Maçon × In Her Own Right",
+-   "description": "Made with In Her Own Right, Chelsea Madeline's book on the inner lives of women artists. We wanted to cast the butterfly's first emergence from its cocoon, the moment you can see both what it was and what it has become, in bronze small enough to hold in your palm.",
+-   "lore": "We wanted this totem itself to show transformation, the moment the thing is about to happen, the moment it becomes something new. We wanted a shape that meant hope, trust, but also inevitability. The butterfly’s first emergence out of its cocoon, its first stretch and solidity beyond its imaginal cells, the moment you can see both what a thing was and what it has become: that was the moment we wanted to cast in bronze and hold in our palms as both reminder and promise.",
+-   "price": 180
+   }
+  },
+  "pages": {},
+@@ -735,4 +692,4 @@
+  "rules": {
+   "totem_stack": "head-on or 3/4 view, another angle, one in hand, one in situ, one composite, one video (where each exists)"
+  }
+-}
++}
+--- a/pdp/email/build_emails.py
++++ b/pdp/email/build_emails.py
+@@ -96,7 +96,6 @@
+     return re.sub(re.escape(IMG) + r"/([\w.-]+\.(?:jpg|gif|png))(?![?\w])", tag, html)
+ 
+ def page(preheader, body):
+-    body = body.replace('@SHIPNOTE@', SHIP_KLAVIYO)
+     return _versioned(f"""<!doctype html>
+ <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>
+@@ -259,15 +258,6 @@
+               "{{ item.line_price|floatformat:0 }}", SITE)
+ CHECKOUT = "{{ event.extra.checkout_url }}"
+ GRID = "<!--GRID-->"          # checkout 2 only: the bag laid out as a grid (Shopify version, see _grid)
+-
+-# the shipping line in the order emails: a Chrysalis preorder ships in early November, everything else within ten business days
+-SHIP_KLAVIYO = ("{% if 'Chrysalis' in event.ItemNames %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. "
+-                "Any other pieces ship within about ten business days.{% else %}You can expect it to ship within about ten business days.{% endif %}")
+-SHIP_SHOPIFY = ("{% assign macon_pre = false %}{% assign macon_rest = false %}{% for line in line_items %}"
+-                "{% if line.product.tags contains 'preorder' or line.title contains 'Chrysalis' %}{% assign macon_pre = true %}{% else %}{% assign macon_rest = true %}{% endif %}{% endfor %}"
+-                "{% if macon_pre and macon_rest %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. Everything else ships within about ten business days."
+-                "{% elsif macon_pre %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them."
+-                "{% else %}You can expect it to ship within about ten business days.{% endif %}")
+ 
+ def notes(rows):
+     cells = "".join(f'<tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
+@@ -317,7 +307,7 @@
+     preview="What happens between now and its arrival.",
+     body=eyebrow("Studio Maçon") + h1("Your piece<br>is being made") + ORDER
+        + notes([("Made to order", "We start on your order as soon as it comes in. No two pieces come out alike."),
+-                ("On its way", "@SHIPNOTE@ We'll send you tracking as soon as possible."),
++                ("On its way", "You can expect it to ship within about ten business days. We'll send you tracking as soon as possible."),
+                 ("Questions", "Just reply to this email! We respond to every message directly.")])),
+  "thanks-2": dict(
+     subject="How to care for your piece",
+@@ -437,7 +427,6 @@
+ 
+ def to_shopify(html, name):
+     import re
+-    html = html.replace(SHIP_KLAVIYO, SHIP_SHOPIFY)
+     html = html.replace('<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">', "")
+     html = html.replace("<style>", "<style>\n  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;"
+                         f"src:url({SITE_ASSETS}/fonts/instrument-serif.woff2) format('woff2')}}", 1)
+--- a/pdp/email/thanks-1.html
++++ b/pdp/email/thanks-1.html
+@@ -14,7 +14,7 @@
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center">
+ <table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
+   <tr><td align="center" style="padding:53px 0 44px"><a href="https://studiomacon.co"><img src="https://studiomacon.studiomacon.workers.dev/img/email/eye.gif?v=210bf680" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>
+-<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr><tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">Your piece<br>is being made</td></tr><tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{% for item in event.extra.line_items %}<tr><td align="center" style="padding:0 0 40px"><a href="https://studiomacon.co" style="text-decoration:none"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr><td height="272" valign="bottom" background="{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center" bgcolor="#8a7a6a" style="height:272px;border-radius:16px;background-image:url({{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center);background-size:cover;background-position:center"><div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))"><div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#ffffff">{{ item.product.title }}</div><div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#ffffff;padding-top:7px">${{ item.line_price|floatformat:0 }}</div></div></td></tr></table></a></td></tr>{% endfor %}</table></td></tr><tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto"><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Made to order</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces come out alike.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">On its way</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">{% if 'Chrysalis' in event.ItemNames %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. Any other pieces ship within about ten business days.{% else %}You can expect it to ship within about ten business days.{% endif %} We'll send you tracking as soon as possible.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Questions</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr></table></td></tr>
++<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr><tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">Your piece<br>is being made</td></tr><tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{% for item in event.extra.line_items %}<tr><td align="center" style="padding:0 0 40px"><a href="https://studiomacon.co" style="text-decoration:none"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr><td height="272" valign="bottom" background="{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center" bgcolor="#8a7a6a" style="height:272px;border-radius:16px;background-image:url({{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center);background-size:cover;background-position:center"><div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))"><div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#ffffff">{{ item.product.title }}</div><div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#ffffff;padding-top:7px">${{ item.line_price|floatformat:0 }}</div></div></td></tr></table></a></td></tr>{% endfor %}</table></td></tr><tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto"><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Made to order</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces come out alike.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">On its way</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">You can expect it to ship within about ten business days. We'll send you tracking as soon as possible.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Questions</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr></table></td></tr>
+   <tr><td class="pad" align="center" style="padding:56px 24px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8a8a8a">
+     Every piece is made to order in the studio in California.<br>
+     <a href="https://studiomacon.co/story" style="color:#8a8a8a">About</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/studiomacon/" style="color:#8a8a8a">Instagram</a>
+--- a/pdp/pages/collection.html
++++ b/pdp/pages/collection.html
+@@ -0,0 +1,161 @@
++<!doctype html>
++<html lang="en">
++<head>
++<meta charset="utf-8">
++<meta name="viewport" content="width=device-width,initial-scale=1">
++<title>My Collection | Studio Maçon</title>
++<link rel="icon" href="img/favicon.png">
++<link rel="stylesheet" href="site.css?v={{CSSV}}">
++<style>
++  /* the title, set as the other wall pages' */
++  .cx-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px 24px;flex-wrap:wrap;padding:calc(90px + clamp(40px,10vh,120px)) 24px 24px}
++  @media (min-width:768px){ .cx-head{padding-left:64px} }          /* the title lines up with the menu button */
++  .cx-head h1{margin:0;font-size:57.5px}
++  @media (min-width:768px){ .cx-head h1{font-size:66.25px} }
++  @media (min-width:1200px){ .cx-head h1{font-size:75px} }
++  .cx-tally{min-width:200px}
++  .cx-count{margin:0;font-size:13px;color:rgba(0,0,0,.45)}.cx-count b{font-weight:400;color:#111}
++  .cx-bar{height:1px;background:rgba(0,0,0,.06);margin-top:10px;position:relative}
++  .cx-bar i{position:absolute;left:0;top:-1px;height:3px;background:#111;width:0;transition:width .9s cubic-bezier(.3,.7,.2,1)}
++  /* the drawer: screen edge to screen edge, hairlines between the compartments */
++  .cx-drawer{--cols:6;border-top:1px solid rgba(0,0,0,.06);display:grid;grid-template-columns:repeat(var(--cols),1fr);background:#fff}
++  .cx-cell{position:relative;border-right:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);display:flex;flex-direction:column;cursor:pointer;
++    opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
++  .cx-cell.got{cursor:default}
++  .cx-drawer.open .cx-cell{opacity:1;transform:none}
++  .cx-art{position:relative;aspect-ratio:4/5}
++  .cx-art img,.cx-art canvas{position:absolute;inset:6% 8%;width:84%;height:88%;object-fit:contain;mix-blend-mode:multiply;pointer-events:none;border-radius:0}
++  /* not yet claimed: a faint, smaller pencil sketch; on hover its outer edge firms up */
++  .cx-sketch,.cx-edge{transform:scale(.85);transition:opacity .35s ease}
++  .cx-sketch{opacity:.4}
++  .cx-edge{opacity:0}
++  .cx-cell:not(.got):hover .cx-edge{opacity:.85}
++  .cx-cell:not(.got):hover .cx-sketch{opacity:.5}
++  .cx-drawn{opacity:0}
++  .got .cx-drawn{opacity:1}
++  .got .cx-sketch,.got .cx-edge,.cx-cell.sketching .cx-sketch,.cx-cell.sketching .cx-edge{opacity:0 !important;transition:none !important}
++  .cx-no{position:absolute;top:clamp(12px,1.2vw,20px);right:clamp(12px,1.2vw,20px);font-size:13px;letter-spacing:.04em;color:rgba(0,0,0,.45);font-variant-numeric:tabular-nums;z-index:1}
++  /* labels as on the home grid; greyed until gathered */
++  .cx-lab{padding:0 clamp(12px,1.2vw,20px) clamp(12px,1.2vw,20px);display:flex;flex-direction:column;gap:4px;transition:opacity .3s ease}
++  .cx-cell:not(.got) .cx-lab{opacity:.32}
++  .cx-cell:not(.got):hover .cx-lab{opacity:.55}
++  .cx-nm{font:400 calc(18px + 9pt)/1 var(--serif);text-transform:uppercase}
++  .cx-ov{font-size:14px;color:rgba(0,0,0,.55)}
++  /* the Bureau's seal, tucked into the top-right corner */
++  .cx-seal{position:absolute;width:clamp(59px,5.82vw,112px);z-index:5;opacity:0;mix-blend-mode:multiply;pointer-events:none;transform:rotate(var(--a))}
++  .got .cx-seal{opacity:.72}
++  .stamping .cx-seal{animation:cx-seal 1.1s cubic-bezier(.3,.7,.3,1) both}
++  @keyframes cx-seal{0%{opacity:0;transform:scale(1.9) rotate(calc(var(--a) - 12deg))}40%{opacity:.8;transform:scale(.94) rotate(var(--a))}100%{opacity:.72;transform:rotate(var(--a))}}
++  .cx-cell:nth-child(6n){border-right:0}
++  @media (max-width:1100px){ .cx-drawer{--cols:4} .cx-cell:nth-child(6n){border-right:1px solid rgba(0,0,0,.06)} .cx-cell:nth-child(4n){border-right:0} }
++  @media (max-width:700px){ .cx-drawer{--cols:2} .cx-cell:nth-child(4n){border-right:1px solid rgba(0,0,0,.06)} .cx-cell:nth-child(2n){border-right:0} .cx-head{padding-left:16px;padding-right:16px}
++    .cx-nm{font-size:calc(18px + 4pt)} .cx-ov{font-size:12px} }
++  @media (prefers-reduced-motion:reduce){ .cx-cell{transition:none} .stamping .cx-seal{animation:none} }
++</style>
++</head>
++<body>
++
++{{NAV}}
++
++<main>
++  <header class="cx-head">
++    <h1>My Collection</h1>
++    <div class="cx-tally"><p class="cx-count"><b id="cx-got">0 of 17</b> gathered</p><div class="cx-bar"><i id="cx-bar"></i></div></div>
++  </header>
++  <section class="cx-drawer" id="cx-drawer">
++    <div class="cx-cell" data-slug="pip" style="transition-delay:0ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/pip--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/pip--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/pip--drawn.webp" alt="Pip" loading="lazy"></div><span class="cx-no">01</span><div class="cx-lab"><span class="cx-nm">Pip</span><span class="cx-ov">Tiny Keeper of Tenderness</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="rebi" style="transition-delay:40ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/rebi--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/rebi--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/rebi--drawn.webp" alt="Rebi" loading="lazy"></div><span class="cx-no">02</span><div class="cx-lab"><span class="cx-nm">Rebi</span><span class="cx-ov">Silhouette in Flux</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="ren" style="transition-delay:80ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ren--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ren--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ren--drawn.webp" alt="Ren" loading="lazy"></div><span class="cx-no">03</span><div class="cx-lab"><span class="cx-nm">Ren</span><span class="cx-ov">Steward of Forgotten Paths</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="zuma" style="transition-delay:120ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/zuma--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/zuma--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/zuma--drawn.webp" alt="Zuma" loading="lazy"></div><span class="cx-no">04</span><div class="cx-lab"><span class="cx-nm">Zuma</span><span class="cx-ov">Spirit of the Sunbaked Shore</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="ori" style="transition-delay:160ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ori--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ori--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ori--drawn.webp" alt="Ori" loading="lazy"></div><span class="cx-no">05</span><div class="cx-lab"><span class="cx-nm">Ori</span><span class="cx-ov">Guardian of Lost Souls</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="yael" style="transition-delay:200ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/yael--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/yael--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/yael--drawn.webp" alt="Yael" loading="lazy"></div><span class="cx-no">06</span><div class="cx-lab"><span class="cx-nm">Yael</span><span class="cx-ov">Prophecy in Metal</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="milo" style="transition-delay:240ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/milo--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/milo--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/milo--drawn.webp" alt="Milo" loading="lazy"></div><span class="cx-no">07</span><div class="cx-lab"><span class="cx-nm">Milo</span><span class="cx-ov">Ancient Wanderer</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="ibi" style="transition-delay:280ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ibi--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ibi--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ibi--drawn.webp" alt="Ibi" loading="lazy"></div><span class="cx-no">08</span><div class="cx-lab"><span class="cx-nm">Ibi</span><span class="cx-ov">Daybreak Apparition</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="eleph" style="transition-delay:320ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/eleph--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/eleph--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/eleph--drawn.webp" alt="Eleph" loading="lazy"></div><span class="cx-no">09</span><div class="cx-lab"><span class="cx-nm">Eleph</span><span class="cx-ov">Breath Suspended</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="zuma-ring" style="transition-delay:360ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/zuma-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/zuma-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/zuma-ring--drawn.webp" alt="Zuma Ring" loading="lazy"></div><span class="cx-no">10</span><div class="cx-lab"><span class="cx-nm">Zuma Ring</span><span class="cx-ov">Sand Spirit, Distilled</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="eclipse-ring" style="transition-delay:400ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/eclipse-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/eclipse-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/eclipse-ring--drawn.webp" alt="Eclipse Ring" loading="lazy"></div><span class="cx-no">11</span><div class="cx-lab"><span class="cx-nm">Eclipse Ring</span><span class="cx-ov">Ellipses in Patient Equilibrium</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="sietch-aperture" style="transition-delay:440ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/sietch-aperture--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/sietch-aperture--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/sietch-aperture--drawn.webp" alt="Sietch Ring" loading="lazy"></div><span class="cx-no">12</span><div class="cx-lab"><span class="cx-nm">Sietch Ring</span><span class="cx-ov">Shelter Cut Into Rock</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="lunar-canyon-ring" style="transition-delay:480ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/lunar-canyon-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/lunar-canyon-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/lunar-canyon-ring--drawn.webp" alt="Lunar Canyon" loading="lazy"></div><span class="cx-no">13</span><div class="cx-lab"><span class="cx-nm">Lunar Canyon</span><span class="cx-ov">Moonrisen Memory</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="ear-cuff" style="transition-delay:520ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/ear-cuff--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/ear-cuff--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/ear-cuff--drawn.webp" alt="Caldera Arc" loading="lazy"></div><span class="cx-no">14</span><div class="cx-lab"><span class="cx-nm">Caldera Arc</span><span class="cx-ov">Perfect Geometries</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="meridian-egg-ring" style="transition-delay:560ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/meridian-egg-ring--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/meridian-egg-ring--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/meridian-egg-ring--drawn.webp" alt="Meridian Egg" loading="lazy"></div><span class="cx-no">15</span><div class="cx-lab"><span class="cx-nm">Meridian Egg</span><span class="cx-ov">Heavier Than It Looks</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="wonderhorn-talisman" style="transition-delay:600ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/wonderhorn-talisman--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/wonderhorn-talisman--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/wonderhorn-talisman--drawn.webp" alt="Wonder Horn" loading="lazy"></div><span class="cx-no">16</span><div class="cx-lab"><span class="cx-nm">Wonder Horn</span><span class="cx-ov">Horn of Undiscovered Chords</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++    <div class="cx-cell" data-slug="starshipkey-pendant" style="transition-delay:640ms"><div class="cx-art"><img class="cx-sketch" src="img/collection/starshipkey-pendant--sketch.webp" alt="" loading="lazy"><img class="cx-edge" src="img/collection/starshipkey-pendant--edge.webp" alt="" loading="lazy"><img class="cx-drawn" src="img/collection/starshipkey-pendant--drawn.webp" alt="Starship Key" loading="lazy"></div><span class="cx-no">17</span><div class="cx-lab"><span class="cx-nm">Starship Key</span><span class="cx-ov">Relic of the Outer Dark</span></div><img class="cx-seal" src="img/claim-stamp.png" alt=""></div>
++  </section>
++</main>
++
++{{FOOTER}}
++{{SITEJS}}
++<script>
++  // a concept for now: clicking a piece gathers it; nothing is remembered
++  (function () {
++  // the seal lands over the top-right of the drawing itself, a little differently each time
++  function placeSeal(c, drawnSel, sealSel) {
++    var img = c.querySelector(drawnSel), seal = c.querySelector(sealSel); if (!img || !seal || !img.naturalWidth) return;
++    if (!img._ink) {          // where the ink is, found once per drawing
++      var G = 120, cv = document.createElement('canvas'); cv.width = cv.height = G; var g = cv.getContext('2d');
++      g.fillStyle = '#fff'; g.fillRect(0, 0, G, G); g.drawImage(img, 0, 0, G, G);
++      var d = g.getImageData(0, 0, G, G).data, x0 = G, y0 = G, x1 = 0, y1 = 0;
++      for (var y = 0; y < G; y++) for (var x = 0; x < G; x++) { var q = (y * G + x) * 4; if (d[q] + d[q + 1] + d[q + 2] < 720) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } }
++      img._ink = [x0 / G, y0 / G, x1 / G, y1 / G];
++    }
++    var cr = c.getBoundingClientRect(), ir = img.getBoundingClientRect(), k = Math.min(ir.width / img.naturalWidth, ir.height / img.naturalHeight);
++    var dw = img.naturalWidth * k, dh = img.naturalHeight * k, ox = ir.left - cr.left + (ir.width - dw) / 2, oy = ir.top - cr.top + (ir.height - dh) / 2;
++    var i = [].indexOf.call(c.parentNode.children, c), r = function (n) { var v = Math.sin((i + 1) * 12.9898 + n * 78.233) * 43758.5453; return v - Math.floor(v); };
++    var S = seal.offsetWidth, tx = ox + img._ink[2] * dw, ty = oy + img._ink[1] * dh;
++    seal.style.right = 'auto'; seal.style.left = (tx - S * (.62 + r(2) * .2)) + 'px'; seal.style.top = (ty - S * (.38 + r(1) * .2)) + 'px';
++    seal.style.setProperty('--a', Math.round(-30 + r(3) * 60) + 'deg');
++  }
++
++    var box = document.getElementById('cx-drawer'), cells = [].slice.call(box.querySelectorAll('.cx-cell'));
++    cells.forEach(function (c, i) {          // each seal in the top-right corner, never quite in the same spot or at the same angle
++      var r = function (k) { var x = Math.sin((i + 1) * 12.9898 + k * 78.233) * 43758.5453; return x - Math.floor(x); };
++      var s = c.querySelector('.cx-seal'); s.style.setProperty('--a', Math.round(-30 + r(3) * 60) + 'deg');
++      s.style.top = (3 + r(1) * 5).toFixed(1) + '%'; s.style.right = (2 + r(2) * 6).toFixed(1) + '%';
++    });
++    var n = 0, bar = document.getElementById('cx-bar'), label = document.getElementById('cx-got');
++    function tally() { label.textContent = n + ' of ' + cells.length; bar.style.width = (n / cells.length * 100) + '%'; }
++    new IntersectionObserver(function (e, o) { if (e[0].isIntersecting) { o.disconnect(); box.classList.add('open'); } }, {threshold: .02}).observe(box);
++    function sketchIn(c, done) {          // the drawing is hatched in, stroke by stroke, until every part of it is covered
++      var art = c.querySelector('.cx-art'), img = c.querySelector('.cx-drawn'), dpr = Math.min(2, devicePixelRatio || 1);
++      var W = Math.round(img.clientWidth * dpr), H = Math.round(img.clientHeight * dpr);
++      if (!img.complete || !img.naturalWidth || matchMedia('(prefers-reduced-motion:reduce)').matches) return done();
++      var cv = document.createElement('canvas'); cv.width = W; cv.height = H; art.appendChild(cv);
++      var ctx = cv.getContext('2d'), mask = document.createElement('canvas'); mask.width = W; mask.height = H; var mx = mask.getContext('2d');
++      var k = Math.min(W / img.naturalWidth, H / img.naturalHeight), dw = img.naturalWidth * k, dh = img.naturalHeight * k, ox = (W - dw) / 2, oy = (H - dh) / 2;
++      var G = 72, gc = document.createElement('canvas'); gc.width = gc.height = G; var gx = gc.getContext('2d');
++      gx.fillStyle = '#fff'; gx.fillRect(0, 0, G, G); gx.drawImage(img, 0, 0, G, G);
++      var px = gx.getImageData(0, 0, G, G).data, todo = [];
++      for (var y = 0; y < G; y++) for (var x = 0; x < G; x++) { var q = (y * G + x) * 4; if (px[q] + px[q + 1] + px[q + 2] < 735) todo.push([x, y]); }
++      var cw = dw / G, ch = dh / G, covered = new Uint8Array(G * G), strokes = [];
++      todo.forEach(function (t) { t.push(t[0] - t[1] + (Math.random() - .5) * G * .35); });
++      todo.sort(function (a, b) { return a[2] - b[2]; });
++      todo.forEach(function (t) {
++        if (covered[t[1] * G + t[0]]) return;
++        var len = 6 + Math.random() * 9, ang = -.7 + (Math.random() - .5) * .4, w = 1.6 + Math.random() * 1.4, ca = Math.cos(ang), sa = Math.sin(ang);
++        for (var u = -len / 2; u <= len / 2; u += .5) for (var v = -w / 2; v <= w / 2; v += .5) {
++          var cx = Math.round(t[0] + ca * u - sa * v), cy = Math.round(t[1] + sa * u + ca * v);
++          if (cx >= 0 && cy >= 0 && cx < G && cy < G) covered[cy * G + cx] = 1;
++        }
++        var x0 = ox + (t[0] + .5) * cw, y0 = oy + (t[1] + .5) * ch, L = len * cw / 2;
++        strokes.push([x0 - ca * L, y0 - sa * L, x0 + ca * L, y0 + sa * L, (w + 1) * cw]);
++      });
++      var N = strokes.length, t0 = performance.now(), D = 3200, drawn = 0;
++      mx.lineCap = 'round'; mx.strokeStyle = '#000';
++      (function frame(now) {
++        var p = Math.min(1, (now - t0) / D), upto = Math.ceil(N * p);
++        for (; drawn < upto; drawn++) { var s = strokes[drawn]; mx.lineWidth = s[4]; mx.beginPath(); mx.moveTo(s[0], s[1]); mx.lineTo(s[2], s[3]); mx.stroke(); }
++        ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, W, H); ctx.drawImage(mask, 0, 0);
++        ctx.globalCompositeOperation = 'source-in'; ctx.drawImage(img, ox, oy, dw, dh);
++        if (p < 1) requestAnimationFrame(frame); else setTimeout(function () { cv.remove(); done(); }, 60);
++      })(t0);
++    }
++    addEventListener('resize', function () { box.querySelectorAll('.cx-cell.got').forEach(function (c) { placeSeal(c, '.cx-drawn', '.cx-seal'); }); });
++    box.addEventListener('click', function (e) {
++      var c = e.target.closest('.cx-cell'); if (!c || c.classList.contains('got') || c.classList.contains('sketching')) return;
++      c.style.transitionDelay = '0ms'; c.classList.add('sketching');
++      sketchIn(c, function () { c.classList.remove('sketching'); c.classList.add('got', 'stamping'); placeSeal(c, '.cx-drawn', '.cx-seal'); n++; tally(); });
++    });
++  })();
++</script>
++</body>
++</html>
+--- a/pdp/pages/custom.html
++++ b/pdp/pages/custom.html
+@@ -15,6 +15,7 @@
+   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
+   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
+   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
++  @media (min-width:1024px){ .examples figure[data-name="hannah-patsy-2-warm--centred.jpg"]{display:none !important} }          /* desktop: off for now so the grid comes out even */
+   /* name and year sit on the grey, bottom left, in black, on hover; no dark gradient */
+   @media (min-width:768px){
+     .examples figure:not(.lead) .over{position:absolute;inset:auto auto 28px 28px;padding:0;background:none;color:#000;opacity:0;transform:translateY(6px);gap:0;font-size:14px}
+@@ -42,6 +43,36 @@
+   .examples figure.unlabelled .over{display:none}
+   @media (hover:none),(max-width:767px){ .examples .over{opacity:1;transform:none} }
+ 
++  /* ── edit mode ───────────────────────────────────────── */
++  body.editing .examples figure{cursor:pointer;transition:none!important;opacity:1!important;filter:none!important;transform:none!important}
++  body.editing .examples figure:hover{outline:1px dashed rgba(0,0,0,.35);outline-offset:-1px}
++  body.editing .examples figure.sel{outline:2px solid #000;outline-offset:-2px}
++  body.editing .examples figure::before{content:attr(data-pos);position:absolute;top:10px;left:10px;z-index:2;min-width:26px;height:26px;
++    padding:0 7px;border-radius:13px;background:#000;color:#fff;font:500 12px/26px var(--sans);text-align:center}
++  body.editing .examples figure.dragging{opacity:.35!important}
++  body.editing .examples figure.drop-before{box-shadow:inset 0 4px 0 #c8321e}
++  .ed{position:fixed;right:16px;bottom:16px;z-index:50;width:260px;padding:16px;background:#fff;border:1px solid #000;
++    font:13px/1.4 var(--sans);box-shadow:0 8px 30px rgba(0,0,0,.12);display:none}
++  body.editing .ed{display:block}
++  .ed h3{margin:0 0 12px;font:500 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
++  .ed .row{margin:0 0 12px}
++  .ed .row > span{display:block;margin:0 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,0,0,.55)}
++  .ed .frames{display:flex;flex-wrap:wrap;gap:4px}
++  .ed .frames button,.ed .acts button{border:1px solid rgba(0,0,0,.25);padding:5px 8px;font-size:12px}
++  .ed .frames button[aria-pressed="true"]{background:#000;color:#fff;border-color:#000}
++  .ed input[type=range]{width:100%}
++  .ed input[type=text]{width:100%;border:0;border-bottom:1px solid rgba(0,0,0,.25);padding:4px 0;font-size:13px;outline:0}
++  .ed .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
++  .ed .acts .save{background:#000;color:#fff;border-color:#000}
++  .ed .addbtn{display:inline-block;border:1px solid #000;padding:5px 10px;font-size:12px;cursor:pointer}
++  .ed .cutopt{display:flex;align-items:center;gap:6px;margin:8px 0 0;font-size:12px}
++  .ed .restore{display:block;margin:8px 0 0;border:1px solid rgba(0,0,0,.25);padding:5px 8px;font-size:12px}
++  .ed .remove{color:#c8321e;border-color:rgba(200,50,30,.4)!important}
++  .ed{max-height:calc(100vh - 32px);overflow-y:auto}
++  .ed .hint{margin:10px 0 0;font-size:11px;color:rgba(0,0,0,.5)}
++  .ed .msg{margin:8px 0 0;font-size:12px}
++  .ed-toggle{position:fixed;left:16px;bottom:16px;z-index:49;padding:7px 11px;background:#fff;border:1px solid rgba(0,0,0,.3);font-size:12px}
++  body.editing .ed-toggle,body:not(.can-edit) .ed-toggle{display:none}
+   .order{padding:48px calc(var(--pad) + 24px) 0}
+ 
+   .head .on-dark{color:#000}
+@@ -348,6 +379,39 @@
+ 
+ {{FOOTER}}
+ 
++<button class="ed-toggle" type="button">Edit wall</button>
++<div class="ed" role="dialog" aria-label="Edit the commission wall" data-removed="{{REMOVED}}">
++  <h3>Edit wall</h3>
++  <div class="row"><span>Frame</span>
++    <div class="frames">
++      <button type="button" data-frame="3/4">3:4</button><button type="button" data-frame="4/5">4:5</button>
++      <button type="button" data-frame="2/3">2:3</button><button type="button" data-frame="1/1">1:1</button>
++      <button type="button" data-frame="5/4">5:4</button><button type="button" data-frame="auto">Natural</button>
++    </div>
++  </div>
++  <div class="row"><span>Selected: <b class="who">click a piece</b></span></div>
++  <div class="row"><span>Position <b class="pv">–</b></span>
++    <div class="acts" style="margin:0"><button type="button" class="earlier">← Earlier</button><button type="button" class="later">Later →</button></div>
++  </div>
++  <div class="row"><span>Name</span><input class="nm" type="text" placeholder="e.g. Seamus" disabled></div>
++  <div class="row"><span>Date</span><input class="dt" type="text" placeholder="e.g. 2024" disabled></div>
++  <div class="row"><span>Size <b class="sv">100%</b></span><input class="size" type="range" min="30" max="200" value="100" disabled></div>
++  <div class="row"><span>Left / right <b class="xv">0</b></span><input class="xr" type="range" min="-40" max="40" value="0" disabled></div>
++  <div class="row"><span>Up / down <b class="yv">0</b></span><input class="yr" type="range" min="-40" max="40" value="0" disabled></div>
++  <div class="acts">
++    <button type="button" class="reset-one">Reset piece</button>
++    <button type="button" class="remove">Remove piece</button>
++    <button type="button" class="done">Close</button>
++    <button type="button" class="save">Save</button>
++  </div>
++  <div class="row add"><span>Add images</span>
++    <label class="addbtn"><input type="file" accept="image/*" multiple hidden>+ Add images</label>
++    <label class="cutopt"><input type="checkbox" checked> Cut out the background</label>
++    <button type="button" class="restore" hidden>Restore removed (<b class="rc">0</b>)</button>
++  </div>
++  <p class="hint">Click a piece, then use Earlier / Later (or the ← → keys) to move it. Numbers show the order, left to right. Shift + arrows nudge it inside its frame.</p>
++  <p class="msg"></p>
++</div>
+ {{SITEJS}}
+ <script>
+   // Commission steps. The shared accordion script toggles any .acc-head, so this
+@@ -486,5 +550,139 @@
+     });
+   })();
+ </script>
++<script>
++  // Edit mode for the commission wall: reorder, resize and nudge pieces, try frame
++  // proportions, then save to the layout file the page is built from.
++  (function () {
++    var wall = document.querySelector('.examples'), ed = document.querySelector('.ed');
++    var q = function (c) { return ed.querySelector(c); };
++    var sel = null, dragged = null;
++    var figs = function () { return [].slice.call(wall.querySelectorAll('figure:not([data-lead])')); };
++    var num = function (f, k, d) { var v = parseFloat(f.style.getPropertyValue('--' + k)); return isNaN(v) ? d : v; };
++
++    function open(on) {
++      document.body.classList.toggle('editing', on);
++      figs().forEach(function (f) { f.classList.add('is-seen'); });
++      if (!on) pick(null);
++    }
++    if (/[?&]edit\b/.test(location.search)) document.body.classList.add('can-edit');
++    document.querySelector('.ed-toggle').addEventListener('click', function () { open(true); });
++    q('.done').addEventListener('click', function () { open(false); });
++    addEventListener('keydown', function (e) {
++      if (e.target.closest('input[type=text], textarea')) return;
++      if (e.key === 'e' || e.key === 'E') { open(!document.body.classList.contains('editing')); return; }
++      if (!document.body.classList.contains('editing') || !sel) return;
++      // Shift + arrows nudge the piece inside its frame; plain arrows move the frame
++      if (e.shiftKey) {
++        var m = {ArrowLeft: ['x', -1], ArrowRight: ['x', 1], ArrowUp: ['y', -1], ArrowDown: ['y', 1]}[e.key];
++        if (m) { e.preventDefault(); set(m[0], num(sel, m[0], 0) + m[1]); }
++      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
++      else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); move(1); }
++      if (e.key === '+' || e.key === '=') set('s', +(num(sel, 's', 1) + .05).toFixed(2));
++      if (e.key === '-' || e.key === '_') set('s', +(num(sel, 's', 1) - .05).toFixed(2));
++    });
++
++    function number() { figs().forEach(function (f, i) { f.dataset.pos = i + 1; }); if (sel) q('.pv').textContent = sel.dataset.pos + ' of ' + figs().length; }
++    function move(dir) {
++      if (!sel) return;
++      var all = figs(), i = all.indexOf(sel), j = i + dir;
++      if (j < 0 || j >= all.length) return;
++      if (dir < 0) wall.insertBefore(sel, all[j]); else wall.insertBefore(sel, all[j].nextSibling);
++      number(); sel.scrollIntoView({block: 'nearest', behavior: 'smooth'});
++      q('.msg').textContent = 'Unsaved changes';
++    }
++    number();
++    function pick(f) {
++      figs().forEach(function (x) { x.classList.toggle('sel', x === f); });
++      sel = f;
++      ['.size', '.xr', '.yr', '.nm', '.dt'].forEach(function (c) { q(c).disabled = !f; });
++      q('.who').textContent = f ? f.dataset.name : 'click a piece';
++      q('.pv').textContent = f ? f.dataset.pos + ' of ' + figs().length : '–';
++      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
++      if (f) sync();
++    }
++    function sync() {
++      var s = num(sel, 's', 1), x = num(sel, 'x', 0), y = num(sel, 'y', 0);
++      q('.size').value = Math.round(s * 100); q('.sv').textContent = Math.round(s * 100) + '%';
++      q('.xr').value = x; q('.xv').textContent = x; q('.yr').value = y; q('.yv').textContent = y;
++      q('.nm').value = sel.querySelector('.name').textContent; q('.dt').value = sel.querySelector('.date').textContent;
++    }
++    function set(k, v) {
++      if (!sel) return;
++      if (k === 's') v = Math.max(.3, Math.min(2, v));
++      else v = Math.max(-40, Math.min(40, v));
++      sel.style.setProperty('--' + k, v); sync(); q('.msg').textContent = 'Unsaved changes';
++    }
++    wall.addEventListener('click', function (e) {
++      if (!document.body.classList.contains('editing')) return;
++      var f = e.target.closest('figure'); if (f) { e.preventDefault(); pick(f); }
++    });
++    function label() {
++      figs().forEach(function (f) { f.classList.toggle('unlabelled', !f.querySelector('.name').textContent.trim()); });
++    }
++    label();
++    q('.nm').addEventListener('input', function () { if (sel) { sel.querySelector('.name').textContent = this.value; label(); q('.msg').textContent = 'Unsaved changes'; } });
++    q('.dt').addEventListener('input', function () { if (sel) { sel.querySelector('.date').textContent = this.value; q('.msg').textContent = 'Unsaved changes'; } });
++    q('.size').addEventListener('input', function () { set('s', this.value / 100); });
++    ['.size', '.xr', '.yr'].forEach(function (c) { q(c).addEventListener('change', function () { this.blur(); }); });
++    q('.xr').addEventListener('input', function () { set('x', +this.value); });
++    q('.yr').addEventListener('input', function () { set('y', +this.value); });
++    // remove: hidden from the wall on save; the image file itself is kept, so it can be restored
++    var removed = JSON.parse(ed.dataset.removed || '[]');
++    function showRestore() { q('.restore').hidden = !removed.length; q('.rc').textContent = removed.length; }
++    showRestore();
++    q('.remove').addEventListener('click', function () {
++      if (!sel) return;
++      removed.push(sel.dataset.name); var gone = sel; pick(null); gone.remove(); number(); showRestore();
++      q('.msg').textContent = 'Unsaved changes';
++    });
++    q('.restore').addEventListener('click', function () {
++      removed = []; showRestore(); save().then(function (ok) { if (ok) location.href = location.pathname + '?edit'; });
++    });
++    // add: save what's here first, then send each picture to be added, then reload into edit mode
++    q('.addbtn input').addEventListener('change', function () {
++      var files = [].slice.call(this.files), cut = q('.cutopt input').checked ? 1 : 0;
++      if (!files.length) return;
++      q('.msg').textContent = 'Saving, then adding ' + files.length + (files.length > 1 ? ' images' : ' image') + (cut ? ' and cutting them out' : '') + '…';
++      save().then(function (ok) {
++        if (!ok) return;
++        return files.reduce(function (p, f) {
++          return p.then(function () {
++            return fetch('/api/commission-image?cut=' + cut + '&name=' + encodeURIComponent(f.name), {method: 'POST', body: f})
++              .then(function (r) { return r.json(); })
++              .then(function (d) { if (d.error) throw new Error(d.error); });
++          });
++        }, Promise.resolve()).then(function () { location.href = location.pathname + '?edit'; })
++          .catch(function (e) { q('.msg').textContent = 'Not added: ' + e.message; });
++      });
++    });
++    q('.earlier').addEventListener('click', function () { move(-1); });
++    q('.later').addEventListener('click', function () { move(1); });
++    q('.reset-one').addEventListener('click', function () { if (sel) { ['s', 'x', 'y'].forEach(function (k) { sel.style.setProperty('--' + k, k === 's' ? 1 : 0); }); sync(); } });
++
++    // frame proportions for the whole wall
++    function frame(v) {
++      wall.style.setProperty('--frame', v);
++      ed.querySelectorAll('[data-frame]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.frame === v); });
++    }
++    ed.querySelectorAll('[data-frame]').forEach(function (b) {
++      b.addEventListener('click', function () { frame(b.dataset.frame); q('.msg').textContent = 'Unsaved changes'; });
++    });
++    frame(wall.style.getPropertyValue('--frame').trim() || '3/4');
++
++    function save() {
++      var pieces = {};
++      figs().forEach(function (f) { pieces[f.dataset.name] = {s: num(f, 's', 1), x: num(f, 'x', 0), y: num(f, 'y', 0), name: f.querySelector('.name').textContent, date: f.querySelector('.date').textContent}; });
++      var body = {frame: wall.style.getPropertyValue('--frame').trim() || '3/4', order: figs().map(function (f) { return f.dataset.name; }), pieces: pieces, removed: removed};
++      q('.msg').textContent = 'Saving…';
++      return fetch('/api/commission-layout', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)})
++        .then(function (r) { return r.json(); })
++        .then(function (d) { q('.msg').textContent = d.saved ? 'Saved.' : 'Not saved: ' + d.error; return !!d.saved; })
++        .catch(function () { q('.msg').textContent = 'Not saved: the preview server is not the editing one.'; return false; });
++    }
++    q('.save').addEventListener('click', function () { save(); });
++    if (/[?&]edit\b/.test(location.search)) open(true);
++  })();
++</script>
+ </body>
+ </html>
+--- a/pdp/partials/footer.html
++++ b/pdp/partials/footer.html
+@@ -1,7 +1,7 @@
+ <footer>
+   <div class="brand">
+-    <img class="mark" src="img/eye-mark.png" alt="Studio Maçon">
+-    <p class="fine"><span>Artifacts of Love,</span><br><span>Made to Order</span></p>
++    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
++    <p class="fine">Artifacts of Love,<br>Made to Order</p>
+   </div>
+   <div class="middle">
+   <nav class="links">
+--- a/pdp/partials/site.js
++++ b/pdp/partials/site.js
+@@ -443,7 +443,6 @@
+     var extra = code ? {discount: code} : {};
+     var gift = MaconGift.read();          // lands on the order as "Gift wrap" and "Gift note", which Flow and the staff email read
+     if (gift.wrap) { extra['attributes[Gift wrap]'] = 'Yes'; if (gift.note) extra['attributes[Gift note]'] = gift.note; }
+-    if (items.some(function (i) { return i.slug === 'chrysalis'; })) extra['attributes[Preorder]'] = 'Chrysalis, ships early November';          // shows on the order in Shopify, so a preorder is never packed with the ten-day pieces
+     location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(extra);
+     // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
+     // pieces still waiting. It is emptied on the thank-you page.
+@@ -613,7 +612,7 @@
+     document.querySelector('.head .right').appendChild(toast);
+     var timer = null;
+     document.querySelectorAll('.cta, .dock').forEach(function (b) {
+-      if (!/add to bag|preorder/i.test(b.textContent)) return;          // Chrysalis's button says Preorder; it fills the bag the same way
++      if (!/add to bag/i.test(b.textContent)) return;
+       b.addEventListener('click', function (e) {
+         var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price .amt') || document.querySelector('.info .price');          // the amount alone, not the shipping notes beside it
+         var sizeBox = document.querySelector('[data-size]'), size = sizeBox && sizeBox.classList.contains('picked') ? sizeBox.querySelector('.size-value').textContent : '';
+@@ -633,7 +632,7 @@
+         });
+         toast.textContent = '';
+         if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+-        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = /preorder/i.test(b.textContent) ? 'Preorder added to bag' : 'Added to bag';
++        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+         tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+         if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+         toast.appendChild(tx);
+@@ -699,9 +698,7 @@
+       if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
+         var price = parseFloat(((document.querySelector('.info .price .amt') || document.querySelector('.info .price') || {}).textContent || '').replace(/[^0-9.]/g, '')) || 0;
+         if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
+-        var q = {payment: 'shop_pay'};
+-        if (/\/chrysalis(\.html)?$/.test(location.pathname)) q['attributes[Preorder]'] = 'Chrysalis, ships early November';          // the same note the bag sends
+-        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery(q);
++        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery({payment: 'shop_pay'});
+         return;
+       }
+       MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
+@@ -937,12 +934,8 @@
+ })();
+ 
+ window.maconShipNote = function () {
+-  // Chrysalis is a preorder: it ships in early November, in the order received, not ten working days out
+-  var items = MaconBag.read(), pre = items.some(function (x) { return x.slug === 'chrysalis'; });
+-  var n = items.reduce(function (t, x) { return t + (x.slug === 'chrysalis' ? 0 : (x.qty || 1)); }, 0);
+-  var preNote = 'Chrysalis is a preorder and ships in early November, in the order received.';
+-  if (pre && !n) return preNote;
+-  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.' + (pre ? ' ' + preNote : '');
++  var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
++  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.';
+ };
+ // the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
+ window.maconShipBy = (function () {
+--- a/pdp/robots.txt
++++ b/pdp/robots.txt
+@@ -3,5 +3,4 @@
+ Disallow: /partials/
+ Disallow: /tools/
+ Disallow: /_picker/
+-Disallow: /newsletter.html
+ Sitemap: https://studiomacon.co/sitemap.xml
+--- a/pdp/site.css
++++ b/pdp/site.css
+@@ -137,8 +137,7 @@
+ footer{overflow:hidden;overflow:clip;display:grid;gap:56px;align-content:end;min-height:105vh;min-height:105svh;padding:96px calc(var(--pad) + 24px) 36px;--f-size:calc(17px - 2pt)}
+ footer .brand{order:3}
+ footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
+-footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}          /* the mark, still and black */
+-footer .fine span{white-space:nowrap}          /* the break always falls after LOVE, at every width */
++footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
+ footer .fine{margin:0;font:400 calc((32px - 5pt) * 1.2)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
+ footer .fine.where{margin:12px 0 0;font-family:"Instrument Serif",serif;font-size:21px;letter-spacing:.01em;text-transform:none;opacity:.6;
+   display:inline-block;transform:rotate(-3deg);transform-origin:left center}          /* where the studio is, in the studio's own hand */
+@@ -634,4 +633,3 @@
+ html.menu-arriving .head > :not(.logotype){visibility:hidden}
+ html.menu-arriving .head .logotype,html.menu-arriving .head .logotype *{color:#000;transition:none !important}
+ 
+-
+--- a/pdp/tools/optimize_media.py
++++ b/pdp/tools/optimize_media.py
+@@ -17,10 +17,8 @@
+ 
+ def save_clean(im, out, floor=80):
+     """Save the lightest webp that still measures as the same picture as its source."""
+-    if out.name.startswith("white-"):          # mostly plain grey backdrop: the whole-picture score passes while the small piece smears
+-        floor = 95
+     ref = np.asarray(im.convert("L"), dtype=float)
+-    for q in sorted(q for q in {floor, 84, 88, 91, 93, 95, 97} if q >= floor):
++    for q in (floor, 84, 88, 91, 93, 95, 97):
+         buf = io.BytesIO()
+         im.save(buf, "WEBP", quality=q, method=6)
+         got = np.asarray(Image.open(io.BytesIO(buf.getvalue())).convert("L"), dtype=float)
+@@ -79,7 +77,7 @@
+             make_tile(src)
+         out = src.with_name(src.name + ".webp")
+         if not out.exists() or out.stat().st_mtime < src.stat().st_mtime:
+-            limit = 1000 if top in SMALL else 4000 if src.name.startswith("white-") else 3200          # retina-sharp on a large display; the grey-backdrop shots show a small piece in a wide frame, so they keep more
++            limit = 1000 if top in SMALL else 3200          # retina-sharp on a large display
+             im = ImageOps.exif_transpose(Image.open(src))
+             im.thumbnail((limit, limit), Image.LANCZOS)
+             if src.suffix.lower() == ".png":

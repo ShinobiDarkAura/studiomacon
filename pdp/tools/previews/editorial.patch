@@ -1,0 +1,380 @@
+# _variant-editorial: this preview's source, as a patch against the live pdp at commit 296015a6 (2026-10-22).
+# Only files the preview had; it predates some later work, so older copies of shared files show as changes.
+--- a/pdp/build_pdp.py
++++ b/pdp/build_pdp.py
+@@ -21,11 +21,11 @@
+ MASTER = os.path.expanduser(os.environ.get("MACON_PIECES", "~/Downloads/Maçon/Pieces Master"))
+ 
+ EYEBROW = {
+-    "pip": "Quiet Keeper",
++    "pip": "Tiny Keeper of Tenderness",
+     "rebi": "Silhouette in Flux",
+     "ren": "Steward of Forgotten Paths",
+     "zuma": "Desert Spirit",
+-    "chrysalis": "In Her Own Right",          # the home grid's hover; the page's own overline comes from content.json
++    "chrysalis": "Keeper of Becoming",
+     "ori": "Guardian of Forests and Rivers",
+     "yael": "Prophecy in Metal",
+     "zuma-ring": "Twin Band",
+@@ -123,8 +123,8 @@
+         "the stories we\u2019ve been told about art, genius, and who gets to claim visibility.</p>"
+         f'<p class="acc-more"><a href="{BOOK_URL}" target="_blank" rel="noopener">'
+         "<em>In Her Own Right</em> through Blue Sky Press</a></p>")
+-OFF_STRIP = {"chrysalis": ("img/chrysalis/white-3.jpg",)}          # phones: pictures left off the thumbnail strip (still on the page); Chrysalis keeps its book photos instead
+-PREORDER = {"chrysalis": "early November"}          # pieces taken as preorders, and when they begin to ship (in the order received)
++OFF_STRIP = {"chrysalis": ("img/chrysalis/white-2.jpg", "img/chrysalis/white-3.jpg")}          # phones: pictures left off the thumbnail strip (still on the page); Chrysalis keeps its book photos instead
++PREORDER = {"chrysalis": "end of October"}          # pieces taken as preorders, and when they begin to ship (in the order received)
+ RETIRED = {"macon-cap"}          # pieces with no page any more
+ 
+ # Photographs that repeat one already in the gallery: same framing, sometimes only a higher-resolution
+@@ -322,7 +322,7 @@
+     ship_1 = _content.shared("shipping:1", ship_a)
+     if slug in PREORDER:          # a preorder ships on its own date, not ten days out
+         ship_1 = ship_1.replace("Each piece is made to order; please allow up to 10 business days before it ships.",
+-                                f"This piece is a preorder: pieces begin shipping in {PREORDER[slug]}, in the order we receive them.")
++                                f"This piece is a preorder: pieces begin shipping at the {PREORDER[slug]}, in the order we receive them.")
+     items.append(("Shipping &amp; Returns",
+                   f'<p class="keep-para">{ship_1}</p>'
+                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
+@@ -1527,17 +1527,12 @@
+     save("index.html", editable(shop, "index.html"))
+     sizer_page()
+     feeds(products)
+-    # the newsletter maker (a private page, newsletter.html), its pieces taken from the wall in the same order
+-    sys.path.insert(0, os.path.join(OUT, "tools", "newsletter")); import build as _newsletter
+-    _newsletter.build(OUT, [{"slug": p["slug"], "name": p["name"], "price": p["price"], "kind": "totem" if _group(p) == 0 else "jewelry", "preorder": p["slug"] in PREORDER}
+-                            for p in wall if p["slug"] != "macon-cap"], _content.CONTENT["products"],
+-                     (lambda c: {"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"]})(json.load(open(os.path.join(OUT, "shopify", "config.json")))))
+     _today = __import__("datetime").date.today().isoformat()
+     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
+         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                 + "".join(f"  <url><loc>{u}</loc><lastmod>{_today}</lastmod></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")
+     with open(os.path.join(OUT, "robots.txt"), "w") as f:
+-        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nDisallow: /newsletter.html\nSitemap: {SITE}/sitemap.xml\n")
++        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nSitemap: {SITE}/sitemap.xml\n")
+     print(f"{len(products)} pages")
+     # the emails name prices by hand (a marketing email has no cart to read from),
+     # so re-write them from Shopify before anyone copies a template out
+--- a/pdp/content.json
++++ b/pdp/content.json
+@@ -16,7 +16,6 @@
+     "tint": -2.0
+    },
+    "gallery": [
+-    "img/ear-cuff/white-1.jpg",
+     "img/ear-cuff/hand-3.jpg",
+     "img/ear-cuff/hires-3.jpg"
+    ],
+@@ -45,7 +44,6 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/eclipse-ring/white-1.jpg",
+     "img/eclipse-ring/hero.jpg",
+     "img/eclipse-ring/hires-1.jpg",
+     "img/eclipse-ring/hand-1.jpg"
+@@ -102,8 +100,7 @@
+     "x": 50,
+     "y": 50,
+     "z": 1.48
+-   },
+-   "lore": "It remembers everything and forgives most of it. Late at night, keepers still hear a low, distant call from just beyond the room."
++   }
+   },
+   "ibi": {
+    "frames": {
+@@ -146,8 +143,7 @@
+      "y": 0,
+      "r": -1
+     }
+-   },
+-   "lore": "It has kept its long watch for longer than anyone can say, and guards its secrets closely. Every attempt to photograph it ends in fog."
++   }
+   },
+   "lunar-canyon-ring": {
+    "frames": {
+@@ -176,7 +172,6 @@
+    },
+    "hero": "img/lunar-canyon-ring/hero.jpg",
+    "gallery": [
+-    "img/lunar-canyon-ring/white-1.jpg",
+     "img/lunar-canyon-ring/hand-2.jpg",
+     "img/lunar-canyon-ring/hand-1.jpg"
+    ],
+@@ -221,7 +216,6 @@
+     "tint": 0.0
+    },
+    "gallery": [
+-    "img/meridian-egg-ring/white-1.jpg",
+     "img/meridian-egg-ring/hand-2.jpg",
+     "img/meridian-egg-ring/plain-1.jpg"
+    ],
+@@ -275,8 +269,7 @@
+      "y": 2.5,
+      "r": 0
+     }
+-   },
+-   "lore": "It crossed a great deal of country to get here, and seems glad to finally stop. Over the years, it comes to resemble whoever holds it."
++   }
+   },
+   "ori": {
+    "frames": {
+@@ -316,8 +309,7 @@
+      "y": 1,
+      "r": 1
+     }
+-   },
+-   "lore": "It keeps a patient watch over forests, rivers and the houses that take it in. In deep winter, the room feels a degree warmer."
++   }
+   },
+   "pip": {
+    "frames": {
+@@ -361,8 +353,7 @@
+      "y": 4.5,
+      "r": 0
+     }
+-   },
+-   "lore": "It kept watch from a sunny windowsill for years. Visitors still pick it up without asking, and those who carry it start checking their pockets."
++   }
+   },
+   "rebi": {
+    "frames": {
+@@ -392,8 +383,7 @@
+    "hero": "img/rebi/hero.jpg",
+    "hidden": [],
+    "tile_hover": "img/rebi/hires-2-mirrored.jpg",
+-   "price": 180,
+-   "lore": "It never looks the same way twice in the same light. Some see one thing, some another, and it seems quietly pleased by the disagreement."
++   "price": 180
+   },
+   "ren": {
+    "frames": {
+@@ -446,8 +436,7 @@
+      "y": -5,
+      "r": -1
+     }
+-   },
+-   "lore": "It knows the way through woods that no longer appear on maps, and its bright crest holds the first light long after dawn."
++   }
+   },
+   "sietch-aperture": {
+    "frames": {
+@@ -476,7 +465,6 @@
+    },
+    "hero": "img/sietch-aperture/hero.jpg",
+    "gallery": [
+-    "img/sietch-aperture/white-1.jpg",
+     "img/sietch-aperture/plain-1.jpg"
+    ]
+   },
+@@ -543,7 +531,6 @@
+     "z": 2.03
+    },
+    "gallery": [
+-    "img/wonderhorn-talisman/white-1.jpg",
+     "img/wonderhorn-talisman/plain-2.jpg",
+     "img/wonderhorn-talisman/plain-3.jpg",
+     "img/wonderhorn-talisman/hand-1.jpg"
+@@ -586,8 +573,7 @@
+      "y": 0,
+      "r": 0
+     }
+-   },
+-   "lore": "It stands where the footing is narrowest, entirely unbothered. At dusk, keepers sometimes hear a faint ringing, like bells on a far mountain."
++   }
+   },
+   "zuma": {
+    "frames": {
+@@ -635,8 +621,7 @@
+      "y": -3,
+      "r": 1.5
+     }
+-   },
+-   "lore": "It carries the stillness of the desert at noon. Kept in a pocket, it warms slowly and holds that warmth well into the evening."
++   }
+   },
+   "zuma-ring": {
+    "frames": {
+@@ -664,7 +649,6 @@
+     "tint": -1.0
+    },
+    "gallery": [
+-    "img/zuma-ring/white-1.jpg",
+     "img/zuma-ring/hires-1.jpg",
+     "img/zuma-ring/plain-1.jpg",
+     "img/zuma-ring/plain-2.jpg",
+@@ -687,8 +671,10 @@
+    "gallery": [
+     "img/chrysalis/hand-1.jpg",
+     "img/chrysalis/white-1.jpg",
++    "img/chrysalis/white-2.jpg",
+     "img/chrysalis/white-3.jpg",
+     "img/chrysalis/book-1.jpg",
++    "img/chrysalis/book-2.jpg",
+     "img/chrysalis/book-3.jpg"
+    ],
+    "frames": {
+--- a/pdp/email/build_emails.py
++++ b/pdp/email/build_emails.py
+@@ -96,7 +96,6 @@
+     return re.sub(re.escape(IMG) + r"/([\w.-]+\.(?:jpg|gif|png))(?![?\w])", tag, html)
+ 
+ def page(preheader, body):
+-    body = body.replace('@SHIPNOTE@', SHIP_KLAVIYO)
+     return _versioned(f"""<!doctype html>
+ <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>
+@@ -259,15 +258,6 @@
+               "{{ item.line_price|floatformat:0 }}", SITE)
+ CHECKOUT = "{{ event.extra.checkout_url }}"
+ GRID = "<!--GRID-->"          # checkout 2 only: the bag laid out as a grid (Shopify version, see _grid)
+-
+-# the shipping line in the order emails: a Chrysalis preorder ships in early November, everything else within ten business days
+-SHIP_KLAVIYO = ("{% if 'Chrysalis' in event.ItemNames %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. "
+-                "Any other pieces ship within about ten business days.{% else %}You can expect it to ship within about ten business days.{% endif %}")
+-SHIP_SHOPIFY = ("{% assign macon_pre = false %}{% assign macon_rest = false %}{% for line in line_items %}"
+-                "{% if line.product.tags contains 'preorder' or line.title contains 'Chrysalis' %}{% assign macon_pre = true %}{% else %}{% assign macon_rest = true %}{% endif %}{% endfor %}"
+-                "{% if macon_pre and macon_rest %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. Everything else ships within about ten business days."
+-                "{% elsif macon_pre %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them."
+-                "{% else %}You can expect it to ship within about ten business days.{% endif %}")
+ 
+ def notes(rows):
+     cells = "".join(f'<tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
+@@ -317,7 +307,7 @@
+     preview="What happens between now and its arrival.",
+     body=eyebrow("Studio Maçon") + h1("Your piece<br>is being made") + ORDER
+        + notes([("Made to order", "We start on your order as soon as it comes in. No two pieces come out alike."),
+-                ("On its way", "@SHIPNOTE@ We'll send you tracking as soon as possible."),
++                ("On its way", "You can expect it to ship within about ten business days. We'll send you tracking as soon as possible."),
+                 ("Questions", "Just reply to this email! We respond to every message directly.")])),
+  "thanks-2": dict(
+     subject="How to care for your piece",
+@@ -437,7 +427,6 @@
+ 
+ def to_shopify(html, name):
+     import re
+-    html = html.replace(SHIP_KLAVIYO, SHIP_SHOPIFY)
+     html = html.replace('<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">', "")
+     html = html.replace("<style>", "<style>\n  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;"
+                         f"src:url({SITE_ASSETS}/fonts/instrument-serif.woff2) format('woff2')}}", 1)
+--- a/pdp/email/thanks-1.html
++++ b/pdp/email/thanks-1.html
+@@ -14,7 +14,7 @@
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center">
+ <table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
+   <tr><td align="center" style="padding:53px 0 44px"><a href="https://studiomacon.co"><img src="https://studiomacon.studiomacon.workers.dev/img/email/eye.gif?v=210bf680" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>
+-<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr><tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">Your piece<br>is being made</td></tr><tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{% for item in event.extra.line_items %}<tr><td align="center" style="padding:0 0 40px"><a href="https://studiomacon.co" style="text-decoration:none"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr><td height="272" valign="bottom" background="{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center" bgcolor="#8a7a6a" style="height:272px;border-radius:16px;background-image:url({{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center);background-size:cover;background-position:center"><div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))"><div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#ffffff">{{ item.product.title }}</div><div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#ffffff;padding-top:7px">${{ item.line_price|floatformat:0 }}</div></div></td></tr></table></a></td></tr>{% endfor %}</table></td></tr><tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto"><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Made to order</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces come out alike.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">On its way</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">{% if 'Chrysalis' in event.ItemNames %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. Any other pieces ship within about ten business days.{% else %}You can expect it to ship within about ten business days.{% endif %} We'll send you tracking as soon as possible.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Questions</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr></table></td></tr>
++<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr><tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">Your piece<br>is being made</td></tr><tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{% for item in event.extra.line_items %}<tr><td align="center" style="padding:0 0 40px"><a href="https://studiomacon.co" style="text-decoration:none"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr><td height="272" valign="bottom" background="{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center" bgcolor="#8a7a6a" style="height:272px;border-radius:16px;background-image:url({{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center);background-size:cover;background-position:center"><div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))"><div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#ffffff">{{ item.product.title }}</div><div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#ffffff;padding-top:7px">${{ item.line_price|floatformat:0 }}</div></div></td></tr></table></a></td></tr>{% endfor %}</table></td></tr><tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto"><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Made to order</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces come out alike.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">On its way</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">You can expect it to ship within about ten business days. We'll send you tracking as soon as possible.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Questions</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr></table></td></tr>
+   <tr><td class="pad" align="center" style="padding:56px 24px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8a8a8a">
+     Every piece is made to order in the studio in California.<br>
+     <a href="https://studiomacon.co/story" style="color:#8a8a8a">About</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/studiomacon/" style="color:#8a8a8a">Instagram</a>
+--- a/pdp/pages/custom.html
++++ b/pdp/pages/custom.html
+@@ -15,6 +15,7 @@
+   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
+   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
+   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
++  @media (min-width:1024px){ .examples figure[data-name="hannah-patsy-2-warm--centred.jpg"]{display:none !important} }          /* desktop: off for now so the grid comes out even */
+   /* name and year sit on the grey, bottom left, in black, on hover; no dark gradient */
+   @media (min-width:768px){
+     .examples figure:not(.lead) .over{position:absolute;inset:auto auto 28px 28px;padding:0;background:none;color:#000;opacity:0;transform:translateY(6px);gap:0;font-size:14px}
+--- a/pdp/partials/site.js
++++ b/pdp/partials/site.js
+@@ -443,7 +443,6 @@
+     var extra = code ? {discount: code} : {};
+     var gift = MaconGift.read();          // lands on the order as "Gift wrap" and "Gift note", which Flow and the staff email read
+     if (gift.wrap) { extra['attributes[Gift wrap]'] = 'Yes'; if (gift.note) extra['attributes[Gift note]'] = gift.note; }
+-    if (items.some(function (i) { return i.slug === 'chrysalis'; })) extra['attributes[Preorder]'] = 'Chrysalis, ships early November';          // shows on the order in Shopify, so a preorder is never packed with the ten-day pieces
+     location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(extra);
+     // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
+     // pieces still waiting. It is emptied on the thank-you page.
+@@ -613,7 +612,7 @@
+     document.querySelector('.head .right').appendChild(toast);
+     var timer = null;
+     document.querySelectorAll('.cta, .dock').forEach(function (b) {
+-      if (!/add to bag|preorder/i.test(b.textContent)) return;          // Chrysalis's button says Preorder; it fills the bag the same way
++      if (!/add to bag/i.test(b.textContent)) return;
+       b.addEventListener('click', function (e) {
+         var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price .amt') || document.querySelector('.info .price');          // the amount alone, not the shipping notes beside it
+         var sizeBox = document.querySelector('[data-size]'), size = sizeBox && sizeBox.classList.contains('picked') ? sizeBox.querySelector('.size-value').textContent : '';
+@@ -633,7 +632,7 @@
+         });
+         toast.textContent = '';
+         if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+-        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = /preorder/i.test(b.textContent) ? 'Preorder added to bag' : 'Added to bag';
++        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+         tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+         if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+         toast.appendChild(tx);
+@@ -699,9 +698,7 @@
+       if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
+         var price = parseFloat(((document.querySelector('.info .price .amt') || document.querySelector('.info .price') || {}).textContent || '').replace(/[^0-9.]/g, '')) || 0;
+         if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
+-        var q = {payment: 'shop_pay'};
+-        if (/\/chrysalis(\.html)?$/.test(location.pathname)) q['attributes[Preorder]'] = 'Chrysalis, ships early November';          // the same note the bag sends
+-        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery(q);
++        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery({payment: 'shop_pay'});
+         return;
+       }
+       MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
+@@ -937,10 +934,10 @@
+ })();
+ 
+ window.maconShipNote = function () {
+-  // Chrysalis is a preorder: it ships in early November, in the order received, not ten working days out
++  // Chrysalis is a preorder: it ships at the end of October, in the order received, not ten working days out
+   var items = MaconBag.read(), pre = items.some(function (x) { return x.slug === 'chrysalis'; });
+   var n = items.reduce(function (t, x) { return t + (x.slug === 'chrysalis' ? 0 : (x.qty || 1)); }, 0);
+-  var preNote = 'Chrysalis is a preorder and ships in early November, in the order received.';
++  var preNote = 'Chrysalis is a preorder and ships at the end of October, in the order received.';
+   if (pre && !n) return preNote;
+   return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.' + (pre ? ' ' + preNote : '');
+ };
+--- a/pdp/robots.txt
++++ b/pdp/robots.txt
+@@ -3,5 +3,4 @@
+ Disallow: /partials/
+ Disallow: /tools/
+ Disallow: /_picker/
+-Disallow: /newsletter.html
+ Sitemap: https://studiomacon.co/sitemap.xml
+--- a/pdp/site.css
++++ b/pdp/site.css
+@@ -635,3 +635,10 @@
+ html.menu-arriving .head .logotype,html.menu-arriving .head .logotype *{color:#000;transition:none !important}
+ 
+ 
++/* ── variant: only the home section titles (Totems, Jewelry) in PP Editorial Old, Title Case, thin, 30% larger (local preview only) ── */
++@font-face{font-family:"PP Editorial Old";src:url(fonts/pp-editorial-old.woff2) format("woff2");font-weight:100 900;font-style:normal;font-display:swap}
++.wall-head h2{font-family:"PP Editorial Old","Instrument Serif",serif!important;text-transform:none!important;letter-spacing:-.005em!important;
++  font-variation-settings:"wght" 100!important;font-weight:100!important}          /* 100 = the thin cut Font Book shows as the variable file's "Regular" */
++.wall-head h2{font-size:69.55px!important}
++@media (min-width:768px){ .wall-head h2{font-size:80.93px!important} }
++@media (min-width:1200px){ .wall-head h2{font-size:92.3px!important} }
+--- a/pdp/tools/grey_backdrop.py
++++ b/pdp/tools/grey_backdrop.py
+@@ -28,13 +28,13 @@
+     return np.stack([x**i * y**j for i in range(deg + 1) for j in range(deg + 1 - i)], -1)
+ 
+ 
+-def flatten(f, whole=False, anchor="centre"):
++def flatten(f, whole=False):
+     """whole=True only evens out the lighting (every pixel kept, shadows fading naturally); otherwise
+     everything but the piece and its shadow also becomes the one flat grey."""
+     im = ImageOps.exif_transpose(Image.open(os.path.join(SRC, f))).convert("RGB")
+     # the site's frames are never wider than 5:4, so the far sides are cut away first and the piece keeps its pixels
+     if im.width > ASPECT * im.height:
+-        w = round(ASPECT * im.height); x = 0 if anchor == "left" else (im.width - w) // 2          # left: something (a chain) runs off that edge and must keep doing so
++        w = round(ASPECT * im.height); x = (im.width - w) // 2
+         im = im.crop((x, 0, x + w, im.height))
+     k = MAXL * ZOOM / max(im.size)                   # final long side at most MAXL after padding
+     if k < 1: im = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
+@@ -87,7 +87,7 @@
+     H, W = round(h / ZOOM), round(w / ZOOM)
+     rng = np.random.default_rng(0)
+     canvas = TARGET + rng.normal(0, 1, (H, W, 3)) * sigma
+-    y0, x0 = (H - h) // 2, 0 if anchor == "left" else (W - w) // 2
++    y0, x0 = (H - h) // 2, (W - w) // 2
+     canvas[y0:y0+h, x0:x0+w] = alpha * out + (1 - alpha) * canvas[y0:y0+h, x0:x0+w]
+     return Image.fromarray(np.clip(canvas, 0, 255).round().astype(np.uint8))
+ 

@@ -1,0 +1,19 @@
+# _variant-cards: this preview's source, as a patch against the live pdp at commit 296015a6 (2026-10-22).
+# Only files the preview had; it predates some later work, so older copies of shared files show as changes.
+--- a/pdp/pages/shop.html
++++ b/pdp/pages/shop.html
+@@ -35,6 +35,14 @@
+   @media (min-width:1024px){ html.photo-clay .wall .piece .name{font-size:30px !important} }
+   @media (min-width:1024px){ html.photo-clay .wall .piece .cost{font-size:13px !important} }
+   @media (min-width:1024px){ html.photo-clay .wall-head{padding-left:22px !important;padding-top:2px !important} }
++  /* preview: the home cards made like the For Someone You Know cards: rounded, a gap between, sentence-case names */
++  html.photo-clay .wall{column-gap:16px !important;row-gap:8px !important}
++  html.photo-clay .wall .piece .pic,html.photo-clay .wall .piece .placeholder-fill{border-radius:16px !important;overflow:hidden !important}
++  html.photo-clay .wall .piece .over{padding-top:18px !important}
++  html.photo-clay .wall .piece .name{font:400 30px/1 var(--serif) !important;text-transform:none !important}
++  html.photo-clay .wall .piece .cost,html.photo-clay .wall .piece .ovl{font:400 14px/1.4 var(--sans) !important;letter-spacing:.02em}
++  html.photo-clay .wall .piece .cost{color:rgba(0,0,0,.6) !important}
++  @media (max-width:767px){ html.photo-clay .wall{column-gap:10px !important} html.photo-clay .wall .piece .pic,html.photo-clay .wall .piece .placeholder-fill{border-radius:12px !important} html.photo-clay .wall .piece .over{padding-top:10px !important;padding-left:0 !important} html.photo-clay .wall .piece .name{font-size:20px !important} html.photo-clay .wall .piece .cost{font-size:13px !important} }
+ </style>
+ <style>
+   /* the film fills the first screen; the nav sits over it in white */

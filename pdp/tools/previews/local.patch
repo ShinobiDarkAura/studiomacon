@@ -1,0 +1,1324 @@
+# _variant-local: this preview's source, as a patch against the live pdp at commit 296015a6 (2026-10-22).
+# Only files the preview had; it predates some later work, so older copies of shared files show as changes.
+--- a/pdp/build_pdp.py
++++ b/pdp/build_pdp.py
+@@ -21,11 +21,11 @@
+ MASTER = os.path.expanduser(os.environ.get("MACON_PIECES", "~/Downloads/Maçon/Pieces Master"))
+ 
+ EYEBROW = {
+-    "pip": "Quiet Keeper",
++    "pip": "Tiny Keeper of Tenderness",
+     "rebi": "Silhouette in Flux",
+     "ren": "Steward of Forgotten Paths",
+     "zuma": "Desert Spirit",
+-    "chrysalis": "In Her Own Right",          # the home grid's hover; the page's own overline comes from content.json
++    "chrysalis": "Keeper of Becoming",
+     "ori": "Guardian of Forests and Rivers",
+     "yael": "Prophecy in Metal",
+     "zuma-ring": "Twin Band",
+@@ -109,22 +109,12 @@
+ 
+ # pictures kept on disk (the shop hover may use them) but left off a product page's gallery
+ # pieces whose page still builds but which are left off the shop and Also Worth Keeping for now
+-HIDE_FROM_SHOP = {"macon-cap", "starshipkey-pendant"}          # remove a slug here to bring it back
++HIDE_FROM_SHOP = {"macon-cap"}          # remove a slug here to bring it back
+ # the jewelry's moss photographs (grid and product pages) wait while their refocused versions are reviewed;
+ # until then the jewelry keeps its in-hand and studio photographs. False brings the moss set back.
+ HOLD_JEWELRY_PHOTOS = False
+ def moss_held(slug):
+     return HOLD_JEWELRY_PHOTOS and kind(slug, read_port(slug)[1]) != "totem"
+-BOOK_URL = "https://www.blueskyblacksheep.com/magazine/p/in-her-own-right"
+-BOOK_LINK = f'<a class="book-link" href="{BOOK_URL}" target="_blank" rel="noopener">In Her Own Right</a>'          # the book's name, wherever the Chrysalis page says it
+-BOOK = ("<p>Part personal manifesto, part historical excavation, <em>" + BOOK_LINK + "</em> explores the inner lives and artistic "
+-        "legacies of women across time. With lyric precision and radical intimacy, author Chelsea Madeline invites readers to "
+-        "reconsider what it means to live a creative life as a woman today. Moving between past and present, the book challenges "
+-        "the stories we\u2019ve been told about art, genius, and who gets to claim visibility.</p>"
+-        f'<p class="acc-more"><a href="{BOOK_URL}" target="_blank" rel="noopener">'
+-        "<em>In Her Own Right</em> through Blue Sky Press</a></p>")
+-OFF_STRIP = {"chrysalis": ("img/chrysalis/white-3.jpg",)}          # phones: pictures left off the thumbnail strip (still on the page); Chrysalis keeps its book photos instead
+-PREORDER = {"chrysalis": "early November"}          # pieces taken as preorders, and when they begin to ship (in the order received)
+ RETIRED = {"macon-cap"}          # pieces with no page any more
+ 
+ # Photographs that repeat one already in the gallery: same framing, sometimes only a higher-resolution
+@@ -187,7 +177,7 @@
+ ]
+ OOAK_SLUGS = {x["slug"] for x in OOAK}
+ NO_FILM = {"eclipse-ring", "ear-cuff", "meridian-egg-ring"}          # ear-cuff, meridian-egg-ring: their "in motion" films are off the page
+-NO_COMPOSITE = {"ear-cuff", "pip", "rebi", "ren", "zuma"}          # totems show only the suede hero, the in-hand photos and the grey-backdrop shots
++NO_COMPOSITE = {"ear-cuff"}
+ PENDANTS = {"wonderhorn-talisman", "starshipkey-pendant"}          # pieces whose gallery ends without the lifestyle composite          # pieces whose product page shows photographs only, though a film exists
+ HIDE_FROM_SHOP |= OOAK_SLUGS          # one-of-ones stay off the shop until Ephemeral returns
+ 
+@@ -319,21 +309,15 @@
+             "with an extra flourish, and write out your note by hand. Add the gift receiver\u2019s address at checkout and it goes "
+             "straight to them. If it isn\u2019t quite right, they can return it within 30 days for store credit.")
+     items.append(("Gifting", f'<p>{_content.shared("gift:1", gift)}</p>'))
+-    ship_1 = _content.shared("shipping:1", ship_a)
+-    if slug in PREORDER:          # a preorder ships on its own date, not ten days out
+-        ship_1 = ship_1.replace("Each piece is made to order; please allow up to 10 business days before it ships.",
+-                                f"This piece is a preorder: pieces begin shipping in {PREORDER[slug]}, in the order we receive them.")
+     items.append(("Shipping &amp; Returns",
+-                  f'<p class="keep-para">{ship_1}</p>'
++                  f'<p class="keep-para">{_content.shared("shipping:1", ship_a)}</p>'
+                   f'<p>{_content.shared("shipping:2", ship_b)}</p>'
+                   f'<p class="intl-note">{_content.shared("shipping:intl", INTL)}</p>'
+                   + ('' if k in ("ring", "apparel") else          # rings say this under Sizing
+                      f'<p>{_content.shared("exchange:1", EXCHANGE)}</p>')
+                   + '<p class="acc-more"><a href="shipping.html">Full details</a></p>'))
+-    if slug == "chrysalis":          # the book the piece was made with
+-        items.append(("The Book", _content.product(slug, "book", BOOK)))
+     # the order on every piece: size first, then what it is, gifting, shipping, and care last
+-    rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "The Book": 1.5, "Gifting": 2, "Shipping &amp; Returns": 3, "Wear &amp; Care": 4, "Care": 4}
++    rank = {"Sizing": 0, "Dimensions": 0, "Materials": 1, "Gifting": 2, "Shipping &amp; Returns": 3, "Wear &amp; Care": 4, "Care": 4}
+     items.sort(key=lambda it: rank.get(it[0], 9))
+     return "\n".join(
+         f'''        <div class="acc-item">
+@@ -448,8 +432,8 @@
+     in_stock = slug not in OOAK_SLUGS or (any(v.get("available", True) for v in variants) if variants else True)
+     if in_stock:
+         buy_block = ('<div class="buy" id="bag" data-variant="{{VARIANT}}">'
+-                     + ('<button class="cta">Preorder</button>' if slug in PREORDER else '<button class="cta">Add to Bag</button>')
+-                     + '<button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">'
++                     '<button class="cta">Add to Bag</button>'
++                     '<button class="buy-now shop-pay" type="button" aria-label="Buy with Shop Pay">'
+                      'Buy with <svg class="shop-word" viewBox="0 0 101 42" aria-hidden="true" focusable="false"><path d="M12.0288 18.2598C7.97006 17.3793 6.16191 17.0348 6.16191 15.4708C6.16191 13.9997 7.38555 13.2669 9.83283 13.2669C11.9851 13.2669 13.5584 14.2075 14.7165 16.0504C14.8039 16.1926 14.9841 16.2418 15.1316 16.1653L19.6984 13.8575C19.8623 13.7755 19.9224 13.5677 19.8295 13.4091C17.934 10.1224 14.4324 8.32324 9.82191 8.32324C3.76379 8.32324 0 11.3091 0 16.0559C0 21.098 4.58319 22.3722 8.64743 23.2527C12.7117 24.1331 14.5253 24.4776 14.5253 26.0417C14.5253 27.6057 13.2033 28.344 10.5648 28.344C8.12848 28.344 6.32033 27.2284 5.22779 25.0628C5.14585 24.9042 4.95466 24.8386 4.79624 24.9206L0.240358 27.1791C0.0819403 27.2612 0.0163881 27.4526 0.0983284 27.6166C1.90648 31.2533 5.61564 33.2986 10.5703 33.2986C16.8797 33.2986 20.6927 30.3619 20.6927 25.4675C20.6927 20.573 16.0876 19.1512 12.0288 18.2707V18.2598Z"/><path d="M36.5018 8.32341C33.9125 8.32341 31.6236 9.24214 29.9794 10.8773C29.8756 10.9757 29.7062 10.9046 29.7062 10.7624V0.322772C29.7062 0.142307 29.5642 0.00012207 29.3839 0.00012207H23.67C23.4897 0.00012207 23.3477 0.142307 23.3477 0.322772V32.7245C23.3477 32.905 23.4897 33.0472 23.67 33.0472H29.3839C29.5642 33.0472 29.7062 32.905 29.7062 32.7245V18.5115C29.7062 15.7662 31.8094 13.6608 34.6445 13.6608C37.4796 13.6608 39.5336 15.7225 39.5336 18.5115V32.7245C39.5336 32.905 39.6756 33.0472 39.8559 33.0472H45.5699C45.7501 33.0472 45.8922 32.905 45.8922 32.7245V18.5115C45.8922 12.5397 41.9809 8.32887 36.5018 8.32887V8.32341Z"/><path d="M57.4962 7.39915C54.3934 7.39915 51.4764 8.34522 49.3896 9.71785C49.2476 9.81082 49.1984 10.0022 49.2858 10.1499L51.8041 14.4537C51.897 14.6068 52.0937 14.6615 52.2466 14.5685C53.8308 13.6115 55.6444 13.1139 57.4962 13.1248C62.4837 13.1248 66.1491 16.6466 66.1491 21.3005C66.1491 25.2652 63.2157 28.2019 59.4956 28.2019C56.4638 28.2019 54.3607 26.4355 54.3607 23.9418C54.3607 22.5145 54.967 21.3442 56.5457 20.5184C56.7096 20.4309 56.7697 20.2286 56.6714 20.07L54.2951 16.0451C54.2186 15.9138 54.0548 15.8537 53.9073 15.9084C50.7225 17.0896 48.4883 19.9333 48.4883 23.7504C48.4883 29.5253 53.0824 33.8346 59.4901 33.8346C66.974 33.8346 72.3548 28.6448 72.3548 21.202C72.3548 13.2233 66.0945 7.39368 57.4853 7.39368L57.4962 7.39915Z"/><path d="M89.0635 8.27964C86.1738 8.27964 83.5954 9.34603 81.7108 11.2272C81.607 11.3311 81.4376 11.2546 81.4376 11.1124V8.84838C81.4376 8.66791 81.2956 8.52573 81.1153 8.52573H75.5489C75.3686 8.52573 75.2266 8.66791 75.2266 8.84838V41.2009C75.2266 41.3814 75.3686 41.5236 75.5489 41.5236H81.2628C81.4431 41.5236 81.5851 41.3814 81.5851 41.2009V30.5917C81.5851 30.4495 81.7545 30.3784 81.8583 30.4714C83.7374 32.2214 86.2229 33.244 89.069 33.244C95.7717 33.244 101 27.8137 101 20.7591C101 13.7045 95.7663 8.27417 89.069 8.27417L89.0635 8.27964ZM87.9874 27.7644C84.1744 27.7644 81.2847 24.7293 81.2847 20.7153C81.2847 16.7014 84.169 13.6663 87.9874 13.6663C91.8058 13.6663 94.6846 16.6521 94.6846 20.7153C94.6846 24.7786 91.844 27.7644 87.9819 27.7644H87.9874Z"/></svg></button></div>')
+     else:
+         buy_block = ('<div class="buy sold" id="bag" data-variant="{{VARIANT}}">'
+@@ -489,8 +473,6 @@
+         return f'<figure{cls}><img src="{src}"{style} alt="{html.escape(alt)}"{extra}></figure>'
+ 
+     figs = [framed(g, ' loading="lazy"') for g in gallery]
+-    off = OFF_STRIP.get(slug, ())
+-    figs = [f.replace("<figure", "<figure data-off-strip", 1) if any(f'src="{o}"' in f for o in off) else f for f in figs]
+     hf = dict((_content.product(slug, "frames", {}) or {}).get(hero) or {})
+     if hero in GREY_OBJECTS:          # same as the gallery: 15% smaller on the grey
+         hf["z"] = hf.get("z", 1) * 0.7586
+@@ -513,10 +495,9 @@
+     return (template
+             .replace("{{TITLE}}", html.escape(name))
+             .replace("{{SLUG}}", slug)
+-            .replace("{{EYEBROW}}", html.escape(eyebrow).replace("In Her Own Right", BOOK_LINK, 1) if slug == "chrysalis" else html.escape(eyebrow))
++            .replace("{{EYEBROW}}", html.escape(eyebrow))
+             .replace("{{PRICE}}", f"${price}")
+-            .replace("{{DESC}}", html.escape(blurb).replace("namesake band", '<a href="zuma-ring.html">namesake band</a>', 1) if slug == "zuma"
+-                     else html.escape(blurb).replace("In Her Own Right", BOOK_LINK, 1) if slug == "chrysalis" else html.escape(blurb))
++            .replace("{{DESC}}", html.escape(blurb).replace("namesake band", '<a href="zuma-ring.html">namesake band</a>', 1) if slug == "zuma" else html.escape(blurb))
+             .replace("{{BUY}}", buy_block)
+             .replace('<section class="product">', '<section class="product' + ('' if in_stock else ' claimed') + '">')
+             .replace("{{SIZE}}", size_select)
+@@ -528,11 +509,7 @@
+             .replace("{{ACCORDIONS}}", accordions(slug, k, notes))
+             .replace("{{SIZER}}", (SIZER + print_sheet()) if k == "ring" else "")
+             .replace("{{CLOSING}}", close)
+-            .replace("{{RELATED}}", related)
+-            .replace('<span class="ship-free">Free shipping</span>',          # a preorder says so beside the price, and on the phone's sticky button
+-                     f'<span class="ship-free">Free shipping · Preorder, ships {PREORDER[slug]}</span>' if slug in PREORDER else '<span class="ship-free">Free shipping</span>')
+-            .replace('aria-label="Add to Bag, ', 'aria-label="Preorder, ' if slug in PREORDER else 'aria-label="Add to Bag, ')
+-            .replace('<span>Add to Bag</span>', '<span>Preorder</span>' if slug in PREORDER else '<span>Add to Bag</span>'))
++            .replace("{{RELATED}}", related))
+ 
+ 
+ def one_block(doc):
+@@ -1527,17 +1504,12 @@
+     save("index.html", editable(shop, "index.html"))
+     sizer_page()
+     feeds(products)
+-    # the newsletter maker (a private page, newsletter.html), its pieces taken from the wall in the same order
+-    sys.path.insert(0, os.path.join(OUT, "tools", "newsletter")); import build as _newsletter
+-    _newsletter.build(OUT, [{"slug": p["slug"], "name": p["name"], "price": p["price"], "kind": "totem" if _group(p) == 0 else "jewelry", "preorder": p["slug"] in PREORDER}
+-                            for p in wall if p["slug"] != "macon-cap"], _content.CONTENT["products"],
+-                     (lambda c: {"shop": c["shop"], "token": c["storefrontToken"], "api": c["apiVersion"]})(json.load(open(os.path.join(OUT, "shopify", "config.json")))))
+     _today = __import__("datetime").date.today().isoformat()
+     with open(os.path.join(OUT, "sitemap.xml"), "w") as f:
+         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+                 + "".join(f"  <url><loc>{u}</loc><lastmod>{_today}</lastmod></url>\n" for u in sorted(set(SITEMAP))) + "</urlset>\n")
+     with open(os.path.join(OUT, "robots.txt"), "w") as f:
+-        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nDisallow: /newsletter.html\nSitemap: {SITE}/sitemap.xml\n")
++        f.write(f"User-agent: *\nDisallow: /pages/\nDisallow: /partials/\nDisallow: /tools/\nDisallow: /_picker/\nSitemap: {SITE}/sitemap.xml\n")
+     print(f"{len(products)} pages")
+     # the emails name prices by hand (a marketing email has no cart to read from),
+     # so re-write them from Shopify before anyone copies a template out
+--- a/pdp/content.json
++++ b/pdp/content.json
+@@ -16,7 +16,6 @@
+     "tint": -2.0
+    },
+    "gallery": [
+-    "img/ear-cuff/white-1.jpg",
+     "img/ear-cuff/hand-3.jpg",
+     "img/ear-cuff/hires-3.jpg"
+    ],
+@@ -45,7 +44,6 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/eclipse-ring/white-1.jpg",
+     "img/eclipse-ring/hero.jpg",
+     "img/eclipse-ring/hires-1.jpg",
+     "img/eclipse-ring/hand-1.jpg"
+@@ -91,8 +89,9 @@
+    },
+    "gallery": [
+     "img/eleph/hand-2.jpg",
+-    "img/eleph/white-1.jpg",
+-    "img/eleph/white-2.jpg"
++    "img/eleph/hires-1.jpg",
++    "img/eleph/hires-3.jpg",
++    "img/eleph/plain-2.jpg"
+    ],
+    "hero": "img/eleph/hero-dm.jpg",
+    "hidden": [],
+@@ -102,8 +101,7 @@
+     "x": 50,
+     "y": 50,
+     "z": 1.48
+-   },
+-   "lore": "It remembers everything and forgives most of it. Late at night, keepers still hear a low, distant call from just beyond the room."
++   }
+   },
+   "ibi": {
+    "frames": {
+@@ -127,8 +125,7 @@
+    },
+    "gallery": [
+     "img/ibi/hand-2.jpg",
+-    "img/ibi/white-1.jpg",
+-    "img/ibi/white-2.jpg"
++    "img/ibi/hires-4.jpg"
+    ],
+    "hero": "img/ibi/hires-2-dm.jpg",
+    "hidden": [],
+@@ -146,8 +143,7 @@
+      "y": 0,
+      "r": -1
+     }
+-   },
+-   "lore": "It has kept its long watch for longer than anyone can say, and guards its secrets closely. Every attempt to photograph it ends in fog."
++   }
+   },
+   "lunar-canyon-ring": {
+    "frames": {
+@@ -176,7 +172,6 @@
+    },
+    "hero": "img/lunar-canyon-ring/hero.jpg",
+    "gallery": [
+-    "img/lunar-canyon-ring/white-1.jpg",
+     "img/lunar-canyon-ring/hand-2.jpg",
+     "img/lunar-canyon-ring/hand-1.jpg"
+    ],
+@@ -221,7 +216,6 @@
+     "tint": 0.0
+    },
+    "gallery": [
+-    "img/meridian-egg-ring/white-1.jpg",
+     "img/meridian-egg-ring/hand-2.jpg",
+     "img/meridian-egg-ring/plain-1.jpg"
+    ],
+@@ -255,9 +249,7 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/milo/hand-2.jpg",
+-    "img/milo/white-1.jpg",
+-    "img/milo/white-2.jpg"
++    "img/milo/hand-2.jpg"
+    ],
+    "hero": "img/milo/hero-dm.jpg",
+    "hidden": [],
+@@ -275,8 +267,7 @@
+      "y": 2.5,
+      "r": 0
+     }
+-   },
+-   "lore": "It crossed a great deal of country to get here, and seems glad to finally stop. Over the years, it comes to resemble whoever holds it."
++   }
+   },
+   "ori": {
+    "frames": {
+@@ -301,10 +292,9 @@
+    "hero": "img/ori/hero.jpg",
+    "gallery": [
+     "img/ori/hand-2.jpg",
+-    "img/ori/white-1.jpg",
+-    "img/ori/white-2.jpg",
+-    "img/ori/white-3.jpg",
+-    "img/ori/white-4.jpg"
++    "img/ori/plain-3.jpg",
++    "img/ori/hires-1.jpg",
++    "img/ori/hires-2.jpg"
+    ],
+    "hidden": [],
+    "tile_hover": "img/ori/hand-1.jpg",
+@@ -316,8 +306,7 @@
+      "y": 1,
+      "r": 1
+     }
+-   },
+-   "lore": "It keeps a patient watch over forests, rivers and the houses that take it in. In deep winter, the room feels a degree warmer."
++   }
+   },
+   "pip": {
+    "frames": {
+@@ -333,9 +322,9 @@
+     }
+    },
+    "gallery": [
++    "img/pip/plain-2.jpg",
+     "img/pip/hand-2.jpg",
+-    "img/pip/white-1.jpg",
+-    "img/pip/white-2.jpg"
++    "img/pip/plain-3.jpg"
+    ],
+    "hidden": [
+     "img/pip/composite.jpg"
+@@ -361,8 +350,7 @@
+      "y": 4.5,
+      "r": 0
+     }
+-   },
+-   "lore": "It kept watch from a sunny windowsill for years. Visitors still pick it up without asking, and those who carry it start checking their pockets."
++   }
+   },
+   "rebi": {
+    "frames": {
+@@ -380,9 +368,8 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/rebi/hand-2.jpg",
+-    "img/rebi/white-1.jpg",
+-    "img/rebi/white-2.jpg"
++    "img/rebi/hires-1.jpg",
++    "img/rebi/hand-2.jpg"
+    ],
+    "tile_before_hires": {
+     "x": 51.5,
+@@ -391,9 +378,7 @@
+    },
+    "hero": "img/rebi/hero.jpg",
+    "hidden": [],
+-   "tile_hover": "img/rebi/hires-2-mirrored.jpg",
+-   "price": 180,
+-   "lore": "It never looks the same way twice in the same light. Some see one thing, some another, and it seems quietly pleased by the disagreement."
++   "tile_hover": "img/rebi/hires-2-mirrored.jpg"
+   },
+   "ren": {
+    "frames": {
+@@ -421,9 +406,9 @@
+     "tint": 0.0
+    },
+    "gallery": [
++    "img/ren/plain-1.jpg",
+     "img/ren/hand-2.jpg",
+-    "img/ren/white-1.jpg",
+-    "img/ren/white-2.jpg"
++    "img/ren/plain-2.jpg"
+    ],
+    "tile_before_hires": {
+     "x": 50,
+@@ -446,8 +431,7 @@
+      "y": -5,
+      "r": -1
+     }
+-   },
+-   "lore": "It knows the way through woods that no longer appear on maps, and its bright crest holds the first light long after dawn."
++   }
+   },
+   "sietch-aperture": {
+    "frames": {
+@@ -476,7 +460,6 @@
+    },
+    "hero": "img/sietch-aperture/hero.jpg",
+    "gallery": [
+-    "img/sietch-aperture/white-1.jpg",
+     "img/sietch-aperture/plain-1.jpg"
+    ]
+   },
+@@ -543,7 +526,6 @@
+     "z": 2.03
+    },
+    "gallery": [
+-    "img/wonderhorn-talisman/white-1.jpg",
+     "img/wonderhorn-talisman/plain-2.jpg",
+     "img/wonderhorn-talisman/plain-3.jpg",
+     "img/wonderhorn-talisman/hand-1.jpg"
+@@ -566,9 +548,7 @@
+     "tint": 0.5
+    },
+    "gallery": [
+-    "img/yael/hand-2.jpg",
+-    "img/yael/white-1.jpg",
+-    "img/yael/white-2.jpg"
++    "img/yael/hand-2.jpg"
+    ],
+    "hero": "img/yael/hires-1.jpg",
+    "hidden": [],
+@@ -586,8 +566,7 @@
+      "y": 0,
+      "r": 0
+     }
+-   },
+-   "lore": "It stands where the footing is narrowest, entirely unbothered. At dusk, keepers sometimes hear a faint ringing, like bells on a far mountain."
++   }
+   },
+   "zuma": {
+    "frames": {
+@@ -616,9 +595,9 @@
+    },
+    "hero": "img/zuma/hero.jpg",
+    "gallery": [
++    "img/zuma/plain-1.jpg",
+     "img/zuma/hand-2.jpg",
+-    "img/zuma/white-1.jpg",
+-    "img/zuma/white-2.jpg"
++    "img/zuma/plain-2.jpg"
+    ],
+    "hidden": [],
+    "tile_hover": "img/zuma/hand-1.jpg",
+@@ -635,8 +614,7 @@
+      "y": -3,
+      "r": 1.5
+     }
+-   },
+-   "lore": "It carries the stillness of the desert at noon. Kept in a pocket, it warms slowly and holds that warmth well into the evening."
++   }
+   },
+   "zuma-ring": {
+    "frames": {
+@@ -664,7 +642,6 @@
+     "tint": -1.0
+    },
+    "gallery": [
+-    "img/zuma-ring/white-1.jpg",
+     "img/zuma-ring/hires-1.jpg",
+     "img/zuma-ring/plain-1.jpg",
+     "img/zuma-ring/plain-2.jpg",
+@@ -682,26 +659,6 @@
+    "hidden": [
+     "img/zuma-ring/composite.jpg"
+    ]
+-  },
+-  "chrysalis": {
+-   "gallery": [
+-    "img/chrysalis/hand-1.jpg",
+-    "img/chrysalis/white-1.jpg",
+-    "img/chrysalis/white-3.jpg",
+-    "img/chrysalis/book-1.jpg",
+-    "img/chrysalis/book-3.jpg"
+-   ],
+-   "frames": {
+-    "img/chrysalis/book-1.jpg": {
+-     "x": 100,
+-     "y": 50,
+-     "z": 1
+-    }
+-   },
+-   "eyebrow": "Studio Maçon × In Her Own Right",
+-   "description": "Made with In Her Own Right, Chelsea Madeline's book on the inner lives of women artists. We wanted to cast the butterfly's first emergence from its cocoon, the moment you can see both what it was and what it has become, in bronze small enough to hold in your palm.",
+-   "lore": "We wanted this totem itself to show transformation, the moment the thing is about to happen, the moment it becomes something new. We wanted a shape that meant hope, trust, but also inevitability. The butterfly’s first emergence out of its cocoon, its first stretch and solidity beyond its imaginal cells, the moment you can see both what a thing was and what it has become: that was the moment we wanted to cast in bronze and hold in our palms as both reminder and promise.",
+-   "price": 180
+   }
+  },
+  "pages": {},
+@@ -735,4 +692,4 @@
+  "rules": {
+   "totem_stack": "head-on or 3/4 view, another angle, one in hand, one in situ, one composite, one video (where each exists)"
+  }
+-}
++}
+--- a/pdp/email/build_emails.py
++++ b/pdp/email/build_emails.py
+@@ -96,7 +96,6 @@
+     return re.sub(re.escape(IMG) + r"/([\w.-]+\.(?:jpg|gif|png))(?![?\w])", tag, html)
+ 
+ def page(preheader, body):
+-    body = body.replace('@SHIPNOTE@', SHIP_KLAVIYO)
+     return _versioned(f"""<!doctype html>
+ <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="x-apple-disable-message-reformatting"><title>Studio Maçon</title>
+@@ -259,15 +258,6 @@
+               "{{ item.line_price|floatformat:0 }}", SITE)
+ CHECKOUT = "{{ event.extra.checkout_url }}"
+ GRID = "<!--GRID-->"          # checkout 2 only: the bag laid out as a grid (Shopify version, see _grid)
+-
+-# the shipping line in the order emails: a Chrysalis preorder ships in early November, everything else within ten business days
+-SHIP_KLAVIYO = ("{% if 'Chrysalis' in event.ItemNames %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. "
+-                "Any other pieces ship within about ten business days.{% else %}You can expect it to ship within about ten business days.{% endif %}")
+-SHIP_SHOPIFY = ("{% assign macon_pre = false %}{% assign macon_rest = false %}{% for line in line_items %}"
+-                "{% if line.product.tags contains 'preorder' or line.title contains 'Chrysalis' %}{% assign macon_pre = true %}{% else %}{% assign macon_rest = true %}{% endif %}{% endfor %}"
+-                "{% if macon_pre and macon_rest %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. Everything else ships within about ten business days."
+-                "{% elsif macon_pre %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them."
+-                "{% else %}You can expect it to ship within about ten business days.{% endif %}")
+ 
+ def notes(rows):
+     cells = "".join(f'<tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 {SERIF};text-transform:uppercase;padding-bottom:7px">{t}</div>'
+@@ -317,7 +307,7 @@
+     preview="What happens between now and its arrival.",
+     body=eyebrow("Studio Maçon") + h1("Your piece<br>is being made") + ORDER
+        + notes([("Made to order", "We start on your order as soon as it comes in. No two pieces come out alike."),
+-                ("On its way", "@SHIPNOTE@ We'll send you tracking as soon as possible."),
++                ("On its way", "You can expect it to ship within about ten business days. We'll send you tracking as soon as possible."),
+                 ("Questions", "Just reply to this email! We respond to every message directly.")])),
+  "thanks-2": dict(
+     subject="How to care for your piece",
+@@ -437,7 +427,6 @@
+ 
+ def to_shopify(html, name):
+     import re
+-    html = html.replace(SHIP_KLAVIYO, SHIP_SHOPIFY)
+     html = html.replace('<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">', "")
+     html = html.replace("<style>", "<style>\n  @font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;"
+                         f"src:url({SITE_ASSETS}/fonts/instrument-serif.woff2) format('woff2')}}", 1)
+--- a/pdp/email/thanks-1.html
++++ b/pdp/email/thanks-1.html
+@@ -14,7 +14,7 @@
+ <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff"><tr><td align="center">
+ <table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px">
+   <tr><td align="center" style="padding:53px 0 44px"><a href="https://studiomacon.co"><img src="https://studiomacon.studiomacon.workers.dev/img/email/eye.gif?v=210bf680" width="54" alt="Studio Maçon" style="width:54px;height:auto"></a></td></tr>
+-<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr><tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">Your piece<br>is being made</td></tr><tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{% for item in event.extra.line_items %}<tr><td align="center" style="padding:0 0 40px"><a href="https://studiomacon.co" style="text-decoration:none"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr><td height="272" valign="bottom" background="{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center" bgcolor="#8a7a6a" style="height:272px;border-radius:16px;background-image:url({{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center);background-size:cover;background-position:center"><div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))"><div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#ffffff">{{ item.product.title }}</div><div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#ffffff;padding-top:7px">${{ item.line_price|floatformat:0 }}</div></div></td></tr></table></a></td></tr>{% endfor %}</table></td></tr><tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto"><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Made to order</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces come out alike.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">On its way</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">{% if 'Chrysalis' in event.ItemNames %}Chrysalis is a preorder and begins shipping in early November, in the order we receive them. Any other pieces ship within about ten business days.{% else %}You can expect it to ship within about ten business days.{% endif %} We'll send you tracking as soon as possible.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Questions</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr></table></td></tr>
++<tr><td class="pad" align="center" style="padding:0 24px 17px;font:400 14px/1.4 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#000000">Studio Maçon</td></tr><tr><td class="pad h1" align="center" style="padding:0 24px 51px;font:400 46px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;letter-spacing:-.005em;color:#000000">Your piece<br>is being made</td></tr><tr><td class="pad" style="padding:0 24px 13px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">{% for item in event.extra.line_items %}<tr><td align="center" style="padding:0 0 40px"><a href="https://studiomacon.co" style="text-decoration:none"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:408px;border-radius:16px;box-shadow:0 18px 28px -12px rgba(0,0,0,.45),0 4px 10px -4px rgba(0,0,0,.25)"><tr><td height="272" valign="bottom" background="{{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center" bgcolor="#8a7a6a" style="height:272px;border-radius:16px;background-image:url({{ item.product.images.0.src|missing_product_image }}&width=960&height=640&crop=center);background-size:cover;background-position:center"><div style="padding:48px 22px 18px;border-radius:0 0 16px 16px;text-align:left;background-image:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0))"><div style="font:400 35px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;color:#ffffff">{{ item.product.title }}</div><div style="font:400 16px/1 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#ffffff;padding-top:7px">${{ item.line_price|floatformat:0 }}</div></div></td></tr></table></a></td></tr>{% endfor %}</table></td></tr><tr><td class="pad" style="padding:4px 24px 26px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:244px;margin:0 auto"><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Made to order</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">We start on your order as soon as it comes in. No two pieces come out alike.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">On its way</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">You can expect it to ship within about ten business days. We'll send you tracking as soon as possible.</div></td></tr><tr><td align="center" style="padding:0 0 42px"><div style="font:400 31px/1 'Instrument Serif','Times New Roman',Georgia,serif;text-transform:uppercase;padding-bottom:7px">Questions</div><div style="font:400 15px/1.6 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#333333">Just reply to this email! We respond to every message directly.</div></td></tr></table></td></tr>
+   <tr><td class="pad" align="center" style="padding:56px 24px 48px;border-top:1px solid #e3e3e3;font:400 12px/1.7 'Helvetica Neue',Helvetica,Arial,sans-serif;color:#8a8a8a">
+     Every piece is made to order in the studio in California.<br>
+     <a href="https://studiomacon.co/story" style="color:#8a8a8a">About</a> &nbsp;·&nbsp; <a href="https://www.instagram.com/studiomacon/" style="color:#8a8a8a">Instagram</a>
+--- a/pdp/pages/custom.html
++++ b/pdp/pages/custom.html
+@@ -15,6 +15,7 @@
+   /* cut-out pieces sit on the grey, 30% smaller than the frame so they never touch its edge */
+   /* every frame 3:4; each piece fitted to the same box so they read at a similar size */
+   .examples figure{aspect-ratio:var(--frame,3/4);position:relative}
++  @media (min-width:1024px){ .examples figure[data-name="hannah-patsy-2-warm--centred.jpg"]{display:none !important} }          /* desktop: off for now so the grid comes out even */
+   /* name and year sit on the grey, bottom left, in black, on hover; no dark gradient */
+   @media (min-width:768px){
+     .examples figure:not(.lead) .over{position:absolute;inset:auto auto 28px 28px;padding:0;background:none;color:#000;opacity:0;transform:translateY(6px);gap:0;font-size:14px}
+@@ -42,6 +43,36 @@
+   .examples figure.unlabelled .over{display:none}
+   @media (hover:none),(max-width:767px){ .examples .over{opacity:1;transform:none} }
+ 
++  /* ── edit mode ───────────────────────────────────────── */
++  body.editing .examples figure{cursor:pointer;transition:none!important;opacity:1!important;filter:none!important;transform:none!important}
++  body.editing .examples figure:hover{outline:1px dashed rgba(0,0,0,.35);outline-offset:-1px}
++  body.editing .examples figure.sel{outline:2px solid #000;outline-offset:-2px}
++  body.editing .examples figure::before{content:attr(data-pos);position:absolute;top:10px;left:10px;z-index:2;min-width:26px;height:26px;
++    padding:0 7px;border-radius:13px;background:#000;color:#fff;font:500 12px/26px var(--sans);text-align:center}
++  body.editing .examples figure.dragging{opacity:.35!important}
++  body.editing .examples figure.drop-before{box-shadow:inset 0 4px 0 #c8321e}
++  .ed{position:fixed;right:16px;bottom:16px;z-index:50;width:260px;padding:16px;background:#fff;border:1px solid #000;
++    font:13px/1.4 var(--sans);box-shadow:0 8px 30px rgba(0,0,0,.12);display:none}
++  body.editing .ed{display:block}
++  .ed h3{margin:0 0 12px;font:500 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
++  .ed .row{margin:0 0 12px}
++  .ed .row > span{display:block;margin:0 0 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(0,0,0,.55)}
++  .ed .frames{display:flex;flex-wrap:wrap;gap:4px}
++  .ed .frames button,.ed .acts button{border:1px solid rgba(0,0,0,.25);padding:5px 8px;font-size:12px}
++  .ed .frames button[aria-pressed="true"]{background:#000;color:#fff;border-color:#000}
++  .ed input[type=range]{width:100%}
++  .ed input[type=text]{width:100%;border:0;border-bottom:1px solid rgba(0,0,0,.25);padding:4px 0;font-size:13px;outline:0}
++  .ed .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
++  .ed .acts .save{background:#000;color:#fff;border-color:#000}
++  .ed .addbtn{display:inline-block;border:1px solid #000;padding:5px 10px;font-size:12px;cursor:pointer}
++  .ed .cutopt{display:flex;align-items:center;gap:6px;margin:8px 0 0;font-size:12px}
++  .ed .restore{display:block;margin:8px 0 0;border:1px solid rgba(0,0,0,.25);padding:5px 8px;font-size:12px}
++  .ed .remove{color:#c8321e;border-color:rgba(200,50,30,.4)!important}
++  .ed{max-height:calc(100vh - 32px);overflow-y:auto}
++  .ed .hint{margin:10px 0 0;font-size:11px;color:rgba(0,0,0,.5)}
++  .ed .msg{margin:8px 0 0;font-size:12px}
++  .ed-toggle{position:fixed;left:16px;bottom:16px;z-index:49;padding:7px 11px;background:#fff;border:1px solid rgba(0,0,0,.3);font-size:12px}
++  body.editing .ed-toggle,body:not(.can-edit) .ed-toggle{display:none}
+   .order{padding:48px calc(var(--pad) + 24px) 0}
+ 
+   .head .on-dark{color:#000}
+@@ -348,6 +379,39 @@
+ 
+ {{FOOTER}}
+ 
++<button class="ed-toggle" type="button">Edit wall</button>
++<div class="ed" role="dialog" aria-label="Edit the commission wall" data-removed="{{REMOVED}}">
++  <h3>Edit wall</h3>
++  <div class="row"><span>Frame</span>
++    <div class="frames">
++      <button type="button" data-frame="3/4">3:4</button><button type="button" data-frame="4/5">4:5</button>
++      <button type="button" data-frame="2/3">2:3</button><button type="button" data-frame="1/1">1:1</button>
++      <button type="button" data-frame="5/4">5:4</button><button type="button" data-frame="auto">Natural</button>
++    </div>
++  </div>
++  <div class="row"><span>Selected: <b class="who">click a piece</b></span></div>
++  <div class="row"><span>Position <b class="pv">–</b></span>
++    <div class="acts" style="margin:0"><button type="button" class="earlier">← Earlier</button><button type="button" class="later">Later →</button></div>
++  </div>
++  <div class="row"><span>Name</span><input class="nm" type="text" placeholder="e.g. Seamus" disabled></div>
++  <div class="row"><span>Date</span><input class="dt" type="text" placeholder="e.g. 2024" disabled></div>
++  <div class="row"><span>Size <b class="sv">100%</b></span><input class="size" type="range" min="30" max="200" value="100" disabled></div>
++  <div class="row"><span>Left / right <b class="xv">0</b></span><input class="xr" type="range" min="-40" max="40" value="0" disabled></div>
++  <div class="row"><span>Up / down <b class="yv">0</b></span><input class="yr" type="range" min="-40" max="40" value="0" disabled></div>
++  <div class="acts">
++    <button type="button" class="reset-one">Reset piece</button>
++    <button type="button" class="remove">Remove piece</button>
++    <button type="button" class="done">Close</button>
++    <button type="button" class="save">Save</button>
++  </div>
++  <div class="row add"><span>Add images</span>
++    <label class="addbtn"><input type="file" accept="image/*" multiple hidden>+ Add images</label>
++    <label class="cutopt"><input type="checkbox" checked> Cut out the background</label>
++    <button type="button" class="restore" hidden>Restore removed (<b class="rc">0</b>)</button>
++  </div>
++  <p class="hint">Click a piece, then use Earlier / Later (or the ← → keys) to move it. Numbers show the order, left to right. Shift + arrows nudge it inside its frame.</p>
++  <p class="msg"></p>
++</div>
+ {{SITEJS}}
+ <script>
+   // Commission steps. The shared accordion script toggles any .acc-head, so this
+@@ -486,5 +550,139 @@
+     });
+   })();
+ </script>
++<script>
++  // Edit mode for the commission wall: reorder, resize and nudge pieces, try frame
++  // proportions, then save to the layout file the page is built from.
++  (function () {
++    var wall = document.querySelector('.examples'), ed = document.querySelector('.ed');
++    var q = function (c) { return ed.querySelector(c); };
++    var sel = null, dragged = null;
++    var figs = function () { return [].slice.call(wall.querySelectorAll('figure:not([data-lead])')); };
++    var num = function (f, k, d) { var v = parseFloat(f.style.getPropertyValue('--' + k)); return isNaN(v) ? d : v; };
++
++    function open(on) {
++      document.body.classList.toggle('editing', on);
++      figs().forEach(function (f) { f.classList.add('is-seen'); });
++      if (!on) pick(null);
++    }
++    if (/[?&]edit\b/.test(location.search)) document.body.classList.add('can-edit');
++    document.querySelector('.ed-toggle').addEventListener('click', function () { open(true); });
++    q('.done').addEventListener('click', function () { open(false); });
++    addEventListener('keydown', function (e) {
++      if (e.target.closest('input[type=text], textarea')) return;
++      if (e.key === 'e' || e.key === 'E') { open(!document.body.classList.contains('editing')); return; }
++      if (!document.body.classList.contains('editing') || !sel) return;
++      // Shift + arrows nudge the piece inside its frame; plain arrows move the frame
++      if (e.shiftKey) {
++        var m = {ArrowLeft: ['x', -1], ArrowRight: ['x', 1], ArrowUp: ['y', -1], ArrowDown: ['y', 1]}[e.key];
++        if (m) { e.preventDefault(); set(m[0], num(sel, m[0], 0) + m[1]); }
++      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
++      else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); move(1); }
++      if (e.key === '+' || e.key === '=') set('s', +(num(sel, 's', 1) + .05).toFixed(2));
++      if (e.key === '-' || e.key === '_') set('s', +(num(sel, 's', 1) - .05).toFixed(2));
++    });
++
++    function number() { figs().forEach(function (f, i) { f.dataset.pos = i + 1; }); if (sel) q('.pv').textContent = sel.dataset.pos + ' of ' + figs().length; }
++    function move(dir) {
++      if (!sel) return;
++      var all = figs(), i = all.indexOf(sel), j = i + dir;
++      if (j < 0 || j >= all.length) return;
++      if (dir < 0) wall.insertBefore(sel, all[j]); else wall.insertBefore(sel, all[j].nextSibling);
++      number(); sel.scrollIntoView({block: 'nearest', behavior: 'smooth'});
++      q('.msg').textContent = 'Unsaved changes';
++    }
++    number();
++    function pick(f) {
++      figs().forEach(function (x) { x.classList.toggle('sel', x === f); });
++      sel = f;
++      ['.size', '.xr', '.yr', '.nm', '.dt'].forEach(function (c) { q(c).disabled = !f; });
++      q('.who').textContent = f ? f.dataset.name : 'click a piece';
++      q('.pv').textContent = f ? f.dataset.pos + ' of ' + figs().length : '–';
++      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
++      if (f) sync();
++    }
++    function sync() {
++      var s = num(sel, 's', 1), x = num(sel, 'x', 0), y = num(sel, 'y', 0);
++      q('.size').value = Math.round(s * 100); q('.sv').textContent = Math.round(s * 100) + '%';
++      q('.xr').value = x; q('.xv').textContent = x; q('.yr').value = y; q('.yv').textContent = y;
++      q('.nm').value = sel.querySelector('.name').textContent; q('.dt').value = sel.querySelector('.date').textContent;
++    }
++    function set(k, v) {
++      if (!sel) return;
++      if (k === 's') v = Math.max(.3, Math.min(2, v));
++      else v = Math.max(-40, Math.min(40, v));
++      sel.style.setProperty('--' + k, v); sync(); q('.msg').textContent = 'Unsaved changes';
++    }
++    wall.addEventListener('click', function (e) {
++      if (!document.body.classList.contains('editing')) return;
++      var f = e.target.closest('figure'); if (f) { e.preventDefault(); pick(f); }
++    });
++    function label() {
++      figs().forEach(function (f) { f.classList.toggle('unlabelled', !f.querySelector('.name').textContent.trim()); });
++    }
++    label();
++    q('.nm').addEventListener('input', function () { if (sel) { sel.querySelector('.name').textContent = this.value; label(); q('.msg').textContent = 'Unsaved changes'; } });
++    q('.dt').addEventListener('input', function () { if (sel) { sel.querySelector('.date').textContent = this.value; q('.msg').textContent = 'Unsaved changes'; } });
++    q('.size').addEventListener('input', function () { set('s', this.value / 100); });
++    ['.size', '.xr', '.yr'].forEach(function (c) { q(c).addEventListener('change', function () { this.blur(); }); });
++    q('.xr').addEventListener('input', function () { set('x', +this.value); });
++    q('.yr').addEventListener('input', function () { set('y', +this.value); });
++    // remove: hidden from the wall on save; the image file itself is kept, so it can be restored
++    var removed = JSON.parse(ed.dataset.removed || '[]');
++    function showRestore() { q('.restore').hidden = !removed.length; q('.rc').textContent = removed.length; }
++    showRestore();
++    q('.remove').addEventListener('click', function () {
++      if (!sel) return;
++      removed.push(sel.dataset.name); var gone = sel; pick(null); gone.remove(); number(); showRestore();
++      q('.msg').textContent = 'Unsaved changes';
++    });
++    q('.restore').addEventListener('click', function () {
++      removed = []; showRestore(); save().then(function (ok) { if (ok) location.href = location.pathname + '?edit'; });
++    });
++    // add: save what's here first, then send each picture to be added, then reload into edit mode
++    q('.addbtn input').addEventListener('change', function () {
++      var files = [].slice.call(this.files), cut = q('.cutopt input').checked ? 1 : 0;
++      if (!files.length) return;
++      q('.msg').textContent = 'Saving, then adding ' + files.length + (files.length > 1 ? ' images' : ' image') + (cut ? ' and cutting them out' : '') + '…';
++      save().then(function (ok) {
++        if (!ok) return;
++        return files.reduce(function (p, f) {
++          return p.then(function () {
++            return fetch('/api/commission-image?cut=' + cut + '&name=' + encodeURIComponent(f.name), {method: 'POST', body: f})
++              .then(function (r) { return r.json(); })
++              .then(function (d) { if (d.error) throw new Error(d.error); });
++          });
++        }, Promise.resolve()).then(function () { location.href = location.pathname + '?edit'; })
++          .catch(function (e) { q('.msg').textContent = 'Not added: ' + e.message; });
++      });
++    });
++    q('.earlier').addEventListener('click', function () { move(-1); });
++    q('.later').addEventListener('click', function () { move(1); });
++    q('.reset-one').addEventListener('click', function () { if (sel) { ['s', 'x', 'y'].forEach(function (k) { sel.style.setProperty('--' + k, k === 's' ? 1 : 0); }); sync(); } });
++
++    // frame proportions for the whole wall
++    function frame(v) {
++      wall.style.setProperty('--frame', v);
++      ed.querySelectorAll('[data-frame]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.frame === v); });
++    }
++    ed.querySelectorAll('[data-frame]').forEach(function (b) {
++      b.addEventListener('click', function () { frame(b.dataset.frame); q('.msg').textContent = 'Unsaved changes'; });
++    });
++    frame(wall.style.getPropertyValue('--frame').trim() || '3/4');
++
++    function save() {
++      var pieces = {};
++      figs().forEach(function (f) { pieces[f.dataset.name] = {s: num(f, 's', 1), x: num(f, 'x', 0), y: num(f, 'y', 0), name: f.querySelector('.name').textContent, date: f.querySelector('.date').textContent}; });
++      var body = {frame: wall.style.getPropertyValue('--frame').trim() || '3/4', order: figs().map(function (f) { return f.dataset.name; }), pieces: pieces, removed: removed};
++      q('.msg').textContent = 'Saving…';
++      return fetch('/api/commission-layout', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)})
++        .then(function (r) { return r.json(); })
++        .then(function (d) { q('.msg').textContent = d.saved ? 'Saved.' : 'Not saved: ' + d.error; return !!d.saved; })
++        .catch(function () { q('.msg').textContent = 'Not saved: the preview server is not the editing one.'; return false; });
++    }
++    q('.save').addEventListener('click', function () { save(); });
++    if (/[?&]edit\b/.test(location.search)) open(true);
++  })();
++</script>
+ </body>
+ </html>
+--- a/pdp/pages/shop.html
++++ b/pdp/pages/shop.html
+@@ -29,6 +29,7 @@
+   html.photo-clay .piece[href="ear-cuff.html"] .pic img.ab:not(.held){object-position:50% 50% !important;transform-origin:50% 50% !important;transform:none !important}
+   html.photo-clay .piece[href="meridian-egg-ring.html"] .pic img.ab:not(.held){object-position:50% 50% !important;transform-origin:50% 50% !important;transform:none !important}
+   html.photo-clay .piece[href="wonderhorn-talisman.html"] .pic img.ab:not(.held){object-position:50% 50% !important;transform-origin:50% 50% !important;transform:none !important}
++  html.photo-clay .piece[href="starshipkey-pendant.html"] .pic img.ab:not(.held){object-position:50% 50% !important;transform-origin:50% 50% !important;transform:none !important}
+   @media (min-width:1024px){ html.photo-clay .wall{column-gap:5px !important;row-gap:8px !important;padding-left:24px !important;padding-right:24px !important} }
+   @media (min-width:1024px){ html.photo-clay .wall .piece .pic{border-radius:0 !important;overflow:hidden !important} }
+   @media (min-width:1024px){ html.photo-clay .wall .piece .over{padding-top:15px !important} }
+--- a/pdp/partials/footer.html
++++ b/pdp/partials/footer.html
+@@ -1,7 +1,7 @@
+ <footer>
+   <div class="brand">
+-    <img class="mark" src="img/eye-mark.png" alt="Studio Maçon">
+-    <p class="fine"><span>Artifacts of Love,</span><br><span>Made to Order</span></p>
++    <img class="mark" src="img/mark-loop-sm.webp" alt="Studio Maçon">
++    <p class="fine">Artifacts of Love,<br>Made to Order</p>
+   </div>
+   <div class="middle">
+   <nav class="links">
+--- a/pdp/partials/site.js
++++ b/pdp/partials/site.js
+@@ -443,7 +443,6 @@
+     var extra = code ? {discount: code} : {};
+     var gift = MaconGift.read();          // lands on the order as "Gift wrap" and "Gift note", which Flow and the staff email read
+     if (gift.wrap) { extra['attributes[Gift wrap]'] = 'Yes'; if (gift.note) extra['attributes[Gift note]'] = gift.note; }
+-    if (items.some(function (i) { return i.slug === 'chrysalis'; })) extra['attributes[Preorder]'] = 'Chrysalis, ships early November';          // shows on the order in Shopify, so a preorder is never packed with the ten-day pieces
+     location.href = 'https://' + cfg.shop + '/cart/' + path + maconClickQuery(extra);
+     // the bag is left alone here: a shopper who backs out of Shopify's checkout must find their
+     // pieces still waiting. It is emptied on the thank-you page.
+@@ -613,7 +612,7 @@
+     document.querySelector('.head .right').appendChild(toast);
+     var timer = null;
+     document.querySelectorAll('.cta, .dock').forEach(function (b) {
+-      if (!/add to bag|preorder/i.test(b.textContent)) return;          // Chrysalis's button says Preorder; it fills the bag the same way
++      if (!/add to bag/i.test(b.textContent)) return;
+       b.addEventListener('click', function (e) {
+         var title = document.querySelector('.info h1'), hero = document.querySelector('.gallery .hero img'), price = document.querySelector('.info .price .amt') || document.querySelector('.info .price');          // the amount alone, not the shipping notes beside it
+         var sizeBox = document.querySelector('[data-size]'), size = sizeBox && sizeBox.classList.contains('picked') ? sizeBox.querySelector('.size-value').textContent : '';
+@@ -633,7 +632,7 @@
+         });
+         toast.textContent = '';
+         if (hero) { var ti = document.createElement('img'); ti.src = hero.getAttribute('src'); ti.alt = ''; toast.appendChild(ti); }
+-        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = /preorder/i.test(b.textContent) ? 'Preorder added to bag' : 'Added to bag';
++        var tx = document.createElement('span'), tb = document.createElement('b'); tb.textContent = 'Added to bag';
+         tx.appendChild(tb); tx.appendChild(document.createTextNode((title ? title.textContent : '') + (size ? ' · Size ' + size : '')));
+         if (price) { var tp = document.createElement('span'); tp.className = 'price-note'; tp.textContent = price.textContent; tx.appendChild(tp); }
+         toast.appendChild(tx);
+@@ -699,9 +698,7 @@
+       if (id && shop) {          // straight into Shop Pay, where the address and card are already saved
+         var price = parseFloat(((document.querySelector('.info .price .amt') || document.querySelector('.info .price') || {}).textContent || '').replace(/[^0-9.]/g, '')) || 0;
+         if (window.maconTrack) maconTrack('checkout', [{variant: variant, qty: 1, price: price}]);
+-        var q = {payment: 'shop_pay'};
+-        if (/\/chrysalis(\.html)?$/.test(location.pathname)) q['attributes[Preorder]'] = 'Chrysalis, ships early November';          // the same note the bag sends
+-        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery(q);
++        location.href = 'https://' + shop + '/cart/' + id + ':1' + maconClickQuery({payment: 'shop_pay'});
+         return;
+       }
+       MaconCheckout([{variant: variant, qty: 1}], b).catch(function () {});
+@@ -937,12 +934,8 @@
+ })();
+ 
+ window.maconShipNote = function () {
+-  // Chrysalis is a preorder: it ships in early November, in the order received, not ten working days out
+-  var items = MaconBag.read(), pre = items.some(function (x) { return x.slug === 'chrysalis'; });
+-  var n = items.reduce(function (t, x) { return t + (x.slug === 'chrysalis' ? 0 : (x.qty || 1)); }, 0);
+-  var preNote = 'Chrysalis is a preorder and ships in early November, in the order received.';
+-  if (pre && !n) return preNote;
+-  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.' + (pre ? ' ' + preNote : '');
++  var n = MaconBag.read().reduce(function (t, x) { return t + (x.qty || 1); }, 0);
++  return (n > 1 ? 'Your pieces are' : 'Your piece is') + ' made to order and will ship on or before ' + maconShipBy() + '.';
+ };
+ // the same date is shown in the bag and its drawer: window.maconShipBy() gives e.g. "Oct 5"
+ window.maconShipBy = (function () {
+--- a/pdp/robots.txt
++++ b/pdp/robots.txt
+@@ -3,5 +3,4 @@
+ Disallow: /partials/
+ Disallow: /tools/
+ Disallow: /_picker/
+-Disallow: /newsletter.html
+ Sitemap: https://studiomacon.co/sitemap.xml
+--- a/pdp/site.css
++++ b/pdp/site.css
+@@ -137,8 +137,7 @@
+ footer{overflow:hidden;overflow:clip;display:grid;gap:56px;align-content:end;min-height:105vh;min-height:105svh;padding:96px calc(var(--pad) + 24px) 36px;--f-size:calc(17px - 2pt)}
+ footer .brand{order:3}
+ footer .middle{order:2;display:flex;flex-direction:column;align-items:flex-start}
+-footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}          /* the mark, still and black */
+-footer .fine span{white-space:nowrap}          /* the break always falls after LOVE, at every width */
++footer .mark{display:block;width:auto;height:38px;margin:0 0 32px}
+ footer .fine{margin:0;font:400 calc((32px - 5pt) * 1.2)/1.05 var(--serif);letter-spacing:.02em;text-transform:uppercase}
+ footer .fine.where{margin:12px 0 0;font-family:"Instrument Serif",serif;font-size:21px;letter-spacing:.01em;text-transform:none;opacity:.6;
+   display:inline-block;transform:rotate(-3deg);transform-origin:left center}          /* where the studio is, in the studio's own hand */
+@@ -634,4 +633,3 @@
+ html.menu-arriving .head > :not(.logotype){visibility:hidden}
+ html.menu-arriving .head .logotype,html.menu-arriving .head .logotype *{color:#000;transition:none !important}
+ 
+-
+--- a/pdp/tools/optimize_media.py
++++ b/pdp/tools/optimize_media.py
+@@ -17,10 +17,8 @@
+ 
+ def save_clean(im, out, floor=80):
+     """Save the lightest webp that still measures as the same picture as its source."""
+-    if out.name.startswith("white-"):          # mostly plain grey backdrop: the whole-picture score passes while the small piece smears
+-        floor = 95
+     ref = np.asarray(im.convert("L"), dtype=float)
+-    for q in sorted(q for q in {floor, 84, 88, 91, 93, 95, 97} if q >= floor):
++    for q in (floor, 84, 88, 91, 93, 95, 97):
+         buf = io.BytesIO()
+         im.save(buf, "WEBP", quality=q, method=6)
+         got = np.asarray(Image.open(io.BytesIO(buf.getvalue())).convert("L"), dtype=float)
+@@ -79,7 +77,7 @@
+             make_tile(src)
+         out = src.with_name(src.name + ".webp")
+         if not out.exists() or out.stat().st_mtime < src.stat().st_mtime:
+-            limit = 1000 if top in SMALL else 4000 if src.name.startswith("white-") else 3200          # retina-sharp on a large display; the grey-backdrop shots show a small piece in a wide frame, so they keep more
++            limit = 1000 if top in SMALL else 3200          # retina-sharp on a large display
+             im = ImageOps.exif_transpose(Image.open(src))
+             im.thumbnail((limit, limit), Image.LANCZOS)
+             if src.suffix.lower() == ".png":
+--- a/pdp/tools/visual_match.json
++++ b/pdp/tools/visual_match.json
+@@ -3,102 +3,108 @@
+   "eclipse-ring": 0.278,
+   "eleph": 0.436,
+   "ibi": 0.3837,
+-  "lunar-canyon-ring": 0.2601,
++  "lunar-canyon-ring": 0.2997,
+   "meridian-egg-ring": 0.288,
+   "milo": 0.3614,
+-  "ori": 0.7173,
+-  "pip": 0.2983,
+-  "rebi": 0.62,
+-  "ren": 0.4119,
+-  "sietch-aperture": 0.2782,
+-  "wonderhorn-talisman": 0.3543,
++  "ori": 0.7245,
++  "pip": 0.3044,
++  "rebi": 0.6172,
++  "ren": 0.4116,
++  "sietch-aperture": 0.27,
++  "starshipkey-pendant": 0.0975,
++  "wonderhorn-talisman": 0.3544,
+   "yael": 0.4041,
+-  "zuma": 0.7003,
++  "zuma": 0.5662,
+   "zuma-ring": 0.3746
+  },
+  "eclipse-ring": {
+   "ear-cuff": 0.278,
+   "eleph": 0.4118,
+   "ibi": 0.505,
+-  "lunar-canyon-ring": 0.6456,
++  "lunar-canyon-ring": 0.5721,
+   "meridian-egg-ring": 0.7742,
+   "milo": 0.5659,
+-  "ori": 0.3809,
+-  "pip": 0.3567,
+-  "rebi": 0.2609,
+-  "ren": 0.607,
+-  "sietch-aperture": 0.7205,
+-  "wonderhorn-talisman": 0.5367,
++  "ori": 0.3804,
++  "pip": 0.347,
++  "rebi": 0.2601,
++  "ren": 0.6066,
++  "sietch-aperture": 0.7036,
++  "starshipkey-pendant": 0.2267,
++  "wonderhorn-talisman": 0.5379,
+   "yael": 0.3323,
+-  "zuma": 0.3751,
++  "zuma": 0.3707,
+   "zuma-ring": 0.4602
+  },
+  "eleph": {
+   "ear-cuff": 0.436,
+   "eclipse-ring": 0.4118,
+   "ibi": 0.6066,
+-  "lunar-canyon-ring": 0.5004,
++  "lunar-canyon-ring": 0.5802,
+   "meridian-egg-ring": 0.4283,
+   "milo": 0.5792,
+-  "ori": 0.4983,
+-  "pip": 0.5694,
++  "ori": 0.4997,
++  "pip": 0.574,
+   "rebi": 0.622,
+-  "ren": 0.4531,
+-  "sietch-aperture": 0.2668,
+-  "wonderhorn-talisman": 0.6175,
++  "ren": 0.4543,
++  "sietch-aperture": 0.2631,
++  "starshipkey-pendant": 0.3463,
++  "wonderhorn-talisman": 0.626,
+   "yael": 0.6852,
+-  "zuma": 0.6801,
++  "zuma": 0.8089,
+   "zuma-ring": 0.6752
+  },
+  "ibi": {
+   "ear-cuff": 0.3837,
+   "eclipse-ring": 0.505,
+   "eleph": 0.6066,
+-  "lunar-canyon-ring": 0.594,
++  "lunar-canyon-ring": 0.5671,
+   "meridian-egg-ring": 0.5102,
+   "milo": 0.7794,
+-  "ori": 0.4723,
+-  "pip": 0.483,
+-  "rebi": 0.488,
+-  "ren": 0.6918,
+-  "sietch-aperture": 0.3367,
+-  "wonderhorn-talisman": 0.5917,
++  "ori": 0.4744,
++  "pip": 0.4837,
++  "rebi": 0.4873,
++  "ren": 0.6935,
++  "sietch-aperture": 0.329,
++  "starshipkey-pendant": 0.3558,
++  "wonderhorn-talisman": 0.5985,
+   "yael": 0.5922,
+-  "zuma": 0.601,
++  "zuma": 0.6077,
+   "zuma-ring": 0.5322
+  },
+  "lunar-canyon-ring": {
+-  "ear-cuff": 0.2601,
+-  "eclipse-ring": 0.6456,
+-  "eleph": 0.5004,
+-  "ibi": 0.594,
+-  "meridian-egg-ring": 0.6027,
+-  "milo": 0.641,
+-  "ori": 0.4709,
+-  "pip": 0.4617,
+-  "rebi": 0.2979,
+-  "ren": 0.4822,
+-  "sietch-aperture": 0.5296,
+-  "wonderhorn-talisman": 0.6422,
+-  "yael": 0.3846,
+-  "zuma": 0.4472,
+-  "zuma-ring": 0.4576
++  "ear-cuff": 0.2997,
++  "eclipse-ring": 0.5721,
++  "eleph": 0.5802,
++  "ibi": 0.5671,
++  "meridian-egg-ring": 0.5604,
++  "milo": 0.524,
++  "ori": 0.4174,
++  "pip": 0.4025,
++  "rebi": 0.5327,
++  "ren": 0.4916,
++  "sietch-aperture": 0.4493,
++  "starshipkey-pendant": 0.2593,
++  "wonderhorn-talisman": 0.5523,
++  "yael": 0.6675,
++  "zuma": 0.5465,
++  "zuma-ring": 0.7893
+  },
+  "meridian-egg-ring": {
+   "ear-cuff": 0.288,
+   "eclipse-ring": 0.7742,
+   "eleph": 0.4283,
+   "ibi": 0.5102,
+-  "lunar-canyon-ring": 0.6027,
++  "lunar-canyon-ring": 0.5604,
+   "milo": 0.5734,
+-  "ori": 0.4548,
+-  "pip": 0.4035,
+-  "rebi": 0.3075,
+-  "ren": 0.5884,
+-  "sietch-aperture": 0.6522,
+-  "wonderhorn-talisman": 0.5208,
++  "ori": 0.4536,
++  "pip": 0.3968,
++  "rebi": 0.3073,
++  "ren": 0.5874,
++  "sietch-aperture": 0.68,
++  "starshipkey-pendant": 0.2428,
++  "wonderhorn-talisman": 0.5229,
+   "yael": 0.3937,
+-  "zuma": 0.4228,
++  "zuma": 0.4122,
+   "zuma-ring": 0.4557
+  },
+  "milo": {
+@@ -106,169 +112,197 @@
+   "eclipse-ring": 0.5659,
+   "eleph": 0.5792,
+   "ibi": 0.7794,
+-  "lunar-canyon-ring": 0.641,
++  "lunar-canyon-ring": 0.524,
+   "meridian-egg-ring": 0.5734,
+-  "ori": 0.5149,
+-  "pip": 0.5743,
+-  "rebi": 0.404,
+-  "ren": 0.6662,
+-  "sietch-aperture": 0.3831,
+-  "wonderhorn-talisman": 0.5655,
++  "ori": 0.5113,
++  "pip": 0.5642,
++  "rebi": 0.4038,
++  "ren": 0.6659,
++  "sietch-aperture": 0.3754,
++  "starshipkey-pendant": 0.3953,
++  "wonderhorn-talisman": 0.5685,
+   "yael": 0.5798,
+-  "zuma": 0.6083,
++  "zuma": 0.5872,
+   "zuma-ring": 0.4948
+  },
+  "ori": {
+-  "ear-cuff": 0.7173,
+-  "eclipse-ring": 0.3809,
+-  "eleph": 0.4983,
+-  "ibi": 0.4723,
+-  "lunar-canyon-ring": 0.4709,
+-  "meridian-egg-ring": 0.4548,
+-  "milo": 0.5149,
+-  "pip": 0.4371,
+-  "rebi": 0.5458,
+-  "ren": 0.4334,
+-  "sietch-aperture": 0.3489,
+-  "wonderhorn-talisman": 0.403,
+-  "yael": 0.4491,
+-  "zuma": 0.7551,
+-  "zuma-ring": 0.3976
++  "ear-cuff": 0.7245,
++  "eclipse-ring": 0.3804,
++  "eleph": 0.4997,
++  "ibi": 0.4744,
++  "lunar-canyon-ring": 0.4174,
++  "meridian-egg-ring": 0.4536,
++  "milo": 0.5113,
++  "pip": 0.4393,
++  "rebi": 0.5448,
++  "ren": 0.435,
++  "sietch-aperture": 0.3455,
++  "starshipkey-pendant": 0.2234,
++  "wonderhorn-talisman": 0.4027,
++  "yael": 0.4489,
++  "zuma": 0.6265,
++  "zuma-ring": 0.3977
+  },
+  "pip": {
+-  "ear-cuff": 0.2983,
+-  "eclipse-ring": 0.3567,
+-  "eleph": 0.5694,
+-  "ibi": 0.483,
+-  "lunar-canyon-ring": 0.4617,
+-  "meridian-egg-ring": 0.4035,
+-  "milo": 0.5743,
+-  "ori": 0.4371,
+-  "rebi": 0.3895,
+-  "ren": 0.3595,
+-  "sietch-aperture": 0.2236,
+-  "wonderhorn-talisman": 0.4504,
+-  "yael": 0.5659,
+-  "zuma": 0.5541,
+-  "zuma-ring": 0.409
++  "ear-cuff": 0.3044,
++  "eclipse-ring": 0.347,
++  "eleph": 0.574,
++  "ibi": 0.4837,
++  "lunar-canyon-ring": 0.4025,
++  "meridian-egg-ring": 0.3968,
++  "milo": 0.5642,
++  "ori": 0.4393,
++  "rebi": 0.3999,
++  "ren": 0.3592,
++  "sietch-aperture": 0.2139,
++  "starshipkey-pendant": 0.3394,
++  "wonderhorn-talisman": 0.4491,
++  "yael": 0.5667,
++  "zuma": 0.5809,
++  "zuma-ring": 0.4057
+  },
+  "rebi": {
+-  "ear-cuff": 0.62,
+-  "eclipse-ring": 0.2609,
++  "ear-cuff": 0.6172,
++  "eclipse-ring": 0.2601,
+   "eleph": 0.622,
+-  "ibi": 0.488,
+-  "lunar-canyon-ring": 0.2979,
+-  "meridian-egg-ring": 0.3075,
+-  "milo": 0.404,
+-  "ori": 0.5458,
+-  "pip": 0.3895,
+-  "ren": 0.4224,
+-  "sietch-aperture": 0.1917,
+-  "wonderhorn-talisman": 0.3589,
+-  "yael": 0.6669,
+-  "zuma": 0.6518,
+-  "zuma-ring": 0.5784
++  "ibi": 0.4873,
++  "lunar-canyon-ring": 0.5327,
++  "meridian-egg-ring": 0.3073,
++  "milo": 0.4038,
++  "ori": 0.5448,
++  "pip": 0.3999,
++  "ren": 0.4243,
++  "sietch-aperture": 0.189,
++  "starshipkey-pendant": 0.1749,
++  "wonderhorn-talisman": 0.3682,
++  "yael": 0.6703,
++  "zuma": 0.7446,
++  "zuma-ring": 0.5818
+  },
+  "ren": {
+-  "ear-cuff": 0.4119,
+-  "eclipse-ring": 0.607,
+-  "eleph": 0.4531,
+-  "ibi": 0.6918,
+-  "lunar-canyon-ring": 0.4822,
+-  "meridian-egg-ring": 0.5884,
+-  "milo": 0.6662,
+-  "ori": 0.4334,
+-  "pip": 0.3595,
+-  "rebi": 0.4224,
+-  "sietch-aperture": 0.4587,
+-  "wonderhorn-talisman": 0.4221,
+-  "yael": 0.4774,
+-  "zuma": 0.4795,
+-  "zuma-ring": 0.42
++  "ear-cuff": 0.4116,
++  "eclipse-ring": 0.6066,
++  "eleph": 0.4543,
++  "ibi": 0.6935,
++  "lunar-canyon-ring": 0.4916,
++  "meridian-egg-ring": 0.5874,
++  "milo": 0.6659,
++  "ori": 0.435,
++  "pip": 0.3592,
++  "rebi": 0.4243,
++  "sietch-aperture": 0.4538,
++  "starshipkey-pendant": 0.2501,
++  "wonderhorn-talisman": 0.4296,
++  "yael": 0.479,
++  "zuma": 0.4628,
++  "zuma-ring": 0.422
+  },
+  "sietch-aperture": {
+-  "ear-cuff": 0.2782,
+-  "eclipse-ring": 0.7205,
+-  "eleph": 0.2668,
+-  "ibi": 0.3367,
+-  "lunar-canyon-ring": 0.5296,
+-  "meridian-egg-ring": 0.6522,
+-  "milo": 0.3831,
+-  "ori": 0.3489,
+-  "pip": 0.2236,
+-  "rebi": 0.1917,
+-  "ren": 0.4587,
+-  "wonderhorn-talisman": 0.3653,
+-  "yael": 0.2138,
+-  "zuma": 0.2398,
+-  "zuma-ring": 0.313
++  "ear-cuff": 0.27,
++  "eclipse-ring": 0.7036,
++  "eleph": 0.2631,
++  "ibi": 0.329,
++  "lunar-canyon-ring": 0.4493,
++  "meridian-egg-ring": 0.68,
++  "milo": 0.3754,
++  "ori": 0.3455,
++  "pip": 0.2139,
++  "rebi": 0.189,
++  "ren": 0.4538,
++  "starshipkey-pendant": 0.1933,
++  "wonderhorn-talisman": 0.3637,
++  "yael": 0.215,
++  "zuma": 0.2387,
++  "zuma-ring": 0.3124
++ },
++ "starshipkey-pendant": {
++  "ear-cuff": 0.0975,
++  "eclipse-ring": 0.2267,
++  "eleph": 0.3463,
++  "ibi": 0.3558,
++  "lunar-canyon-ring": 0.2593,
++  "meridian-egg-ring": 0.2428,
++  "milo": 0.3953,
++  "ori": 0.2234,
++  "pip": 0.3394,
++  "rebi": 0.1749,
++  "ren": 0.2501,
++  "sietch-aperture": 0.1933,
++  "wonderhorn-talisman": 0.4047,
++  "yael": 0.2428,
++  "zuma": 0.2974,
++  "zuma-ring": 0.2382
+  },
+  "wonderhorn-talisman": {
+-  "ear-cuff": 0.3543,
+-  "eclipse-ring": 0.5367,
+-  "eleph": 0.6175,
+-  "ibi": 0.5917,
+-  "lunar-canyon-ring": 0.6422,
+-  "meridian-egg-ring": 0.5208,
+-  "milo": 0.5655,
+-  "ori": 0.403,
+-  "pip": 0.4504,
+-  "rebi": 0.3589,
+-  "ren": 0.4221,
+-  "sietch-aperture": 0.3653,
+-  "yael": 0.4243,
+-  "zuma": 0.4968,
+-  "zuma-ring": 0.6024
++  "ear-cuff": 0.3544,
++  "eclipse-ring": 0.5379,
++  "eleph": 0.626,
++  "ibi": 0.5985,
++  "lunar-canyon-ring": 0.5523,
++  "meridian-egg-ring": 0.5229,
++  "milo": 0.5685,
++  "ori": 0.4027,
++  "pip": 0.4491,
++  "rebi": 0.3682,
++  "ren": 0.4296,
++  "sietch-aperture": 0.3637,
++  "starshipkey-pendant": 0.4047,
++  "yael": 0.4339,
++  "zuma": 0.4864,
++  "zuma-ring": 0.6111
+  },
+  "yael": {
+   "ear-cuff": 0.4041,
+   "eclipse-ring": 0.3323,
+   "eleph": 0.6852,
+   "ibi": 0.5922,
+-  "lunar-canyon-ring": 0.3846,
++  "lunar-canyon-ring": 0.6675,
+   "meridian-egg-ring": 0.3937,
+   "milo": 0.5798,
+-  "ori": 0.4491,
+-  "pip": 0.5659,
+-  "rebi": 0.6669,
+-  "ren": 0.4774,
+-  "sietch-aperture": 0.2138,
+-  "wonderhorn-talisman": 0.4243,
+-  "zuma": 0.61,
++  "ori": 0.4489,
++  "pip": 0.5667,
++  "rebi": 0.6703,
++  "ren": 0.479,
++  "sietch-aperture": 0.215,
++  "starshipkey-pendant": 0.2428,
++  "wonderhorn-talisman": 0.4339,
++  "zuma": 0.7316,
+   "zuma-ring": 0.7303
+  },
+  "zuma": {
+-  "ear-cuff": 0.7003,
+-  "eclipse-ring": 0.3751,
+-  "eleph": 0.6801,
+-  "ibi": 0.601,
+-  "lunar-canyon-ring": 0.4472,
+-  "meridian-egg-ring": 0.4228,
+-  "milo": 0.6083,
+-  "ori": 0.7551,
+-  "pip": 0.5541,
+-  "rebi": 0.6518,
+-  "ren": 0.4795,
+-  "sietch-aperture": 0.2398,
+-  "wonderhorn-talisman": 0.4968,
+-  "yael": 0.61,
+-  "zuma-ring": 0.4942
++  "ear-cuff": 0.5662,
++  "eclipse-ring": 0.3707,
++  "eleph": 0.8089,
++  "ibi": 0.6077,
++  "lunar-canyon-ring": 0.5465,
++  "meridian-egg-ring": 0.4122,
++  "milo": 0.5872,
++  "ori": 0.6265,
++  "pip": 0.5809,
++  "rebi": 0.7446,
++  "ren": 0.4628,
++  "sietch-aperture": 0.2387,
++  "starshipkey-pendant": 0.2974,
++  "wonderhorn-talisman": 0.4864,
++  "yael": 0.7316,
++  "zuma-ring": 0.6019
+  },
+  "zuma-ring": {
+   "ear-cuff": 0.3746,
+   "eclipse-ring": 0.4602,
+   "eleph": 0.6752,
+   "ibi": 0.5322,
+-  "lunar-canyon-ring": 0.4576,
++  "lunar-canyon-ring": 0.7893,
+   "meridian-egg-ring": 0.4557,
+   "milo": 0.4948,
+-  "ori": 0.3976,
+-  "pip": 0.409,
+-  "rebi": 0.5784,
+-  "ren": 0.42,
+-  "sietch-aperture": 0.313,
+-  "wonderhorn-talisman": 0.6024,
++  "ori": 0.3977,
++  "pip": 0.4057,
++  "rebi": 0.5818,
++  "ren": 0.422,
++  "sietch-aperture": 0.3124,
++  "starshipkey-pendant": 0.2382,
++  "wonderhorn-talisman": 0.6111,
+   "yael": 0.7303,
+-  "zuma": 0.4942
++  "zuma": 0.6019
+  }
+ }
